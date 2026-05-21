@@ -4,7 +4,7 @@ Spécification détaillée du logiciel de gestion de bibliothèque BibliOfelia, 
 
 Version : 1.0 (cible v1)
 Statut : draft pour Spec-Driven Development
-Dernière modif spec : 2026-05-21 — FEAT-003 (i18n + modeltranslation 4 langues, §6.9)
+Dernière modif spec : 2026-05-21 — FEAT-004 (auth/rôles/audit/throttling, §9.1/§9.2/§9.6)
 
 ---
 
@@ -781,6 +781,15 @@ Rôles :
 | Contributor_api | Catalogage uniquement | N | N | N | N | Y |
 | Readonly | Lecture | Lecture | Lecture | Lecture | N | N |
 
+Implémentation (FEAT-004) :
+- Un `Group` Django par rôle, créé par `python manage.py setup_roles` (idempotent, appelé dans `dev-entrypoint.sh`). Mapping perms dans `apps/accounts/groups.py`.
+- Signal `post_save` sur `User` (`apps/accounts/signals.py`) : synchronise `role`, `is_staff`, et l'appartenance au Group.
+  - `is_superuser=True` force `role=SUPERADMIN` (cas `createsuperuser`).
+  - Seul `superadmin` a `is_staff=True` → seul rôle qui peut accéder à `/admin/` Django.
+  - Les autres rôles utiliseront l'UI custom (Sprint 2+).
+- Helpers : `apps.accounts.permissions.require_role(*roles)` (décorateur vue Django) et `HasRole` (permission DRF, lit `view.required_roles`).
+- Librarian ne peut pas `delete` les modèles porteurs d'historique (`BibliographicRecord`, `Loan`, `Member`) ; passe par `status=closed` ou escalade superadmin.
+
 ### 9.3 Reset administrateur
 
 Procédure physique en cas d'oubli total :
@@ -806,9 +815,10 @@ Procédure physique en cas d'oubli total :
 
 ### 9.6 Audit
 
-- django-auditlog actif sur Member, BibliographicRecord, Item, Loan, Setting, User
-- Conservation : 5 ans
-- Export possible pour rapport ou investigation
+- django-auditlog actif sur Member, BibliographicRecord, Item, Loan, Setting, User (enregistrement explicite dans `apps/core/apps.py:ready()`, FEAT-004).
+- Le middleware `AuditlogMiddleware` attache l'`actor` (request.user) automatiquement.
+- Conservation : 5 ans → commande de purge périodique (différée Task #13/#14).
+- Export possible pour rapport ou investigation (Task #11).
 
 ---
 

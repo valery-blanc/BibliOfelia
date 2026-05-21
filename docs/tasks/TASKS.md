@@ -2,7 +2,7 @@
 
 Source de vérité de l'avancement v1. Une case `[x]` = livrable terminé et déployable. `[ ]` = à faire. `[!]` = bloqué (voir note).
 
-Mise à jour : 2026-05-21 (Task #3 livré + validé Val, Task #4 en cours)
+Mise à jour : 2026-05-21 (Sprint 1 terminé et validé — prêt pour /clear + Sprint 2)
 
 ## Sprint 0 — Squelette
 
@@ -57,7 +57,19 @@ Mise à jour : 2026-05-21 (Task #3 livré + validé Val, Task #4 en cours)
   - [x] Doc : `docs/specs/FEAT-003-i18n-modeltranslation.md` + `SPEC §6.9` mis à jour
   - [x] Test Val OK : admin Category/Tag/MemberCategory affiche 4 onglets de langue (2026-05-21)
   - [x] Commit `FEAT-003: i18n + modeltranslation 4 langues`
-- [ ] **Task #4** Auth, rôles, audit, throttling
+- [x] **Task #4** Auth, rôles, audit, throttling — validé Val 2026-05-21
+  - [x] `apps/accounts/groups.py` : ROLE_PERMS mapping `Role → [(app, codename)]`
+  - [x] `apps/accounts/signals.py` : post_save User → sync role/is_staff/Group (is_superuser → SUPERADMIN forcé)
+  - [x] `apps/accounts/management/commands/setup_roles.py` : crée Groups + assigne perms (idempotent, resync users existants)
+  - [x] `apps/accounts/permissions.py` : `@require_role(*roles)` + `HasRole` (DRF)
+  - [x] `apps/core/apps.py:ready()` : enregistre auditlog sur Setting, BibliographicRecord, Item, Member, Loan, User (§9.6)
+  - [x] `scripts/dev-entrypoint.sh` : ajout `setup_roles` au boot
+  - [x] Tests pytest 22/22 verts (`apps/accounts/tests/test_roles.py`, `test_permissions_helpers.py`, `test_audit.py`)
+  - [x] `manage.py check` 0 issue, boot dev OK avec setup_roles
+  - [x] Doc : `docs/specs/FEAT-004-auth-roles-audit.md` + `SPEC §9.2/§9.6` mis à jour
+  - [x] Test Val OK : user librarian créé via /admin/ avec Group librarian et is_staff=False (2026-05-21)
+  - [x] Commit `FEAT-004: auth, rôles, audit, throttling`
+  - [x] Fin Sprint 1, prêt pour `/clear` + Sprint 2
 
 ## Sprint 2 — UI et workflows métier
 
