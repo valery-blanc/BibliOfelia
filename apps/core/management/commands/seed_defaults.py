@@ -1,14 +1,45 @@
 """Crée les objets par défaut au premier démarrage (idempotent).
 
-Étoffé dans le slice modèles (§5.2 seed catégories, MemberCategory) et le wizard (§11.3).
+SPEC §5.2 : seed Settings + Categories + MemberCategories.
 """
 from django.core.management.base import BaseCommand
+from django.db import transaction
 
 from apps.core.models import Setting
 
 
+CATEGORIES = [
+    # (code, name_fr, parent_code, default_loan_duration_days)
+    ("ENF", "Enfance", None, None),
+    ("ENF-ALB", "Albums", "ENF", None),
+    ("ENF-LEC", "Premières lectures", "ENF", None),
+    ("ENF-ROM", "Romans jeunesse", "ENF", None),
+    ("ADU", "Adultes", None, None),
+    ("ADU-ROM", "Romans", "ADU", None),
+    ("ADU-NOU", "Nouvelles", "ADU", None),
+    ("ADU-POE", "Poésie", "ADU", None),
+    ("ADU-THE", "Théâtre", "ADU", None),
+    ("DOC", "Documentaires", None, None),
+    ("DOC-SCI", "Sciences", "DOC", None),
+    ("DOC-HIS", "Histoire", "DOC", None),
+    ("DOC-GEO", "Géographie", "DOC", None),
+    ("DOC-PRA", "Pratique", "DOC", None),
+    ("DOC-REL", "Religions", "DOC", None),
+    ("PER", "Périodiques", None, 7),
+]
+
+MEMBER_CATEGORIES = [
+    # (code, name, max_concurrent_loans, default_loan_duration_days, card_validity_months)
+    ("ENFANT", "Enfant (< 14 ans)", 3, 21, 12),
+    ("ADO", "Adolescent (14-17 ans)", 5, 21, 12),
+    ("ADULTE", "Adulte", 5, 21, 12),
+    ("ENSEIGNANT", "Enseignant", 15, 60, 12),
+    ("COLLECTIF", "Collectif (école/famille)", 20, 30, 12),
+]
+
+
 class Command(BaseCommand):
-    help = "Crée les Setting par défaut si absents (idempotent)."
+    help = "Crée Settings, Catégories et MemberCategories par défaut si absents (idempotent)."
 
     DEFAULTS = {
         "library_name": ("BibliOfelia", "Nom de la bibliothèque"),
@@ -31,12 +62,48 @@ class Command(BaseCommand):
         "setup_completed": (False, "Wizard d'installation terminé"),
     }
 
+    @transaction.atomic
     def handle(self, *args, **opts):
-        created = 0
+        from apps.catalog.models import Category
+        from apps.members.models import MemberCategory
+
+        settings_created = 0
         for key, (value, description) in self.DEFAULTS.items():
-            obj, was_created = Setting.objects.get_or_create(
+            _, created = Setting.objects.get_or_create(
                 pk=key, defaults={"value": value, "description": description}
             )
-            if was_created:
-                created += 1
-        self.stdout.write(self.style.SUCCESS(f"seed_defaults : {created} Setting créé(s)."))
+            if created:
+                settings_created += 1
+
+        cat_created = 0
+        cat_by_code: dict[str, Category] = {}
+        for code, name, parent_code, dur in CATEGORIES:
+            parent = cat_by_code.get(parent_code) if parent_code else None
+            obj, created = Category.objects.get_or_create(
+                code=code,
+                defaults={"name": name, "parent": parent, "default_loan_duration_days": dur},
+            )
+            cat_by_code[code] = obj
+            if created:
+                cat_created += 1
+
+        mcat_created = 0
+        for code, name, max_loans, dur, validity in MEMBER_CATEGORIES:
+            _, created = MemberCategory.objects.get_or_create(
+                code=code,
+                defaults={
+                    "name": name,
+                    "max_concurrent_loans": max_loans,
+                    "default_loan_duration_days": dur,
+                    "card_validity_months": validity,
+                },
+            )
+            if created:
+                mcat_created += 1
+
+        self.stdout.write(
+            self.style.SUCCESS(
+                f"seed_defaults : {settings_created} Setting, "
+                f"{cat_created} Category, {mcat_created} MemberCategory créés."
+            )
+        )

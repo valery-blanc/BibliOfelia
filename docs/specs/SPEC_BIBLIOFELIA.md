@@ -4,6 +4,7 @@ Spécification détaillée du logiciel de gestion de bibliothèque BibliOfelia, 
 
 Version : 1.0 (cible v1)
 Statut : draft pour Spec-Driven Development
+Dernière modif spec : 2026-05-21 — FEAT-002 (modèles de données implémentés, §5 verrouillé)
 
 ---
 
@@ -386,7 +387,15 @@ Clés attendues :
 - `default_language`
 
 #### Audit
-- Via django-auditlog, pas de modèle custom
+- Via django-auditlog, pas de modèle custom (enregistrement explicite des modèles audités → Task #4).
+
+#### Écarts d'implémentation (FEAT-002)
+
+- Les champs `CharField` "nullable" dans la spec sont implémentés `blank=True` (chaîne vide), convention Django pour éviter le double état null/empty. Concerne notamment `BibliographicRecord.subtitle`, `Member.replaces_card_number`.
+- `Item.internal_id` et `Item.ean13` sont générés dans `Item.save()` au premier `pk` connu (compteur quotidien pour `internal_id`, préfixe `290`+pk pour `ean13`).
+- `Member.card_number` généré dans `Member.save()` avec préfixe `291`+pk.
+- `Member.expiration_date` auto-calculé à la création (`registration_date + category.card_validity_months`).
+- Tokenizer FTS5 : `unicode61 remove_diacritics 2` (recherche tolérante aux accents).
 
 ### 5.3 Index et performance
 
@@ -399,7 +408,7 @@ Index dédiés :
 - `Member(card_number)` unique
 - `Loan(member_id, status)` pour règles de prêt
 - `Loan(due_date, status)` pour rapports retards
-- FTS5 virtuel sur `(title, subtitle, summary, authors.full_name)` via trigger sync
+- FTS5 virtuel sur `(title, subtitle, summary, authors_concat)` via triggers sync (`catalog_record_fts`, migration `catalog/0002_fts5`). `authors_concat` est un `group_concat(full_name, ' ')` resynchronisé sur ajout/suppression M2M `BibliographicRecord.authors`.
 
 ---
 

@@ -2,7 +2,7 @@
 
 Source de vérité de l'avancement v1. Une case `[x]` = livrable terminé et déployable. `[ ]` = à faire. `[!]` = bloqué (voir note).
 
-Mise à jour : 2026-05-21
+Mise à jour : 2026-05-21 (Task #2 livré + validé Val)
 
 ## Sprint 0 — Squelette
 
@@ -31,7 +31,19 @@ Mise à jour : 2026-05-21
 
 ## Sprint 1 — Domaine
 
-- [ ] **Task #2** Modèles de données (§5)
+- [x] **Task #2** Modèles de données (§5) — validé Val 2026-05-21
+  - [x] `apps/catalog/models.py` : Author, Category, Tag, Location, BibliographicRecord, Item (avec auto-gen `internal_id` + `ean13` préfixe 290)
+  - [x] `apps/members/models.py` : MemberCategory, Member (auto-gen `card_number` préfixe 291, `expiration_date` auto)
+  - [x] `apps/loans/models.py` : Loan, InHouseConsultation, Reservation
+  - [x] Indexes §5.3 : unique partiel ISBN, composites Item/Loan/Member
+  - [x] FTS5 SQLite (`catalog/migrations/0002_fts5.py`) — table virtuelle + 5 triggers (insert/update/delete + M2M auteurs)
+  - [x] Seed §5.2 étoffé : 16 Catégories + 5 MemberCategory dans `seed_defaults`
+  - [x] Admin Django minimal (catalog/members/loans/accounts) pour navigation Sprint 1
+  - [x] `python-dateutil` ajouté à `requirements.txt`
+  - [x] `manage.py check` OK, `migrate` OK, smoke test Item/Member/Loan + FTS5 OK, admin /admin/* en 200
+  - [x] Doc : `docs/specs/FEAT-002-data-models.md` + mise à jour `SPEC_BIBLIOFELIA.md` §5 (écarts + FTS5)
+  - [x] Test Val OK : menus Catalogue/Usagers/Prêts visibles, création modèles OK (2026-05-21)
+  - [x] Commit `FEAT-002: modèles de données v1 + FTS5 + seed`
 - [ ] **Task #3** i18n + modeltranslation (4 langues)
 - [ ] **Task #4** Auth, rôles, audit, throttling
 
