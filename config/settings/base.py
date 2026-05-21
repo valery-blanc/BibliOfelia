@@ -185,6 +185,21 @@ LANGUAGES = [
 ]
 LOCALE_PATHS = [BASE_DIR / "locale"]
 
+# Malagasy n'est pas livré dans django.conf.locale.LANG_INFO ; on l'enregistre
+# pour que get_language_info('mg') ne lève pas KeyError (modeltranslation
+# l'appelle pour calculer la direction d'écriture des champs traduits).
+from django.conf.locale import LANG_INFO  # noqa: E402
+
+LANG_INFO.setdefault(
+    "mg",
+    {
+        "bidi": False,
+        "code": "mg",
+        "name": "Malagasy",
+        "name_local": "Malagasy",
+    },
+)
+
 MODELTRANSLATION_DEFAULT_LANGUAGE = LANGUAGE_CODE
 MODELTRANSLATION_LANGUAGES = tuple(code for code, _ in LANGUAGES)
 MODELTRANSLATION_FALLBACK_LANGUAGES = (LANGUAGE_CODE,)

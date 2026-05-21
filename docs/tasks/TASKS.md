@@ -2,7 +2,7 @@
 
 Source de vérité de l'avancement v1. Une case `[x]` = livrable terminé et déployable. `[ ]` = à faire. `[!]` = bloqué (voir note).
 
-Mise à jour : 2026-05-21 (Task #2 livré + validé Val)
+Mise à jour : 2026-05-21 (Task #3 livré + validé Val, Task #4 en cours)
 
 ## Sprint 0 — Squelette
 
@@ -44,7 +44,19 @@ Mise à jour : 2026-05-21 (Task #2 livré + validé Val)
   - [x] Doc : `docs/specs/FEAT-002-data-models.md` + mise à jour `SPEC_BIBLIOFELIA.md` §5 (écarts + FTS5)
   - [x] Test Val OK : menus Catalogue/Usagers/Prêts visibles, création modèles OK (2026-05-21)
   - [x] Commit `FEAT-002: modèles de données v1 + FTS5 + seed`
-- [ ] **Task #3** i18n + modeltranslation (4 langues)
+- [x] **Task #3** i18n + modeltranslation (4 langues) — validé Val 2026-05-21
+  - [x] `apps/catalog/translation.py` : `Category.name`, `Tag.name`
+  - [x] `apps/members/translation.py` : `MemberCategory.name`
+  - [x] Migrations `catalog/0003_translation_fields` + `members/0002_translation_fields` (ADD COLUMN `name_fr/en/es/mg`)
+  - [x] Migrations backfill `catalog/0004_backfill_translation_fr` + `members/0003_backfill_translation_fr` (UPDATE name_fr = name)
+  - [x] Admin : `Category/Tag/MemberCategory` héritent de `TranslationAdmin` (onglets par langue)
+  - [x] Fix `mg` absent de `LANG_INFO` Django → enregistrement dans `config/settings/base.py`
+  - [x] `locale/{fr,en,es,mg}/LC_MESSAGES/django.po` générés par `makemessages` (83 msgid extraits)
+  - [x] `dev-entrypoint.sh` étoffé : `compilemessages` au boot (les `.mo` sont gitignorés)
+  - [x] Smoke test ORM : backfill OK, switch FR/EN/ES OK, fallback MG→FR OK, edit form admin contient les 4 champs `name_<lang>`
+  - [x] Doc : `docs/specs/FEAT-003-i18n-modeltranslation.md` + `SPEC §6.9` mis à jour
+  - [x] Test Val OK : admin Category/Tag/MemberCategory affiche 4 onglets de langue (2026-05-21)
+  - [x] Commit `FEAT-003: i18n + modeltranslation 4 langues`
 - [ ] **Task #4** Auth, rôles, audit, throttling
 
 ## Sprint 2 — UI et workflows métier

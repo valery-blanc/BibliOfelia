@@ -1,0 +1,266 @@
+# SOME DESCRIPTIVE TITLE.
+# Copyright (C) YEAR THE PACKAGE'S COPYRIGHT HOLDER
+# This file is distributed under the same license as the PACKAGE package.
+# FIRST AUTHOR <EMAIL@ADDRESS>, YEAR.
+#
+#, fuzzy
+msgid ""
+msgstr ""
+"Project-Id-Version: PACKAGE VERSION\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2026-05-21 15:00+0000\n"
+"PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
+"Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
+"Language-Team: LANGUAGE <LL@li.org>\n"
+"Language: \n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Plural-Forms: nplurals=2; plural=(n != 1);\n"
+msgid "Livre"
+msgstr ""
+
+msgid "Numéro de magazine"
+msgstr ""
+
+msgid "Journal"
+msgstr ""
+
+msgid "BD / manga"
+msgstr ""
+
+msgid "CD audio"
+msgstr ""
+
+msgid "Autre"
+msgstr ""
+
+msgid "Saisie manuelle"
+msgstr ""
+
+msgid "OpenLibrary"
+msgstr ""
+
+msgid "OfeliaScan"
+msgstr ""
+
+msgid "Import"
+msgstr ""
+
+msgid "Vérifiée"
+msgstr ""
+
+msgid "Automatique"
+msgstr ""
+
+msgid "Partielle"
+msgstr ""
+
+msgid "Neuf"
+msgstr ""
+
+msgid "Bon"
+msgstr ""
+
+msgid "Usé"
+msgstr ""
+
+msgid "Abîmé"
+msgstr ""
+
+msgid "Disponible"
+msgstr ""
+
+msgid "Prêté"
+msgstr ""
+
+msgid "Mis de côté"
+msgstr ""
+
+msgid "En réparation"
+msgstr ""
+
+msgid "Perdu"
+msgstr ""
+
+msgid "Pilonné"
+msgstr ""
+
+msgid "Achat"
+msgstr ""
+
+msgid "Don"
+msgstr ""
+
+msgid "Échange"
+msgstr ""
+
+msgid "Inconnu"
+msgstr ""
+
+msgid "auteur"
+msgstr ""
+
+msgid "auteurs"
+msgstr ""
+
+msgid "catégorie"
+msgstr ""
+
+msgid "catégories"
+msgstr ""
+
+msgid "Hex ex: #ff8800"
+msgstr ""
+
+msgid "tag"
+msgstr ""
+
+msgid "tags"
+msgstr ""
+
+msgid "emplacement"
+msgstr ""
+
+msgid "emplacements"
+msgstr ""
+
+msgid "notice bibliographique"
+msgstr ""
+
+msgid "notices bibliographiques"
+msgstr ""
+
+msgid "exemplaire"
+msgstr ""
+
+msgid "exemplaires"
+msgstr ""
+
+msgid "En cours"
+msgstr ""
+
+msgid "Retourné"
+msgstr ""
+
+msgid "En retard"
+msgstr ""
+
+msgid "Radié"
+msgstr ""
+
+msgid "En attente"
+msgstr ""
+
+msgid "Prêt à retirer"
+msgstr ""
+
+msgid "Honorée"
+msgstr ""
+
+msgid "Expirée"
+msgstr ""
+
+msgid "Annulée"
+msgstr ""
+
+msgid "prêt"
+msgstr ""
+
+msgid "prêts"
+msgstr ""
+
+msgid "consultation sur place"
+msgstr ""
+
+msgid "consultations sur place"
+msgstr ""
+
+msgid "réservation"
+msgstr ""
+
+msgid "réservations"
+msgstr ""
+
+msgid "Actif"
+msgstr ""
+
+msgid "Suspendu"
+msgstr ""
+
+msgid "Expiré"
+msgstr ""
+
+msgid "Clôturé"
+msgstr ""
+
+msgid "Liste de codes DocumentType ; vide = tous autorisés."
+msgstr ""
+
+msgid "catégorie d'usager"
+msgstr ""
+
+msgid "catégories d'usager"
+msgstr ""
+
+msgid "Compte collectif parent (école/famille)."
+msgstr ""
+
+msgid "usager"
+msgstr ""
+
+msgid "usagers"
+msgstr ""
+
+msgid "Connexion"
+msgstr ""
+
+msgid "Identifiants invalides."
+msgstr ""
+
+msgid "Nom d'utilisateur"
+msgstr ""
+
+msgid "Mot de passe"
+msgstr ""
+
+msgid "Se connecter"
+msgstr ""
+
+msgid "Tableau de bord"
+msgstr ""
+
+msgid "Catalogue"
+msgstr ""
+
+msgid "Usagers"
+msgstr ""
+
+msgid "Prêt"
+msgstr ""
+
+msgid "Retour"
+msgstr ""
+
+msgid "Déconnexion"
+msgstr ""
+
+msgid "Ofelia Box"
+msgstr ""
+
+msgid ""
+"Bienvenue dans BibliOfelia. L'interface complète arrive avec les slices "
+"fonctionnels."
+msgstr ""
+
+msgid "Prêts actifs"
+msgstr ""
+
+msgid "Retards"
+msgstr ""
+
+msgid "Réservations prêtes"
+msgstr ""
+
+msgid "Espace disque"
+msgstr ""

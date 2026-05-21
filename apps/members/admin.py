@@ -1,11 +1,12 @@
 """Admin minimal pour usagers."""
 from django.contrib import admin
+from modeltranslation.admin import TranslationAdmin
 
 from .models import Member, MemberCategory
 
 
 @admin.register(MemberCategory)
-class MemberCategoryAdmin(admin.ModelAdmin):
+class MemberCategoryAdmin(TranslationAdmin):
     list_display = (
         "code",
         "name",

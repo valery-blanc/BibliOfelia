@@ -4,7 +4,7 @@ Spécification détaillée du logiciel de gestion de bibliothèque BibliOfelia, 
 
 Version : 1.0 (cible v1)
 Statut : draft pour Spec-Driven Development
-Dernière modif spec : 2026-05-21 — FEAT-002 (modèles de données implémentés, §5 verrouillé)
+Dernière modif spec : 2026-05-21 — FEAT-003 (i18n + modeltranslation 4 langues, §6.9)
 
 ---
 
@@ -637,11 +637,13 @@ Le système n'envoie ni email ni SMS. Les notifications sont des éléments d'in
 - Malgache
 
 Implémentation :
-- Django i18n standard pour l'interface (`.po` files)
-- django-modeltranslation pour les catégories, tags, paramètres traduisibles
-- Sélecteur de langue par utilisateur connecté (préférence stockée)
-- Membre peut avoir une `preferred_language` distincte, utilisée pour reçus et cartes
-- Aucune dépendance à un service de traduction externe : tout est figé dans les fichiers .po
+- Django i18n standard pour l'interface (`.po` files dans `locale/<lang>/LC_MESSAGES/`, compilés en `.mo` au boot du container via `dev-entrypoint.sh`).
+- `django-modeltranslation` pour les champs traduits du domaine : `Category.name`, `Tag.name`, `MemberCategory.name` (colonnes `name_<lang>` ajoutées via migrations `*_translation_fields.py` + backfill `name → name_fr` via migration `*_backfill_translation_fr.py`).
+- Fallback configuré : `MODELTRANSLATION_FALLBACK_LANGUAGES = ('fr',)` → si un champ traduit est vide pour la langue active, la valeur française est utilisée.
+- Code de langue `mg` (Malagasy) absent de `django.conf.locale.LANG_INFO` ; enregistré explicitement dans `config/settings/base.py` (sinon `KeyError` dans `modeltranslation.admin.TranslationAdmin`).
+- Sélecteur de langue par utilisateur connecté (préférence stockée) → UI Sprint 2 (Task #5).
+- Membre peut avoir une `preferred_language` distincte, utilisée pour reçus et cartes (Sprint 3).
+- Aucune dépendance à un service de traduction externe : tout est figé dans les fichiers .po (v1 : seul `fr` rempli, `en/es/mg` vides → fallback français).
 
 #### Extensibilité
 - Ajout d'une langue = ajout d'un dossier `locale/<code>/` avec les `.po`

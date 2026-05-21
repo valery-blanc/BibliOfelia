@@ -12,5 +12,8 @@ python manage.py migrate --noinput
 echo "[dev] seed_defaults..."
 python manage.py seed_defaults || true
 
+echo "[dev] compilemessages (i18n)..."
+python manage.py compilemessages 2>&1 | tail -5 || true
+
 echo "[dev] démarrage : $*"
 exec "$@"

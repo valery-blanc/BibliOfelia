@@ -1,5 +1,6 @@
 """Admin minimal pour naviguer les modèles catalogue."""
 from django.contrib import admin
+from modeltranslation.admin import TranslationAdmin
 
 from .models import Author, BibliographicRecord, Category, Item, Location, Tag
 
@@ -11,14 +12,14 @@ class AuthorAdmin(admin.ModelAdmin):
 
 
 @admin.register(Category)
-class CategoryAdmin(admin.ModelAdmin):
+class CategoryAdmin(TranslationAdmin):
     list_display = ("code", "name", "parent", "default_loan_duration_days")
     list_filter = ("parent",)
     search_fields = ("code", "name")
 
 
 @admin.register(Tag)
-class TagAdmin(admin.ModelAdmin):
+class TagAdmin(TranslationAdmin):
     list_display = ("name", "color")
     search_fields = ("name",)
 
