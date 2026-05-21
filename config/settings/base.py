@@ -237,6 +237,7 @@ Q_CLUSTER = {
     "workers": 2,
     "recycle": 500,
     "timeout": 90,
+    "retry": 120,  # doit être > timeout (BUG-001)
     "compress": True,
     "save_limit": 250,
     "queue_limit": 500,
@@ -254,20 +255,11 @@ AXES_LOCKOUT_PARAMETERS = [["username", "ip_address"]]
 AXES_RESET_ON_SUCCESS = True
 
 # django-auditlog
+# Les modèles audités (Member, BibliographicRecord, Item, Loan, Setting, User)
+# seront enregistrés explicitement via auditlog.register() dans Task #4 (cf. SPEC §9.6).
+# Donc INCLUDE_ALL_MODELS reste à False et on ne définit pas EXCLUDE_TRACKING_MODELS
+# (qui requiert INCLUDE_ALL_MODELS=True — BUG-001).
 AUDITLOG_INCLUDE_ALL_MODELS = False
-AUDITLOG_EXCLUDE_TRACKING_MODELS = (
-    "sessions.session",
-    "admin.logentry",
-    "auditlog.logentry",
-    "axes.accessattempt",
-    "axes.accesslog",
-    "axes.accessfailurelog",
-    "django_q.schedule",
-    "django_q.task",
-    "django_q.success",
-    "django_q.failure",
-    "django_q.ormq",
-)
 
 # OpenLibrary
 OPENLIBRARY_BASE_URL = env("OPENLIBRARY_BASE_URL")

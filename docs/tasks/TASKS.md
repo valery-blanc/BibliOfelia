@@ -19,9 +19,15 @@ Mise à jour : 2026-05-21
   - [x] Templates base.html, dashboard, login (placeholders)
   - [x] Téléchargement Pico.css 2.x + HTMX 2.0.4 + Alpine 3.14.8 dans static/
   - [ ] Téléchargement Inter font + Lucide icons (esthétique uniquement, non bloquant)
-  - [ ] Test : `docker compose -f docker-compose.dev.yml up` boote sans crash (à faire par Val)
+  - [x] Test boot : `docker compose -f docker-compose.dev.yml up` → web + worker UP, API health 200, /setup/ rend (2026-05-21)
+  - [x] **BUG-001** fix : `AUDITLOG_EXCLUDE_TRACKING_MODELS` retiré + `Q_CLUSTER.retry=120` (cf. docs/bugs/BUG-001-auditlog-q2-config.md)
+  - [x] `scripts/dev-entrypoint.sh` ajouté (auto makemigrations + migrate + seed au boot dev) + worker `depends_on: web` + `sleep 5`
+  - [x] Migrations initiales `apps/core/0001_initial.py` (Setting) + `apps/accounts/0001_initial.py` (User)
+  - [x] Skill `/vb-init` appliqué : CLAUDE.md enrichi (Chemins, Task Tracking, Resuming Work, Doc Sync, Bug/Feat workflows, Cadence /clear, Infrastructure, Skills personnalisés)
+  - [x] `MEMORY.md` mis à jour (feedback_sprint_clear)
   - [x] `git init` + remote `origin` = https://github.com/valery-blanc/BibliOfelia.git
-  - [ ] Premier commit `init: squelette projet (Task #1)` + push (en attente confirmation Val)
+  - [x] Premier commit `init: squelette projet (Task #1)` + push → commit `eca06e6`
+  - [x] Commit fix BUG-001 + dev-entrypoint + migrations initiales + CLAUDE.md enrichi (validé par Val 2026-05-21)
 
 ## Sprint 1 — Domaine
 

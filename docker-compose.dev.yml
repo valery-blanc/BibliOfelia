@@ -6,7 +6,8 @@ services:
       context: .
       target: dev
     container_name: bibliofelia-web-dev
-    command: python manage.py runserver 0.0.0.0:8001
+    entrypoint: ["/usr/bin/tini", "--", "/app/scripts/dev-entrypoint.sh"]
+    command: ["python", "manage.py", "runserver", "0.0.0.0:8001"]
     environment:
       DJANGO_SETTINGS_MODULE: config.settings.dev
       SECRET_KEY: dev-secret-key
@@ -24,8 +25,6 @@ services:
       - bibliofelia-media:/app/media
     ports:
       - "8001:8001"
-    depends_on:
-      - worker
     tty: true
     stdin_open: true
 
@@ -34,7 +33,10 @@ services:
       context: .
       target: dev
     container_name: bibliofelia-worker-dev
-    command: python manage.py qcluster
+    # Le worker attend que web ait fini les migrations
+    depends_on:
+      - web
+    command: ["sh", "-c", "sleep 5 && python manage.py qcluster"]
     environment:
       DJANGO_SETTINGS_MODULE: config.settings.dev
       SECRET_KEY: dev-secret-key
