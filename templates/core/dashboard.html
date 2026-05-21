@@ -1,0 +1,28 @@
+{% extends "base.html" %}
+{% load i18n %}
+
+{% block title %}{% trans "Tableau de bord" %}{% endblock %}
+
+{% block content %}
+<h1>{% trans "Tableau de bord" %}</h1>
+<p>{% trans "Bienvenue dans BibliOfelia. L'interface complète arrive avec les slices fonctionnels." %}</p>
+
+<section class="grid">
+    <article>
+        <header><strong>{% trans "Prêts actifs" %}</strong></header>
+        <p>—</p>
+    </article>
+    <article>
+        <header><strong>{% trans "Retards" %}</strong></header>
+        <p>—</p>
+    </article>
+    <article>
+        <header><strong>{% trans "Réservations prêtes" %}</strong></header>
+        <p>—</p>
+    </article>
+    <article>
+        <header><strong>{% trans "Espace disque" %}</strong></header>
+        <p>—</p>
+    </article>
+</section>
+{% endblock %}

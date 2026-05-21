@@ -1,0 +1,27 @@
+# Container léger dédié aux sauvegardes (cron + sqlite3 + rclone + rsync)
+FROM alpine:3.20
+
+RUN apk add --no-cache \
+        sqlite \
+        rsync \
+        rclone \
+        bash \
+        tini \
+        coreutils \
+        findutils \
+        gzip \
+        tzdata
+
+WORKDIR /app
+COPY scripts/backup.sh /app/backup.sh
+COPY scripts/restore.sh /app/restore.sh
+COPY scripts/backup-crontab /etc/crontabs/root
+RUN chmod +x /app/backup.sh /app/restore.sh
+
+ENV BACKUP_HOURLY=true \
+    BACKUP_DATA_PATH=/app/data \
+    BACKUP_MEDIA_PATH=/app/media \
+    BACKUP_DEST_PATH=/backup
+
+ENTRYPOINT ["/sbin/tini", "--"]
+CMD ["crond", "-f", "-l", "8"]

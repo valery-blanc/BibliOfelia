@@ -1,0 +1,50 @@
+# Dev local — Django runserver + worker django-q2 dans 2 containers.
+# Lancement : docker compose -f docker-compose.dev.yml up
+services:
+  web:
+    build:
+      context: .
+      target: dev
+    container_name: bibliofelia-web-dev
+    command: python manage.py runserver 0.0.0.0:8001
+    environment:
+      DJANGO_SETTINGS_MODULE: config.settings.dev
+      SECRET_KEY: dev-secret-key
+      DEBUG: "True"
+      ALLOWED_HOSTS: "*"
+      DATABASE_PATH: /app/data/bibliofelia.sqlite3
+      FORCE_SCRIPT_NAME: ""
+      STATIC_URL: /static/
+      MEDIA_URL: /media/
+      DEFAULT_LANGUAGE: fr
+      ENABLED_LANGUAGES: "fr,en,es,mg"
+    volumes:
+      - .:/app
+      - bibliofelia-data:/app/data
+      - bibliofelia-media:/app/media
+    ports:
+      - "8001:8001"
+    depends_on:
+      - worker
+    tty: true
+    stdin_open: true
+
+  worker:
+    build:
+      context: .
+      target: dev
+    container_name: bibliofelia-worker-dev
+    command: python manage.py qcluster
+    environment:
+      DJANGO_SETTINGS_MODULE: config.settings.dev
+      SECRET_KEY: dev-secret-key
+      DEBUG: "True"
+      DATABASE_PATH: /app/data/bibliofelia.sqlite3
+    volumes:
+      - .:/app
+      - bibliofelia-data:/app/data
+      - bibliofelia-media:/app/media
+
+volumes:
+  bibliofelia-data:
+  bibliofelia-media:

@@ -1,0 +1,49 @@
+spécifications du logiciel de gestion de la bibliothèque
+
+1. Application web sur ofelia box (raspberry PI 5, 4GB ram):
+		Catalogage des documents : 
+			Gestion de la liste des livres, revues, journaux, avec leurs métadonnées (comme le titre, l’auteur, l’éditeur, l’année, résumé, code ISBN etc.) + un ID interne utilisé pour les autres fonctionalités (prêts, retour, inventaire, ...)
+			Possibilité d'imprimer l'ID interne sur des étiquettes au format EAN13 pour les coller sur les livres.
+			Moteur de recherche dans le catalogue par titre, auteur, ISBN, mots-clés etc. ou filtres.
+			Import d'une liste de livres depuis une application externe (Cf #2 appli android) 
+
+		Gestion des usagers : 
+			création et suivi des fiches membres, 
+			création de la carte de bibliothèque, 
+			historique des emprunts.
+
+		Gestion des prêts et retours : 
+			enregistrement des emprunts et des dates d’échéance, 
+			prolongations et du 
+			statut de disponibilité des livres.
+			Gestion des réservations d’un document quand il n’est pas disponible.
+			Rappels et notifications : alertes pour les retours en retard.
+
+		Administration :	
+			Statistiques et rapports : suivi de l’activité, des prêts, des retards, des livres perdus et volés et de l’utilisation de la collection
+			import/export de données 
+			Gestion des profils administrateurs
+		
+2.Application android, scan des code barre des livres (n° ISBN) :  Permet de scanner rapidement un grand nombre de livres, puis envoyer cette liste au logiciel de gestion de bibliothèque sur ofelia box. 
+	Le téléphonne est sur un wifi local partagé avec la ofelia box, avec ou sans accès internet. 
+	Prévoir aussi un mode autonome avec export des données vers l'ofelia box a posteriori.
+	à chaque code ISBN reconnu on affiche les info qu'on peut pour validation (langue, maison d'édition, titre si on est offline, titre auteur si on est connecté à internet)
+	1 mode scan en continu : on filme et pour chaque code ISBN reconnu on affiche les infos et le livre est ajouté à la liste, 
+	1 mode avec appui sur l'écran pour lancer le scan de chaque livre (on appuie pour scanner, l'app affiche les infos et on on valide pour ajouter le livre)
+
+
+
+Règles générales
+Tout doit pouvoir fonctionner offline la plupart du temps et les actions qui nécéssitent un accès internet doivent pouvoir être différées dans le temps (exemple : envoi de rapports, récupérations des métadonnées des livres, import/export de données). Tout doit pouvoir fonctionner avec une connection faible débit/grande latence
+Multilingue (Anglais, Français, Espagnol, Malgache, Arabe). Prévoir la possibilité de rajouter de nombreuses autres langues facilement
+Privilégier la simplicité d'utilisation et l'ergonomie. Le système sera utilisé par des personnes à faible niveau d'étude et faible accès à l'informatique (villages afrique, amérique du sud). IHM : Faire des menus simples et choix simples. Si des choses complexes ne peuvent pas être présentées simplement alors prévoir 2 niveaux d'accès : accès simple et accès utilisateurs avancés
+Sera utilisé pour des bibliothèques de petites taille : 3000 ouvrages max (mais ne pas mettre de limite hard-codée)
+
+
+
+
+Pour une v2
+			Le raspberry pi est connecté à un écran. 
+			Scan des livres avec une douchette code-barre connectée au raspberry pi via USB
+			
+		

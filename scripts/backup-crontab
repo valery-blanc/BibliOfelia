@@ -1,0 +1,2 @@
+# BibliOfelia : sauvegardes toutes les heures à HH:00
+0 * * * * /app/backup.sh >> /var/log/bibliofelia-backup.log 2>&1

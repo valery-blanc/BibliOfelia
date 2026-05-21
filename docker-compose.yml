@@ -1,0 +1,80 @@
+# Prod / déploiement keebee.
+# À fusionner dans le docker-compose.yml d'EduBox ou inclure via -f.
+services:
+  bibliofelia-web:
+    image: ofelia/bibliofelia:${BIBLIOFELIA_TAG:-stable}
+    build:
+      context: .
+      target: prod
+    restart: unless-stopped
+    volumes:
+      - bibliofelia-data:/app/data
+      - bibliofelia-media:/app/media
+    environment:
+      DJANGO_SETTINGS_MODULE: config.settings.prod
+      SECRET_KEY_FILE: /run/secrets/bibliofelia_secret
+      ALLOWED_HOSTS: "bibliofelia.local,192.168.0.147,localhost"
+      CSRF_TRUSTED_ORIGINS: "https://bibliofelia.local,https://192.168.0.147"
+      DATABASE_PATH: /app/data/bibliofelia.sqlite3
+      FORCE_SCRIPT_NAME: /bibliofelia
+      STATIC_URL: /bibliofelia/static/
+      MEDIA_URL: /bibliofelia/media/
+      DEFAULT_LANGUAGE: fr
+      ENABLED_LANGUAGES: "fr,en,es,mg"
+    secrets:
+      - bibliofelia_secret
+    networks:
+      - ofelia-net
+    depends_on:
+      - bibliofelia-worker
+
+  bibliofelia-worker:
+    image: ofelia/bibliofelia:${BIBLIOFELIA_TAG:-stable}
+    build:
+      context: .
+      target: prod
+    restart: unless-stopped
+    command: python manage.py qcluster
+    volumes:
+      - bibliofelia-data:/app/data
+      - bibliofelia-media:/app/media
+    environment:
+      DJANGO_SETTINGS_MODULE: config.settings.prod
+      SECRET_KEY_FILE: /run/secrets/bibliofelia_secret
+      DATABASE_PATH: /app/data/bibliofelia.sqlite3
+      DEFAULT_LANGUAGE: fr
+      ENABLED_LANGUAGES: "fr,en,es,mg"
+      OPENLIBRARY_BASE_URL: https://openlibrary.org
+    secrets:
+      - bibliofelia_secret
+    networks:
+      - ofelia-net
+
+  bibliofelia-backup:
+    image: ofelia/bibliofelia-backup:${BIBLIOFELIA_TAG:-stable}
+    build:
+      context: .
+      dockerfile: Dockerfile.backup
+    restart: unless-stopped
+    volumes:
+      - bibliofelia-data:/app/data:ro
+      - bibliofelia-media:/app/media:ro
+      - /mnt/usb-backup:/backup
+    environment:
+      BACKUP_HOURLY: "true"
+      BACKUP_DATA_PATH: /app/data
+      BACKUP_MEDIA_PATH: /app/media
+      BACKUP_DEST_PATH: /backup
+      CLOUD_BACKUP_ENABLED: "false"
+
+volumes:
+  bibliofelia-data:
+  bibliofelia-media:
+
+networks:
+  ofelia-net:
+    external: true
+
+secrets:
+  bibliofelia_secret:
+    file: ./secrets/bibliofelia_secret.txt

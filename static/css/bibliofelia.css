@@ -1,0 +1,22 @@
+/* BibliOfelia — overrides Pico.css minimes. */
+
+:root {
+    --pico-font-size: 16px;
+}
+
+/* Couleurs sémantiques pour statuts (vert / orange / rouge cf. SPEC §10.1). */
+.status-available { color: var(--pico-color-green-500); }
+.status-reserved  { color: var(--pico-color-orange-500); }
+.status-overdue   { color: var(--pico-color-red-500); }
+
+/* Boutons d'action principaux 44px min (accessibilité tactile, SPEC §10.1). */
+.btn-primary {
+    min-height: 44px;
+    font-size: 1.05rem;
+}
+
+/* Messages flash */
+.msg { padding: 0.75rem 1rem; margin: 1rem 0; border-left: 4px solid var(--pico-primary); }
+.msg-success { border-color: var(--pico-color-green-500); }
+.msg-error   { border-color: var(--pico-color-red-500); }
+.msg-warning { border-color: var(--pico-color-orange-500); }

@@ -1,0 +1,51 @@
+{% load static i18n %}<!doctype html>
+<html lang="{{ LANGUAGE_CODE|default:'fr' }}">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>{% block title %}{{ library_name }}{% endblock %} — BibliOfelia</title>
+    <link rel="stylesheet" href="{% static 'css/pico.min.css' %}">
+    <link rel="stylesheet" href="{% static 'css/bibliofelia.css' %}">
+    <script defer src="{% static 'js/htmx.min.js' %}"></script>
+    <script defer src="{% static 'js/alpine.min.js' %}"></script>
+</head>
+<body>
+<header class="container">
+    <nav>
+        <ul>
+            <li><strong>{{ library_name }}</strong></li>
+        </ul>
+        {% if user.is_authenticated %}
+        <ul>
+            <li><a href="{% url 'core:dashboard' %}">{% trans "Tableau de bord" %}</a></li>
+            <li><a href="#">{% trans "Catalogue" %}</a></li>
+            <li><a href="#">{% trans "Usagers" %}</a></li>
+            <li><a href="#">{% trans "Prêt" %}</a></li>
+            <li><a href="#">{% trans "Retour" %}</a></li>
+            <li>
+                <details class="dropdown">
+                    <summary>{{ user.username }}</summary>
+                    <ul>
+                        <li><a href="{% url 'accounts:logout' %}">{% trans "Déconnexion" %}</a></li>
+                    </ul>
+                </details>
+            </li>
+        </ul>
+        {% endif %}
+    </nav>
+</header>
+
+<main class="container">
+    {% if messages %}
+        {% for message in messages %}
+            <article role="alert" class="msg msg-{{ message.tags }}">{{ message }}</article>
+        {% endfor %}
+    {% endif %}
+    {% block content %}{% endblock %}
+</main>
+
+<footer class="container">
+    <small>BibliOfelia v{{ app_version }} — {% trans "Ofelia Box" %}</small>
+</footer>
+</body>
+</html>

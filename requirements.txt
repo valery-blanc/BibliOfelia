@@ -1,0 +1,38 @@
+# Core
+Django==5.1.4
+gunicorn==23.0.0
+
+# REST API
+djangorestframework==3.15.2
+djangorestframework-simplejwt==5.3.1
+django-cors-headers==4.6.0
+
+# Async tasks
+django-q2==1.7.6
+croniter==3.0.4
+
+# i18n et données
+django-modeltranslation==0.19.11
+
+# Sécurité
+django-axes==7.0.1
+django-auditlog==3.0.0
+argon2-cffi==23.1.0
+
+# Templates / formulaires
+django-htmx==1.21.0
+django-widget-tweaks==1.5.0
+
+# Codes-barres et PDF
+python-barcode==0.15.1
+reportlab==4.2.5
+Pillow==11.0.0
+
+# CUPS impression (Linux uniquement, optionnel en dev Windows)
+# pycups==2.0.4  -- installé seulement dans l'image Docker Linux
+
+# HTTP client
+httpx==0.28.1
+
+# Settings env
+django-environ==0.11.2
