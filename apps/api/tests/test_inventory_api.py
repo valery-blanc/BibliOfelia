@@ -122,6 +122,50 @@ class TestInventoryItems:
         matched = [s for s in scans if s.item_id is not None]
         assert len(matched) == 1
 
+    def test_isbn_fallback_matches_item(self, client, scanner):
+        """BUG-008 : scanned_value = ISBN commercial → item résolu via record.isbn_13."""
+        _auth(client)
+        rec = BibliographicRecord.objects.create(title="T", isbn_13="9782070408504")
+        item = Item.objects.create(record=rec, ean13="2900000000099")
+        sid = client.post("/api/v1/inventory-sessions", {}, format="json").json()[
+            "session_id"
+        ]
+        resp = client.post(
+            f"/api/v1/inventory-sessions/{sid}/items",
+            {"items": [{"scanned_value": "9782070408504", "scanned_at": "2026-05-22T10:00:00Z"}]},
+            format="json",
+        )
+        assert resp.status_code == 200
+        assert resp.json()["accepted"] == 1
+        scan = InventoryScan.objects.get(session__session_id=sid)
+        assert scan.item_id == item.id
+
+    def test_isbn_multi_copy_each_counted(self, client, scanner):
+        """BUG-008 : 3 exemplaires du même ISBN scannés → 3 pointages distincts."""
+        _auth(client)
+        rec = BibliographicRecord.objects.create(title="T", isbn_13="9782070408504")
+        item_a = Item.objects.create(record=rec, ean13="2900000000099")
+        item_b = Item.objects.create(record=rec, ean13="2900000000106")
+        item_c = Item.objects.create(record=rec, ean13="2900000000113")
+        sid = client.post("/api/v1/inventory-sessions", {}, format="json").json()[
+            "session_id"
+        ]
+        payload = {
+            "items": [
+                {"scanned_value": "9782070408504", "scanned_at": "2026-05-22T10:00:00Z"},
+                {"scanned_value": "9782070408504", "scanned_at": "2026-05-22T10:00:01Z"},
+                {"scanned_value": "9782070408504", "scanned_at": "2026-05-22T10:00:02Z"},
+            ]
+        }
+        resp = client.post(f"/api/v1/inventory-sessions/{sid}/items", payload, format="json")
+        assert resp.status_code == 200
+        body = resp.json()
+        assert body["accepted"] == 3
+        assert body["duplicates"] == 0
+        scans = InventoryScan.objects.filter(session__session_id=sid)
+        matched_item_ids = {s.item_id for s in scans if s.item_id}
+        assert matched_item_ids == {item_a.id, item_b.id, item_c.id}
+
     def test_duplicates_counted(self, client, scanner):
         _auth(client)
         sid = client.post("/api/v1/inventory-sessions", {}, format="json").json()[

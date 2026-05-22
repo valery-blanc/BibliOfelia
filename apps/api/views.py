@@ -406,20 +406,37 @@ class InventorySessionItemsView(APIView):
         from apps.catalog.models import Item
 
         for entry in items:
-            ean = normalize_code(entry["scanned_value"])
-            if ean in existing:
+            raw = normalize_code(entry["scanned_value"])
+            # Résolution de l'exemplaire : code interne Ofelia 290… en priorité,
+            # puis ISBN-13 / ISBN-10 commercial.  Pour les ISBN multi-exemplaires,
+            # on exclut les EAN déjà présents dans existing pour pointer le
+            # prochain exemplaire non encore pointé (BUG-008).
+            item = Item.objects.filter(ean13=raw).first()
+            if item:
+                storage_ean = raw
+            else:
+                item = (
+                    Item.objects.filter(record__isbn_13=raw)
+                    .exclude(ean13__in=existing)
+                    .first()
+                    or Item.objects.filter(record__isbn_10=raw)
+                    .exclude(ean13__in=existing)
+                    .first()
+                )
+                storage_ean = item.ean13 if item else raw
+
+            if storage_ean in existing:
                 duplicates += 1
                 continue
             try:
-                item = Item.objects.filter(ean13=ean).first()
                 InventoryScan.objects.create(
                     session=session,
-                    ean13=ean,
+                    ean13=storage_ean,
                     item=item,
                     scanned_at=entry["scanned_at"],
                     device="ofeliascan",
                 )
-                existing.add(ean)
+                existing.add(storage_ean)
                 accepted += 1
             except Exception as exc:  # pragma: no cover
                 rejected.append({"scanned_value": entry["scanned_value"], "reason": str(exc)})

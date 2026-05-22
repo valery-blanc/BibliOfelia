@@ -821,11 +821,18 @@ ce qui la distingue dans l'UI librarian de récolement (FEAT-010).
   rien.
 - `POST /inventory-sessions/{id}/items` — auth requise. Body **enveloppé** :
   `{"items": [{scanned_value, scanned_at}, ...]}`.
-  - `scanned_value` normalisé (`normalize_code`) puis enregistré comme
-    `InventoryScan` ; contrainte UNIQUE `(session, ean13)` → doublons
-    comptés (`duplicates`).
-  - Item matché si `ean13` correspond à un `Item.ean13`, sinon `item=NULL`
-    (le rapport librarian liste l'ean comme « inconnu »).
+  - `scanned_value` normalisé (`normalize_code`) puis résolu en `Item` :
+    1. `Item.ean13` (code interne Ofelia `290…`) — workflow normal, un
+       sticker par exemplaire, aucune ambiguïté.
+    2. Fallback `BibliographicRecord.isbn_13` puis `isbn_10` (ISBN commercial
+       scanné depuis la couverture, quand les étiquettes ne sont pas encore
+       collées). Pour les ISBN multi-exemplaires, on exclut les EAN déjà
+       présents dans la session et on avance sur le prochain exemplaire non
+       encore pointé : N scans du même ISBN → N exemplaires distincts marqués
+       présents. (BUG-008)
+  - `InventoryScan.ean13` stocke le code interne de l'exemplaire résolu
+    (ou le `scanned_value` brut si inconnu) ; contrainte UNIQUE `(session,
+    ean13)` → doublons vrais comptés (`duplicates`).
   - Réponse `200` : `{session_id, accepted, duplicates, rejected}`.
   - `409 session_closed` si pas `open`.
 - `POST /inventory-sessions/{id}/close` — auth requise. Body vide.

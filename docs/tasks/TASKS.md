@@ -230,6 +230,8 @@ Mise à jour : 2026-05-22 (Sprint 5 — Task #20 / FEAT-021 codée : 6 endpoints
   - [x] Tests : `apps/api/tests/test_scan_sessions.py` (10 cas) + `test_inventory_api.py` (7 cas)
   - [x] SPEC §6.10 réécrite (sections « Sessions de scan » et « Récolement ») + entête de version
   - [x] Déploiement Pi + test OfeliaScan (envoi listes de livres bout-en-bout) — validé Val 2026-05-22
+  - [x] **BUG-008** fix récolement ISBN : lookup par isbn_13/isbn_10 en fallback du code Ofelia interne
+
 - [ ] **Task #17** Tests (pytest-django, coverage 70%)
 
 ## Sprint 6 — Déploiement
