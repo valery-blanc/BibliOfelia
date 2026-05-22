@@ -2,7 +2,7 @@
 
 Source de vérité de l'avancement v1. Une case `[x]` = livrable terminé et déployable. `[ ]` = à faire. `[!]` = bloqué (voir note).
 
-Mise à jour : 2026-05-21 (Sprint 2 codé + documenté — en attente test Val + commit)
+Mise à jour : 2026-05-22 (Sprint 2 livré et poussé `d361965` ; Sprint 3 re-priorisé → Connexion OfeliaScan)
 
 ## Sprint 0 — Squelette
 
@@ -122,10 +122,31 @@ Mise à jour : 2026-05-21 (Sprint 2 codé + documenté — en attente test Val +
   - [x] **BUG-005** i18n — traduction complète `en`/`es`/`mg` (~300 chaînes) + `prefix_default_language=True`
   - [x] Docs : `BUG-003`, `BUG-004`, `BUG-005`, SPEC §6.3/§6.5/§6.9 mises à jour
 - [x] Test Val des correctifs (2026-05-22 : double prêt / récolement / i18n confirmés OK)
-- [ ] Commit unique Sprint 2 (code + docs + TASKS.md)
+- [x] Commit `d361965` + push `origin/main` (2026-05-22)
 - [ ] Commit unique Sprint 2 (code + docs + TASKS.md)
 
-## Sprint 3 — Hors workflow principal
+## Sprint 3 — Connexion OfeliaScan (appairage + lookup ISBN)
+
+> Re-priorisé le 2026-05-22 (demande de Val) : l'application Android OfeliaScan
+> est prête (découverte mDNS + appairage + lookup ISBN) et doit être testée. Le
+> contrat d'API est figé par `docs/specs/SPEC-CORR-001-contrat-api-box.md`,
+> appliqué dans `SPEC §6.10`. Si la box respecte ce contrat à la lettre,
+> OfeliaScan n'a aucune modification à faire.
+
+- [ ] **Task #16** API REST OfeliaScan — authentification, appairage, lookup ISBN (§6.10)
+  - [ ] Auth JWT : `POST /auth/login`, `/auth/refresh`, `/auth/logout` — serializer/vue custom émettant `access_token` / `refresh_token` / `token_type` / `expires_in`
+  - [ ] SimpleJWT : `ROTATE_REFRESH_TOKENS` + `BLACKLIST_AFTER_ROTATION` + app `token_blacklist`
+  - [ ] `GET /pairing/info` — sans auth, inclure le champ `api_base`
+  - [ ] `GET /isbn/{isbn}` — champ `publication_year`, `isbn` toujours présent ; cache local + fallback OpenLibrary
+  - [ ] `GET /health` — champ `status` garanti
+  - [ ] Format d'erreur uniforme `{error:{code,message,details}}`
+  - [ ] Tests API (pytest + DRF APIClient)
+- [ ] **Task #19** Publication mDNS/DNS-SD `_bibliofelia._tcp.` (SPEC §6.10 / SPEC-CORR-001 §7)
+  - [ ] Service Avahi sur l'hôte Pi : `/etc/avahi/services/bibliofelia.service` (TXT : `library_name`, `version`, `api_base`)
+  - [ ] Régénération du fichier au wizard de premier démarrage (Task #15)
+- [ ] Test Val : découverte + appairage OfeliaScan + scan ISBN bout-en-bout
+
+## Sprint 4 — Hors workflow principal
 
 - [ ] **Task #11** Dashboard, rapports, paramètres (§6.6)
 - [ ] **Task #12** Impression étiquettes + cartes (§6.7)
@@ -133,12 +154,12 @@ Mise à jour : 2026-05-21 (Sprint 2 codé + documenté — en attente test Val +
 - [ ] **Task #14** Sauvegardes locales + cloud (§8)
 - [ ] **Task #15** Wizard premier démarrage + données démo (§11.3-11.4)
 
-## Sprint 4 — API et qualité
+## Sprint 5 — API complète + qualité
 
-- [ ] **Task #16** API REST OfeliaScan v1 (§6.10)
+- [ ] **Task #20** API REST OfeliaScan — sessions de scan catalogage + endpoints récolement (reste de §6.10)
 - [ ] **Task #17** Tests (pytest-django, coverage 70%)
 
-## Sprint 5 — Déploiement
+## Sprint 6 — Déploiement
 
 - [ ] **Task #18** Intégration keebee : docker-compose + nginx /bibliofelia/
   - Cohabitation avec Koha (qui reste sur `/biblio/`)

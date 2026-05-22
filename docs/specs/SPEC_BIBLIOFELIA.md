@@ -4,7 +4,7 @@ Spécification détaillée du logiciel de gestion de bibliothèque BibliOfelia, 
 
 Version : 1.0 (cible v1)
 Statut : draft pour Spec-Driven Development
-Dernière modif spec : 2026-05-22 — Sprint 2 : FEAT-005 à FEAT-010 (UI, catalogage, usagers, prêts, réservations, récolement — §6.1 à §6.5, §10) ; i18n 4 langues traduites (§6.9) ; BUG-002 à BUG-005
+Dernière modif spec : 2026-05-22 — Sprint 2 : FEAT-005 à FEAT-010 (§6.1 à §6.5, §10) ; i18n 4 langues (§6.9) ; BUG-002 à BUG-005 ; §6.10 réécrit comme contrat d'API (SPEC-CORR-001)
 
 ---
 
@@ -688,51 +688,76 @@ Implémentation :
 
 ### 6.10 Webservice OfeliaScan (API REST)
 
-Base URL : `http://<box-ip>/biblio/api/v1`
+Contrat d'API entre la box BibliOfelia et l'application Android OfeliaScan.
+Les schémas JSON ci-dessous sont **figés** par `docs/specs/SPEC-CORR-001-contrat-api-box.md` (2026-05-22). OfeliaScan les implémente déjà : BibliOfelia doit s'y conformer à la lettre.
 
-Authentification : JWT, refresh tokens longue durée (90 jours) pour adapter l'usage mobile.
+#### Conventions générales
 
-#### Endpoints
+- **Base URL** : `http://<box-ip>/biblio/api/v1/` — le slash final est significatif (le client concatène des chemins relatifs).
+- **Encodage** : JSON UTF-8, `Content-Type: application/json`.
+- **Nommage des champs JSON** : `snake_case`.
+- **Dates** : chaînes ISO 8601 UTC (`2026-05-22T14:30:00Z`).
+- **Authentification** : JWT Bearer (`Authorization: Bearer <access_token>`) sur tous les endpoints, **sauf** `GET /pairing/info` et la publication mDNS, accessibles sans token pour permettre la découverte avant appairage.
+- **Champs additionnels** : la box peut renvoyer des champs non listés ; le client les ignore. Les champs marqués **requis** doivent toujours être présents.
+- **Format d'erreur** (uniforme) : `{"error": {"code": "<code>", "message": "...", "details": {}}}`. Codes HTTP : `401` (identifiants), `403` (accès refusé), `404` (introuvable), `5xx` (erreur box).
 
-##### Authentification
-- `POST /auth/login` : `{username, password}` retourne `{access, refresh}`
-- `POST /auth/refresh` : `{refresh}` retourne `{access}`
-- `POST /auth/logout` : invalide le refresh token
+#### Authentification
 
-##### Pairing
-- `GET /pairing/info` : retourne `{box_name, version, library_name}` (auth non requise pour découverte)
-- `POST /pairing/claim` : associe un appareil à un compte contributeur via QR code généré par l'admin web
+- `POST /auth/login` — auth non requise. Requête `{"username", "password"}`. Réponse `200` :
+  `{"access_token", "refresh_token", "token_type": "Bearer", "expires_in": <int s>}` (les 4 champs requis). `401` si identifiants invalides.
+- `POST /auth/refresh` — auth non requise. Requête `{"refresh_token"}`. Réponse `200` : mêmes 4 champs que `/auth/login` (un **nouveau** `refresh_token` est émis → rotation des refresh tokens activée).
+- `POST /auth/logout` — auth requise, corps vide. Réponse `204`. Met le(s) refresh token(s) de l'utilisateur sur liste noire.
 
-##### Métadonnées
-- `GET /isbn/{isbn}` : lookup ISBN, retourne `{title, authors, publisher, year, language, cover_url, source, cached}` ou 404
-- Comportement : cache local de la box, fallback OpenLibrary si internet, mise en file si offline avec réponse `{cached: false, pending: true}`
+> SimpleJWT renvoie `{access, refresh}` par défaut : BibliOfelia fournit un serializer/vue **personnalisé** émettant les noms OAuth 2.0 (`access_token`, `refresh_token`, `token_type`, `expires_in`). Activer `ROTATE_REFRESH_TOKENS`, `BLACKLIST_AFTER_ROTATION` et l'app `rest_framework_simplejwt.token_blacklist`.
 
-##### Sessions de scan (catalogage)
-- `POST /scan-sessions` : crée une session de catalogage, retourne `session_id`
-- `POST /scan-sessions/{id}/items` : ajoute des items scannés en batch
-  - body : `[{isbn, title, authors, language, location_code, state, copy_count, scanned_at, notes}, ...]`
-- `GET /scan-sessions/{id}` : statut, nombre d'items, statut de validation
-- `POST /scan-sessions/{id}/finalize` : clôt la session côté Android, déclenche la file de validation côté web
+#### Pairing
 
-##### Récolement
-- `POST /inventory-sessions` : `{scope_location_id, scope_category_id, name}`
-- `POST /inventory-sessions/{id}/items` : `[{ean13, scanned_at}, ...]`
-- `GET /inventory-sessions/{id}/status` : compteur en temps réel
-- `POST /inventory-sessions/{id}/close` : clôt côté Android, le rapport est généré côté web
+- `GET /pairing/info` — **auth non requise** (découverte). Réponse `200` :
+  `{"box_name", "library_name", "version", "api_base"}` (les 4 requis ; `api_base` = `"/biblio/api/v1/"`).
+- `POST /pairing/claim` — appairage par QR code. Hors périmètre du contrat SPEC-CORR-001 (différé).
 
-##### Items
-- `GET /items/{ean13}` : retourne notice + état exemplaire pour vérification scan
-- `GET /search?q=...` : recherche pour autocomplétion mobile
+#### Métadonnées
 
-##### Diagnostic
-- `GET /health` : statut système (espace disque, version, dernière sauvegarde)
-- `GET /sync/status` : queue des tâches en attente
+- `GET /isbn/{isbn}` — auth requise. Réponse `200` :
+  `{"isbn", "title", "authors": [...], "publisher", "publication_year", "language", "cover_url", "source", "cached"}`.
+  Seul `isbn` est requis (ré-émis tel quel) ; les autres peuvent être `null`/`[]`. **Le champ est `publication_year`, pas `year`.** `404` si ISBN introuvable.
+- Comportement : cache local de la box, fallback OpenLibrary si internet.
 
-#### Codes d'erreur et résilience
-- Tous les endpoints idempotents là où c'est possible (utilisation d'`Idempotency-Key`)
-- Format d'erreur : `{error: {code, message, details}}`
-- Throttling : 60 req/min par token
-- Pagination cursor-based sur les listes
+#### Diagnostic
+
+- `GET /health` — auth requise. Réponse `200` : `{"status": "ok"|"degraded", "version"?, "disk_free_mb"?, "last_backup_at"?}`. Seul `status` est requis.
+- `GET /sync/status` — queue des tâches en attente.
+
+#### Sessions de scan (catalogage) — *non couvert par SPEC-CORR-001*
+
+- `POST /scan-sessions` : crée une session de catalogage, retourne `session_id`.
+- `POST /scan-sessions/{id}/items` : batch `[{isbn, title, authors, language, location_code, state, copy_count, scanned_at, notes}, ...]`.
+- `GET /scan-sessions/{id}` : statut, nombre d'items, statut de validation.
+- `POST /scan-sessions/{id}/finalize` : clôt la session, déclenche la file de validation côté web.
+
+#### Récolement — *non couvert par SPEC-CORR-001*
+
+- `POST /inventory-sessions`, `POST /inventory-sessions/{id}/items` (`[{ean13, scanned_at}, ...]`), `GET /inventory-sessions/{id}/status`, `POST /inventory-sessions/{id}/close`.
+
+#### Items
+
+- `GET /items/{ean13}` : notice + état exemplaire pour vérification scan.
+- `GET /search?q=...` : recherche pour autocomplétion mobile.
+
+#### Résilience
+
+- Endpoints idempotents là où c'est possible (`Idempotency-Key`).
+- Throttling par scope (`auth`, `scan`, `isbn`) — déjà configuré dans `settings/base.py` (FEAT-004).
+- Pagination cursor-based sur les listes.
+
+#### Découverte mDNS / DNS-SD
+
+La box **publie un service DNS-SD** pour qu'OfeliaScan la découvre sur le réseau local :
+
+- Type de service : `_bibliofelia._tcp.`, domaine `.local`, port HTTP de l'API.
+- Nom d'instance = `box_name` (= celui de `/pairing/info`).
+- Enregistrements TXT recommandés : `library_name`, `version`, `api_base`.
+- Implémentation : `avahi-daemon` sur l'hôte Raspberry Pi (pas dans le conteneur Docker), fichier `/etc/avahi/services/bibliofelia.service` régénéré au wizard de premier démarrage (§11.3) avec le nom réel de la bibliothèque.
 
 ---
 

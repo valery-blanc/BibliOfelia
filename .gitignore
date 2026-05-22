@@ -66,3 +66,7 @@ secrets/
 *.pem
 *.crt
 !docs/**/*.key
+
+# Notes de travail locales de Val (bugs / petites features) — jamais dans git
+temp.txt
+temp_*.txt
