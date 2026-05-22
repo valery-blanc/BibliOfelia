@@ -2,7 +2,7 @@
 
 Source de vérité de l'avancement v1. Une case `[x]` = livrable terminé et déployable. `[ ]` = à faire. `[!]` = bloqué (voir note).
 
-Mise à jour : 2026-05-21 (Sprint 1 terminé et validé — prêt pour /clear + Sprint 2)
+Mise à jour : 2026-05-21 (Sprint 2 codé + documenté — en attente test Val + commit)
 
 ## Sprint 0 — Squelette
 
@@ -18,7 +18,7 @@ Mise à jour : 2026-05-21 (Sprint 1 terminé et validé — prêt pour /clear + 
   - [x] Middleware SetupRequiredMiddleware + handler exceptions DRF
   - [x] Templates base.html, dashboard, login (placeholders)
   - [x] Téléchargement Pico.css 2.x + HTMX 2.0.4 + Alpine 3.14.8 dans static/
-  - [ ] Téléchargement Inter font + Lucide icons (esthétique uniquement, non bloquant)
+  - [x] Téléchargement Inter font + Lucide icons (fait en Task #5 : `static/fonts/`, `static/icons/`)
   - [x] Test boot : `docker compose -f docker-compose.dev.yml up` → web + worker UP, API health 200, /setup/ rend (2026-05-21)
   - [x] **BUG-001** fix : `AUDITLOG_EXCLUDE_TRACKING_MODELS` retiré + `Q_CLUSTER.retry=120` (cf. docs/bugs/BUG-001-auditlog-q2-config.md)
   - [x] `scripts/dev-entrypoint.sh` ajouté (auto makemigrations + migrate + seed au boot dev) + worker `depends_on: web` + `sleep 5`
@@ -73,12 +73,57 @@ Mise à jour : 2026-05-21 (Sprint 1 terminé et validé — prêt pour /clear + 
 
 ## Sprint 2 — UI et workflows métier
 
-- [ ] **Task #5** UI base (Pico/HTMX/Alpine, layout, recherche globale)
-- [ ] **Task #6** Catalogage (§6.1)
-- [ ] **Task #7** Gestion usagers (§6.2)
-- [ ] **Task #8** Prêts/Retours/Renouvellements/Perdus (§6.3)
-- [ ] **Task #9** Réservations (§6.4)
-- [ ] **Task #10** Récolement (§6.5)
+> Sprint codé + documenté les 2026-05-21/22. Suite de tests : **117 passed**
+> (`docker compose -f docker-compose.dev.yml run --rm web pytest`).
+
+- [x] **Task #5** UI base (Pico/HTMX/Alpine, layout, recherche globale)
+  - [x] Assets locaux : Inter (`static/fonts/`) + 31 icônes Lucide (`static/icons/`)
+  - [x] Tag `{% icon %}` (`apps/core/templatetags/biblio_icons.py`)
+  - [x] `base.html` : nav par rôle, recherche globale, sélecteur de langue, compteurs, aide, mode simple/avancé
+  - [x] Recherche globale `core:search` + `apps/core/search.py` (classification EAN/ISBN/texte + FTS5)
+  - [x] `core:toggle_advanced`, `core:help`, dashboard avec KPIs réels
+  - [x] `config/settings/test.py` : retrait de `SetupRequiredMiddleware` pour les tests de vues
+  - [x] **BUG-002** corrigé : boucle de redirection sur `/` (RedirectView racine retiré)
+  - [x] Doc : `FEAT-005-ui-base.md`, `BUG-002-root-redirect-loop.md`
+  - [x] Tests écrits : `apps/core/tests/test_search.py`, `test_ui.py`
+- [x] **Task #6** Catalogage (§6.1)
+  - [x] `BibliographicRecordForm` (auteurs texte libre), `ItemForm`, `ItemBulkCreateForm`
+  - [x] Vues notices (liste FTS + filtres, détail, CRUD), exemplaires (création groupée, édition, mise au rebut)
+  - [x] Lookup ISBN OpenLibrary (`apps/catalog/openlibrary.py` + endpoint HTMX `isbn_lookup`)
+  - [x] Templates `templates/catalog/`
+  - [x] Doc : `FEAT-006-catalogage.md` ; Tests : `apps/catalog/tests/`
+- [x] **Task #7** Gestion usagers (§6.2)
+  - [x] `MemberForm` + vues (liste, fiche, historique, inscription, édition)
+  - [x] `apps/members/services.py` : remplacement de carte, renouvellement, expiration
+  - [x] Commande `expire_members` (tâche django-q2 quotidienne)
+  - [x] Templates `templates/members/`
+  - [x] Doc : `FEAT-007-gestion-usagers.md` ; Tests : `apps/members/tests/`
+- [x] **Task #8** Prêts/Retours/Renouvellements/Perdus (§6.3)
+  - [x] `apps/loans/services.py` : durée, vérifications, prêt, retour, renouvellement, perte
+  - [x] Vues : workflow prêt (panier session), retour, renouvellement, livre perdu, consultation
+  - [x] Templates `templates/loans/`
+  - [x] Doc : `FEAT-008-prets-retours.md` ; Tests : `apps/loans/tests/`
+- [x] **Task #9** Réservations (§6.4)
+  - [x] `services.py` : création, satisfaction FIFO, annulation, expiration
+  - [x] Vues : création depuis notice, liste à honorer, annulation
+  - [x] Commande `expire_reservations` (tâche django-q2 quotidienne)
+  - [x] Doc : `FEAT-009-reservations.md` ; Tests : `apps/loans/tests/test_services.py`/`test_views.py`
+- [x] **Task #10** Récolement (§6.5)
+  - [x] Modèles `InventorySession` / `InventoryScan` + migration `0001_initial` (rédigée à la main)
+  - [x] `apps/inventory/services.py` : périmètre, pointage, rapport de divergences
+  - [x] Vues : sessions, détail/pointage, clôture/réouverture/validation, rapport
+  - [x] Templates `templates/inventory/`
+  - [x] Doc : `FEAT-010-recolement.md` ; Tests : `apps/inventory/tests/`
+- [x] Exécuter `pytest` dans Docker — **117 passed** (2026-05-22)
+- [x] `makemigrations --check` — **No changes detected** : migration inventory `0001` conforme au modèle
+- [x] Corrections suite au test de Val (2026-05-22) :
+  - [x] **BUG-003** double prêt — `check_item_loanable` s'appuie sur la table `Loan` ; message « Cet ouvrage est déjà prêté » ; messages du moteur de prêt en `gettext_lazy` (traduits 4 langues)
+  - [x] **BUG-004** récolement — exemplaires prêtés exclus du périmètre attendu
+  - [x] **BUG-005** i18n — traduction complète `en`/`es`/`mg` (~300 chaînes) + `prefix_default_language=True`
+  - [x] Docs : `BUG-003`, `BUG-004`, `BUG-005`, SPEC §6.3/§6.5/§6.9 mises à jour
+- [x] Test Val des correctifs (2026-05-22 : double prêt / récolement / i18n confirmés OK)
+- [ ] Commit unique Sprint 2 (code + docs + TASKS.md)
+- [ ] Commit unique Sprint 2 (code + docs + TASKS.md)
 
 ## Sprint 3 — Hors workflow principal
 

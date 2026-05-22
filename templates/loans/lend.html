@@ -1,0 +1,96 @@
+{% extends "base.html" %}
+{% load i18n biblio_icons %}
+
+{% block title %}{% trans "Prêt" %}{% endblock %}
+
+{% block content %}
+<h1>{% icon "book-down" %} {% trans "Prêt" %}</h1>
+
+{% if not member %}
+<article>
+    <h2>{% trans "1. Carte de l'usager" %}</h2>
+    <form method="post" action="{% url 'loans:lend' %}">
+        {% csrf_token %}
+        <input type="hidden" name="action" value="set_member">
+        <label class="search-field">
+            {% icon "scan-barcode" %}
+            <input type="text" name="card" autofocus autocomplete="off"
+                   placeholder="{% trans 'Scanner ou saisir le n° de carte' %}">
+        </label>
+        <button type="submit" class="btn-primary">{% trans "Continuer" %}</button>
+    </form>
+</article>
+{% else %}
+<article class="member-panel">
+    <header class="page-head">
+        <h2>{{ member.full_name }} <small class="help-hint">— {{ member.category.name }}</small></h2>
+        <form method="post" action="{% url 'loans:lend' %}">
+            {% csrf_token %}
+            <input type="hidden" name="action" value="cancel">
+            <button type="submit" class="secondary outline">{% icon "x" %} {% trans "Changer d'usager" %}</button>
+        </form>
+    </header>
+    {% for alert in alerts %}
+    <div class="msg msg-warning">{% icon "triangle-alert" %} {{ alert }}</div>
+    {% endfor %}
+    {% if active_loans %}
+    <details class="advanced-section">
+        <summary>{% trans "Prêts déjà en cours" %} ({{ active_loans|length }})</summary>
+        <ul>
+            {% for loan in active_loans %}
+            <li>{{ loan.item.record.title }} — {% trans "échéance" %} {{ loan.due_date }}</li>
+            {% endfor %}
+        </ul>
+    </details>
+    {% endif %}
+</article>
+
+<article>
+    <h2>{% trans "2. Livres à prêter" %}</h2>
+    <form method="post" action="{% url 'loans:lend' %}">
+        {% csrf_token %}
+        <input type="hidden" name="action" value="add_item">
+        <label class="search-field">
+            {% icon "scan-barcode" %}
+            <input type="text" name="ean" autofocus autocomplete="off"
+                   placeholder="{% trans 'Scanner le code-barres du livre' %}">
+        </label>
+        <button type="submit">{% icon "plus" %} {% trans "Ajouter" %}</button>
+    </form>
+
+    {% if basket %}
+    <ul class="scan-list">
+        {% for item in basket %}
+        <li class="scan-line">
+            <span>{{ item.record.title }} <small class="help-hint">{{ item.internal_id }}</small></span>
+            <form method="post" action="{% url 'loans:lend' %}">
+                {% csrf_token %}
+                <input type="hidden" name="action" value="remove_item">
+                <input type="hidden" name="item_pk" value="{{ item.pk }}">
+                <button type="submit" class="outline secondary">{% icon "x" %}</button>
+            </form>
+        </li>
+        {% endfor %}
+    </ul>
+    {% else %}
+    <p class="help-hint">{% trans "Aucun livre scanné pour l'instant." %}</p>
+    {% endif %}
+</article>
+
+{% if basket %}
+<article>
+    <h2>{% trans "3. Valider le prêt" %}</h2>
+    <form method="post" action="{% url 'loans:lend' %}">
+        {% csrf_token %}
+        <input type="hidden" name="action" value="validate">
+        <label>{% trans "Note (facultatif)" %}
+            <input type="text" name="notes" placeholder="{% trans 'Ex. : override réservation' %}">
+        </label>
+        <button type="submit" class="btn-primary">
+            {% icon "check" %} {% blocktrans count n=basket|length %}Prêter {{ n }} livre{% plural %}Prêter {{ n }} livres{% endblocktrans %}
+        </button>
+    </form>
+</article>
+{% endif %}
+{% endif %}
+{% endblock %}

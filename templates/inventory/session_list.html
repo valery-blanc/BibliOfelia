@@ -1,0 +1,43 @@
+{% extends "base.html" %}
+{% load i18n biblio_icons %}
+
+{% block title %}{% trans "Récolement" %}{% endblock %}
+
+{% block content %}
+<header class="page-head">
+    <h1>{% icon "clipboard-list" %} {% trans "Récolement" %}</h1>
+    {% if user.is_librarian %}
+    <a href="{% url 'inventory:create' %}" role="button" class="btn-big">{% icon "plus" %} {% trans "Nouvelle session" %}</a>
+    {% endif %}
+</header>
+
+<section>
+    <h2>{% trans "Sessions en cours" %}</h2>
+    {% if open_sessions %}
+    <ul>
+        {% for s in open_sessions %}
+        <li><a href="{% url 'inventory:detail' s.pk %}">{{ s }}</a> — {{ s.get_scope_type_display }}</li>
+        {% endfor %}
+    </ul>
+    {% else %}<p>{% trans "Aucune session en cours." %}</p>{% endif %}
+</section>
+
+<section>
+    <h2>{% trans "Historique" %}</h2>
+    {% if closed_sessions %}
+    <table>
+        <thead><tr><th>{% trans "Session" %}</th><th>{% trans "Périmètre" %}</th><th>{% trans "Statut" %}</th><th>{% trans "Clôturée le" %}</th></tr></thead>
+        <tbody>
+            {% for s in closed_sessions %}
+            <tr>
+                <td><a href="{% url 'inventory:report' s.pk %}">{{ s }}</a></td>
+                <td>{{ s.get_scope_type_display }}</td>
+                <td>{{ s.get_status_display }}</td>
+                <td>{{ s.closed_at|date:"Y-m-d"|default:"—" }}</td>
+            </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+    {% else %}<p>{% trans "Aucune session clôturée." %}</p>{% endif %}
+</section>
+{% endblock %}

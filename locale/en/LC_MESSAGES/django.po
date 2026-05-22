@@ -1,266 +1,1353 @@
-# SOME DESCRIPTIVE TITLE.
-# Copyright (C) YEAR THE PACKAGE'S COPYRIGHT HOLDER
-# This file is distributed under the same license as the PACKAGE package.
-# FIRST AUTHOR <EMAIL@ADDRESS>, YEAR.
+# BibliOfelia — English translation.
+# Copyright (C) 2026 Ofelia project.
+# This file is distributed under the same license as the BibliOfelia package.
 #
-#, fuzzy
 msgid ""
 msgstr ""
-"Project-Id-Version: PACKAGE VERSION\n"
+"Project-Id-Version: BibliOfelia 1.0\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2026-05-21 15:00+0000\n"
-"PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
-"Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
-"Language-Team: LANGUAGE <LL@li.org>\n"
-"Language: \n"
+"POT-Creation-Date: 2026-05-22 00:08+0000\n"
+"PO-Revision-Date: 2026-05-22 00:00+0000\n"
+"Last-Translator: Claude Code\n"
+"Language-Team: English\n"
+"Language: en\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=2; plural=(n != 1);\n"
+
+#: apps/catalog/forms.py:17 templates/catalog/record_detail.html:21
+#: templates/catalog/record_list.html:46
+msgid "Auteur(s)"
+msgstr "Author(s)"
+
+#: apps/catalog/forms.py:19
+msgid "Séparez plusieurs auteurs par un point-virgule."
+msgstr "Separate multiple authors with a semicolon."
+
+#: apps/catalog/forms.py:49
+#, python-format
+msgid "L'ISBN doit comporter %(n)s caractères."
+msgstr "The ISBN must be %(n)s characters long."
+
+#: apps/catalog/forms.py:97
+msgid "Nombre d'exemplaires"
+msgstr "Number of copies"
+
+#: apps/catalog/forms.py:101
+msgid "Jusqu'à 20 exemplaires identiques d'un coup."
+msgstr "Up to 20 identical copies at once."
+
+#: apps/catalog/models.py:22
 msgid "Livre"
-msgstr ""
+msgstr "Book"
 
+#: apps/catalog/models.py:23
 msgid "Numéro de magazine"
-msgstr ""
+msgstr "Magazine issue"
 
+#: apps/catalog/models.py:24
 msgid "Journal"
-msgstr ""
+msgstr "Newspaper"
 
+#: apps/catalog/models.py:25
 msgid "BD / manga"
-msgstr ""
+msgstr "Comic / manga"
 
+#: apps/catalog/models.py:26
 msgid "CD audio"
-msgstr ""
+msgstr "Audio CD"
 
+#: apps/catalog/models.py:27
 msgid "Autre"
-msgstr ""
+msgstr "Other"
 
+#: apps/catalog/models.py:31
 msgid "Saisie manuelle"
-msgstr ""
+msgstr "Manual entry"
 
+#: apps/catalog/models.py:32
 msgid "OpenLibrary"
-msgstr ""
+msgstr "OpenLibrary"
 
+#: apps/catalog/models.py:33
 msgid "OfeliaScan"
-msgstr ""
+msgstr "OfeliaScan"
 
+#: apps/catalog/models.py:34
 msgid "Import"
-msgstr ""
+msgstr "Import"
 
+#: apps/catalog/models.py:38
 msgid "Vérifiée"
-msgstr ""
+msgstr "Verified"
 
+#: apps/catalog/models.py:39
 msgid "Automatique"
-msgstr ""
+msgstr "Automatic"
 
+#: apps/catalog/models.py:40
 msgid "Partielle"
-msgstr ""
+msgstr "Partial"
 
+#: apps/catalog/models.py:44
 msgid "Neuf"
-msgstr ""
+msgstr "New"
 
+#: apps/catalog/models.py:45
 msgid "Bon"
-msgstr ""
+msgstr "Good"
 
+#: apps/catalog/models.py:46
 msgid "Usé"
-msgstr ""
+msgstr "Worn"
 
+#: apps/catalog/models.py:47
 msgid "Abîmé"
-msgstr ""
+msgstr "Damaged"
 
+#: apps/catalog/models.py:51
 msgid "Disponible"
-msgstr ""
+msgstr "Available"
 
+#: apps/catalog/models.py:52
 msgid "Prêté"
-msgstr ""
+msgstr "On loan"
 
+#: apps/catalog/models.py:53
 msgid "Mis de côté"
-msgstr ""
+msgstr "Set aside"
 
+#: apps/catalog/models.py:54
 msgid "En réparation"
-msgstr ""
+msgstr "Under repair"
 
+#: apps/catalog/models.py:55 apps/loans/models.py:15
+#: templates/members/member_detail.html:76
 msgid "Perdu"
-msgstr ""
+msgstr "Lost"
 
+#: apps/catalog/models.py:56
 msgid "Pilonné"
-msgstr ""
+msgstr "Discarded"
 
+#: apps/catalog/models.py:60
 msgid "Achat"
-msgstr ""
+msgstr "Purchase"
 
+#: apps/catalog/models.py:61
 msgid "Don"
-msgstr ""
+msgstr "Donation"
 
+#: apps/catalog/models.py:62
 msgid "Échange"
-msgstr ""
+msgstr "Exchange"
 
+#: apps/catalog/models.py:63
 msgid "Inconnu"
-msgstr ""
+msgstr "Unknown"
 
+#: apps/catalog/models.py:76
 msgid "auteur"
-msgstr ""
+msgstr "author"
 
+#: apps/catalog/models.py:77
 msgid "auteurs"
-msgstr ""
+msgstr "authors"
 
+#: apps/catalog/models.py:93
 msgid "catégorie"
-msgstr ""
+msgstr "category"
 
+#: apps/catalog/models.py:94
 msgid "catégories"
-msgstr ""
+msgstr "categories"
 
+#: apps/catalog/models.py:103
 msgid "Hex ex: #ff8800"
-msgstr ""
+msgstr "Hex, e.g.: #ff8800"
 
+#: apps/catalog/models.py:106
 msgid "tag"
-msgstr ""
+msgstr "tag"
 
+#: apps/catalog/models.py:107
 msgid "tags"
-msgstr ""
+msgstr "tags"
 
+#: apps/catalog/models.py:122
 msgid "emplacement"
-msgstr ""
+msgstr "location"
 
+#: apps/catalog/models.py:123
 msgid "emplacements"
-msgstr ""
+msgstr "locations"
 
+#: apps/catalog/models.py:170
 msgid "notice bibliographique"
-msgstr ""
+msgstr "bibliographic record"
 
+#: apps/catalog/models.py:171
 msgid "notices bibliographiques"
-msgstr ""
+msgstr "bibliographic records"
 
+#: apps/catalog/models.py:208
 msgid "exemplaire"
-msgstr ""
+msgstr "copy"
 
+#: apps/catalog/models.py:209
 msgid "exemplaires"
-msgstr ""
+msgstr "copies"
 
+#: apps/catalog/views.py:114
+msgid "Notice créée."
+msgstr "Record created."
+
+#: apps/catalog/views.py:119 apps/catalog/views.py:159
+#: templates/catalog/record_list.html:11 templates/core/dashboard.html:42
+msgid "Nouvelle notice"
+msgstr "New record"
+
+#: apps/catalog/views.py:131
+msgid "Notice mise à jour."
+msgstr "Record updated."
+
+#: apps/catalog/views.py:136
+msgid "Modifier la notice"
+msgstr "Edit record"
+
+#: apps/catalog/views.py:147
+msgid "Notice trouvée sur OpenLibrary."
+msgstr "Record found on OpenLibrary."
+
+#: apps/catalog/views.py:151
+msgid "Aucune réponse d'OpenLibrary — saisissez la notice à la main."
+msgstr "No response from OpenLibrary — enter the record manually."
+
+#: apps/catalog/views.py:173
+msgid "Suppression impossible : des exemplaires actifs sont rattachés."
+msgstr "Cannot delete: active copies are attached."
+
+#: apps/catalog/views.py:177
+msgid "Notice supprimée."
+msgstr "Record deleted."
+
+#: apps/catalog/views.py:203
+#, python-format
+msgid "%(n)s exemplaire(s) ajouté(s)."
+msgstr "%(n)s copy/copies added."
+
+#: apps/catalog/views.py:220
+msgid "Exemplaire mis à jour."
+msgstr "Copy updated."
+
+#: apps/catalog/views.py:235
+msgid "Impossible : l'exemplaire est prêté ou réservé."
+msgstr "Not possible: the copy is on loan or reserved."
+
+#: apps/catalog/views.py:239
+msgid "Exemplaire retiré du fonds."
+msgstr "Copy removed from the collection."
+
+#: apps/inventory/forms.py:19
+msgid "Choisissez un emplacement."
+msgstr "Choose a location."
+
+#: apps/inventory/forms.py:21
+msgid "Choisissez une catégorie."
+msgstr "Choose a category."
+
+#: apps/inventory/models.py:17
+msgid "Tout le fonds"
+msgstr "Whole collection"
+
+#: apps/inventory/models.py:18
+msgid "Un emplacement"
+msgstr "A location"
+
+#: apps/inventory/models.py:19
+msgid "Une catégorie"
+msgstr "A category"
+
+#: apps/inventory/models.py:23 apps/loans/models.py:12
 msgid "En cours"
-msgstr ""
+msgstr "In progress"
 
+#: apps/inventory/models.py:24
+msgid "Clôturée"
+msgstr "Closed"
+
+#: apps/inventory/models.py:25
+msgid "Validée"
+msgstr "Finalized"
+
+#: apps/inventory/models.py:50
+msgid "session de récolement"
+msgstr "inventory session"
+
+#: apps/inventory/models.py:51
+msgid "sessions de récolement"
+msgstr "inventory sessions"
+
+#: apps/inventory/models.py:78
+msgid "pointage de récolement"
+msgstr "inventory scan"
+
+#: apps/inventory/models.py:79
+msgid "pointages de récolement"
+msgstr "inventory scans"
+
+#: apps/inventory/views.py:50
+msgid "Session de récolement créée."
+msgstr "Inventory session created."
+
+#: apps/inventory/views.py:79
+msgid "Cette session est clôturée."
+msgstr "This session is closed."
+
+#: apps/inventory/views.py:83
+msgid "Exemplaire pointé."
+msgstr "Copy scanned."
+
+#: apps/inventory/views.py:85
+msgid "Cet exemplaire a déjà été pointé."
+msgstr "This copy has already been scanned."
+
+#: apps/inventory/views.py:94
+msgid "Récolement clôturé — consultez le rapport."
+msgstr "Inventory closed — see the report."
+
+#: apps/inventory/views.py:103
+msgid "Une session validée ne peut pas être rouverte."
+msgstr "A finalized session cannot be reopened."
+
+#: apps/inventory/views.py:106
+msgid "Récolement rouvert."
+msgstr "Inventory reopened."
+
+#: apps/inventory/views.py:115
+msgid "Récolement validé définitivement."
+msgstr "Inventory finalized for good."
+
+#: apps/inventory/views.py:138
+#, python-format
+msgid "%(id)s marqué perdu."
+msgstr "%(id)s marked as lost."
+
+#: apps/loans/forms.py:31
+msgid "Réserver pour"
+msgstr "Reserve for"
+
+#: apps/loans/models.py:13
 msgid "Retourné"
-msgstr ""
+msgstr "Returned"
 
+#: apps/loans/models.py:14
 msgid "En retard"
-msgstr ""
+msgstr "Overdue"
 
+#: apps/loans/models.py:16
 msgid "Radié"
-msgstr ""
+msgstr "Written off"
 
+#: apps/loans/models.py:20 templates/loans/reservations.html:41
 msgid "En attente"
-msgstr ""
+msgstr "Pending"
 
+#: apps/loans/models.py:21
 msgid "Prêt à retirer"
-msgstr ""
+msgstr "Ready for pickup"
 
+#: apps/loans/models.py:22
 msgid "Honorée"
-msgstr ""
+msgstr "Fulfilled"
 
+#: apps/loans/models.py:23
 msgid "Expirée"
-msgstr ""
+msgstr "Expired"
 
+#: apps/loans/models.py:24
 msgid "Annulée"
-msgstr ""
+msgstr "Cancelled"
 
+#: apps/loans/models.py:51
 msgid "prêt"
-msgstr ""
+msgstr "loan"
 
+#: apps/loans/models.py:52
 msgid "prêts"
-msgstr ""
+msgstr "loans"
 
+#: apps/loans/models.py:90
 msgid "consultation sur place"
-msgstr ""
+msgstr "in-house consultation"
 
+#: apps/loans/models.py:91
 msgid "consultations sur place"
-msgstr ""
+msgstr "in-house consultations"
 
+#: apps/loans/models.py:124
 msgid "réservation"
-msgstr ""
+msgstr "reservation"
 
+#: apps/loans/models.py:125
 msgid "réservations"
-msgstr ""
+msgstr "reservations"
 
+#: apps/loans/services.py:90
+msgid "Cet ouvrage est déjà prêté."
+msgstr "This book is already on loan."
+
+#: apps/loans/services.py:97
+msgid "Exemplaire mis de côté pour un autre usager."
+msgstr "This copy is set aside for another member."
+
+#: apps/loans/services.py:101
+msgid "Exemplaire non disponible au prêt."
+msgstr "This copy is not available for loan."
+
+#: apps/loans/services.py:107
+msgid "Ce type de document n'est pas autorisé pour cet usager."
+msgstr "This document type is not allowed for this member."
+
+#: apps/loans/services.py:114
+#, python-format
+msgid "Limite de prêts atteinte (%(limit)s) pour cet usager."
+msgstr "Loan limit reached (%(limit)s) for this member."
+
+#: apps/loans/services.py:125
+msgid "Une réservation d'un autre usager existe sur cette notice."
+msgstr "Another member has a reservation on this record."
+
+#: apps/loans/services.py:230
+msgid "Ce prêt n'est pas renouvelable."
+msgstr "This loan cannot be renewed."
+
+#: apps/loans/services.py:236
+#, python-format
+msgid "Nombre maximum de renouvellements atteint (%(n)s)."
+msgstr "Maximum number of renewals reached (%(n)s)."
+
+#: apps/loans/services.py:244
+msgid "Une réservation est en attente sur cette notice."
+msgstr "A reservation is pending on this record."
+
+#: apps/loans/views.py:43
+#, python-format
+msgid "%(n)s prêt(s) en retard."
+msgstr "%(n)s overdue loan(s)."
+
+#: apps/loans/views.py:45
+msgid "La carte de cet usager expire bientôt."
+msgstr "This member's card expires soon."
+
+#: apps/loans/views.py:50
+#, python-format
+msgid "%(n)s réservation(s) à retirer."
+msgstr "%(n)s reservation(s) to pick up."
+
+#: apps/loans/views.py:96
+msgid "Aucun usager pour cette carte."
+msgstr "No member for this card."
+
+#: apps/loans/views.py:107
+msgid "Scannez d'abord une carte d'usager."
+msgstr "Scan a member card first."
+
+#: apps/loans/views.py:115 apps/loans/views.py:196
+#, python-format
+msgid "Exemplaire introuvable : %(ean)s."
+msgstr "Copy not found: %(ean)s."
+
+#: apps/loans/views.py:117
+msgid "Cet exemplaire est déjà dans la liste."
+msgstr "This copy is already in the list."
+
+#: apps/loans/views.py:137
+msgid "Aucun exemplaire à prêter."
+msgstr "No copy to lend."
+
+#: apps/loans/views.py:149
+#, python-format
+msgid "%(title)s : %(err)s"
+msgstr "%(title)s: %(err)s"
+
+#: apps/loans/views.py:157
+#, python-format
+msgid "%(n)s prêt(s) enregistré(s)."
+msgstr "%(n)s loan(s) recorded."
+
+#: apps/loans/views.py:210
+msgid "Aucun prêt actif pour cet exemplaire."
+msgstr "No active loan for this copy."
+
+#: apps/loans/views.py:212
+msgid "Livre perdu réintégré au fonds."
+msgstr "Lost book returned to the collection."
+
+#: apps/loans/views.py:214
+#, python-format
+msgid "Retour enregistré : %(t)s."
+msgstr "Return recorded: %(t)s."
+
+#: apps/loans/views.py:218
+#, python-format
+msgid "À mettre de côté pour %(m)s (réservation)."
+msgstr "To set aside for %(m)s (reservation)."
+
+#: apps/loans/views.py:234
+#, python-format
+msgid "Prêt renouvelé jusqu'au %(d)s."
+msgstr "Loan renewed until %(d)s."
+
+#: apps/loans/views.py:249
+msgid "Livre déclaré perdu."
+msgstr "Book declared lost."
+
+#: apps/loans/views.py:251
+msgid "Ce prêt n'est pas actif."
+msgstr "This loan is not active."
+
+#: apps/loans/views.py:265
+msgid "Consultation sur place enregistrée."
+msgstr "In-house consultation recorded."
+
+#: apps/loans/views.py:299
+msgid "Réservation enregistrée."
+msgstr "Reservation recorded."
+
+#: apps/loans/views.py:313
+msgid "Réservation annulée."
+msgstr "Reservation cancelled."
+
+#: apps/members/forms.py:39
+msgid "Par défaut : aujourd'hui."
+msgstr "Default: today."
+
+#: apps/members/forms.py:44
+msgid "Langue de la bibliothèque"
+msgstr "Library language"
+
+#: apps/members/models.py:21
 msgid "Actif"
-msgstr ""
+msgstr "Active"
 
+#: apps/members/models.py:22
 msgid "Suspendu"
-msgstr ""
+msgstr "Suspended"
 
+#: apps/members/models.py:23
 msgid "Expiré"
-msgstr ""
+msgstr "Expired"
 
+#: apps/members/models.py:24
 msgid "Clôturé"
-msgstr ""
+msgstr "Closed"
 
+#: apps/members/models.py:35
 msgid "Liste de codes DocumentType ; vide = tous autorisés."
-msgstr ""
+msgstr "List of DocumentType codes; empty = all allowed."
 
+#: apps/members/models.py:40
 msgid "catégorie d'usager"
-msgstr ""
+msgstr "member category"
 
+#: apps/members/models.py:41
 msgid "catégories d'usager"
-msgstr ""
+msgstr "member categories"
 
+#: apps/members/models.py:77
 msgid "Compte collectif parent (école/famille)."
-msgstr ""
+msgstr "Parent collective account (school/family)."
 
+#: apps/members/models.py:82
 msgid "usager"
-msgstr ""
+msgstr "member"
 
+#: apps/members/models.py:83
 msgid "usagers"
-msgstr ""
+msgstr "members"
 
+#: apps/members/views.py:98
+msgid "Sans catégorie"
+msgstr "Uncategorized"
+
+#: apps/members/views.py:123
+#, python-format
+msgid "Usager inscrit — carte n° %(card)s."
+msgstr "Member registered — card no. %(card)s."
+
+#: apps/members/views.py:129 templates/core/dashboard.html:43
+#: templates/members/member_list.html:11
+msgid "Nouvel usager"
+msgstr "New member"
+
+#: apps/members/views.py:140
+msgid "Fiche usager mise à jour."
+msgstr "Member record updated."
+
+#: apps/members/views.py:147
+msgid "Modifier l'usager"
+msgstr "Edit member"
+
+#: apps/members/views.py:157
+#, python-format
+msgid "Nouvelle carte émise : n° %(card)s."
+msgstr "New card issued: no. %(card)s."
+
+#: apps/members/views.py:169
+#, python-format
+msgid "Carte renouvelée jusqu'au %(date)s."
+msgstr "Card renewed until %(date)s."
+
+#: templates/accounts/login.html:4 templates/accounts/login.html:8
 msgid "Connexion"
-msgstr ""
+msgstr "Sign in"
 
+#: templates/accounts/login.html:10
 msgid "Identifiants invalides."
-msgstr ""
+msgstr "Invalid credentials."
 
+#: templates/accounts/login.html:15
 msgid "Nom d'utilisateur"
-msgstr ""
+msgstr "Username"
 
+#: templates/accounts/login.html:19
 msgid "Mot de passe"
-msgstr ""
+msgstr "Password"
 
+#: templates/accounts/login.html:22
 msgid "Se connecter"
-msgstr ""
+msgstr "Sign in"
 
+#: templates/base.html:20 templates/core/dashboard.html:4
+#: templates/core/dashboard.html:7
 msgid "Tableau de bord"
-msgstr ""
+msgstr "Dashboard"
 
+#: templates/base.html:21 templates/catalog/record_list.html:4
+#: templates/catalog/record_list.html:8
 msgid "Catalogue"
-msgstr ""
+msgstr "Catalogue"
 
+#: templates/base.html:22 templates/members/member_list.html:4
+#: templates/members/member_list.html:8
 msgid "Usagers"
-msgstr ""
+msgstr "Members"
 
+#: templates/base.html:24 templates/loans/lend.html:4
+#: templates/loans/lend.html:7
 msgid "Prêt"
-msgstr ""
+msgstr "Lending"
 
+#: templates/base.html:25 templates/catalog/record_confirm_delete.html:14
+#: templates/core/dashboard.html:41 templates/loans/return.html:4
+#: templates/loans/return.html:7 templates/members/member_history.html:32
 msgid "Retour"
-msgstr ""
+msgstr "Return"
 
+#: templates/base.html:27 templates/loans/reservations.html:4
+#: templates/loans/reservations.html:8
+msgid "Réservations"
+msgstr "Reservations"
+
+#: templates/base.html:31 templates/inventory/session_list.html:4
+#: templates/inventory/session_list.html:8
+msgid "Récolement"
+msgstr "Inventory"
+
+#: templates/base.html:36 templates/core/dashboard.html:16
+#: templates/loans/return.html:51
+msgid "Prêts en retard"
+msgstr "Overdue loans"
+
+#: templates/base.html:44 templates/catalog/record_detail.html:26
+msgid "Langue"
+msgstr "Language"
+
+#: templates/base.html:50 templates/core/help.html:4 templates/core/help.html:7
+msgid "Aide"
+msgstr "Help"
+
+#: templates/base.html:59
+msgid "Mode simple"
+msgstr "Simple mode"
+
+#: templates/base.html:59
+msgid "Mode avancé"
+msgstr "Advanced mode"
+
+#: templates/base.html:64
+msgid "Administration"
+msgstr "Administration"
+
+#: templates/base.html:69
 msgid "Déconnexion"
-msgstr ""
+msgstr "Log out"
 
+#: templates/base.html:81
+msgid "Rechercher un livre, un ISBN — ou scanner une carte / un code-barres…"
+msgstr "Search for a book or ISBN — or scan a card / barcode…"
+
+#: templates/base.html:99
 msgid "Ofelia Box"
-msgstr ""
+msgstr "Ofelia Box"
 
-msgid ""
-"Bienvenue dans BibliOfelia. L'interface complète arrive avec les slices "
-"fonctionnels."
-msgstr ""
+#: templates/catalog/_record_form.html:21
+msgid "Récupérer"
+msgstr "Fetch"
 
-msgid "Prêts actifs"
-msgstr ""
+#: templates/catalog/_record_form.html:33 templates/members/member_form.html:19
+msgid "Options avancées"
+msgstr "Advanced options"
 
-msgid "Retards"
-msgstr ""
+#: templates/catalog/_record_form.html:45 templates/catalog/item_form.html:16
+#: templates/loans/consultation.html:16 templates/members/member_form.html:30
+msgid "Enregistrer"
+msgstr "Save"
 
+#: templates/catalog/_record_form.html:46 templates/catalog/item_form.html:17
+#: templates/catalog/record_confirm_delete.html:21
+#: templates/inventory/session_form.html:17 templates/loans/mark_lost.html:16
+#: templates/loans/reservation_form.html:15
+#: templates/loans/reservations.html:28 templates/loans/reservations.html:55
+#: templates/members/member_form.html:32 templates/members/member_form.html:34
+msgid "Annuler"
+msgstr "Cancel"
+
+#: templates/catalog/item_form.html:4 templates/catalog/item_form.html:7
+msgid "Modifier l'exemplaire"
+msgstr "Edit copy"
+
+#: templates/catalog/item_form.html:4 templates/catalog/item_form.html:7
+msgid "Ajouter des exemplaires"
+msgstr "Add copies"
+
+#: templates/catalog/item_form.html:8
+msgid "Notice :"
+msgstr "Record:"
+
+#: templates/catalog/record_confirm_delete.html:4
+#: templates/catalog/record_confirm_delete.html:7
+msgid "Supprimer la notice"
+msgstr "Delete record"
+
+#: templates/catalog/record_confirm_delete.html:8
+#, python-format
+msgid "Confirmez-vous la suppression de « %(title)s » ?"
+msgstr "Do you confirm deleting “%(title)s”?"
+
+#: templates/catalog/record_confirm_delete.html:12
+msgid "Des exemplaires actifs sont rattachés à cette notice. Retirez-les d'abord."
+msgstr "Active copies are attached to this record. Remove them first."
+
+#: templates/catalog/record_confirm_delete.html:19
+msgid "Supprimer définitivement"
+msgstr "Delete permanently"
+
+#: templates/catalog/record_detail.html:11
+#: templates/members/member_detail.html:46
+msgid "Modifier"
+msgstr "Edit"
+
+#: templates/catalog/record_detail.html:12
+#: templates/loans/reservation_form.html:4
+msgid "Réserver"
+msgstr "Reserve"
+
+#: templates/catalog/record_detail.html:13
+msgid "Supprimer"
+msgstr "Delete"
+
+#: templates/catalog/record_detail.html:22
+#: templates/catalog/record_list.html:47
+#: templates/members/member_detail.html:21
+#: templates/members/member_list.html:36
+msgid "Catégorie"
+msgstr "Category"
+
+#: templates/catalog/record_detail.html:23
+msgid "Type"
+msgstr "Type"
+
+#: templates/catalog/record_detail.html:24
+msgid "Éditeur"
+msgstr "Publisher"
+
+#: templates/catalog/record_detail.html:25
+msgid "Année"
+msgstr "Year"
+
+#: templates/catalog/record_detail.html:28
+msgid "Tags"
+msgstr "Tags"
+
+#: templates/catalog/record_detail.html:35
+#: templates/catalog/record_list.html:48 templates/core/dashboard.html:32
+msgid "Exemplaires"
+msgstr "Copies"
+
+#: templates/catalog/record_detail.html:37
+msgid "Ajouter un exemplaire"
+msgstr "Add a copy"
+
+#: templates/catalog/record_detail.html:43
+#: templates/inventory/session_report.html:25
+msgid "Code interne"
+msgstr "Internal ID"
+
+#: templates/catalog/record_detail.html:43
+msgid "Emplacement"
+msgstr "Location"
+
+#: templates/catalog/record_detail.html:43
+msgid "État"
+msgstr "Condition"
+
+#: templates/catalog/record_detail.html:43
+#: templates/inventory/session_list.html:29
+#: templates/inventory/session_report.html:25
+#: templates/members/member_history.html:32
+#: templates/members/member_list.html:36
+msgid "Statut"
+msgstr "Status"
+
+#: templates/catalog/record_detail.html:63
+msgid "Aucun exemplaire pour cette notice."
+msgstr "No copies for this record."
+
+#: templates/catalog/record_list.html:17
+msgid "Titre, auteur, ISBN…"
+msgstr "Title, author, ISBN…"
+
+#: templates/catalog/record_list.html:19 templates/members/member_list.html:19
+msgid "Toutes catégories"
+msgstr "All categories"
+
+#: templates/catalog/record_list.html:25
+msgid "Tout type"
+msgstr "All types"
+
+#: templates/catalog/record_list.html:31
+msgid "Toute langue"
+msgstr "All languages"
+
+#: templates/catalog/record_list.html:36 templates/members/member_list.html:30
+msgid "Filtrer"
+msgstr "Filter"
+
+#: templates/catalog/record_list.html:39
+#, python-format
+msgid "%(counter)s notice"
+msgid_plural "%(counter)s notices"
+msgstr[0] "%(counter)s record"
+msgstr[1] "%(counter)s records"
+
+#: templates/catalog/record_list.html:45
+#: templates/inventory/session_report.html:25
+#: templates/loans/reservations.html:18 templates/loans/reservations.html:44
+#: templates/loans/return.html:54 templates/members/member_detail.html:64
+#: templates/members/member_history.html:17
+#: templates/members/member_history.html:32
+msgid "Titre"
+msgstr "Title"
+
+#: templates/catalog/record_list.html:65 templates/members/member_list.html:52
+msgid "Précédent"
+msgstr "Previous"
+
+#: templates/catalog/record_list.html:67 templates/members/member_list.html:54
+msgid "Suivant"
+msgstr "Next"
+
+#: templates/catalog/record_list.html:71
+msgid "Aucune notice ne correspond."
+msgstr "No matching record."
+
+#: templates/core/dashboard.html:12 templates/members/member_detail.html:61
+#: templates/members/member_history.html:14
+msgid "Prêts en cours"
+msgstr "Current loans"
+
+#: templates/core/dashboard.html:20
 msgid "Réservations prêtes"
-msgstr ""
+msgstr "Ready reservations"
 
-msgid "Espace disque"
-msgstr ""
+#: templates/core/dashboard.html:24
+msgid "Usagers inscrits"
+msgstr "Registered members"
+
+#: templates/core/dashboard.html:28
+msgid "Notices au catalogue"
+msgstr "Catalogue records"
+
+#: templates/core/dashboard.html:38
+msgid "Actions fréquentes"
+msgstr "Common actions"
+
+#: templates/core/dashboard.html:40
+msgid "Nouveau prêt"
+msgstr "New loan"
+
+#: templates/core/help.html:10
+msgid "Recherche"
+msgstr "Search"
+
+#: templates/core/help.html:11
+msgid ""
+"La barre de recherche en haut de l'écran accepte un titre,\n"
+"    un nom d'auteur, un ISBN, ou un code scanné. Scanner une carte d'usager ou\n"
+"    le code-barres d'un exemplaire ouvre directement la fiche correspondante."
+msgstr "The search bar at the top of the screen accepts a title, an author name, an ISBN, or a scanned code. Scanning a member card or a copy's barcode opens the matching record directly."
+
+#: templates/core/help.html:17
+msgid "Prêt et retour"
+msgstr "Lending and return"
+
+#: templates/core/help.html:18
+msgid ""
+"L'écran « Prêt » se déroule de haut en bas : scannez la carte\n"
+"    de l'usager, puis chaque livre, puis validez. L'écran « Retour » ne demande\n"
+"    que les livres."
+msgstr "The “Lending” screen flows from top to bottom: scan the member's card, then each book, then confirm. The “Return” screen only asks for the books."
+
+#: templates/core/help.html:24
+msgid "Mode simple et mode avancé"
+msgstr "Simple mode and advanced mode"
+
+#: templates/core/help.html:25
+msgid ""
+"Par défaut, les options rares sont masquées. Le menu en haut\n"
+"    à droite permet de basculer en mode avancé pour les afficher."
+msgstr "By default, rarely-used options are hidden. The menu at the top right lets you switch to advanced mode to show them."
+
+#: templates/inventory/session_detail.html:13
+#: templates/inventory/session_list.html:29
+msgid "Périmètre"
+msgstr "Scope"
+
+#: templates/inventory/session_detail.html:14
+msgid "Identifiant OfeliaScan"
+msgstr "OfeliaScan identifier"
+
+#: templates/inventory/session_detail.html:15
+msgid "Démarrée le"
+msgstr "Started on"
+
+#: templates/inventory/session_detail.html:19
+msgid "Avancement"
+msgstr "Progress"
+
+#: templates/inventory/session_detail.html:21
+msgid "exemplaires pointés / attendus dans le périmètre"
+msgstr "copies scanned / expected within scope"
+
+#: templates/inventory/session_detail.html:26
+msgid "Pointer un exemplaire"
+msgstr "Scan a copy"
+
+#: templates/inventory/session_detail.html:32
+msgid "Scanner le code-barres"
+msgstr "Scan the barcode"
+
+#: templates/inventory/session_detail.html:34
+msgid "Pointer"
+msgstr "Scan"
+
+#: templates/inventory/session_detail.html:44
+msgid "Clôturer et voir le rapport"
+msgstr "Close and view the report"
+
+#: templates/inventory/session_detail.html:47
+msgid "Voir le rapport"
+msgstr "View the report"
+
+#: templates/inventory/session_detail.html:54
+msgid "Derniers pointages"
+msgstr "Latest scans"
+
+#: templates/inventory/session_detail.html:58
+msgid "inconnu"
+msgstr "unknown"
+
+#: templates/inventory/session_form.html:4
+#: templates/inventory/session_form.html:7
+msgid "Nouvelle session de récolement"
+msgstr "New inventory session"
+
+#: templates/inventory/session_form.html:8
+msgid "Choisissez le périmètre à pointer. Un identifiant sera généré pour OfeliaScan."
+msgstr "Choose the scope to scan. An identifier will be generated for OfeliaScan."
+
+#: templates/inventory/session_form.html:16
+msgid "Lancer le récolement"
+msgstr "Start the inventory"
+
+#: templates/inventory/session_list.html:10
+msgid "Nouvelle session"
+msgstr "New session"
+
+#: templates/inventory/session_list.html:15
+msgid "Sessions en cours"
+msgstr "Ongoing sessions"
+
+#: templates/inventory/session_list.html:22
+msgid "Aucune session en cours."
+msgstr "No ongoing session."
+
+#: templates/inventory/session_list.html:26
+#: templates/members/member_detail.html:47
+#: templates/members/member_history.html:4
+msgid "Historique"
+msgstr "History"
+
+#: templates/inventory/session_list.html:29
+msgid "Session"
+msgstr "Session"
+
+#: templates/inventory/session_list.html:29
+msgid "Clôturée le"
+msgstr "Closed on"
+
+#: templates/inventory/session_list.html:41
+msgid "Aucune session clôturée."
+msgstr "No closed session."
+
+#: templates/inventory/session_report.html:4
+#: templates/inventory/session_report.html:8
+msgid "Rapport de récolement"
+msgstr "Inventory report"
+
+#: templates/inventory/session_report.html:9
+#: templates/loans/reservations.html:10
+msgid "Imprimer"
+msgstr "Print"
+
+#: templates/inventory/session_report.html:14
+msgid "Attendus"
+msgstr "Expected"
+
+#: templates/inventory/session_report.html:15
+msgid "Présents"
+msgstr "Present"
+
+#: templates/inventory/session_report.html:16
+msgid "Manquants"
+msgstr "Missing"
+
+#: templates/inventory/session_report.html:17
+msgid "Hors périmètre"
+msgstr "Out of scope"
+
+#: templates/inventory/session_report.html:18
+msgid "Inconnus"
+msgstr "Unknown"
+
+#: templates/inventory/session_report.html:22
+msgid "Exemplaires manquants"
+msgstr "Missing copies"
+
+#: templates/inventory/session_report.html:37
+msgid "Marquer perdu"
+msgstr "Mark as lost"
+
+#: templates/inventory/session_report.html:45
+#: templates/inventory/session_report.html:52
+#: templates/inventory/session_report.html:59
+#: templates/members/member_history.html:25
+#: templates/members/member_history.html:41
+msgid "Aucun."
+msgstr "None."
+
+#: templates/inventory/session_report.html:49
+msgid "Pointés hors périmètre (mauvaise location)"
+msgstr "Scanned out of scope (wrong location)"
+
+#: templates/inventory/session_report.html:56
+msgid "Codes inconnus du système"
+msgstr "Codes unknown to the system"
+
+#: templates/inventory/session_report.html:65
+msgid "Clôturer"
+msgstr "Close"
+
+#: templates/inventory/session_report.html:67
+msgid "Rouvrir"
+msgstr "Reopen"
+
+#: templates/inventory/session_report.html:68
+msgid "Valider définitivement"
+msgstr "Finalize"
+
+#: templates/loans/consultation.html:4 templates/loans/consultation.html:7
+msgid "Consultation sur place"
+msgstr "In-house consultation"
+
+#: templates/loans/consultation.html:8
+msgid "Compte les documents consultés sans sortie de la bibliothèque."
+msgstr "Counts documents consulted without leaving the library."
+
+#: templates/loans/lend.html:11
+msgid "1. Carte de l'usager"
+msgstr "1. Member card"
+
+#: templates/loans/lend.html:18
+msgid "Scanner ou saisir le n° de carte"
+msgstr "Scan or enter the card number"
+
+#: templates/loans/lend.html:20
+msgid "Continuer"
+msgstr "Continue"
+
+#: templates/loans/lend.html:30
+msgid "Changer d'usager"
+msgstr "Change member"
+
+#: templates/loans/lend.html:38
+msgid "Prêts déjà en cours"
+msgstr "Loans already in progress"
+
+#: templates/loans/lend.html:41
+msgid "échéance"
+msgstr "due"
+
+#: templates/loans/lend.html:49
+msgid "2. Livres à prêter"
+msgstr "2. Books to lend"
+
+#: templates/loans/lend.html:56
+msgid "Scanner le code-barres du livre"
+msgstr "Scan the book's barcode"
+
+#: templates/loans/lend.html:58
+msgid "Ajouter"
+msgstr "Add"
+
+#: templates/loans/lend.html:76
+msgid "Aucun livre scanné pour l'instant."
+msgstr "No book scanned yet."
+
+#: templates/loans/lend.html:82
+msgid "3. Valider le prêt"
+msgstr "3. Confirm the loan"
+
+#: templates/loans/lend.html:86
+msgid "Note (facultatif)"
+msgstr "Note (optional)"
+
+#: templates/loans/lend.html:87
+msgid "Ex. : override réservation"
+msgstr "E.g.: reservation override"
+
+#: templates/loans/lend.html:90
+#, python-format
+msgid "Prêter %(n)s livre"
+msgid_plural "Prêter %(n)s livres"
+msgstr[0] "Lend %(n)s book"
+msgstr[1] "Lend %(n)s books"
+
+#: templates/loans/mark_lost.html:4 templates/loans/mark_lost.html:14
+msgid "Déclarer perdu"
+msgstr "Declare lost"
+
+#: templates/loans/mark_lost.html:7
+msgid "Déclarer un livre perdu"
+msgstr "Declare a book lost"
+
+#: templates/loans/mark_lost.html:8
+#, python-format
+msgid "Confirmer que « %(title)s » prêté à %(member)s est perdu ?"
+msgstr "Confirm that “%(title)s” lent to %(member)s is lost?"
+
+#: templates/loans/mark_lost.html:9
+msgid "L'exemplaire passera en statut « perdu ». Aucune facturation automatique."
+msgstr "The copy will be set to “lost”. No automatic billing."
+
+#: templates/loans/reservation_form.html:7
+msgid "Réserver une notice"
+msgstr "Reserve a record"
+
+#: templates/loans/reservation_form.html:14
+msgid "Enregistrer la réservation"
+msgstr "Save the reservation"
+
+#: templates/loans/reservations.html:15
+msgid "À honorer (livres mis de côté)"
+msgstr "To fulfil (books set aside)"
+
+#: templates/loans/reservations.html:18 templates/loans/reservations.html:44
+#: templates/loans/return.html:54
+msgid "Usager"
+msgstr "Member"
+
+#: templates/loans/reservations.html:18
+msgid "Mis de côté le"
+msgstr "Set aside on"
+
+#: templates/loans/reservations.html:36
+msgid "Aucune réservation prête."
+msgstr "No ready reservation."
+
+#: templates/loans/reservations.html:44
+msgid "Réservé le"
+msgstr "Reserved on"
+
+#: templates/loans/reservations.html:44 templates/members/member_detail.html:23
+msgid "Expire le"
+msgstr "Expires on"
+
+#: templates/loans/reservations.html:63
+msgid "Aucune réservation en attente."
+msgstr "No pending reservation."
+
+#: templates/loans/return.html:16
+msgid "Scanner le code-barres du livre rendu"
+msgstr "Scan the returned book's barcode"
+
+#: templates/loans/return.html:18
+msgid "Enregistrer le retour"
+msgstr "Record the return"
+
+#: templates/loans/return.html:25
+msgid "Retours de la séance"
+msgstr "Returns this session"
+
+#: templates/loans/return.html:29
+msgid "Vider la liste"
+msgstr "Clear the list"
+
+#: templates/loans/return.html:37
+msgid "retard"
+msgstr "overdue"
+
+#: templates/loans/return.html:38
+msgid "perdu réintégré"
+msgstr "lost item returned"
+
+#: templates/loans/return.html:39
+msgid "aucun prêt actif"
+msgstr "no active loan"
+
+#: templates/loans/return.html:42
+msgid "Pour"
+msgstr "For"
+
+#: templates/loans/return.html:54 templates/members/member_detail.html:64
+#: templates/members/member_history.html:17
+msgid "Échéance"
+msgstr "Due date"
+
+#: templates/loans/return.html:66
+msgid "Aucun prêt en retard."
+msgstr "No overdue loan."
+
+#: templates/members/member_detail.html:15
+#, python-format
+msgid "La carte expire dans %(days)s jour."
+msgid_plural "La carte expire dans %(days)s jours."
+msgstr[0] "The card expires in %(days)s day."
+msgstr[1] "The card expires in %(days)s days."
+
+#: templates/members/member_detail.html:20
+#: templates/members/member_list.html:36
+msgid "N° de carte"
+msgstr "Card no."
+
+#: templates/members/member_detail.html:22
+msgid "Inscrit le"
+msgstr "Registered on"
+
+#: templates/members/member_detail.html:24
+msgid "Téléphone"
+msgstr "Phone"
+
+#: templates/members/member_detail.html:26
+msgid "Compte parent"
+msgstr "Parent account"
+
+#: templates/members/member_detail.html:29
+msgid "Ancienne carte"
+msgstr "Previous card"
+
+#: templates/members/member_detail.html:35
+msgid "Membres rattachés"
+msgstr "Linked members"
+
+#: templates/members/member_detail.html:50
+msgid "Renouveler la carte"
+msgstr "Renew the card"
+
+#: templates/members/member_detail.html:53
+msgid "Émettre une nouvelle carte ? L'ancien numéro sera désactivé."
+msgstr "Issue a new card? The old number will be deactivated."
+
+#: templates/members/member_detail.html:55
+msgid "Remplacer la carte"
+msgstr "Replace the card"
+
+#: templates/members/member_detail.html:74
+msgid "Renouveler"
+msgstr "Renew"
+
+#: templates/members/member_detail.html:84
+msgid "Aucun prêt en cours."
+msgstr "No current loan."
+
+#: templates/members/member_history.html:8
+msgid "Historique de prêt"
+msgstr "Loan history"
+
+#: templates/members/member_history.html:9
+msgid "Fiche usager"
+msgstr "Member record"
+
+#: templates/members/member_history.html:11
+#, python-format
+msgid "%(n)s prêt au total"
+msgid_plural "%(n)s prêts au total"
+msgstr[0] "%(n)s loan in total"
+msgstr[1] "%(n)s loans in total"
+
+#: templates/members/member_history.html:17
+#: templates/members/member_history.html:32
+msgid "Prêté le"
+msgstr "Lent on"
+
+#: templates/members/member_history.html:29
+msgid "Historique complet"
+msgstr "Full history"
+
+#: templates/members/member_history.html:46
+msgid "Consultations sur place"
+msgstr "In-house consultations"
+
+#: templates/members/member_history.html:49
+#, python-format
+msgid "%(n)s document"
+msgid_plural "%(n)s documents"
+msgstr[0] "%(n)s document"
+msgstr[1] "%(n)s documents"
+
+#: templates/members/member_history.html:56
+msgid "Statistiques par catégorie"
+msgstr "Statistics by category"
+
+#: templates/members/member_history.html:63
+msgid "Aucune donnée."
+msgstr "No data."
+
+#: templates/members/member_list.html:17
+msgid "Nom ou n° de carte…"
+msgstr "Name or card number…"
+
+#: templates/members/member_list.html:25
+msgid "Tout statut"
+msgstr "All statuses"
+
+#: templates/members/member_list.html:36
+msgid "Nom"
+msgstr "Name"
+
+#: templates/members/member_list.html:58
+msgid "Aucun usager ne correspond."
+msgstr "No matching member."

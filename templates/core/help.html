@@ -1,0 +1,28 @@
+{% extends "base.html" %}
+{% load i18n %}
+
+{% block title %}{% trans "Aide" %}{% endblock %}
+
+{% block content %}
+<h1>{% trans "Aide" %}</h1>
+
+<article>
+    <h2>{% trans "Recherche" %}</h2>
+    <p>{% blocktrans %}La barre de recherche en haut de l'écran accepte un titre,
+    un nom d'auteur, un ISBN, ou un code scanné. Scanner une carte d'usager ou
+    le code-barres d'un exemplaire ouvre directement la fiche correspondante.{% endblocktrans %}</p>
+</article>
+
+<article>
+    <h2>{% trans "Prêt et retour" %}</h2>
+    <p>{% blocktrans %}L'écran « Prêt » se déroule de haut en bas : scannez la carte
+    de l'usager, puis chaque livre, puis validez. L'écran « Retour » ne demande
+    que les livres.{% endblocktrans %}</p>
+</article>
+
+<article>
+    <h2>{% trans "Mode simple et mode avancé" %}</h2>
+    <p>{% blocktrans %}Par défaut, les options rares sont masquées. Le menu en haut
+    à droite permet de basculer en mode avancé pour les afficher.{% endblocktrans %}</p>
+</article>
+{% endblock %}

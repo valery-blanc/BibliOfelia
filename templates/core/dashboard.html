@@ -1,28 +1,47 @@
 {% extends "base.html" %}
-{% load i18n %}
+{% load i18n biblio_icons %}
 
 {% block title %}{% trans "Tableau de bord" %}{% endblock %}
 
 {% block content %}
 <h1>{% trans "Tableau de bord" %}</h1>
-<p>{% trans "Bienvenue dans BibliOfelia. L'interface complète arrive avec les slices fonctionnels." %}</p>
 
-<section class="grid">
-    <article>
-        <header><strong>{% trans "Prêts actifs" %}</strong></header>
-        <p>—</p>
+<section class="kpi-grid">
+    <article class="kpi-card">
+        <div class="kpi-value">{{ kpi_active_loans }}</div>
+        <small>{% trans "Prêts en cours" %}</small>
     </article>
-    <article>
-        <header><strong>{% trans "Retards" %}</strong></header>
-        <p>—</p>
+    <article class="kpi-card {% if kpi_overdue %}kpi-alert{% endif %}">
+        <div class="kpi-value">{{ kpi_overdue }}</div>
+        <small>{% trans "Prêts en retard" %}</small>
     </article>
-    <article>
-        <header><strong>{% trans "Réservations prêtes" %}</strong></header>
-        <p>—</p>
+    <article class="kpi-card">
+        <div class="kpi-value">{{ kpi_reservations_ready }}</div>
+        <small>{% trans "Réservations prêtes" %}</small>
     </article>
-    <article>
-        <header><strong>{% trans "Espace disque" %}</strong></header>
-        <p>—</p>
+    <article class="kpi-card">
+        <div class="kpi-value">{{ kpi_members }}</div>
+        <small>{% trans "Usagers inscrits" %}</small>
+    </article>
+    <article class="kpi-card">
+        <div class="kpi-value">{{ kpi_records }}</div>
+        <small>{% trans "Notices au catalogue" %}</small>
+    </article>
+    <article class="kpi-card">
+        <div class="kpi-value">{{ kpi_items }}</div>
+        <small>{% trans "Exemplaires" %}</small>
     </article>
 </section>
+
+{% if user.is_librarian %}
+<section style="margin-top:2rem;">
+    <h2>{% trans "Actions fréquentes" %}</h2>
+    <div class="grid">
+        <a href="{% url 'loans:lend' %}" role="button" class="btn-big">{% icon "book-down" %} {% trans "Nouveau prêt" %}</a>
+        <a href="{% url 'loans:return_items' %}" role="button" class="btn-big">{% icon "book-up" %} {% trans "Retour" %}</a>
+        <a href="{% url 'catalog:record_create' %}" role="button" class="btn-big secondary">{% icon "plus" %} {% trans "Nouvelle notice" %}</a>
+        <a href="{% url 'members:create' %}" role="button" class="btn-big secondary">{% icon "user-plus" %} {% trans "Nouvel usager" %}</a>
+    </div>
+</section>
+{% endif %}
 {% endblock %}

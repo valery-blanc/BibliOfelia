@@ -1,0 +1,48 @@
+{% load i18n biblio_icons %}
+<div id="record-form">
+    <h1>{{ form_title }}</h1>
+    <form method="post" action="{{ form_action }}" enctype="multipart/form-data">
+        {% csrf_token %}
+        {% if form.non_field_errors %}<div class="msg msg-error">{{ form.non_field_errors }}</div>{% endif %}
+
+        {% include "partials/_field.html" with field=form.title %}
+        {% include "partials/_field.html" with field=form.authors_text %}
+
+        <div class="form-row">
+            <label for="{{ form.isbn_13.id_for_label }}">ISBN-13</label>
+            <div class="isbn-row">
+                {{ form.isbn_13 }}
+                {% if show_lookup %}
+                <button type="button" class="secondary"
+                        hx-get="{% url 'catalog:isbn_lookup' %}"
+                        hx-include="[name='isbn_13']"
+                        hx-target="#record-form"
+                        hx-swap="outerHTML">
+                    {% icon "search" %} {% trans "Récupérer" %}
+                </button>
+                {% endif %}
+            </div>
+            {% for error in form.isbn_13.errors %}<small class="field-error">{{ error }}</small>{% endfor %}
+        </div>
+
+        {% include "partials/_field.html" with field=form.category %}
+        {% include "partials/_field.html" with field=form.document_type %}
+        {% include "partials/_field.html" with field=form.language %}
+
+        <details class="advanced-section" {% if user.always_show_advanced %}open{% endif %}>
+            <summary>{% trans "Options avancées" %}</summary>
+            {% include "partials/_field.html" with field=form.subtitle %}
+            {% include "partials/_field.html" with field=form.publisher %}
+            {% include "partials/_field.html" with field=form.publication_year %}
+            {% include "partials/_field.html" with field=form.isbn_10 %}
+            {% include "partials/_field.html" with field=form.series_name %}
+            {% include "partials/_field.html" with field=form.series_volume %}
+            {% include "partials/_field.html" with field=form.summary %}
+            {% include "partials/_field.html" with field=form.cover_image %}
+            {% include "partials/_field.html" with field=form.tags %}
+        </details>
+
+        <button type="submit" class="btn-primary">{% icon "check" %} {% trans "Enregistrer" %}</button>
+        <a href="{% url 'catalog:record_list' %}" role="button" class="secondary outline">{% trans "Annuler" %}</a>
+    </form>
+</div>

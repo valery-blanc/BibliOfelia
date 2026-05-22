@@ -1,0 +1,24 @@
+{% extends "base.html" %}
+{% load i18n biblio_icons %}
+
+{% block title %}{% trans "Supprimer la notice" %}{% endblock %}
+
+{% block content %}
+<h1>{% trans "Supprimer la notice" %}</h1>
+<p>{% blocktrans with title=record.title %}Confirmez-vous la suppression de « {{ title }} » ?{% endblocktrans %}</p>
+
+{% if blocked %}
+<div class="msg msg-error">
+    {% trans "Des exemplaires actifs sont rattachés à cette notice. Retirez-les d'abord." %}
+</div>
+<a href="{% url 'catalog:record_detail' record.pk %}" role="button">{% trans "Retour" %}</a>
+{% else %}
+<form method="post">
+    {% csrf_token %}
+    <button type="submit" class="btn-primary" style="background:var(--pico-color-red-500);border-color:var(--pico-color-red-500)">
+        {% icon "trash-2" %} {% trans "Supprimer définitivement" %}
+    </button>
+    <a href="{% url 'catalog:record_detail' record.pk %}" role="button" class="secondary outline">{% trans "Annuler" %}</a>
+</form>
+{% endif %}
+{% endblock %}

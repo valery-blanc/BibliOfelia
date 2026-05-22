@@ -1,0 +1,65 @@
+{% extends "base.html" %}
+{% load i18n biblio_icons %}
+
+{% block title %}{{ session }}{% endblock %}
+
+{% block content %}
+<header class="page-head">
+    <h1>{% icon "clipboard-list" %} {{ session }}</h1>
+    <span>{{ session.get_status_display }}</span>
+</header>
+
+<dl class="record-meta">
+    <div><dt>{% trans "Périmètre" %}</dt><dd>{{ session.get_scope_type_display }}{% if session.scope_location %} — {{ session.scope_location.code }}{% endif %}{% if session.scope_category %} — {{ session.scope_category.name }}{% endif %}</dd></div>
+    <div><dt>{% trans "Identifiant OfeliaScan" %}</dt><dd><code>{{ session.session_id }}</code></dd></div>
+    <div><dt>{% trans "Démarrée le" %}</dt><dd>{{ session.started_at|date:"Y-m-d H:i" }}</dd></div>
+</dl>
+
+<article>
+    <h2>{% trans "Avancement" %}</h2>
+    <p class="kpi-value">{{ progress.scanned }} / {{ progress.expected }}</p>
+    <small class="help-hint">{% trans "exemplaires pointés / attendus dans le périmètre" %}</small>
+</article>
+
+{% if session.is_open %}
+<article>
+    <h2>{% trans "Pointer un exemplaire" %}</h2>
+    <form method="post" action="{% url 'inventory:add_scan' session.pk %}">
+        {% csrf_token %}
+        <label class="search-field">
+            {% icon "scan-barcode" %}
+            <input type="text" name="ean" autofocus autocomplete="off"
+                   placeholder="{% trans 'Scanner le code-barres' %}">
+        </label>
+        <button type="submit" class="btn-primary">{% icon "plus" %} {% trans "Pointer" %}</button>
+    </form>
+</article>
+{% endif %}
+
+<div class="action-row">
+    {% if user.is_librarian %}
+        {% if session.is_open %}
+        <form method="post" action="{% url 'inventory:close' session.pk %}">
+            {% csrf_token %}
+            <button type="submit">{% icon "check" %} {% trans "Clôturer et voir le rapport" %}</button>
+        </form>
+        {% else %}
+        <a href="{% url 'inventory:report' session.pk %}" role="button">{% trans "Voir le rapport" %}</a>
+        {% endif %}
+    {% endif %}
+</div>
+
+{% if scans %}
+<section>
+    <h2>{% trans "Derniers pointages" %}</h2>
+    <ul class="scan-list">
+        {% for scan in scans %}
+        <li class="scan-line {% if not scan.item %}scan-warn{% endif %}">
+            <span>{{ scan.ean13 }}{% if scan.item %} — {{ scan.item.record.title }}{% else %} — <em>{% trans "inconnu" %}</em>{% endif %}</span>
+            <small class="help-hint">{{ scan.scanned_at|date:"H:i" }}</small>
+        </li>
+        {% endfor %}
+    </ul>
+</section>
+{% endif %}
+{% endblock %}

@@ -1,4 +1,4 @@
-{% load static i18n %}<!doctype html>
+{% load static i18n biblio_icons %}<!doctype html>
 <html lang="{{ LANGUAGE_CODE|default:'fr' }}">
 <head>
     <meta charset="utf-8">
@@ -9,33 +9,84 @@
     <script defer src="{% static 'js/htmx.min.js' %}"></script>
     <script defer src="{% static 'js/alpine.min.js' %}"></script>
 </head>
-<body>
-<header class="container">
-    <nav>
-        <ul>
-            <li><strong>{{ library_name }}</strong></li>
-        </ul>
-        {% if user.is_authenticated %}
-        <ul>
-            <li><a href="{% url 'core:dashboard' %}">{% trans "Tableau de bord" %}</a></li>
-            <li><a href="#">{% trans "Catalogue" %}</a></li>
-            <li><a href="#">{% trans "Usagers" %}</a></li>
-            <li><a href="#">{% trans "Prêt" %}</a></li>
-            <li><a href="#">{% trans "Retour" %}</a></li>
+<body hx-headers='{"X-CSRFToken": "{{ csrf_token }}"}'>
+{% if user.is_authenticated %}
+<header class="app-header">
+    <nav class="app-topbar">
+        <a href="{% url 'core:dashboard' %}" class="app-brand">
+            {% icon "book-open" %} <strong>{{ library_name }}</strong>
+        </a>
+        <ul class="app-nav">
+            <li><a href="{% url 'core:dashboard' %}">{% icon "layout-dashboard" %} {% trans "Tableau de bord" %}</a></li>
+            <li><a href="{% url 'catalog:record_list' %}">{% icon "book-open" %} {% trans "Catalogue" %}</a></li>
+            <li><a href="{% url 'members:list' %}">{% icon "users" %} {% trans "Usagers" %}</a></li>
+            {% if user.is_librarian %}
+            <li><a href="{% url 'loans:lend' %}">{% icon "book-down" %} {% trans "Prêt" %}</a></li>
+            <li><a href="{% url 'loans:return_items' %}">{% icon "book-up" %} {% trans "Retour" %}</a></li>
             <li>
-                <details class="dropdown">
-                    <summary>{{ user.username }}</summary>
-                    <ul>
-                        <li><a href="{% url 'accounts:logout' %}">{% trans "Déconnexion" %}</a></li>
-                    </ul>
-                </details>
+                <a href="{% url 'loans:reservations' %}">{% icon "bookmark-check" %} {% trans "Réservations" %}
+                {% if nav_counts.reservations_ready %}<span class="nav-badge badge-warning">{{ nav_counts.reservations_ready }}</span>{% endif %}
+                </a>
             </li>
+            <li><a href="{% url 'inventory:list' %}">{% icon "clipboard-list" %} {% trans "Récolement" %}</a></li>
+            {% endif %}
         </ul>
-        {% endif %}
+        <div class="app-topbar-right">
+            {% if nav_counts.overdue %}
+            <a href="{% url 'loans:return_items' %}" class="nav-badge badge-danger" title="{% trans 'Prêts en retard' %}">
+                {% icon "triangle-alert" %} {{ nav_counts.overdue }}
+            </a>
+            {% endif %}
+            <form action="{% url 'set_language' %}" method="post" class="lang-form">
+                {% csrf_token %}
+                <input type="hidden" name="next" value="{{ request.path }}">
+                {% icon "languages" %}
+                <select name="language" onchange="this.form.submit()" aria-label="{% trans 'Langue' %}">
+                    {% for code, name in enabled_languages %}
+                    <option value="{{ code }}" {% if code == LANGUAGE_CODE %}selected{% endif %}>{{ name }}</option>
+                    {% endfor %}
+                </select>
+            </form>
+            <a href="{% url 'core:help' %}" class="icon-link" title="{% trans 'Aide' %}">{% icon "circle-help" %}</a>
+            <details class="dropdown user-menu">
+                <summary>{{ user.get_username }}</summary>
+                <ul dir="rtl">
+                    <li>
+                        <form action="{% url 'core:toggle_advanced' %}" method="post">
+                            {% csrf_token %}
+                            <input type="hidden" name="next" value="{{ request.path }}">
+                            <button type="submit" class="link-button">
+                                {% if user.always_show_advanced %}{% trans "Mode simple" %}{% else %}{% trans "Mode avancé" %}{% endif %}
+                            </button>
+                        </form>
+                    </li>
+                    {% if user.is_superadmin %}
+                    <li><a href="{% url 'admin:index' %}">{% icon "settings" %} {% trans "Administration" %}</a></li>
+                    {% endif %}
+                    <li>
+                        <form action="{% url 'accounts:logout' %}" method="post">
+                            {% csrf_token %}
+                            <button type="submit" class="link-button">{% icon "log-out" %} {% trans "Déconnexion" %}</button>
+                        </form>
+                    </li>
+                </ul>
+            </details>
+        </div>
     </nav>
+    <div class="app-searchbar">
+        <form action="{% url 'core:search' %}" method="get" role="search">
+            <label class="search-field">
+                {% icon "search" %}
+                <input type="search" name="q" value="{{ request.GET.q|default:'' }}"
+                       placeholder="{% trans 'Rechercher un livre, un ISBN — ou scanner une carte / un code-barres…' %}"
+                       autocomplete="off">
+            </label>
+        </form>
+    </div>
 </header>
+{% endif %}
 
-<main class="container">
+<main class="container app-main">
     {% if messages %}
         {% for message in messages %}
             <article role="alert" class="msg msg-{{ message.tags }}">{{ message }}</article>
@@ -44,7 +95,7 @@
     {% block content %}{% endblock %}
 </main>
 
-<footer class="container">
+<footer class="container app-footer">
     <small>BibliOfelia v{{ app_version }} — {% trans "Ofelia Box" %}</small>
 </footer>
 </body>

@@ -1,0 +1,17 @@
+{% extends "base.html" %}
+{% load i18n biblio_icons %}
+
+{% block title %}{% trans "Réserver" %}{% endblock %}
+
+{% block content %}
+<h1>{% icon "bookmark-check" %} {% trans "Réserver une notice" %}</h1>
+<p class="help-hint">{{ record.title }}</p>
+
+<form method="post">
+    {% csrf_token %}
+    {% if form.non_field_errors %}<div class="msg msg-error">{{ form.non_field_errors }}</div>{% endif %}
+    {% include "partials/_field.html" with field=form.member %}
+    <button type="submit" class="btn-primary">{% icon "check" %} {% trans "Enregistrer la réservation" %}</button>
+    <a href="{% url 'catalog:record_detail' record.pk %}" role="button" class="secondary outline">{% trans "Annuler" %}</a>
+</form>
+{% endblock %}

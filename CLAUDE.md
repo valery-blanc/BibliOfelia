@@ -23,6 +23,19 @@ Pour toute modification (bug fix ou feature), AVANT commit :
 [code] → [docs] → [déploiement Pi] → [test user] → [confirmation OK] → [commit]
 ```
 
+### Répartition des rôles (Claude / Val)
+
+Claude exécute **toutes les tâches techniques** lui-même, sans demander à Val de
+lancer des commandes : coder, `pytest`, `docker compose`, `makemigrations`,
+migrations, déploiement, vérifications, préparation de l'environnement de test
+(ex. positionner `setup_completed`). Si un outil est cassé, Claude le signale et
+propose une réparation — mais ne délègue jamais le travail technique à Val.
+
+Val intervient **uniquement** pour le test fonctionnel final de l'UI dans le
+navigateur, puis donne (ou non) sa confirmation explicite avant le commit.
+Concrètement : Claude lance `docker compose up`, prépare tout, et Val n'a plus
+qu'à regarder l'écran.
+
 1. Coder le changement.
 2. Mettre à jour **`docs/specs/SPEC_BIBLIOFELIA.md`** (source de vérité), créer `docs/bugs/BUG-XXX-*.md` ou `docs/specs/FEAT-XXX-*.md` si pertinent.
 3. Cocher `[x]` dans `docs/tasks/TASKS.md`.

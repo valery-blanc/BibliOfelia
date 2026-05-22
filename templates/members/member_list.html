@@ -1,0 +1,60 @@
+{% extends "base.html" %}
+{% load i18n biblio_icons %}
+
+{% block title %}{% trans "Usagers" %}{% endblock %}
+
+{% block content %}
+<header class="page-head">
+    <h1>{% icon "users" %} {% trans "Usagers" %}</h1>
+    {% if user.is_librarian %}
+    <a href="{% url 'members:create' %}" role="button" class="btn-big">
+        {% icon "user-plus" %} {% trans "Nouvel usager" %}
+    </a>
+    {% endif %}
+</header>
+
+<form method="get" class="filter-bar">
+    <input type="search" name="q" value="{{ q }}" placeholder="{% trans 'Nom ou n° de carte…' %}">
+    <select name="category">
+        <option value="">{% trans "Toutes catégories" %}</option>
+        {% for cat in categories %}
+        <option value="{{ cat.pk }}" {% if selected.category == cat.pk|stringformat:'s' %}selected{% endif %}>{{ cat.name }}</option>
+        {% endfor %}
+    </select>
+    <select name="status">
+        <option value="">{% trans "Tout statut" %}</option>
+        {% for value, label in statuses %}
+        <option value="{{ value }}" {% if selected.status == value %}selected{% endif %}>{{ label }}</option>
+        {% endfor %}
+    </select>
+    <button type="submit">{% icon "search" %} {% trans "Filtrer" %}</button>
+</form>
+
+{% if page_obj %}
+<table>
+    <thead>
+        <tr><th>{% trans "Nom" %}</th><th>{% trans "N° de carte" %}</th><th>{% trans "Catégorie" %}</th><th>{% trans "Statut" %}</th></tr>
+    </thead>
+    <tbody>
+        {% for member in page_obj %}
+        <tr>
+            <td><a href="{% url 'members:detail' member.pk %}">{{ member.last_name }} {{ member.first_name }}</a></td>
+            <td>{{ member.card_number }}</td>
+            <td>{{ member.category.name }}</td>
+            <td>{{ member.get_status_display }}</td>
+        </tr>
+        {% endfor %}
+    </tbody>
+</table>
+
+{% if page_obj.paginator.num_pages > 1 %}
+<nav class="pager">
+    {% if page_obj.has_previous %}<a href="?q={{ q }}&page={{ page_obj.previous_page_number }}">{% trans "Précédent" %}</a>{% endif %}
+    <span>{{ page_obj.number }} / {{ page_obj.paginator.num_pages }}</span>
+    {% if page_obj.has_next %}<a href="?q={{ q }}&page={{ page_obj.next_page_number }}">{% trans "Suivant" %}</a>{% endif %}
+</nav>
+{% endif %}
+{% else %}
+<p>{% trans "Aucun usager ne correspond." %}</p>
+{% endif %}
+{% endblock %}

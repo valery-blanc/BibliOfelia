@@ -1,0 +1,37 @@
+{% extends "base.html" %}
+{% load i18n biblio_icons %}
+
+{% block title %}{{ form_title }}{% endblock %}
+
+{% block content %}
+<h1>{{ form_title }}</h1>
+
+<form method="post" enctype="multipart/form-data">
+    {% csrf_token %}
+    {% if form.non_field_errors %}<div class="msg msg-error">{{ form.non_field_errors }}</div>{% endif %}
+
+    {% include "partials/_field.html" with field=form.first_name %}
+    {% include "partials/_field.html" with field=form.last_name %}
+    {% include "partials/_field.html" with field=form.category %}
+    {% include "partials/_field.html" with field=form.preferred_language %}
+
+    <details class="advanced-section" {% if user.always_show_advanced %}open{% endif %}>
+        <summary>{% trans "Options avancées" %}</summary>
+        {% include "partials/_field.html" with field=form.birth_date %}
+        {% include "partials/_field.html" with field=form.contact_phone %}
+        {% include "partials/_field.html" with field=form.address %}
+        {% include "partials/_field.html" with field=form.registration_date %}
+        {% include "partials/_field.html" with field=form.expiration_date %}
+        {% include "partials/_field.html" with field=form.parent_account %}
+        {% include "partials/_field.html" with field=form.photo %}
+        {% include "partials/_field.html" with field=form.notes %}
+    </details>
+
+    <button type="submit" class="btn-primary">{% icon "check" %} {% trans "Enregistrer" %}</button>
+    {% if member %}
+    <a href="{% url 'members:detail' member.pk %}" role="button" class="secondary outline">{% trans "Annuler" %}</a>
+    {% else %}
+    <a href="{% url 'members:list' %}" role="button" class="secondary outline">{% trans "Annuler" %}</a>
+    {% endif %}
+</form>
+{% endblock %}

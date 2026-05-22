@@ -1,0 +1,73 @@
+{% extends "base.html" %}
+{% load i18n biblio_icons %}
+
+{% block title %}{% trans "Catalogue" %}{% endblock %}
+
+{% block content %}
+<header class="page-head">
+    <h1>{% icon "book-open" %} {% trans "Catalogue" %}</h1>
+    {% if user.is_librarian %}
+    <a href="{% url 'catalog:record_create' %}" role="button" class="btn-big">
+        {% icon "plus" %} {% trans "Nouvelle notice" %}
+    </a>
+    {% endif %}
+</header>
+
+<form method="get" class="filter-bar">
+    <input type="search" name="q" value="{{ q }}" placeholder="{% trans 'Titre, auteur, ISBN…' %}">
+    <select name="category">
+        <option value="">{% trans "Toutes catégories" %}</option>
+        {% for cat in categories %}
+        <option value="{{ cat.pk }}" {% if selected.category == cat.pk|stringformat:'s' %}selected{% endif %}>{{ cat.name }}</option>
+        {% endfor %}
+    </select>
+    <select name="document_type">
+        <option value="">{% trans "Tout type" %}</option>
+        {% for value, label in document_types %}
+        <option value="{{ value }}" {% if selected.document_type == value %}selected{% endif %}>{{ label }}</option>
+        {% endfor %}
+    </select>
+    <select name="language">
+        <option value="">{% trans "Toute langue" %}</option>
+        {% for code, name in enabled_languages %}
+        <option value="{{ code }}" {% if selected.language == code %}selected{% endif %}>{{ name }}</option>
+        {% endfor %}
+    </select>
+    <button type="submit">{% icon "search" %} {% trans "Filtrer" %}</button>
+</form>
+
+<p class="help-hint">{% blocktrans count counter=total %}{{ counter }} notice{% plural %}{{ counter }} notices{% endblocktrans %}</p>
+
+{% if page_obj %}
+<table>
+    <thead>
+        <tr>
+            <th>{% trans "Titre" %}</th>
+            <th>{% trans "Auteur(s)" %}</th>
+            <th>{% trans "Catégorie" %}</th>
+            <th>{% trans "Exemplaires" %}</th>
+        </tr>
+    </thead>
+    <tbody>
+        {% for record in page_obj %}
+        <tr>
+            <td><a href="{% url 'catalog:record_detail' record.pk %}">{{ record.title }}</a></td>
+            <td>{% for a in record.authors.all %}{{ a.full_name }}{% if not forloop.last %}, {% endif %}{% endfor %}</td>
+            <td>{{ record.category.name|default:"—" }}</td>
+            <td>{{ record.items.count }}</td>
+        </tr>
+        {% endfor %}
+    </tbody>
+</table>
+
+{% if page_obj.paginator.num_pages > 1 %}
+<nav class="pager">
+    {% if page_obj.has_previous %}<a href="?q={{ q }}&page={{ page_obj.previous_page_number }}">{% trans "Précédent" %}</a>{% endif %}
+    <span>{{ page_obj.number }} / {{ page_obj.paginator.num_pages }}</span>
+    {% if page_obj.has_next %}<a href="?q={{ q }}&page={{ page_obj.next_page_number }}">{% trans "Suivant" %}</a>{% endif %}
+</nav>
+{% endif %}
+{% else %}
+<p>{% trans "Aucune notice ne correspond." %}</p>
+{% endif %}
+{% endblock %}

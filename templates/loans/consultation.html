@@ -1,0 +1,18 @@
+{% extends "base.html" %}
+{% load i18n biblio_icons %}
+
+{% block title %}{% trans "Consultation sur place" %}{% endblock %}
+
+{% block content %}
+<h1>{% icon "book-open" %} {% trans "Consultation sur place" %}</h1>
+<p class="help-hint">{% trans "Compte les documents consultés sans sortie de la bibliothèque." %}</p>
+
+<form method="post">
+    {% csrf_token %}
+    {% if form.non_field_errors %}<div class="msg msg-error">{{ form.non_field_errors }}</div>{% endif %}
+    {% include "partials/_field.html" with field=form.count %}
+    {% include "partials/_field.html" with field=form.member %}
+    {% include "partials/_field.html" with field=form.date %}
+    <button type="submit" class="btn-primary">{% icon "check" %} {% trans "Enregistrer" %}</button>
+</form>
+{% endblock %}

@@ -1,4 +1,17 @@
 from django.urls import path
 
+from . import views
+
 app_name = "catalog"
-urlpatterns: list = []
+
+urlpatterns = [
+    path("", views.record_list, name="record_list"),
+    path("new/", views.record_create, name="record_create"),
+    path("isbn-lookup/", views.isbn_lookup, name="isbn_lookup"),
+    path("<int:pk>/", views.record_detail, name="record_detail"),
+    path("<int:pk>/edit/", views.record_edit, name="record_edit"),
+    path("<int:pk>/delete/", views.record_delete, name="record_delete"),
+    path("<int:record_pk>/items/new/", views.item_create, name="item_create"),
+    path("items/<int:pk>/edit/", views.item_edit, name="item_edit"),
+    path("items/<int:pk>/discard/", views.item_discard, name="item_discard"),
+]

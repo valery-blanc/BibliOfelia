@@ -8,7 +8,6 @@ from django.conf.urls.i18n import i18n_patterns
 from django.conf.urls.static import static
 from django.contrib import admin
 from django.urls import include, path
-from django.views.generic import RedirectView
 
 urlpatterns = [
     path("admin/", admin.site.urls),
@@ -18,7 +17,10 @@ urlpatterns = [
     path("accounts/", include("apps.accounts.urls", namespace="accounts")),
 ]
 
-# Tout le reste sous i18n_patterns (préfixe langue dans l'URL)
+# Tout le reste sous i18n_patterns : préfixe de langue sur TOUTES les URLs
+# (`/fr/…`, `/en/…`, etc.). `prefix_default_language=True` est indispensable
+# pour que le sélecteur de langue et le cookie de préférence soient respectés
+# partout (cf. FEAT-005 / discussion i18n Sprint 2).
 urlpatterns += i18n_patterns(
     path("", include("apps.core.urls", namespace="core")),
     path("catalog/", include("apps.catalog.urls", namespace="catalog")),
@@ -27,7 +29,7 @@ urlpatterns += i18n_patterns(
     path("inventory/", include("apps.inventory.urls", namespace="inventory")),
     path("printing/", include("apps.printing.urls", namespace="printing")),
     path("reports/", include("apps.reports.urls", namespace="reports")),
-    prefix_default_language=False,
+    prefix_default_language=True,
 )
 
 if settings.DEBUG:
@@ -40,5 +42,6 @@ if settings.DEBUG:
     except ImportError:
         pass
 
-# Page racine → dashboard ou setup
-urlpatterns = [path("", RedirectView.as_view(pattern_name="core:dashboard", permanent=False))] + urlpatterns
+# La racine `/` (sans préfixe) ne matche aucune route : LocaleMiddleware la
+# redirige vers `/<langue>/` selon le cookie / l'en-tête Accept-Language. Pas
+# de RedirectView maison : elle bouclerait sur core:dashboard (BUG-002).

@@ -4,7 +4,7 @@ Spécification détaillée du logiciel de gestion de bibliothèque BibliOfelia, 
 
 Version : 1.0 (cible v1)
 Statut : draft pour Spec-Driven Development
-Dernière modif spec : 2026-05-21 — FEAT-004 (auth/rôles/audit/throttling, §9.1/§9.2/§9.6)
+Dernière modif spec : 2026-05-22 — Sprint 2 : FEAT-005 à FEAT-010 (UI, catalogage, usagers, prêts, réservations, récolement — §6.1 à §6.5, §10) ; i18n 4 langues traduites (§6.9) ; BUG-002 à BUG-005
 
 ---
 
@@ -572,6 +572,40 @@ Index dédiés :
 - Conservation des sessions clôturées
 - Comparaison entre récolements pour suivi de la qualité du fonds
 
+#### Écarts d'implémentation Sprint 2 (FEAT-005 à FEAT-010)
+
+État réel du code livré au Sprint 2 (les écrans §6.1 à §6.5 sont opérationnels) :
+
+- **§6.1 Catalogage** — Notices et exemplaires : CRUD complet, recherche FTS5
+  filtrée, lookup ISBN OpenLibrary (synchrone). La mise en file d'attente du
+  lookup quand la box est hors-ligne est différée (dépend de la détection de
+  connectivité §7.3). L'import batch OfeliaScan dépend de l'API REST (Task #16).
+  La suppression logique d'exemplaire = statut `discarded` (pas de champ booléen
+  séparé) ; une notice se supprime réellement, à condition de n'avoir aucun
+  exemplaire actif.
+- **§6.2 Usagers** — Inscription, fiche, historique, remplacement de carte,
+  renouvellement, expiration : opérationnels. Les cartes de remplacement
+  utilisent une plage de séquence haute pour éviter les collisions. L'aperçu /
+  impression de la carte PDF relève de l'impression (Task #12). Le compte
+  collectif accepte tout usager comme parent (pas de filtre de catégorie).
+- **§6.3 Prêts/Retours** — Workflow de prêt en 3 étapes (panier en session),
+  retour, renouvellement, livre perdu, consultation sur place : opérationnels.
+  Le retour est traité au scan (pas de validation finale différée). Le reçu
+  papier relève de l'impression (Task #12). La vérification « exemplaire
+  disponible » s'appuie sur la table `Loan` (vérité), pas sur le cache
+  `Item.status`, pour interdire tout double prêt (BUG-003).
+- **§6.4 Réservations** — Création, satisfaction FIFO au retour, liste à
+  honorer, annulation, expiration : opérationnels.
+- **§6.5 Récolement** — Sessions, périmètre, pointage (web manuel), rapport de
+  divergences, clôture/réouverture/validation : opérationnels. La réception des
+  scans depuis OfeliaScan dépend de l'API REST (Task #16). L'action de divergence
+  fournie en v1 est « marquer perdu ». Le périmètre « attendu » se limite aux
+  exemplaires censés être physiquement présents (statut `available` ou
+  `reserved_for_pickup`) : un exemplaire prêté n'est pas « manquant » (BUG-004).
+- **Tâches quotidiennes** — `expire_members` et `expire_reservations` sont des
+  commandes de gestion ; leur planification django-q2 (`Schedule`) sera créée au
+  paramétrage de premier démarrage (Task #15).
+
 ### 6.6 Administration et rapports
 
 #### Tableau de bord
@@ -637,13 +671,15 @@ Le système n'envoie ni email ni SMS. Les notifications sont des éléments d'in
 - Malgache
 
 Implémentation :
-- Django i18n standard pour l'interface (`.po` files dans `locale/<lang>/LC_MESSAGES/`, compilés en `.mo` au boot du container via `dev-entrypoint.sh`).
+- Django i18n standard pour l'interface (`.po` files dans `locale/<lang>/LC_MESSAGES/`, compilés en `.mo` au boot du container via `dev-entrypoint.sh` ; les `.mo` sont gitignorés).
+- **Les 4 langues sont livrées traduites** (Sprint 2, FEAT-005 / BUG-005) : `fr`, `en`, `es`, `mg` — environ 300 chaînes chacune. Le malgache est une première passe, à faire relire par un locuteur natif.
 - `django-modeltranslation` pour les champs traduits du domaine : `Category.name`, `Tag.name`, `MemberCategory.name` (colonnes `name_<lang>` ajoutées via migrations `*_translation_fields.py` + backfill `name → name_fr` via migration `*_backfill_translation_fr.py`).
 - Fallback configuré : `MODELTRANSLATION_FALLBACK_LANGUAGES = ('fr',)` → si un champ traduit est vide pour la langue active, la valeur française est utilisée.
 - Code de langue `mg` (Malagasy) absent de `django.conf.locale.LANG_INFO` ; enregistré explicitement dans `config/settings/base.py` (sinon `KeyError` dans `modeltranslation.admin.TranslationAdmin`).
-- Sélecteur de langue par utilisateur connecté (préférence stockée) → UI Sprint 2 (Task #5).
+- **Routage** : `i18n_patterns(prefix_default_language=True)` dans `config/urls.py` — toutes les URLs de l'interface portent un préfixe de langue (`/fr/…`, `/en/…`, `/es/…`, `/mg/…`). Indispensable pour que le sélecteur de langue et le cookie de préférence soient respectés sur toutes les pages (cf. BUG-005). La racine `/` redirige vers `/<langue>/`.
+- Sélecteur de langue dans l'en-tête : `set_language` natif de Django, persistance par cookie `django_language`.
 - Membre peut avoir une `preferred_language` distincte, utilisée pour reçus et cartes (Sprint 3).
-- Aucune dépendance à un service de traduction externe : tout est figé dans les fichiers .po (v1 : seul `fr` rempli, `en/es/mg` vides → fallback français).
+- Aucune dépendance à un service de traduction externe : tout est figé dans les fichiers .po.
 
 #### Extensibilité
 - Ajout d'une langue = ajout d'un dossier `locale/<code>/` avec les `.po`
@@ -858,6 +894,11 @@ Pour respecter le principe d'ergonomie pour usagers peu formés sans frustrer le
 - Tooltips sur les champs
 - Page d'aide dédiée par écran, accessible via icône "?" en haut à droite
 - Vidéos courtes (optionnelles, externalisées plus tard)
+
+> Implémentation Sprint 2 (FEAT-005) : icône « ? » dans l'en-tête → page d'aide
+> unique (`core:help`) regroupant les rubriques principales. Le découpage par
+> écran sera affiné ultérieurement. Le mode simple/avancé (§10.3) est piloté par
+> `User.always_show_advanced`, basculable depuis le menu utilisateur.
 
 ---
 

@@ -1,0 +1,87 @@
+{% extends "base.html" %}
+{% load i18n biblio_icons %}
+
+{% block title %}{{ member.full_name }}{% endblock %}
+
+{% block content %}
+<header class="page-head">
+    <h1>{{ member.last_name }} {{ member.first_name }}</h1>
+    <span class="status-{{ member.status }}">{{ member.get_status_display }}</span>
+</header>
+
+{% if expiring_soon %}
+<div class="msg msg-warning">
+    {% icon "triangle-alert" %}
+    {% blocktrans count days=days_left %}La carte expire dans {{ days }} jour.{% plural %}La carte expire dans {{ days }} jours.{% endblocktrans %}
+</div>
+{% endif %}
+
+<dl class="record-meta">
+    <div><dt>{% trans "N° de carte" %}</dt><dd>{{ member.card_number }}</dd></div>
+    <div><dt>{% trans "Catégorie" %}</dt><dd>{{ member.category.name }}</dd></div>
+    <div><dt>{% trans "Inscrit le" %}</dt><dd>{{ member.registration_date }}</dd></div>
+    <div><dt>{% trans "Expire le" %}</dt><dd>{{ member.expiration_date|default:"—" }}</dd></div>
+    <div><dt>{% trans "Téléphone" %}</dt><dd>{{ member.contact_phone|default:"—" }}</dd></div>
+    {% if member.parent_account %}
+    <div><dt>{% trans "Compte parent" %}</dt><dd><a href="{% url 'members:detail' member.parent_account.pk %}">{{ member.parent_account.full_name }}</a></dd></div>
+    {% endif %}
+    {% if member.replaces_card_number %}
+    <div><dt>{% trans "Ancienne carte" %}</dt><dd>{{ member.replaces_card_number }}</dd></div>
+    {% endif %}
+</dl>
+
+{% if dependents %}
+<section>
+    <h2>{% trans "Membres rattachés" %}</h2>
+    <ul>
+        {% for dep in dependents %}
+        <li><a href="{% url 'members:detail' dep.pk %}">{{ dep.full_name }}</a></li>
+        {% endfor %}
+    </ul>
+</section>
+{% endif %}
+
+{% if user.is_librarian %}
+<div class="action-row">
+    <a href="{% url 'members:edit' member.pk %}" role="button" class="secondary">{% icon "pencil" %} {% trans "Modifier" %}</a>
+    <a href="{% url 'members:history' member.pk %}" role="button" class="secondary">{% icon "book-open" %} {% trans "Historique" %}</a>
+    <form method="post" action="{% url 'members:renew' member.pk %}" style="display:inline">
+        {% csrf_token %}
+        <button type="submit" class="secondary">{% icon "refresh-cw" %} {% trans "Renouveler la carte" %}</button>
+    </form>
+    <form method="post" action="{% url 'members:replace_card' member.pk %}" style="display:inline"
+          onsubmit="return confirm('{% trans "Émettre une nouvelle carte ? L'ancien numéro sera désactivé." %}')">
+        {% csrf_token %}
+        <button type="submit" class="secondary">{% icon "credit-card" %} {% trans "Remplacer la carte" %}</button>
+    </form>
+</div>
+{% endif %}
+
+<section>
+    <h2>{% trans "Prêts en cours" %} ({{ active_count }})</h2>
+    {% if active_loans %}
+    <table>
+        <thead><tr><th>{% trans "Titre" %}</th><th>{% trans "Échéance" %}</th><th></th></tr></thead>
+        <tbody>
+            {% for loan in active_loans %}
+            <tr>
+                <td>{{ loan.item.record.title }}</td>
+                <td class="{% if loan.is_overdue %}status-overdue{% endif %}">{{ loan.due_date }}</td>
+                <td>
+                    {% if user.is_librarian %}
+                    <form method="post" action="{% url 'loans:renew_loan' loan.pk %}" style="display:inline">
+                        {% csrf_token %}
+                        <button type="submit" class="outline">{% trans "Renouveler" %}</button>
+                    </form>
+                    <a href="{% url 'loans:mark_lost' loan.pk %}" class="outline" role="button">{% trans "Perdu" %}</a>
+                    {% endif %}
+                </td>
+            </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+    {% else %}
+    <p>{% trans "Aucun prêt en cours." %}</p>
+    {% endif %}
+</section>
+{% endblock %}

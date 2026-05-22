@@ -1,0 +1,66 @@
+{% extends "base.html" %}
+{% load i18n biblio_icons %}
+
+{% block title %}{{ record.title }}{% endblock %}
+
+{% block content %}
+<header class="page-head">
+    <h1>{{ record.title }}</h1>
+    {% if user.is_librarian %}
+    <div class="action-row">
+        <a href="{% url 'catalog:record_edit' record.pk %}" role="button" class="secondary">{% icon "pencil" %} {% trans "Modifier" %}</a>
+        <a href="{% url 'loans:reservation_create' record.pk %}" role="button" class="secondary">{% icon "bookmark-check" %} {% trans "Réserver" %}</a>
+        <a href="{% url 'catalog:record_delete' record.pk %}" role="button" class="secondary">{% icon "trash-2" %} {% trans "Supprimer" %}</a>
+    </div>
+    {% endif %}
+</header>
+
+{% if record.subtitle %}<p><em>{{ record.subtitle }}</em></p>{% endif %}
+
+<dl class="record-meta">
+    <div><dt>{% trans "Auteur(s)" %}</dt><dd>{% for a in record.authors.all %}{{ a.full_name }}{% if not forloop.last %}, {% endif %}{% empty %}—{% endfor %}</dd></div>
+    <div><dt>{% trans "Catégorie" %}</dt><dd>{{ record.category.name|default:"—" }}</dd></div>
+    <div><dt>{% trans "Type" %}</dt><dd>{{ record.get_document_type_display }}</dd></div>
+    <div><dt>{% trans "Éditeur" %}</dt><dd>{{ record.publisher|default:"—" }}</dd></div>
+    <div><dt>{% trans "Année" %}</dt><dd>{{ record.publication_year|default:"—" }}</dd></div>
+    <div><dt>{% trans "Langue" %}</dt><dd>{{ record.language|default:"—" }}</dd></div>
+    <div><dt>ISBN-13</dt><dd>{{ record.isbn_13|default:"—" }}</dd></div>
+    {% if record.tags.all %}<div><dt>{% trans "Tags" %}</dt><dd>{% for t in record.tags.all %}<span class="tag-pill">{{ t.name }}</span>{% endfor %}</dd></div>{% endif %}
+</dl>
+
+{% if record.summary %}<article>{{ record.summary|linebreaks }}</article>{% endif %}
+
+<section>
+    <header class="page-head">
+        <h2>{% trans "Exemplaires" %}</h2>
+        {% if user.is_librarian %}
+        <a href="{% url 'catalog:item_create' record.pk %}" role="button" class="btn-big">{% icon "plus" %} {% trans "Ajouter un exemplaire" %}</a>
+        {% endif %}
+    </header>
+    {% if record.items.all %}
+    <table>
+        <thead>
+            <tr><th>{% trans "Code interne" %}</th><th>EAN13</th><th>{% trans "Emplacement" %}</th><th>{% trans "État" %}</th><th>{% trans "Statut" %}</th><th></th></tr>
+        </thead>
+        <tbody>
+            {% for item in record.items.all %}
+            <tr>
+                <td>{{ item.internal_id }}</td>
+                <td>{{ item.ean13 }}</td>
+                <td>{{ item.location.code|default:"—" }}</td>
+                <td>{{ item.get_state_display }}</td>
+                <td class="status-{{ item.status }}">{{ item.get_status_display }}</td>
+                <td>
+                    {% if user.is_librarian %}
+                    <a href="{% url 'catalog:item_edit' item.pk %}">{% icon "pencil" %}</a>
+                    {% endif %}
+                </td>
+            </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+    {% else %}
+    <p>{% trans "Aucun exemplaire pour cette notice." %}</p>
+    {% endif %}
+</section>
+{% endblock %}

@@ -1,0 +1,18 @@
+{% extends "base.html" %}
+{% load i18n biblio_icons %}
+
+{% block title %}{% trans "Déclarer perdu" %}{% endblock %}
+
+{% block content %}
+<h1>{% trans "Déclarer un livre perdu" %}</h1>
+<p>{% blocktrans with title=loan.item.record.title member=loan.member.full_name %}Confirmer que « {{ title }} » prêté à {{ member }} est perdu ?{% endblocktrans %}</p>
+<p class="help-hint">{% trans "L'exemplaire passera en statut « perdu ». Aucune facturation automatique." %}</p>
+
+<form method="post">
+    {% csrf_token %}
+    <button type="submit" class="btn-primary" style="background:var(--pico-color-red-500);border-color:var(--pico-color-red-500)">
+        {% icon "triangle-alert" %} {% trans "Déclarer perdu" %}
+    </button>
+    <a href="{% url 'members:detail' loan.member.pk %}" role="button" class="secondary outline">{% trans "Annuler" %}</a>
+</form>
+{% endblock %}

@@ -1,0 +1,69 @@
+{% extends "base.html" %}
+{% load i18n biblio_icons %}
+
+{% block title %}{% trans "Retour" %}{% endblock %}
+
+{% block content %}
+<h1>{% icon "book-up" %} {% trans "Retour" %}</h1>
+
+<article>
+    <form method="post" action="{% url 'loans:return_items' %}">
+        {% csrf_token %}
+        <input type="hidden" name="action" value="add_item">
+        <label class="search-field">
+            {% icon "scan-barcode" %}
+            <input type="text" name="ean" autofocus autocomplete="off"
+                   placeholder="{% trans 'Scanner le code-barres du livre rendu' %}">
+        </label>
+        <button type="submit" class="btn-primary">{% icon "check" %} {% trans "Enregistrer le retour" %}</button>
+    </form>
+</article>
+
+{% if return_log %}
+<article>
+    <header class="page-head">
+        <h2>{% trans "Retours de la séance" %}</h2>
+        <form method="post" action="{% url 'loans:return_items' %}">
+            {% csrf_token %}
+            <input type="hidden" name="action" value="clear">
+            <button type="submit" class="secondary outline">{% trans "Vider la liste" %}</button>
+        </form>
+    </header>
+    <ul class="scan-list">
+        {% for entry in return_log %}
+        <li class="scan-line {% if entry.kind == 'no_loan' %}scan-warn{% elif entry.reservation %}scan-warn{% endif %}">
+            <span>
+                {{ entry.title }} <small class="help-hint">{{ entry.internal_id }}</small>
+                {% if entry.overdue %}<span class="status-overdue">— {% trans "retard" %}</span>{% endif %}
+                {% if entry.kind == 'reintegrated' %}<span>— {% trans "perdu réintégré" %}</span>{% endif %}
+                {% if entry.kind == 'no_loan' %}<span class="status-overdue">— {% trans "aucun prêt actif" %}</span>{% endif %}
+            </span>
+            {% if entry.reservation %}
+            <strong class="status-reserved_for_pickup">{% icon "bookmark-check" %} {% trans "Pour" %} {{ entry.reservation }}</strong>
+            {% endif %}
+        </li>
+        {% endfor %}
+    </ul>
+</article>
+{% endif %}
+
+<article>
+    <h2>{% trans "Prêts en retard" %}</h2>
+    {% if overdue_loans %}
+    <table>
+        <thead><tr><th>{% trans "Titre" %}</th><th>{% trans "Usager" %}</th><th>{% trans "Échéance" %}</th></tr></thead>
+        <tbody>
+            {% for loan in overdue_loans %}
+            <tr>
+                <td>{{ loan.item.record.title }}</td>
+                <td><a href="{% url 'members:detail' loan.member.pk %}">{{ loan.member.full_name }}</a></td>
+                <td class="status-overdue">{{ loan.due_date }}</td>
+            </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+    {% else %}
+    <p>{% trans "Aucun prêt en retard." %}</p>
+    {% endif %}
+</article>
+{% endblock %}
