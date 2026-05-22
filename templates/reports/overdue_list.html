@@ -1,0 +1,43 @@
+{% extends "base.html" %}
+{% load i18n biblio_icons %}
+
+{% block title %}{% trans "Retards" %}{% endblock %}
+
+{% block content %}
+<h1>{% icon "triangle-alert" %} {% trans "Liste des retards" %}</h1>
+
+<form method="get" class="filters no-print">
+    <label>{% trans "Seuil (jours)" %} <input type="number" name="threshold" min="0" value="{{ threshold }}"></label>
+    <button type="submit">{% trans "Filtrer" %}</button>
+    <button type="button" onclick="window.print()">{% icon "printer" %} {% trans "Imprimer" %}</button>
+</form>
+
+<p>{% blocktrans count count=loans|length %}{{ count }} prêt en retard.{% plural %}{{ count }} prêts en retard.{% endblocktrans %}</p>
+
+<table>
+    <thead>
+        <tr>
+            <th>{% trans "Échéance" %}</th>
+            <th>{% trans "Exemplaire" %}</th>
+            <th>{% trans "Titre" %}</th>
+            <th>{% trans "Usager" %}</th>
+            <th>{% trans "Carte" %}</th>
+            <th>{% trans "Jours" %}</th>
+        </tr>
+    </thead>
+    <tbody>
+    {% for loan in loans %}
+        <tr>
+            <td>{{ loan.due_date|date:"Y-m-d" }}</td>
+            <td><code>{{ loan.item.internal_id }}</code></td>
+            <td>{{ loan.item.record.title|truncatechars:60 }}</td>
+            <td>{{ loan.member.last_name }} {{ loan.member.first_name }}</td>
+            <td><code>{{ loan.member.card_number }}</code></td>
+            <td>{{ today|timesince:loan.due_date|default:"-" }}</td>
+        </tr>
+    {% empty %}
+        <tr><td colspan="6"><em>{% trans "Aucun retard." %}</em></td></tr>
+    {% endfor %}
+    </tbody>
+</table>
+{% endblock %}

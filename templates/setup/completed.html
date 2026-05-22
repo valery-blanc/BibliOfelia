@@ -1,0 +1,33 @@
+{% load i18n biblio_icons static %}<!doctype html>
+<html lang="{{ LANGUAGE_CODE|default:'fr' }}">
+<head>
+    <meta charset="utf-8">
+    <title>{% trans "Installation terminée" %}</title>
+    <link rel="stylesheet" href="{% static 'css/pico.min.css' %}">
+    <link rel="stylesheet" href="{% static 'css/bibliofelia.css' %}">
+</head>
+<body>
+<main class="container" style="max-width:640px;padding:2rem 1rem;">
+<h1>{% icon "circle-check" %} {% trans "Installation terminée" %}</h1>
+
+<article class="msg msg-success">
+    <p>{% trans "BibliOfelia est prête à l'usage." %}</p>
+    <p>{% blocktrans with u=completion.superadmin_username %}Compte administrateur créé : <strong>{{ u }}</strong>{% endblocktrans %}</p>
+    {% if completion.demo_installed %}<p>{% trans "Données de démonstration installées." %}</p>{% endif %}
+    {% if completion.avahi_written %}<p>{% trans "Service mDNS Avahi écrit pour la découverte OfeliaScan." %}</p>{% endif %}
+</article>
+
+<section>
+    <h2>{% icon "key-round" %} {% trans "Clé de récupération" %}</h2>
+    <article class="msg msg-warning">
+        <p><strong>{% trans "Imprimez cette clé et conservez-la hors de la box." %}</strong>
+            {% trans "Elle permet de réinitialiser un superadmin perdu via la procédure §9.3." %}</p>
+        <pre style="font-size:1.4rem;text-align:center;letter-spacing:0.1em;padding:1rem;background:#fff;border:1px dashed #999">{{ completion.recovery_key }}</pre>
+        <button type="button" onclick="window.print()">{% icon "printer" %} {% trans "Imprimer" %}</button>
+    </article>
+</section>
+
+<a href="{% url 'accounts:login' %}" role="button">{% icon "log-in" %} {% trans "Se connecter" %}</a>
+</main>
+</body>
+</html>

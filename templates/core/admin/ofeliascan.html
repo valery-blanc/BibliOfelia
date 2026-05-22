@@ -1,0 +1,80 @@
+{% extends "base.html" %}
+{% load i18n biblio_icons %}
+
+{% block title %}{% trans "Connexion OfeliaScan" %}{% endblock %}
+
+{% block content %}
+<nav class="breadcrumb">
+    <a href="{% url 'core:advanced' %}">{% trans "Avancé" %}</a> /
+    <strong>{% trans "Connexion OfeliaScan" %}</strong>
+</nav>
+
+<h1>{% icon "scan-barcode" %} {% trans "Connexion OfeliaScan" %}</h1>
+
+<p>{% trans "Paramètres à saisir dans l'application mobile OfeliaScan pour qu'elle se connecte à cette box." %}</p>
+
+<section>
+    <h2>{% trans "Adresse de la box" %}</h2>
+    <p><small>{% trans "OfeliaScan détecte normalement la box automatiquement (mDNS). En cas de besoin, saisissez l'adresse ci-dessous." %}</small></p>
+    <dl>
+        <dt>{% trans "Nom de la box" %}</dt><dd><code>{{ box_name }}</code></dd>
+        <dt>{% trans "Nom d'hôte" %}</dt><dd><code>{{ box.hostname|default:"—" }}</code></dd>
+        <dt>{% trans "Adresse IP locale" %}</dt><dd><code>{{ box.lan_ip|default:"—" }}</code></dd>
+        <dt>{% trans "Hôte courant (navigateur)" %}</dt><dd><code>{{ box.request_host }}</code></dd>
+        <dt>{% trans "Chemin de l'API" %}</dt><dd><code>{{ api_path }}</code></dd>
+    </dl>
+</section>
+
+<section>
+    <h2>{% trans "Identifiants autorisés" %}</h2>
+    <p><small>{% trans "Comptes (rôle Contributeur OfeliaScan) acceptés par l'API. Le mot de passe est affiché en clair pour être recopié dans l'application." %}</small></p>
+    <table>
+        <thead>
+            <tr>
+                <th>{% trans "Identifiant" %}</th>
+                <th>{% trans "Mot de passe" %}</th>
+                <th>{% trans "Créé le" %}</th>
+                <th>{% trans "Actions" %}</th>
+            </tr>
+        </thead>
+        <tbody>
+        {% for cred in credentials %}
+            <tr>
+                <td><code>{{ cred.username }}</code></td>
+                <td><code>{{ cred.password }}</code></td>
+                <td>{{ cred.created_at|slice:":10" }}</td>
+                <td>
+                    <form method="post" style="display:inline"
+                          onsubmit="return confirm('{% trans "Révoquer cet identifiant ? OfeliaScan ne pourra plus se connecter avec." %}')">
+                        {% csrf_token %}
+                        <input type="hidden" name="action" value="revoke">
+                        <input type="hidden" name="username" value="{{ cred.username }}">
+                        <button type="submit" class="outline secondary">{% icon "ban" %} {% trans "Révoquer" %}</button>
+                    </form>
+                </td>
+            </tr>
+        {% empty %}
+            <tr><td colspan="4"><em>{% trans "Aucun identifiant autorisé." %}</em></td></tr>
+        {% endfor %}
+        </tbody>
+    </table>
+</section>
+
+<section>
+    <h2>{% trans "Autoriser un nouvel identifiant" %}</h2>
+    <form method="post">
+        {% csrf_token %}
+        <input type="hidden" name="action" value="add">
+        <div class="grid">
+            <label>{% trans "Identifiant" %}
+                <input type="text" name="username" value="ofeliascan" required autocomplete="off">
+            </label>
+            <label>{% trans "Mot de passe" %}
+                <input type="text" name="password" value="{{ suggested_password }}" autocomplete="off">
+            </label>
+        </div>
+        <small>{% trans "Laissez le mot de passe proposé ou saisissez le vôtre. Il sera affiché en clair dans le tableau ci-dessus." %}</small>
+        <button type="submit">{% icon "plus" %} {% trans "Autoriser" %}</button>
+    </form>
+</section>
+{% endblock %}

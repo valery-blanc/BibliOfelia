@@ -4,7 +4,7 @@ Spécification détaillée du logiciel de gestion de bibliothèque BibliOfelia, 
 
 Version : 1.0 (cible v1)
 Statut : draft pour Spec-Driven Development
-Dernière modif spec : 2026-05-22 — Sprint 3 : FEAT-016 — API OfeliaScan (§6.10 : auth JWT, /pairing/info, /isbn/{isbn}, /health) ; FEAT-019 — publication mDNS via service Avahi sur l'hôte (§6.10) ; SPEC-CORR-002 — /pairing/info renvoie `base_url` (URL absolue) ; Sprint 2 : FEAT-005 à FEAT-010 (§6.1 à §6.5, §10) ; i18n 4 langues (§6.9) ; BUG-002 à BUG-005 ; §6.10 réécrit comme contrat d'API (SPEC-CORR-001)
+Dernière modif spec : 2026-05-22 — Sprint 4 : FEAT-011 (dashboard enrichi §6.6 + rapports + paramètres + gestion comptes), FEAT-012 (impression étiquettes + cartes §6.7), FEAT-013 (notifications offline §6.8), FEAT-014 (sauvegardes §8 + planification django-q2), FEAT-015 (wizard premier démarrage §11.3 + données démo §11.4), FEAT-017 (onglet « Avancé » + page Connexion OfeliaScan + « Mon compte » §6.6/§6.10/§10.2), BUG-006 (i18n : `accounts/` déplacé sous `i18n_patterns` + chaînes EN/ES/MG complétées) ; Sprint 3 : FEAT-016 — API OfeliaScan (§6.10 : auth JWT, /pairing/info, /isbn/{isbn}, /health) ; FEAT-019 — publication mDNS via service Avahi sur l'hôte (§6.10) ; SPEC-CORR-002 — /pairing/info renvoie `base_url` (URL absolue) ; Sprint 2 : FEAT-005 à FEAT-010 (§6.1 à §6.5, §10) ; i18n 4 langues (§6.9) ; BUG-002 à BUG-005 ; §6.10 réécrit comme contrat d'API (SPEC-CORR-001)
 
 ---
 
@@ -549,6 +549,11 @@ Index dédiés :
 
 ### 6.5 Récolement
 
+> Libellé UI : depuis FEAT-017, l'écran est intitulé **« Inventaire »**
+> (accessible via l'onglet Avancé). L'app, le code et les modèles
+> conservent le nom `inventory` ; « récolement » reste le terme du domaine
+> dans cette spec.
+
 #### Lancement
 - Page "Récolement"
 - Création d'une session avec : périmètre (toutes locations / une location spécifique / une catégorie), date de début
@@ -608,6 +613,20 @@ Index dédiés :
 
 ### 6.6 Administration et rapports
 
+> Implémentation Sprint 4 (FEAT-011) :
+> - **Dashboard** (`core:dashboard`) : KPI + tendance prêts 30j (sparkline) + Top 10 mois/année + activité (usagers actifs, croissance fonds) + état système (version, disque libre, dernière sauvegarde alerte > 24 h, ZeroTier).
+> - **Rapports** (`apps/reports/`) : index `reports:index` ; listes imprimables `reports:overdue`, `reports:reservations_pickup`, `reports:inactive` (CSS `@media print`) ; export CSV `reports:loans_csv` (période paramétrable) ; PDF annuel `reports:annual_pdf` (ReportLab).
+> - **Paramètres** (`/admin/settings/`, superadmin uniquement) : identité (nom, box_name mDNS, adresse, contact), langues (activées + défaut), sauvegardes (cf. §8 / FEAT-014), format étiquettes/cartes, ZeroTier. Catégories/Tags/Locations/MemberCategory restent éditées via `/admin/` Django pour l'instant (lien depuis l'index).
+> - **Gestion comptes** (`/accounts/users/`) : CRUD + reset mot de passe (avec génération aléatoire 16 chars).
+> - **Diagnostic** (`core:diagnostics`) : versions, dernière sauvegarde, file django-q2.
+>
+> Implémentation Sprint 4 (FEAT-017) — **navigation** :
+> - Onglet **« Avancé »** (`core:advanced`) dans la barre de nav : page index regroupant Impression, Rapports, Inventaire et Administration, chaque lien explicité d'une phrase. C'est le point d'accès unique aux écrans hors-workflow.
+> - Barre principale allégée : plus de « Tableau de bord » (le logo `house` y mène) ni de « Récolement » (→ Avancé / Inventaire).
+> - Menu utilisateur (haut-droite) : « Mon compte » (auto-édition de son propre compte via `accounts:user_edit` ; formulaire restreint sans `role`/`is_active` pour les non-superadmins) + « Déconnexion ». L'entrée « Mode avancé/simple » (§10.3) n'est plus surfacée mais le mécanisme reste actif côté modèle.
+
+
+
 #### Tableau de bord
 - Prêts actifs (compteur + tendance 30 jours)
 - Retards (compteur + détail)
@@ -642,6 +661,14 @@ Index dédiés :
 
 ### 6.7 Impression d'étiquettes
 
+> Implémentation Sprint 4 (FEAT-012) :
+> - `apps/printing/services.py` : `render_item_labels_pdf(items)` (planche A4 24 étiquettes 70×36 mm par défaut, dimensions paramétrables via `Setting.label_format`) ; `render_member_cards_pdf(members)` (8/A4 par défaut, paramétrable 4/6/8/10).
+> - Codes-barres : `python-barcode` → PNG en mémoire → ReportLab.
+> - CUPS : `pycups` (installé uniquement dans l'image Linux Docker, optionnel) ; `submit_to_cups(pdf)` retourne `sent=False` silencieusement en dev Windows, le PDF est servi en fallback.
+> - Routes : `printing:labels`, `printing:labels_pdf`, `printing:labels_send`, `printing:cards`, `printing:cards_pdf` (rôle LIBRARIAN/SUPERADMIN).
+
+
+
 #### Étiquettes exemplaires
 - Format thermique 50x25mm (paramétrable)
 - Contenu : EAN13 lisible humainement et code-barres, titre tronqué (30 caractères), code Location, internal_id
@@ -654,6 +681,14 @@ Index dédiés :
 - Impression sur papier ordinaire en v1, à plastifier
 
 ### 6.8 Notifications offline
+
+> Implémentation Sprint 4 (FEAT-013) :
+> - `apps/members/notifications.py:member_alerts(member)` retourne une liste `MemberAlert(level, message)` (niveaux `info`/`warning`/`error`) selon retards, réservations à retirer, carte expirée ou expirante ≤ 30 j.
+> - Bandeau affiché à l'identification : `templates/loans/lend.html` (workflow prêt) + `templates/members/member_detail.html` (fiche usager). Classes CSS `msg-info/msg-warning/msg-error`.
+> - `apps/members/notifications.py:navbar_counts()` alimente la barre de nav (retards + réservations prêtes).
+> - Liste imprimable des réservations à retirer : `reports:reservations_pickup`.
+
+
 
 Le système n'envoie ni email ni SMS. Les notifications sont des éléments d'interface :
 
@@ -672,11 +707,11 @@ Le système n'envoie ni email ni SMS. Les notifications sont des éléments d'in
 
 Implémentation :
 - Django i18n standard pour l'interface (`.po` files dans `locale/<lang>/LC_MESSAGES/`, compilés en `.mo` au boot du container via `dev-entrypoint.sh` ; les `.mo` sont gitignorés).
-- **Les 4 langues sont livrées traduites** (Sprint 2, FEAT-005 / BUG-005) : `fr`, `en`, `es`, `mg` — environ 300 chaînes chacune. Le malgache est une première passe, à faire relire par un locuteur natif.
+- **Les 4 langues sont livrées traduites** (Sprint 2 BUG-005 + Sprint 4 BUG-006) : `fr`, `en`, `es`, `mg` — **503 chaînes** par locale (chiffre courant). Le malgache est une première passe, à faire relire par un locuteur natif.
 - `django-modeltranslation` pour les champs traduits du domaine : `Category.name`, `Tag.name`, `MemberCategory.name` (colonnes `name_<lang>` ajoutées via migrations `*_translation_fields.py` + backfill `name → name_fr` via migration `*_backfill_translation_fr.py`).
 - Fallback configuré : `MODELTRANSLATION_FALLBACK_LANGUAGES = ('fr',)` → si un champ traduit est vide pour la langue active, la valeur française est utilisée.
 - Code de langue `mg` (Malagasy) absent de `django.conf.locale.LANG_INFO` ; enregistré explicitement dans `config/settings/base.py` (sinon `KeyError` dans `modeltranslation.admin.TranslationAdmin`).
-- **Routage** : `i18n_patterns(prefix_default_language=True)` dans `config/urls.py` — toutes les URLs de l'interface portent un préfixe de langue (`/fr/…`, `/en/…`, `/es/…`, `/mg/…`). Indispensable pour que le sélecteur de langue et le cookie de préférence soient respectés sur toutes les pages (cf. BUG-005). La racine `/` redirige vers `/<langue>/`.
+- **Routage** : `i18n_patterns(prefix_default_language=True)` dans `config/urls.py` — toutes les URLs de l'interface portent un préfixe de langue (`/fr/…`, `/en/…`, `/es/…`, `/mg/…`), **y compris `accounts/`** (login/logout + gestion comptes, depuis BUG-006). Indispensable pour que le sélecteur de langue et le cookie de préférence soient respectés sur toutes les pages (cf. BUG-005). La racine `/` redirige vers `/<langue>/`. Seuls `setup/`, `admin/`, `api/v1/`, `i18n/` restent hors `i18n_patterns` (paths techniques sans i18n).
 - Sélecteur de langue dans l'en-tête : `set_language` natif de Django, persistance par cookie `django_language`.
 - Membre peut avoir une `preferred_language` distincte, utilisée pour reçus et cartes (Sprint 3).
 - Aucune dépendance à un service de traduction externe : tout est figé dans les fichiers .po.
@@ -776,6 +811,22 @@ et `/items`, `/search`, `/sync/status` restent à faire (Task #20, Sprint 5).
 - `/health` exige une authentification (contrat §6.10). Le healthcheck Docker
   utilise donc `/api/v1/pairing/info` (public) comme sonde de vivacité.
 
+#### Gestion des identifiants OfeliaScan (FEAT-017)
+
+Page d'administration **Connexion OfeliaScan** (`core:ofeliascan`,
+`/admin/ofeliascan/`, accès SUPERADMIN, lien dans l'onglet Avancé) :
+
+- Affiche l'**adresse de la box** (nom d'hôte, IP locale, hôte courant,
+  chemin de l'API) — secours si la découverte mDNS échoue.
+- Gère les **identifiants** que l'API accepte sur `POST /auth/login` :
+  comptes Django de rôle `contributor_api`. Création (login + mot de
+  passe) et révocation (`is_active=False` → SimpleJWT rejette).
+- `Setting["ofeliascan_credentials"]` stocke `[{username, password,
+  created_at}]` avec le **mot de passe en clair** (demande explicite :
+  le bibliothécaire doit le relire pour le saisir dans l'app mobile —
+  modèle « mot de passe Wi-Fi affiché »). Le compte Django garde un
+  hash Argon2 ; le clair n'est qu'une copie de commodité.
+
 ### 7.1 Modes de fonctionnement
 
 | Mode | Disponibilité internet | Comportement |
@@ -803,6 +854,16 @@ Job léger ping vers `8.8.8.8` ou serveur Ofelia toutes les 5 minutes. Statut ex
 ---
 
 ## 8. Sauvegarde et restauration
+
+> Implémentation Sprint 4 (FEAT-014) :
+> - `apps/tasks/backup.py:run_backup()` utilise l'API Python `sqlite3.Connection.backup()` (copie cohérente même sous WAL), vérifie `PRAGMA integrity_check`, gère la rotation 24h/7j/35j/400j, lance `rsync` ou `shutil.copytree` pour `media/`, et `rclone sync` si `backup_config.cloud_enabled`.
+> - `Setting.last_backup` (timestamp/statut/taille/error) → exploité par le dashboard pour alerter si > 24 h.
+> - `apps/tasks/scheduling.py:install_schedules()` enregistre 3 Schedule django-q2 (backup horaire, expire cartes quotidien, expire réservations quotidien). Installé au boot dev par `dev-entrypoint.sh` (commande `setup_schedules`).
+> - Commandes : `manage.py run_backup [--force-daily|--force-cloud]`, `manage.py restore_backup <path> [--yes]`.
+> - UI : bouton « Sauvegarder maintenant » + upload de restauration dans `/admin/settings/backup/` (superadmin).
+> - Cohabitation avec `scripts/backup.sh` (container backup keebee) : mêmes dossiers cibles ; les deux peuvent tourner, la rotation est idempotente.
+
+
 
 ### 8.1 Sauvegarde locale
 
@@ -916,9 +977,14 @@ Procédure physique en cas d'oubli total :
 4. **Catalogue** : recherche + liste + détail notice/exemplaire
 5. **Usagers** : recherche + liste + détail
 6. **Réservations** : à honorer + en attente
-7. **Récolement** : sessions + détail session
+7. **Inventaire** : sessions + détail session (libellé UI ; app/code = `inventory`, ex-« récolement »)
 8. **Rapports** : sélection + génération PDF/CSV
 9. **Paramètres** : sections regroupées
+
+> Implémentation Sprint 4 (FEAT-017) : la barre de navigation expose
+> Catalogue, Usagers, Prêt, Retour, Réservations et **Avancé**. Les écrans
+> Inventaire, Rapports et Paramètres sont regroupés sous l'onglet
+> **Avancé** (`core:advanced`) et non dans la barre principale.
 
 ### 10.3 Mode "accès simple" vs "avancé"
 
@@ -999,6 +1065,14 @@ networks:
 
 ### 11.3 Wizard de premier démarrage
 
+> Implémentation Sprint 4 (FEAT-015) :
+> - Multi-step session-based dans `apps/setup/views.py` (8 étapes : langue, identité, langues activées, superadmin, imprimante, sauvegarde, ZeroTier, démo).
+> - `apps/setup/services.py:apply_wizard()` persiste les choix dans `Setting.*` (`library_name`, `box_name`, `library_identity`, `languages_config`, `printer_config`, `backup_config`, `zerotier`), crée le superadmin, génère et **hashe** la `recovery_key` (§9.3 ; clé en clair affichée une seule fois), installe les schedules django-q2 + le service Avahi, et bascule `setup_completed=True`.
+> - Routes : `setup:wizard`, `setup:step`, `setup:finalize` — non préfixées par la langue (hors `i18n_patterns`).
+> - Détection auto CUPS / USB / ZeroTier : **différée** (saisie manuelle en v1).
+
+
+
 À la première connexion web (route `/setup` accessible uniquement si pas encore configuré) :
 1. Choix de la langue de l'interface
 2. Nom et adresse de la bibliothèque
@@ -1011,6 +1085,13 @@ networks:
 9. Récapitulatif et génération de la `recovery_key` à imprimer
 
 ### 11.4 Données de démo
+
+> Implémentation Sprint 4 (FEAT-015) :
+> - `apps/setup/demo.py` : `install_demo()` crée 50 notices, 80 exemplaires, 20 usagers, jusqu'à 15 prêts en cours. Objets marqués `[DEMO]` dans `notes` / `summary` / `description` selon le modèle.
+> - `remove_demo()` + commande `manage.py remove_demo` suppriment proprement (via marqueur).
+> - Activable depuis le wizard (`Step8DemoForm`).
+
+
 
 - Set de seed : 50 notices fictives, 80 exemplaires, 20 membres, 15 prêts en cours
 - Activable/désactivable depuis les paramètres

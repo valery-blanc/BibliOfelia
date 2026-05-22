@@ -1,0 +1,42 @@
+{% extends "base.html" %}
+{% load i18n biblio_icons widget_tweaks %}
+
+{% block title %}{{ label }} — {% trans "Paramètres" %}{% endblock %}
+
+{% block content %}
+<nav class="breadcrumb">
+    <a href="{% url 'core:settings_index' %}">{% trans "Paramètres" %}</a> /
+    <strong>{{ label }}</strong>
+</nav>
+
+<h1>{% icon "settings" %} {{ label }}</h1>
+
+<form method="post">
+    {% csrf_token %}
+    {% for field in form %}
+        <div class="form-row">
+            {{ field.label_tag }}
+            {{ field|add_class:"form-control" }}
+            {% if field.help_text %}<small>{{ field.help_text }}</small>{% endif %}
+            {% if field.errors %}<div class="msg msg-error">{{ field.errors }}</div>{% endif %}
+        </div>
+    {% endfor %}
+    {% if form.non_field_errors %}<div class="msg msg-error">{{ form.non_field_errors }}</div>{% endif %}
+    <button type="submit">{% icon "save" %} {% trans "Enregistrer" %}</button>
+    <a href="{% url 'core:settings_index' %}" role="button" class="secondary">{% trans "Annuler" %}</a>
+</form>
+
+{% if section == "backup" %}
+<hr>
+<section>
+    <h2>{% trans "Actions sauvegarde" %}</h2>
+    <form method="post" action="{% url 'core:backup_now' %}" style="display:inline">
+        {% csrf_token %}
+        <button type="submit">{% icon "save" %} {% trans "Sauvegarder maintenant" %}</button>
+    </form>
+    <a href="{% url 'core:backup_restore' %}" role="button" class="secondary">
+        {% icon "upload" %} {% trans "Restaurer depuis un fichier…" %}
+    </a>
+</section>
+{% endif %}
+{% endblock %}

@@ -1,0 +1,15 @@
+{% load i18n biblio_icons static %}<!doctype html>
+<html lang="{{ LANGUAGE_CODE|default:'fr' }}">
+<head>
+    <meta charset="utf-8">
+    <title>{% trans "Installation déjà effectuée" %}</title>
+    <link rel="stylesheet" href="{% static 'css/pico.min.css' %}">
+</head>
+<body>
+<main class="container" style="max-width:640px;padding:2rem 1rem;">
+<h1>{% icon "circle-check" %} {% trans "Installation déjà effectuée" %}</h1>
+<p>{% trans "BibliOfelia est configurée. Pour réinitialiser, contactez le support central (procédure §9.3)." %}</p>
+<a href="{% url 'accounts:login' %}" role="button">{% trans "Se connecter" %}</a>
+</main>
+</body>
+</html>

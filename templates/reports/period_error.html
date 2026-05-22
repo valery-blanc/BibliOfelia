@@ -1,0 +1,12 @@
+{% extends "base.html" %}
+{% load i18n %}
+
+{% block title %}{% trans "Période invalide" %}{% endblock %}
+
+{% block content %}
+<h1>{% trans "Période invalide" %}</h1>
+<article class="msg msg-error">
+    {{ form.errors }}
+</article>
+<a href="{% url 'reports:index' %}">{% trans "Retour aux rapports" %}</a>
+{% endblock %}

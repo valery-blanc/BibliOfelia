@@ -1,0 +1,54 @@
+{% extends "base.html" %}
+{% load i18n biblio_icons %}
+
+{% block title %}{% trans "Diagnostic" %}{% endblock %}
+
+{% block content %}
+<nav class="breadcrumb">
+    <a href="{% url 'core:settings_index' %}">{% trans "Paramètres" %}</a> /
+    <strong>{% trans "Diagnostic" %}</strong>
+</nav>
+
+<h1>{% icon "activity" %} {% trans "Diagnostic" %}</h1>
+
+<section>
+    <h2>{% trans "État système" %}</h2>
+    <dl>
+        <dt>{% trans "Version" %}</dt><dd>{{ status.version }}</dd>
+        <dt>{% trans "Espace disque" %}</dt>
+        <dd>{% if status.disk_free_gb is not None %}{{ status.disk_free_gb }} / {{ status.disk_total_gb }} Go{% else %}—{% endif %}</dd>
+        <dt>{% trans "Dernière sauvegarde" %}</dt>
+        <dd>
+            {% if status.last_backup_at %}
+                {{ status.last_backup_at|date:"Y-m-d H:i" }}
+                ({{ status.last_backup_age_hours }} h)
+                {% if status.backup_alert %}<strong class="text-danger">⚠</strong>{% endif %}
+            {% else %}{% trans "Aucune sauvegarde enregistrée." %}{% endif %}
+        </dd>
+    </dl>
+</section>
+
+<section>
+    <h2>{% trans "Derniers paramètres modifiés" %}</h2>
+    <table>
+        <thead><tr><th>{% trans "Clé" %}</th><th>{% trans "Maj" %}</th></tr></thead>
+        <tbody>
+        {% for s in last_settings %}
+            <tr><td><code>{{ s.key }}</code></td><td>{{ s.updated_at|date:"Y-m-d H:i" }}</td></tr>
+        {% endfor %}
+        </tbody>
+    </table>
+</section>
+
+<section>
+    <h2>{% trans "File django-q2" %}</h2>
+    <h3>{% trans "Tâches planifiées" %}</h3>
+    <ul>
+        {% for sch in q_schedules %}<li><code>{{ sch.func }}</code> — {{ sch.schedule_type }} {{ sch.next_run|date:"Y-m-d H:i" }}</li>{% empty %}<li><em>{% trans "Aucune." %}</em></li>{% endfor %}
+    </ul>
+    <h3>{% trans "Dernières exécutions" %}</h3>
+    <ul>
+        {% for t in q_recent_tasks %}<li><code>{{ t.func }}</code> — {{ t.started|date:"Y-m-d H:i" }} — {% if t.success %}✓{% else %}✗{% endif %}</li>{% empty %}<li><em>{% trans "Aucune." %}</em></li>{% endfor %}
+    </ul>
+</section>
+{% endblock %}

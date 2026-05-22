@@ -1,0 +1,32 @@
+{% extends "base.html" %}
+{% load i18n biblio_icons widget_tweaks %}
+
+{% block title %}{% if creating %}{% trans "Nouveau compte" %}{% else %}{% trans "Éditer compte" %} {{ target.username }}{% endif %}{% endblock %}
+
+{% block content %}
+<nav class="breadcrumb">
+    {% if user.is_superadmin %}<a href="{% url 'accounts:user_list' %}">{% trans "Comptes" %}</a> / {% endif %}
+    <strong>{% if creating %}{% trans "Nouveau" %}{% elif self_edit %}{% trans "Mon compte" %}{% else %}{{ target.username }}{% endif %}</strong>
+</nav>
+
+<h1>
+    {% if creating %}{% icon "user-plus" %} {% trans "Nouveau compte" %}
+    {% elif self_edit %}{% icon "user" %} {% trans "Mon compte" %}
+    {% else %}{% icon "user" %} {{ target.username }}{% endif %}
+</h1>
+
+<form method="post">
+    {% csrf_token %}
+    {% for field in form %}
+        <div class="form-row">
+            {{ field.label_tag }}
+            {{ field|add_class:"form-control" }}
+            {% if field.help_text %}<small>{{ field.help_text }}</small>{% endif %}
+            {% if field.errors %}<div class="msg msg-error">{{ field.errors }}</div>{% endif %}
+        </div>
+    {% endfor %}
+    {% if form.non_field_errors %}<div class="msg msg-error">{{ form.non_field_errors }}</div>{% endif %}
+    <button type="submit">{% icon "save" %} {% trans "Enregistrer" %}</button>
+    <a href="{% url 'accounts:user_list' %}" role="button" class="secondary">{% trans "Annuler" %}</a>
+</form>
+{% endblock %}

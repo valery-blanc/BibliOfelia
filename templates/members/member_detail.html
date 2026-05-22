@@ -9,12 +9,11 @@
     <span class="status-{{ member.status }}">{{ member.get_status_display }}</span>
 </header>
 
-{% if expiring_soon %}
-<div class="msg msg-warning">
-    {% icon "triangle-alert" %}
-    {% blocktrans count days=days_left %}La carte expire dans {{ days }} jour.{% plural %}La carte expire dans {{ days }} jours.{% endblocktrans %}
+{% for alert in alerts %}
+<div class="msg msg-{{ alert.level }}">
+    {% icon "triangle-alert" %} {{ alert.message }}
 </div>
-{% endif %}
+{% endfor %}
 
 <dl class="record-meta">
     <div><dt>{% trans "N° de carte" %}</dt><dd>{{ member.card_number }}</dd></div>

@@ -1,0 +1,36 @@
+{% extends "base.html" %}
+{% load i18n biblio_icons %}
+
+{% block title %}{% trans "Rapports" %}{% endblock %}
+
+{% block content %}
+<h1>{% icon "file-text" %} {% trans "Rapports" %}</h1>
+
+<section>
+    <h2>{% trans "Listes imprimables" %}</h2>
+    <ul>
+        <li><a href="{% url 'reports:overdue' %}">{% trans "Liste des retards (> 7 jours par défaut)" %}</a></li>
+        <li><a href="{% url 'reports:reservations_pickup' %}">{% trans "Réservations à retirer (relance)" %}</a></li>
+        <li><a href="{% url 'reports:inactive' %}">{% trans "Inactifs (usagers + exemplaires)" %}</a></li>
+    </ul>
+</section>
+
+<section>
+    <h2>{% trans "Export CSV des prêts" %}</h2>
+    <form method="get" action="{% url 'reports:loans_csv' %}">
+        <div class="grid">
+            <label>{{ period_form.start.label }} {{ period_form.start }}</label>
+            <label>{{ period_form.end.label }} {{ period_form.end }}</label>
+        </div>
+        <button type="submit">{% icon "download" %} {% trans "Télécharger CSV" %}</button>
+    </form>
+</section>
+
+<section>
+    <h2>{% trans "Rapport annuel d'activité (PDF)" %}</h2>
+    <form method="get" action="{% url 'reports:annual_pdf' %}">
+        <label>{{ year_form.year.label }} {{ year_form.year }}</label>
+        <button type="submit">{% icon "download" %} {% trans "Générer le PDF" %}</button>
+    </form>
+</section>
+{% endblock %}

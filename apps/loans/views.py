@@ -13,7 +13,7 @@ from apps.accounts.permissions import require_role
 from apps.catalog.models import BibliographicRecord, Item
 from apps.core.search import normalize_code
 from apps.members.models import Member
-from apps.members.services import is_expiring_soon
+from apps.members.notifications import member_alerts
 
 from .forms import ConsultationForm, ReservationForm
 from .models import Loan, LoanStatus, Reservation, ReservationStatus
@@ -29,26 +29,6 @@ from .services import (
 
 WRITE_ROLES = (Role.LIBRARIAN, Role.SUPERADMIN)
 _OPEN_LOAN_STATUSES = (LoanStatus.ACTIVE, LoanStatus.OVERDUE)
-
-
-# ==========================================================================
-# Prêt — workflow scan carte → scan livres → valider (SPEC §6.3)
-# ==========================================================================
-def _member_alerts(member: Member) -> list[str]:
-    alerts: list[str] = []
-    overdue = member.loans.filter(
-        status__in=_OPEN_LOAN_STATUSES, due_date__lt=date.today()
-    ).count()
-    if overdue:
-        alerts.append(_("%(n)s prêt(s) en retard.") % {"n": overdue})
-    if is_expiring_soon(member):
-        alerts.append(_("La carte de cet usager expire bientôt."))
-    ready = Reservation.objects.filter(
-        member=member, status=ReservationStatus.READY_FOR_PICKUP
-    ).count()
-    if ready:
-        alerts.append(_("%(n)s réservation(s) à retirer.") % {"n": ready})
-    return alerts
 
 
 @require_role(*WRITE_ROLES)
@@ -67,7 +47,7 @@ def lend(request):
     context = {
         "member": member,
         "basket": basket,
-        "alerts": _member_alerts(member) if member else [],
+        "alerts": [a.message for a in member_alerts(member)] if member else [],
         "active_loans": (
             member.loans.filter(status__in=_OPEN_LOAN_STATUSES).select_related(
                 "item__record"

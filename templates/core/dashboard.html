@@ -33,6 +33,78 @@
     </article>
 </section>
 
+<section class="dashboard-trend">
+    <h2>{% trans "Tendance — 30 derniers jours" %}</h2>
+    {% if trend_max %}
+    <div class="sparkline" role="img" aria-label="{% trans 'Prêts par jour' %}">
+        {% for row in trend %}
+        <span class="bar" style="height: calc({{ row.count }} / {{ trend_max }} * 100%);"
+              title="{{ row.day|date:'Y-m-d' }} — {{ row.count }}"></span>
+        {% endfor %}
+    </div>
+    {% else %}
+    <p><small>{% trans "Pas encore de prêts enregistrés sur la période." %}</small></p>
+    {% endif %}
+</section>
+
+<section class="dashboard-grid">
+    <article>
+        <h3>{% trans "Top 10 ce mois-ci" %}</h3>
+        {% if top_month %}
+        <ol class="top-list">
+            {% for entry in top_month %}
+            <li><a href="{% url 'catalog:record_detail' pk=entry.record_id %}">{{ entry.title|truncatechars:60 }}</a>
+                <span class="count">{{ entry.count }}</span></li>
+            {% endfor %}
+        </ol>
+        {% else %}<p><small>{% trans "Aucun prêt ce mois." %}</small></p>{% endif %}
+    </article>
+
+    <article>
+        <h3>{% trans "Top 10 cette année" %}</h3>
+        {% if top_year %}
+        <ol class="top-list">
+            {% for entry in top_year %}
+            <li><a href="{% url 'catalog:record_detail' pk=entry.record_id %}">{{ entry.title|truncatechars:60 }}</a>
+                <span class="count">{{ entry.count }}</span></li>
+            {% endfor %}
+        </ol>
+        {% else %}<p><small>{% trans "Aucun prêt cette année." %}</small></p>{% endif %}
+    </article>
+
+    <article>
+        <h3>{% trans "Activité" %}</h3>
+        <dl>
+            <dt>{% trans "Usagers actifs (mois)" %}</dt><dd>{{ members_month }}</dd>
+            <dt>{% trans "Usagers actifs (année)" %}</dt><dd>{{ members_year }}</dd>
+            <dt>{% trans "Notices ajoutées (mois)" %}</dt><dd>{{ growth_month.records_added }}</dd>
+            <dt>{% trans "Exemplaires ajoutés (mois)" %}</dt><dd>{{ growth_month.items_added }}</dd>
+            <dt>{% trans "Notices ajoutées (année)" %}</dt><dd>{{ growth_year.records_added }}</dd>
+        </dl>
+    </article>
+
+    <article {% if system_status.backup_alert %}class="status-alert"{% endif %}>
+        <h3>{% trans "État système" %}</h3>
+        <dl>
+            <dt>{% trans "Version" %}</dt><dd>{{ system_status.version }}</dd>
+            <dt>{% trans "Espace disque libre" %}</dt>
+            <dd>{% if system_status.disk_free_gb is not None %}{{ system_status.disk_free_gb }} / {{ system_status.disk_total_gb }} Go{% else %}—{% endif %}</dd>
+            <dt>{% trans "Dernière sauvegarde" %}</dt>
+            <dd>
+                {% if system_status.last_backup_at %}
+                    {{ system_status.last_backup_at|date:"Y-m-d H:i" }}
+                    {% if system_status.backup_alert %}<strong class="text-danger">⚠ {% trans "&gt; 24h" %}</strong>{% endif %}
+                {% else %}
+                    <strong class="text-danger">{% trans "Aucune sauvegarde enregistrée" %}</strong>
+                {% endif %}
+            </dd>
+            {% if system_status.zerotier_status %}
+            <dt>{% trans "ZeroTier" %}</dt><dd>{{ system_status.zerotier_status }}</dd>
+            {% endif %}
+        </dl>
+    </article>
+</section>
+
 {% if user.is_librarian %}
 <section style="margin-top:2rem;">
     <h2>{% trans "Actions fréquentes" %}</h2>
@@ -44,4 +116,16 @@
     </div>
 </section>
 {% endif %}
+
+<section style="margin-top:2rem;">
+    <h2>{% trans "Rapports" %}</h2>
+    <div class="grid">
+        <a href="{% url 'reports:index' %}" role="button" class="secondary">{% icon "file-text" %} {% trans "Tous les rapports" %}</a>
+        <a href="{% url 'reports:overdue' %}" role="button" class="secondary">{% icon "triangle-alert" %} {% trans "Retards à imprimer" %}</a>
+        {% if user.is_superadmin %}
+        <a href="{% url 'core:settings_index' %}" role="button" class="secondary">{% icon "settings" %} {% trans "Paramètres" %}</a>
+        <a href="{% url 'accounts:user_list' %}" role="button" class="secondary">{% icon "users" %} {% trans "Comptes" %}</a>
+        {% endif %}
+    </div>
+</section>
 {% endblock %}

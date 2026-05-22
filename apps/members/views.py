@@ -18,6 +18,7 @@ from apps.loans.models import LoanStatus
 
 from .forms import MemberForm
 from .models import Member, MemberCategory, MemberStatus
+from .notifications import member_alerts
 from .services import (
     days_until_expiration,
     is_expiring_soon,
@@ -83,6 +84,7 @@ def member_detail(request, pk):
             "dependents": member.dependents.all(),
             "days_left": days_until_expiration(member),
             "expiring_soon": is_expiring_soon(member),
+            "alerts": member_alerts(member),
         },
     )
 

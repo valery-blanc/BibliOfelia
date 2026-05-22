@@ -1,7 +1,7 @@
 """Vues transverses : dashboard, recherche globale, aide, préférences UI."""
 from __future__ import annotations
 
-from datetime import date
+from datetime import date, timedelta
 from urllib.parse import urlencode
 
 from django.contrib.auth.decorators import login_required
@@ -19,7 +19,11 @@ from .search import classify_query
 
 @login_required
 def dashboard(request):
+    """SPEC §6.6 : KPI principaux + tendance 30j + top 10 + état système."""
+    from apps.reports import services as reports
+
     today = date.today()
+    periods = reports.month_year_periods(today)
     active_loans = Loan.objects.filter(
         status__in=[LoanStatus.ACTIVE, LoanStatus.OVERDUE]
     ).count()
@@ -29,15 +33,34 @@ def dashboard(request):
     reservations_ready = Reservation.objects.filter(
         status=ReservationStatus.READY_FOR_PICKUP
     ).count()
-    context = {
+
+    trend = reports.loans_trend(days=30)
+    trend_max = max((row["count"] for row in trend), default=0)
+
+    top_month = reports.top_loaned_records(periods["month_start"], today, limit=10)
+    top_year = reports.top_loaned_records(periods["year_start"], today, limit=10)
+    members_month = reports.active_members(periods["month_start"], today)
+    members_year = reports.active_members(periods["year_start"], today)
+    growth_month = reports.collection_growth(periods["month_start"], today)
+    growth_year = reports.collection_growth(periods["year_start"], today)
+
+    return render(request, "core/dashboard.html", {
         "kpi_active_loans": active_loans,
         "kpi_overdue": overdue,
         "kpi_reservations_ready": reservations_ready,
         "kpi_records": BibliographicRecord.objects.count(),
         "kpi_items": Item.objects.count(),
         "kpi_members": Member.objects.count(),
-    }
-    return render(request, "core/dashboard.html", context)
+        "trend": trend,
+        "trend_max": trend_max,
+        "top_month": top_month,
+        "top_year": top_year,
+        "members_month": members_month,
+        "members_year": members_year,
+        "growth_month": growth_month,
+        "growth_year": growth_year,
+        "system_status": reports.system_status(),
+    })
 
 
 @login_required
@@ -72,6 +95,15 @@ def global_search(request):
 @login_required
 def help_page(request):
     return render(request, "core/help.html", {})
+
+
+@login_required
+def advanced_index(request):
+    """Index « Avancé » : tous les outils Sprint 4 (rapports, impression,
+    paramètres, comptes, diagnostic) groupés avec une phrase d'explication
+    par lien. Visible des librarians+ ; sections superadmin masquées sinon.
+    """
+    return render(request, "core/advanced.html", {})
 
 
 @require_POST

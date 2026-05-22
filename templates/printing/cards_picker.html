@@ -1,0 +1,42 @@
+{% extends "base.html" %}
+{% load i18n biblio_icons %}
+
+{% block title %}{% trans "Impression cartes" %}{% endblock %}
+
+{% block content %}
+<h1>{% icon "id-card" %} {% trans "Cartes membres" %}</h1>
+
+<form method="get" action="{% url 'printing:cards_pdf' %}">
+    <p><button type="submit">{% icon "file-down" %} {% trans "Générer PDF" %}</button></p>
+    <table>
+        <thead>
+            <tr>
+                <th><input type="checkbox" id="selectAll"></th>
+                <th>{% trans "Carte" %}</th>
+                <th>{% trans "Nom" %}</th>
+                <th>{% trans "Catégorie" %}</th>
+                <th>{% trans "Expiration" %}</th>
+            </tr>
+        </thead>
+        <tbody>
+        {% for m in members %}
+            <tr>
+                <td><input type="checkbox" name="ids" value="{{ m.pk }}"></td>
+                <td><code>{{ m.card_number }}</code></td>
+                <td>{{ m.last_name }} {{ m.first_name }}</td>
+                <td>{{ m.category.name }}</td>
+                <td>{{ m.expiration_date|date:"Y-m-d"|default:"—" }}</td>
+            </tr>
+        {% empty %}
+            <tr><td colspan="5"><em>{% trans "Aucun usager." %}</em></td></tr>
+        {% endfor %}
+        </tbody>
+    </table>
+</form>
+
+<script>
+document.getElementById('selectAll').addEventListener('change', function(e) {
+    document.querySelectorAll('input[name="ids"]').forEach(cb => cb.checked = e.target.checked);
+});
+</script>
+{% endblock %}

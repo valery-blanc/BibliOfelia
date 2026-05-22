@@ -14,10 +14,9 @@
 <header class="app-header">
     <nav class="app-topbar">
         <a href="{% url 'core:dashboard' %}" class="app-brand">
-            {% icon "book-open" %} <strong>{{ library_name }}</strong>
+            {% icon "house" %} <strong>{{ library_name }}</strong>
         </a>
         <ul class="app-nav">
-            <li><a href="{% url 'core:dashboard' %}">{% icon "layout-dashboard" %} {% trans "Tableau de bord" %}</a></li>
             <li><a href="{% url 'catalog:record_list' %}">{% icon "book-open" %} {% trans "Catalogue" %}</a></li>
             <li><a href="{% url 'members:list' %}">{% icon "users" %} {% trans "Usagers" %}</a></li>
             {% if user.is_librarian %}
@@ -28,8 +27,8 @@
                 {% if nav_counts.reservations_ready %}<span class="nav-badge badge-warning">{{ nav_counts.reservations_ready }}</span>{% endif %}
                 </a>
             </li>
-            <li><a href="{% url 'inventory:list' %}">{% icon "clipboard-list" %} {% trans "Récolement" %}</a></li>
             {% endif %}
+            <li><a href="{% url 'core:advanced' %}">{% icon "settings" %} {% trans "Avancé" %}</a></li>
         </ul>
         <div class="app-topbar-right">
             {% if nav_counts.overdue %}
@@ -51,18 +50,7 @@
             <details class="dropdown user-menu">
                 <summary>{{ user.get_username }}</summary>
                 <ul dir="rtl">
-                    <li>
-                        <form action="{% url 'core:toggle_advanced' %}" method="post">
-                            {% csrf_token %}
-                            <input type="hidden" name="next" value="{{ request.path }}">
-                            <button type="submit" class="link-button">
-                                {% if user.always_show_advanced %}{% trans "Mode simple" %}{% else %}{% trans "Mode avancé" %}{% endif %}
-                            </button>
-                        </form>
-                    </li>
-                    {% if user.is_superadmin %}
-                    <li><a href="{% url 'admin:index' %}">{% icon "settings" %} {% trans "Administration" %}</a></li>
-                    {% endif %}
+                    <li><a href="{% url 'accounts:user_edit' pk=user.pk %}">{% icon "user" %} {% trans "Mon compte" %}</a></li>
                     <li>
                         <form action="{% url 'accounts:logout' %}" method="post">
                             {% csrf_token %}

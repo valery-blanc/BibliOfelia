@@ -2,7 +2,7 @@
 
 Source de vérité de l'avancement v1. Une case `[x]` = livrable terminé et déployable. `[ ]` = à faire. `[!]` = bloqué (voir note).
 
-Mise à jour : 2026-05-22 (Sprint 3 : Task #16 committé `68375df`, Task #19 committé `7985376` ; SPEC-CORR-002 `/pairing/info` → `base_url`)
+Mise à jour : 2026-05-22 (Sprint 4 — Tasks #11 à #15 + BUG-006 + FEAT-017 validés par Val et commités d'un bloc. Sprint 3 : Task #19 mDNS toujours en attente de test sur la Pi.)
 
 ## Sprint 0 — Squelette
 
@@ -154,11 +154,59 @@ Mise à jour : 2026-05-22 (Sprint 3 : Task #16 committé `68375df`, Task #19 com
 
 ## Sprint 4 — Hors workflow principal
 
-- [ ] **Task #11** Dashboard, rapports, paramètres (§6.6)
-- [ ] **Task #12** Impression étiquettes + cartes (§6.7)
-- [ ] **Task #13** Notifications offline + alertes (§6.8)
-- [ ] **Task #14** Sauvegardes locales + cloud (§8)
-- [ ] **Task #15** Wizard premier démarrage + données démo (§11.3-11.4)
+> Codé d'un bloc le 2026-05-22, **validé par Val 2026-05-22**, commité d'un bloc avec BUG-006 + FEAT-017. Suite de tests : **139 passed**.
+
+- [x] **Task #11** Dashboard, rapports, paramètres (§6.6) — *validé Val 2026-05-22*
+  - [x] `apps/reports/services.py` — agrégations (trend 30j, top10 mois/année, active members, growth, system_status, listes pour rapports, annual_report)
+  - [x] `apps/reports/views.py` + `forms.py` + `pdf.py` (ReportLab annuel) + `urls.py` + templates `templates/reports/`
+  - [x] Dashboard enrichi (`apps/core/views.py:dashboard` + `templates/core/dashboard.html` — sparkline + top + état système)
+  - [x] Paramètres : `apps/core/forms.py` (identité, langues, backup, étiquettes, ZeroTier) + `apps/core/admin_views.py` (settings_index/section/diagnostics) + templates `templates/core/admin/`
+  - [x] Gestion comptes : `apps/accounts/forms.py` (UserAdminForm, PasswordResetForm) + `apps/accounts/views.py` (user_list, create, edit, password_reset auto/manuel) + templates `templates/accounts/user_*`
+  - [x] CSS additionnel : sparkline, dashboard-grid, settings-nav, breadcrumb, `msg-info`
+  - [x] Doc : `docs/specs/FEAT-011-dashboard-rapports-parametres.md` + SPEC §6.6 mis à jour
+- [x] **Task #12** Impression étiquettes + cartes (§6.7) — *validé Val 2026-05-22*
+  - [x] `apps/printing/services.py` (render_item_labels_pdf, render_member_cards_pdf, submit_to_cups) — python-barcode + ReportLab
+  - [x] `apps/printing/views.py` + `urls.py` + templates `templates/printing/`
+  - [x] CUPS optionnel : pycups importé localement (échec silencieux en dev Windows → fallback PDF)
+  - [x] Format paramétrable via `Setting.label_format` (FEAT-011)
+  - [x] Doc : `docs/specs/FEAT-012-impression-etiquettes-cartes.md` + SPEC §6.7 mis à jour
+- [x] **Task #13** Notifications offline + alertes (§6.8) — *validé Val 2026-05-22*
+  - [x] `apps/members/notifications.py` (member_alerts + navbar_counts) — centralisation
+  - [x] Refacto `apps/loans/views.py` (lend), `apps/core/context_processors.py` (notifications), `apps/members/views.py` (member_detail)
+  - [x] Bandeau d'alertes sur fiche membre (`templates/members/member_detail.html`)
+  - [x] Liste imprimable réservations à retirer (`reports:reservations_pickup`)
+  - [x] Doc : `docs/specs/FEAT-013-notifications-offline.md` + SPEC §6.8 mis à jour
+- [x] **Task #14** Sauvegardes locales + cloud (§8) — *validé Val 2026-05-22*
+  - [x] `apps/tasks/backup.py` — `run_backup()` (sqlite3 .backup + integrity_check + rotation 24h/7j/35j/400j + rsync media + cloud rclone opt-in) + `restore_from_file()`
+  - [x] `apps/tasks/scheduling.py` + commande `setup_schedules` (3 Schedule django-q2 : backup horaire, expire cartes, expire réservations)
+  - [x] Commandes `manage.py run_backup` + `restore_backup`
+  - [x] Vues admin : bouton « Sauvegarder maintenant » + upload restauration (`core:backup_now`, `core:backup_restore`)
+  - [x] `Setting.last_backup` exploité par le dashboard (alerte > 24 h)
+  - [x] `dev-entrypoint.sh` : appel à `setup_schedules` au boot dev
+  - [x] Doc : `docs/specs/FEAT-014-sauvegardes.md` + SPEC §8 mis à jour
+- [x] **Task #15** Wizard premier démarrage + données démo (§11.3-11.4) — *validé Val 2026-05-22*
+  - [x] `apps/setup/forms.py` — 8 formulaires d'étape
+  - [x] `apps/setup/views.py` — wizard multi-step session-based (`wizard_index`, `wizard_step`, `wizard_finalize`)
+  - [x] `apps/setup/services.py:apply_wizard()` — persistance Setting + création superadmin + recovery_key (hash uniquement) + setup_schedules + generate_avahi_service (lève le blocage Task #19 wizard)
+  - [x] `apps/setup/demo.py` — install/remove démo (50 notices, 80 exemplaires, 20 membres, 15 prêts, marqueur `[DEMO]`)
+  - [x] Commande `manage.py remove_demo`
+  - [x] Templates `templates/setup/` (step, completed, already_done — standalone, hors `base.html`)
+  - [x] Doc : `docs/specs/FEAT-015-wizard-premier-demarrage.md` + SPEC §11.3-11.4 mises à jour
+
+> **Sprint 3 reste à tester sur la Pi** (Task #19 mDNS découverte réelle, Task #16 lookup ISBN bout-en-bout). Une fois la Pi accessible, l'`avahi-daemon` lit le fichier généré par `generate_avahi_service` (déclenché en fin de wizard désormais).
+
+### Corrections suite au test de Val (2026-05-22)
+
+- [x] **BUG-006** i18n Sprint 4 : `accounts/` déplacé sous `i18n_patterns` (`/fr/accounts/users/` répond) ; chaînes EN/ES/MG complétées (0 fuzzy, 0 untranslated) ; doc `docs/bugs/BUG-006-i18n-sprint4-urls-and-strings.md` + SPEC §6.9 mise à jour.
+- [x] **FEAT-017** Navigation « Avancé » + page Connexion OfeliaScan + « Mon compte »
+  - [x] Onglet « Avancé » (`core:advanced`) : index des outils hors-workflow (Impression, Rapports, Inventaire, Administration), liens explicités
+  - [x] Barre principale allégée : suppression « Tableau de bord » + « Récolement » ; icône logo `book-open` → `house`
+  - [x] Menu utilisateur : suppression « Mode avancé » + « Administration » ; ajout « Mon compte » (auto-édition, formulaire restreint sans escalade)
+  - [x] Page Connexion OfeliaScan (`core:ofeliascan`) : adresse box + identifiants `contributor_api` (login/mot de passe en clair, création/révocation)
+  - [x] Renommage UI « Récolement » → « Inventaire »
+  - [x] Nouveaux SVG `static/icons/house.svg` + `user.svg`
+  - [x] i18n : 545 chaînes EN/ES/MG (0 fuzzy, 0 untranslated)
+  - [x] Doc : `docs/specs/FEAT-017-navigation-avancee-ofeliascan.md` + SPEC §6.5/§6.6/§6.10/§10.2
 
 ## Sprint 5 — API complète + qualité
 

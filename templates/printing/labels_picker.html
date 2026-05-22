@@ -1,0 +1,53 @@
+{% extends "base.html" %}
+{% load i18n biblio_icons %}
+
+{% block title %}{% trans "Impression étiquettes" %}{% endblock %}
+
+{% block content %}
+<h1>{% icon "printer" %} {% trans "Étiquettes exemplaires" %}</h1>
+
+<form method="get" class="filters">
+    <label>{% trans "Emplacement" %} <input type="text" name="location" value="{{ location }}" placeholder="A1"></label>
+    <label><input type="checkbox" name="pending" value="1" {% if pending %}checked{% endif %}> {% trans "Derniers ajouts" %}</label>
+    <button type="submit">{% trans "Filtrer" %}</button>
+</form>
+
+<form method="get" action="{% url 'printing:labels_pdf' %}" id="labelsForm">
+    <p>
+        <button type="submit">{% icon "file-down" %} {% trans "Générer PDF" %}</button>
+        <button type="submit" formaction="{% url 'printing:labels_send' %}" formmethod="post" formenctype="application/x-www-form-urlencoded">
+            {% icon "printer" %} {% trans "Imprimer (CUPS)" %}
+        </button>
+    </p>
+    <table>
+        <thead>
+            <tr>
+                <th><input type="checkbox" id="selectAll"></th>
+                <th>{% trans "ID interne" %}</th>
+                <th>{% trans "Titre" %}</th>
+                <th>{% trans "Emplacement" %}</th>
+                <th>{% trans "EAN13" %}</th>
+            </tr>
+        </thead>
+        <tbody>
+        {% for item in items %}
+            <tr>
+                <td><input type="checkbox" name="ids" value="{{ item.pk }}"></td>
+                <td><code>{{ item.internal_id }}</code></td>
+                <td>{{ item.record.title|truncatechars:50 }}</td>
+                <td>{{ item.location.code|default:"—" }}</td>
+                <td><code>{{ item.ean13 }}</code></td>
+            </tr>
+        {% empty %}
+            <tr><td colspan="5"><em>{% trans "Aucun exemplaire." %}</em></td></tr>
+        {% endfor %}
+        </tbody>
+    </table>
+</form>
+
+<script>
+document.getElementById('selectAll').addEventListener('change', function(e) {
+    document.querySelectorAll('input[name="ids"]').forEach(cb => cb.checked = e.target.checked);
+});
+</script>
+{% endblock %}

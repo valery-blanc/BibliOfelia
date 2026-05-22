@@ -1,0 +1,43 @@
+{% extends "base.html" %}
+{% load i18n biblio_icons %}
+
+{% block title %}{% trans "Comptes" %}{% endblock %}
+
+{% block content %}
+<nav class="breadcrumb">
+    <a href="{% url 'core:settings_index' %}">{% trans "Paramètres" %}</a> /
+    <strong>{% trans "Comptes" %}</strong>
+</nav>
+
+<h1>{% icon "users" %} {% trans "Comptes utilisateurs" %}</h1>
+<p><a href="{% url 'accounts:user_create' %}" role="button">{% icon "user-plus" %} {% trans "Nouveau compte" %}</a></p>
+
+<table>
+    <thead>
+        <tr>
+            <th>{% trans "Identifiant" %}</th>
+            <th>{% trans "Nom" %}</th>
+            <th>{% trans "Rôle" %}</th>
+            <th>{% trans "Actif" %}</th>
+            <th>{% trans "Actions" %}</th>
+        </tr>
+    </thead>
+    <tbody>
+    {% for u in users %}
+        <tr>
+            <td><code>{{ u.username }}</code></td>
+            <td>{{ u.last_name }} {{ u.first_name }}</td>
+            <td>{{ u.get_role_display }}</td>
+            <td>{% if u.is_active %}✓{% else %}—{% endif %}</td>
+            <td>
+                <a href="{% url 'accounts:user_edit' pk=u.pk %}">{% trans "Éditer" %}</a>
+                ·
+                <a href="{% url 'accounts:user_password_reset' pk=u.pk %}">{% trans "Mot de passe" %}</a>
+            </td>
+        </tr>
+    {% empty %}
+        <tr><td colspan="5"><em>{% trans "Aucun compte." %}</em></td></tr>
+    {% endfor %}
+    </tbody>
+</table>
+{% endblock %}

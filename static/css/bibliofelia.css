@@ -177,6 +177,7 @@
 .msg-success { border-color: var(--pico-color-green-500); }
 .msg-error   { border-color: var(--pico-color-red-500); }
 .msg-warning { border-color: var(--pico-color-orange-500); }
+.msg-info    { border-color: var(--pico-primary); }
 
 /* --- Grille KPI du tableau de bord --- */
 .kpi-grid {
@@ -187,6 +188,61 @@
 .kpi-card { text-align: center; }
 .kpi-value { font-size: 2.2rem; font-weight: 700; line-height: 1.1; }
 .kpi-card.kpi-alert .kpi-value { color: var(--pico-color-red-500); }
+
+/* --- Tableau de bord : tendance + grilles --- */
+.dashboard-trend { margin-top: 2rem; }
+.sparkline {
+    display: flex;
+    align-items: flex-end;
+    gap: 2px;
+    height: 80px;
+    padding: 0.5rem;
+    background: var(--pico-card-background-color);
+    border: 1px solid var(--pico-muted-border-color);
+    border-radius: var(--pico-border-radius);
+}
+.sparkline .bar {
+    flex: 1;
+    min-height: 2px;
+    background: var(--pico-primary);
+    border-radius: 2px 2px 0 0;
+}
+.dashboard-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+    gap: 1rem;
+    margin-top: 1.5rem;
+}
+.dashboard-grid article { padding: 1rem; }
+.dashboard-grid article.status-alert { border-left: 4px solid var(--pico-color-orange-500); }
+.dashboard-grid h3 { margin-top: 0; }
+.top-list { padding-left: 1.2rem; margin: 0; }
+.top-list li { display: flex; justify-content: space-between; gap: 0.5rem; align-items: baseline; }
+.top-list li .count { font-weight: 700; }
+.text-danger { color: var(--pico-color-red-500); }
+
+/* --- Menu paramètres --- */
+.settings-nav ul { list-style: none; padding: 0; }
+.settings-nav li { margin: 0.4rem 0; }
+.settings-nav a { display: block; padding: 0.6rem 1rem; border: 1px solid var(--pico-muted-border-color); border-radius: var(--pico-border-radius); }
+.settings-nav a:hover { background: var(--pico-secondary-background); }
+
+.breadcrumb { font-size: 0.9rem; color: var(--pico-muted-color); margin-bottom: 0.5rem; }
+
+/* --- Page Avancé --- */
+.advanced-list { list-style: none; padding: 0; }
+.advanced-list li {
+    padding: 0.75rem 1rem;
+    border: 1px solid var(--pico-muted-border-color);
+    border-radius: var(--pico-border-radius);
+    margin-bottom: 0.5rem;
+}
+.advanced-list li a { font-weight: 600; display: block; }
+.advanced-list li small { color: var(--pico-muted-color); display: block; margin-top: 0.25rem; }
+
+@media print {
+    .no-print { display: none; }
+}
 
 /* --- Workflows scan (prêt / retour / récolement) --- */
 .scan-line {

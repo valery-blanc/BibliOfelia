@@ -1,0 +1,100 @@
+{% extends "base.html" %}
+{% load i18n biblio_icons %}
+
+{% block title %}{% trans "Avancé" %}{% endblock %}
+
+{% block content %}
+<h1>{% icon "settings" %} {% trans "Avancé" %}</h1>
+
+<p>{% trans "Outils complémentaires : impressions, rapports, inventaire, et — pour les administrateurs — paramètres, comptes et diagnostic." %}</p>
+
+{% if user.is_librarian %}
+<section>
+    <h2>{% icon "printer" %} {% trans "Impression" %}</h2>
+    <ul class="advanced-list">
+        <li>
+            <a href="{% url 'printing:labels' %}">{% trans "Étiquettes exemplaires" %}</a>
+            <small>{% trans "Génère les étiquettes (EAN13 + titre + emplacement) à coller sur les ouvrages. PDF planche A4 ou envoi direct à l'imprimante CUPS." %}</small>
+        </li>
+        <li>
+            <a href="{% url 'printing:cards' %}">{% trans "Cartes membres" %}</a>
+            <small>{% trans "Planche PDF de cartes de membre prêtes à découper (8 par feuille A4 par défaut), à plastifier après impression." %}</small>
+        </li>
+    </ul>
+</section>
+{% endif %}
+
+<section>
+    <h2>{% icon "file-text" %} {% trans "Rapports" %}</h2>
+    <ul class="advanced-list">
+        <li>
+            <a href="{% url 'reports:index' %}"><strong>{% trans "Tous les rapports" %}</strong></a>
+            <small>{% trans "Page d'accueil des rapports : listes imprimables, export CSV, rapport annuel PDF." %}</small>
+        </li>
+        <li>
+            <a href="{% url 'reports:overdue' %}">{% trans "Retards à imprimer" %}</a>
+            <small>{% trans "Liste des prêts dépassant le seuil de retard (paramétrable, 7 jours par défaut), prête à imprimer." %}</small>
+        </li>
+        <li>
+            <a href="{% url 'reports:reservations_pickup' %}">{% trans "Réservations à retirer" %}</a>
+            <small>{% trans "Liste des réservations satisfaites en attente de retrait — pour relance manuelle des usagers." %}</small>
+        </li>
+        <li>
+            <a href="{% url 'reports:inactive' %}">{% trans "Inactifs" %}</a>
+            <small>{% trans "Usagers et exemplaires sans aucun prêt sur une période — utile pour l'inventaire et la gestion du fonds." %}</small>
+        </li>
+        <li>
+            <a href="{% url 'reports:index' %}#csv">{% trans "Export CSV des prêts" %}</a>
+            <small>{% trans "Téléchargement CSV des prêts sur une période — pour analyse externe ou rapports aux bailleurs." %}</small>
+        </li>
+        <li>
+            <a href="{% url 'reports:index' %}#annual">{% trans "Rapport annuel d'activité (PDF)" %}</a>
+            <small>{% trans "Rapport PDF complet d'une année : prêts, usagers, top 10, croissance du fonds." %}</small>
+        </li>
+    </ul>
+</section>
+
+{% if user.is_librarian %}
+<section>
+    <h2>{% icon "clipboard-list" %} {% trans "Inventaire" %}</h2>
+    <ul class="advanced-list">
+        <li>
+            <a href="{% url 'inventory:list' %}">{% trans "Sessions d'inventaire" %}</a>
+            <small>{% trans "Vérification du fonds : créer une session, pointer les exemplaires scannés, repérer les écarts." %}</small>
+        </li>
+    </ul>
+</section>
+{% endif %}
+
+{% if user.is_superadmin %}
+<section>
+    <h2>{% icon "settings" %} {% trans "Administration" %}</h2>
+    <ul class="advanced-list">
+        <li>
+            <a href="{% url 'core:settings_index' %}">{% trans "Paramètres" %}</a>
+            <small>{% trans "Identité de la bibliothèque, langues activées, format des étiquettes/cartes, sauvegardes, ZeroTier." %}</small>
+        </li>
+        <li>
+            <a href="{% url 'accounts:user_list' %}">{% trans "Comptes utilisateurs" %}</a>
+            <small>{% trans "Création, édition, réinitialisation de mot de passe des comptes bibliothécaires et administrateurs." %}</small>
+        </li>
+        <li>
+            <a href="{% url 'core:ofeliascan' %}">{% trans "Connexion OfeliaScan" %}</a>
+            <small>{% trans "Identifiants autorisés pour l'application mobile OfeliaScan et adresse de la box." %}</small>
+        </li>
+        <li>
+            <a href="{% url 'core:settings_section' section='backup' %}">{% trans "Sauvegardes" %}</a>
+            <small>{% trans "Déclencher une sauvegarde manuelle, configurer la fréquence et le cloud, restaurer depuis un fichier." %}</small>
+        </li>
+        <li>
+            <a href="{% url 'core:diagnostics' %}">{% trans "Diagnostic" %}</a>
+            <small>{% trans "État système : version, espace disque, file django-q2, derniers paramètres modifiés." %}</small>
+        </li>
+        <li>
+            <a href="{% url 'admin:index' %}">{% trans "Administration Django" %}</a>
+            <small>{% trans "Gestion fine : catégories, tags, emplacements, catégories d'usagers (réservé Claude / support distant)." %}</small>
+        </li>
+    </ul>
+</section>
+{% endif %}
+{% endblock %}

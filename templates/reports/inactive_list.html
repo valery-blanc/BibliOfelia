@@ -1,0 +1,59 @@
+{% extends "base.html" %}
+{% load i18n biblio_icons %}
+
+{% block title %}{% trans "Inactifs" %}{% endblock %}
+
+{% block content %}
+<h1>{% icon "user-x" %} {% trans "Inactifs" %}</h1>
+
+<form method="get" class="filters no-print">
+    <label>{% trans "Seuil d'inactivité (jours)" %}
+        <input type="number" name="days" min="30" value="{{ days }}"></label>
+    <button type="submit">{% trans "Filtrer" %}</button>
+    <button type="button" onclick="window.print()">{% icon "printer" %} {% trans "Imprimer" %}</button>
+</form>
+
+<section>
+    <h2>{% trans "Usagers inactifs" %} ({{ members|length }})</h2>
+    <table>
+        <thead>
+            <tr>
+                <th>{% trans "Carte" %}</th><th>{% trans "Nom" %}</th><th>{% trans "Inscription" %}</th>
+            </tr>
+        </thead>
+        <tbody>
+        {% for m in members %}
+            <tr>
+                <td><code>{{ m.card_number }}</code></td>
+                <td>{{ m.last_name }} {{ m.first_name }}</td>
+                <td>{{ m.registration_date|date:"Y-m-d" }}</td>
+            </tr>
+        {% empty %}
+            <tr><td colspan="3"><em>{% trans "Aucun usager inactif sur la période." %}</em></td></tr>
+        {% endfor %}
+        </tbody>
+    </table>
+</section>
+
+<section>
+    <h2>{% trans "Exemplaires inactifs" %} ({{ items|length }})</h2>
+    <table>
+        <thead>
+            <tr>
+                <th>{% trans "ID interne" %}</th><th>{% trans "EAN13" %}</th><th>{% trans "Titre" %}</th>
+            </tr>
+        </thead>
+        <tbody>
+        {% for it in items %}
+            <tr>
+                <td><code>{{ it.internal_id }}</code></td>
+                <td><code>{{ it.ean13 }}</code></td>
+                <td>{{ it.record.title|truncatechars:60 }}</td>
+            </tr>
+        {% empty %}
+            <tr><td colspan="3"><em>{% trans "Aucun exemplaire inactif sur la période." %}</em></td></tr>
+        {% endfor %}
+        </tbody>
+    </table>
+</section>
+{% endblock %}

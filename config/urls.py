@@ -14,15 +14,19 @@ urlpatterns = [
     path("api/v1/", include("apps.api.urls", namespace="api")),
     path("i18n/", include("django.conf.urls.i18n")),
     path("setup/", include("apps.setup.urls", namespace="setup")),
-    path("accounts/", include("apps.accounts.urls", namespace="accounts")),
 ]
 
 # Tout le reste sous i18n_patterns : préfixe de langue sur TOUTES les URLs
 # (`/fr/…`, `/en/…`, etc.). `prefix_default_language=True` est indispensable
 # pour que le sélecteur de langue et le cookie de préférence soient respectés
 # partout (cf. FEAT-005 / discussion i18n Sprint 2).
+#
+# `accounts/` (login + logout + gestion comptes, Sprint 4) est sous i18n_patterns :
+# LocaleMiddleware redirige `/accounts/login/` → `/<lang>/accounts/login/`
+# automatiquement, et `/fr/accounts/users/` (FEAT-011) fonctionne.
 urlpatterns += i18n_patterns(
     path("", include("apps.core.urls", namespace="core")),
+    path("accounts/", include("apps.accounts.urls", namespace="accounts")),
     path("catalog/", include("apps.catalog.urls", namespace="catalog")),
     path("members/", include("apps.members.urls", namespace="members")),
     path("loans/", include("apps.loans.urls", namespace="loans")),

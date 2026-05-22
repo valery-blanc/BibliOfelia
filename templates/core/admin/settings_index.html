@@ -1,0 +1,27 @@
+{% extends "base.html" %}
+{% load i18n biblio_icons %}
+
+{% block title %}{% trans "Paramètres" %}{% endblock %}
+
+{% block content %}
+<h1>{% icon "settings" %} {% trans "Paramètres" %}</h1>
+
+<p>{% trans "Configuration de la bibliothèque, des sauvegardes et de la connectivité." %}</p>
+
+<nav class="settings-nav">
+    <ul>
+        {% for slug, info in sections.items %}
+            <li>
+                <a href="{% url 'core:settings_section' section=slug %}">
+                    {% icon "chevron-right" %} {{ info.0 }}
+                </a>
+            </li>
+        {% endfor %}
+        <li><a href="{% url 'accounts:user_list' %}">{% icon "users" %} {% trans "Comptes utilisateurs" %}</a></li>
+        <li><a href="{% url 'core:diagnostics' %}">{% icon "activity" %} {% trans "Diagnostic" %}</a></li>
+    </ul>
+</nav>
+
+<p><small>{% trans "Les catégories, tags et emplacements se gèrent depuis l'administration Django pour l'instant." %}
+    <a href="{% url 'admin:index' %}">{% trans "Ouvrir l'admin" %}</a>.</small></p>
+{% endblock %}

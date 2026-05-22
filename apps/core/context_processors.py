@@ -15,22 +15,15 @@ def global_settings(request):
 
 
 def notifications(request):
-    """Compteurs de la barre de nav : retards + réservations prêtes (SPEC §6.8)."""
+    """Compteurs de la barre de nav (§6.8)."""
     if not getattr(request.user, "is_authenticated", False):
         return {"nav_counts": {}}
     try:
-        from apps.loans.models import Loan, LoanStatus, Reservation, ReservationStatus
+        from apps.members.notifications import navbar_counts
 
-        overdue = Loan.objects.filter(
-            status__in=[LoanStatus.ACTIVE, LoanStatus.OVERDUE],
-            due_date__lt=date.today(),
-        ).count()
-        ready = Reservation.objects.filter(
-            status=ReservationStatus.READY_FOR_PICKUP
-        ).count()
+        return {"nav_counts": navbar_counts()}
     except Exception:
         return {"nav_counts": {}}
-    return {"nav_counts": {"overdue": overdue, "reservations_ready": ready}}
 
 
 def _safe_setting(key: str, default):

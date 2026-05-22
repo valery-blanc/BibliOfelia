@@ -1,0 +1,32 @@
+{% extends "base.html" %}
+{% load i18n biblio_icons %}
+
+{% block title %}{% trans "Restaurer une sauvegarde" %}{% endblock %}
+
+{% block content %}
+<nav class="breadcrumb">
+    <a href="{% url 'core:settings_index' %}">{% trans "Paramètres" %}</a> /
+    <a href="{% url 'core:settings_section' section='backup' %}">{% trans "Sauvegardes" %}</a> /
+    <strong>{% trans "Restauration" %}</strong>
+</nav>
+
+<h1>{% icon "upload" %} {% trans "Restaurer la base depuis un fichier" %}</h1>
+
+<article class="msg msg-warning">
+    {% blocktrans %}
+    Cette action écrase la base actuelle. Une copie de la base courante est
+    placée à côté (suffixe <code>.pre-restore.&lt;timestamp&gt;</code>). Coupez
+    le service avant de restaurer si possible.
+    {% endblocktrans %}
+</article>
+
+{% if error %}<div class="msg msg-error">{{ error }}</div>{% endif %}
+
+<form method="post" enctype="multipart/form-data">
+    {% csrf_token %}
+    <label>{% trans "Fichier .sqlite3 ou .sqlite3.gz" %}
+        <input type="file" name="archive" accept=".sqlite3,.sqlite3.gz,.gz" required>
+    </label>
+    <button type="submit">{% icon "upload" %} {% trans "Restaurer" %}</button>
+</form>
+{% endblock %}
