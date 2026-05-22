@@ -4,7 +4,7 @@ Spécification détaillée du logiciel de gestion de bibliothèque BibliOfelia, 
 
 Version : 1.0 (cible v1)
 Statut : draft pour Spec-Driven Development
-Dernière modif spec : 2026-05-22 — FEAT-020 (intégration keebee : déploiement sur la Ofelia Box via le wizard keebee, clone + build sur la Pi, routage nginx `/bibliofelia/`, réglage `SECURE_COOKIES`, statique servi par nginx — §4, §11) ; FEAT-018 (terminologie UI : l'EAN13 interne d'un exemplaire est nommé « code Ofelia » dans toute l'interface ; rapport d'inventaire enrichi du code Ofelia et de l'ISBN — §5.2/§6.5/§6.7) ; Sprint 4 : FEAT-011 (dashboard enrichi §6.6 + rapports + paramètres + gestion comptes), FEAT-012 (impression étiquettes + cartes §6.7), FEAT-013 (notifications offline §6.8), FEAT-014 (sauvegardes §8 + planification django-q2), FEAT-015 (wizard premier démarrage §11.3 + données démo §11.4), FEAT-017 (onglet « Avancé » + page Connexion OfeliaScan + « Mon compte » §6.6/§6.10/§10.2), BUG-006 (i18n : `accounts/` déplacé sous `i18n_patterns` + chaînes EN/ES/MG complétées) ; Sprint 3 : FEAT-016 — API OfeliaScan (§6.10 : auth JWT, /pairing/info, /isbn/{isbn}, /health) ; FEAT-019 — publication mDNS via service Avahi sur l'hôte (§6.10) ; SPEC-CORR-002 — /pairing/info renvoie `base_url` (URL absolue) ; Sprint 2 : FEAT-005 à FEAT-010 (§6.1 à §6.5, §10) ; i18n 4 langues (§6.9) ; BUG-002 à BUG-005 ; §6.10 réécrit comme contrat d'API (SPEC-CORR-001)
+Dernière modif spec : 2026-05-22 — FEAT-021 (API scan-sessions + inventory-sessions : contrat aligné sur le client OfeliaScan — corps `{"items":[...]}`, champs `scanned_value`/`metadata_*`/`item_state`, idempotency `local_id`, finalize sync = create-or-add-copies, ownership contributor_api — §6.10) ; FEAT-020 (intégration keebee : déploiement sur la Ofelia Box via le wizard keebee, clone + build sur la Pi, routage nginx `/bibliofelia/`, réglage `SECURE_COOKIES`, statique servi par nginx — §4, §11) ; FEAT-018 (terminologie UI : l'EAN13 interne d'un exemplaire est nommé « code Ofelia » dans toute l'interface ; rapport d'inventaire enrichi du code Ofelia et de l'ISBN — §5.2/§6.5/§6.7) ; Sprint 4 : FEAT-011 (dashboard enrichi §6.6 + rapports + paramètres + gestion comptes), FEAT-012 (impression étiquettes + cartes §6.7), FEAT-013 (notifications offline §6.8), FEAT-014 (sauvegardes §8 + planification django-q2), FEAT-015 (wizard premier démarrage §11.3 + données démo §11.4), FEAT-017 (onglet « Avancé » + page Connexion OfeliaScan + « Mon compte » §6.6/§6.10/§10.2), BUG-006 (i18n : `accounts/` déplacé sous `i18n_patterns` + chaînes EN/ES/MG complétées) ; Sprint 3 : FEAT-016 — API OfeliaScan (§6.10 : auth JWT, /pairing/info, /isbn/{isbn}, /health) ; FEAT-019 — publication mDNS via service Avahi sur l'hôte (§6.10) ; SPEC-CORR-002 — /pairing/info renvoie `base_url` (URL absolue) ; Sprint 2 : FEAT-005 à FEAT-010 (§6.1 à §6.5, §10) ; i18n 4 langues (§6.9) ; BUG-002 à BUG-005 ; §6.10 réécrit comme contrat d'API (SPEC-CORR-001)
 
 ---
 
@@ -776,16 +776,62 @@ Les schémas JSON ci-dessous sont **figés** par `docs/specs/SPEC-CORR-001-contr
 - `GET /health` — auth requise. Réponse `200` : `{"status": "ok"|"degraded", "version"?, "disk_free_mb"?, "last_backup_at"?}`. Seul `status` est requis.
 - `GET /sync/status` — queue des tâches en attente.
 
-#### Sessions de scan (catalogage) — *non couvert par SPEC-CORR-001*
+#### Sessions de scan (catalogage) — FEAT-021 / Task #20
 
-- `POST /scan-sessions` : crée une session de catalogage, retourne `session_id`.
-- `POST /scan-sessions/{id}/items` : batch `[{isbn, title, authors, language, location_code, state, copy_count, scanned_at, notes}, ...]`.
-- `GET /scan-sessions/{id}` : statut, nombre d'items, statut de validation.
-- `POST /scan-sessions/{id}/finalize` : clôt la session, déclenche la file de validation côté web.
+Contrat **aligné sur le client OfeliaScan déjà déployé** (la SPEC initiale
+proposait un schéma simplifié ; le client envoie le schéma documenté ci-dessous
+et c'est lui qui fait foi). Permissions : un user `contributor_api` ne voit
+et n'agit que sur ses propres sessions (404 sur celles des autres) ;
+librarian/superadmin voient tout.
 
-#### Récolement — *non couvert par SPEC-CORR-001*
+- `POST /scan-sessions` — auth requise. Body `{"label"?: string}`.
+  Réponse `201` : `{session_id, state: "open", created_at}`.
+- `POST /scan-sessions/{id}/items` — auth requise. Body **enveloppé** :
+  `{"items": [{local_id, scan_kind, scanned_value?, metadata_title?,
+   metadata_authors?, metadata_language?, metadata_publisher?, metadata_year?,
+   location_code?, item_state?, copy_count?, scanned_at, notes?}, ...]}`.
+  - `scan_kind ∈ {ean13, isbn, manual}`.
+  - `local_id` : idempotency par session (rejouer un POST renvoie
+    `duplicates += 1`, jamais d'erreur).
+  - Réponse `200` : `{session_id, accepted, duplicates, rejected: [{local_id, reason}]}`.
+  - `409 session_closed` si la session est finalisée.
+- `POST /scan-sessions/{id}/finalize` — auth requise. Body vide.
+  Traitement **synchrone** dans une transaction :
+  - lookup `BibliographicRecord` par `isbn_13` puis `isbn_10` (normalisés
+    depuis `scanned_value`) ;
+  - si trouvé → `+copy_count Item`s ajoutés au record existant ;
+  - sinon → nouveau `BibliographicRecord` créé avec les `metadata_*`
+    (`metadata_source=scan_app`), puis `+copy_count Item`s ;
+  - `location_code` résolu via `Location.code` ; `item_state` validé sinon
+    fallback `good` ; marqueur `[ScanSession:UUID]` ajouté aux `notes`.
+  - Réponse `200` : `{session_id, state: "finalized", finalized_at,
+    summary: {items_processed, records_created, records_matched, copies_added, errors}}`.
 
-- `POST /inventory-sessions`, `POST /inventory-sessions/{id}/items` (`[{ean13, scanned_at}, ...]`), `GET /inventory-sessions/{id}/status`, `POST /inventory-sessions/{id}/close`.
+#### Récolement — FEAT-021 / Task #20
+
+Contrat **aligné sur le client OfeliaScan**. La session est créée
+directement par OfeliaScan (`mobile_created=True` côté `InventorySession`),
+ce qui la distingue dans l'UI librarian de récolement (FEAT-010).
+
+- `POST /inventory-sessions` — auth requise. Body :
+  `{"label"?, "scope_type"?: "all"|"location"|"category",
+   "scope_location_code"?, "scope_category_code"?}`.
+  Réponse `201` : `{session_id, state: "open", started_at}`.
+  `400 unknown_location` / `unknown_category` si le code ne correspond à
+  rien.
+- `POST /inventory-sessions/{id}/items` — auth requise. Body **enveloppé** :
+  `{"items": [{scanned_value, scanned_at}, ...]}`.
+  - `scanned_value` normalisé (`normalize_code`) puis enregistré comme
+    `InventoryScan` ; contrainte UNIQUE `(session, ean13)` → doublons
+    comptés (`duplicates`).
+  - Item matché si `ean13` correspond à un `Item.ean13`, sinon `item=NULL`
+    (le rapport librarian liste l'ean comme « inconnu »).
+  - Réponse `200` : `{session_id, accepted, duplicates, rejected}`.
+  - `409 session_closed` si pas `open`.
+- `POST /inventory-sessions/{id}/close` — auth requise. Body vide.
+  Réponse `200` : `{session_id, state: "closed", closed_at, scans_count}`.
+  Le rapport (présents/manquants/mal rangés/inconnus) reste un workflow
+  librarian côté web (FEAT-010).
 
 #### Items
 
@@ -809,9 +855,10 @@ La box **publie un service DNS-SD** pour qu'OfeliaScan la découvre sur le rése
 
 #### Implémentation (FEAT-016)
 
-État : auth JWT, `/pairing/info`, `/isbn/{isbn}`, `/health` et le format
-d'erreur sont implémentés (`apps/api/`). Les sessions de scan, le récolement
-et `/items`, `/search`, `/sync/status` restent à faire (Task #20, Sprint 5).
+État : auth JWT, `/pairing/info`, `/isbn/{isbn}`, `/health`, le format
+d'erreur, et **les sessions de scan + récolement** (FEAT-021 / Task #20)
+sont implémentés dans `apps/api/`. Restent à faire : `/items/{ean13}`,
+`/search`, `/sync/status` (raffinements ultérieurs).
 
 - Les routes sont définies **sans slash final** (`apps/api/urls.py`), conforme
   au contrat (OfeliaScan concatène les chemins relatifs).

@@ -2,7 +2,7 @@
 
 Source de vérité de l'avancement v1. Une case `[x]` = livrable terminé et déployable. `[ ]` = à faire. `[!]` = bloqué (voir note).
 
-Mise à jour : 2026-05-22 (Sprint 6 — Task #18 / FEAT-020 validés par Val sur la Pi `192.168.0.147` : portail → tuile → wizard BibliOfelia → recovery_key OK. BUG-007 corrigé au passage. Sprint 3 : Tasks #16/#19 testables maintenant que BibliOfelia tourne sur la Pi.)
+Mise à jour : 2026-05-22 (Sprint 5 — Task #20 / FEAT-021 codée : 6 endpoints scan-sessions + inventory-sessions, contrat aligné sur OfeliaScan ; tests écrits ; déploiement Pi en attente. Sprint 6 — Task #18 / FEAT-020 validé par Val. BUG-007 fixé.)
 
 ## Sprint 0 — Squelette
 
@@ -219,7 +219,17 @@ Mise à jour : 2026-05-22 (Sprint 6 — Task #18 / FEAT-020 validés par Val sur
 
 ## Sprint 5 — API complète + qualité
 
-- [ ] **Task #20** API REST OfeliaScan — sessions de scan catalogage + endpoints récolement (reste de §6.10)
+- [x] **Task #20** API REST OfeliaScan — sessions de scan catalogage + endpoints récolement (FEAT-021)
+  - [x] `docs/specs/FEAT-021-api-scan-sessions.md` — spec alignée sur le vrai contrat OfeliaScan
+  - [x] Modèles `ScanSession` + `ScanItem` (`apps/catalog/models.py`) + migration manuelle `catalog/0005_scan_sessions.py`
+  - [x] Flag `mobile_created` sur `InventorySession` + migration `inventory/0002_mobile_created.py`
+  - [x] Service `finalize_scan_session()` (`apps/api/services.py`) — sync, transaction, lookup ISBN puis create-or-add-copies
+  - [x] Helper `get_session_for_user()` (`apps/api/permissions.py`) — ownership contributor_api (404, pas 403, pour ne pas fuir l'existence)
+  - [x] Serializers `ScanItemsBatchInput`, `InventoryItemsBatchInput`, `ScanSessionCreateInput`, `InventorySessionCreateInput` (`apps/api/serializers.py`)
+  - [x] 6 endpoints (`apps/api/views.py` + `urls.py`) : `POST /scan-sessions`, `/items`, `/finalize`, `POST /inventory-sessions`, `/items`, `/close`
+  - [x] Tests : `apps/api/tests/test_scan_sessions.py` (10 cas) + `test_inventory_api.py` (7 cas)
+  - [x] SPEC §6.10 réécrite (sections « Sessions de scan » et « Récolement ») + entête de version
+  - [x] Déploiement Pi + test OfeliaScan (envoi listes de livres bout-en-bout) — validé Val 2026-05-22
 - [ ] **Task #17** Tests (pytest-django, coverage 70%)
 
 ## Sprint 6 — Déploiement

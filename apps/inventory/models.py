@@ -45,6 +45,10 @@ class InventorySession(models.Model):
     created_by = models.ForeignKey(
         settings.AUTH_USER_MODEL, null=True, blank=True, on_delete=models.SET_NULL
     )
+    # True si la session a été créée depuis OfeliaScan (POST /inventory-sessions
+    # via l'API REST) plutôt que depuis l'UI web. Permet à l'UI librarian de
+    # distinguer les sessions « mobiles » dans la liste (FEAT-021 / Task #20).
+    mobile_created = models.BooleanField(default=False)
 
     class Meta:
         verbose_name = _("session de récolement")

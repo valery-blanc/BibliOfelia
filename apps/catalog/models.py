@@ -8,6 +8,7 @@ enregistré dans `apps.catalog.translation` (Task #3) et générera les colonnes
 """
 from __future__ import annotations
 
+import uuid
 from datetime import date
 
 from django.conf import settings
@@ -239,3 +240,96 @@ class Item(models.Model):
             self.internal_id = f"OFL-{day_str}-{seq_today:04d}"
         if not self.ean13:
             self.ean13 = build_ean13(ITEM_EAN13_PREFIX, self.pk)
+
+
+# ─── Sessions de scan OfeliaScan ───────────────────────────────────────────
+# FEAT-021 / Task #20 (Sprint 5). OfeliaScan crée une session, envoie des
+# batchs d'items, puis demande la finalisation : la session est alors
+# transformée en BibliographicRecord + Item (matching ISBN si possible).
+
+
+class ScanKind(models.TextChoices):
+    EAN13 = "ean13", _("EAN13")
+    ISBN = "isbn", _("ISBN")
+    MANUAL = "manual", _("Saisie manuelle")
+
+
+class ScanSessionState(models.TextChoices):
+    OPEN = "open", _("Ouverte")
+    FINALIZED = "finalized", _("Validée")
+
+
+class ScanSession(models.Model):
+    """Une campagne de catalogage envoyée depuis OfeliaScan. SPEC §6.10."""
+
+    session_id = models.UUIDField(default=uuid.uuid4, unique=True, editable=False)
+    label = models.CharField(max_length=120, blank=True)
+    state = models.CharField(
+        max_length=10, choices=ScanSessionState.choices, default=ScanSessionState.OPEN
+    )
+    started_at = models.DateTimeField(default=timezone.now)
+    finalized_at = models.DateTimeField(null=True, blank=True)
+    created_by = models.ForeignKey(
+        settings.AUTH_USER_MODEL,
+        null=True,
+        blank=True,
+        related_name="scan_sessions",
+        on_delete=models.SET_NULL,
+    )
+    # Résultat agrégé de la finalisation (items_processed, records_created, ...).
+    processing_summary = models.JSONField(default=dict, blank=True)
+
+    class Meta:
+        verbose_name = _("session de scan")
+        verbose_name_plural = _("sessions de scan")
+        ordering = ["-started_at"]
+
+    def __str__(self) -> str:
+        return self.label or f"ScanSession {self.session_id}"
+
+    @property
+    def is_open(self) -> bool:
+        return self.state == ScanSessionState.OPEN
+
+
+class ScanItem(models.Model):
+    """Un item envoyé par OfeliaScan dans une session de scan.
+
+    `local_id` permet à OfeliaScan de rejouer un POST sans créer de doublon
+    (contrainte UNIQUE `(session, local_id)`). `processed` passe à True
+    après la finalisation, et `processing_result` mémorise l'action prise
+    (record créé / matché / erreur).
+    """
+
+    session = models.ForeignKey(
+        ScanSession, related_name="items", on_delete=models.CASCADE
+    )
+    local_id = models.CharField(max_length=120)
+    scan_kind = models.CharField(max_length=10, choices=ScanKind.choices)
+    scanned_value = models.CharField(max_length=32, blank=True)
+    metadata_title = models.CharField(max_length=300, blank=True)
+    metadata_authors = models.JSONField(default=list, blank=True)
+    metadata_language = models.CharField(max_length=10, blank=True)
+    metadata_publisher = models.CharField(max_length=200, blank=True)
+    metadata_year = models.IntegerField(null=True, blank=True)
+    location_code = models.CharField(max_length=20, blank=True)
+    item_state = models.CharField(max_length=10, blank=True)
+    copy_count = models.PositiveIntegerField(default=1)
+    scanned_at = models.DateTimeField()
+    notes = models.TextField(blank=True)
+    processed = models.BooleanField(default=False)
+    processing_result = models.JSONField(default=dict, blank=True)
+
+    class Meta:
+        verbose_name = _("item scanné")
+        verbose_name_plural = _("items scannés")
+        ordering = ["session", "id"]
+        constraints = [
+            models.UniqueConstraint(
+                fields=["session", "local_id"],
+                name="scanitem_unique_local",
+            ),
+        ]
+
+    def __str__(self) -> str:
+        return f"{self.local_id} ({self.scan_kind}={self.scanned_value or '∅'})"

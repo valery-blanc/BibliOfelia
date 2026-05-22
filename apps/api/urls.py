@@ -16,4 +16,31 @@ urlpatterns = [
     path("pairing/info", views.PairingInfoView.as_view(), name="pairing-info"),
     path("isbn/<str:isbn>", views.IsbnLookupView.as_view(), name="isbn-lookup"),
     path("health", views.HealthView.as_view(), name="health"),
+    # FEAT-021 — Sessions de scan (catalogage) et récolement OfeliaScan
+    path("scan-sessions", views.ScanSessionCreateView.as_view(), name="scan-create"),
+    path(
+        "scan-sessions/<uuid:session_id>/items",
+        views.ScanSessionItemsView.as_view(),
+        name="scan-items",
+    ),
+    path(
+        "scan-sessions/<uuid:session_id>/finalize",
+        views.ScanSessionFinalizeView.as_view(),
+        name="scan-finalize",
+    ),
+    path(
+        "inventory-sessions",
+        views.InventorySessionCreateView.as_view(),
+        name="inventory-create",
+    ),
+    path(
+        "inventory-sessions/<uuid:session_id>/items",
+        views.InventorySessionItemsView.as_view(),
+        name="inventory-items",
+    ),
+    path(
+        "inventory-sessions/<uuid:session_id>/close",
+        views.InventorySessionCloseView.as_view(),
+        name="inventory-close",
+    ),
 ]
