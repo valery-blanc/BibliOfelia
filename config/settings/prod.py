@@ -18,10 +18,16 @@ CSRF_TRUSTED_ORIGINS = env("CSRF_TRUSTED_ORIGINS", default=[])
 
 # Sécurité HTTPS (nginx termine TLS, on est derrière proxy)
 SECURE_PROXY_SSL_HEADER = ("HTTP_X_FORWARDED_PROTO", "https")
-SESSION_COOKIE_SECURE = True
-CSRF_COOKIE_SECURE = True
-SECURE_HSTS_SECONDS = 31536000
-SECURE_HSTS_INCLUDE_SUBDOMAINS = True
+
+# SECURE_COOKIES : cookies marqués Secure + HSTS. Vaut True par défaut, mais la
+# Ofelia Box sert l'UI en HTTP sur son point d'accès WiFi (443 bloqué sur wlan0
+# par keebee) ; le mettre à False y permet la connexion HTTP comme HTTPS
+# (FEAT-020). Reste à True pour tout déploiement 100 % HTTPS.
+SECURE_COOKIES = env("SECURE_COOKIES")
+SESSION_COOKIE_SECURE = SECURE_COOKIES
+CSRF_COOKIE_SECURE = SECURE_COOKIES
+SECURE_HSTS_SECONDS = 31536000 if SECURE_COOKIES else 0
+SECURE_HSTS_INCLUDE_SUBDOMAINS = SECURE_COOKIES
 SECURE_HSTS_PRELOAD = False  # cert auto-signé local, pas de preload
 SECURE_CONTENT_TYPE_NOSNIFF = True
 SECURE_REFERRER_POLICY = "same-origin"

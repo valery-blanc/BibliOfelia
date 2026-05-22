@@ -84,7 +84,10 @@ def install_demo() -> dict:
             publisher=rng.choice(["Gallimard", "Hachette", "Flammarion", "Stock", "Le Seuil"]),
             publication_year=rng.randint(1900, 2025),
             language="fr",
-            isbn_13="" if rng.random() < 0.3 else f"978{rng.randint(10**9, 10**10 - 1)}",
+            # None et pas "" : la contrainte UNIQUE partielle sur isbn_13 est
+            # WHERE isbn_13 IS NOT NULL ; SQLite traite "" comme une valeur
+            # ordinaire et fait collisionner les notices sans ISBN (BUG-007).
+            isbn_13=None if rng.random() < 0.3 else f"978{rng.randint(10**9, 10**10 - 1)}",
             category=rng.choice(categories),
             summary=DEMO_MARKER,
         )

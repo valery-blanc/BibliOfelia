@@ -4,7 +4,7 @@ Spécification détaillée du logiciel de gestion de bibliothèque BibliOfelia, 
 
 Version : 1.0 (cible v1)
 Statut : draft pour Spec-Driven Development
-Dernière modif spec : 2026-05-22 — FEAT-018 (terminologie UI : l'EAN13 interne d'un exemplaire est nommé « code Ofelia » dans toute l'interface ; rapport d'inventaire enrichi du code Ofelia et de l'ISBN — §5.2/§6.5/§6.7) ; Sprint 4 : FEAT-011 (dashboard enrichi §6.6 + rapports + paramètres + gestion comptes), FEAT-012 (impression étiquettes + cartes §6.7), FEAT-013 (notifications offline §6.8), FEAT-014 (sauvegardes §8 + planification django-q2), FEAT-015 (wizard premier démarrage §11.3 + données démo §11.4), FEAT-017 (onglet « Avancé » + page Connexion OfeliaScan + « Mon compte » §6.6/§6.10/§10.2), BUG-006 (i18n : `accounts/` déplacé sous `i18n_patterns` + chaînes EN/ES/MG complétées) ; Sprint 3 : FEAT-016 — API OfeliaScan (§6.10 : auth JWT, /pairing/info, /isbn/{isbn}, /health) ; FEAT-019 — publication mDNS via service Avahi sur l'hôte (§6.10) ; SPEC-CORR-002 — /pairing/info renvoie `base_url` (URL absolue) ; Sprint 2 : FEAT-005 à FEAT-010 (§6.1 à §6.5, §10) ; i18n 4 langues (§6.9) ; BUG-002 à BUG-005 ; §6.10 réécrit comme contrat d'API (SPEC-CORR-001)
+Dernière modif spec : 2026-05-22 — FEAT-020 (intégration keebee : déploiement sur la Ofelia Box via le wizard keebee, clone + build sur la Pi, routage nginx `/bibliofelia/`, réglage `SECURE_COOKIES`, statique servi par nginx — §4, §11) ; FEAT-018 (terminologie UI : l'EAN13 interne d'un exemplaire est nommé « code Ofelia » dans toute l'interface ; rapport d'inventaire enrichi du code Ofelia et de l'ISBN — §5.2/§6.5/§6.7) ; Sprint 4 : FEAT-011 (dashboard enrichi §6.6 + rapports + paramètres + gestion comptes), FEAT-012 (impression étiquettes + cartes §6.7), FEAT-013 (notifications offline §6.8), FEAT-014 (sauvegardes §8 + planification django-q2), FEAT-015 (wizard premier démarrage §11.3 + données démo §11.4), FEAT-017 (onglet « Avancé » + page Connexion OfeliaScan + « Mon compte » §6.6/§6.10/§10.2), BUG-006 (i18n : `accounts/` déplacé sous `i18n_patterns` + chaînes EN/ES/MG complétées) ; Sprint 3 : FEAT-016 — API OfeliaScan (§6.10 : auth JWT, /pairing/info, /isbn/{isbn}, /health) ; FEAT-019 — publication mDNS via service Avahi sur l'hôte (§6.10) ; SPEC-CORR-002 — /pairing/info renvoie `base_url` (URL absolue) ; Sprint 2 : FEAT-005 à FEAT-010 (§6.1 à §6.5, §10) ; i18n 4 langues (§6.9) ; BUG-002 à BUG-005 ; §6.10 réécrit comme contrat d'API (SPEC-CORR-001)
 
 ---
 
@@ -80,8 +80,8 @@ BibliOfelia partage le Raspberry Pi avec les autres services Ofelia (Moodle, Kol
 - Pas de monopolisation de ressources (RAM, CPU)
 - Routage via le reverse-proxy nginx existant d'Edubox
 - Réutilisation du backup, de la stack ZeroTier, et de l'UPS
-- Conteneurisation Docker Compose, services préfixés `bibliofelia-*`
-- Réseau Docker partagé `ofelia-net` avec nginx en frontal
+- Conteneurisation Docker Compose, conteneurs préfixés `edubox-bibliofelia*`
+- Réseau Docker partagé `edubox-net` avec nginx en frontal
 
 ---
 
@@ -173,27 +173,36 @@ Aucune dépendance CDN externe : tous les assets sont servis depuis la box.
 
 ### 4.2 Conteneurs
 
-- `bibliofelia-web` : Django + gunicorn, expose port 8001 (interne)
-- `bibliofelia-worker` : django-q2 worker
-- `bibliofelia-backup` : cron + script rsync vers clé USB montée
+- `edubox-bibliofelia` (service `bibliofelia`) : Django + gunicorn, expose le
+  port 8001 (interne), healthcheck sur `/api/v1/pairing/info`.
+- `edubox-bibliofelia-worker` (service `bibliofelia-worker`) : worker django-q2
+  (`qcluster`). Démarre une fois le conteneur web `healthy` ; il n'exécute pas
+  `entrypoint.sh` pour éviter une course aux migrations sur SQLite.
 
-Les conteneurs partagent un volume `bibliofelia-data` (SQLite + média) et un volume `bibliofelia-backup` (clé USB).
+Les conteneurs partagent les volumes `bibliofelia-data` (SQLite),
+`bibliofelia-media` (couvertures, uploads) et `bibliofelia-static` (statique
+collecté, monté en lecture seule dans nginx). La sauvegarde est assurée par le
+worker (planification django-q2, FEAT-014) — pas de conteneur backup dédié.
 
 ### 4.3 Routage nginx
 
-- `/biblio/` → bibliofelia-web (interface web)
-- `/biblio/api/` → bibliofelia-web (API REST OfeliaScan)
-- `/biblio/static/` → fichiers statiques (servi par nginx directement)
-- `/biblio/media/` → couvertures et fichiers uploadés
+L'application est servie sous `/bibliofelia/`. nginx retire le préfixe avant de
+proxifier (`proxy_pass http://bibliofelia:8001/;`) ; `FORCE_SCRIPT_NAME=/bibliofelia`
+fait que Django reconstruit liens et redirections avec le préfixe (FEAT-020).
+
+- `/bibliofelia/` → conteneur web (interface web + API REST OfeliaScan)
+- `/bibliofelia/static/` → `alias` nginx sur le volume `bibliofelia-static`
+- `/bibliofelia/media/` → `alias` nginx sur le volume `bibliofelia-media`
 
 ### 4.4 Démarrage et migrations
 
-À chaque démarrage du conteneur web :
+À chaque démarrage du conteneur web (`scripts/entrypoint.sh`) :
 
 1. Vérification de la connectivité à la base
 2. Exécution de `manage.py migrate`
 3. Création des objets par défaut si base vide (catégories, règles, langue)
-4. Démarrage de gunicorn
+4. `compilemessages` (traductions) puis `collectstatic` (statique frais)
+5. Démarrage de gunicorn
 
 Aucune intervention manuelle requise pour les mises à jour mineures.
 
@@ -732,7 +741,7 @@ Les schémas JSON ci-dessous sont **figés** par `docs/specs/SPEC-CORR-001-contr
 
 #### Conventions générales
 
-- **Base URL** : `http://<box-ip>/biblio/api/v1/` — le slash final est significatif (le client concatène des chemins relatifs).
+- **Base URL** : `http://<box-ip>/bibliofelia/api/v1/` — le slash final est significatif (le client concatène des chemins relatifs). OfeliaScan ne code aucun chemin en dur : il découvre la base URL via mDNS / `/pairing/info` (SPEC-CORR-002).
 - **Encodage** : JSON UTF-8, `Content-Type: application/json`.
 - **Nommage des champs JSON** : `snake_case`.
 - **Dates** : chaînes ISO 8601 UTC (`2026-05-22T14:30:00Z`).
@@ -1014,58 +1023,51 @@ Pour respecter le principe d'ergonomie pour usagers peu formés sans frustrer le
 
 ### 11.1 Image Docker
 
-- Image multi-arch (arm64 pour Pi 5, amd64 pour dev et test)
-- Publiée sur registry Ofelia (à définir : GitHub Container Registry ou Harbor self-hosted)
-- Tags : `latest`, `vX.Y.Z`, `stable`
+- Image multi-arch (`Dockerfile`, cible `prod`) — arm64 pour la Pi 5, amd64
+  pour dev et test.
+- **Pas de registry** : keebee clone le dépôt GitHub BibliOfelia au moment de
+  l'installation et build l'image directement sur la Pi (même mécanisme que
+  Digistorm — FEAT-020). Internet requis uniquement pendant l'installation.
 
 ### 11.2 Docker Compose
 
-Snippet à intégrer au `docker-compose.yml` d'Edubox :
+BibliOfelia est installé via le **wizard de keebee** (case à cocher
+« BibliOfelia »). keebee intègre deux services à son propre
+`docker-compose.yml` ; cf. `keebee/docs/specs/FEAT-029-bibliofelia.md` et le
+fichier `docker-compose.yml` de ce dépôt (référence). Forme des services :
 
 ```yaml
 services:
-  bibliofelia-web:
-    image: ofelia/bibliofelia:stable
+  bibliofelia:                       # conteneur edubox-bibliofelia
+    build: { context: ./bibliofelia, target: prod }
     restart: unless-stopped
     volumes:
-      - bibliofelia-data:/app/data
-      - bibliofelia-media:/app/media
+      - /opt/edubox/data/bibliofelia/data:/app/data
+      - /opt/edubox/data/bibliofelia/media:/app/media
+      - bibliofelia-static:/app/staticfiles
+      - /etc/avahi/services:/etc/avahi/services      # mDNS — FEAT-019
     environment:
-      - DJANGO_SETTINGS_MODULE=bibliofelia.settings.prod
-      - SECRET_KEY_FILE=/run/secrets/bibliofelia_secret
-    networks:
-      - ofelia-net
+      DJANGO_SETTINGS_MODULE: config.settings.prod
+      SECRET_KEY: ${BIBLIOFELIA_SECRET_KEY}          # généré par le wizard
+      ALLOWED_HOSTS: "*"
+      FORCE_SCRIPT_NAME: /bibliofelia
+      STATIC_URL: /bibliofelia/static/
+      MEDIA_URL: /bibliofelia/media/
+      API_BASE_PATH: /bibliofelia/api/v1/
+      SECURE_COOKIES: "false"                        # AP WiFi en HTTP
+    networks: [edubox-net]
+
+  bibliofelia-worker:                # conteneur edubox-bibliofelia-worker
+    build: { context: ./bibliofelia, target: prod }
+    entrypoint: ["/usr/bin/tini", "--"]
+    command: ["python", "manage.py", "qcluster"]
     depends_on:
-      - bibliofelia-worker
-
-  bibliofelia-worker:
-    image: ofelia/bibliofelia:stable
-    restart: unless-stopped
-    command: python manage.py qcluster
-    volumes:
-      - bibliofelia-data:/app/data
-      - bibliofelia-media:/app/media
-    networks:
-      - ofelia-net
-
-  bibliofelia-backup:
-    image: ofelia/bibliofelia-backup:stable
-    restart: unless-stopped
-    volumes:
-      - bibliofelia-data:/app/data:ro
-      - bibliofelia-media:/app/media:ro
-      - /mnt/usb-backup:/backup
-    environment:
-      - BACKUP_HOURLY=true
-
-volumes:
-  bibliofelia-data:
-  bibliofelia-media:
-
-networks:
-  ofelia-net:
-    external: true
+      bibliofelia: { condition: service_healthy }
+    networks: [edubox-net]
 ```
+
+nginx (keebee) sert `/bibliofelia/static/` et `/bibliofelia/media/` par
+`alias`, et proxifie le reste vers `bibliofelia:8001` en retirant le préfixe.
 
 ### 11.3 Wizard de premier démarrage
 
@@ -1094,6 +1096,7 @@ networks:
 > - `apps/setup/demo.py` : `install_demo()` crée 50 notices, 80 exemplaires, 20 usagers, jusqu'à 15 prêts en cours. Objets marqués `[DEMO]` dans `notes` / `summary` / `description` selon le modèle.
 > - `remove_demo()` + commande `manage.py remove_demo` suppriment proprement (via marqueur).
 > - Activable depuis le wizard (`Step8DemoForm`).
+> - **BUG-007 (2026-05-22)** : les notices sans ISBN sont créées avec `isbn_13=None` (et non `""`) — la contrainte UNIQUE partielle `WHERE isbn_13 IS NOT NULL` n'autorise les doublons que pour `NULL`.
 
 
 
@@ -1115,8 +1118,8 @@ networks:
 
 ### 11.6 Diagnostic et support
 
-- Endpoint `/biblio/api/v1/health` JSON avec métriques système
-- Page admin `/biblio/admin/diagnostics` regroupant logs récents, statut backups, statut queue
+- Endpoint `/bibliofelia/api/v1/health` JSON avec métriques système
+- Page admin `/bibliofelia/admin/diagnostics` regroupant logs récents, statut backups, statut queue
 - Export de "bundle de diagnostic" zip (logs + config sans secrets) pour support à distance
 - Accès SSH via ZeroTier réservé au support central
 

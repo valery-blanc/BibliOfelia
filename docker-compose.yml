@@ -1,80 +1,77 @@
-# Prod / déploiement keebee.
-# À fusionner dans le docker-compose.yml d'EduBox ou inclure via -f.
+# Déploiement sur la Ofelia Box (Raspberry Pi 5) — FEAT-020 / Task #18.
+#
+# RÉFÉRENCE : le déploiement réel est piloté par le dépôt keebee, qui clone ce
+# dépôt au moment de l'installation et intègre ces deux services à son propre
+# docker-compose.yml (cf. keebee/docs/specs/FEAT-029-bibliofelia.md). Ce fichier
+# documente la forme attendue des services et reste utilisable tel quel si le
+# réseau `edubox-net` existe déjà.
+#
+# Dev local : utiliser docker-compose.dev.yml.
 services:
-  bibliofelia-web:
+  bibliofelia:
     image: ofelia/bibliofelia:${BIBLIOFELIA_TAG:-stable}
     build:
       context: .
       target: prod
+    container_name: edubox-bibliofelia
     restart: unless-stopped
     volumes:
       - bibliofelia-data:/app/data
       - bibliofelia-media:/app/media
+      - bibliofelia-static:/app/staticfiles
+      - /etc/avahi/services:/etc/avahi/services
     environment:
       DJANGO_SETTINGS_MODULE: config.settings.prod
-      SECRET_KEY_FILE: /run/secrets/bibliofelia_secret
-      ALLOWED_HOSTS: "bibliofelia.local,192.168.0.147,localhost"
-      CSRF_TRUSTED_ORIGINS: "https://bibliofelia.local,https://192.168.0.147"
+      SECRET_KEY: ${BIBLIOFELIA_SECRET_KEY}
+      ALLOWED_HOSTS: "*"
       DATABASE_PATH: /app/data/bibliofelia.sqlite3
       FORCE_SCRIPT_NAME: /bibliofelia
       STATIC_URL: /bibliofelia/static/
       MEDIA_URL: /bibliofelia/media/
+      API_BASE_PATH: /bibliofelia/api/v1/
+      SECURE_COOKIES: "false"
       DEFAULT_LANGUAGE: fr
       ENABLED_LANGUAGES: "fr,en,es,mg"
-    secrets:
-      - bibliofelia_secret
+      OPENLIBRARY_BASE_URL: https://openlibrary.org
     networks:
-      - ofelia-net
-    depends_on:
-      - bibliofelia-worker
+      - edubox-net
 
   bibliofelia-worker:
     image: ofelia/bibliofelia:${BIBLIOFELIA_TAG:-stable}
     build:
       context: .
       target: prod
+    container_name: edubox-bibliofelia-worker
     restart: unless-stopped
-    command: python manage.py qcluster
+    # Pas d'entrypoint.sh : les migrations / seed / collectstatic sont faits
+    # par le conteneur web. Le worker attend simplement que web soit healthy.
+    entrypoint: ["/usr/bin/tini", "--"]
+    command: ["python", "manage.py", "qcluster"]
+    # Le HEALTHCHECK du Dockerfile pingle :8001 (gunicorn) ; le worker n'écoute
+    # pas, on le désactive pour qu'il n'apparaisse pas comme `unhealthy`.
+    healthcheck:
+      disable: true
     volumes:
       - bibliofelia-data:/app/data
       - bibliofelia-media:/app/media
     environment:
       DJANGO_SETTINGS_MODULE: config.settings.prod
-      SECRET_KEY_FILE: /run/secrets/bibliofelia_secret
+      SECRET_KEY: ${BIBLIOFELIA_SECRET_KEY}
       DATABASE_PATH: /app/data/bibliofelia.sqlite3
       DEFAULT_LANGUAGE: fr
       ENABLED_LANGUAGES: "fr,en,es,mg"
       OPENLIBRARY_BASE_URL: https://openlibrary.org
-    secrets:
-      - bibliofelia_secret
     networks:
-      - ofelia-net
-
-  bibliofelia-backup:
-    image: ofelia/bibliofelia-backup:${BIBLIOFELIA_TAG:-stable}
-    build:
-      context: .
-      dockerfile: Dockerfile.backup
-    restart: unless-stopped
-    volumes:
-      - bibliofelia-data:/app/data:ro
-      - bibliofelia-media:/app/media:ro
-      - /mnt/usb-backup:/backup
-    environment:
-      BACKUP_HOURLY: "true"
-      BACKUP_DATA_PATH: /app/data
-      BACKUP_MEDIA_PATH: /app/media
-      BACKUP_DEST_PATH: /backup
-      CLOUD_BACKUP_ENABLED: "false"
+      - edubox-net
+    depends_on:
+      bibliofelia:
+        condition: service_healthy
 
 volumes:
   bibliofelia-data:
   bibliofelia-media:
+  bibliofelia-static:
 
 networks:
-  ofelia-net:
+  edubox-net:
     external: true
-
-secrets:
-  bibliofelia_secret:
-    file: ./secrets/bibliofelia_secret.txt

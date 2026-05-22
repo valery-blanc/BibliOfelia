@@ -2,7 +2,7 @@
 
 Source de vérité de l'avancement v1. Une case `[x]` = livrable terminé et déployable. `[ ]` = à faire. `[!]` = bloqué (voir note).
 
-Mise à jour : 2026-05-22 (Sprint 4 — Tasks #11 à #15 + BUG-006 + FEAT-017 validés par Val et commités d'un bloc. Sprint 3 : Task #19 mDNS toujours en attente de test sur la Pi.)
+Mise à jour : 2026-05-22 (Sprint 6 — Task #18 / FEAT-020 validés par Val sur la Pi `192.168.0.147` : portail → tuile → wizard BibliOfelia → recovery_key OK. BUG-007 corrigé au passage. Sprint 3 : Tasks #16/#19 testables maintenant que BibliOfelia tourne sur la Pi.)
 
 ## Sprint 0 — Squelette
 
@@ -148,8 +148,8 @@ Mise à jour : 2026-05-22 (Sprint 4 — Tasks #11 à #15 + BUG-006 + FEAT-017 va
   - [x] Réglages `AVAHI_SERVICE_PATH` + `MDNS_SERVICE_PORT` (`config/settings/base.py`)
   - [x] Tests : `apps/core/tests/test_avahi.py` — 6 verts ; suite complète **138 passed**
   - [x] Doc : `docs/specs/FEAT-019-mdns-avahi.md` + `SPEC §6.10` mis à jour
-  - [!] Régénération au wizard de premier démarrage — bloqué : dépend de Task #15 (Sprint 4) ; la commande est prête, reste à brancher le `call_command`
-  - [!] Bind-mount `/etc/avahi/services/` + exécution au déploiement — bloqué : dépend de Task #18 (intégration keebee, Sprint 6)
+  - [x] Régénération au wizard de premier démarrage — débloqué par Task #15 : `apply_wizard()` appelle `generate_avahi_service`
+  - [x] Bind-mount `/etc/avahi/services/` — fait dans la compose keebee (FEAT-020 / Task #18) ; `avahi-daemon` installé par `bootstrap.sh` keebee
 - [ ] Test Val : découverte + appairage OfeliaScan + scan ISBN bout-en-bout (sur la Pi, après Task #18)
 
 ## Sprint 4 — Hors workflow principal
@@ -224,8 +224,20 @@ Mise à jour : 2026-05-22 (Sprint 4 — Tasks #11 à #15 + BUG-006 + FEAT-017 va
 
 ## Sprint 6 — Déploiement
 
-- [ ] **Task #18** Intégration keebee : docker-compose + nginx /bibliofelia/
-  - Cohabitation avec Koha (qui reste sur `/biblio/`)
-  - Modifier C:\WORK\keebee/docker-compose.yml + conf nginx
-  - Build multi-arch arm64+amd64
-  - Documenter dans `keebee/docs/specs/specs_keebee.md`
+- [ ] **Task #18** Intégration keebee : déploiement sur la Ofelia Box (FEAT-020)
+  - Cohabitation avec Koha (qui reste sur `/biblio/` ; BibliOfelia sur `/bibliofelia/`)
+  - [x] `docs/specs/FEAT-020-integration-keebee.md`
+  - [x] BibliOfelia : réglage `SECURE_COOKIES` (`base.py` + `prod.py`)
+  - [x] BibliOfelia : `collectstatic` ajouté à `scripts/entrypoint.sh`
+  - [x] BibliOfelia : `API_BASE_PATH` par défaut corrigé `/biblio/` → `/bibliofelia/`
+  - [x] BibliOfelia : `docker-compose.yml` aligné (référence keebee : web + worker, `edubox-net`)
+  - [x] BibliOfelia : `SPEC §4/§11` mis à jour
+  - [x] keebee : `setup/app.py` + `setup/templates/index.html` (carte wizard BibliOfelia)
+  - [x] keebee : `docker-compose.yml` (services `bibliofelia` + `bibliofelia-worker`)
+  - [x] keebee : `nginx/conf.d/ofelia-locations.inc` (`location /bibliofelia/`)
+  - [x] keebee : `portal/index.html` (tuile) + `healthcheck/app.py`
+  - [x] keebee : `bootstrap.sh` (installe `avahi-daemon`)
+  - [x] keebee : `docs/specs/FEAT-029-bibliofelia.md` + `specs_keebee.md` + `TASKS.md`
+  - Build multi-arch : abandonné — keebee clone + build sur la Pi (décision Val 2026-05-22)
+  - [x] Déploiement sur la Pi `192.168.0.147` + test Val (portail → wizard → connexion) — OK 2026-05-22
+  - [x] **BUG-007** wizard 500 fin d'install : `install_demo()` plantait sur la contrainte UNIQUE `isbn_13` ; fix `""` → `None` (`apps/setup/demo.py`) + doc + SPEC §11.4

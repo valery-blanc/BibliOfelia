@@ -26,12 +26,13 @@ env = environ.Env(
     OPENLIBRARY_TIMEOUT=(int, 5),
     BIBLIOFELIA_VERSION=(str, "0.1.0-dev"),
     API_BASE_URL=(str, ""),
-    API_BASE_PATH=(str, "/biblio/api/v1/"),
+    API_BASE_PATH=(str, "/bibliofelia/api/v1/"),
     AVAHI_SERVICE_PATH=(str, "/etc/avahi/services/bibliofelia.service"),
     MDNS_SERVICE_PORT=(int, 80),
     BACKUP_USB_PATH=(str, "/backup"),
     CUPS_HOST=(str, ""),
     CUPS_PORT=(int, 631),
+    SECURE_COOKIES=(bool, True),
 )
 
 env_file = BASE_DIR / ".env"
