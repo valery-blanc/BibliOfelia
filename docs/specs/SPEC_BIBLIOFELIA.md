@@ -4,7 +4,7 @@ Spécification détaillée du logiciel de gestion de bibliothèque BibliOfelia, 
 
 Version : 1.0 (cible v1)
 Statut : draft pour Spec-Driven Development
-Dernière modif spec : 2026-05-22 — Sprint 3 : FEAT-016 — implémentation de l'API OfeliaScan (§6.10 : auth JWT, /pairing/info, /isbn/{isbn}, /health) ; Sprint 2 : FEAT-005 à FEAT-010 (§6.1 à §6.5, §10) ; i18n 4 langues (§6.9) ; BUG-002 à BUG-005 ; §6.10 réécrit comme contrat d'API (SPEC-CORR-001)
+Dernière modif spec : 2026-05-22 — Sprint 3 : FEAT-016 — API OfeliaScan (§6.10 : auth JWT, /pairing/info, /isbn/{isbn}, /health) ; FEAT-019 — publication mDNS via service Avahi sur l'hôte (§6.10) ; Sprint 2 : FEAT-005 à FEAT-010 (§6.1 à §6.5, §10) ; i18n 4 langues (§6.9) ; BUG-002 à BUG-005 ; §6.10 réécrit comme contrat d'API (SPEC-CORR-001)
 
 ---
 
@@ -757,7 +757,7 @@ La box **publie un service DNS-SD** pour qu'OfeliaScan la découvre sur le rése
 - Type de service : `_bibliofelia._tcp.`, domaine `.local`, port HTTP de l'API.
 - Nom d'instance = `box_name` (= celui de `/pairing/info`).
 - Enregistrements TXT recommandés : `library_name`, `version`, `api_base`.
-- Implémentation : `avahi-daemon` sur l'hôte Raspberry Pi (pas dans le conteneur Docker), fichier `/etc/avahi/services/bibliofelia.service` régénéré au wizard de premier démarrage (§11.3) avec le nom réel de la bibliothèque. Choix d'archi retenu pour sa robustesse (service géré par systemd, découplé du conteneur applicatif).
+- Implémentation (FEAT-019) : `avahi-daemon` sur l'hôte Raspberry Pi (pas dans le conteneur Docker). Le fichier `/etc/avahi/services/bibliofelia.service` est généré par la commande `manage.py generate_avahi_service` (à partir des `Setting` `box_name`/`library_name` et des réglages `BIBLIOFELIA_VERSION`/`API_BASE_PATH`/`MDNS_SERVICE_PORT`) ; le dossier `/etc/avahi/services/` est monté depuis l'hôte. `avahi-daemon`, géré par systemd, surveille ce dossier et recharge automatiquement. Le wizard de premier démarrage (§11.3) régénère le fichier avec le nom réel de la bibliothèque. Choix d'archi retenu pour sa robustesse (service géré par systemd, fichier statique, découplé du conteneur applicatif).
 
 #### Implémentation (FEAT-016)
 

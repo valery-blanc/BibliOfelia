@@ -26,6 +26,8 @@ env = environ.Env(
     OPENLIBRARY_TIMEOUT=(int, 5),
     BIBLIOFELIA_VERSION=(str, "0.1.0-dev"),
     API_BASE_PATH=(str, "/biblio/api/v1/"),
+    AVAHI_SERVICE_PATH=(str, "/etc/avahi/services/bibliofelia.service"),
+    MDNS_SERVICE_PORT=(int, 80),
     BACKUP_USB_PATH=(str, "/backup"),
     CUPS_HOST=(str, ""),
     CUPS_PORT=(int, 631),
@@ -287,6 +289,12 @@ OPENLIBRARY_TIMEOUT = env("OPENLIBRARY_TIMEOUT")
 # attend un slash final).
 BIBLIOFELIA_VERSION = env("BIBLIOFELIA_VERSION")
 API_BASE_PATH = env("API_BASE_PATH")
+
+# Découverte mDNS (SPEC §6.10) — service Avahi `_bibliofelia._tcp.` publié sur
+# l'hôte Raspberry Pi. AVAHI_SERVICE_PATH = fichier écrit par la commande
+# `generate_avahi_service` (dossier `/etc/avahi/services/` monté depuis l'hôte).
+AVAHI_SERVICE_PATH = env("AVAHI_SERVICE_PATH")
+MDNS_SERVICE_PORT = env("MDNS_SERVICE_PORT")
 
 # Sauvegardes
 BACKUP_USB_PATH = env("BACKUP_USB_PATH")

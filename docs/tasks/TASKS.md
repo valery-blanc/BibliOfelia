@@ -133,7 +133,7 @@ Mise à jour : 2026-05-22 (Sprint 3 : Task #16 codée + 132 tests verts, en atte
 > appliqué dans `SPEC §6.10`. Si la box respecte ce contrat à la lettre,
 > OfeliaScan n'a aucune modification à faire.
 
-- [ ] **Task #16** API REST OfeliaScan — authentification, appairage, lookup ISBN (§6.10) — *codée, en attente test Val*
+- [x] **Task #16** API REST OfeliaScan — authentification, appairage, lookup ISBN (§6.10) — validé Val 2026-05-22 (conformité contrat), commit `68375df`
   - [x] Auth JWT : `POST /auth/login`, `/auth/refresh`, `/auth/logout` — serializers custom (`apps/api/serializers.py`) émettant `access_token` / `refresh_token` / `token_type` / `expires_in`
   - [x] SimpleJWT : `ROTATE_REFRESH_TOKENS` + `BLACKLIST_AFTER_ROTATION` + app `token_blacklist` (déjà configurés, exploités par `/auth/refresh` et `/auth/logout`)
   - [x] `GET /pairing/info` — sans auth, champ `api_base` (réglage `API_BASE_PATH`)
@@ -142,10 +142,14 @@ Mise à jour : 2026-05-22 (Sprint 3 : Task #16 codée + 132 tests verts, en atte
   - [x] Format d'erreur uniforme `{error:{code,message,details}}` (handler `apps/api/exceptions.py` + 404 ISBN)
   - [x] Tests API : `apps/api/tests/test_api.py` — 15 tests verts, suite complète **132 passed**
   - [x] Doc : `docs/specs/FEAT-016-api-ofeliascan.md` + `SPEC §6.10` mis à jour
-- [ ] **Task #19** Publication mDNS/DNS-SD `_bibliofelia._tcp.` (SPEC §6.10 / SPEC-CORR-001 §7)
-  - [ ] Service Avahi sur l'hôte Pi : `/etc/avahi/services/bibliofelia.service` (TXT : `library_name`, `version`, `api_base`)
-  - [ ] Régénération du fichier au wizard de premier démarrage (Task #15)
-- [ ] Test Val : découverte + appairage OfeliaScan + scan ISBN bout-en-bout
+- [ ] **Task #19** Publication mDNS/DNS-SD `_bibliofelia._tcp.` (SPEC §6.10 / SPEC-CORR-001 §7) — *codée, test mDNS réel à faire sur la Pi*
+  - [x] Commande `generate_avahi_service` (`apps/core/management/commands/`) : génère `/etc/avahi/services/bibliofelia.service` (TXT : `library_name`, `version`, `api_base`) à partir des `Setting` + réglages ; options `--output` / `--dry-run`
+  - [x] Réglages `AVAHI_SERVICE_PATH` + `MDNS_SERVICE_PORT` (`config/settings/base.py`)
+  - [x] Tests : `apps/core/tests/test_avahi.py` — 6 verts ; suite complète **138 passed**
+  - [x] Doc : `docs/specs/FEAT-019-mdns-avahi.md` + `SPEC §6.10` mis à jour
+  - [!] Régénération au wizard de premier démarrage — bloqué : dépend de Task #15 (Sprint 4) ; la commande est prête, reste à brancher le `call_command`
+  - [!] Bind-mount `/etc/avahi/services/` + exécution au déploiement — bloqué : dépend de Task #18 (intégration keebee, Sprint 6)
+- [ ] Test Val : découverte + appairage OfeliaScan + scan ISBN bout-en-bout (sur la Pi, après Task #18)
 
 ## Sprint 4 — Hors workflow principal
 
