@@ -33,6 +33,7 @@ services:
       DEFAULT_LANGUAGE: fr
       ENABLED_LANGUAGES: "fr,en,es,mg"
       OPENLIBRARY_BASE_URL: https://openlibrary.org
+      CSRF_TRUSTED_ORIGINS: ${BIBLIOFELIA_CSRF_TRUSTED_ORIGINS:-}
     networks:
       - edubox-net
 
