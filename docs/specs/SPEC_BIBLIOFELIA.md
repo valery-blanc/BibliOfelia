@@ -4,7 +4,7 @@ Spécification détaillée du logiciel de gestion de bibliothèque BibliOfelia, 
 
 Version : 1.0 (cible v1)
 Statut : draft pour Spec-Driven Development
-Dernière modif spec : 2026-05-22 — Sprint 3 : FEAT-016 — API OfeliaScan (§6.10 : auth JWT, /pairing/info, /isbn/{isbn}, /health) ; FEAT-019 — publication mDNS via service Avahi sur l'hôte (§6.10) ; Sprint 2 : FEAT-005 à FEAT-010 (§6.1 à §6.5, §10) ; i18n 4 langues (§6.9) ; BUG-002 à BUG-005 ; §6.10 réécrit comme contrat d'API (SPEC-CORR-001)
+Dernière modif spec : 2026-05-22 — Sprint 3 : FEAT-016 — API OfeliaScan (§6.10 : auth JWT, /pairing/info, /isbn/{isbn}, /health) ; FEAT-019 — publication mDNS via service Avahi sur l'hôte (§6.10) ; SPEC-CORR-002 — /pairing/info renvoie `base_url` (URL absolue) ; Sprint 2 : FEAT-005 à FEAT-010 (§6.1 à §6.5, §10) ; i18n 4 langues (§6.9) ; BUG-002 à BUG-005 ; §6.10 réécrit comme contrat d'API (SPEC-CORR-001)
 
 ---
 
@@ -713,7 +713,7 @@ Les schémas JSON ci-dessous sont **figés** par `docs/specs/SPEC-CORR-001-contr
 #### Pairing
 
 - `GET /pairing/info` — **auth non requise** (découverte). Réponse `200` :
-  `{"box_name", "library_name", "version", "api_base"}` (les 4 requis ; `api_base` = `"/biblio/api/v1/"`).
+  `{"box_name", "library_name", "version", "base_url"}` (les 4 requis). `base_url` est l'**URL absolue complète** de la base de l'API, slash final inclus (`http://<box>/…/api/v1/`) ; OfeliaScan l'utilise telle quelle. La box la reconstruit depuis la requête entrante (ou réglage `API_BASE_URL`). Amendé par `SPEC-CORR-002`.
 - `POST /pairing/claim` — appairage par QR code. Hors périmètre du contrat SPEC-CORR-001 (différé).
 
 #### Métadonnées
@@ -756,7 +756,7 @@ La box **publie un service DNS-SD** pour qu'OfeliaScan la découvre sur le rése
 
 - Type de service : `_bibliofelia._tcp.`, domaine `.local`, port HTTP de l'API.
 - Nom d'instance = `box_name` (= celui de `/pairing/info`).
-- Enregistrements TXT recommandés : `library_name`, `version`, `api_base`.
+- Enregistrements TXT recommandés : `library_name`, `version`, `api_base` (le *chemin* de l'API ; distinct du `base_url` — URL absolue — de `/pairing/info` ; non exploités par OfeliaScan v1).
 - Implémentation (FEAT-019) : `avahi-daemon` sur l'hôte Raspberry Pi (pas dans le conteneur Docker). Le fichier `/etc/avahi/services/bibliofelia.service` est généré par la commande `manage.py generate_avahi_service` (à partir des `Setting` `box_name`/`library_name` et des réglages `BIBLIOFELIA_VERSION`/`API_BASE_PATH`/`MDNS_SERVICE_PORT`) ; le dossier `/etc/avahi/services/` est monté depuis l'hôte. `avahi-daemon`, géré par systemd, surveille ce dossier et recharge automatiquement. Le wizard de premier démarrage (§11.3) régénère le fichier avec le nom réel de la bibliothèque. Choix d'archi retenu pour sa robustesse (service géré par systemd, fichier statique, découplé du conteneur applicatif).
 
 #### Implémentation (FEAT-016)
@@ -770,9 +770,9 @@ et `/items`, `/search`, `/sync/status` restent à faire (Task #20, Sprint 5).
 - `POST /auth/login` et `/auth/refresh` : serializers personnalisés
   (`apps/api/serializers.py`) émettant les noms OAuth 2.0.
 - `version` (de `/pairing/info` et `/health`) provient du réglage
-  `BIBLIOFELIA_VERSION` ; `api_base` du réglage `API_BASE_PATH` (défaut
-  `/biblio/api/v1/`) ; `box_name` / `library_name` du modèle `Setting`
-  (renseignés par le wizard, §11.3).
+  `BIBLIOFELIA_VERSION` ; `base_url` est reconstruit depuis la requête entrante
+  (ou réglage `API_BASE_URL` si défini) ; `box_name` / `library_name` du modèle
+  `Setting` (renseignés par le wizard, §11.3).
 - `/health` exige une authentification (contrat §6.10). Le healthcheck Docker
   utilise donc `/api/v1/pairing/info` (public) comme sonde de vivacité.
 

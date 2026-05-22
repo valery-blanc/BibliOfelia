@@ -2,7 +2,7 @@
 
 Source de vérité de l'avancement v1. Une case `[x]` = livrable terminé et déployable. `[ ]` = à faire. `[!]` = bloqué (voir note).
 
-Mise à jour : 2026-05-22 (Sprint 3 : Task #16 codée + 132 tests verts, en attente test Val ; Task #19 → avahi hôte décidé)
+Mise à jour : 2026-05-22 (Sprint 3 : Task #16 committé `68375df`, Task #19 committé `7985376` ; SPEC-CORR-002 `/pairing/info` → `base_url`)
 
 ## Sprint 0 — Squelette
 
@@ -140,8 +140,9 @@ Mise à jour : 2026-05-22 (Sprint 3 : Task #16 codée + 132 tests verts, en atte
   - [x] `GET /isbn/{isbn}` — champ `publication_year`, `isbn` toujours présent ; cache local `BibliographicRecord` + fallback OpenLibrary
   - [x] `GET /health` — champ `status` garanti, auth requise ; healthcheck Docker repointé sur `/pairing/info`
   - [x] Format d'erreur uniforme `{error:{code,message,details}}` (handler `apps/api/exceptions.py` + 404 ISBN)
-  - [x] Tests API : `apps/api/tests/test_api.py` — 15 tests verts, suite complète **132 passed**
+  - [x] Tests API : `apps/api/tests/test_api.py` — 16 tests verts
   - [x] Doc : `docs/specs/FEAT-016-api-ofeliascan.md` + `SPEC §6.10` mis à jour
+  - [x] **SPEC-CORR-002** : `/pairing/info` renvoie `base_url` (URL absolue, nom de champ aligné sur le `PairingInfoDto` d'OfeliaScan) au lieu de `api_base` — lève le conflit de routage `/biblio/` vs `/bibliofelia/`
 - [ ] **Task #19** Publication mDNS/DNS-SD `_bibliofelia._tcp.` (SPEC §6.10 / SPEC-CORR-001 §7) — *codée, test mDNS réel à faire sur la Pi*
   - [x] Commande `generate_avahi_service` (`apps/core/management/commands/`) : génère `/etc/avahi/services/bibliofelia.service` (TXT : `library_name`, `version`, `api_base`) à partir des `Setting` + réglages ; options `--output` / `--dry-run`
   - [x] Réglages `AVAHI_SERVICE_PATH` + `MDNS_SERVICE_PORT` (`config/settings/base.py`)

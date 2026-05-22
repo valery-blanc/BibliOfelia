@@ -119,10 +119,17 @@ class TestPairingInfo:
     def test_pairing_info_no_auth_required(self, client):
         resp = client.get("/api/v1/pairing/info")
         assert resp.status_code == 200
-        assert {"box_name", "library_name", "version", "api_base"} <= set(resp.json())
+        assert {"box_name", "library_name", "version", "base_url"} <= set(resp.json())
 
-    def test_api_base_has_trailing_slash(self, client):
-        assert client.get("/api/v1/pairing/info").json()["api_base"].endswith("/")
+    def test_base_url_is_absolute_with_trailing_slash(self, client):
+        base_url = client.get("/api/v1/pairing/info").json()["base_url"]
+        assert base_url.startswith("http")
+        assert base_url.endswith("/")
+
+    def test_base_url_override_from_setting(self, client, settings):
+        settings.API_BASE_URL = "http://192.168.0.147/bibliofelia/api/v1/"
+        base_url = client.get("/api/v1/pairing/info").json()["base_url"]
+        assert base_url == "http://192.168.0.147/bibliofelia/api/v1/"
 
 
 @pytest.mark.django_db

@@ -25,6 +25,7 @@ env = environ.Env(
     OPENLIBRARY_BASE_URL=(str, "https://openlibrary.org"),
     OPENLIBRARY_TIMEOUT=(int, 5),
     BIBLIOFELIA_VERSION=(str, "0.1.0-dev"),
+    API_BASE_URL=(str, ""),
     API_BASE_PATH=(str, "/biblio/api/v1/"),
     AVAHI_SERVICE_PATH=(str, "/etc/avahi/services/bibliofelia.service"),
     MDNS_SERVICE_PORT=(int, 80),
@@ -284,10 +285,14 @@ AUDITLOG_INCLUDE_ALL_MODELS = False
 OPENLIBRARY_BASE_URL = env("OPENLIBRARY_BASE_URL")
 OPENLIBRARY_TIMEOUT = env("OPENLIBRARY_TIMEOUT")
 
-# API OfeliaScan (SPEC §6.10) — version logicielle exposée par /pairing/info et
-# /health ; API_BASE_PATH = chemin public de l'API derrière nginx (le contrat
-# attend un slash final).
+# API OfeliaScan (SPEC §6.10).
+# BIBLIOFELIA_VERSION : version logicielle, exposée par /pairing/info et /health.
+# API_BASE_URL : URL absolue complète renvoyée dans `base_url` par /pairing/info.
+#   Vide => reconstruite depuis la requête (la box publie l'adresse réellement
+#   utilisée par le client ; aucun chemin codé en dur — SPEC-CORR-002).
+# API_BASE_PATH : chemin de base, utilisé pour l'enregistrement TXT mDNS.
 BIBLIOFELIA_VERSION = env("BIBLIOFELIA_VERSION")
+API_BASE_URL = env("API_BASE_URL")
 API_BASE_PATH = env("API_BASE_PATH")
 
 # Découverte mDNS (SPEC §6.10) — service Avahi `_bibliofelia._tcp.` publié sur

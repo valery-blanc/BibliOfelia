@@ -1,9 +1,9 @@
 # FEAT-016 — API REST OfeliaScan (auth, appairage, lookup ISBN)
 
-Statut : **DONE — tests écrits et exécutés (15 verts), en attente test fonctionnel Val** (2026-05-22)
+Statut : **DONE — committé `68375df` ; `/pairing/info` amendé par SPEC-CORR-002 (`base_url`)** (2026-05-22)
 Sprint : 3
 Task : #16 de `docs/tasks/TASKS.md`
-Spec : `SPEC_BIBLIOFELIA.md` §6.10 — contrat figé par `SPEC-CORR-001-contrat-api-box.md`
+Spec : `SPEC_BIBLIOFELIA.md` §6.10 — contrat `SPEC-CORR-001`, amendé par `SPEC-CORR-002`
 
 ## Contexte
 
@@ -74,8 +74,8 @@ ISBN est construit explicitement au même format.
 ## Réglages (`config/settings/base.py`)
 
 - `BIBLIOFELIA_VERSION` (défaut `0.1.0-dev`) — exposé par `/pairing/info` et `/health`.
-- `API_BASE_PATH` (défaut `/biblio/api/v1/`) — valeur renvoyée dans `api_base`.
-  Le contrat OfeliaScan attend `/biblio/api/v1/` (slash final inclus).
+- `API_BASE_URL` (défaut vide) — URL absolue renvoyée dans `base_url` par
+  `/pairing/info` ; vide => reconstruite depuis la requête entrante (SPEC-CORR-002).
 - `box_name` / `library_name` sont lus depuis `Setting` (renseignés par le
   wizard de premier démarrage, Task #15) ; défauts `OfeliaBox` / `BibliOfelia`.
 
@@ -92,19 +92,19 @@ ISBN est construit explicitement au même format.
   (les anciennes entrées `/health/` n'ont plus de route).
 - Aucun changement de modèle → aucune migration.
 
-## Point ouvert — routage nginx (Task #18)
+## Routage nginx — résolu (SPEC-CORR-002)
 
-Le contrat fige `api_base = /biblio/api/v1/`, alors que la route nginx de
-l'UI BibliOfelia est `/bibliofelia/` (`/biblio/` étant le Koha de keebee). La
-cohabitation est possible : nginx fait du *longest-prefix match*, donc
-`location /biblio/api/v1/ { proxy_pass bibliofelia; }` peut coexister avec
-`location /biblio/ { proxy_pass koha; }`. `API_BASE_PATH` est configurable par
-variable d'environnement pour absorber la décision finale au déploiement.
+Le conflit `/biblio/api/v1/` (contrat) vs `/bibliofelia/` (route nginx de l'UI,
+`/biblio/` étant le Koha de keebee) est levé : `/pairing/info` renvoie désormais
+`base_url`, l'URL absolue **réelle** de la box, qu'OfeliaScan utilise
+directement. La box n'a plus à se conformer à un chemin imposé. Le routage nginx
+de Task #18 reste libre ; il devra seulement transmettre les en-têtes (`Host`,
+`X-Forwarded-Proto`) et ne pas réécrire le chemin — sinon fixer `API_BASE_URL`.
 
 ## Tests (`apps/api/tests/test_api.py`)
 
-15 tests (DRF `APIClient`), tous verts : champs OAuth, mauvais identifiants,
-rotation + liste noire du refresh token, logout, `/pairing/info` public,
-`/health` protégé, lookup ISBN cache / fallback OpenLibrary (moqué) / 404.
-`conftest.py` vide le cache entre tests pour réinitialiser les compteurs de
-throttling. Suite complète : **132 passed**.
+16 tests (DRF `APIClient`), tous verts : champs OAuth, mauvais identifiants,
+rotation + liste noire du refresh token, logout, `/pairing/info` public +
+`base_url` absolu + override, `/health` protégé, lookup ISBN cache / fallback
+OpenLibrary (moqué) / 404. `conftest.py` vide le cache entre tests pour
+réinitialiser les compteurs de throttling.
