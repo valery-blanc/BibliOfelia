@@ -6,7 +6,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: BibliOfelia 1.0\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2026-05-22 12:04+0000\n"
+"POT-Creation-Date: 2026-05-22 13:07+0000\n"
 "PO-Revision-Date: 2026-05-22 00:00+0000\n"
 "Last-Translator: Claude Code\n"
 "Language-Team: Español\n"
@@ -319,7 +319,6 @@ msgid "Restauration terminée. Redémarrez l'application avant tout autre usage.
 msgstr "Restauración completa. Reinicie la aplicación antes de continuar."
 
 #: apps/core/admin_views.py:166
-#| msgid "Identifiant"
 msgid "Identifiant requis."
 msgstr "Identificador obligatorio."
 
@@ -1071,7 +1070,6 @@ msgstr "Nuevo"
 
 #: templates/accounts/user_form.html:9 templates/accounts/user_form.html:14
 #: templates/base.html:53
-#| msgid "Aucun compte."
 msgid "Mon compte"
 msgstr "Mi cuenta"
 
@@ -1260,6 +1258,13 @@ msgid "Code interne"
 msgstr "Código interno"
 
 #: templates/catalog/record_detail.html:43
+#: templates/inventory/session_report.html:25
+#: templates/printing/labels_picker.html:29
+#: templates/reports/inactive_list.html:43
+msgid "Code Ofelia"
+msgstr "Código Ofelia"
+
+#: templates/catalog/record_detail.html:43
 #: templates/printing/labels_picker.html:10
 #: templates/printing/labels_picker.html:28
 msgid "Emplacement"
@@ -1414,7 +1419,6 @@ msgstr "Últimas ejecuciones"
 #: templates/core/admin/ofeliascan.html:4
 #: templates/core/admin/ofeliascan.html:9
 #: templates/core/admin/ofeliascan.html:12 templates/core/advanced.html:82
-#| msgid "Identifiant OfeliaScan"
 msgid "Connexion OfeliaScan"
 msgstr "Conexión OfeliaScan"
 
@@ -1422,7 +1426,9 @@ msgstr "Conexión OfeliaScan"
 msgid ""
 "Paramètres à saisir dans l'application mobile OfeliaScan pour qu'elle se "
 "connecte à cette box."
-msgstr "Ajustes a introducir en la aplicación móvil OfeliaScan para que se conecte a esta caja."
+msgstr ""
+"Ajustes a introducir en la aplicación móvil OfeliaScan para que se conecte a "
+"esta caja."
 
 #: templates/core/admin/ofeliascan.html:17
 msgid "Adresse de la box"
@@ -1432,10 +1438,11 @@ msgstr "Dirección de la caja"
 msgid ""
 "OfeliaScan détecte normalement la box automatiquement (mDNS). En cas de "
 "besoin, saisissez l'adresse ci-dessous."
-msgstr "OfeliaScan detecta normalmente la caja automáticamente (mDNS). Si es necesario, introduzca la dirección de abajo."
+msgstr ""
+"OfeliaScan detecta normalmente la caja automáticamente (mDNS). Si es "
+"necesario, introduzca la dirección de abajo."
 
 #: templates/core/admin/ofeliascan.html:20
-#| msgid "Nom de la box (mDNS)"
 msgid "Nom de la box"
 msgstr "Nombre de la caja"
 
@@ -1456,7 +1463,6 @@ msgid "Chemin de l'API"
 msgstr "Ruta de la API"
 
 #: templates/core/admin/ofeliascan.html:29
-#| msgid "Identifiants invalides."
 msgid "Identifiants autorisés"
 msgstr "Credenciales autorizadas"
 
@@ -1464,10 +1470,11 @@ msgstr "Credenciales autorizadas"
 msgid ""
 "Comptes (rôle Contributeur OfeliaScan) acceptés par l'API. Le mot de passe "
 "est affiché en clair pour être recopié dans l'application."
-msgstr "Cuentas (rol Contribuidor OfeliaScan) aceptadas por la API. La contraseña se muestra en claro para copiarla en la aplicación."
+msgstr ""
+"Cuentas (rol Contribuidor OfeliaScan) aceptadas por la API. La contraseña se "
+"muestra en claro para copiarla en la aplicación."
 
 #: templates/core/admin/ofeliascan.html:36
-#| msgid "Prêté le"
 msgid "Créé le"
 msgstr "Creado el"
 
@@ -1491,10 +1498,11 @@ msgstr "Autorizar una nueva credencial"
 msgid ""
 "Laissez le mot de passe proposé ou saisissez le vôtre. Il sera affiché en "
 "clair dans le tableau ci-dessus."
-msgstr "Mantenga la contraseña propuesta o introduzca la suya. Se mostrará en claro en la tabla de arriba."
+msgstr ""
+"Mantenga la contraseña propuesta o introduzca la suya. Se mostrará en claro "
+"en la tabla de arriba."
 
 #: templates/core/admin/ofeliascan.html:77
-#| msgid "Automatique"
 msgid "Autoriser"
 msgstr "Autorizar"
 
@@ -1528,29 +1536,29 @@ msgid "Restaurer depuis un fichier…"
 msgstr "Restaurar desde un archivo…"
 
 #: templates/core/advanced.html:9
-#| msgid ""
-#| "Outils complémentaires : rapports, impressions, et — pour les "
-#| "administrateurs — paramètres, comptes et diagnostic."
 msgid ""
 "Outils complémentaires : impressions, rapports, inventaire, et — pour les "
 "administrateurs — paramètres, comptes et diagnostic."
-msgstr "Herramientas adicionales: impresiones, informes, inventario y — para administradores — ajustes, cuentas y diagnóstico."
+msgstr ""
+"Herramientas adicionales: impresiones, informes, inventario y — para "
+"administradores — ajustes, cuentas y diagnóstico."
 
 #: templates/core/advanced.html:13
 msgid "Impression"
 msgstr "Impresión"
 
-#: templates/core/advanced.html:16 templates/printing/labels_picker.html:7
-msgid "Étiquettes exemplaires"
-msgstr "Etiquetas de ejemplares"
+#: templates/core/advanced.html:16 templates/printing/labels_picker.html:4
+#: templates/printing/labels_picker.html:7
+msgid "Étiquettes codes Ofelia"
+msgstr "Etiquetas códigos Ofelia"
 
 #: templates/core/advanced.html:17
 msgid ""
-"Génère les étiquettes (EAN13 + titre + emplacement) à coller sur les "
+"Génère les étiquettes (code Ofelia + titre + emplacement) à coller sur les "
 "ouvrages. PDF planche A4 ou envoi direct à l'imprimante CUPS."
 msgstr ""
-"Genera etiquetas (EAN13 + título + ubicación) para pegar en las obras. Hoja "
-"PDF A4 o envío directo a impresora CUPS."
+"Genera etiquetas (código Ofelia + título + ubicación) para pegar en las "
+"obras. Hoja PDF A4 o envío directo a impresora CUPS."
 
 #: templates/core/advanced.html:20 templates/printing/cards_picker.html:7
 msgid "Cartes membres"
@@ -1612,13 +1620,12 @@ msgid "Inactifs"
 msgstr "Inactivos"
 
 #: templates/core/advanced.html:44
-#| msgid ""
-#| "Usagers et exemplaires sans aucun prêt sur une période — utile pour le "
-#| "récolement et la gestion du fonds."
 msgid ""
 "Usagers et exemplaires sans aucun prêt sur une période — utile pour "
 "l'inventaire et la gestion du fonds."
-msgstr "Usuarios y ejemplares sin ningún préstamo en un período — útil para el inventario y la gestión del fondo."
+msgstr ""
+"Usuarios y ejemplares sin ningún préstamo en un período — útil para el "
+"inventario y la gestión del fondo."
 
 #: templates/core/advanced.html:47 templates/reports/index.html:19
 msgid "Export CSV des prêts"
@@ -1650,7 +1657,6 @@ msgid "Inventaire"
 msgstr "Inventario"
 
 #: templates/core/advanced.html:62
-#| msgid "Sessions en cours"
 msgid "Sessions d'inventaire"
 msgstr "Sesiones de inventario"
 
@@ -1658,7 +1664,9 @@ msgstr "Sesiones de inventario"
 msgid ""
 "Vérification du fonds : créer une session, pointer les exemplaires scannés, "
 "repérer les écarts."
-msgstr "Verificación del fondo: crear una sesión, registrar los ejemplares escaneados, detectar las diferencias."
+msgstr ""
+"Verificación del fondo: crear una sesión, registrar los ejemplares "
+"escaneados, detectar las diferencias."
 
 #: templates/core/advanced.html:71
 msgid "Administration"
@@ -1684,7 +1692,9 @@ msgstr ""
 msgid ""
 "Identifiants autorisés pour l'application mobile OfeliaScan et adresse de la "
 "box."
-msgstr "Credenciales autorizadas para la aplicación móvil OfeliaScan y dirección de la caja."
+msgstr ""
+"Credenciales autorizadas para la aplicación móvil OfeliaScan y dirección de "
+"la caja."
 
 #: templates/core/advanced.html:87
 msgid ""
@@ -1872,12 +1882,12 @@ msgid "exemplaires pointés / attendus dans le périmètre"
 msgstr "ejemplares escaneados / esperados en el alcance"
 
 #: templates/inventory/session_detail.html:26
-msgid "Pointer un exemplaire"
-msgstr "Escanear un ejemplar"
+msgid "Scanner ou saisir le code Ofelia d'un document"
+msgstr "Escanee o introduzca el código Ofelia de un documento"
 
 #: templates/inventory/session_detail.html:32
-msgid "Scanner le code-barres"
-msgstr "Escanear el código de barras"
+msgid "Scanner le code Ofelia"
+msgstr "Escanear el código Ofelia"
 
 #: templates/inventory/session_detail.html:34
 msgid "Pointer"
@@ -1901,7 +1911,6 @@ msgstr "desconocido"
 
 #: templates/inventory/session_form.html:4
 #: templates/inventory/session_form.html:7
-#| msgid "Nouvelle session"
 msgid "Nouvelle session d'inventaire"
 msgstr "Nueva sesión de inventario"
 
@@ -1983,35 +1992,40 @@ msgstr "Desconocidos"
 msgid "Exemplaires manquants"
 msgstr "Ejemplares faltantes"
 
-#: templates/inventory/session_report.html:37
+#: templates/inventory/session_report.html:25
+#: templates/inventory/session_report.html:53
+msgid "ISBN"
+msgstr "ISBN"
+
+#: templates/inventory/session_report.html:39
 msgid "Marquer perdu"
 msgstr "Marcar como perdido"
 
-#: templates/inventory/session_report.html:45
-#: templates/inventory/session_report.html:52
-#: templates/inventory/session_report.html:59
+#: templates/inventory/session_report.html:47
+#: templates/inventory/session_report.html:54
+#: templates/inventory/session_report.html:61
 #: templates/members/member_history.html:25
 #: templates/members/member_history.html:41
 msgid "Aucun."
 msgstr "Ninguno."
 
-#: templates/inventory/session_report.html:49
+#: templates/inventory/session_report.html:51
 msgid "Pointés hors périmètre (mauvaise location)"
 msgstr "Escaneados fuera del alcance (ubicación incorrecta)"
 
-#: templates/inventory/session_report.html:56
+#: templates/inventory/session_report.html:58
 msgid "Codes inconnus du système"
 msgstr "Códigos desconocidos por el sistema"
 
-#: templates/inventory/session_report.html:65
+#: templates/inventory/session_report.html:67
 msgid "Clôturer"
 msgstr "Cerrar"
 
-#: templates/inventory/session_report.html:67
+#: templates/inventory/session_report.html:69
 msgid "Rouvrir"
 msgstr "Reabrir"
 
-#: templates/inventory/session_report.html:68
+#: templates/inventory/session_report.html:70
 msgid "Valider définitivement"
 msgstr "Validar definitivamente"
 
@@ -2301,10 +2315,6 @@ msgstr "Caducidad"
 msgid "Aucun usager."
 msgstr "Ningún usuario."
 
-#: templates/printing/labels_picker.html:4
-msgid "Impression étiquettes"
-msgstr "Impresión de etiquetas"
-
 #: templates/printing/labels_picker.html:11
 msgid "Derniers ajouts"
 msgstr "Últimas incorporaciones"
@@ -2317,11 +2327,6 @@ msgstr "Imprimir (CUPS)"
 #: templates/reports/inactive_list.html:43
 msgid "ID interne"
 msgstr "ID interno"
-
-#: templates/printing/labels_picker.html:29
-#: templates/reports/inactive_list.html:43
-msgid "EAN13"
-msgstr "EAN13"
 
 #: templates/printing/labels_picker.html:42
 msgid "Aucun exemplaire."
@@ -2488,24 +2493,3 @@ msgstr "Instalación"
 #: templates/setup/step.html:14
 msgid "Étape"
 msgstr "Paso"
-
-#~ msgid "Récolement"
-#~ msgstr "Inventario"
-
-#~ msgid "Mode simple"
-#~ msgstr "Modo simple"
-
-#~ msgid "Mode avancé"
-#~ msgstr "Modo avanzado"
-
-#~ msgid "Nouvelle session de récolement"
-#~ msgstr "Nueva sesión de inventario"
-
-#~ msgid "Lancer le récolement"
-#~ msgstr "Iniciar el inventario"
-
-#~ msgid "Rapport de récolement"
-#~ msgstr "Informe de inventario"
-
-#~ msgid "La carte de cet usager expire bientôt."
-#~ msgstr "La tarjeta de este usuario caduca pronto."

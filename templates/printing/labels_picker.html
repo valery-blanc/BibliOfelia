@@ -1,10 +1,10 @@
 {% extends "base.html" %}
 {% load i18n biblio_icons %}
 
-{% block title %}{% trans "Impression étiquettes" %}{% endblock %}
+{% block title %}{% trans "Étiquettes codes Ofelia" %}{% endblock %}
 
 {% block content %}
-<h1>{% icon "printer" %} {% trans "Étiquettes exemplaires" %}</h1>
+<h1>{% icon "printer" %} {% trans "Étiquettes codes Ofelia" %}</h1>
 
 <form method="get" class="filters">
     <label>{% trans "Emplacement" %} <input type="text" name="location" value="{{ location }}" placeholder="A1"></label>
@@ -26,7 +26,7 @@
                 <th>{% trans "ID interne" %}</th>
                 <th>{% trans "Titre" %}</th>
                 <th>{% trans "Emplacement" %}</th>
-                <th>{% trans "EAN13" %}</th>
+                <th>{% trans "Code Ofelia" %}</th>
             </tr>
         </thead>
         <tbody>

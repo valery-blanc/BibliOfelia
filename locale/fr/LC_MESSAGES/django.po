@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2026-05-22 12:04+0000\n"
+"POT-Creation-Date: 2026-05-22 13:07+0000\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -1259,6 +1259,13 @@ msgid "Code interne"
 msgstr ""
 
 #: templates/catalog/record_detail.html:43
+#: templates/inventory/session_report.html:25
+#: templates/printing/labels_picker.html:29
+#: templates/reports/inactive_list.html:43
+msgid "Code Ofelia"
+msgstr ""
+
+#: templates/catalog/record_detail.html:43
 #: templates/printing/labels_picker.html:10
 #: templates/printing/labels_picker.html:28
 msgid "Emplacement"
@@ -1524,13 +1531,14 @@ msgstr ""
 msgid "Impression"
 msgstr ""
 
-#: templates/core/advanced.html:16 templates/printing/labels_picker.html:7
-msgid "Étiquettes exemplaires"
+#: templates/core/advanced.html:16 templates/printing/labels_picker.html:4
+#: templates/printing/labels_picker.html:7
+msgid "Étiquettes codes Ofelia"
 msgstr ""
 
 #: templates/core/advanced.html:17
 msgid ""
-"Génère les étiquettes (EAN13 + titre + emplacement) à coller sur les "
+"Génère les étiquettes (code Ofelia + titre + emplacement) à coller sur les "
 "ouvrages. PDF planche A4 ou envoi direct à l'imprimante CUPS."
 msgstr ""
 
@@ -1819,11 +1827,11 @@ msgid "exemplaires pointés / attendus dans le périmètre"
 msgstr ""
 
 #: templates/inventory/session_detail.html:26
-msgid "Pointer un exemplaire"
+msgid "Scanner ou saisir le code Ofelia d'un document"
 msgstr ""
 
 #: templates/inventory/session_detail.html:32
-msgid "Scanner le code-barres"
+msgid "Scanner le code Ofelia"
 msgstr ""
 
 #: templates/inventory/session_detail.html:34
@@ -1928,35 +1936,40 @@ msgstr ""
 msgid "Exemplaires manquants"
 msgstr ""
 
-#: templates/inventory/session_report.html:37
+#: templates/inventory/session_report.html:25
+#: templates/inventory/session_report.html:53
+msgid "ISBN"
+msgstr ""
+
+#: templates/inventory/session_report.html:39
 msgid "Marquer perdu"
 msgstr ""
 
-#: templates/inventory/session_report.html:45
-#: templates/inventory/session_report.html:52
-#: templates/inventory/session_report.html:59
+#: templates/inventory/session_report.html:47
+#: templates/inventory/session_report.html:54
+#: templates/inventory/session_report.html:61
 #: templates/members/member_history.html:25
 #: templates/members/member_history.html:41
 msgid "Aucun."
 msgstr ""
 
-#: templates/inventory/session_report.html:49
+#: templates/inventory/session_report.html:51
 msgid "Pointés hors périmètre (mauvaise location)"
 msgstr ""
 
-#: templates/inventory/session_report.html:56
+#: templates/inventory/session_report.html:58
 msgid "Codes inconnus du système"
 msgstr ""
 
-#: templates/inventory/session_report.html:65
+#: templates/inventory/session_report.html:67
 msgid "Clôturer"
 msgstr ""
 
-#: templates/inventory/session_report.html:67
+#: templates/inventory/session_report.html:69
 msgid "Rouvrir"
 msgstr ""
 
-#: templates/inventory/session_report.html:68
+#: templates/inventory/session_report.html:70
 msgid "Valider définitivement"
 msgstr ""
 
@@ -2246,10 +2259,6 @@ msgstr ""
 msgid "Aucun usager."
 msgstr ""
 
-#: templates/printing/labels_picker.html:4
-msgid "Impression étiquettes"
-msgstr ""
-
 #: templates/printing/labels_picker.html:11
 msgid "Derniers ajouts"
 msgstr ""
@@ -2261,11 +2270,6 @@ msgstr ""
 #: templates/printing/labels_picker.html:26
 #: templates/reports/inactive_list.html:43
 msgid "ID interne"
-msgstr ""
-
-#: templates/printing/labels_picker.html:29
-#: templates/reports/inactive_list.html:43
-msgid "EAN13"
 msgstr ""
 
 #: templates/printing/labels_picker.html:42

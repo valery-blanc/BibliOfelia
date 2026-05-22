@@ -4,7 +4,7 @@ Spécification détaillée du logiciel de gestion de bibliothèque BibliOfelia, 
 
 Version : 1.0 (cible v1)
 Statut : draft pour Spec-Driven Development
-Dernière modif spec : 2026-05-22 — Sprint 4 : FEAT-011 (dashboard enrichi §6.6 + rapports + paramètres + gestion comptes), FEAT-012 (impression étiquettes + cartes §6.7), FEAT-013 (notifications offline §6.8), FEAT-014 (sauvegardes §8 + planification django-q2), FEAT-015 (wizard premier démarrage §11.3 + données démo §11.4), FEAT-017 (onglet « Avancé » + page Connexion OfeliaScan + « Mon compte » §6.6/§6.10/§10.2), BUG-006 (i18n : `accounts/` déplacé sous `i18n_patterns` + chaînes EN/ES/MG complétées) ; Sprint 3 : FEAT-016 — API OfeliaScan (§6.10 : auth JWT, /pairing/info, /isbn/{isbn}, /health) ; FEAT-019 — publication mDNS via service Avahi sur l'hôte (§6.10) ; SPEC-CORR-002 — /pairing/info renvoie `base_url` (URL absolue) ; Sprint 2 : FEAT-005 à FEAT-010 (§6.1 à §6.5, §10) ; i18n 4 langues (§6.9) ; BUG-002 à BUG-005 ; §6.10 réécrit comme contrat d'API (SPEC-CORR-001)
+Dernière modif spec : 2026-05-22 — FEAT-018 (terminologie UI : l'EAN13 interne d'un exemplaire est nommé « code Ofelia » dans toute l'interface ; rapport d'inventaire enrichi du code Ofelia et de l'ISBN — §5.2/§6.5/§6.7) ; Sprint 4 : FEAT-011 (dashboard enrichi §6.6 + rapports + paramètres + gestion comptes), FEAT-012 (impression étiquettes + cartes §6.7), FEAT-013 (notifications offline §6.8), FEAT-014 (sauvegardes §8 + planification django-q2), FEAT-015 (wizard premier démarrage §11.3 + données démo §11.4), FEAT-017 (onglet « Avancé » + page Connexion OfeliaScan + « Mon compte » §6.6/§6.10/§10.2), BUG-006 (i18n : `accounts/` déplacé sous `i18n_patterns` + chaînes EN/ES/MG complétées) ; Sprint 3 : FEAT-016 — API OfeliaScan (§6.10 : auth JWT, /pairing/info, /isbn/{isbn}, /health) ; FEAT-019 — publication mDNS via service Avahi sur l'hôte (§6.10) ; SPEC-CORR-002 — /pairing/info renvoie `base_url` (URL absolue) ; Sprint 2 : FEAT-005 à FEAT-010 (§6.1 à §6.5, §10) ; i18n 4 langues (§6.9) ; BUG-002 à BUG-005 ; §6.10 réécrit comme contrat d'API (SPEC-CORR-001)
 
 ---
 
@@ -300,6 +300,8 @@ Format EAN13 :
 - Caractère 4 à 12 : numéro séquentiel de l'exemplaire (000000001 à 999999999)
 - Caractère 13 : checksum standard EAN-13
 
+**Terminologie UI (FEAT-018)** : ce code EAN13 interne (champ `Item.ean13`) est désigné « **code Ofelia** » dans toute l'interface utilisateur. Le terme technique « EAN13 » n'apparaît plus comme libellé visible ; il reste le nom du champ modèle et de la norme du code-barres. À ne pas confondre avec le « code interne » (`Item.internal_id`, format `OFL-AAAAMMJJ-NNNN`), qui est un identifiant lisible distinct.
+
 #### MemberCategory
 - `id` (PK)
 - `code` (string, ex. "ADULTE", "ENFANT", "ECOLE")
@@ -571,6 +573,7 @@ Index dédiés :
   - Exemplaires attendus non pointés (manquants)
   - Exemplaires pointés non attendus dans le périmètre (mauvaise location)
   - Exemplaires pointés inconnus du système (à enregistrer)
+- Chaque exemplaire listé (manquants, hors périmètre) est identifié par son **code interne** (`OFL-…`), son **code Ofelia** (EAN13) et son **ISBN** lorsqu'il est connu (FEAT-018)
 - Actions proposées pour chaque divergence (réintégrer, marquer perdu, déplacer, créer notice)
 
 #### Historique
@@ -670,8 +673,9 @@ Index dédiés :
 
 
 #### Étiquettes exemplaires
+- Écran intitulé « **Étiquettes codes Ofelia** » (FEAT-018)
 - Format thermique 50x25mm (paramétrable)
-- Contenu : EAN13 lisible humainement et code-barres, titre tronqué (30 caractères), code Location, internal_id
+- Contenu : code Ofelia (EAN13) lisible humainement et code-barres, titre tronqué (30 caractères), code Location, internal_id
 - File d'impression : génération de tous les exemplaires sélectionnés en un job CUPS
 - Fallback PDF si imprimante absente : génération d'une planche A4 de 24 étiquettes
 

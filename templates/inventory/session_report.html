@@ -22,11 +22,13 @@
     <h2 class="status-overdue">{% trans "Exemplaires manquants" %}</h2>
     {% if report.missing %}
     <table>
-        <thead><tr><th>{% trans "Code interne" %}</th><th>{% trans "Titre" %}</th><th>{% trans "Statut" %}</th><th></th></tr></thead>
+        <thead><tr><th>{% trans "Code interne" %}</th><th>{% trans "Code Ofelia" %}</th><th>{% trans "ISBN" %}</th><th>{% trans "Titre" %}</th><th>{% trans "Statut" %}</th><th></th></tr></thead>
         <tbody>
             {% for item in report.missing %}
             <tr>
                 <td>{{ item.internal_id }}</td>
+                <td><code>{{ item.ean13 }}</code></td>
+                <td><code>{{ item.record.isbn_13|default:"—" }}</code></td>
                 <td>{{ item.record.title }}</td>
                 <td class="status-{{ item.status }}">{{ item.get_status_display }}</td>
                 <td>
@@ -48,7 +50,7 @@
 <section>
     <h2>{% trans "Pointés hors périmètre (mauvaise location)" %}</h2>
     {% if report.misplaced %}
-    <ul>{% for item in report.misplaced %}<li>{{ item.internal_id }} — {{ item.record.title }} ({{ item.location.code|default:"—" }})</li>{% endfor %}</ul>
+    <ul>{% for item in report.misplaced %}<li>{{ item.internal_id }} — <code>{{ item.ean13 }}</code>{% if item.record.isbn_13 %} — {% trans "ISBN" %} <code>{{ item.record.isbn_13 }}</code>{% endif %} — {{ item.record.title }} ({{ item.location.code|default:"—" }})</li>{% endfor %}</ul>
     {% else %}<p>{% trans "Aucun." %}</p>{% endif %}
 </section>
 

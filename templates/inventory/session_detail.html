@@ -23,13 +23,13 @@
 
 {% if session.is_open %}
 <article>
-    <h2>{% trans "Pointer un exemplaire" %}</h2>
+    <h2>{% trans "Scanner ou saisir le code Ofelia d'un document" %}</h2>
     <form method="post" action="{% url 'inventory:add_scan' session.pk %}">
         {% csrf_token %}
         <label class="search-field">
             {% icon "scan-barcode" %}
             <input type="text" name="ean" autofocus autocomplete="off"
-                   placeholder="{% trans 'Scanner le code-barres' %}">
+                   placeholder="{% trans 'Scanner le code Ofelia' %}">
         </label>
         <button type="submit" class="btn-primary">{% icon "plus" %} {% trans "Pointer" %}</button>
     </form>

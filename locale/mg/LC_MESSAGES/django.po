@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: BibliOfelia 1.0\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2026-05-22 12:04+0000\n"
+"POT-Creation-Date: 2026-05-22 13:07+0000\n"
 "PO-Revision-Date: 2026-05-22 00:00+0000\n"
 "Last-Translator: Claude Code\n"
 "Language-Team: Malagasy\n"
@@ -321,7 +321,6 @@ msgstr ""
 "Vita ny famerenana. Avereno alefa ny rindrambaiko alohan'ny hampiasana azy."
 
 #: apps/core/admin_views.py:166
-#| msgid "Identifiant"
 msgid "Identifiant requis."
 msgstr "Ilaina ny anaram-pidirana."
 
@@ -1075,7 +1074,6 @@ msgstr "Vaovao"
 
 #: templates/accounts/user_form.html:9 templates/accounts/user_form.html:14
 #: templates/base.html:53
-#| msgid "Aucun compte."
 msgid "Mon compte"
 msgstr "Ny kaontiko"
 
@@ -1265,6 +1263,13 @@ msgid "Code interne"
 msgstr "Kaody anatiny"
 
 #: templates/catalog/record_detail.html:43
+#: templates/inventory/session_report.html:25
+#: templates/printing/labels_picker.html:29
+#: templates/reports/inactive_list.html:43
+msgid "Code Ofelia"
+msgstr "Kaody Ofelia"
+
+#: templates/catalog/record_detail.html:43
 #: templates/printing/labels_picker.html:10
 #: templates/printing/labels_picker.html:28
 msgid "Emplacement"
@@ -1420,7 +1425,6 @@ msgstr "Asa farany"
 #: templates/core/admin/ofeliascan.html:4
 #: templates/core/admin/ofeliascan.html:9
 #: templates/core/admin/ofeliascan.html:12 templates/core/advanced.html:82
-#| msgid "Identifiant OfeliaScan"
 msgid "Connexion OfeliaScan"
 msgstr "Fifandraisana OfeliaScan"
 
@@ -1428,7 +1432,9 @@ msgstr "Fifandraisana OfeliaScan"
 msgid ""
 "Paramètres à saisir dans l'application mobile OfeliaScan pour qu'elle se "
 "connecte à cette box."
-msgstr "Safidy hampidirina ao amin'ny rindrambaiko finday OfeliaScan mba hifandray amin'ity vata ity."
+msgstr ""
+"Safidy hampidirina ao amin'ny rindrambaiko finday OfeliaScan mba hifandray "
+"amin'ity vata ity."
 
 #: templates/core/admin/ofeliascan.html:17
 msgid "Adresse de la box"
@@ -1438,10 +1444,11 @@ msgstr "Adiresin'ny vata"
 msgid ""
 "OfeliaScan détecte normalement la box automatiquement (mDNS). En cas de "
 "besoin, saisissez l'adresse ci-dessous."
-msgstr "Mahita ny vata ho azy matetika ny OfeliaScan (mDNS). Raha ilaina, ampidiro ny adiresy etsy ambany."
+msgstr ""
+"Mahita ny vata ho azy matetika ny OfeliaScan (mDNS). Raha ilaina, ampidiro "
+"ny adiresy etsy ambany."
 
 #: templates/core/admin/ofeliascan.html:20
-#| msgid "Nom de la box (mDNS)"
 msgid "Nom de la box"
 msgstr "Anaran'ny vata"
 
@@ -1462,7 +1469,6 @@ msgid "Chemin de l'API"
 msgstr "Lalan'ny API"
 
 #: templates/core/admin/ofeliascan.html:29
-#| msgid "Identifiants invalides."
 msgid "Identifiants autorisés"
 msgstr "Mari-pamantarana nekena"
 
@@ -1470,16 +1476,19 @@ msgstr "Mari-pamantarana nekena"
 msgid ""
 "Comptes (rôle Contributeur OfeliaScan) acceptés par l'API. Le mot de passe "
 "est affiché en clair pour être recopié dans l'application."
-msgstr "Kaonty (anjara-asa Mpandray anjara OfeliaScan) ekena amin'ny API. Aseho mazava ny teny miafina mba hadika ao amin'ny rindrambaiko."
+msgstr ""
+"Kaonty (anjara-asa Mpandray anjara OfeliaScan) ekena amin'ny API. Aseho "
+"mazava ny teny miafina mba hadika ao amin'ny rindrambaiko."
 
 #: templates/core/admin/ofeliascan.html:36
-#| msgid "Prêté le"
 msgid "Créé le"
 msgstr "Noforonina ny"
 
 #: templates/core/admin/ofeliascan.html:48
 msgid "Révoquer cet identifiant ? OfeliaScan ne pourra plus se connecter avec."
-msgstr "Hofoanana ity mari-pamantarana ity? Tsy afaka hifandray amin'izany intsony ny OfeliaScan."
+msgstr ""
+"Hofoanana ity mari-pamantarana ity? Tsy afaka hifandray amin'izany intsony "
+"ny OfeliaScan."
 
 #: templates/core/admin/ofeliascan.html:52
 msgid "Révoquer"
@@ -1497,10 +1506,11 @@ msgstr "Manaiky mari-pamantarana vaovao"
 msgid ""
 "Laissez le mot de passe proposé ou saisissez le vôtre. Il sera affiché en "
 "clair dans le tableau ci-dessus."
-msgstr "Avelao ny teny miafina natolotra na ampidiro ny anao. Haseho mazava ao amin'ny tabilao etsy ambony izy io."
+msgstr ""
+"Avelao ny teny miafina natolotra na ampidiro ny anao. Haseho mazava ao "
+"amin'ny tabilao etsy ambony izy io."
 
 #: templates/core/admin/ofeliascan.html:77
-#| msgid "Automatique"
 msgid "Autoriser"
 msgstr "Ekeo"
 
@@ -1533,29 +1543,29 @@ msgid "Restaurer depuis un fichier…"
 msgstr "Avereno avy amin'ny rakitra…"
 
 #: templates/core/advanced.html:9
-#| msgid ""
-#| "Outils complémentaires : rapports, impressions, et — pour les "
-#| "administrateurs — paramètres, comptes et diagnostic."
 msgid ""
 "Outils complémentaires : impressions, rapports, inventaire, et — pour les "
 "administrateurs — paramètres, comptes et diagnostic."
-msgstr "Fitaovana fanampiny: fanontana, tatitra, fanisana, ary — ho an'ny mpitantana — safidy, kaonty sy fitsapana."
+msgstr ""
+"Fitaovana fanampiny: fanontana, tatitra, fanisana, ary — ho an'ny mpitantana "
+"— safidy, kaonty sy fitsapana."
 
 #: templates/core/advanced.html:13
 msgid "Impression"
 msgstr "Fanontana"
 
-#: templates/core/advanced.html:16 templates/printing/labels_picker.html:7
-msgid "Étiquettes exemplaires"
-msgstr "Marika ho an'ny kopia"
+#: templates/core/advanced.html:16 templates/printing/labels_picker.html:4
+#: templates/printing/labels_picker.html:7
+msgid "Étiquettes codes Ofelia"
+msgstr "Marika kaody Ofelia"
 
 #: templates/core/advanced.html:17
 msgid ""
-"Génère les étiquettes (EAN13 + titre + emplacement) à coller sur les "
+"Génère les étiquettes (code Ofelia + titre + emplacement) à coller sur les "
 "ouvrages. PDF planche A4 ou envoi direct à l'imprimante CUPS."
 msgstr ""
-"Mamorona marika (EAN13 + lohateny + toerana) hapetaka amin'ny boky. Taratasy "
-"PDF A4 na fandefasana mivantana amin'ny mpanonta CUPS."
+"Mamorona marika (kaody Ofelia + lohateny + toerana) hapetaka amin'ny boky. "
+"Taratasy PDF A4 na fandefasana mivantana amin'ny mpanonta CUPS."
 
 #: templates/core/advanced.html:20 templates/printing/cards_picker.html:7
 msgid "Cartes membres"
@@ -1617,13 +1627,12 @@ msgid "Inactifs"
 msgstr "Tsy mavitrika"
 
 #: templates/core/advanced.html:44
-#| msgid ""
-#| "Usagers et exemplaires sans aucun prêt sur une période — utile pour le "
-#| "récolement et la gestion du fonds."
 msgid ""
 "Usagers et exemplaires sans aucun prêt sur une période — utile pour "
 "l'inventaire et la gestion du fonds."
-msgstr "Mpampiasa sy kopia tsy nampindramina nandritra vanim-potoana — ilaina amin'ny fanisana sy fitantanana ny fonon-tahiry."
+msgstr ""
+"Mpampiasa sy kopia tsy nampindramina nandritra vanim-potoana — ilaina "
+"amin'ny fanisana sy fitantanana ny fonon-tahiry."
 
 #: templates/core/advanced.html:47 templates/reports/index.html:19
 msgid "Export CSV des prêts"
@@ -1655,7 +1664,6 @@ msgid "Inventaire"
 msgstr "Fanisana"
 
 #: templates/core/advanced.html:62
-#| msgid "Sessions en cours"
 msgid "Sessions d'inventaire"
 msgstr "Fotoam-panisana"
 
@@ -1663,7 +1671,9 @@ msgstr "Fotoam-panisana"
 msgid ""
 "Vérification du fonds : créer une session, pointer les exemplaires scannés, "
 "repérer les écarts."
-msgstr "Fanamarinana ny fonon-tahiry: mamorona fotoana, manamarika ny kopia voascan, mahita ny tsy fitoviana."
+msgstr ""
+"Fanamarinana ny fonon-tahiry: mamorona fotoana, manamarika ny kopia voascan, "
+"mahita ny tsy fitoviana."
 
 #: templates/core/advanced.html:71
 msgid "Administration"
@@ -1689,7 +1699,9 @@ msgstr ""
 msgid ""
 "Identifiants autorisés pour l'application mobile OfeliaScan et adresse de la "
 "box."
-msgstr "Mari-pamantarana nekena ho an'ny rindrambaiko finday OfeliaScan sy ny adiresin'ny vata."
+msgstr ""
+"Mari-pamantarana nekena ho an'ny rindrambaiko finday OfeliaScan sy ny "
+"adiresin'ny vata."
 
 #: templates/core/advanced.html:87
 msgid ""
@@ -1878,12 +1890,12 @@ msgid "exemplaires pointés / attendus dans le périmètre"
 msgstr "kopia voamarika / andrasana ao anatin'ny faritra"
 
 #: templates/inventory/session_detail.html:26
-msgid "Pointer un exemplaire"
-msgstr "Mamariha kopia"
+msgid "Scanner ou saisir le code Ofelia d'un document"
+msgstr "Skano na soraty ny kaody Ofelia an'ny antontan-taratasy"
 
 #: templates/inventory/session_detail.html:32
-msgid "Scanner le code-barres"
-msgstr "Skano ny kaody tsipika"
+msgid "Scanner le code Ofelia"
+msgstr "Skano ny kaody Ofelia"
 
 #: templates/inventory/session_detail.html:34
 msgid "Pointer"
@@ -1907,7 +1919,6 @@ msgstr "tsy fantatra"
 
 #: templates/inventory/session_form.html:4
 #: templates/inventory/session_form.html:7
-#| msgid "Nouvelle session"
 msgid "Nouvelle session d'inventaire"
 msgstr "Fotoam-panisana vaovao"
 
@@ -1989,35 +2000,40 @@ msgstr "Tsy fantatra"
 msgid "Exemplaires manquants"
 msgstr "Kopia tsy ampy"
 
-#: templates/inventory/session_report.html:37
+#: templates/inventory/session_report.html:25
+#: templates/inventory/session_report.html:53
+msgid "ISBN"
+msgstr "ISBN"
+
+#: templates/inventory/session_report.html:39
 msgid "Marquer perdu"
 msgstr "Mariho ho very"
 
-#: templates/inventory/session_report.html:45
-#: templates/inventory/session_report.html:52
-#: templates/inventory/session_report.html:59
+#: templates/inventory/session_report.html:47
+#: templates/inventory/session_report.html:54
+#: templates/inventory/session_report.html:61
 #: templates/members/member_history.html:25
 #: templates/members/member_history.html:41
 msgid "Aucun."
 msgstr "Tsy misy."
 
-#: templates/inventory/session_report.html:49
+#: templates/inventory/session_report.html:51
 msgid "Pointés hors périmètre (mauvaise location)"
 msgstr "Voamarika ivelan'ny faritra (toerana diso)"
 
-#: templates/inventory/session_report.html:56
+#: templates/inventory/session_report.html:58
 msgid "Codes inconnus du système"
 msgstr "Kaody tsy fantatry ny rafitra"
 
-#: templates/inventory/session_report.html:65
+#: templates/inventory/session_report.html:67
 msgid "Clôturer"
 msgstr "Akatony"
 
-#: templates/inventory/session_report.html:67
+#: templates/inventory/session_report.html:69
 msgid "Rouvrir"
 msgstr "Sokafy indray"
 
-#: templates/inventory/session_report.html:68
+#: templates/inventory/session_report.html:70
 msgid "Valider définitivement"
 msgstr "Ankatoavy tanteraka"
 
@@ -2307,10 +2323,6 @@ msgstr "Fahataperana"
 msgid "Aucun usager."
 msgstr "Tsy misy mpampiasa."
 
-#: templates/printing/labels_picker.html:4
-msgid "Impression étiquettes"
-msgstr "Fanontana marika"
-
 #: templates/printing/labels_picker.html:11
 msgid "Derniers ajouts"
 msgstr "Nampidirina farany"
@@ -2323,11 +2335,6 @@ msgstr "Atonta (CUPS)"
 #: templates/reports/inactive_list.html:43
 msgid "ID interne"
 msgstr "ID anaty"
-
-#: templates/printing/labels_picker.html:29
-#: templates/reports/inactive_list.html:43
-msgid "EAN13"
-msgstr "EAN13"
 
 #: templates/printing/labels_picker.html:42
 msgid "Aucun exemplaire."
@@ -2492,24 +2499,3 @@ msgstr "Fametrahana"
 #: templates/setup/step.html:14
 msgid "Étape"
 msgstr "Dingana"
-
-#~ msgid "Récolement"
-#~ msgstr "Fanisana"
-
-#~ msgid "Mode simple"
-#~ msgstr "Fomba tsotra"
-
-#~ msgid "Mode avancé"
-#~ msgstr "Fomba mandroso"
-
-#~ msgid "Nouvelle session de récolement"
-#~ msgstr "Fotoam-panisana vaovao"
-
-#~ msgid "Lancer le récolement"
-#~ msgstr "Atombohy ny fanisana"
-
-#~ msgid "Rapport de récolement"
-#~ msgstr "Tatitry ny fanisana"
-
-#~ msgid "La carte de cet usager expire bientôt."
-#~ msgstr "Ho lany andro tsy ho ela ny karatr'ity mpikambana ity."

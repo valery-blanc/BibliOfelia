@@ -207,6 +207,15 @@ Mise à jour : 2026-05-22 (Sprint 4 — Tasks #11 à #15 + BUG-006 + FEAT-017 va
   - [x] Nouveaux SVG `static/icons/house.svg` + `user.svg`
   - [x] i18n : 545 chaînes EN/ES/MG (0 fuzzy, 0 untranslated)
   - [x] Doc : `docs/specs/FEAT-017-navigation-avancee-ofeliascan.md` + SPEC §6.5/§6.6/§6.10/§10.2
+- [x] **FEAT-018** Terminologie « code Ofelia » + rapport d'inventaire enrichi — *validé Val 2026-05-22*
+  - [x] Libellé « EAN13 » → « Code Ofelia » : `record_detail.html`, `labels_picker.html`, `inactive_list.html`, `advanced.html`
+  - [x] Page d'impression : titre + onglet « Étiquettes codes Ofelia » (`labels_picker.html`) + lien aligné dans `advanced.html`
+  - [x] `session_detail.html` : « Pointer un exemplaire » → « Scanner ou saisir le code Ofelia d'un document » ; placeholder → « Scanner le code Ofelia »
+  - [x] `session_report.html` : colonnes « Code Ofelia » + « ISBN » sur les manquants ; codes ajoutés sur les hors périmètre
+  - [x] i18n : `makemessages -a --no-obsolete` + traductions EN/ES/MG (0 fuzzy, 0 untranslated) + `compilemessages`
+  - [x] Tests : `apps/inventory` + `apps/printing` + `test_ui.py` — 22 passed
+  - [x] Doc : `docs/specs/FEAT-018-code-ofelia.md` + SPEC §5.2/§6.5/§6.7
+  - [x] Test Val OK (2026-05-22) + commit unique
 
 ## Sprint 5 — API complète + qualité
 
