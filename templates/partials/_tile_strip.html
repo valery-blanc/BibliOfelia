@@ -1,0 +1,62 @@
+{% load i18n biblio_icons %}
+{# Barre de navigation horizontale (chip par section) pour les pages secondaires. #}
+{# Usage : {% include "partials/_tile_strip.html" with active="catalogue" %} #}
+<nav class="tilestrip-wrap" aria-label="{% trans 'Sections' %}">
+    <div class="tilestrip">
+
+        <a href="{% url 'core:dashboard' %}"
+           class="chip chip--burgundy{% if active == 'home' %} is-active{% endif %}"
+           aria-current="{% if active == 'home' %}page{% endif %}">
+            <span class="chip-dot">{% icon "house" size="14px" %}</span>
+            {% trans "Accueil" %}
+        </a>
+
+        <a href="{% url 'catalog:record_list' %}"
+           class="chip chip--amber{% if active == 'catalogue' %} is-active{% endif %}"
+           aria-current="{% if active == 'catalogue' %}page{% endif %}">
+            <span class="chip-dot">{% icon "book-open" size="14px" %}</span>
+            {% trans "Catalogue" %}
+        </a>
+
+        <a href="{% url 'members:list' %}"
+           class="chip chip--sky{% if active == 'members' %} is-active{% endif %}"
+           aria-current="{% if active == 'members' %}page{% endif %}">
+            <span class="chip-dot">{% icon "users" size="14px" %}</span>
+            {% trans "Membres" %}
+        </a>
+
+        {% if user.is_librarian %}
+        <a href="{% url 'loans:lend' %}"
+           class="chip chip--orange{% if active == 'lending' %} is-active{% endif %}"
+           aria-current="{% if active == 'lending' %}page{% endif %}">
+            <span class="chip-dot">{% icon "book-down" size="14px" %}</span>
+            {% trans "Prêt" %}
+        </a>
+
+        <a href="{% url 'loans:return_items' %}"
+           class="chip chip--olive{% if active == 'return' %} is-active{% endif %}"
+           aria-current="{% if active == 'return' %}page{% endif %}">
+            <span class="chip-dot">{% icon "book-up" size="14px" %}</span>
+            {% trans "Retour" %}
+        </a>
+
+        <a href="{% url 'loans:reservations' %}"
+           class="chip chip--blush{% if active == 'reservations' %} is-active{% endif %}"
+           aria-current="{% if active == 'reservations' %}page{% endif %}">
+            <span class="chip-dot">{% icon "bookmark-check" size="14px" %}</span>
+            {% trans "Réservations" %}
+            {% if nav_counts.reservations_ready %}
+            <span class="badge badge--late" style="padding:1px 7px;font-size:10px;">{{ nav_counts.reservations_ready }}</span>
+            {% endif %}
+        </a>
+        {% endif %}
+
+        <a href="{% url 'core:advanced' %}"
+           class="chip chip--forest{% if active == 'advanced' %} is-active{% endif %}"
+           aria-current="{% if active == 'advanced' %}page{% endif %}">
+            <span class="chip-dot">{% icon "settings" size="14px" %}</span>
+            {% trans "Avancé" %}
+        </a>
+
+    </div>
+</nav>

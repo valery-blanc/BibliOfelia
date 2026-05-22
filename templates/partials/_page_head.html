@@ -1,0 +1,24 @@
+{% load i18n biblio_icons %}
+{# En-tête de page avec illustration, titre, sous-titre et bouton d'action optionnel. #}
+{# Usage : {% include "partials/_page_head.html" with section="catalogue" title=_("Catalogue") subtitle=_("Tous les livres") %} #}
+{# section = catalogue | members | lending | return | reservations | advanced #}
+{# action_url / action_label / action_icon = bouton d'action (optionnel) #}
+<header class="pagehead">
+    <div class="pagehead-icon pagehead-icon--illus"
+         style="box-shadow: var(--shadow-sm), inset 0 0 0 2px var(--{{ section_color|default:'burgundy' }})">
+        {% illus section %}
+    </div>
+    <div class="pagehead-text">
+        <h1 class="pagehead-title">{{ title }}</h1>
+        {% if subtitle %}<div class="pagehead-sub">{{ subtitle }}</div>{% endif %}
+    </div>
+    {% if action_url %}
+    <div class="pagehead-action">
+        <a href="{{ action_url }}" class="btn btn--primary">
+            {% if action_icon %}{% icon action_icon size="16px" %}{% endif %}
+            <span class="hide-sm">{{ action_label }}</span>
+            <span class="only-sm">{% icon "plus" size="16px" %}</span>
+        </a>
+    </div>
+    {% endif %}
+</header>

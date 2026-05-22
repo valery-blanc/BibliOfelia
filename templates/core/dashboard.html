@@ -1,131 +1,265 @@
 {% extends "base.html" %}
 {% load i18n biblio_icons %}
 
-{% block title %}{% trans "Tableau de bord" %}{% endblock %}
+{% block title %}{% trans "Accueil" %}{% endblock %}
 
 {% block content %}
-<h1>{% trans "Tableau de bord" %}</h1>
 
-<section class="kpi-grid">
-    <article class="kpi-card">
-        <div class="kpi-value">{{ kpi_active_loans }}</div>
-        <small>{% trans "Prêts en cours" %}</small>
-    </article>
-    <article class="kpi-card {% if kpi_overdue %}kpi-alert{% endif %}">
-        <div class="kpi-value">{{ kpi_overdue }}</div>
-        <small>{% trans "Prêts en retard" %}</small>
-    </article>
-    <article class="kpi-card">
-        <div class="kpi-value">{{ kpi_reservations_ready }}</div>
-        <small>{% trans "Réservations prêtes" %}</small>
-    </article>
-    <article class="kpi-card">
-        <div class="kpi-value">{{ kpi_members }}</div>
-        <small>{% trans "Usagers inscrits" %}</small>
-    </article>
-    <article class="kpi-card">
-        <div class="kpi-value">{{ kpi_records }}</div>
-        <small>{% trans "Notices au catalogue" %}</small>
-    </article>
-    <article class="kpi-card">
-        <div class="kpi-value">{{ kpi_items }}</div>
-        <small>{% trans "Exemplaires" %}</small>
-    </article>
+{# ── Hero ── #}
+<section class="hero">
+    <div class="hero-greet">{% trans "Bonjour," %} <b>{{ user.get_username }}</b>.</div>
+    <div class="hero-sub">{% trans "Voici ce qui se passe à la bibliothèque aujourd'hui." %}</div>
 </section>
 
-<section class="dashboard-trend">
-    <h2>{% trans "Tendance — 30 derniers jours" %}</h2>
-    {% if trend_max %}
-    <div class="sparkline" role="img" aria-label="{% trans 'Prêts par jour' %}">
-        {% for row in trend %}
-        <span class="bar" style="height: calc({{ row.count }} / {{ trend_max }} * 100%);"
-              title="{{ row.day|date:'Y-m-d' }} — {{ row.count }}"></span>
-        {% endfor %}
-    </div>
-    {% else %}
-    <p><small>{% trans "Pas encore de prêts enregistrés sur la période." %}</small></p>
+{# ── Grille de tuiles ── #}
+<div class="tilegrid" role="navigation" aria-label="{% trans 'Sections principales' %}">
+
+    <a href="{% url 'catalog:record_list' %}" class="tile tile--amber">
+        <div class="tile-icon tile-icon--illus">{% illus "catalogue" %}</div>
+        <div class="tile-text">
+            <div class="tile-title">{% trans "Catalogue" %}</div>
+            <div class="tile-desc">{% trans "Tous les livres et leurs exemplaires" %}</div>
+        </div>
+        <div class="tile-chev">{% icon "chevron-right" size="22px" %}</div>
+    </a>
+
+    <a href="{% url 'members:list' %}" class="tile tile--sky">
+        <div class="tile-icon tile-icon--illus">{% illus "members" %}</div>
+        <div class="tile-text">
+            <div class="tile-title">{% trans "Membres" %}</div>
+            <div class="tile-desc">{% trans "Lecteurs inscrits, cartes et historique" %}</div>
+        </div>
+        <div class="tile-chev">{% icon "chevron-right" size="22px" %}</div>
+    </a>
+
+    {% if user.is_librarian %}
+    <a href="{% url 'loans:lend' %}" class="tile tile--orange">
+        <div class="tile-icon tile-icon--illus">{% illus "lending" %}</div>
+        <div class="tile-text">
+            <div class="tile-title">{% trans "Prêt" %}</div>
+            <div class="tile-desc">{% trans "Enregistrer un nouveau prêt" %}</div>
+        </div>
+        <div class="tile-chev">{% icon "chevron-right" size="22px" %}</div>
+    </a>
+
+    <a href="{% url 'loans:return_items' %}" class="tile tile--olive">
+        <div class="tile-icon tile-icon--illus">{% illus "return" %}</div>
+        <div class="tile-text">
+            <div class="tile-title">{% trans "Retour" %}</div>
+            <div class="tile-desc">{% trans "Enregistrer un retour" %}</div>
+        </div>
+        <div class="tile-chev">{% icon "chevron-right" size="22px" %}</div>
+    </a>
+
+    <a href="{% url 'loans:reservations' %}" class="tile tile--blush">
+        <div class="tile-icon tile-icon--illus">{% illus "reserve" %}</div>
+        <div class="tile-text">
+            <div class="tile-title">{% trans "Réservations" %}</div>
+            <div class="tile-desc">{% trans "Livres en attente" %}</div>
+        </div>
+        <div class="tile-chev">{% icon "chevron-right" size="22px" %}</div>
+    </a>
     {% endif %}
-</section>
 
-<section class="dashboard-grid">
-    <article>
-        <h3>{% trans "Top 10 ce mois-ci" %}</h3>
-        {% if top_month %}
-        <ol class="top-list">
-            {% for entry in top_month %}
-            <li><a href="{% url 'catalog:record_detail' pk=entry.record_id %}">{{ entry.title|truncatechars:60 }}</a>
-                <span class="count">{{ entry.count }}</span></li>
-            {% endfor %}
-        </ol>
-        {% else %}<p><small>{% trans "Aucun prêt ce mois." %}</small></p>{% endif %}
-    </article>
+    <a href="{% url 'core:advanced' %}" class="tile tile--forest">
+        <div class="tile-icon tile-icon--illus">{% illus "advanced" %}</div>
+        <div class="tile-text">
+            <div class="tile-title">{% trans "Avancé" %}</div>
+            <div class="tile-desc">{% trans "Impression, rapports, paramètres" %}</div>
+        </div>
+        <div class="tile-chev">{% icon "chevron-right" size="22px" %}</div>
+    </a>
 
-    <article>
-        <h3>{% trans "Top 10 cette année" %}</h3>
-        {% if top_year %}
-        <ol class="top-list">
-            {% for entry in top_year %}
-            <li><a href="{% url 'catalog:record_detail' pk=entry.record_id %}">{{ entry.title|truncatechars:60 }}</a>
-                <span class="count">{{ entry.count }}</span></li>
-            {% endfor %}
-        </ol>
-        {% else %}<p><small>{% trans "Aucun prêt cette année." %}</small></p>{% endif %}
-    </article>
+</div>
 
-    <article>
-        <h3>{% trans "Activité" %}</h3>
-        <dl>
-            <dt>{% trans "Usagers actifs (mois)" %}</dt><dd>{{ members_month }}</dd>
-            <dt>{% trans "Usagers actifs (année)" %}</dt><dd>{{ members_year }}</dd>
-            <dt>{% trans "Notices ajoutées (mois)" %}</dt><dd>{{ growth_month.records_added }}</dd>
-            <dt>{% trans "Exemplaires ajoutés (mois)" %}</dt><dd>{{ growth_month.items_added }}</dd>
-            <dt>{% trans "Notices ajoutées (année)" %}</dt><dd>{{ growth_year.records_added }}</dd>
-        </dl>
-    </article>
-
-    <article {% if system_status.backup_alert %}class="status-alert"{% endif %}>
-        <h3>{% trans "État système" %}</h3>
-        <dl>
-            <dt>{% trans "Version" %}</dt><dd>{{ system_status.version }}</dd>
-            <dt>{% trans "Espace disque libre" %}</dt>
-            <dd>{% if system_status.disk_free_gb is not None %}{{ system_status.disk_free_gb }} / {{ system_status.disk_total_gb }} Go{% else %}—{% endif %}</dd>
-            <dt>{% trans "Dernière sauvegarde" %}</dt>
-            <dd>
-                {% if system_status.last_backup_at %}
-                    {{ system_status.last_backup_at|date:"Y-m-d H:i" }}
-                    {% if system_status.backup_alert %}<strong class="text-danger">⚠ {% trans "&gt; 24h" %}</strong>{% endif %}
-                {% else %}
-                    <strong class="text-danger">{% trans "Aucune sauvegarde enregistrée" %}</strong>
-                {% endif %}
-            </dd>
-            {% if system_status.zerotier_status %}
-            <dt>{% trans "ZeroTier" %}</dt><dd>{{ system_status.zerotier_status }}</dd>
-            {% endif %}
-        </dl>
-    </article>
-</section>
-
+{# ── Bannière scan ── #}
 {% if user.is_librarian %}
-<section style="margin-top:2rem;">
-    <h2>{% trans "Actions fréquentes" %}</h2>
-    <div class="grid">
-        <a href="{% url 'loans:lend' %}" role="button" class="btn-big">{% icon "book-down" %} {% trans "Nouveau prêt" %}</a>
-        <a href="{% url 'loans:return_items' %}" role="button" class="btn-big">{% icon "book-up" %} {% trans "Retour" %}</a>
-        <a href="{% url 'catalog:record_create' %}" role="button" class="btn-big secondary">{% icon "plus" %} {% trans "Nouvelle notice" %}</a>
-        <a href="{% url 'members:create' %}" role="button" class="btn-big secondary">{% icon "user-plus" %} {% trans "Nouvel usager" %}</a>
+<a href="{% url 'loans:lend' %}" class="scan-banner">
+    <div class="sb-icon">{% icon "scan-barcode" size="22px" %}</div>
+    <div class="sb-text">
+        <div class="sb-title">{% trans "Scanner une carte ou un livre" %}</div>
+        <div class="sb-sub">{% trans "Caisse rapide — prêt, retour, recherche par code-barres" %}</div>
     </div>
-</section>
+    <span class="sb-btn">{% trans "Scanner" %}</span>
+</a>
 {% endif %}
 
-<section style="margin-top:2rem;">
-    <h2>{% trans "Rapports" %}</h2>
-    <div class="grid">
-        <a href="{% url 'reports:index' %}" role="button" class="secondary">{% icon "file-text" %} {% trans "Tous les rapports" %}</a>
-        <a href="{% url 'reports:overdue' %}" role="button" class="secondary">{% icon "triangle-alert" %} {% trans "Retards à imprimer" %}</a>
-        {% if user.is_superadmin %}
-        <a href="{% url 'core:settings_index' %}" role="button" class="secondary">{% icon "settings" %} {% trans "Paramètres" %}</a>
-        <a href="{% url 'accounts:user_list' %}" role="button" class="secondary">{% icon "users" %} {% trans "Comptes" %}</a>
+{# ── Recherche globale ── #}
+<div class="search">
+    <span class="search-icon">{% icon "search" size="18px" %}</span>
+    <form action="{% url 'core:search' %}" method="get">
+        <input type="search" name="q" value="{{ request.GET.q|default:'' }}"
+               placeholder="{% trans 'Titre, auteur, ISBN, n° de carte…' %}"
+               autocomplete="off" aria-label="{% trans 'Recherche globale' %}">
+    </form>
+</div>
+
+{# ── KPI ── #}
+<div class="kpis">
+    <div class="kpi" style="--kpi-color:var(--burgundy)">
+        <div class="kpi-num">{{ kpi_active_loans }}</div>
+        <div class="kpi-label">{% trans "Prêts en cours" %}</div>
+    </div>
+    <div class="kpi" style="--kpi-color:var(--orange)">
+        <div class="kpi-num">{{ kpi_overdue }}</div>
+        <div class="kpi-label">{% trans "Prêts en retard" %}</div>
+    </div>
+    <div class="kpi" style="--kpi-color:var(--amber)">
+        <div class="kpi-num">{{ kpi_reservations_ready }}</div>
+        <div class="kpi-label">{% trans "Réservations prêtes" %}</div>
+    </div>
+    <div class="kpi" style="--kpi-color:var(--sky)">
+        <div class="kpi-num">{{ kpi_members }}</div>
+        <div class="kpi-label">{% trans "Membres inscrits" %}</div>
+    </div>
+    <div class="kpi" style="--kpi-color:var(--olive)">
+        <div class="kpi-num">{{ kpi_records }}</div>
+        <div class="kpi-label">{% trans "Notices" %}</div>
+    </div>
+    <div class="kpi" style="--kpi-color:var(--blush)">
+        <div class="kpi-num">{{ kpi_items }}</div>
+        <div class="kpi-label">{% trans "Exemplaires" %}</div>
+    </div>
+</div>
+
+{# ── Actions rapides ── #}
+{% if user.is_librarian %}
+<h2 class="section-title">{% trans "Actions rapides" %}</h2>
+<div class="qactions">
+    <a href="{% url 'loans:lend' %}" class="qaction">
+        <div class="qaction-icon" style="--qa-bg:var(--orange-light);--qa-fg:var(--orange)">
+            {% icon "book-down" size="18px" %}
+        </div>
+        <div class="qaction-label">{% trans "Nouveau prêt" %}</div>
+        <div class="qaction-meta">{% trans "Prêter un livre" %}</div>
+    </a>
+    <a href="{% url 'loans:return_items' %}" class="qaction">
+        <div class="qaction-icon" style="--qa-bg:var(--forest-light);--qa-fg:var(--forest)">
+            {% icon "book-up" size="18px" %}
+        </div>
+        <div class="qaction-label">{% trans "Retour" %}</div>
+        <div class="qaction-meta">{% trans "Enregistrer un retour" %}</div>
+    </a>
+    <a href="{% url 'catalog:record_create' %}" class="qaction">
+        <div class="qaction-icon" style="--qa-bg:var(--amber-light);--qa-fg:var(--amber)">
+            {% icon "plus" size="18px" %}
+        </div>
+        <div class="qaction-label">{% trans "Nouvelle notice" %}</div>
+        <div class="qaction-meta">{% trans "Ajouter un livre" %}</div>
+    </a>
+    <a href="{% url 'members:create' %}" class="qaction">
+        <div class="qaction-icon" style="--qa-bg:var(--sky-light);--qa-fg:var(--sky-dark)">
+            {% icon "user-plus" size="18px" %}
+        </div>
+        <div class="qaction-label">{% trans "Nouveau membre" %}</div>
+        <div class="qaction-meta">{% trans "Inscrire un lecteur" %}</div>
+    </a>
+</div>
+{% endif %}
+
+{# ── Tendance + Activité ── #}
+<div class="grid-2" style="margin-top:24px">
+    <div class="card">
+        <div class="row-between">
+            <div class="card-title">{% trans "Tendance — 30 derniers jours" %}</div>
+            <span class="badge badge--mut">30j</span>
+        </div>
+        {% if trend_max %}
+        <div class="trend" role="img" aria-label="{% trans 'Prêts par jour' %}">
+            <svg viewBox="0 0 400 140" preserveAspectRatio="none">
+                <defs>
+                    <linearGradient id="trendg" x1="0" y1="0" x2="0" y2="1">
+                        <stop offset="0%" stop-color="#6B2138" stop-opacity="0.25"/>
+                        <stop offset="100%" stop-color="#6B2138" stop-opacity="0"/>
+                    </linearGradient>
+                </defs>
+                {# Génère la courbe à partir des données réelles #}
+                {% if trend_points %}
+                <path d="{{ trend_points }}" fill="url(#trendg)"/>
+                <path d="{{ trend_line }}" fill="none" stroke="#6B2138" stroke-width="2"/>
+                {% else %}
+                <text x="200" y="80" text-anchor="middle" fill="#9A9088" font-size="13">{% trans "Pas encore de données" %}</text>
+                {% endif %}
+            </svg>
+        </div>
+        {% else %}
+        <p class="muted text-sm" style="margin-top:14px">{% trans "Pas encore de prêts enregistrés sur la période." %}</p>
         {% endif %}
     </div>
-</section>
+
+    <div class="card">
+        <div class="card-title">{% trans "Activité" %}</div>
+        <div class="stack-md" style="margin-top:12px">
+            <div class="row-between text-sm">
+                <span class="muted">{% trans "Membres actifs (mois)" %}</span>
+                <strong>{{ members_month }}</strong>
+            </div>
+            <div class="row-between text-sm">
+                <span class="muted">{% trans "Membres actifs (année)" %}</span>
+                <strong>{{ members_year }}</strong>
+            </div>
+            <div class="row-between text-sm">
+                <span class="muted">{% trans "Notices ajoutées (mois)" %}</span>
+                <strong>{{ growth_month.records_added }}</strong>
+            </div>
+            <div class="row-between text-sm">
+                <span class="muted">{% trans "Exemplaires ajoutés (mois)" %}</span>
+                <strong>{{ growth_month.items_added }}</strong>
+            </div>
+            <div class="row-between text-sm">
+                <span class="muted">{% trans "Notices ajoutées (année)" %}</span>
+                <strong>{{ growth_year.records_added }}</strong>
+            </div>
+        </div>
+    </div>
+</div>
+
+{# ── Top 10 + État système ── #}
+<div class="grid-2" style="margin-top:14px">
+    <div class="card">
+        <div class="card-title">{% trans "Top 10 ce mois-ci" %}</div>
+        {% if top_month %}
+        <div class="stack-sm" style="margin-top:12px">
+            {% for entry in top_month %}
+            <div class="row-between text-sm">
+                <a href="{% url 'catalog:record_detail' pk=entry.record_id %}" class="cell-link" style="font-size:13px;min-width:0;overflow:hidden;text-overflow:ellipsis;white-space:nowrap">{{ entry.title|truncatechars:45 }}</a>
+                <strong style="flex-shrink:0;margin-left:8px">{{ entry.count }}</strong>
+            </div>
+            {% endfor %}
+        </div>
+        {% else %}
+        <p class="muted text-sm" style="margin-top:10px">{% trans "Aucun prêt ce mois." %}</p>
+        {% endif %}
+    </div>
+
+    <div class="card {% if system_status.backup_alert %}card--alert{% endif %}">
+        <div class="card-title">{% trans "État système" %}</div>
+        <div class="stack-md" style="margin-top:12px">
+            <div class="row-between text-sm">
+                <span class="muted">{% trans "Version" %}</span>
+                <strong>{{ system_status.version }}</strong>
+            </div>
+            <div class="row-between text-sm">
+                <span class="muted">{% trans "Espace disque" %}</span>
+                <strong>
+                    {% if system_status.disk_free_gb is not None %}{{ system_status.disk_free_gb }} / {{ system_status.disk_total_gb }} Go
+                    {% else %}—{% endif %}
+                </strong>
+            </div>
+            <div class="row-between text-sm">
+                <span class="muted">{% trans "Dernière sauvegarde" %}</span>
+                <strong>
+                    {% if system_status.last_backup_at %}{{ system_status.last_backup_at|date:"Y-m-d H:i" }}
+                    {% if system_status.backup_alert %}<span class="badge badge--late">{% trans "> 24h" %}</span>{% endif %}
+                    {% else %}<span class="badge badge--late">{% trans "Aucune" %}</span>{% endif %}
+                </strong>
+            </div>
+            <div class="row-between text-sm">
+                <span class="muted">{% trans "Réseau" %}</span>
+                <span class="badge badge--ok">{% icon "check" size="12px" %} online</span>
+            </div>
+        </div>
+    </div>
+</div>
+
 {% endblock %}

@@ -1,60 +1,124 @@
 {% extends "base.html" %}
 {% load i18n biblio_icons %}
 
-{% block title %}{% trans "Usagers" %}{% endblock %}
+{% block title %}{% trans "Membres" %}{% endblock %}
+
+{% block tile_strip %}
+{% include "partials/_tile_strip.html" with active="members" %}
+{% endblock %}
 
 {% block content %}
-<header class="page-head">
-    <h1>{% icon "users" %} {% trans "Usagers" %}</h1>
+
+<header class="pagehead">
+    <div class="pagehead-icon pagehead-icon--illus"
+         style="box-shadow:var(--shadow-sm),inset 0 0 0 2px var(--sky)">
+        {% illus "members" %}
+    </div>
+    <div class="pagehead-text">
+        <h1 class="pagehead-title">{% trans "Membres" %}</h1>
+        <div class="pagehead-sub">{% trans "Lecteurs inscrits, cartes et historique" %}</div>
+    </div>
     {% if user.is_librarian %}
-    <a href="{% url 'members:create' %}" role="button" class="btn-big">
-        {% icon "user-plus" %} {% trans "Nouvel usager" %}
-    </a>
+    <div class="pagehead-action">
+        <a href="{% url 'members:create' %}" class="btn btn--primary">
+            {% icon "user-plus" size="16px" %}
+            <span class="hide-sm">{% trans "Nouveau membre" %}</span>
+        </a>
+    </div>
     {% endif %}
 </header>
 
+{# KPI #}
+{% if kpi_active is not None %}
+<div class="kpis" style="grid-template-columns:repeat(3,1fr);margin-bottom:20px">
+    <div class="kpi" style="--kpi-color:var(--sky)">
+        <div class="kpi-num">{{ kpi_active|default:"—" }}</div>
+        <div class="kpi-label">{% trans "Actifs ce mois" %}</div>
+    </div>
+    <div class="kpi" style="--kpi-color:var(--orange)">
+        <div class="kpi-num">{{ kpi_overdue|default:"—" }}</div>
+        <div class="kpi-label">{% trans "En retard" %}</div>
+    </div>
+    <div class="kpi" style="--kpi-color:var(--forest)">
+        <div class="kpi-num">{{ kpi_new|default:"—" }}</div>
+        <div class="kpi-label">{% trans "Nouveaux ce mois" %}</div>
+    </div>
+</div>
+{% endif %}
+
 <form method="get" class="filter-bar">
-    <input type="search" name="q" value="{{ q }}" placeholder="{% trans 'Nom ou n° de carte…' %}">
-    <select name="category">
+    <div class="search" style="flex:1;margin:0">
+        <span class="search-icon">{% icon "search" size="18px" %}</span>
+        <input type="search" name="q" value="{{ q }}"
+               placeholder="{% trans 'Nom ou n° de carte…' %}"
+               style="width:100%">
+    </div>
+    <select name="category" class="filter-select" style="width:auto;min-width:160px">
         <option value="">{% trans "Toutes catégories" %}</option>
         {% for cat in categories %}
         <option value="{{ cat.pk }}" {% if selected.category == cat.pk|stringformat:'s' %}selected{% endif %}>{{ cat.name }}</option>
         {% endfor %}
     </select>
-    <select name="status">
+    <select name="status" class="filter-select" style="width:auto;min-width:130px">
         <option value="">{% trans "Tout statut" %}</option>
         {% for value, label in statuses %}
         <option value="{{ value }}" {% if selected.status == value %}selected{% endif %}>{{ label }}</option>
         {% endfor %}
     </select>
-    <button type="submit">{% icon "search" %} {% trans "Filtrer" %}</button>
+    <button type="submit" class="btn btn--primary">
+        {% icon "search" size="16px" %} {% trans "Filtrer" %}
+    </button>
 </form>
 
 {% if page_obj %}
-<table>
-    <thead>
-        <tr><th>{% trans "Nom" %}</th><th>{% trans "N° de carte" %}</th><th>{% trans "Catégorie" %}</th><th>{% trans "Statut" %}</th></tr>
-    </thead>
-    <tbody>
-        {% for member in page_obj %}
-        <tr>
-            <td><a href="{% url 'members:detail' member.pk %}">{{ member.last_name }} {{ member.first_name }}</a></td>
-            <td>{{ member.card_number }}</td>
-            <td>{{ member.category.name }}</td>
-            <td>{{ member.get_status_display }}</td>
-        </tr>
-        {% endfor %}
-    </tbody>
-</table>
+<div class="list">
+    {% for member in page_obj %}
+    {% with initials=member.last_name|first|add:member.first_name|first %}
+    {% with colors="burgundy,amber,sky,orange,olive,blush,forest" %}
+    <a href="{% url 'members:detail' member.pk %}" class="list-row">
+        <div class="lrow-icon" style="
+            background:var(--sky);color:var(--ink);
+            font-family:var(--font-brand);font-weight:700;font-size:14px;
+            width:44px;height:44px;border-radius:14px;flex-shrink:0">
+            {{ initials|upper }}
+        </div>
+        <div class="lrow-body">
+            <div class="lrow-title">{{ member.last_name }} {{ member.first_name }}</div>
+            <div class="lrow-sub">{{ member.card_number }} · {{ member.category.name }}</div>
+        </div>
+        <div class="lrow-end">
+            {% with status=member.get_status_display %}
+            {% if member.has_overdue %}
+            <span class="badge badge--late">{{ status }}</span>
+            {% elif member.is_expiring_soon %}
+            <span class="badge badge--soon">{{ status }}</span>
+            {% else %}
+            <span class="badge badge--ok">{{ status }}</span>
+            {% endif %}
+            {% endwith %}
+        </div>
+    </a>
+    {% endwith %}
+    {% endwith %}
+    {% endfor %}
+</div>
 
 {% if page_obj.paginator.num_pages > 1 %}
 <nav class="pager">
-    {% if page_obj.has_previous %}<a href="?q={{ q }}&page={{ page_obj.previous_page_number }}">{% trans "Précédent" %}</a>{% endif %}
-    <span>{{ page_obj.number }} / {{ page_obj.paginator.num_pages }}</span>
-    {% if page_obj.has_next %}<a href="?q={{ q }}&page={{ page_obj.next_page_number }}">{% trans "Suivant" %}</a>{% endif %}
+    {% if page_obj.has_previous %}
+    <a href="?q={{ q }}&page={{ page_obj.previous_page_number }}" class="btn btn--ghost btn--sm">{% trans "Précédent" %}</a>
+    {% endif %}
+    <span class="pager-info">{{ page_obj.number }} / {{ page_obj.paginator.num_pages }}</span>
+    {% if page_obj.has_next %}
+    <a href="?q={{ q }}&page={{ page_obj.next_page_number }}" class="btn btn--ghost btn--sm">{% trans "Suivant" %}</a>
+    {% endif %}
 </nav>
 {% endif %}
+
 {% else %}
-<p>{% trans "Aucun usager ne correspond." %}</p>
+<div class="card" style="text-align:center;padding:32px">
+    <p class="muted">{% trans "Aucun membre ne correspond." %}</p>
+</div>
 {% endif %}
+
 {% endblock %}
