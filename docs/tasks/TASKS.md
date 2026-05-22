@@ -2,7 +2,7 @@
 
 Source de vérité de l'avancement v1. Une case `[x]` = livrable terminé et déployable. `[ ]` = à faire. `[!]` = bloqué (voir note).
 
-Mise à jour : 2026-05-22 (Sprint 5 — Task #20 / FEAT-021 validée Val : scan catalogage + récolement OfeliaScan OK. BUG-008 fixé et validé Val : récolement ISBN + multi-exemplaires. Sprint 6 — Task #18 / FEAT-020 validé Val. BUG-007 fixé.)
+Mise à jour : 2026-05-23 (Sprint 6 — FEAT-022 : refonte UI design OFELIA validée Val (tuiles, tile strip, polices, login). BUG-009 : CSRF_TRUSTED_ORIGINS. Pi : repo git autonome BibliOfelia initialisé pour mises à jour wizard. Docs : SPEC §3.2/§10.2 mis à jour, FEAT-022 + BUG-009 créés, keebee FEAT-029 amendé.)
 
 ## Sprint 0 — Squelette
 
@@ -253,3 +253,6 @@ Mise à jour : 2026-05-22 (Sprint 5 — Task #20 / FEAT-021 validée Val : scan 
   - Build multi-arch : abandonné — keebee clone + build sur la Pi (décision Val 2026-05-22)
   - [x] Déploiement sur la Pi `192.168.0.147` + test Val (portail → wizard → connexion) — OK 2026-05-22
   - [x] **BUG-007** wizard 500 fin d'install : `install_demo()` plantait sur la contrainte UNIQUE `isbn_13` ; fix `""` → `None` (`apps/setup/demo.py`) + doc + SPEC §11.4
+  - [x] **BUG-009** CSRF_TRUSTED_ORIGINS manquant : login impossible depuis domaine externe (ZeroTier) — ajout variable dans `docker-compose.yml` ; doc `docs/bugs/BUG-009-csrf-trusted-origins.md`
+  - [x] **FEAT-022** Refonte UI design OFELIA : tuiles, tile strip, page head, polices Bricolage Grotesque/DM Sans, ofelia.css, login stylé, logo OFELIA, 17 icônes Lucide — validé Val 2026-05-23 ; doc `docs/specs/FEAT-022-refonte-ui-design-ofelia.md`
+  - [x] Pi : `/opt/edubox/bibliofelia/` converti en repo git autonome (origin = GitHub BibliOfelia/main) — wizard peut désormais faire `git pull --ff-only` pour les mises à jour ; keebee `FEAT-029-bibliofelia.md` mis à jour

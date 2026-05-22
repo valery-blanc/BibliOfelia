@@ -4,7 +4,7 @@ Spécification détaillée du logiciel de gestion de bibliothèque BibliOfelia, 
 
 Version : 1.0 (cible v1)
 Statut : draft pour Spec-Driven Development
-Dernière modif spec : 2026-05-22 — FEAT-021 (API scan-sessions + inventory-sessions : contrat aligné sur le client OfeliaScan — corps `{"items":[...]}`, champs `scanned_value`/`metadata_*`/`item_state`, idempotency `local_id`, finalize sync = create-or-add-copies, ownership contributor_api — §6.10) ; FEAT-020 (intégration keebee : déploiement sur la Ofelia Box via le wizard keebee, clone + build sur la Pi, routage nginx `/bibliofelia/`, réglage `SECURE_COOKIES`, statique servi par nginx — §4, §11) ; FEAT-018 (terminologie UI : l'EAN13 interne d'un exemplaire est nommé « code Ofelia » dans toute l'interface ; rapport d'inventaire enrichi du code Ofelia et de l'ISBN — §5.2/§6.5/§6.7) ; Sprint 4 : FEAT-011 (dashboard enrichi §6.6 + rapports + paramètres + gestion comptes), FEAT-012 (impression étiquettes + cartes §6.7), FEAT-013 (notifications offline §6.8), FEAT-014 (sauvegardes §8 + planification django-q2), FEAT-015 (wizard premier démarrage §11.3 + données démo §11.4), FEAT-017 (onglet « Avancé » + page Connexion OfeliaScan + « Mon compte » §6.6/§6.10/§10.2), BUG-006 (i18n : `accounts/` déplacé sous `i18n_patterns` + chaînes EN/ES/MG complétées) ; Sprint 3 : FEAT-016 — API OfeliaScan (§6.10 : auth JWT, /pairing/info, /isbn/{isbn}, /health) ; FEAT-019 — publication mDNS via service Avahi sur l'hôte (§6.10) ; SPEC-CORR-002 — /pairing/info renvoie `base_url` (URL absolue) ; Sprint 2 : FEAT-005 à FEAT-010 (§6.1 à §6.5, §10) ; i18n 4 langues (§6.9) ; BUG-002 à BUG-005 ; §6.10 réécrit comme contrat d'API (SPEC-CORR-001)
+Dernière modif spec : 2026-05-23 — Refonte UI design OFELIA (§3.2 Frontend, §10.2 Navigation/Écrans : tuiles, tile strip, page head, polices Bricolage Grotesque/DM Sans, ofelia.css, logo OFELIA) ; FEAT-021 (API scan-sessions + inventory-sessions : contrat aligné sur le client OfeliaScan — corps `{"items":[...]}`, champs `scanned_value`/`metadata_*`/`item_state`, idempotency `local_id`, finalize sync = create-or-add-copies, ownership contributor_api — §6.10) ; FEAT-020 (intégration keebee : déploiement sur la Ofelia Box via le wizard keebee, clone + build sur la Pi, routage nginx `/bibliofelia/`, réglage `SECURE_COOKIES`, statique servi par nginx — §4, §11) ; FEAT-018 (terminologie UI : l'EAN13 interne d'un exemplaire est nommé « code Ofelia » dans toute l'interface ; rapport d'inventaire enrichi du code Ofelia et de l'ISBN — §5.2/§6.5/§6.7) ; Sprint 4 : FEAT-011 (dashboard enrichi §6.6 + rapports + paramètres + gestion comptes), FEAT-012 (impression étiquettes + cartes §6.7), FEAT-013 (notifications offline §6.8), FEAT-014 (sauvegardes §8 + planification django-q2), FEAT-015 (wizard premier démarrage §11.3 + données démo §11.4), FEAT-017 (onglet « Avancé » + page Connexion OfeliaScan + « Mon compte » §6.6/§6.10/§10.2), BUG-006 (i18n : `accounts/` déplacé sous `i18n_patterns` + chaînes EN/ES/MG complétées) ; Sprint 3 : FEAT-016 — API OfeliaScan (§6.10 : auth JWT, /pairing/info, /isbn/{isbn}, /health) ; FEAT-019 — publication mDNS via service Avahi sur l'hôte (§6.10) ; SPEC-CORR-002 — /pairing/info renvoie `base_url` (URL absolue) ; Sprint 2 : FEAT-005 à FEAT-010 (§6.1 à §6.5, §10) ; i18n 4 langues (§6.9) ; BUG-002 à BUG-005 ; §6.10 réécrit comme contrat d'API (SPEC-CORR-001)
 
 ---
 
@@ -111,10 +111,18 @@ BibliOfelia partage le Raspberry Pi avec les autres services Ofelia (Moodle, Kol
 |-----------|-------|---------------|
 | Rendu | Server-side (Django templates) | Faible latence sur Pi, simplicité, SEO inutile |
 | Interactivité | HTMX 2.x | Interactions sans SPA, suffit largement |
-| Reactivité locale | Alpine.js 3.x | Petits composants (modals, accordéons) |
-| CSS | Pico.css 2.x | Classless par défaut, micro-bundle, semantic HTML |
-| Icônes | Lucide static SVG | Pack libre, embarqué localement |
-| Polices | Inter (latine) | OFL, légère, lisible |
+| Réactivité locale | Alpine.js 3.x | Petits composants (modals, accordéons) |
+| CSS | `static/css/ofelia.css` — système de design OFELIA Studio Ayer | Tokens couleur OFELIA, mobile-first, grille tuiles, tile strip, badges, cartes |
+| Icônes | Lucide static SVG | Pack libre, embarqué localement (`static/icons/`) |
+| Polices | Bricolage Grotesque (titres/marque) + DM Sans (corps/UI) | OFL, servies en local (woff2 variables, `static/fonts/`) — contrainte hors-ligne |
+| Logo | `static/img/ofelia-logo.png` | Logo officiel OFELIA, topbar + login |
+
+> **Refonte UI (2026-05-23, design handoff Claude Design)** : Pico.css et Inter remplacés
+> par le système de design OFELIA (Studio Ayer). Les templates utilisent les partials
+> `templates/partials/_tile_strip.html` (navigation chips) et `_page_head.html`
+> (en-tête de page avec illustration SVG). Les illustrations 7 sections (64×64
+> flat-vector, palette OFELIA) sont définies dans le tag `{% illus %}` de
+> `apps/core/templatetags/biblio_icons.py`.
 
 Aucune dépendance CDN externe : tous les assets sont servis depuis la box.
 
@@ -1038,20 +1046,25 @@ Procédure physique en cas d'oubli total :
 
 ### 10.2 Écrans principaux
 
-1. **Dashboard** : KPIs, raccourcis vers actions fréquentes
+1. **Accueil / Dashboard** : grille de tuiles colorées + KPIs + actions rapides + tendance
 2. **Prêt** : scan carte → scan livres → valider (workflow linéaire, gros boutons)
 3. **Retour** : scan livres → valider
 4. **Catalogue** : recherche + liste + détail notice/exemplaire
-5. **Usagers** : recherche + liste + détail
+5. **Membres** : recherche + liste + détail (libellé UI : « Membres »)
 6. **Réservations** : à honorer + en attente
-7. **Inventaire** : sessions + détail session (libellé UI ; app/code = `inventory`, ex-« récolement »)
-8. **Rapports** : sélection + génération PDF/CSV
-9. **Paramètres** : sections regroupées
+7. **Avancé** : Inventaire, Rapports, Impression, Administration (onglet regroupeur)
+   - **Inventaire** : sessions + détail session (libellé UI ; app/code = `inventory`)
+   - **Rapports** : sélection + génération PDF/CSV
+   - **Paramètres** : sections regroupées
 
-> Implémentation Sprint 4 (FEAT-017) : la barre de navigation expose
-> Catalogue, Usagers, Prêt, Retour, Réservations et **Avancé**. Les écrans
-> Inventaire, Rapports et Paramètres sont regroupés sous l'onglet
-> **Avancé** (`core:advanced`) et non dans la barre principale.
+> **Navigation (refonte UI 2026-05-23, design OFELIA)** :
+>
+> - **Topbar sticky** : logo OFELIA + nom de la bibliothèque + sélecteur de langue (pill) + aide + avatar utilisateur (dropdown Mon compte / Déconnexion). Page login : topbar allégée sans avatar.
+> - **Accueil** : grille de **6 grosses tuiles colorées** (Catalogue=amber, Membres=sky, Prêt=orange, Retour=olive, Réservations=blush, Avancé=forest) avec illustrations SVG multicolores 64×64 OFELIA, responsive 1→2→4 colonnes (600/900 px). Bannière scan rapide. KPIs 6 cartes.
+> - **Tile strip** (pages secondaires) : bande horizontale scrollable de chips colorés sous la topbar, permettant de naviguer entre toutes les sections sans repasser par l'accueil. Chip actif = couleur de section.
+> - **Page head** : chaque page secondaire affiche l'illustration SVG de la section + titre + sous-titre + bouton d'action principal.
+>
+> Implémentation Sprint 4 (FEAT-017) + refonte UI (design handoff 2026-05-23).
 
 ### 10.3 Mode "accès simple" vs "avancé"
 
@@ -1286,7 +1299,8 @@ django-modeltranslation
 django-auditlog
 django-axes
 HTMX 2.x + Alpine.js 3.x
-Pico.css 2.x
+ofelia.css (système de design OFELIA Studio Ayer — remplace Pico.css)
+Bricolage Grotesque + DM Sans (woff2 locaux — remplace Inter)
 python-barcode + ReportLab
 pycups
 httpx
