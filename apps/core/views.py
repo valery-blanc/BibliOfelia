@@ -6,7 +6,6 @@ from urllib.parse import urlencode
 
 from django.contrib.auth.decorators import login_required
 from django.db.models import Q
-from django.http import JsonResponse
 from django.shortcuts import redirect, render
 from django.urls import reverse
 from django.views.decorators.http import require_POST
@@ -84,8 +83,3 @@ def toggle_advanced(request):
     user.save(update_fields=["always_show_advanced"])
     next_url = request.POST.get("next") or reverse("core:dashboard")
     return redirect(next_url)
-
-
-def health(request):
-    """Endpoint de santé minimal, étendu plus tard (espace disque, backup)."""
-    return JsonResponse({"status": "ok", "version": "0.1.0-dev"})

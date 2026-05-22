@@ -24,6 +24,8 @@ env = environ.Env(
     MEDIA_URL=(str, "/media/"),
     OPENLIBRARY_BASE_URL=(str, "https://openlibrary.org"),
     OPENLIBRARY_TIMEOUT=(int, 5),
+    BIBLIOFELIA_VERSION=(str, "0.1.0-dev"),
+    API_BASE_PATH=(str, "/biblio/api/v1/"),
     BACKUP_USB_PATH=(str, "/backup"),
     CUPS_HOST=(str, ""),
     CUPS_PORT=(int, 631),
@@ -279,6 +281,12 @@ AUDITLOG_INCLUDE_ALL_MODELS = False
 # OpenLibrary
 OPENLIBRARY_BASE_URL = env("OPENLIBRARY_BASE_URL")
 OPENLIBRARY_TIMEOUT = env("OPENLIBRARY_TIMEOUT")
+
+# API OfeliaScan (SPEC §6.10) — version logicielle exposée par /pairing/info et
+# /health ; API_BASE_PATH = chemin public de l'API derrière nginx (le contrat
+# attend un slash final).
+BIBLIOFELIA_VERSION = env("BIBLIOFELIA_VERSION")
+API_BASE_PATH = env("API_BASE_PATH")
 
 # Sauvegardes
 BACKUP_USB_PATH = env("BACKUP_USB_PATH")

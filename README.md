@@ -42,7 +42,7 @@ Placés dans `static/css/` et `static/js/`.
 ```
 config/         settings (base/dev/prod/test), urls, wsgi
 apps/
-  core/         Setting, EAN13, dashboard, health
+  core/         Setting, EAN13, dashboard, recherche globale
   accounts/     User étendu (rôles), login
   catalog/      Author, Category, Tag, Location, BibliographicRecord, Item  [Task #2]
   members/      MemberCategory, Member                                       [Task #2]

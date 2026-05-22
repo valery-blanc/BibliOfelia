@@ -2,7 +2,7 @@
 
 Source de vérité de l'avancement v1. Une case `[x]` = livrable terminé et déployable. `[ ]` = à faire. `[!]` = bloqué (voir note).
 
-Mise à jour : 2026-05-22 (Sprint 2 livré et poussé `d361965` ; Sprint 3 re-priorisé → Connexion OfeliaScan)
+Mise à jour : 2026-05-22 (Sprint 3 : Task #16 codée + 132 tests verts, en attente test Val ; Task #19 → avahi hôte décidé)
 
 ## Sprint 0 — Squelette
 
@@ -123,7 +123,7 @@ Mise à jour : 2026-05-22 (Sprint 2 livré et poussé `d361965` ; Sprint 3 re-pr
   - [x] Docs : `BUG-003`, `BUG-004`, `BUG-005`, SPEC §6.3/§6.5/§6.9 mises à jour
 - [x] Test Val des correctifs (2026-05-22 : double prêt / récolement / i18n confirmés OK)
 - [x] Commit `d361965` + push `origin/main` (2026-05-22)
-- [ ] Commit unique Sprint 2 (code + docs + TASKS.md)
+- [x] Commit unique Sprint 2 (code + docs + TASKS.md) — commit `d361965` poussé `origin/main`
 
 ## Sprint 3 — Connexion OfeliaScan (appairage + lookup ISBN)
 
@@ -133,14 +133,15 @@ Mise à jour : 2026-05-22 (Sprint 2 livré et poussé `d361965` ; Sprint 3 re-pr
 > appliqué dans `SPEC §6.10`. Si la box respecte ce contrat à la lettre,
 > OfeliaScan n'a aucune modification à faire.
 
-- [ ] **Task #16** API REST OfeliaScan — authentification, appairage, lookup ISBN (§6.10)
-  - [ ] Auth JWT : `POST /auth/login`, `/auth/refresh`, `/auth/logout` — serializer/vue custom émettant `access_token` / `refresh_token` / `token_type` / `expires_in`
-  - [ ] SimpleJWT : `ROTATE_REFRESH_TOKENS` + `BLACKLIST_AFTER_ROTATION` + app `token_blacklist`
-  - [ ] `GET /pairing/info` — sans auth, inclure le champ `api_base`
-  - [ ] `GET /isbn/{isbn}` — champ `publication_year`, `isbn` toujours présent ; cache local + fallback OpenLibrary
-  - [ ] `GET /health` — champ `status` garanti
-  - [ ] Format d'erreur uniforme `{error:{code,message,details}}`
-  - [ ] Tests API (pytest + DRF APIClient)
+- [ ] **Task #16** API REST OfeliaScan — authentification, appairage, lookup ISBN (§6.10) — *codée, en attente test Val*
+  - [x] Auth JWT : `POST /auth/login`, `/auth/refresh`, `/auth/logout` — serializers custom (`apps/api/serializers.py`) émettant `access_token` / `refresh_token` / `token_type` / `expires_in`
+  - [x] SimpleJWT : `ROTATE_REFRESH_TOKENS` + `BLACKLIST_AFTER_ROTATION` + app `token_blacklist` (déjà configurés, exploités par `/auth/refresh` et `/auth/logout`)
+  - [x] `GET /pairing/info` — sans auth, champ `api_base` (réglage `API_BASE_PATH`)
+  - [x] `GET /isbn/{isbn}` — champ `publication_year`, `isbn` toujours présent ; cache local `BibliographicRecord` + fallback OpenLibrary
+  - [x] `GET /health` — champ `status` garanti, auth requise ; healthcheck Docker repointé sur `/pairing/info`
+  - [x] Format d'erreur uniforme `{error:{code,message,details}}` (handler `apps/api/exceptions.py` + 404 ISBN)
+  - [x] Tests API : `apps/api/tests/test_api.py` — 15 tests verts, suite complète **132 passed**
+  - [x] Doc : `docs/specs/FEAT-016-api-ofeliascan.md` + `SPEC §6.10` mis à jour
 - [ ] **Task #19** Publication mDNS/DNS-SD `_bibliofelia._tcp.` (SPEC §6.10 / SPEC-CORR-001 §7)
   - [ ] Service Avahi sur l'hôte Pi : `/etc/avahi/services/bibliofelia.service` (TXT : `library_name`, `version`, `api_base`)
   - [ ] Régénération du fichier au wizard de premier démarrage (Task #15)

@@ -9,7 +9,7 @@ from django.http import HttpResponseRedirect
 from django.urls import resolve, reverse
 
 ALLOWED_NAMESPACES = {"setup", "admin", "accounts"}
-ALLOWED_PATHS = {"/health/", "/api/v1/health/", "/static/", "/media/"}
+ALLOWED_PATHS = {"/static/", "/media/"}
 
 
 class SetupRequiredMiddleware:

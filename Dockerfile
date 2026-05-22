@@ -47,9 +47,10 @@ RUN mkdir -p /app/data /app/media /app/staticfiles \
     && python manage.py collectstatic --noinput \
     && python manage.py compilemessages || true
 
-# Healthcheck simple : ping endpoint /health
+# Healthcheck : /pairing/info est public (pas d'auth) et touche la BD.
+# /api/v1/health exige un JWT (contrat OfeliaScan §6.10), donc inadapté ici.
 HEALTHCHECK --interval=30s --timeout=5s --start-period=30s --retries=3 \
-    CMD curl -fsS http://localhost:8001/api/v1/health/ || exit 1
+    CMD curl -fsS http://localhost:8001/api/v1/pairing/info || exit 1
 
 EXPOSE 8001
 ENTRYPOINT ["/usr/bin/tini", "--", "/app/scripts/entrypoint.sh"]

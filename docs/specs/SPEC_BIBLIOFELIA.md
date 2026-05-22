@@ -4,7 +4,7 @@ Spécification détaillée du logiciel de gestion de bibliothèque BibliOfelia, 
 
 Version : 1.0 (cible v1)
 Statut : draft pour Spec-Driven Development
-Dernière modif spec : 2026-05-22 — Sprint 2 : FEAT-005 à FEAT-010 (§6.1 à §6.5, §10) ; i18n 4 langues (§6.9) ; BUG-002 à BUG-005 ; §6.10 réécrit comme contrat d'API (SPEC-CORR-001)
+Dernière modif spec : 2026-05-22 — Sprint 3 : FEAT-016 — implémentation de l'API OfeliaScan (§6.10 : auth JWT, /pairing/info, /isbn/{isbn}, /health) ; Sprint 2 : FEAT-005 à FEAT-010 (§6.1 à §6.5, §10) ; i18n 4 langues (§6.9) ; BUG-002 à BUG-005 ; §6.10 réécrit comme contrat d'API (SPEC-CORR-001)
 
 ---
 
@@ -757,11 +757,24 @@ La box **publie un service DNS-SD** pour qu'OfeliaScan la découvre sur le rése
 - Type de service : `_bibliofelia._tcp.`, domaine `.local`, port HTTP de l'API.
 - Nom d'instance = `box_name` (= celui de `/pairing/info`).
 - Enregistrements TXT recommandés : `library_name`, `version`, `api_base`.
-- Implémentation : `avahi-daemon` sur l'hôte Raspberry Pi (pas dans le conteneur Docker), fichier `/etc/avahi/services/bibliofelia.service` régénéré au wizard de premier démarrage (§11.3) avec le nom réel de la bibliothèque.
+- Implémentation : `avahi-daemon` sur l'hôte Raspberry Pi (pas dans le conteneur Docker), fichier `/etc/avahi/services/bibliofelia.service` régénéré au wizard de premier démarrage (§11.3) avec le nom réel de la bibliothèque. Choix d'archi retenu pour sa robustesse (service géré par systemd, découplé du conteneur applicatif).
 
----
+#### Implémentation (FEAT-016)
 
-## 7. Connectivité et synchronisation
+État : auth JWT, `/pairing/info`, `/isbn/{isbn}`, `/health` et le format
+d'erreur sont implémentés (`apps/api/`). Les sessions de scan, le récolement
+et `/items`, `/search`, `/sync/status` restent à faire (Task #20, Sprint 5).
+
+- Les routes sont définies **sans slash final** (`apps/api/urls.py`), conforme
+  au contrat (OfeliaScan concatène les chemins relatifs).
+- `POST /auth/login` et `/auth/refresh` : serializers personnalisés
+  (`apps/api/serializers.py`) émettant les noms OAuth 2.0.
+- `version` (de `/pairing/info` et `/health`) provient du réglage
+  `BIBLIOFELIA_VERSION` ; `api_base` du réglage `API_BASE_PATH` (défaut
+  `/biblio/api/v1/`) ; `box_name` / `library_name` du modèle `Setting`
+  (renseignés par le wizard, §11.3).
+- `/health` exige une authentification (contrat §6.10). Le healthcheck Docker
+  utilise donc `/api/v1/pairing/info` (public) comme sonde de vivacité.
 
 ### 7.1 Modes de fonctionnement
 
