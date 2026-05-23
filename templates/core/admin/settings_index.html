@@ -3,25 +3,76 @@
 
 {% block title %}{% trans "Paramètres" %}{% endblock %}
 
+{% block tile_strip %}{% include "partials/_tile_strip.html" with active="advanced" %}{% endblock %}
+
 {% block content %}
-<h1>{% icon "settings" %} {% trans "Paramètres" %}</h1>
+<header class="pagehead">
+    <div class="pagehead-icon" style="--ph-bg:var(--burgundy);--ph-fg:#fff">
+        {% icon "settings" size="28px" %}
+    </div>
+    <div class="pagehead-text">
+        <h1 class="pagehead-title">{% trans "Paramètres" %}</h1>
+        <div class="pagehead-sub">{% trans "Configuration de la bibliothèque, des sauvegardes et de la connectivité." %}</div>
+    </div>
+</header>
 
-<p>{% trans "Configuration de la bibliothèque, des sauvegardes et de la connectivité." %}</p>
+<div class="list">
+    {% for slug, info in sections.items %}
+    <a href="{% url 'core:settings_section' section=slug %}" class="list-row">
+        <div class="lrow-icon" style="
+            {% if slug == 'identity' %}--lr-bg:var(--burgundy-light);--lr-fg:var(--burgundy)
+            {% elif slug == 'languages' %}--lr-bg:var(--sky-light);--lr-fg:var(--sky-dark)
+            {% elif slug == 'backup' %}--lr-bg:var(--forest-light);--lr-fg:var(--forest)
+            {% elif slug == 'labels' %}--lr-bg:var(--amber-light);--lr-fg:#946906
+            {% elif slug == 'zerotier' %}--lr-bg:var(--olive-light);--lr-fg:var(--ink)
+            {% endif %}">
+            {% if slug == 'identity' %}{% icon "id-card" size="18px" %}
+            {% elif slug == 'languages' %}{% icon "languages" size="18px" %}
+            {% elif slug == 'backup' %}{% icon "database" size="18px" %}
+            {% elif slug == 'labels' %}{% icon "printer" size="18px" %}
+            {% elif slug == 'zerotier' %}{% icon "globe" size="18px" %}
+            {% else %}{% icon "settings" size="18px" %}{% endif %}
+        </div>
+        <div class="lrow-body">
+            <div class="lrow-title">{{ info.0 }}</div>
+            <div class="lrow-sub">
+                {% if slug == 'identity' %}{% trans "Nom de la bibliothèque, contact, fuseau horaire" %}
+                {% elif slug == 'languages' %}{% trans "Langues actives et langue par défaut" %}
+                {% elif slug == 'backup' %}{% trans "Fréquence locale et destination cloud (rclone)" %}
+                {% elif slug == 'labels' %}{% trans "Format des étiquettes codes Ofelia" %}
+                {% elif slug == 'zerotier' %}{% trans "Réseau privé pour accès à distance" %}
+                {% endif %}
+            </div>
+        </div>
+        <div class="lrow-end">{% icon "chevron-right" size="18px" %}</div>
+    </a>
+    {% endfor %}
 
-<nav class="settings-nav">
-    <ul>
-        {% for slug, info in sections.items %}
-            <li>
-                <a href="{% url 'core:settings_section' section=slug %}">
-                    {% icon "chevron-right" %} {{ info.0 }}
-                </a>
-            </li>
-        {% endfor %}
-        <li><a href="{% url 'accounts:user_list' %}">{% icon "users" %} {% trans "Comptes utilisateurs" %}</a></li>
-        <li><a href="{% url 'core:diagnostics' %}">{% icon "activity" %} {% trans "Diagnostic" %}</a></li>
-    </ul>
-</nav>
+    <a href="{% url 'accounts:user_list' %}" class="list-row">
+        <div class="lrow-icon" style="--lr-bg:var(--blush-light);--lr-fg:var(--burgundy)">
+            {% icon "users" size="18px" %}
+        </div>
+        <div class="lrow-body">
+            <div class="lrow-title">{% trans "Comptes utilisateurs" %}</div>
+            <div class="lrow-sub">{% trans "Bibliothécaires, contributeurs, administration" %}</div>
+        </div>
+        <div class="lrow-end">{% icon "chevron-right" size="18px" %}</div>
+    </a>
 
-<p><small>{% trans "Les catégories, tags et emplacements se gèrent depuis l'administration Django pour l'instant." %}
-    <a href="{% url 'admin:index' %}">{% trans "Ouvrir l'admin" %}</a>.</small></p>
+    <a href="{% url 'core:diagnostics' %}" class="list-row">
+        <div class="lrow-icon" style="--lr-bg:var(--cream-dark);--lr-fg:var(--ink-soft)">
+            {% icon "activity" size="18px" %}
+        </div>
+        <div class="lrow-body">
+            <div class="lrow-title">{% trans "Diagnostic" %}</div>
+            <div class="lrow-sub">{% trans "État du système, sauvegardes, planificateur" %}</div>
+        </div>
+        <div class="lrow-end">{% icon "chevron-right" size="18px" %}</div>
+    </a>
+</div>
+
+<p class="muted text-sm" style="margin-top:24px">
+    {% trans "Les catégories, tags et emplacements se gèrent depuis l'administration Django pour l'instant." %}
+    <a href="{% url 'admin:index' %}" class="cell-link">{% trans "Ouvrir l'admin" %}</a>.
+</p>
 {% endblock %}

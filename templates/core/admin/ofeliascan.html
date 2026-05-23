@@ -3,78 +3,98 @@
 
 {% block title %}{% trans "Connexion OfeliaScan" %}{% endblock %}
 
+{% block tile_strip %}{% include "partials/_tile_strip.html" with active="advanced" %}{% endblock %}
+
 {% block content %}
 <nav class="breadcrumb">
     <a href="{% url 'core:advanced' %}">{% trans "Avancé" %}</a> /
     <strong>{% trans "Connexion OfeliaScan" %}</strong>
 </nav>
 
-<h1>{% icon "scan-barcode" %} {% trans "Connexion OfeliaScan" %}</h1>
+<header class="pagehead">
+    <div class="pagehead-icon" style="--ph-bg:var(--burgundy);--ph-fg:#fff">
+        {% icon "scan-barcode" size="28px" %}
+    </div>
+    <div class="pagehead-text">
+        <h1 class="pagehead-title">{% trans "Connexion OfeliaScan" %}</h1>
+        <div class="pagehead-sub">{% trans "Paramètres à saisir dans l'application mobile pour qu'elle se connecte à cette box." %}</div>
+    </div>
+</header>
 
-<p>{% trans "Paramètres à saisir dans l'application mobile OfeliaScan pour qu'elle se connecte à cette box." %}</p>
-
-<section>
-    <h2>{% trans "Adresse de la box" %}</h2>
-    <p><small>{% trans "OfeliaScan détecte normalement la box automatiquement (mDNS). En cas de besoin, saisissez l'adresse ci-dessous." %}</small></p>
-    <dl>
-        <dt>{% trans "Nom de la box" %}</dt><dd><code>{{ box_name }}</code></dd>
-        <dt>{% trans "Nom d'hôte" %}</dt><dd><code>{{ box.hostname|default:"—" }}</code></dd>
-        <dt>{% trans "Adresse IP locale" %}</dt><dd><code>{{ box.lan_ip|default:"—" }}</code></dd>
-        <dt>{% trans "Hôte courant (navigateur)" %}</dt><dd><code>{{ box.request_host }}</code></dd>
-        <dt>{% trans "Chemin de l'API" %}</dt><dd><code>{{ api_path }}</code></dd>
+<h2 class="section-title">{% trans "Adresse de la box" %}</h2>
+<div class="card">
+    <p class="muted text-sm" style="margin-bottom:14px">
+        {% trans "OfeliaScan détecte normalement la box automatiquement (mDNS). En cas de besoin, saisissez l'adresse ci-dessous." %}
+    </p>
+    <dl class="record-meta">
+        <div><dt>{% trans "Nom de la box" %}</dt><dd>{{ box_name }}</dd></div>
+        <div><dt>{% trans "Nom d'hôte" %}</dt><dd>{{ box.hostname|default:"—" }}</dd></div>
+        <div><dt>{% trans "Adresse IP locale" %}</dt><dd>{{ box.lan_ip|default:"—" }}</dd></div>
+        <div><dt>{% trans "Hôte courant (navigateur)" %}</dt><dd>{{ box.request_host }}</dd></div>
+        <div><dt>{% trans "Chemin de l'API" %}</dt><dd>{{ api_path }}</dd></div>
     </dl>
-</section>
+</div>
 
-<section>
-    <h2>{% trans "Identifiants autorisés" %}</h2>
-    <p><small>{% trans "Comptes (rôle Contributeur OfeliaScan) acceptés par l'API. Le mot de passe est affiché en clair pour être recopié dans l'application." %}</small></p>
-    <table>
+<h2 class="section-title" style="margin-top:28px">{% trans "Identifiants autorisés" %}</h2>
+<p class="muted text-sm" style="margin-bottom:12px">
+    {% trans "Comptes (rôle Contributeur OfeliaScan) acceptés par l'API. Le mot de passe est affiché en clair pour être recopié dans l'application." %}
+</p>
+<div class="table-wrap">
+    <table class="table">
         <thead>
             <tr>
                 <th>{% trans "Identifiant" %}</th>
                 <th>{% trans "Mot de passe" %}</th>
                 <th>{% trans "Créé le" %}</th>
-                <th>{% trans "Actions" %}</th>
+                <th></th>
             </tr>
         </thead>
         <tbody>
         {% for cred in credentials %}
             <tr>
-                <td><code>{{ cred.username }}</code></td>
-                <td><code>{{ cred.password }}</code></td>
+                <td><span class="cell-title">{{ cred.username }}</span></td>
+                <td>{{ cred.password }}</td>
                 <td>{{ cred.created_at|slice:":10" }}</td>
-                <td>
-                    <form method="post" style="display:inline"
+                <td style="text-align:right">
+                    <form method="post" style="margin:0"
                           onsubmit="return confirm('{% trans "Révoquer cet identifiant ? OfeliaScan ne pourra plus se connecter avec." %}')">
                         {% csrf_token %}
                         <input type="hidden" name="action" value="revoke">
                         <input type="hidden" name="username" value="{{ cred.username }}">
-                        <button type="submit" class="outline secondary">{% icon "ban" %} {% trans "Révoquer" %}</button>
+                        <button type="submit" class="btn btn--ghost btn--sm" style="color:#B83232">
+                            {% icon "ban" size="14px" %} {% trans "Révoquer" %}
+                        </button>
                     </form>
                 </td>
             </tr>
         {% empty %}
-            <tr><td colspan="4"><em>{% trans "Aucun identifiant autorisé." %}</em></td></tr>
+            <tr><td colspan="4" class="muted" style="text-align:center;padding:24px">{% trans "Aucun identifiant autorisé." %}</td></tr>
         {% endfor %}
         </tbody>
     </table>
-</section>
+</div>
 
-<section>
-    <h2>{% trans "Autoriser un nouvel identifiant" %}</h2>
-    <form method="post">
-        {% csrf_token %}
-        <input type="hidden" name="action" value="add">
-        <div class="grid">
-            <label>{% trans "Identifiant" %}
-                <input type="text" name="username" value="ofeliascan" required autocomplete="off">
-            </label>
-            <label>{% trans "Mot de passe" %}
-                <input type="text" name="password" value="{{ suggested_password }}" autocomplete="off">
-            </label>
+<h2 class="section-title" style="margin-top:28px">{% trans "Autoriser un nouvel identifiant" %}</h2>
+<form method="post" class="card">
+    {% csrf_token %}
+    <input type="hidden" name="action" value="add">
+    <div class="grid-2">
+        <div class="field">
+            <label>{% trans "Identifiant" %}</label>
+            <input type="text" name="username" value="ofeliascan" required autocomplete="off">
         </div>
-        <small>{% trans "Laissez le mot de passe proposé ou saisissez le vôtre. Il sera affiché en clair dans le tableau ci-dessus." %}</small>
-        <button type="submit">{% icon "plus" %} {% trans "Autoriser" %}</button>
-    </form>
-</section>
+        <div class="field">
+            <label>{% trans "Mot de passe" %}</label>
+            <input type="text" name="password" value="{{ suggested_password }}" autocomplete="off">
+        </div>
+    </div>
+    <small class="help-hint" style="margin-bottom:12px;display:block">
+        {% trans "Laissez le mot de passe proposé ou saisissez le vôtre. Il sera affiché en clair dans le tableau ci-dessus." %}
+    </small>
+    <div class="form-actions">
+        <button type="submit" class="btn btn--primary">
+            {% icon "plus" size="16px" %} {% trans "Autoriser" %}
+        </button>
+    </div>
+</form>
 {% endblock %}

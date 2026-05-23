@@ -3,40 +3,54 @@
 
 {% block title %}{% trans "Réservations à retirer" %}{% endblock %}
 
-{% block content %}
-<h1>{% icon "bookmark-check" %} {% trans "Réservations à retirer" %}</h1>
+{% block tile_strip %}{% include "partials/_tile_strip.html" with active="advanced" %}{% endblock %}
 
-<div class="no-print">
-    <button type="button" onclick="window.print()">{% icon "printer" %} {% trans "Imprimer" %}</button>
-    <a href="{% url 'loans:reservations' %}" role="button" class="secondary">{% trans "Gérer les réservations" %}</a>
+{% block content %}
+<header class="pagehead">
+    <div class="pagehead-icon" style="--ph-bg:var(--amber);--ph-fg:var(--ink)">
+        {% icon "bookmark-check" size="28px" %}
+    </div>
+    <div class="pagehead-text">
+        <h1 class="pagehead-title">{% trans "Réservations à retirer" %}</h1>
+        <div class="pagehead-sub">{% blocktrans count count=reservations|length %}{{ count }} réservation à retirer.{% plural %}{{ count }} réservations à retirer.{% endblocktrans %}</div>
+    </div>
+</header>
+
+<div class="no-print" style="display:flex;gap:8px;flex-wrap:wrap;margin-bottom:18px">
+    <button type="button" class="btn btn--primary" onclick="window.print()">
+        {% icon "printer" size="16px" %} {% trans "Imprimer" %}
+    </button>
+    <a href="{% url 'loans:reservations' %}" class="btn btn--ghost">
+        {% icon "bookmark" size="16px" %} {% trans "Gérer les réservations" %}
+    </a>
 </div>
 
-<p>{% blocktrans count count=reservations|length %}{{ count }} réservation à retirer.{% plural %}{{ count }} réservations à retirer.{% endblocktrans %}</p>
-
-<table>
-    <thead>
-        <tr>
-            <th>{% trans "Disponible depuis" %}</th>
-            <th>{% trans "Usager" %}</th>
-            <th>{% trans "Carte" %}</th>
-            <th>{% trans "Téléphone" %}</th>
-            <th>{% trans "Titre" %}</th>
-            <th>{% trans "Exemplaire" %}</th>
-        </tr>
-    </thead>
-    <tbody>
-    {% for r in reservations %}
-        <tr>
-            <td>{{ r.ready_since|date:"Y-m-d" }}</td>
-            <td>{{ r.member.last_name }} {{ r.member.first_name }}</td>
-            <td><code>{{ r.member.card_number }}</code></td>
-            <td>{{ r.member.contact_phone|default:"—" }}</td>
-            <td>{{ r.record.title|truncatechars:60 }}</td>
-            <td><code>{{ r.fulfilled_by_item.internal_id|default:"—" }}</code></td>
-        </tr>
-    {% empty %}
-        <tr><td colspan="6"><em>{% trans "Aucune réservation prête." %}</em></td></tr>
-    {% endfor %}
-    </tbody>
-</table>
+<div class="table-wrap">
+    <table class="table">
+        <thead>
+            <tr>
+                <th>{% trans "Disponible depuis" %}</th>
+                <th>{% trans "Usager" %}</th>
+                <th>{% trans "Carte" %}</th>
+                <th>{% trans "Téléphone" %}</th>
+                <th>{% trans "Titre" %}</th>
+                <th>{% trans "Exemplaire" %}</th>
+            </tr>
+        </thead>
+        <tbody>
+        {% for r in reservations %}
+            <tr>
+                <td><span class="badge badge--ok">{{ r.ready_since|date:"Y-m-d" }}</span></td>
+                <td><span class="cell-title">{{ r.member.last_name }} {{ r.member.first_name }}</span></td>
+                <td>{{ r.member.card_number }}</td>
+                <td>{{ r.member.contact_phone|default:"—" }}</td>
+                <td>{{ r.record.title|truncatechars:60 }}</td>
+                <td>{{ r.fulfilled_by_item.internal_id|default:"—" }}</td>
+            </tr>
+        {% empty %}
+            <tr><td colspan="6" class="muted" style="text-align:center;padding:24px">{% trans "Aucune réservation prête." %}</td></tr>
+        {% endfor %}
+        </tbody>
+    </table>
+</div>
 {% endblock %}

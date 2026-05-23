@@ -3,17 +3,30 @@
 
 {% block title %}{% trans "Nouvelle session d'inventaire" %}{% endblock %}
 
-{% block content %}
-<h1>{% trans "Nouvelle session d'inventaire" %}</h1>
-<p class="help-hint">{% trans "Choisissez le périmètre à pointer. Un identifiant sera généré pour OfeliaScan." %}</p>
+{% block tile_strip %}{% include "partials/_tile_strip.html" with active="advanced" %}{% endblock %}
 
-<form method="post">
+{% block content %}
+<header class="pagehead">
+    <div class="pagehead-icon" style="--ph-bg:var(--olive);--ph-fg:var(--ink)">
+        {% icon "clipboard-list" size="28px" %}
+    </div>
+    <div class="pagehead-text">
+        <h1 class="pagehead-title">{% trans "Nouvelle session d'inventaire" %}</h1>
+        <div class="pagehead-sub">{% trans "Choisissez le périmètre à pointer. Un identifiant sera généré pour OfeliaScan." %}</div>
+    </div>
+</header>
+
+<form method="post" class="card">
     {% csrf_token %}
     {% if form.non_field_errors %}<div class="msg msg-error">{{ form.non_field_errors }}</div>{% endif %}
     {% for field in form %}
         {% include "partials/_field.html" with field=field %}
     {% endfor %}
-    <button type="submit" class="btn-primary">{% icon "check" %} {% trans "Lancer l'inventaire" %}</button>
-    <a href="{% url 'inventory:list' %}" role="button" class="secondary outline">{% trans "Annuler" %}</a>
+    <div class="form-actions">
+        <button type="submit" class="btn btn--primary">
+            {% icon "check" size="16px" %} {% trans "Lancer l'inventaire" %}
+        </button>
+        <a href="{% url 'inventory:list' %}" class="btn btn--ghost">{% trans "Annuler" %}</a>
+    </div>
 </form>
 {% endblock %}

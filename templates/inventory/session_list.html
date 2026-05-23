@@ -3,41 +3,72 @@
 
 {% block title %}{% trans "Inventaire" %}{% endblock %}
 
+{% block tile_strip %}{% include "partials/_tile_strip.html" with active="advanced" %}{% endblock %}
+
 {% block content %}
-<header class="page-head">
-    <h1>{% icon "clipboard-list" %} {% trans "Inventaire" %}</h1>
+<header class="pagehead">
+    <div class="pagehead-icon" style="--ph-bg:var(--olive);--ph-fg:var(--ink)">
+        {% icon "clipboard-list" size="28px" %}
+    </div>
+    <div class="pagehead-text">
+        <h1 class="pagehead-title">{% trans "Inventaire" %}</h1>
+        <div class="pagehead-sub">{% trans "Sessions de récolement et historique" %}</div>
+    </div>
     {% if user.is_librarian %}
-    <a href="{% url 'inventory:create' %}" role="button" class="btn-big">{% icon "plus" %} {% trans "Nouvelle session" %}</a>
+    <div class="pagehead-action">
+        <a href="{% url 'inventory:create' %}" class="btn btn--primary">
+            {% icon "plus" size="16px" %}
+            <span class="hide-sm">{% trans "Nouvelle session" %}</span>
+        </a>
+    </div>
     {% endif %}
 </header>
 
-<section>
-    <h2>{% trans "Sessions en cours" %}</h2>
-    {% if open_sessions %}
-    <ul>
-        {% for s in open_sessions %}
-        <li><a href="{% url 'inventory:detail' s.pk %}">{{ s }}</a> — {{ s.get_scope_type_display }}</li>
-        {% endfor %}
-    </ul>
-    {% else %}<p>{% trans "Aucune session en cours." %}</p>{% endif %}
-</section>
+<h2 class="section-title">{% trans "Sessions en cours" %}</h2>
+{% if open_sessions %}
+<div class="list">
+    {% for s in open_sessions %}
+    <a href="{% url 'inventory:detail' s.pk %}" class="list-row">
+        <div class="lrow-icon" style="--lr-bg:var(--olive-light);--lr-fg:var(--ink)">
+            {% icon "clipboard-list" size="18px" %}
+        </div>
+        <div class="lrow-body">
+            <div class="lrow-title">{{ s }}</div>
+            <div class="lrow-sub">{{ s.get_scope_type_display }}</div>
+        </div>
+        <div class="lrow-end">{% icon "chevron-right" size="18px" %}</div>
+    </a>
+    {% endfor %}
+</div>
+{% else %}
+<div class="card"><p class="muted">{% trans "Aucune session en cours." %}</p></div>
+{% endif %}
 
-<section>
-    <h2>{% trans "Historique" %}</h2>
-    {% if closed_sessions %}
-    <table>
-        <thead><tr><th>{% trans "Session" %}</th><th>{% trans "Périmètre" %}</th><th>{% trans "Statut" %}</th><th>{% trans "Clôturée le" %}</th></tr></thead>
+<h2 class="section-title" style="margin-top:28px">{% trans "Historique" %}</h2>
+{% if closed_sessions %}
+<div class="table-wrap">
+    <table class="table">
+        <thead>
+            <tr>
+                <th>{% trans "Session" %}</th>
+                <th>{% trans "Périmètre" %}</th>
+                <th>{% trans "Statut" %}</th>
+                <th>{% trans "Clôturée le" %}</th>
+            </tr>
+        </thead>
         <tbody>
             {% for s in closed_sessions %}
             <tr>
-                <td><a href="{% url 'inventory:report' s.pk %}">{{ s }}</a></td>
+                <td><a href="{% url 'inventory:report' s.pk %}" class="cell-link">{{ s }}</a></td>
                 <td>{{ s.get_scope_type_display }}</td>
-                <td>{{ s.get_status_display }}</td>
+                <td><span class="badge badge--mut">{{ s.get_status_display }}</span></td>
                 <td>{{ s.closed_at|date:"Y-m-d"|default:"—" }}</td>
             </tr>
             {% endfor %}
         </tbody>
     </table>
-    {% else %}<p>{% trans "Aucune session clôturée." %}</p>{% endif %}
-</section>
+</div>
+{% else %}
+<div class="card"><p class="muted">{% trans "Aucune session clôturée." %}</p></div>
+{% endif %}
 {% endblock %}

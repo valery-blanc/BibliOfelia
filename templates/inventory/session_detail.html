@@ -3,63 +3,90 @@
 
 {% block title %}{{ session }}{% endblock %}
 
+{% block tile_strip %}{% include "partials/_tile_strip.html" with active="advanced" %}{% endblock %}
+
 {% block content %}
-<header class="page-head">
-    <h1>{% icon "clipboard-list" %} {{ session }}</h1>
-    <span>{{ session.get_status_display }}</span>
+<header class="pagehead">
+    <div class="pagehead-icon" style="--ph-bg:var(--olive);--ph-fg:var(--ink)">
+        {% icon "clipboard-list" size="28px" %}
+    </div>
+    <div class="pagehead-text">
+        <h1 class="pagehead-title">{{ session }}</h1>
+        <div class="pagehead-sub">{{ session.get_scope_type_display }}{% if session.scope_location %} · {{ session.scope_location.code }}{% endif %}{% if session.scope_category %} · {{ session.scope_category.name }}{% endif %}</div>
+    </div>
+    <div class="pagehead-action">
+        {% if session.is_open %}
+            <span class="badge badge--ok">{{ session.get_status_display }}</span>
+        {% else %}
+            <span class="badge badge--mut">{{ session.get_status_display }}</span>
+        {% endif %}
+    </div>
 </header>
 
-<dl class="record-meta">
-    <div><dt>{% trans "Périmètre" %}</dt><dd>{{ session.get_scope_type_display }}{% if session.scope_location %} — {{ session.scope_location.code }}{% endif %}{% if session.scope_category %} — {{ session.scope_category.name }}{% endif %}</dd></div>
-    <div><dt>{% trans "Identifiant OfeliaScan" %}</dt><dd><code>{{ session.session_id }}</code></dd></div>
-    <div><dt>{% trans "Démarrée le" %}</dt><dd>{{ session.started_at|date:"Y-m-d H:i" }}</dd></div>
-</dl>
-
-<article>
-    <h2>{% trans "Avancement" %}</h2>
-    <p class="kpi-value">{{ progress.scanned }} / {{ progress.expected }}</p>
-    <small class="help-hint">{% trans "exemplaires pointés / attendus dans le périmètre" %}</small>
-</article>
-
-{% if session.is_open %}
-<article>
-    <h2>{% trans "Scanner ou saisir le code Ofelia d'un document" %}</h2>
-    <form method="post" action="{% url 'inventory:add_scan' session.pk %}">
-        {% csrf_token %}
-        <label class="search-field">
-            {% icon "scan-barcode" %}
-            <input type="text" name="ean" autofocus autocomplete="off"
-                   placeholder="{% trans 'Scanner le code Ofelia' %}">
-        </label>
-        <button type="submit" class="btn-primary">{% icon "plus" %} {% trans "Pointer" %}</button>
-    </form>
-</article>
-{% endif %}
-
-<div class="action-row">
-    {% if user.is_librarian %}
-        {% if session.is_open %}
-        <form method="post" action="{% url 'inventory:close' session.pk %}">
-            {% csrf_token %}
-            <button type="submit">{% icon "check" %} {% trans "Clôturer et voir le rapport" %}</button>
-        </form>
-        {% else %}
-        <a href="{% url 'inventory:report' session.pk %}" role="button">{% trans "Voir le rapport" %}</a>
-        {% endif %}
-    {% endif %}
+<div class="card">
+    <dl class="record-meta">
+        <div><dt>{% trans "Identifiant OfeliaScan" %}</dt><dd>{{ session.session_id }}</dd></div>
+        <div><dt>{% trans "Démarrée le" %}</dt><dd>{{ session.started_at|date:"Y-m-d H:i" }}</dd></div>
+    </dl>
 </div>
 
+<h2 class="section-title">{% trans "Avancement" %}</h2>
+<div class="card">
+    <div class="kpi-num" style="font-size:36px">{{ progress.scanned }} <span class="muted" style="font-size:20px">/ {{ progress.expected }}</span></div>
+    <div class="kpi-label">{% trans "exemplaires pointés / attendus dans le périmètre" %}</div>
+</div>
+
+{% if session.is_open %}
+<h2 class="section-title" style="margin-top:28px">{% trans "Scanner un code Ofelia" %}</h2>
+<div class="card">
+    <form method="post" action="{% url 'inventory:add_scan' session.pk %}">
+        {% csrf_token %}
+        <div class="search" style="margin-bottom:14px">
+            <span class="search-icon">{% icon "scan-barcode" size="18px" %}</span>
+            <input type="text" name="ean" autofocus autocomplete="off"
+                   placeholder="{% trans 'Scanner le code Ofelia' %}">
+        </div>
+        <button type="submit" class="btn btn--primary">
+            {% icon "plus" size="16px" %} {% trans "Pointer" %}
+        </button>
+    </form>
+</div>
+{% endif %}
+
+{% if user.is_librarian %}
+<div style="display:flex;gap:8px;flex-wrap:wrap;margin-top:20px">
+    {% if session.is_open %}
+    <form method="post" action="{% url 'inventory:close' session.pk %}" style="margin:0">
+        {% csrf_token %}
+        <button type="submit" class="btn btn--primary">
+            {% icon "check" size="16px" %} {% trans "Clôturer et voir le rapport" %}
+        </button>
+    </form>
+    {% else %}
+    <a href="{% url 'inventory:report' session.pk %}" class="btn btn--primary">
+        {% icon "file-text" size="16px" %} {% trans "Voir le rapport" %}
+    </a>
+    {% endif %}
+</div>
+{% endif %}
+
 {% if scans %}
-<section>
-    <h2>{% trans "Derniers pointages" %}</h2>
-    <ul class="scan-list">
-        {% for scan in scans %}
-        <li class="scan-line {% if not scan.item %}scan-warn{% endif %}">
-            <span>{{ scan.ean13 }}{% if scan.item %} — {{ scan.item.record.title }}{% else %} — <em>{% trans "inconnu" %}</em>{% endif %}</span>
-            <small class="help-hint">{{ scan.scanned_at|date:"H:i" }}</small>
-        </li>
-        {% endfor %}
-    </ul>
-</section>
+<h2 class="section-title" style="margin-top:28px">{% trans "Derniers pointages" %}</h2>
+<div class="list">
+    {% for scan in scans %}
+    <div class="list-row{% if not scan.item %} scan-warn{% endif %}">
+        <div class="lrow-icon" style="--lr-bg:var(--olive-light);--lr-fg:#6B5A0E">
+            {% icon "scan-barcode" size="18px" %}
+        </div>
+        <div class="lrow-body">
+            <div class="lrow-title">
+                {% if scan.item %}{{ scan.item.record.title }}{% else %}<em class="muted">{% trans "inconnu" %}</em>{% endif %}
+            </div>
+            <div class="lrow-sub">{{ scan.ean13 }}</div>
+        </div>
+        <div class="lrow-end">{{ scan.scanned_at|date:"H:i" }}</div>
+    </div>
+    {% endfor %}
+</div>
 {% endif %}
 {% endblock %}

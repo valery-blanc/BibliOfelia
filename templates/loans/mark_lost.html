@@ -3,16 +3,32 @@
 
 {% block title %}{% trans "Déclarer perdu" %}{% endblock %}
 
-{% block content %}
-<h1>{% trans "Déclarer un livre perdu" %}</h1>
-<p>{% blocktrans with title=loan.item.record.title member=loan.member.full_name %}Confirmer que « {{ title }} » prêté à {{ member }} est perdu ?{% endblocktrans %}</p>
-<p class="help-hint">{% trans "L'exemplaire passera en statut « perdu ». Aucune facturation automatique." %}</p>
+{% block tile_strip %}{% include "partials/_tile_strip.html" with active="lending" %}{% endblock %}
 
-<form method="post">
-    {% csrf_token %}
-    <button type="submit" class="btn-primary" style="background:var(--pico-color-red-500);border-color:var(--pico-color-red-500)">
-        {% icon "triangle-alert" %} {% trans "Déclarer perdu" %}
-    </button>
-    <a href="{% url 'members:detail' loan.member.pk %}" role="button" class="secondary outline">{% trans "Annuler" %}</a>
-</form>
+{% block content %}
+<header class="pagehead">
+    <div class="pagehead-icon" style="--ph-bg:var(--blush);--ph-fg:#B83232">
+        {% icon "triangle-alert" size="28px" %}
+    </div>
+    <div class="pagehead-text">
+        <h1 class="pagehead-title">{% trans "Déclarer un livre perdu" %}</h1>
+        <div class="pagehead-sub">{{ loan.item.record.title }} · {{ loan.member.full_name }}</div>
+    </div>
+</header>
+
+<div class="card">
+    <p>{% blocktrans with title=loan.item.record.title member=loan.member.full_name %}Confirmer que « {{ title }} » prêté à {{ member }} est perdu ?{% endblocktrans %}</p>
+    <p class="muted text-sm" style="margin-top:10px">
+        {% trans "L'exemplaire passera en statut « perdu ». Aucune facturation automatique." %}
+    </p>
+    <form method="post" style="margin-top:18px">
+        {% csrf_token %}
+        <div class="form-actions" style="border:0;padding:0;margin:0">
+            <button type="submit" class="btn btn--primary" style="background:#B83232;border-color:#B83232">
+                {% icon "triangle-alert" size="16px" %} {% trans "Déclarer perdu" %}
+            </button>
+            <a href="{% url 'members:detail' loan.member.pk %}" class="btn btn--ghost">{% trans "Annuler" %}</a>
+        </div>
+    </form>
+</div>
 {% endblock %}

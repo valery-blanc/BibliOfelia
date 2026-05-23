@@ -2,7 +2,7 @@
 
 Source de vérité de l'avancement v1. Une case `[x]` = livrable terminé et déployable. `[ ]` = à faire. `[!]` = bloqué (voir note).
 
-Mise à jour : 2026-05-23 (Sprint 7 **CLOS** — FEAT-024 **validé Val 2026-05-23** : scanner caméra navigateur sur Android Firefox HTTPS OK, fallback OfeliaScan automatique en HTTP LAN, Chrome Android sans Play Store via `S.browser_fallback_url`, bouton Annuler pendant polling. Décision UX : caméra-d'abord automatique, pas de toggle utilisateur. Décision infra : pas de cert auto-signé. 3 commits Pi `d7c8e8f` → `9d2af81` → `e9993a5`. FEAT-023 **validé Val 2026-05-23** : banner dashboard → OfeliaScan ouvre → scan livre → retour BibliOfelia → fiche notice affichée, bout-en-bout fonctionnel. Modèle `ScanHandoff` + endpoints `/api/v1/scan-handoff[/{token}]` + JS `scan-handoff.js` + 4 boutons « Scanner » câblés. BUG-010 entrypoint Dockerfile + BUG-011 CSRF cookie HttpOnly + Chrome Android `intent://` URL résolus. Sprints 3/5/6 clos. Reste pour Sprint 7 : Android-side OfeliaScan déjà fonctionnelle côté Val (intent filter + activity scan-one + POST callback) — implémentation Android terminée hors repo. Prochain sprint : FEAT-024 scanner caméra navigateur (HTTPS).)
+Mise à jour : 2026-05-23 (Sprint 8 **CLOS** — FEAT-025 **validé Val 2026-05-23** : refonte design global, 23 templates métiers harmonisés sur le design system OFELIA. Lot A pilote validé en premier (record_detail, member_detail, reports/index, settings_index), puis Lots B+C+D livrés d'un bloc. Helpers CSS ajoutés (`.req`, `.help-hint`, `.field-error`, `.form-control`, `details.advanced-section`, `.isbn-row`, `.form-actions`), `_field.html` migré `.form-row` → `.field`. Découverte d'infra : templates **embarqués au build Docker**, pas bind-mountés → rebuild obligatoire pour tout changement de template (documenté dans FEAT-025). — Sprint 7 **CLOS** — FEAT-024 **validé Val 2026-05-23** : scanner caméra navigateur sur Android Firefox HTTPS OK, fallback OfeliaScan automatique en HTTP LAN, Chrome Android sans Play Store via `S.browser_fallback_url`, bouton Annuler pendant polling. Décision UX : caméra-d'abord automatique, pas de toggle utilisateur. Décision infra : pas de cert auto-signé. 3 commits Pi `d7c8e8f` → `9d2af81` → `e9993a5`. FEAT-023 **validé Val 2026-05-23** : banner dashboard → OfeliaScan ouvre → scan livre → retour BibliOfelia → fiche notice affichée, bout-en-bout fonctionnel. Modèle `ScanHandoff` + endpoints `/api/v1/scan-handoff[/{token}]` + JS `scan-handoff.js` + 4 boutons « Scanner » câblés. BUG-010 entrypoint Dockerfile + BUG-011 CSRF cookie HttpOnly + Chrome Android `intent://` URL résolus. Sprints 3/5/6 clos. Reste pour Sprint 7 : Android-side OfeliaScan déjà fonctionnelle côté Val (intent filter + activity scan-one + POST callback) — implémentation Android terminée hors repo. Prochain sprint : FEAT-024 scanner caméra navigateur (HTTPS).)
 
 ## Sprint 0 — Squelette
 
@@ -296,3 +296,22 @@ Mise à jour : 2026-05-23 (Sprint 7 **CLOS** — FEAT-024 **validé Val 2026-05-
   - [x] **Itération 1 → 2** : suppression du toggle UI (« pas pratique, ne marche pas »), passage à caméra-d'abord automatique avec fallback OfeliaScan
   - [x] **Itération 2 → 3** : diag verbose (flashMessage indique la raison technique du fallback), `S.browser_fallback_url=` sur intent Chrome Android, bouton « Annuler » pendant le polling OfeliaScan
   - [x] 3 commits poussés : `d7c8e8f` (initial), `9d2af81` (rev caméra-d'abord), `e9993a5` (diag + Chrome fix + Annuler)
+
+## Sprint 8 — Refonte design global (FEAT-025) — CLOS
+
+> Sprint clos 2026-05-23, validé Val. Voir `docs/specs/FEAT-025-refonte-design-global.md`.
+> Démarche : Lot A pilote (4 URLs) → validation Val → Lot B+C+D livrés d'un bloc → validation Val finale.
+
+- [x] **Task #23** FEAT-025 — Refonte design global (23 templates) — validé Val 2026-05-23
+  - [x] Spec `docs/specs/FEAT-025-refonte-design-global.md`
+  - [x] **Lot A — pilote** : record_detail, member_detail, reports/index, settings_index → validation Val OK
+  - [x] **Lot B — listes** (5 templates Pico restants) : user_list, session_list, overdue_list, inactive_list, reservations_pickup *(record_list, member_list, reservations déjà refondus à FEAT-022)*
+  - [x] **Lot C — formulaires** (9 templates) : record_form, _record_form, item_form, record_confirm_delete, member_form, user_form, reservation_form, session_form, password_reset
+  - [x] **Lot D — reste** (13 templates) : session_detail, session_report, consultation, mark_lost, settings_section, backup_restore, diagnostics, ofeliascan, labels_picker, cards_picker, period_error, help, member_history
+  - [x] Helpers CSS ajoutés à `static/css/ofelia.css` : `.req`, `.help-hint`, `.field-error`, `.form-control`, `details.advanced-section`, `.isbn-row`, `.form-actions`
+  - [x] `templates/partials/_field.html` migré de `.form-row` (inexistant) vers `.field` (existe dans ofelia.css)
+  - [x] Déploiement Pi : tar templates + ofelia.css → scp → extract → docker compose build → up
+  - [x] Découverte d'infrastructure : templates **embarqués au build**, pas bind-mountés → rebuild obligatoire pour tout changement de template (documenté dans FEAT-025)
+  - [x] SPEC §10.2 mise à jour (sous-section FEAT-025), entête de version FEAT-025
+  - [x] Test Val OK 2026-05-23 (toutes les pages OK)
+

@@ -3,10 +3,19 @@
 
 {% block title %}{{ form_title }}{% endblock %}
 
-{% block content %}
-<h1>{{ form_title }}</h1>
+{% block tile_strip %}{% include "partials/_tile_strip.html" with active="members" %}{% endblock %}
 
-<form method="post" enctype="multipart/form-data">
+{% block content %}
+<header class="pagehead">
+    <div class="pagehead-icon" style="--ph-bg:var(--sky);--ph-fg:var(--ink)">
+        {% icon "user" size="28px" %}
+    </div>
+    <div class="pagehead-text">
+        <h1 class="pagehead-title">{{ form_title }}</h1>
+    </div>
+</header>
+
+<form method="post" enctype="multipart/form-data" class="card">
     {% csrf_token %}
     {% if form.non_field_errors %}<div class="msg msg-error">{{ form.non_field_errors }}</div>{% endif %}
 
@@ -27,11 +36,15 @@
         {% include "partials/_field.html" with field=form.notes %}
     </details>
 
-    <button type="submit" class="btn-primary">{% icon "check" %} {% trans "Enregistrer" %}</button>
-    {% if member %}
-    <a href="{% url 'members:detail' member.pk %}" role="button" class="secondary outline">{% trans "Annuler" %}</a>
-    {% else %}
-    <a href="{% url 'members:list' %}" role="button" class="secondary outline">{% trans "Annuler" %}</a>
-    {% endif %}
+    <div class="form-actions">
+        <button type="submit" class="btn btn--primary">
+            {% icon "check" size="16px" %} {% trans "Enregistrer" %}
+        </button>
+        {% if member %}
+        <a href="{% url 'members:detail' member.pk %}" class="btn btn--ghost">{% trans "Annuler" %}</a>
+        {% else %}
+        <a href="{% url 'members:list' %}" class="btn btn--ghost">{% trans "Annuler" %}</a>
+        {% endif %}
+    </div>
 </form>
 {% endblock %}

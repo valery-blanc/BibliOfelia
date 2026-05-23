@@ -3,63 +3,122 @@
 
 {% block title %}{% trans "Historique" %} — {{ member.full_name }}{% endblock %}
 
-{% block content %}
-<header class="page-head">
-    <h1>{% trans "Historique de prêt" %}</h1>
-    <a href="{% url 'members:detail' member.pk %}" role="button" class="secondary outline">{% icon "arrow-left" %} {% trans "Fiche usager" %}</a>
-</header>
-<p class="help-hint">{{ member.full_name }} — {% blocktrans count n=total_loans %}{{ n }} prêt au total{% plural %}{{ n }} prêts au total{% endblocktrans %}</p>
+{% block tile_strip %}{% include "partials/_tile_strip.html" with active="members" %}{% endblock %}
 
-<section>
-    <h2>{% trans "Prêts en cours" %}</h2>
-    {% if active_loans %}
-    <table>
-        <thead><tr><th>{% trans "Titre" %}</th><th>{% trans "Prêté le" %}</th><th>{% trans "Échéance" %}</th></tr></thead>
+{% block content %}
+<header class="pagehead">
+    <div class="pagehead-icon" style="--ph-bg:var(--sky);--ph-fg:var(--ink)">
+        {% icon "book-open" size="28px" %}
+    </div>
+    <div class="pagehead-text">
+        <h1 class="pagehead-title">{% trans "Historique de prêt" %}</h1>
+        <div class="pagehead-sub">{{ member.full_name }} · {% blocktrans count n=total_loans %}{{ n }} prêt au total{% plural %}{{ n }} prêts au total{% endblocktrans %}</div>
+    </div>
+    <div class="pagehead-action">
+        <a href="{% url 'members:detail' member.pk %}" class="btn btn--ghost">
+            {% icon "arrow-left" size="16px" %} <span class="hide-sm">{% trans "Fiche usager" %}</span>
+        </a>
+    </div>
+</header>
+
+<h2 class="section-title">{% trans "Prêts en cours" %}</h2>
+{% if active_loans %}
+<div class="table-wrap">
+    <table class="table">
+        <thead>
+            <tr>
+                <th>{% trans "Titre" %}</th>
+                <th>{% trans "Prêté le" %}</th>
+                <th>{% trans "Échéance" %}</th>
+            </tr>
+        </thead>
         <tbody>
             {% for loan in active_loans %}
-            <tr><td>{{ loan.item.record.title }}</td><td>{{ loan.loan_date|date:"Y-m-d" }}</td>
-                <td class="{% if loan.is_overdue %}status-overdue{% endif %}">{{ loan.due_date }}</td></tr>
+            <tr>
+                <td><span class="cell-title">{{ loan.item.record.title }}</span></td>
+                <td>{{ loan.loan_date|date:"Y-m-d" }}</td>
+                <td>
+                    {% if loan.is_overdue %}
+                        <span class="badge badge--late">{{ loan.due_date }}</span>
+                    {% else %}
+                        {{ loan.due_date }}
+                    {% endif %}
+                </td>
+            </tr>
             {% endfor %}
         </tbody>
     </table>
-    {% else %}<p>{% trans "Aucun." %}</p>{% endif %}
-</section>
-
-<section>
-    <h2>{% trans "Historique complet" %}</h2>
-    {% if past_loans %}
-    <table>
-        <thead><tr><th>{% trans "Titre" %}</th><th>{% trans "Prêté le" %}</th><th>{% trans "Retour" %}</th><th>{% trans "Statut" %}</th></tr></thead>
-        <tbody>
-            {% for loan in past_loans %}
-            <tr><td>{{ loan.item.record.title }}</td><td>{{ loan.loan_date|date:"Y-m-d" }}</td>
-                <td>{{ loan.return_date|date:"Y-m-d"|default:"—" }}</td>
-                <td class="status-{{ loan.status }}">{{ loan.get_status_display }}</td></tr>
-            {% endfor %}
-        </tbody>
-    </table>
-    {% else %}<p>{% trans "Aucun." %}</p>{% endif %}
-</section>
-
-{% if consultations %}
-<section>
-    <h2>{% trans "Consultations sur place" %}</h2>
-    <ul>
-        {% for c in consultations %}
-        <li>{{ c.date }} — {% if c.item %}{{ c.item.record.title }}{% else %}{% blocktrans count n=c.count %}{{ n }} document{% plural %}{{ n }} documents{% endblocktrans %}{% endif %}</li>
-        {% endfor %}
-    </ul>
-</section>
+</div>
+{% else %}
+<div class="card"><p class="muted">{% trans "Aucun." %}</p></div>
 {% endif %}
 
-<section>
-    <h2>{% trans "Statistiques par catégorie" %}</h2>
-    {% if stats_by_category %}
-    <ul>
+<h2 class="section-title" style="margin-top:28px">{% trans "Historique complet" %}</h2>
+{% if past_loans %}
+<div class="table-wrap">
+    <table class="table">
+        <thead>
+            <tr>
+                <th>{% trans "Titre" %}</th>
+                <th>{% trans "Prêté le" %}</th>
+                <th>{% trans "Retour" %}</th>
+                <th>{% trans "Statut" %}</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for loan in past_loans %}
+            <tr>
+                <td><span class="cell-title">{{ loan.item.record.title }}</span></td>
+                <td>{{ loan.loan_date|date:"Y-m-d" }}</td>
+                <td>{{ loan.return_date|date:"Y-m-d"|default:"—" }}</td>
+                <td>
+                    {% if loan.status == "returned" %}
+                        <span class="badge badge--ok">{{ loan.get_status_display }}</span>
+                    {% elif loan.status == "lost" %}
+                        <span class="badge badge--late">{{ loan.get_status_display }}</span>
+                    {% else %}
+                        <span class="badge badge--mut">{{ loan.get_status_display }}</span>
+                    {% endif %}
+                </td>
+            </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+</div>
+{% else %}
+<div class="card"><p class="muted">{% trans "Aucun." %}</p></div>
+{% endif %}
+
+{% if consultations %}
+<h2 class="section-title" style="margin-top:28px">{% trans "Consultations sur place" %}</h2>
+<div class="list">
+    {% for c in consultations %}
+    <div class="list-row">
+        <div class="lrow-icon" style="--lr-bg:var(--olive-light);--lr-fg:#6B5A0E">
+            {% icon "book-open" size="18px" %}
+        </div>
+        <div class="lrow-body">
+            <div class="lrow-title">
+                {% if c.item %}{{ c.item.record.title }}{% else %}{% blocktrans count n=c.count %}{{ n }} document{% plural %}{{ n }} documents{% endblocktrans %}{% endif %}
+            </div>
+            <div class="lrow-sub">{{ c.date }}</div>
+        </div>
+    </div>
+    {% endfor %}
+</div>
+{% endif %}
+
+{% if stats_by_category %}
+<h2 class="section-title" style="margin-top:28px">{% trans "Statistiques par catégorie" %}</h2>
+<div class="card">
+    <div class="stack-sm">
         {% for name, count in stats_by_category %}
-        <li>{{ name }} : {{ count }}</li>
+        <div class="row-between text-sm">
+            <span>{{ name }}</span>
+            <strong>{{ count }}</strong>
+        </div>
         {% endfor %}
-    </ul>
-    {% else %}<p>{% trans "Aucune donnée." %}</p>{% endif %}
-</section>
+    </div>
+</div>
+{% endif %}
 {% endblock %}

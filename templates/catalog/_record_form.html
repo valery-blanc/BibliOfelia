@@ -1,24 +1,32 @@
 {% load i18n biblio_icons %}
 <div id="record-form">
-    <h1>{{ form_title }}</h1>
-    <form method="post" action="{{ form_action }}" enctype="multipart/form-data">
+    <header class="pagehead">
+        <div class="pagehead-icon" style="--ph-bg:var(--amber);--ph-fg:var(--ink)">
+            {% icon "book-open" size="28px" %}
+        </div>
+        <div class="pagehead-text">
+            <h1 class="pagehead-title">{{ form_title }}</h1>
+        </div>
+    </header>
+
+    <form method="post" action="{{ form_action }}" enctype="multipart/form-data" class="card">
         {% csrf_token %}
         {% if form.non_field_errors %}<div class="msg msg-error">{{ form.non_field_errors }}</div>{% endif %}
 
         {% include "partials/_field.html" with field=form.title %}
         {% include "partials/_field.html" with field=form.authors_text %}
 
-        <div class="form-row">
+        <div class="field">
             <label for="{{ form.isbn_13.id_for_label }}">ISBN-13</label>
             <div class="isbn-row">
                 {{ form.isbn_13 }}
                 {% if show_lookup %}
-                <button type="button" class="secondary"
+                <button type="button" class="btn btn--ghost"
                         hx-get="{% url 'catalog:isbn_lookup' %}"
                         hx-include="[name='isbn_13']"
                         hx-target="#record-form"
                         hx-swap="outerHTML">
-                    {% icon "search" %} {% trans "Récupérer" %}
+                    {% icon "search" size="16px" %} {% trans "Récupérer" %}
                 </button>
                 {% endif %}
             </div>
@@ -42,7 +50,11 @@
             {% include "partials/_field.html" with field=form.tags %}
         </details>
 
-        <button type="submit" class="btn-primary">{% icon "check" %} {% trans "Enregistrer" %}</button>
-        <a href="{% url 'catalog:record_list' %}" role="button" class="secondary outline">{% trans "Annuler" %}</a>
+        <div class="form-actions">
+            <button type="submit" class="btn btn--primary">
+                {% icon "check" size="16px" %} {% trans "Enregistrer" %}
+            </button>
+            <a href="{% url 'catalog:record_list' %}" class="btn btn--ghost">{% trans "Annuler" %}</a>
+        </div>
     </form>
 </div>

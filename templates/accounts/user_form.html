@@ -3,30 +3,46 @@
 
 {% block title %}{% if creating %}{% trans "Nouveau compte" %}{% else %}{% trans "Éditer compte" %} {{ target.username }}{% endif %}{% endblock %}
 
+{% block tile_strip %}{% include "partials/_tile_strip.html" with active="advanced" %}{% endblock %}
+
 {% block content %}
 <nav class="breadcrumb">
     {% if user.is_superadmin %}<a href="{% url 'accounts:user_list' %}">{% trans "Comptes" %}</a> / {% endif %}
     <strong>{% if creating %}{% trans "Nouveau" %}{% elif self_edit %}{% trans "Mon compte" %}{% else %}{{ target.username }}{% endif %}</strong>
 </nav>
 
-<h1>
-    {% if creating %}{% icon "user-plus" %} {% trans "Nouveau compte" %}
-    {% elif self_edit %}{% icon "user" %} {% trans "Mon compte" %}
-    {% else %}{% icon "user" %} {{ target.username }}{% endif %}
-</h1>
+<header class="pagehead">
+    <div class="pagehead-icon" style="--ph-bg:var(--blush);--ph-fg:var(--burgundy)">
+        {% if creating %}{% icon "user-plus" size="28px" %}
+        {% else %}{% icon "user" size="28px" %}{% endif %}
+    </div>
+    <div class="pagehead-text">
+        <h1 class="pagehead-title">
+            {% if creating %}{% trans "Nouveau compte" %}
+            {% elif self_edit %}{% trans "Mon compte" %}
+            {% else %}{{ target.username }}{% endif %}
+        </h1>
+    </div>
+</header>
 
-<form method="post">
+<form method="post" class="card">
     {% csrf_token %}
+    {% if form.non_field_errors %}<div class="msg msg-error">{{ form.non_field_errors }}</div>{% endif %}
     {% for field in form %}
-        <div class="form-row">
-            {{ field.label_tag }}
+        <div class="field">
+            <label for="{{ field.id_for_label }}">
+                {{ field.label }}{% if field.field.required %} <span class="req" aria-hidden="true">*</span>{% endif %}
+            </label>
             {{ field|add_class:"form-control" }}
-            {% if field.help_text %}<small>{{ field.help_text }}</small>{% endif %}
-            {% if field.errors %}<div class="msg msg-error">{{ field.errors }}</div>{% endif %}
+            {% if field.help_text %}<small class="help-hint">{{ field.help_text }}</small>{% endif %}
+            {% for error in field.errors %}<small class="field-error">{{ error }}</small>{% endfor %}
         </div>
     {% endfor %}
-    {% if form.non_field_errors %}<div class="msg msg-error">{{ form.non_field_errors }}</div>{% endif %}
-    <button type="submit">{% icon "save" %} {% trans "Enregistrer" %}</button>
-    <a href="{% url 'accounts:user_list' %}" role="button" class="secondary">{% trans "Annuler" %}</a>
+    <div class="form-actions">
+        <button type="submit" class="btn btn--primary">
+            {% icon "check" size="16px" %} {% trans "Enregistrer" %}
+        </button>
+        <a href="{% url 'accounts:user_list' %}" class="btn btn--ghost">{% trans "Annuler" %}</a>
+    </div>
 </form>
 {% endblock %}

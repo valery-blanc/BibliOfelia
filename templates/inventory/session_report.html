@@ -3,40 +3,77 @@
 
 {% block title %}{% trans "Rapport d'inventaire" %}{% endblock %}
 
+{% block tile_strip %}{% include "partials/_tile_strip.html" with active="advanced" %}{% endblock %}
+
 {% block content %}
-<header class="page-head">
-    <h1>{% trans "Rapport d'inventaire" %}</h1>
-    <button type="button" class="secondary outline" onclick="window.print()">{% icon "printer" %} {% trans "Imprimer" %}</button>
+<header class="pagehead">
+    <div class="pagehead-icon" style="--ph-bg:var(--olive);--ph-fg:var(--ink)">
+        {% icon "file-bar-chart" size="28px" %}
+    </div>
+    <div class="pagehead-text">
+        <h1 class="pagehead-title">{% trans "Rapport d'inventaire" %}</h1>
+        <div class="pagehead-sub">{{ session }} · {{ session.get_status_display }}</div>
+    </div>
+    <div class="pagehead-action">
+        <button type="button" class="btn btn--ghost" onclick="window.print()">
+            {% icon "printer" size="16px" %} <span class="hide-sm">{% trans "Imprimer" %}</span>
+        </button>
+    </div>
 </header>
-<p class="help-hint">{{ session }} — {{ session.get_status_display }}</p>
 
-<section class="kpi-grid">
-    <article class="kpi-card"><div class="kpi-value">{{ report.expected_count }}</div><small>{% trans "Attendus" %}</small></article>
-    <article class="kpi-card"><div class="kpi-value">{{ report.present|length }}</div><small>{% trans "Présents" %}</small></article>
-    <article class="kpi-card kpi-alert"><div class="kpi-value">{{ report.missing|length }}</div><small>{% trans "Manquants" %}</small></article>
-    <article class="kpi-card"><div class="kpi-value">{{ report.misplaced|length }}</div><small>{% trans "Hors périmètre" %}</small></article>
-    <article class="kpi-card"><div class="kpi-value">{{ report.unknown|length }}</div><small>{% trans "Inconnus" %}</small></article>
-</section>
+<div class="kpis" style="grid-template-columns:repeat(5,1fr)">
+    <div class="kpi" style="--kpi-color:var(--sky)">
+        <div class="kpi-num">{{ report.expected_count }}</div>
+        <div class="kpi-label">{% trans "Attendus" %}</div>
+    </div>
+    <div class="kpi" style="--kpi-color:var(--forest)">
+        <div class="kpi-num">{{ report.present|length }}</div>
+        <div class="kpi-label">{% trans "Présents" %}</div>
+    </div>
+    <div class="kpi" style="--kpi-color:#B83232">
+        <div class="kpi-num">{{ report.missing|length }}</div>
+        <div class="kpi-label">{% trans "Manquants" %}</div>
+    </div>
+    <div class="kpi" style="--kpi-color:var(--amber)">
+        <div class="kpi-num">{{ report.misplaced|length }}</div>
+        <div class="kpi-label">{% trans "Hors périmètre" %}</div>
+    </div>
+    <div class="kpi" style="--kpi-color:var(--grey)">
+        <div class="kpi-num">{{ report.unknown|length }}</div>
+        <div class="kpi-label">{% trans "Inconnus" %}</div>
+    </div>
+</div>
 
-<section>
-    <h2 class="status-overdue">{% trans "Exemplaires manquants" %}</h2>
-    {% if report.missing %}
-    <table>
-        <thead><tr><th>{% trans "Code interne" %}</th><th>{% trans "Code Ofelia" %}</th><th>{% trans "ISBN" %}</th><th>{% trans "Titre" %}</th><th>{% trans "Statut" %}</th><th></th></tr></thead>
+<h2 class="section-title">{% trans "Exemplaires manquants" %}</h2>
+{% if report.missing %}
+<div class="table-wrap">
+    <table class="table">
+        <thead>
+            <tr>
+                <th>{% trans "Code interne" %}</th>
+                <th>{% trans "Code Ofelia" %}</th>
+                <th>{% trans "ISBN" %}</th>
+                <th>{% trans "Titre" %}</th>
+                <th>{% trans "Statut" %}</th>
+                <th></th>
+            </tr>
+        </thead>
         <tbody>
             {% for item in report.missing %}
             <tr>
                 <td>{{ item.internal_id }}</td>
-                <td><code>{{ item.ean13 }}</code></td>
-                <td><code>{{ item.record.isbn_13|default:"—" }}</code></td>
-                <td>{{ item.record.title }}</td>
-                <td class="status-{{ item.status }}">{{ item.get_status_display }}</td>
-                <td>
+                <td>{{ item.ean13 }}</td>
+                <td>{{ item.record.isbn_13|default:"—" }}</td>
+                <td><span class="cell-title">{{ item.record.title }}</span></td>
+                <td><span class="badge badge--late">{{ item.get_status_display }}</span></td>
+                <td style="text-align:right">
                     {% if user.is_librarian and session.status != 'finalized' %}
-                    <form method="post" action="{% url 'inventory:resolve_missing' session.pk %}" style="display:inline">
+                    <form method="post" action="{% url 'inventory:resolve_missing' session.pk %}" style="margin:0">
                         {% csrf_token %}
                         <input type="hidden" name="item_pk" value="{{ item.pk }}">
-                        <button type="submit" class="outline">{% trans "Marquer perdu" %}</button>
+                        <button type="submit" class="btn btn--ghost btn--sm" style="color:#B83232">
+                            {% trans "Marquer perdu" %}
+                        </button>
                     </form>
                     {% endif %}
                 </td>
@@ -44,30 +81,62 @@
             {% endfor %}
         </tbody>
     </table>
-    {% else %}<p>{% trans "Aucun." %}</p>{% endif %}
-</section>
+</div>
+{% else %}
+<div class="card"><p class="muted">{% trans "Aucun." %}</p></div>
+{% endif %}
 
-<section>
-    <h2>{% trans "Pointés hors périmètre (mauvaise location)" %}</h2>
-    {% if report.misplaced %}
-    <ul>{% for item in report.misplaced %}<li>{{ item.internal_id }} — <code>{{ item.ean13 }}</code>{% if item.record.isbn_13 %} — {% trans "ISBN" %} <code>{{ item.record.isbn_13 }}</code>{% endif %} — {{ item.record.title }} ({{ item.location.code|default:"—" }})</li>{% endfor %}</ul>
-    {% else %}<p>{% trans "Aucun." %}</p>{% endif %}
-</section>
+<h2 class="section-title" style="margin-top:28px">{% trans "Pointés hors périmètre (mauvaise location)" %}</h2>
+{% if report.misplaced %}
+<div class="list">
+    {% for item in report.misplaced %}
+    <div class="list-row">
+        <div class="lrow-icon" style="--lr-bg:var(--amber-light);--lr-fg:#946906">
+            {% icon "triangle-alert" size="18px" %}
+        </div>
+        <div class="lrow-body">
+            <div class="lrow-title">{{ item.record.title }}</div>
+            <div class="lrow-sub">{{ item.internal_id }} · {{ item.ean13 }}{% if item.record.isbn_13 %} · ISBN {{ item.record.isbn_13 }}{% endif %}</div>
+        </div>
+        <div class="lrow-end">{{ item.location.code|default:"—" }}</div>
+    </div>
+    {% endfor %}
+</div>
+{% else %}
+<div class="card"><p class="muted">{% trans "Aucun." %}</p></div>
+{% endif %}
 
-<section>
-    <h2>{% trans "Codes inconnus du système" %}</h2>
-    {% if report.unknown %}
-    <ul>{% for ean in report.unknown %}<li><code>{{ ean }}</code></li>{% endfor %}</ul>
-    {% else %}<p>{% trans "Aucun." %}</p>{% endif %}
-</section>
+<h2 class="section-title" style="margin-top:28px">{% trans "Codes inconnus du système" %}</h2>
+{% if report.unknown %}
+<div class="card">
+    <div class="tag-row">
+        {% for ean in report.unknown %}<span class="badge">{{ ean }}</span>{% endfor %}
+    </div>
+</div>
+{% else %}
+<div class="card"><p class="muted">{% trans "Aucun." %}</p></div>
+{% endif %}
 
 {% if user.is_librarian %}
-<div class="action-row">
+<div style="display:flex;gap:8px;flex-wrap:wrap;margin-top:24px">
     {% if session.status == 'open' %}
-    <form method="post" action="{% url 'inventory:close' session.pk %}">{% csrf_token %}<button type="submit">{% trans "Clôturer" %}</button></form>
+    <form method="post" action="{% url 'inventory:close' session.pk %}" style="margin:0">
+        {% csrf_token %}
+        <button type="submit" class="btn btn--primary">{% trans "Clôturer" %}</button>
+    </form>
     {% elif session.status == 'closed' %}
-    <form method="post" action="{% url 'inventory:reopen' session.pk %}">{% csrf_token %}<button type="submit" class="secondary">{% icon "rotate-ccw" %} {% trans "Rouvrir" %}</button></form>
-    <form method="post" action="{% url 'inventory:finalize' session.pk %}">{% csrf_token %}<button type="submit">{% icon "check" %} {% trans "Valider définitivement" %}</button></form>
+    <form method="post" action="{% url 'inventory:reopen' session.pk %}" style="margin:0">
+        {% csrf_token %}
+        <button type="submit" class="btn btn--ghost">
+            {% icon "rotate-ccw" size="16px" %} {% trans "Rouvrir" %}
+        </button>
+    </form>
+    <form method="post" action="{% url 'inventory:finalize' session.pk %}" style="margin:0">
+        {% csrf_token %}
+        <button type="submit" class="btn btn--primary">
+            {% icon "check" size="16px" %} {% trans "Valider définitivement" %}
+        </button>
+    </form>
     {% endif %}
 </div>
 {% endif %}

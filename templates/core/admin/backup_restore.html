@@ -3,6 +3,8 @@
 
 {% block title %}{% trans "Restaurer une sauvegarde" %}{% endblock %}
 
+{% block tile_strip %}{% include "partials/_tile_strip.html" with active="advanced" %}{% endblock %}
+
 {% block content %}
 <nav class="breadcrumb">
     <a href="{% url 'core:settings_index' %}">{% trans "Paramètres" %}</a> /
@@ -10,23 +12,36 @@
     <strong>{% trans "Restauration" %}</strong>
 </nav>
 
-<h1>{% icon "upload" %} {% trans "Restaurer la base depuis un fichier" %}</h1>
+<header class="pagehead">
+    <div class="pagehead-icon" style="--ph-bg:var(--forest);--ph-fg:#fff">
+        {% icon "database" size="28px" %}
+    </div>
+    <div class="pagehead-text">
+        <h1 class="pagehead-title">{% trans "Restaurer la base depuis un fichier" %}</h1>
+    </div>
+</header>
 
-<article class="msg msg-warning">
+<div role="alert" class="msg msg-warning">
+    {% icon "triangle-alert" size="16px" %}
     {% blocktrans %}
     Cette action écrase la base actuelle. Une copie de la base courante est
     placée à côté (suffixe <code>.pre-restore.&lt;timestamp&gt;</code>). Coupez
     le service avant de restaurer si possible.
     {% endblocktrans %}
-</article>
+</div>
 
 {% if error %}<div class="msg msg-error">{{ error }}</div>{% endif %}
 
-<form method="post" enctype="multipart/form-data">
+<form method="post" enctype="multipart/form-data" class="card">
     {% csrf_token %}
-    <label>{% trans "Fichier .sqlite3 ou .sqlite3.gz" %}
-        <input type="file" name="archive" accept=".sqlite3,.sqlite3.gz,.gz" required>
-    </label>
-    <button type="submit">{% icon "upload" %} {% trans "Restaurer" %}</button>
+    <div class="field">
+        <label for="archive">{% trans "Fichier .sqlite3 ou .sqlite3.gz" %}</label>
+        <input id="archive" type="file" name="archive" accept=".sqlite3,.sqlite3.gz,.gz" required>
+    </div>
+    <div class="form-actions">
+        <button type="submit" class="btn btn--primary">
+            {% icon "database" size="16px" %} {% trans "Restaurer" %}
+        </button>
+    </div>
 </form>
 {% endblock %}

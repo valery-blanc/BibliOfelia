@@ -3,41 +3,69 @@
 
 {% block title %}{% trans "Comptes" %}{% endblock %}
 
+{% block tile_strip %}{% include "partials/_tile_strip.html" with active="advanced" %}{% endblock %}
+
 {% block content %}
 <nav class="breadcrumb">
     <a href="{% url 'core:settings_index' %}">{% trans "Paramètres" %}</a> /
     <strong>{% trans "Comptes" %}</strong>
 </nav>
 
-<h1>{% icon "users" %} {% trans "Comptes utilisateurs" %}</h1>
-<p><a href="{% url 'accounts:user_create' %}" role="button">{% icon "user-plus" %} {% trans "Nouveau compte" %}</a></p>
+<header class="pagehead">
+    <div class="pagehead-icon" style="--ph-bg:var(--blush);--ph-fg:var(--burgundy)">
+        {% icon "users" size="28px" %}
+    </div>
+    <div class="pagehead-text">
+        <h1 class="pagehead-title">{% trans "Comptes utilisateurs" %}</h1>
+        <div class="pagehead-sub">{% trans "Bibliothécaires, contributeurs, administration" %}</div>
+    </div>
+    <div class="pagehead-action">
+        <a href="{% url 'accounts:user_create' %}" class="btn btn--primary">
+            {% icon "user-plus" size="16px" %}
+            <span class="hide-sm">{% trans "Nouveau compte" %}</span>
+        </a>
+    </div>
+</header>
 
-<table>
-    <thead>
-        <tr>
-            <th>{% trans "Identifiant" %}</th>
-            <th>{% trans "Nom" %}</th>
-            <th>{% trans "Rôle" %}</th>
-            <th>{% trans "Actif" %}</th>
-            <th>{% trans "Actions" %}</th>
-        </tr>
-    </thead>
-    <tbody>
-    {% for u in users %}
-        <tr>
-            <td><code>{{ u.username }}</code></td>
-            <td>{{ u.last_name }} {{ u.first_name }}</td>
-            <td>{{ u.get_role_display }}</td>
-            <td>{% if u.is_active %}✓{% else %}—{% endif %}</td>
-            <td>
-                <a href="{% url 'accounts:user_edit' pk=u.pk %}">{% trans "Éditer" %}</a>
-                ·
-                <a href="{% url 'accounts:user_password_reset' pk=u.pk %}">{% trans "Mot de passe" %}</a>
-            </td>
-        </tr>
-    {% empty %}
-        <tr><td colspan="5"><em>{% trans "Aucun compte." %}</em></td></tr>
-    {% endfor %}
-    </tbody>
-</table>
+<div class="table-wrap">
+    <table class="table">
+        <thead>
+            <tr>
+                <th>{% trans "Identifiant" %}</th>
+                <th>{% trans "Nom" %}</th>
+                <th>{% trans "Rôle" %}</th>
+                <th>{% trans "Actif" %}</th>
+                <th></th>
+            </tr>
+        </thead>
+        <tbody>
+        {% for u in users %}
+            <tr>
+                <td><span class="cell-title">{{ u.username }}</span></td>
+                <td>{{ u.last_name }} {{ u.first_name }}</td>
+                <td>{{ u.get_role_display }}</td>
+                <td>
+                    {% if u.is_active %}
+                        <span class="badge badge--ok">{% icon "check" size="12px" %} {% trans "Actif" %}</span>
+                    {% else %}
+                        <span class="badge badge--mut">—</span>
+                    {% endif %}
+                </td>
+                <td style="text-align:right">
+                    <div style="display:inline-flex;gap:6px">
+                        <a href="{% url 'accounts:user_edit' pk=u.pk %}" class="btn btn--ghost btn--sm">
+                            {% icon "pencil" size="14px" %} <span class="hide-sm">{% trans "Éditer" %}</span>
+                        </a>
+                        <a href="{% url 'accounts:user_password_reset' pk=u.pk %}" class="btn btn--ghost btn--sm">
+                            {% icon "shield" size="14px" %} <span class="hide-sm">{% trans "Mot de passe" %}</span>
+                        </a>
+                    </div>
+                </td>
+            </tr>
+        {% empty %}
+            <tr><td colspan="5" class="muted" style="text-align:center;padding:24px">{% trans "Aucun compte." %}</td></tr>
+        {% endfor %}
+        </tbody>
+    </table>
+</div>
 {% endblock %}

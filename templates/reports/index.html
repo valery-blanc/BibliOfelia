@@ -3,34 +3,82 @@
 
 {% block title %}{% trans "Rapports" %}{% endblock %}
 
+{% block tile_strip %}{% include "partials/_tile_strip.html" with active="advanced" %}{% endblock %}
+
 {% block content %}
-<h1>{% icon "file-text" %} {% trans "Rapports" %}</h1>
+<header class="pagehead">
+    <div class="pagehead-icon" style="--ph-bg:var(--forest);--ph-fg:#fff">
+        {% icon "file-text" size="28px" %}
+    </div>
+    <div class="pagehead-text">
+        <h1 class="pagehead-title">{% trans "Rapports" %}</h1>
+        <div class="pagehead-sub">{% trans "Listes imprimables, exports CSV et rapport annuel PDF." %}</div>
+    </div>
+</header>
 
-<section>
-    <h2>{% trans "Listes imprimables" %}</h2>
-    <ul>
-        <li><a href="{% url 'reports:overdue' %}">{% trans "Liste des retards (> 7 jours par défaut)" %}</a></li>
-        <li><a href="{% url 'reports:reservations_pickup' %}">{% trans "Réservations à retirer (relance)" %}</a></li>
-        <li><a href="{% url 'reports:inactive' %}">{% trans "Inactifs (usagers + exemplaires)" %}</a></li>
-    </ul>
-</section>
-
-<section>
-    <h2>{% trans "Export CSV des prêts" %}</h2>
-    <form method="get" action="{% url 'reports:loans_csv' %}">
-        <div class="grid">
-            <label>{{ period_form.start.label }} {{ period_form.start }}</label>
-            <label>{{ period_form.end.label }} {{ period_form.end }}</label>
+<h2 class="section-title">{% trans "Listes imprimables" %}</h2>
+<div class="list">
+    <a href="{% url 'reports:overdue' %}" class="list-row">
+        <div class="lrow-icon" style="--lr-bg:var(--blush-light);--lr-fg:#B83232">
+            {% icon "triangle-alert" size="18px" %}
         </div>
-        <button type="submit">{% icon "download" %} {% trans "Télécharger CSV" %}</button>
-    </form>
-</section>
+        <div class="lrow-body">
+            <div class="lrow-title">{% trans "Liste des retards" %}</div>
+            <div class="lrow-sub">{% trans "Retards de plus de 7 jours par défaut" %}</div>
+        </div>
+        <div class="lrow-end">{% icon "chevron-right" size="18px" %}</div>
+    </a>
+    <a href="{% url 'reports:reservations_pickup' %}" class="list-row">
+        <div class="lrow-icon" style="--lr-bg:var(--amber-light);--lr-fg:#946906">
+            {% icon "bookmark-check" size="18px" %}
+        </div>
+        <div class="lrow-body">
+            <div class="lrow-title">{% trans "Réservations à retirer" %}</div>
+            <div class="lrow-sub">{% trans "Liste de relance pour les usagers" %}</div>
+        </div>
+        <div class="lrow-end">{% icon "chevron-right" size="18px" %}</div>
+    </a>
+    <a href="{% url 'reports:inactive' %}" class="list-row">
+        <div class="lrow-icon" style="--lr-bg:var(--cream-dark);--lr-fg:var(--ink-soft)">
+            {% icon "archive" size="18px" %}
+        </div>
+        <div class="lrow-body">
+            <div class="lrow-title">{% trans "Inactifs" %}</div>
+            <div class="lrow-sub">{% trans "Usagers et exemplaires inactifs" %}</div>
+        </div>
+        <div class="lrow-end">{% icon "chevron-right" size="18px" %}</div>
+    </a>
+</div>
 
-<section>
-    <h2>{% trans "Rapport annuel d'activité (PDF)" %}</h2>
-    <form method="get" action="{% url 'reports:annual_pdf' %}">
-        <label>{{ year_form.year.label }} {{ year_form.year }}</label>
-        <button type="submit">{% icon "download" %} {% trans "Générer le PDF" %}</button>
+<h2 class="section-title" style="margin-top:28px">{% trans "Export CSV des prêts" %}</h2>
+<div class="card">
+    <form method="get" action="{% url 'reports:loans_csv' %}">
+        <div class="grid-2">
+            <div class="field">
+                <label for="{{ period_form.start.id_for_label }}">{{ period_form.start.label }}</label>
+                {{ period_form.start }}
+            </div>
+            <div class="field">
+                <label for="{{ period_form.end.id_for_label }}">{{ period_form.end.label }}</label>
+                {{ period_form.end }}
+            </div>
+        </div>
+        <button type="submit" class="btn btn--primary">
+            {% icon "file-text" size="16px" %} {% trans "Télécharger CSV" %}
+        </button>
     </form>
-</section>
+</div>
+
+<h2 class="section-title" style="margin-top:28px">{% trans "Rapport annuel d'activité (PDF)" %}</h2>
+<div class="card">
+    <form method="get" action="{% url 'reports:annual_pdf' %}">
+        <div class="field">
+            <label for="{{ year_form.year.id_for_label }}">{{ year_form.year.label }}</label>
+            {{ year_form.year }}
+        </div>
+        <button type="submit" class="btn btn--primary">
+            {% icon "file-text" size="16px" %} {% trans "Générer le PDF" %}
+        </button>
+    </form>
+</div>
 {% endblock %}

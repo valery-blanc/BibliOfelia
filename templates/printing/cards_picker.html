@@ -3,35 +3,51 @@
 
 {% block title %}{% trans "Impression cartes" %}{% endblock %}
 
+{% block tile_strip %}{% include "partials/_tile_strip.html" with active="advanced" %}{% endblock %}
+
 {% block content %}
-<h1>{% icon "id-card" %} {% trans "Cartes membres" %}</h1>
+<header class="pagehead">
+    <div class="pagehead-icon" style="--ph-bg:var(--sky);--ph-fg:var(--ink)">
+        {% icon "id-card" size="28px" %}
+    </div>
+    <div class="pagehead-text">
+        <h1 class="pagehead-title">{% trans "Cartes membres" %}</h1>
+        <div class="pagehead-sub">{% trans "Sélectionnez les usagers puis générez la planche PDF" %}</div>
+    </div>
+</header>
 
 <form method="get" action="{% url 'printing:cards_pdf' %}">
-    <p><button type="submit">{% icon "file-down" %} {% trans "Générer PDF" %}</button></p>
-    <table>
-        <thead>
-            <tr>
-                <th><input type="checkbox" id="selectAll"></th>
-                <th>{% trans "Carte" %}</th>
-                <th>{% trans "Nom" %}</th>
-                <th>{% trans "Catégorie" %}</th>
-                <th>{% trans "Expiration" %}</th>
-            </tr>
-        </thead>
-        <tbody>
-        {% for m in members %}
-            <tr>
-                <td><input type="checkbox" name="ids" value="{{ m.pk }}"></td>
-                <td><code>{{ m.card_number }}</code></td>
-                <td>{{ m.last_name }} {{ m.first_name }}</td>
-                <td>{{ m.category.name }}</td>
-                <td>{{ m.expiration_date|date:"Y-m-d"|default:"—" }}</td>
-            </tr>
-        {% empty %}
-            <tr><td colspan="5"><em>{% trans "Aucun usager." %}</em></td></tr>
-        {% endfor %}
-        </tbody>
-    </table>
+    <div style="display:flex;gap:8px;flex-wrap:wrap;margin-bottom:14px">
+        <button type="submit" class="btn btn--primary">
+            {% icon "file-text" size="16px" %} {% trans "Générer PDF" %}
+        </button>
+    </div>
+    <div class="table-wrap">
+        <table class="table">
+            <thead>
+                <tr>
+                    <th style="width:40px"><input type="checkbox" id="selectAll"></th>
+                    <th>{% trans "Carte" %}</th>
+                    <th>{% trans "Nom" %}</th>
+                    <th>{% trans "Catégorie" %}</th>
+                    <th>{% trans "Expiration" %}</th>
+                </tr>
+            </thead>
+            <tbody>
+            {% for m in members %}
+                <tr>
+                    <td><input type="checkbox" name="ids" value="{{ m.pk }}"></td>
+                    <td>{{ m.card_number }}</td>
+                    <td><span class="cell-title">{{ m.last_name }} {{ m.first_name }}</span></td>
+                    <td>{{ m.category.name }}</td>
+                    <td>{{ m.expiration_date|date:"Y-m-d"|default:"—" }}</td>
+                </tr>
+            {% empty %}
+                <tr><td colspan="5" class="muted" style="text-align:center;padding:24px">{% trans "Aucun usager." %}</td></tr>
+            {% endfor %}
+            </tbody>
+        </table>
+    </div>
 </form>
 
 <script>

@@ -3,16 +3,29 @@
 
 {% block title %}{% trans "Consultation sur place" %}{% endblock %}
 
-{% block content %}
-<h1>{% icon "book-open" %} {% trans "Consultation sur place" %}</h1>
-<p class="help-hint">{% trans "Compte les documents consultés sans sortie de la bibliothèque." %}</p>
+{% block tile_strip %}{% include "partials/_tile_strip.html" with active="lending" %}{% endblock %}
 
-<form method="post">
+{% block content %}
+<header class="pagehead">
+    <div class="pagehead-icon" style="--ph-bg:var(--olive);--ph-fg:var(--ink)">
+        {% icon "book-open" size="28px" %}
+    </div>
+    <div class="pagehead-text">
+        <h1 class="pagehead-title">{% trans "Consultation sur place" %}</h1>
+        <div class="pagehead-sub">{% trans "Compte les documents consultés sans sortie de la bibliothèque." %}</div>
+    </div>
+</header>
+
+<form method="post" class="card">
     {% csrf_token %}
     {% if form.non_field_errors %}<div class="msg msg-error">{{ form.non_field_errors }}</div>{% endif %}
     {% include "partials/_field.html" with field=form.count %}
     {% include "partials/_field.html" with field=form.member %}
     {% include "partials/_field.html" with field=form.date %}
-    <button type="submit" class="btn-primary">{% icon "check" %} {% trans "Enregistrer" %}</button>
+    <div class="form-actions">
+        <button type="submit" class="btn btn--primary">
+            {% icon "check" size="16px" %} {% trans "Enregistrer" %}
+        </button>
+    </div>
 </form>
 {% endblock %}

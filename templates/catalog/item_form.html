@@ -3,17 +3,36 @@
 
 {% block title %}{% if item %}{% trans "Modifier l'exemplaire" %}{% else %}{% trans "Ajouter des exemplaires" %}{% endif %}{% endblock %}
 
-{% block content %}
-<h1>{% if item %}{% trans "Modifier l'exemplaire" %} {{ item.internal_id }}{% else %}{% trans "Ajouter des exemplaires" %}{% endif %}</h1>
-<p class="help-hint">{% trans "Notice :" %} <a href="{% url 'catalog:record_detail' record.pk %}">{{ record.title }}</a></p>
+{% block tile_strip %}{% include "partials/_tile_strip.html" with active="catalogue" %}{% endblock %}
 
-<form method="post">
+{% block content %}
+<header class="pagehead">
+    <div class="pagehead-icon" style="--ph-bg:var(--amber);--ph-fg:var(--ink)">
+        {% icon "package" size="28px" %}
+    </div>
+    <div class="pagehead-text">
+        <h1 class="pagehead-title">
+            {% if item %}{% trans "Modifier l'exemplaire" %} {{ item.internal_id }}
+            {% else %}{% trans "Ajouter des exemplaires" %}{% endif %}
+        </h1>
+        <div class="pagehead-sub">
+            {% trans "Notice :" %}
+            <a href="{% url 'catalog:record_detail' record.pk %}" class="cell-link">{{ record.title }}</a>
+        </div>
+    </div>
+</header>
+
+<form method="post" class="card">
     {% csrf_token %}
     {% if form.non_field_errors %}<div class="msg msg-error">{{ form.non_field_errors }}</div>{% endif %}
     {% for field in form %}
         {% include "partials/_field.html" with field=field %}
     {% endfor %}
-    <button type="submit" class="btn-primary">{% icon "check" %} {% trans "Enregistrer" %}</button>
-    <a href="{% url 'catalog:record_detail' record.pk %}" role="button" class="secondary outline">{% trans "Annuler" %}</a>
+    <div class="form-actions">
+        <button type="submit" class="btn btn--primary">
+            {% icon "check" size="16px" %} {% trans "Enregistrer" %}
+        </button>
+        <a href="{% url 'catalog:record_detail' record.pk %}" class="btn btn--ghost">{% trans "Annuler" %}</a>
+    </div>
 </form>
 {% endblock %}

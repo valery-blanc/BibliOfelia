@@ -3,6 +3,8 @@
 
 {% block title %}{{ form_title }}{% endblock %}
 
+{% block tile_strip %}{% include "partials/_tile_strip.html" with active="catalogue" %}{% endblock %}
+
 {% block content %}
 {% include "catalog/_record_form.html" %}
 {% endblock %}

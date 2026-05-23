@@ -3,15 +3,28 @@
 
 {% block title %}{% trans "Réserver" %}{% endblock %}
 
-{% block content %}
-<h1>{% icon "bookmark-check" %} {% trans "Réserver une notice" %}</h1>
-<p class="help-hint">{{ record.title }}</p>
+{% block tile_strip %}{% include "partials/_tile_strip.html" with active="reservations" %}{% endblock %}
 
-<form method="post">
+{% block content %}
+<header class="pagehead">
+    <div class="pagehead-icon" style="--ph-bg:var(--blush);--ph-fg:var(--burgundy)">
+        {% icon "bookmark-check" size="28px" %}
+    </div>
+    <div class="pagehead-text">
+        <h1 class="pagehead-title">{% trans "Réserver une notice" %}</h1>
+        <div class="pagehead-sub">{{ record.title }}</div>
+    </div>
+</header>
+
+<form method="post" class="card">
     {% csrf_token %}
     {% if form.non_field_errors %}<div class="msg msg-error">{{ form.non_field_errors }}</div>{% endif %}
     {% include "partials/_field.html" with field=form.member %}
-    <button type="submit" class="btn-primary">{% icon "check" %} {% trans "Enregistrer la réservation" %}</button>
-    <a href="{% url 'catalog:record_detail' record.pk %}" role="button" class="secondary outline">{% trans "Annuler" %}</a>
+    <div class="form-actions">
+        <button type="submit" class="btn btn--primary">
+            {% icon "check" size="16px" %} {% trans "Enregistrer la réservation" %}
+        </button>
+        <a href="{% url 'catalog:record_detail' record.pk %}" class="btn btn--ghost">{% trans "Annuler" %}</a>
+    </div>
 </form>
 {% endblock %}

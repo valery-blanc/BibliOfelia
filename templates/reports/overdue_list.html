@@ -3,41 +3,58 @@
 
 {% block title %}{% trans "Retards" %}{% endblock %}
 
-{% block content %}
-<h1>{% icon "triangle-alert" %} {% trans "Liste des retards" %}</h1>
+{% block tile_strip %}{% include "partials/_tile_strip.html" with active="advanced" %}{% endblock %}
 
-<form method="get" class="filters no-print">
-    <label>{% trans "Seuil (jours)" %} <input type="number" name="threshold" min="0" value="{{ threshold }}"></label>
-    <button type="submit">{% trans "Filtrer" %}</button>
-    <button type="button" onclick="window.print()">{% icon "printer" %} {% trans "Imprimer" %}</button>
+{% block content %}
+<header class="pagehead">
+    <div class="pagehead-icon" style="--ph-bg:var(--blush);--ph-fg:#B83232">
+        {% icon "triangle-alert" size="28px" %}
+    </div>
+    <div class="pagehead-text">
+        <h1 class="pagehead-title">{% trans "Liste des retards" %}</h1>
+        <div class="pagehead-sub">{% blocktrans count count=loans|length %}{{ count }} prêt en retard.{% plural %}{{ count }} prêts en retard.{% endblocktrans %}</div>
+    </div>
+</header>
+
+<form method="get" class="filter-bar no-print">
+    <div class="field" style="margin:0;flex:0 0 auto">
+        <label>{% trans "Seuil (jours)" %}</label>
+        <input type="number" name="threshold" min="0" value="{{ threshold }}" style="width:120px">
+    </div>
+    <button type="submit" class="btn btn--primary">
+        {% icon "filter" size="16px" %} {% trans "Filtrer" %}
+    </button>
+    <button type="button" class="btn btn--ghost" onclick="window.print()">
+        {% icon "printer" size="16px" %} {% trans "Imprimer" %}
+    </button>
 </form>
 
-<p>{% blocktrans count count=loans|length %}{{ count }} prêt en retard.{% plural %}{{ count }} prêts en retard.{% endblocktrans %}</p>
-
-<table>
-    <thead>
-        <tr>
-            <th>{% trans "Échéance" %}</th>
-            <th>{% trans "Exemplaire" %}</th>
-            <th>{% trans "Titre" %}</th>
-            <th>{% trans "Usager" %}</th>
-            <th>{% trans "Carte" %}</th>
-            <th>{% trans "Jours" %}</th>
-        </tr>
-    </thead>
-    <tbody>
-    {% for loan in loans %}
-        <tr>
-            <td>{{ loan.due_date|date:"Y-m-d" }}</td>
-            <td><code>{{ loan.item.internal_id }}</code></td>
-            <td>{{ loan.item.record.title|truncatechars:60 }}</td>
-            <td>{{ loan.member.last_name }} {{ loan.member.first_name }}</td>
-            <td><code>{{ loan.member.card_number }}</code></td>
-            <td>{{ today|timesince:loan.due_date|default:"-" }}</td>
-        </tr>
-    {% empty %}
-        <tr><td colspan="6"><em>{% trans "Aucun retard." %}</em></td></tr>
-    {% endfor %}
-    </tbody>
-</table>
+<div class="table-wrap">
+    <table class="table">
+        <thead>
+            <tr>
+                <th>{% trans "Échéance" %}</th>
+                <th>{% trans "Exemplaire" %}</th>
+                <th>{% trans "Titre" %}</th>
+                <th>{% trans "Usager" %}</th>
+                <th>{% trans "Carte" %}</th>
+                <th>{% trans "Jours" %}</th>
+            </tr>
+        </thead>
+        <tbody>
+        {% for loan in loans %}
+            <tr>
+                <td><span class="badge badge--late">{{ loan.due_date|date:"Y-m-d" }}</span></td>
+                <td>{{ loan.item.internal_id }}</td>
+                <td>{{ loan.item.record.title|truncatechars:60 }}</td>
+                <td><span class="cell-title">{{ loan.member.last_name }} {{ loan.member.first_name }}</span></td>
+                <td>{{ loan.member.card_number }}</td>
+                <td>{{ today|timesince:loan.due_date|default:"-" }}</td>
+            </tr>
+        {% empty %}
+            <tr><td colspan="6" class="muted" style="text-align:center;padding:24px">{% trans "Aucun retard." %}</td></tr>
+        {% endfor %}
+        </tbody>
+    </table>
+</div>
 {% endblock %}

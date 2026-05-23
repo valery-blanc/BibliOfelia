@@ -3,46 +3,68 @@
 
 {% block title %}{% trans "Étiquettes codes Ofelia" %}{% endblock %}
 
-{% block content %}
-<h1>{% icon "printer" %} {% trans "Étiquettes codes Ofelia" %}</h1>
+{% block tile_strip %}{% include "partials/_tile_strip.html" with active="advanced" %}{% endblock %}
 
-<form method="get" class="filters">
-    <label>{% trans "Emplacement" %} <input type="text" name="location" value="{{ location }}" placeholder="A1"></label>
-    <label><input type="checkbox" name="pending" value="1" {% if pending %}checked{% endif %}> {% trans "Derniers ajouts" %}</label>
-    <button type="submit">{% trans "Filtrer" %}</button>
+{% block content %}
+<header class="pagehead">
+    <div class="pagehead-icon" style="--ph-bg:var(--orange);--ph-fg:#fff">
+        {% icon "printer" size="28px" %}
+    </div>
+    <div class="pagehead-text">
+        <h1 class="pagehead-title">{% trans "Étiquettes codes Ofelia" %}</h1>
+        <div class="pagehead-sub">{% trans "Sélectionnez les exemplaires à imprimer puis générez le PDF" %}</div>
+    </div>
+</header>
+
+<form method="get" class="filter-bar">
+    <div class="field" style="margin:0;flex:0 0 auto">
+        <label>{% trans "Emplacement" %}</label>
+        <input type="text" name="location" value="{{ location }}" placeholder="A1" style="width:120px">
+    </div>
+    <label style="display:flex;align-items:center;gap:8px;font-size:14px;font-weight:600;color:var(--ink-soft);align-self:center;margin-top:18px">
+        <input type="checkbox" name="pending" value="1" {% if pending %}checked{% endif %}>
+        {% trans "Derniers ajouts" %}
+    </label>
+    <button type="submit" class="btn btn--primary">
+        {% icon "filter" size="16px" %} {% trans "Filtrer" %}
+    </button>
 </form>
 
 <form method="get" action="{% url 'printing:labels_pdf' %}" id="labelsForm">
-    <p>
-        <button type="submit">{% icon "file-down" %} {% trans "Générer PDF" %}</button>
-        <button type="submit" formaction="{% url 'printing:labels_send' %}" formmethod="post" formenctype="application/x-www-form-urlencoded">
-            {% icon "printer" %} {% trans "Imprimer (CUPS)" %}
+    <div style="display:flex;gap:8px;flex-wrap:wrap;margin-bottom:14px">
+        <button type="submit" class="btn btn--primary">
+            {% icon "file-text" size="16px" %} {% trans "Générer PDF" %}
         </button>
-    </p>
-    <table>
-        <thead>
-            <tr>
-                <th><input type="checkbox" id="selectAll"></th>
-                <th>{% trans "ID interne" %}</th>
-                <th>{% trans "Titre" %}</th>
-                <th>{% trans "Emplacement" %}</th>
-                <th>{% trans "Code Ofelia" %}</th>
-            </tr>
-        </thead>
-        <tbody>
-        {% for item in items %}
-            <tr>
-                <td><input type="checkbox" name="ids" value="{{ item.pk }}"></td>
-                <td><code>{{ item.internal_id }}</code></td>
-                <td>{{ item.record.title|truncatechars:50 }}</td>
-                <td>{{ item.location.code|default:"—" }}</td>
-                <td><code>{{ item.ean13 }}</code></td>
-            </tr>
-        {% empty %}
-            <tr><td colspan="5"><em>{% trans "Aucun exemplaire." %}</em></td></tr>
-        {% endfor %}
-        </tbody>
-    </table>
+        <button type="submit" formaction="{% url 'printing:labels_send' %}" formmethod="post" formenctype="application/x-www-form-urlencoded" class="btn btn--ghost">
+            {% icon "printer" size="16px" %} {% trans "Imprimer (CUPS)" %}
+        </button>
+    </div>
+    <div class="table-wrap">
+        <table class="table">
+            <thead>
+                <tr>
+                    <th style="width:40px"><input type="checkbox" id="selectAll"></th>
+                    <th>{% trans "ID interne" %}</th>
+                    <th>{% trans "Titre" %}</th>
+                    <th>{% trans "Emplacement" %}</th>
+                    <th>{% trans "Code Ofelia" %}</th>
+                </tr>
+            </thead>
+            <tbody>
+            {% for item in items %}
+                <tr>
+                    <td><input type="checkbox" name="ids" value="{{ item.pk }}"></td>
+                    <td>{{ item.internal_id }}</td>
+                    <td><span class="cell-title">{{ item.record.title|truncatechars:50 }}</span></td>
+                    <td>{{ item.location.code|default:"—" }}</td>
+                    <td>{{ item.ean13 }}</td>
+                </tr>
+            {% empty %}
+                <tr><td colspan="5" class="muted" style="text-align:center;padding:24px">{% trans "Aucun exemplaire." %}</td></tr>
+            {% endfor %}
+            </tbody>
+        </table>
+    </div>
 </form>
 
 <script>

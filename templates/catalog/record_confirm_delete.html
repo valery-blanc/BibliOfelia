@@ -3,22 +3,37 @@
 
 {% block title %}{% trans "Supprimer la notice" %}{% endblock %}
 
+{% block tile_strip %}{% include "partials/_tile_strip.html" with active="catalogue" %}{% endblock %}
+
 {% block content %}
-<h1>{% trans "Supprimer la notice" %}</h1>
-<p>{% blocktrans with title=record.title %}Confirmez-vous la suppression de « {{ title }} » ?{% endblocktrans %}</p>
+<header class="pagehead">
+    <div class="pagehead-icon" style="--ph-bg:var(--blush);--ph-fg:#B83232">
+        {% icon "trash-2" size="28px" %}
+    </div>
+    <div class="pagehead-text">
+        <h1 class="pagehead-title">{% trans "Supprimer la notice" %}</h1>
+        <div class="pagehead-sub">{{ record.title }}</div>
+    </div>
+</header>
 
 {% if blocked %}
-<div class="msg msg-error">
+<div role="alert" class="msg msg-error">
+    {% icon "triangle-alert" size="16px" %}
     {% trans "Des exemplaires actifs sont rattachés à cette notice. Retirez-les d'abord." %}
 </div>
-<a href="{% url 'catalog:record_detail' record.pk %}" role="button">{% trans "Retour" %}</a>
+<a href="{% url 'catalog:record_detail' record.pk %}" class="btn btn--primary">{% trans "Retour" %}</a>
 {% else %}
-<form method="post">
-    {% csrf_token %}
-    <button type="submit" class="btn-primary" style="background:var(--pico-color-red-500);border-color:var(--pico-color-red-500)">
-        {% icon "trash-2" %} {% trans "Supprimer définitivement" %}
-    </button>
-    <a href="{% url 'catalog:record_detail' record.pk %}" role="button" class="secondary outline">{% trans "Annuler" %}</a>
-</form>
+<div class="card">
+    <p>{% blocktrans with title=record.title %}Confirmez-vous la suppression de « {{ title }} » ? Cette action est irréversible.{% endblocktrans %}</p>
+    <form method="post" style="margin-top:18px">
+        {% csrf_token %}
+        <div class="form-actions" style="border:0;padding:0;margin:0">
+            <button type="submit" class="btn btn--primary" style="background:#B83232;border-color:#B83232">
+                {% icon "trash-2" size="16px" %} {% trans "Supprimer définitivement" %}
+            </button>
+            <a href="{% url 'catalog:record_detail' record.pk %}" class="btn btn--ghost">{% trans "Annuler" %}</a>
+        </div>
+    </form>
+</div>
 {% endif %}
 {% endblock %}

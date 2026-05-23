@@ -1,5 +1,5 @@
 {# Rendu d'un champ de formulaire. Usage : {% include "partials/_field.html" with field=form.xxx %} #}
-<div class="form-row">
+<div class="field">
     <label for="{{ field.id_for_label }}">
         {{ field.label }}{% if field.field.required %} <span class="req" aria-hidden="true">*</span>{% endif %}
     </label>

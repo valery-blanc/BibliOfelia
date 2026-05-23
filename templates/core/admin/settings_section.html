@@ -3,40 +3,56 @@
 
 {% block title %}{{ label }} — {% trans "Paramètres" %}{% endblock %}
 
+{% block tile_strip %}{% include "partials/_tile_strip.html" with active="advanced" %}{% endblock %}
+
 {% block content %}
 <nav class="breadcrumb">
     <a href="{% url 'core:settings_index' %}">{% trans "Paramètres" %}</a> /
     <strong>{{ label }}</strong>
 </nav>
 
-<h1>{% icon "settings" %} {{ label }}</h1>
+<header class="pagehead">
+    <div class="pagehead-icon" style="--ph-bg:var(--burgundy);--ph-fg:#fff">
+        {% icon "settings" size="28px" %}
+    </div>
+    <div class="pagehead-text">
+        <h1 class="pagehead-title">{{ label }}</h1>
+    </div>
+</header>
 
-<form method="post">
+<form method="post" class="card">
     {% csrf_token %}
     {% for field in form %}
-        <div class="form-row">
-            {{ field.label_tag }}
+        <div class="field">
+            <label for="{{ field.id_for_label }}">
+                {{ field.label }}{% if field.field.required %} <span class="req" aria-hidden="true">*</span>{% endif %}
+            </label>
             {{ field|add_class:"form-control" }}
-            {% if field.help_text %}<small>{{ field.help_text }}</small>{% endif %}
-            {% if field.errors %}<div class="msg msg-error">{{ field.errors }}</div>{% endif %}
+            {% if field.help_text %}<small class="help-hint">{{ field.help_text }}</small>{% endif %}
+            {% for error in field.errors %}<small class="field-error">{{ error }}</small>{% endfor %}
         </div>
     {% endfor %}
     {% if form.non_field_errors %}<div class="msg msg-error">{{ form.non_field_errors }}</div>{% endif %}
-    <button type="submit">{% icon "save" %} {% trans "Enregistrer" %}</button>
-    <a href="{% url 'core:settings_index' %}" role="button" class="secondary">{% trans "Annuler" %}</a>
+    <div class="form-actions">
+        <button type="submit" class="btn btn--primary">
+            {% icon "check" size="16px" %} {% trans "Enregistrer" %}
+        </button>
+        <a href="{% url 'core:settings_index' %}" class="btn btn--ghost">{% trans "Annuler" %}</a>
+    </div>
 </form>
 
 {% if section == "backup" %}
-<hr>
-<section>
-    <h2>{% trans "Actions sauvegarde" %}</h2>
-    <form method="post" action="{% url 'core:backup_now' %}" style="display:inline">
+<h2 class="section-title" style="margin-top:28px">{% trans "Actions sauvegarde" %}</h2>
+<div class="card" style="display:flex;gap:10px;flex-wrap:wrap">
+    <form method="post" action="{% url 'core:backup_now' %}" style="margin:0">
         {% csrf_token %}
-        <button type="submit">{% icon "save" %} {% trans "Sauvegarder maintenant" %}</button>
+        <button type="submit" class="btn btn--primary">
+            {% icon "database" size="16px" %} {% trans "Sauvegarder maintenant" %}
+        </button>
     </form>
-    <a href="{% url 'core:backup_restore' %}" role="button" class="secondary">
-        {% icon "upload" %} {% trans "Restaurer depuis un fichier…" %}
+    <a href="{% url 'core:backup_restore' %}" class="btn btn--ghost">
+        {% icon "rotate-ccw" size="16px" %} {% trans "Restaurer depuis un fichier…" %}
     </a>
-</section>
+</div>
 {% endif %}
 {% endblock %}

@@ -3,57 +3,77 @@
 
 {% block title %}{% trans "Inactifs" %}{% endblock %}
 
-{% block content %}
-<h1>{% icon "user-x" %} {% trans "Inactifs" %}</h1>
+{% block tile_strip %}{% include "partials/_tile_strip.html" with active="advanced" %}{% endblock %}
 
-<form method="get" class="filters no-print">
-    <label>{% trans "Seuil d'inactivité (jours)" %}
-        <input type="number" name="days" min="30" value="{{ days }}"></label>
-    <button type="submit">{% trans "Filtrer" %}</button>
-    <button type="button" onclick="window.print()">{% icon "printer" %} {% trans "Imprimer" %}</button>
+{% block content %}
+<header class="pagehead">
+    <div class="pagehead-icon" style="--ph-bg:var(--cream-dark);--ph-fg:var(--ink-soft)">
+        {% icon "archive" size="28px" %}
+    </div>
+    <div class="pagehead-text">
+        <h1 class="pagehead-title">{% trans "Inactifs" %}</h1>
+        <div class="pagehead-sub">{% trans "Usagers et exemplaires sans activité récente" %}</div>
+    </div>
+</header>
+
+<form method="get" class="filter-bar no-print">
+    <div class="field" style="margin:0;flex:0 0 auto">
+        <label>{% trans "Seuil d'inactivité (jours)" %}</label>
+        <input type="number" name="days" min="30" value="{{ days }}" style="width:140px">
+    </div>
+    <button type="submit" class="btn btn--primary">
+        {% icon "filter" size="16px" %} {% trans "Filtrer" %}
+    </button>
+    <button type="button" class="btn btn--ghost" onclick="window.print()">
+        {% icon "printer" size="16px" %} {% trans "Imprimer" %}
+    </button>
 </form>
 
-<section>
-    <h2>{% trans "Usagers inactifs" %} ({{ members|length }})</h2>
-    <table>
+<h2 class="section-title">{% trans "Usagers inactifs" %} <small>({{ members|length }})</small></h2>
+<div class="table-wrap">
+    <table class="table">
         <thead>
             <tr>
-                <th>{% trans "Carte" %}</th><th>{% trans "Nom" %}</th><th>{% trans "Inscription" %}</th>
+                <th>{% trans "Carte" %}</th>
+                <th>{% trans "Nom" %}</th>
+                <th>{% trans "Inscription" %}</th>
             </tr>
         </thead>
         <tbody>
         {% for m in members %}
             <tr>
-                <td><code>{{ m.card_number }}</code></td>
-                <td>{{ m.last_name }} {{ m.first_name }}</td>
+                <td>{{ m.card_number }}</td>
+                <td><span class="cell-title">{{ m.last_name }} {{ m.first_name }}</span></td>
                 <td>{{ m.registration_date|date:"Y-m-d" }}</td>
             </tr>
         {% empty %}
-            <tr><td colspan="3"><em>{% trans "Aucun usager inactif sur la période." %}</em></td></tr>
+            <tr><td colspan="3" class="muted" style="text-align:center;padding:24px">{% trans "Aucun usager inactif sur la période." %}</td></tr>
         {% endfor %}
         </tbody>
     </table>
-</section>
+</div>
 
-<section>
-    <h2>{% trans "Exemplaires inactifs" %} ({{ items|length }})</h2>
-    <table>
+<h2 class="section-title" style="margin-top:28px">{% trans "Exemplaires inactifs" %} <small>({{ items|length }})</small></h2>
+<div class="table-wrap">
+    <table class="table">
         <thead>
             <tr>
-                <th>{% trans "ID interne" %}</th><th>{% trans "Code Ofelia" %}</th><th>{% trans "Titre" %}</th>
+                <th>{% trans "ID interne" %}</th>
+                <th>{% trans "Code Ofelia" %}</th>
+                <th>{% trans "Titre" %}</th>
             </tr>
         </thead>
         <tbody>
         {% for it in items %}
             <tr>
-                <td><code>{{ it.internal_id }}</code></td>
-                <td><code>{{ it.ean13 }}</code></td>
-                <td>{{ it.record.title|truncatechars:60 }}</td>
+                <td>{{ it.internal_id }}</td>
+                <td>{{ it.ean13 }}</td>
+                <td><span class="cell-title">{{ it.record.title|truncatechars:60 }}</span></td>
             </tr>
         {% empty %}
-            <tr><td colspan="3"><em>{% trans "Aucun exemplaire inactif sur la période." %}</em></td></tr>
+            <tr><td colspan="3" class="muted" style="text-align:center;padding:24px">{% trans "Aucun exemplaire inactif sur la période." %}</td></tr>
         {% endfor %}
         </tbody>
     </table>
-</section>
+</div>
 {% endblock %}
