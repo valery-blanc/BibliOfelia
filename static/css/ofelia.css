@@ -995,3 +995,163 @@ select.filter-select:focus {
 
 /* ────────── Wizard ────────── */
 .wizard-step { max-width: 600px; margin: 40px auto; }
+
+/* ────────── Scan split-button + toggle de mode (FEAT-024) ────────── */
+.scan-split {
+  display: inline-flex;
+  align-items: stretch;
+  gap: 0;
+  position: relative;
+}
+.scan-split.scan-split--block { display: flex; width: 100%; }
+.scan-split > .js-scan-handoff { flex: 1 1 auto; min-width: 0; }
+.scan-mode-toggle {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  min-width: 38px;
+  padding: 0 10px;
+  border: 1px solid var(--line);
+  border-left: none;
+  background: var(--paper);
+  color: var(--ink);
+  border-radius: 0 var(--r-md) var(--r-md) 0;
+  cursor: pointer;
+  font-size: 12px;
+  line-height: 1;
+}
+.scan-mode-toggle:hover { background: var(--cream); }
+.scan-split > .js-scan-handoff { border-radius: var(--r-md) 0 0 var(--r-md); }
+.scan-mode-toggle-caret { font-size: 14px; }
+
+/* Banner dashboard : le bouton est un <a> plein largeur, le toggle se pose en overlay. */
+.scan-banner { position: relative; }
+.scan-banner .scan-mode-toggle {
+  position: absolute;
+  top: 8px;
+  right: 8px;
+  border-radius: var(--r-sm, 8px);
+  background: rgba(255, 255, 255, 0.85);
+  border: 1px solid var(--line);
+  z-index: 2;
+}
+
+/* Popover */
+.scan-mode-popover {
+  position: absolute;
+  top: calc(100% + 6px);
+  right: 0;
+  min-width: 240px;
+  padding: 6px;
+  background: var(--paper);
+  border: 1px solid var(--line);
+  border-radius: var(--r-md);
+  box-shadow: var(--shadow-md, 0 8px 24px rgba(0,0,0,0.12));
+  z-index: 1000;
+  display: none;
+}
+.scan-mode-popover.is-open { display: block; }
+.scan-mode-option {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  width: 100%;
+  padding: 10px 12px;
+  background: transparent;
+  border: none;
+  border-radius: var(--r-sm, 8px);
+  text-align: left;
+  font-size: 14px;
+  color: var(--ink);
+  cursor: pointer;
+}
+.scan-mode-option:hover { background: var(--cream); }
+.scan-mode-option.is-active { background: var(--cream); font-weight: 600; }
+.scan-mode-option.is-disabled {
+  opacity: 0.55;
+  cursor: not-allowed;
+}
+.scan-mode-option.is-disabled:hover { background: transparent; }
+.scan-mode-bullet { width: 16px; display: inline-flex; justify-content: center; color: var(--burgundy); }
+.scan-mode-label { flex: 1; }
+.scan-mode-hint { font-size: 11px; color: var(--grey); text-transform: uppercase; letter-spacing: 0.04em; }
+
+/* ────────── Modal caméra (FEAT-024) ────────── */
+.scan-camera-modal {
+  position: fixed;
+  inset: 0;
+  background: rgba(0, 0, 0, 0.78);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 2000;
+  padding: 16px;
+}
+.scan-camera-card {
+  background: var(--paper);
+  border-radius: var(--r-lg, 16px);
+  width: 100%;
+  max-width: 480px;
+  max-height: 90vh;
+  display: flex;
+  flex-direction: column;
+  overflow: hidden;
+  box-shadow: 0 20px 60px rgba(0,0,0,0.4);
+}
+.scan-camera-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 12px 16px;
+  border-bottom: 1px solid var(--line);
+}
+.scan-camera-title { font-weight: 700; font-size: 16px; }
+.scan-camera-close {
+  background: transparent;
+  border: none;
+  font-size: 28px;
+  line-height: 1;
+  cursor: pointer;
+  color: var(--ink);
+  padding: 0 4px;
+}
+.scan-camera-viewfinder {
+  background: #000;
+  width: 100%;
+  aspect-ratio: 3 / 2;
+  position: relative;
+  overflow: hidden;
+}
+.scan-camera-viewfinder video { width: 100%; height: 100%; object-fit: cover; }
+.scan-camera-hint {
+  padding: 10px 16px;
+  font-size: 13px;
+  color: var(--grey);
+  text-align: center;
+}
+.scan-camera-error {
+  padding: 0 16px 8px;
+  color: #B83232;
+  font-size: 13px;
+  min-height: 18px;
+  text-align: center;
+}
+.scan-camera-error:empty { display: none; }
+.scan-camera-actions {
+  display: flex;
+  justify-content: flex-end;
+  gap: 8px;
+  padding: 12px 16px;
+  border-top: 1px solid var(--line);
+}
+body.scan-camera-open { overflow: hidden; }
+
+@media (max-width: 480px) {
+  .scan-camera-modal { padding: 0; }
+  .scan-camera-card { max-width: 100%; max-height: 100vh; height: 100%; border-radius: 0; }
+  .scan-camera-viewfinder { aspect-ratio: auto; flex: 1; }
+}
+
+@media print {
+  .scan-mode-toggle, .scan-mode-popover, .scan-camera-modal { display: none !important; }
+}

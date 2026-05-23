@@ -4,7 +4,7 @@ Spécification détaillée du logiciel de gestion de bibliothèque BibliOfelia, 
 
 Version : 1.0 (cible v1)
 Statut : draft pour Spec-Driven Development
-Dernière modif spec : 2026-05-23 — FEAT-023 (handoff single-scan OfeliaScan : nouveaux endpoints `/scan-handoff` + `/scan-handoff/{token}` ; modèle `ScanHandoff` ; deep-link `ofeliascan://scan-one` ; boutons « Scanner » des pages prêt/retour/dashboard câblés ; CSRF + polling 700 ms ; TTL 5 min — §6.10 nouvelle sous-section « Handoff single-scan ») ; Refonte UI design OFELIA (§3.2 Frontend, §10.2 Navigation/Écrans : tuiles, tile strip, page head, polices Bricolage Grotesque/DM Sans, ofelia.css, logo OFELIA) ; FEAT-021 (API scan-sessions + inventory-sessions : contrat aligné sur le client OfeliaScan — corps `{"items":[...]}`, champs `scanned_value`/`metadata_*`/`item_state`, idempotency `local_id`, finalize sync = create-or-add-copies, ownership contributor_api — §6.10) ; FEAT-020 (intégration keebee : déploiement sur la Ofelia Box via le wizard keebee, clone + build sur la Pi, routage nginx `/bibliofelia/`, réglage `SECURE_COOKIES`, statique servi par nginx — §4, §11) ; FEAT-018 (terminologie UI : l'EAN13 interne d'un exemplaire est nommé « code Ofelia » dans toute l'interface ; rapport d'inventaire enrichi du code Ofelia et de l'ISBN — §5.2/§6.5/§6.7) ; Sprint 4 : FEAT-011 (dashboard enrichi §6.6 + rapports + paramètres + gestion comptes), FEAT-012 (impression étiquettes + cartes §6.7), FEAT-013 (notifications offline §6.8), FEAT-014 (sauvegardes §8 + planification django-q2), FEAT-015 (wizard premier démarrage §11.3 + données démo §11.4), FEAT-017 (onglet « Avancé » + page Connexion OfeliaScan + « Mon compte » §6.6/§6.10/§10.2), BUG-006 (i18n : `accounts/` déplacé sous `i18n_patterns` + chaînes EN/ES/MG complétées) ; Sprint 3 : FEAT-016 — API OfeliaScan (§6.10 : auth JWT, /pairing/info, /isbn/{isbn}, /health) ; FEAT-019 — publication mDNS via service Avahi sur l'hôte (§6.10) ; SPEC-CORR-002 — /pairing/info renvoie `base_url` (URL absolue) ; Sprint 2 : FEAT-005 à FEAT-010 (§6.1 à §6.5, §10) ; i18n 4 langues (§6.9) ; BUG-002 à BUG-005 ; §6.10 réécrit comme contrat d'API (SPEC-CORR-001)
+Dernière modif spec : 2026-05-23 — FEAT-024 (scanner caméra navigateur : mode alternatif au handoff OfeliaScan, lib `html5-qrcode` locale, toggle utilisateur device-scoped en localStorage, contrainte HTTPS — §6.10 nouvelle sous-section « Scanner caméra navigateur ») ; FEAT-023 (handoff single-scan OfeliaScan : nouveaux endpoints `/scan-handoff` + `/scan-handoff/{token}` ; modèle `ScanHandoff` ; deep-link `ofeliascan://scan-one` ; boutons « Scanner » des pages prêt/retour/dashboard câblés ; CSRF + polling 700 ms ; TTL 5 min — §6.10 nouvelle sous-section « Handoff single-scan ») ; Refonte UI design OFELIA (§3.2 Frontend, §10.2 Navigation/Écrans : tuiles, tile strip, page head, polices Bricolage Grotesque/DM Sans, ofelia.css, logo OFELIA) ; FEAT-021 (API scan-sessions + inventory-sessions : contrat aligné sur le client OfeliaScan — corps `{"items":[...]}`, champs `scanned_value`/`metadata_*`/`item_state`, idempotency `local_id`, finalize sync = create-or-add-copies, ownership contributor_api — §6.10) ; FEAT-020 (intégration keebee : déploiement sur la Ofelia Box via le wizard keebee, clone + build sur la Pi, routage nginx `/bibliofelia/`, réglage `SECURE_COOKIES`, statique servi par nginx — §4, §11) ; FEAT-018 (terminologie UI : l'EAN13 interne d'un exemplaire est nommé « code Ofelia » dans toute l'interface ; rapport d'inventaire enrichi du code Ofelia et de l'ISBN — §5.2/§6.5/§6.7) ; Sprint 4 : FEAT-011 (dashboard enrichi §6.6 + rapports + paramètres + gestion comptes), FEAT-012 (impression étiquettes + cartes §6.7), FEAT-013 (notifications offline §6.8), FEAT-014 (sauvegardes §8 + planification django-q2), FEAT-015 (wizard premier démarrage §11.3 + données démo §11.4), FEAT-017 (onglet « Avancé » + page Connexion OfeliaScan + « Mon compte » §6.6/§6.10/§10.2), BUG-006 (i18n : `accounts/` déplacé sous `i18n_patterns` + chaînes EN/ES/MG complétées) ; Sprint 3 : FEAT-016 — API OfeliaScan (§6.10 : auth JWT, /pairing/info, /isbn/{isbn}, /health) ; FEAT-019 — publication mDNS via service Avahi sur l'hôte (§6.10) ; SPEC-CORR-002 — /pairing/info renvoie `base_url` (URL absolue) ; Sprint 2 : FEAT-005 à FEAT-010 (§6.1 à §6.5, §10) ; i18n 4 langues (§6.9) ; BUG-002 à BUG-005 ; §6.10 réécrit comme contrat d'API (SPEC-CORR-001)
 
 ---
 
@@ -902,7 +902,37 @@ Fallback hors OfeliaScan : sur iOS ou Android sans l'app, `window.location`
 échoue silencieusement, le timeout client de 120 s relâche le bouton, et
 le champ texte reste utilisable pour la saisie manuelle (= comportement
 pré-FEAT-023, pas de régression). Le scanner caméra navigateur est
-adressé séparément par FEAT-024 (nécessite HTTPS).
+adressé séparément par FEAT-024 ci-dessous.
+
+#### Scanner caméra navigateur — FEAT-024 / Task #22
+
+Mode alternatif pour iOS / Android-sans-OfeliaScan / desktop avec webcam.
+Voir `docs/specs/FEAT-024-scanner-camera-navigateur.md`.
+
+Choix utilisateur via un toggle (chevron) attaché à chaque bouton
+`.js-scan-handoff` : mode `ofeliascan` (défaut) ou `camera`. Persistance
+**device-scoped** dans `localStorage['bibliofelia.scan-mode']`.
+
+Contrainte HTTPS : `getUserMedia` exige `window.isSecureContext`. La box
+est déjà en HTTPS via le domaine externe ; **aucun certificat auto-signé**
+n'est installé sur les téléphones. En HTTP LAN, l'option « Caméra » du
+popover est grisée avec le tooltip « Nécessite HTTPS — accédez via internet ».
+Si le mode mémorisé est `camera` mais l'utilisateur revient en HTTP, le clic
+retombe automatiquement sur OfeliaScan pour ce clic (la préférence reste
+intacte).
+
+Implémentation : lib locale `html5-qrcode` v2.3.8 (`static/js/html5-qrcode.min.js`,
+375 KB, Apache-2.0), lazy-load à la première ouverture du modal. Modal
+viseur 480 px desktop / full-screen mobile, caméra arrière
+(`facingMode: environment`), formats acceptés EAN-13/EAN-8/UPC/CODE_128/CODE_39/QR/ITF.
+À la première détection, `BibliOfelia.scan.applyResult(btn, {value})` ré-utilise
+exactement le même routage que FEAT-023 (`data-scan-target`,
+`data-scan-autosubmit`, `data-scan-dispatch-url`). Aucun nouveau endpoint
+Django, pas de migration. Décodage 100 % local, aucune image envoyée au
+serveur.
+
+Périmètre : mêmes 4 entrées que FEAT-023 (dashboard, prêt-carte, prêt-livre,
+retour). Récolement et catalogage hors périmètre v1.
 
 #### Items
 

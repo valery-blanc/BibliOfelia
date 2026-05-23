@@ -2,7 +2,7 @@
 
 Source de vérité de l'avancement v1. Une case `[x]` = livrable terminé et déployable. `[ ]` = à faire. `[!]` = bloqué (voir note).
 
-Mise à jour : 2026-05-23 (Sprint 7 — FEAT-023 **validé Val 2026-05-23** : banner dashboard → OfeliaScan ouvre → scan livre → retour BibliOfelia → fiche notice affichée, bout-en-bout fonctionnel. Modèle `ScanHandoff` + endpoints `/api/v1/scan-handoff[/{token}]` + JS `scan-handoff.js` + 4 boutons « Scanner » câblés. BUG-010 entrypoint Dockerfile + BUG-011 CSRF cookie HttpOnly + Chrome Android `intent://` URL résolus. Sprints 3/5/6 clos. Reste pour Sprint 7 : Android-side OfeliaScan déjà fonctionnelle côté Val (intent filter + activity scan-one + POST callback) — implémentation Android terminée hors repo. Prochain sprint : FEAT-024 scanner caméra navigateur (HTTPS).)
+Mise à jour : 2026-05-23 (Sprint 7 — FEAT-024 code livré : scanner caméra navigateur via html5-qrcode local, toggle utilisateur device-scoped (localStorage), modal full-screen mobile / 480 px desktop, contrainte HTTPS sans cert auto-signé (option grisée en HTTP LAN), aucun nouveau endpoint Django, 179 tests verts ; déploiement Pi + test Val à venir. FEAT-023 **validé Val 2026-05-23** : banner dashboard → OfeliaScan ouvre → scan livre → retour BibliOfelia → fiche notice affichée, bout-en-bout fonctionnel. Modèle `ScanHandoff` + endpoints `/api/v1/scan-handoff[/{token}]` + JS `scan-handoff.js` + 4 boutons « Scanner » câblés. BUG-010 entrypoint Dockerfile + BUG-011 CSRF cookie HttpOnly + Chrome Android `intent://` URL résolus. Sprints 3/5/6 clos. Reste pour Sprint 7 : Android-side OfeliaScan déjà fonctionnelle côté Val (intent filter + activity scan-one + POST callback) — implémentation Android terminée hors repo. Prochain sprint : FEAT-024 scanner caméra navigateur (HTTPS).)
 
 ## Sprint 0 — Squelette
 
@@ -281,7 +281,16 @@ Mise à jour : 2026-05-23 (Sprint 7 — FEAT-023 **validé Val 2026-05-23** : ba
   - [x] Test Val 2026-05-23 : banner dashboard → OfeliaScan ouvert → scan livre → retour BibliOfelia → fiche notice affichée. Bout-en-bout fonctionnel. Les boutons `loans/lend/lend.html` et `loans/return/return.html` utilisent le même JS, donc validés implicitement.
   - [x] **Côté OfeliaScan Android** (hors repo BibliOfelia) : intent filter `ofeliascan://scan-one`, écran de scan unique, POST callback — implémenté par Val 2026-05-23, validé en bout-en-bout depuis le dashboard.
 
-- [ ] **Task #22** FEAT-024 — Scanner caméra navigateur (fallback hors OfeliaScan, nécessite HTTPS)
-  - À spécifier dans `docs/specs/FEAT-024-*.md` après validation FEAT-023.
-  - Cible : iOS + Android-sans-OfeliaScan. Lib candidate : `html5-qrcode` (~150 KB, locale, EAN-13 + QR + code39).
-  - Prérequis HTTPS sur la box (`getUserMedia` exige un contexte sécurisé) : choix entre cert auto-signé installé sur les téléphones, ou DNS local + Let's Encrypt DNS-01.
+- [ ] **Task #22** FEAT-024 — Scanner caméra navigateur (fallback hors OfeliaScan)
+  - [x] `docs/specs/FEAT-024-scanner-camera-navigateur.md` — spec
+  - [x] Lib `static/js/html5-qrcode.min.js` v2.3.8 vendorée (375 KB, Apache-2.0)
+  - [x] `static/js/scan-handoff.js` refacto : `window.BibliOfelia.scan = {applyResult, flashMessage, setBusy, readMode}` + court-circuit vers mode caméra si `localStorage['bibliofelia.scan-mode']==='camera'` && `isSecureContext`
+  - [x] `static/js/scan-camera.js` : lazy-load lib, modal viseur, `facingMode: environment`, formats EAN-13/EAN-8/UPC/CODE_128/CODE_39/QR/ITF, gestion `NotAllowedError` / `NotFoundError`, fallback gracieux
+  - [x] `static/js/scan-mode-toggle.js` : auto-injecte chevron + popover sur chaque `.js-scan-handoff`, persistance localStorage, option Caméra grisée hors `isSecureContext`
+  - [x] `static/css/ofelia.css` : `.scan-split`, `.scan-mode-toggle`, `.scan-mode-popover`, `.scan-camera-modal` (480 px desktop / full-screen mobile)
+  - [x] `templates/base.html` : `#scan-mode-i18n` (13 chaînes) + chargement des 3 JS en defer
+  - [x] i18n : 13 nouvelles chaînes traduites EN/ES/MG (FR = msgid par défaut)
+  - [x] `pytest` → 179 passed (non-régression) ; `manage.py check` 0 issue
+  - [x] **Cert auto-signé écarté** (décision Val 2026-05-23) : feature active uniquement en HTTPS (accès internet)
+  - [ ] Déploiement Pi + test Val (HTTP LAN = option Caméra grisée ; HTTPS externe = scan réel sur les 4 entrées + non-régression OfeliaScan)
+  - [ ] Confirmation Val → commit unique `FEAT-024: scanner caméra navigateur`

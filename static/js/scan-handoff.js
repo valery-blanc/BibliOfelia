@@ -1,4 +1,5 @@
-/* FEAT-023 — Scan handoff single-scan (BibliOfelia web ↔ OfeliaScan).
+/* FEAT-023/024 — Scan handoff single-scan (BibliOfelia web ↔ OfeliaScan)
+ * + chemin caméra navigateur (`scan-camera.js`).
  *
  * Boutons marqués `.js-scan-handoff` :
  *   data-scan-target      : sélecteur CSS d'un <input> à pré-remplir
@@ -7,15 +8,22 @@
  *   data-scan-dispatch-url: URL vers laquelle rediriger après scan (ex. /search/),
  *                           le JS ajoute ?q=<valeur> automatiquement
  *
- * Le bouton ouvre OfeliaScan via `ofeliascan://scan-one?token=...&kind=...`,
- * puis poll `/api/v1/scan-handoff/{token}` jusqu'à completion (TTL côté
- * serveur 5 min, timeout côté client 120 s).
+ * Modes :
+ *   - `ofeliascan` (défaut) : ouvre OfeliaScan via `ofeliascan://scan-one?token=...`,
+ *     puis poll `/api/v1/scan-handoff/{token}` (TTL serveur 5 min, timeout client 120 s).
+ *   - `camera`              : géré par `scan-camera.js` (cf. FEAT-024). Le mode est
+ *     lu depuis `localStorage['bibliofelia.scan-mode']`. Quand actif, ce module
+ *     délègue à `BibliOfelia.scan.openCamera(btn)` et ne fait pas de handoff.
+ *
+ * Helpers partagés exposés via `window.BibliOfelia.scan` (utilisés par
+ * `scan-camera.js`).
  */
 (function () {
     "use strict";
 
     var POLL_INTERVAL_MS = 700;
     var TIMEOUT_MS = 120 * 1000;
+    var STORAGE_KEY = "bibliofelia.scan-mode";
 
     function getConfig() {
         var el = document.getElementById("scan-handoff-config");
@@ -76,7 +84,11 @@
             }
             btn.disabled = true;
             btn.classList.add("is-busy");
-            btn.innerHTML = label || "⏳ " + (btn.dataset.busyLabel || "En attente d’OfeliaScan…");
+            if (label) {
+                btn.innerHTML = label;
+            } else {
+                btn.innerHTML = "⏳ " + (btn.dataset.busyLabel || "En attente…");
+            }
         } else {
             btn.disabled = false;
             btn.classList.remove("is-busy");
@@ -88,12 +100,14 @@
     }
 
     function flashMessage(btn, text) {
-        var note = btn.parentNode.querySelector(".scan-handoff-note");
+        // Cherche un point d'ancrage stable : .scan-split d'abord, sinon le parent direct.
+        var anchor = btn.closest(".scan-split") || btn.parentNode;
+        var note = anchor.querySelector(":scope > .scan-handoff-note");
         if (!note) {
             note = document.createElement("div");
             note.className = "scan-handoff-note muted text-sm";
             note.style.marginTop = "8px";
-            btn.parentNode.appendChild(note);
+            anchor.appendChild(note);
         }
         note.textContent = text;
         setTimeout(function () { if (note.parentNode) note.parentNode.removeChild(note); }, 4500);
@@ -113,10 +127,6 @@
     }
 
     function openDeepLink(url) {
-        // Si une app gère l'URL, Android bascule sur elle (la page reste
-        // active en arrière-plan, le polling reprend au retour). Sans handler,
-        // Chrome affiche un message d'erreur et le timeout du polling
-        // finit par relâcher le bouton.
         console.log("[scan-handoff] ouverture deep-link:", url);
         try { window.location.href = url; } catch (e) { console.warn("[scan-handoff]", e); }
     }
@@ -158,9 +168,18 @@
         return false;
     }
 
-    function handleClick(btn) {
+    function readMode() {
+        try {
+            var v = window.localStorage && window.localStorage.getItem(STORAGE_KEY);
+            return v === "camera" ? "camera" : "ofeliascan";
+        } catch (e) {
+            return "ofeliascan";
+        }
+    }
+
+    function handleHandoff(btn) {
         var targetKind = btn.dataset.scanKind || "auto";
-        setBusy(btn, true);
+        setBusy(btn, true, "⏳ " + (btn.dataset.busyLabelHandoff || "En attente d’OfeliaScan…"));
 
         createHandoff(targetKind).then(function (handoff) {
             openDeepLink(chooseDeepLinkUrl(handoff));
@@ -197,6 +216,16 @@
         });
     }
 
+    // Namespace partagé (consommé par `scan-camera.js`, `scan-mode-toggle.js`).
+    window.BibliOfelia = window.BibliOfelia || {};
+    window.BibliOfelia.scan = {
+        STORAGE_KEY: STORAGE_KEY,
+        applyResult: applyResult,
+        flashMessage: flashMessage,
+        setBusy: setBusy,
+        readMode: readMode
+    };
+
     document.addEventListener("click", function (ev) {
         var btn = ev.target.closest(".js-scan-handoff");
         if (!btn) return;
@@ -205,6 +234,19 @@
             return;
         }
         ev.preventDefault();
-        handleClick(btn);
+
+        var mode = readMode();
+        if (mode === "camera"
+                && window.BibliOfelia.scan.openCamera
+                && window.isSecureContext) {
+            window.BibliOfelia.scan.openCamera(btn);
+            return;
+        }
+        // Fallback gracieux : mode caméra demandé mais HTTPS absent ou module
+        // non chargé → on retombe sur le handoff OfeliaScan.
+        if (mode === "camera" && !window.isSecureContext) {
+            flashMessage(btn, "HTTPS requis pour la caméra. Bascule sur OfeliaScan.");
+        }
+        handleHandoff(btn);
     });
 })();
