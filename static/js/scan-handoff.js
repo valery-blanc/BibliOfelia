@@ -1,18 +1,16 @@
 /* FEAT-023/024 — Click handler des boutons `.js-scan-handoff`.
  *
  * Stratégie (révision Val 2026-05-23) :
- *   1. Si la caméra du navigateur est disponible (HTTPS + getUserMedia + lib
- *      chargée), on ouvre la caméra interne (modal in-page, on ne sort pas
- *      du site).
- *   2. Sinon (HTTP LAN, navigateur sans getUserMedia, ou la caméra plante
- *      à l'init), on tombe automatiquement sur le handoff OfeliaScan qui
- *      ouvre l'app Android et revient.
+ *   1. Si la caméra du navigateur est disponible (HTTPS + getUserMedia + lib),
+ *      on ouvre la caméra interne (modal in-page, on ne sort pas du site).
+ *   2. Sinon, fallback automatique sur le handoff OfeliaScan, avec dans la
+ *      flashMessage la raison technique exacte (utile pour diagnostiquer).
  *
- * Attributs déclaratifs (FEAT-023, inchangés) :
- *   data-scan-target       : sélecteur CSS d'un <input> à pré-remplir
- *   data-scan-kind         : auto | book | card  (indication UI pour OfeliaScan)
- *   data-scan-autosubmit   : "true" pour soumettre le form après remplissage
- *   data-scan-dispatch-url : URL vers laquelle rediriger après scan
+ * Attributs déclaratifs (FEAT-023) :
+ *   data-scan-target       : sélecteur CSS du <input> à pré-remplir
+ *   data-scan-kind         : auto | book | card
+ *   data-scan-autosubmit   : "true" pour soumettre le form
+ *   data-scan-dispatch-url : URL de redirection (?q= ajouté)
  *
  * Helpers exposés via `window.BibliOfelia.scan` (consommés par scan-camera.js).
  */
@@ -21,6 +19,7 @@
 
     var POLL_INTERVAL_MS = 700;
     var TIMEOUT_MS = 120 * 1000;
+    var activeHandoffs = new WeakMap(); // btn → { intervalId, cancelEl }
 
     function getConfig() {
         var el = document.getElementById("scan-handoff-config");
@@ -90,7 +89,44 @@
                 btn.innerHTML = btn.dataset.originalLabel;
                 delete btn.dataset.originalLabel;
             }
+            removeCancelLink(btn);
         }
+    }
+
+    function addCancelLink(btn) {
+        removeCancelLink(btn);
+        var link = document.createElement("button");
+        link.type = "button";
+        link.className = "scan-handoff-cancel";
+        link.textContent = "Annuler";
+        link.style.cssText = "display:block;margin-top:6px;background:none;border:none;color:var(--burgundy);text-decoration:underline;cursor:pointer;font-size:13px;padding:4px;";
+        link.addEventListener("click", function (ev) {
+            ev.preventDefault();
+            ev.stopPropagation();
+            cancelHandoff(btn);
+        });
+        btn.parentNode.appendChild(link);
+        var state = activeHandoffs.get(btn) || {};
+        state.cancelEl = link;
+        activeHandoffs.set(btn, state);
+    }
+
+    function removeCancelLink(btn) {
+        var state = activeHandoffs.get(btn);
+        if (state && state.cancelEl && state.cancelEl.parentNode) {
+            state.cancelEl.parentNode.removeChild(state.cancelEl);
+            state.cancelEl = null;
+        }
+    }
+
+    function cancelHandoff(btn) {
+        var state = activeHandoffs.get(btn);
+        if (state && state.intervalId) {
+            clearInterval(state.intervalId);
+        }
+        activeHandoffs.delete(btn);
+        setBusy(btn, false);
+        flashMessage(btn, "Scan annulé.");
     }
 
     function flashMessage(btn, text) {
@@ -99,18 +135,26 @@
         if (!note) {
             note = document.createElement("div");
             note.className = "scan-handoff-note muted text-sm";
-            note.style.marginTop = "8px";
+            note.style.cssText = "margin-top:8px;font-size:13px;color:var(--grey);";
             anchor.appendChild(note);
         }
         note.textContent = text;
-        setTimeout(function () { if (note.parentNode) note.parentNode.removeChild(note); }, 4500);
+        setTimeout(function () { if (note && note.parentNode) note.parentNode.removeChild(note); }, 6000);
     }
 
     function chooseDeepLinkUrl(handoff) {
+        // Sur Chrome / Samsung Browser / Edge Android, on cible l'intent:// qui
+        // contourne le blocage silencieux du scheme custom. On ajoute
+        // `S.browser_fallback_url=<page courante>` pour empêcher Chrome de
+        // rediriger vers le Play Store si OfeliaScan n'est pas installé.
         var ua = navigator.userAgent || "";
         var isChromeLikeAndroid = /Android/i.test(ua) && /(Chrome|SamsungBrowser|EdgA)/i.test(ua);
         if (isChromeLikeAndroid && handoff.android_intent_url) {
-            return handoff.android_intent_url;
+            var fallback = encodeURIComponent(window.location.href);
+            return handoff.android_intent_url.replace(
+                /;end$/,
+                ";S.browser_fallback_url=" + fallback + ";end"
+            );
         }
         return handoff.deep_link;
     }
@@ -127,11 +171,8 @@
 
         if (dispatchUrl) {
             var u;
-            try {
-                u = new URL(dispatchUrl, window.location.origin);
-            } catch (e) {
-                u = null;
-            }
+            try { u = new URL(dispatchUrl, window.location.origin); }
+            catch (e) { u = null; }
             if (u) {
                 u.searchParams.set("q", res.value);
                 window.location.href = u.toString();
@@ -145,11 +186,8 @@
                 target.value = res.value;
                 target.dispatchEvent(new Event("input", { bubbles: true }));
                 if (autoSubmit && form) {
-                    if (typeof form.requestSubmit === "function") {
-                        form.requestSubmit();
-                    } else {
-                        form.submit();
-                    }
+                    if (typeof form.requestSubmit === "function") form.requestSubmit();
+                    else form.submit();
                     return true;
                 }
             }
@@ -160,21 +198,29 @@
     function startHandoff(btn) {
         var targetKind = btn.dataset.scanKind || "auto";
         setBusy(btn, true, "⏳ " + (btn.dataset.busyLabelHandoff || "En attente d’OfeliaScan…"));
+        addCancelLink(btn);
 
         createHandoff(targetKind).then(function (handoff) {
             openDeepLink(chooseDeepLinkUrl(handoff));
 
             var started = Date.now();
-            var interval = setInterval(function () {
+            var intervalId = setInterval(function () {
+                // Si l'utilisateur a annulé via le lien, on n'est plus dans la map.
+                if (!activeHandoffs.has(btn)) {
+                    clearInterval(intervalId);
+                    return;
+                }
                 if (Date.now() - started > TIMEOUT_MS) {
-                    clearInterval(interval);
+                    clearInterval(intervalId);
+                    activeHandoffs.delete(btn);
                     setBusy(btn, false);
-                    flashMessage(btn, "Scan abandonné (délai dépassé). Tapez la valeur à la main si OfeliaScan n’est pas installé.");
+                    flashMessage(btn, "Délai d’attente OfeliaScan dépassé (2 min). Tapez la valeur à la main si l’app n’est pas installée.");
                     return;
                 }
                 pollHandoff(handoff.token).then(function (res) {
                     if (!res || res.state === "pending") return;
-                    clearInterval(interval);
+                    clearInterval(intervalId);
+                    activeHandoffs.delete(btn);
                     if (res.state === "completed") {
                         var consumed = applyResult(btn, res);
                         if (!consumed) {
@@ -190,16 +236,37 @@
                     }
                 });
             }, POLL_INTERVAL_MS);
+            activeHandoffs.set(btn, { intervalId: intervalId, cancelEl: (activeHandoffs.get(btn) || {}).cancelEl });
         }).catch(function (err) {
+            activeHandoffs.delete(btn);
             setBusy(btn, false);
-            flashMessage(btn, "Erreur à la création du handoff (" + (err && err.message ? err.message : "?") + "). Ouvre la console pour le détail.");
+            flashMessage(btn, "Erreur création handoff (" + (err && err.message ? err.message : "?") + ").");
         });
     }
 
+    function cameraSupportInfo() {
+        var info = {
+            ok: false,
+            isSecureContext: window.isSecureContext === true,
+            hasMediaDevices: !!navigator.mediaDevices,
+            hasGetUserMedia: !!(navigator.mediaDevices && typeof navigator.mediaDevices.getUserMedia === "function"),
+            hasModule: !!(window.BibliOfelia && window.BibliOfelia.scan && window.BibliOfelia.scan.openCamera),
+            protocol: window.location.protocol
+        };
+        info.ok = info.isSecureContext && info.hasMediaDevices && info.hasGetUserMedia && info.hasModule;
+        return info;
+    }
+
     function cameraSupported() {
-        return window.isSecureContext === true
-            && !!navigator.mediaDevices
-            && typeof navigator.mediaDevices.getUserMedia === "function";
+        return cameraSupportInfo().ok;
+    }
+
+    function explainCameraFailure(info) {
+        if (!info.isSecureContext) return "HTTPS requis (URL en " + info.protocol + ")";
+        if (!info.hasMediaDevices) return "navigateur sans navigator.mediaDevices";
+        if (!info.hasGetUserMedia) return "navigateur sans getUserMedia";
+        if (!info.hasModule) return "module scan-camera.js non chargé";
+        return "raison inconnue";
     }
 
     window.BibliOfelia = window.BibliOfelia || {};
@@ -208,7 +275,8 @@
         flashMessage: flashMessage,
         setBusy: setBusy,
         startHandoff: startHandoff,
-        cameraSupported: cameraSupported
+        cameraSupported: cameraSupported,
+        cameraSupportInfo: cameraSupportInfo
     };
 
     document.addEventListener("click", function (ev) {
@@ -220,20 +288,21 @@
         }
         ev.preventDefault();
 
-        // Priorité 1 : caméra interne (on reste dans la page).
-        if (cameraSupported() && window.BibliOfelia.scan.openCamera) {
+        var info = cameraSupportInfo();
+        console.log("[scan] camera support:", info);
+
+        if (info.ok) {
             window.BibliOfelia.scan.openCamera(btn, {
                 onUnavailable: function (reason) {
-                    console.warn("[scan] caméra indisponible (" + reason + "), bascule sur OfeliaScan.");
-                    flashMessage(btn, "Caméra indisponible — ouverture d’OfeliaScan.");
+                    console.warn("[scan] caméra indisponible (" + reason + "), fallback OfeliaScan.");
+                    flashMessage(btn, "Caméra indisponible (" + reason + ") — ouverture d’OfeliaScan.");
                     startHandoff(btn);
                 }
             });
             return;
         }
 
-        // Priorité 2 : fallback OfeliaScan (HTTP LAN, navigateur sans
-        // getUserMedia, ou module caméra non chargé).
+        flashMessage(btn, "Caméra interne indisponible : " + explainCameraFailure(info) + ". OfeliaScan utilisé en secours.");
         startHandoff(btn);
     });
 })();
