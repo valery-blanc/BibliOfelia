@@ -77,9 +77,15 @@ Tous sous le préfixe `/api/v1/`, **sans slash final** (convention SPEC §6.10).
     "created_at": "2026-05-23T15:30:00Z",
     "expires_at": "2026-05-23T15:35:00Z",
     "completed_at": null,
-    "deep_link": "ofeliascan://scan-one?token=<uuid>&kind=<auto|book|card>"
+    "deep_link": "ofeliascan://scan-one?token=<uuid>&kind=<auto|book|card>",
+    "android_intent_url": "intent://scan-one?token=<uuid>&kind=<auto|book|card>#Intent;scheme=ofeliascan;package=org.zitoon.ofeliascan;end"
   }
   ```
+
+  Le package Android est paramétré par le réglage `OFELIASCAN_ANDROID_PACKAGE`
+  (défaut `org.zitoon.ofeliascan` — l'`applicationId` de l'app dans `build.gradle`).
+  Le JS choisit `android_intent_url` sur Chrome/Samsung/Edge Android (le
+  scheme `ofeliascan://` y est bloqué silencieusement) et `deep_link` ailleurs.
 
 #### `GET /scan-handoff/{token}` — polling navigateur
 

@@ -99,11 +99,26 @@
         setTimeout(function () { if (note.parentNode) note.parentNode.removeChild(note); }, 4500);
     }
 
+    function chooseDeepLinkUrl(handoff) {
+        // Sur Chrome / Samsung Browser Android, le scheme custom
+        // `ofeliascan://…` est de plus en plus souvent ignoré silencieusement
+        // (politique anti-deeplink-spam). L'URL `intent://…#Intent;package=…;end`
+        // contourne la restriction en ciblant explicitement l'app installée.
+        var ua = navigator.userAgent || "";
+        var isChromeLikeAndroid = /Android/i.test(ua) && /(Chrome|SamsungBrowser|EdgA)/i.test(ua);
+        if (isChromeLikeAndroid && handoff.android_intent_url) {
+            return handoff.android_intent_url;
+        }
+        return handoff.deep_link;
+    }
+
     function openDeepLink(url) {
-        // Sur Android avec OfeliaScan installé, le navigateur bascule sur l'app.
-        // Sans handler, Chrome affiche un message d'erreur — la page reste
-        // active, le polling se contente du timeout pour signaler l'échec.
-        try { window.location.href = url; } catch (e) { /* noop */ }
+        // Si une app gère l'URL, Android bascule sur elle (la page reste
+        // active en arrière-plan, le polling reprend au retour). Sans handler,
+        // Chrome affiche un message d'erreur et le timeout du polling
+        // finit par relâcher le bouton.
+        console.log("[scan-handoff] ouverture deep-link:", url);
+        try { window.location.href = url; } catch (e) { console.warn("[scan-handoff]", e); }
     }
 
     function applyResult(btn, res) {
@@ -148,7 +163,7 @@
         setBusy(btn, true);
 
         createHandoff(targetKind).then(function (handoff) {
-            openDeepLink(handoff.deep_link);
+            openDeepLink(chooseDeepLinkUrl(handoff));
 
             var started = Date.now();
             var interval = setInterval(function () {

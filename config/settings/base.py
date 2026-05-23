@@ -24,6 +24,7 @@ env = environ.Env(
     MEDIA_URL=(str, "/media/"),
     OPENLIBRARY_BASE_URL=(str, "https://openlibrary.org"),
     OPENLIBRARY_TIMEOUT=(int, 5),
+    OFELIASCAN_ANDROID_PACKAGE=(str, "org.zitoon.ofeliascan"),
     BIBLIOFELIA_VERSION=(str, "0.1.0-dev"),
     API_BASE_URL=(str, ""),
     API_BASE_PATH=(str, "/bibliofelia/api/v1/"),
@@ -285,6 +286,13 @@ AUDITLOG_INCLUDE_ALL_MODELS = False
 # OpenLibrary
 OPENLIBRARY_BASE_URL = env("OPENLIBRARY_BASE_URL")
 OPENLIBRARY_TIMEOUT = env("OPENLIBRARY_TIMEOUT")
+
+# OfeliaScan Android (FEAT-023 / handoff single-scan).
+# Le package est utilisé dans l'URL `intent://…#Intent;scheme=ofeliascan;package=<pkg>;end`
+# qui ouvre OfeliaScan depuis Chrome Android de manière fiable (le simple
+# `ofeliascan://` via window.location.href est souvent bloqué silencieusement
+# sur Chrome récent pour des raisons de sécurité).
+OFELIASCAN_ANDROID_PACKAGE = env("OFELIASCAN_ANDROID_PACKAGE")
 
 # API OfeliaScan (SPEC §6.10).
 # BIBLIOFELIA_VERSION : version logicielle, exposée par /pairing/info et /health.

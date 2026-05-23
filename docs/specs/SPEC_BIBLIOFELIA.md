@@ -861,8 +861,11 @@ pour le contrat Android complet.
   (un `contributor_api` reçoit `403 forbidden`). Body :
   `{"target_kind"?: "auto"|"book"|"card"}` (défaut `auto`).
   Réponse `201` : `{token, state: "pending", target_kind, value: "",
-  value_kind: "", created_at, expires_at, completed_at: null, deep_link}`.
-  `deep_link = ofeliascan://scan-one?token=<UUID>&kind=<target_kind>`.
+  value_kind: "", created_at, expires_at, completed_at: null, deep_link, android_intent_url}`.
+  Deux URLs sont renvoyées pour maximiser la compatibilité :
+  - `deep_link = ofeliascan://scan-one?token=<UUID>&kind=<target_kind>` — scheme custom, utilisable par Firefox Android, Safari iOS, et tout navigateur qui sait suivre les schemes natifs.
+  - `android_intent_url = intent://scan-one?token=<UUID>&kind=<target_kind>#Intent;scheme=ofeliascan;package=<OFELIASCAN_ANDROID_PACKAGE>;end` — forme `intent://` utilisée par Chrome / Samsung Browser / Edge Android (le scheme custom y est souvent bloqué silencieusement par la politique anti-deeplink-spam). Le package est réglé via `OFELIASCAN_ANDROID_PACKAGE` (défaut `org.zitoon.ofeliascan`).
+
   TTL 5 minutes, single-use.
 - `GET /scan-handoff/{token}` — auth requise. Permission : créateur du
   handoff (sinon `404`, pas de fuite d'existence) ; superadmin voit tout.
@@ -882,7 +885,8 @@ pour le contrat Android complet.
 Côté navigateur : `static/js/scan-handoff.js` détecte `.js-scan-handoff` au
 clic, lit les attributs `data-scan-target` / `data-scan-kind` /
 `data-scan-autosubmit` / `data-scan-dispatch-url`, POST le handoff, ouvre
-le deep-link (`window.location.href`), poll toutes les 700 ms (timeout
+l'URL adaptée au navigateur (UA-sniff : Chrome/Samsung/Edge Android →
+`android_intent_url`, sinon `deep_link`), poll toutes les 700 ms (timeout
 client 120 s), puis injecte la valeur dans l'input cible + soumet le
 formulaire englobant — ou redirige vers `core:search?q=<value>` pour le
 mode dashboard (la recherche globale `classify_query` dispatch ensuite).

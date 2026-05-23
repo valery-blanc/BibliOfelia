@@ -78,7 +78,10 @@ class TestCreate:
         )
         assert resp.status_code == 201
         data = resp.json()
-        assert {"token", "state", "deep_link", "expires_at", "target_kind"} <= set(data)
+        assert {
+            "token", "state", "deep_link", "android_intent_url",
+            "expires_at", "target_kind",
+        } <= set(data)
         assert data["state"] == "pending"
         assert data["target_kind"] == "book"
         assert data["deep_link"].startswith("ofeliascan://scan-one?token=")
@@ -86,12 +89,27 @@ class TestCreate:
         assert "kind=book" in data["deep_link"]
         assert ScanHandoff.objects.filter(token=data["token"]).exists()
 
+    def test_android_intent_url_includes_package_and_scheme(self, client, librarian):
+        client.force_authenticate(user=librarian)
+        resp = client.post(
+            "/api/v1/scan-handoff", {"target_kind": "card"}, format="json"
+        )
+        intent = resp.json()["android_intent_url"]
+        assert intent.startswith("intent://scan-one?token=")
+        assert "kind=card" in intent
+        assert "#Intent;" in intent
+        assert "scheme=ofeliascan" in intent
+        assert "package=org.zitoon.ofeliascan" in intent
+        assert intent.endswith(";end")
+
     def test_default_target_kind_is_auto(self, client, librarian):
         client.force_authenticate(user=librarian)
         resp = client.post("/api/v1/scan-handoff", {}, format="json")
         assert resp.status_code == 201
-        assert resp.json()["target_kind"] == "auto"
-        assert "kind=auto" in resp.json()["deep_link"]
+        data = resp.json()
+        assert data["target_kind"] == "auto"
+        assert "kind=auto" in data["deep_link"]
+        assert "kind=auto" in data["android_intent_url"]
 
 
 @pytest.mark.django_db

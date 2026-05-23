@@ -485,6 +485,8 @@ class InventorySessionCloseView(APIView):
 # ─── Scan handoff single-scan (FEAT-023) ───────────────────────────────────
 
 DEEP_LINK_SCHEME = "ofeliascan://scan-one"
+DEEP_LINK_INTENT_HOST = "scan-one"
+DEEP_LINK_INTENT_SCHEME = "ofeliascan"
 
 
 def _can_create_handoff(user) -> bool:
@@ -517,7 +519,23 @@ def _serialize_handoff(handoff) -> dict:
 
 
 def _build_deep_link(token: str, target_kind: str) -> str:
+    """URL au scheme custom — Firefox/Safari/iOS, fallback hors Chrome Android."""
     return f"{DEEP_LINK_SCHEME}?token={token}&kind={target_kind}"
+
+
+def _build_android_intent_url(token: str, target_kind: str) -> str:
+    """URL `intent://` pour Chrome Android (plus fiable que le scheme custom).
+
+    Chrome Android n'ouvre plus systématiquement `ofeliascan://…` via
+    `window.location.href` (politique anti-deeplink-spam) ; l'URL `intent://`
+    avec `package=` cible explicitement l'app installée et contourne la
+    restriction.
+    """
+    package = settings.OFELIASCAN_ANDROID_PACKAGE
+    return (
+        f"intent://{DEEP_LINK_INTENT_HOST}?token={token}&kind={target_kind}"
+        f"#Intent;scheme={DEEP_LINK_INTENT_SCHEME};package={package};end"
+    )
 
 
 def _handoff_error(code: str, message: str, http_status: int, **details):
@@ -554,6 +572,9 @@ class ScanHandoffCreateView(APIView):
         )
         body = _serialize_handoff(handoff)
         body["deep_link"] = _build_deep_link(handoff.token, target_kind)
+        body["android_intent_url"] = _build_android_intent_url(
+            handoff.token, target_kind
+        )
         return Response(body, status=status.HTTP_201_CREATED)
 
 

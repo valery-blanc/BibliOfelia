@@ -277,6 +277,7 @@ Mise à jour : 2026-05-23 (Sprint 7 démarré — FEAT-023 codé côté BibliOfe
   - [x] Déploiement Pi (rebuild conteneurs + migration `api.0001_initial`) — 2026-05-23
   - [x] **BUG-010** entrypoint Docker prod non exécutable au rebuild (Windows git ne pose pas l'exec bit) : `chmod +x /app/scripts/*.sh` ajouté au Dockerfile (cibles dev + prod) — `docs/bugs/BUG-010-entrypoint-exec-bit.md`
   - [x] **BUG-011** scan-handoff POST silencieusement KO en prod (CSRF_COOKIE_HTTPONLY=True → JS ne pouvait pas lire `csrftoken`) : token rendu par `{% csrf_token %}` injecté dans `#scan-handoff-config`, JS utilise `cfg.csrfToken` au lieu de `getCookie('csrftoken')` — `docs/bugs/BUG-011-scan-handoff-csrf-token.md`
+  - [x] Deep-link Chrome Android : ajout d'`android_intent_url` (`intent://scan-one?…#Intent;scheme=ofeliascan;package=org.zitoon.ofeliascan;end`) dans la réponse `POST /scan-handoff` ; UA-sniff côté JS (Chrome/Samsung/Edge Android → intent, sinon scheme custom) ; réglage `OFELIASCAN_ANDROID_PACKAGE` (défaut `org.zitoon.ofeliascan`). Chrome récent bloque silencieusement `ofeliascan://` via `window.location.href` pour des raisons anti-deeplink-spam.
   - [ ] Test Val (lend/return/dashboard, fallback iOS, fallback Android sans OfeliaScan)
   - [ ] **Côté OfeliaScan Android** : implémenter l'intent filter `ofeliascan://scan-one`, l'écran de scan unique, le POST callback (suit le contrat de `FEAT-023-scan-handoff-ofeliascan.md`). À traiter dans le repo OfeliaScan, sprint Android séparé.
 
