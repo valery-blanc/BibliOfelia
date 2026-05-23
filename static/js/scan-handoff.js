@@ -1,0 +1,191 @@
+/* FEAT-023 — Scan handoff single-scan (BibliOfelia web ↔ OfeliaScan).
+ *
+ * Boutons marqués `.js-scan-handoff` :
+ *   data-scan-target      : sélecteur CSS d'un <input> à pré-remplir
+ *   data-scan-kind        : auto | book | card  (indication UI pour OfeliaScan)
+ *   data-scan-autosubmit  : "true" pour soumettre le form après remplissage
+ *   data-scan-dispatch-url: URL vers laquelle rediriger après scan (ex. /search/),
+ *                           le JS ajoute ?q=<valeur> automatiquement
+ *
+ * Le bouton ouvre OfeliaScan via `ofeliascan://scan-one?token=...&kind=...`,
+ * puis poll `/api/v1/scan-handoff/{token}` jusqu'à completion (TTL côté
+ * serveur 5 min, timeout côté client 120 s).
+ */
+(function () {
+    "use strict";
+
+    var POLL_INTERVAL_MS = 700;
+    var TIMEOUT_MS = 120 * 1000;
+
+    function getCookie(name) {
+        var parts = ("; " + document.cookie).split("; " + name + "=");
+        if (parts.length === 2) {
+            return decodeURIComponent(parts.pop().split(";").shift());
+        }
+        return "";
+    }
+
+    function getConfig() {
+        var el = document.getElementById("scan-handoff-config");
+        if (!el) return null;
+        try { return JSON.parse(el.textContent); } catch (e) { return null; }
+    }
+
+    function jsonHeaders() {
+        return {
+            "Content-Type": "application/json",
+            "Accept": "application/json",
+            "X-CSRFToken": getCookie("csrftoken")
+        };
+    }
+
+    function createHandoff(targetKind) {
+        var cfg = getConfig();
+        if (!cfg || !cfg.createUrl) return Promise.reject(new Error("config"));
+        return fetch(cfg.createUrl, {
+            method: "POST",
+            credentials: "same-origin",
+            headers: jsonHeaders(),
+            body: JSON.stringify({ target_kind: targetKind || "auto" })
+        }).then(function (resp) {
+            if (!resp.ok) throw new Error("create-failed-" + resp.status);
+            return resp.json();
+        });
+    }
+
+    function pollHandoff(token) {
+        var cfg = getConfig();
+        var url = cfg.createUrl + "/" + token;
+        return fetch(url, {
+            credentials: "same-origin",
+            headers: { "Accept": "application/json" }
+        }).then(function (resp) {
+            if (!resp.ok) return { state: "error", status: resp.status };
+            return resp.json();
+        });
+    }
+
+    function setBusy(btn, busy, label) {
+        if (busy) {
+            if (!btn.dataset.originalLabel) {
+                btn.dataset.originalLabel = btn.innerHTML;
+            }
+            btn.disabled = true;
+            btn.classList.add("is-busy");
+            btn.innerHTML = label || "⏳ " + (btn.dataset.busyLabel || "En attente d’OfeliaScan…");
+        } else {
+            btn.disabled = false;
+            btn.classList.remove("is-busy");
+            if (btn.dataset.originalLabel) {
+                btn.innerHTML = btn.dataset.originalLabel;
+                delete btn.dataset.originalLabel;
+            }
+        }
+    }
+
+    function flashMessage(btn, text) {
+        var note = btn.parentNode.querySelector(".scan-handoff-note");
+        if (!note) {
+            note = document.createElement("div");
+            note.className = "scan-handoff-note muted text-sm";
+            note.style.marginTop = "8px";
+            btn.parentNode.appendChild(note);
+        }
+        note.textContent = text;
+        setTimeout(function () { if (note.parentNode) note.parentNode.removeChild(note); }, 4500);
+    }
+
+    function openDeepLink(url) {
+        // Sur Android avec OfeliaScan installé, le navigateur bascule sur l'app.
+        // Sans handler, Chrome affiche un message d'erreur — la page reste
+        // active, le polling se contente du timeout pour signaler l'échec.
+        try { window.location.href = url; } catch (e) { /* noop */ }
+    }
+
+    function applyResult(btn, res) {
+        var targetSel = btn.dataset.scanTarget || "";
+        var autoSubmit = btn.dataset.scanAutosubmit === "true";
+        var dispatchUrl = btn.dataset.scanDispatchUrl || "";
+
+        if (dispatchUrl) {
+            var u;
+            try {
+                u = new URL(dispatchUrl, window.location.origin);
+            } catch (e) {
+                u = null;
+            }
+            if (u) {
+                u.searchParams.set("q", res.value);
+                window.location.href = u.toString();
+                return true;
+            }
+        }
+        if (targetSel) {
+            var form = btn.closest("form");
+            var target = form ? form.querySelector(targetSel) : document.querySelector(targetSel);
+            if (target) {
+                target.value = res.value;
+                target.dispatchEvent(new Event("input", { bubbles: true }));
+                if (autoSubmit && form) {
+                    if (typeof form.requestSubmit === "function") {
+                        form.requestSubmit();
+                    } else {
+                        form.submit();
+                    }
+                    return true;
+                }
+            }
+        }
+        return false;
+    }
+
+    function handleClick(btn) {
+        var targetKind = btn.dataset.scanKind || "auto";
+        setBusy(btn, true);
+
+        createHandoff(targetKind).then(function (handoff) {
+            openDeepLink(handoff.deep_link);
+
+            var started = Date.now();
+            var interval = setInterval(function () {
+                if (Date.now() - started > TIMEOUT_MS) {
+                    clearInterval(interval);
+                    setBusy(btn, false);
+                    flashMessage(btn, "Scan abandonné (délai dépassé). Tapez la valeur à la main si OfeliaScan n’est pas installé.");
+                    return;
+                }
+                pollHandoff(handoff.token).then(function (res) {
+                    if (!res || res.state === "pending") return;
+                    clearInterval(interval);
+                    if (res.state === "completed") {
+                        var consumed = applyResult(btn, res);
+                        if (!consumed) {
+                            setBusy(btn, false);
+                            flashMessage(btn, "Valeur scannée : " + res.value);
+                        }
+                    } else if (res.state === "cancelled") {
+                        setBusy(btn, false);
+                        flashMessage(btn, "Scan annulé dans OfeliaScan.");
+                    } else if (res.state === "expired" || res.state === "error") {
+                        setBusy(btn, false);
+                        flashMessage(btn, "Le handoff a expiré. Recommencez.");
+                    }
+                });
+            }, POLL_INTERVAL_MS);
+        }).catch(function () {
+            setBusy(btn, false);
+            flashMessage(btn, "Erreur à la création du handoff. Réessayez.");
+        });
+    }
+
+    document.addEventListener("click", function (ev) {
+        var btn = ev.target.closest(".js-scan-handoff");
+        if (!btn) return;
+        if (btn.disabled || btn.classList.contains("is-busy")) {
+            ev.preventDefault();
+            return;
+        }
+        ev.preventDefault();
+        handleClick(btn);
+    });
+})();

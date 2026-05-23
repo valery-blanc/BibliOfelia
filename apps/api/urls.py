@@ -43,4 +43,15 @@ urlpatterns = [
         views.InventorySessionCloseView.as_view(),
         name="inventory-close",
     ),
+    # FEAT-023 — Scan handoff single-scan (web ↔ OfeliaScan)
+    path(
+        "scan-handoff",
+        views.ScanHandoffCreateView.as_view(),
+        name="scan-handoff-create",
+    ),
+    path(
+        "scan-handoff/<uuid:token>",
+        views.ScanHandoffDetailView.as_view(),
+        name="scan-handoff-detail",
+    ),
 ]

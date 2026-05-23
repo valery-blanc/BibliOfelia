@@ -34,7 +34,11 @@
                 <input type="text" name="card" autofocus autocomplete="off"
                        placeholder="{% trans 'Scanner ou saisir le n° de carte' %}">
             </div>
-            <button type="submit" class="btn btn--ghost btn--block">
+            <button type="submit"
+                    class="btn btn--ghost btn--block js-scan-handoff"
+                    data-scan-target="input[name=card]"
+                    data-scan-kind="card"
+                    data-scan-autosubmit="true">
                 {% icon "scan-barcode" size="16px" %} {% trans "Scanner la carte" %}
             </button>
         </form>
@@ -99,7 +103,11 @@
                    autocomplete="off"
                    placeholder="{% trans 'Scanner le code-barres du livre' %}">
         </div>
-        <button type="submit" class="btn btn--accent btn--block btn--lg">
+        <button type="submit"
+                class="btn btn--accent btn--block btn--lg js-scan-handoff"
+                data-scan-target="input[name=ean]"
+                data-scan-kind="book"
+                data-scan-autosubmit="true">
             {% icon "scan-barcode" size="16px" %} {% trans "Scanner un livre" %}
         </button>
     </form>

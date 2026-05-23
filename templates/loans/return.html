@@ -31,7 +31,11 @@
             <input type="text" name="ean" autofocus autocomplete="off"
                    placeholder="{% trans 'Scanner le code-barres du livre rendu' %}">
         </div>
-        <button type="submit" class="btn btn--olive btn--block btn--lg">
+        <button type="submit"
+                class="btn btn--olive btn--block btn--lg js-scan-handoff"
+                data-scan-target="input[name=ean]"
+                data-scan-kind="book"
+                data-scan-autosubmit="true">
             {% icon "scan-barcode" size="16px" %} {% trans "Enregistrer le retour" %}
         </button>
     </form>

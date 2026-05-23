@@ -162,3 +162,40 @@ class InventoryItemInputSerializer(serializers.Serializer):
 
 class InventoryItemsBatchInputSerializer(serializers.Serializer):
     items = InventoryItemInputSerializer(many=True)
+
+
+# ─── Scan handoff single-scan (FEAT-023) ──────────────────────────────────
+
+
+class ScanHandoffCreateInputSerializer(serializers.Serializer):
+    """`POST /scan-handoff` — target_kind optionnel (auto par défaut)."""
+
+    target_kind = serializers.ChoiceField(
+        choices=["auto", "book", "card"], required=False, default="auto"
+    )
+
+
+class ScanHandoffSubmitInputSerializer(serializers.Serializer):
+    """`POST /scan-handoff/{token}` — corps envoyé par OfeliaScan.
+
+    `cancelled=true` autorise OfeliaScan à signaler une annulation utilisateur
+    sans renvoyer de valeur ; sinon `value` + `kind` requis.
+    """
+
+    value = serializers.CharField(
+        required=False, allow_blank=True, max_length=64, default=""
+    )
+    kind = serializers.ChoiceField(
+        choices=["ean13", "isbn", "card", "item", "manual"],
+        required=False,
+        allow_blank=True,
+        default="manual",
+    )
+    cancelled = serializers.BooleanField(required=False, default=False)
+
+    def validate(self, attrs):
+        if not attrs.get("cancelled") and not (attrs.get("value") or "").strip():
+            raise serializers.ValidationError(
+                {"value": "Champ `value` requis sauf si `cancelled=true`."}
+            )
+        return attrs

@@ -2,7 +2,7 @@
 
 Source de vérité de l'avancement v1. Une case `[x]` = livrable terminé et déployable. `[ ]` = à faire. `[!]` = bloqué (voir note).
 
-Mise à jour : 2026-05-23 (Sprint 6 — FEAT-022 : refonte UI design OFELIA validée Val (tuiles, tile strip, polices, login). BUG-009 : CSRF_TRUSTED_ORIGINS. Pi : repo git autonome BibliOfelia initialisé pour mises à jour wizard. Docs : SPEC §3.2/§10.2 mis à jour, FEAT-022 + BUG-009 créés, keebee FEAT-029 amendé.)
+Mise à jour : 2026-05-23 (Sprint 7 démarré — FEAT-023 codé côté BibliOfelia : modèle `ScanHandoff` + 3 endpoints `/api/v1/scan-handoff[/{token}]` + JS `scan-handoff.js` + boutons « Scanner » câblés sur prêt/retour/dashboard ; contrat Android documenté dans `docs/specs/FEAT-023-scan-handoff-ofeliascan.md` ; 18 nouveaux tests verts (suite totale 178 passed). Sprints 3/5/6 clos : Tasks #17/#18/#19 + test Val mDNS/lookup bout-en-bout validés Val 2026-05-23.)
 
 ## Sprint 0 — Squelette
 
@@ -143,14 +143,14 @@ Mise à jour : 2026-05-23 (Sprint 6 — FEAT-022 : refonte UI design OFELIA vali
   - [x] Tests API : `apps/api/tests/test_api.py` — 16 tests verts
   - [x] Doc : `docs/specs/FEAT-016-api-ofeliascan.md` + `SPEC §6.10` mis à jour
   - [x] **SPEC-CORR-002** : `/pairing/info` renvoie `base_url` (URL absolue, nom de champ aligné sur le `PairingInfoDto` d'OfeliaScan) au lieu de `api_base` — lève le conflit de routage `/biblio/` vs `/bibliofelia/`
-- [ ] **Task #19** Publication mDNS/DNS-SD `_bibliofelia._tcp.` (SPEC §6.10 / SPEC-CORR-001 §7) — *codée, test mDNS réel à faire sur la Pi*
+- [x] **Task #19** Publication mDNS/DNS-SD `_bibliofelia._tcp.` (SPEC §6.10 / SPEC-CORR-001 §7) — *validé Val 2026-05-23 (déploiement Pi + test découverte réelle)*
   - [x] Commande `generate_avahi_service` (`apps/core/management/commands/`) : génère `/etc/avahi/services/bibliofelia.service` (TXT : `library_name`, `version`, `api_base`) à partir des `Setting` + réglages ; options `--output` / `--dry-run`
   - [x] Réglages `AVAHI_SERVICE_PATH` + `MDNS_SERVICE_PORT` (`config/settings/base.py`)
   - [x] Tests : `apps/core/tests/test_avahi.py` — 6 verts ; suite complète **138 passed**
   - [x] Doc : `docs/specs/FEAT-019-mdns-avahi.md` + `SPEC §6.10` mis à jour
   - [x] Régénération au wizard de premier démarrage — débloqué par Task #15 : `apply_wizard()` appelle `generate_avahi_service`
   - [x] Bind-mount `/etc/avahi/services/` — fait dans la compose keebee (FEAT-020 / Task #18) ; `avahi-daemon` installé par `bootstrap.sh` keebee
-- [ ] Test Val : découverte + appairage OfeliaScan + scan ISBN bout-en-bout (sur la Pi, après Task #18)
+- [x] Test Val : découverte + appairage OfeliaScan + scan ISBN bout-en-bout (sur la Pi, après Task #18) — validé Val 2026-05-23
 
 ## Sprint 4 — Hors workflow principal
 
@@ -232,11 +232,11 @@ Mise à jour : 2026-05-23 (Sprint 6 — FEAT-022 : refonte UI design OFELIA vali
   - [x] Déploiement Pi + test OfeliaScan (envoi listes de livres bout-en-bout) — validé Val 2026-05-22
   - [x] **BUG-008** fix récolement ISBN : lookup par isbn_13/isbn_10 en fallback du code Ofelia interne + multi-exemplaires — validé Val 2026-05-22
 
-- [ ] **Task #17** Tests (pytest-django, coverage 70%)
+- [x] **Task #17** Tests (pytest-django, coverage 70%) — validé Val 2026-05-23 : objectif relâché, les **178 tests verts** (apps/api + catalog + core + inventory + loans + members + reports + setup) couvrent les workflows métiers critiques et le contrat API OfeliaScan ; la mesure de couverture chiffrée reste un nice-to-have post-v1.
 
 ## Sprint 6 — Déploiement
 
-- [ ] **Task #18** Intégration keebee : déploiement sur la Ofelia Box (FEAT-020)
+- [x] **Task #18** Intégration keebee : déploiement sur la Ofelia Box (FEAT-020) — validé Val 2026-05-23
   - Cohabitation avec Koha (qui reste sur `/biblio/` ; BibliOfelia sur `/bibliofelia/`)
   - [x] `docs/specs/FEAT-020-integration-keebee.md`
   - [x] BibliOfelia : réglage `SECURE_COOKIES` (`base.py` + `prod.py`)
@@ -256,3 +256,28 @@ Mise à jour : 2026-05-23 (Sprint 6 — FEAT-022 : refonte UI design OFELIA vali
   - [x] **BUG-009** CSRF_TRUSTED_ORIGINS manquant : login impossible depuis domaine externe (ZeroTier) — ajout variable dans `docker-compose.yml` ; doc `docs/bugs/BUG-009-csrf-trusted-origins.md`
   - [x] **FEAT-022** Refonte UI design OFELIA : tuiles, tile strip, page head, polices Bricolage Grotesque/DM Sans, ofelia.css, login stylé, logo OFELIA, 17 icônes Lucide — validé Val 2026-05-23 ; doc `docs/specs/FEAT-022-refonte-ui-design-ofelia.md`
   - [x] Pi : `/opt/edubox/bibliofelia/` converti en repo git autonome (origin = GitHub BibliOfelia/main) — wizard peut désormais faire `git pull --ff-only` pour les mises à jour ; keebee `FEAT-029-bibliofelia.md` mis à jour
+
+## Sprint 7 — Scanner depuis le site web
+
+> Les boutons « Scanner » de l'UI ne faisaient que décorer un champ de saisie
+> texte. On les rend fonctionnels par étapes : d'abord en déléguant à
+> OfeliaScan (FEAT-023, cible bibliothécaires Android), ensuite avec un
+> scanner caméra navigateur pour les autres clients (FEAT-024, nécessite
+> HTTPS sur la box).
+
+- [x] **Task #21** FEAT-023 — Handoff single-scan OfeliaScan (BibliOfelia)
+  - [x] Modèle `apps/api/models.py:ScanHandoff` (token UUID, target_kind, state, value, value_kind, expires_at TTL 5 min, completed_by audit) + migration `apps/api/migrations/0001_initial.py`
+  - [x] Serializers `ScanHandoffCreateInputSerializer` / `ScanHandoffSubmitInputSerializer` (validation `cancelled=true` vs `value` requis)
+  - [x] Endpoints (`apps/api/views.py` + `urls.py`) : `POST /scan-handoff` (création, librarian/superadmin), `GET /scan-handoff/{token}` (polling créateur), `POST /scan-handoff/{token}` (callback JWT OfeliaScan)
+  - [x] Permission helpers `_can_create_handoff` / `_can_view_handoff` (404 pour les non-propriétaires, pas 403)
+  - [x] Frontend : `static/js/scan-handoff.js` (clic `.js-scan-handoff` → POST handoff → ouverture deep-link → polling 700 ms → injection valeur + autosubmit OU redirection dispatch-url) ; config JSON injectée dans `base.html`
+  - [x] Templates : `loans/lend.html` (Scanner la carte + Scanner un livre, autosubmit), `loans/return.html` (Enregistrer le retour, autosubmit), `core/dashboard.html` (banner → redirige vers `core:search?q=<value>`)
+  - [x] Tests : `apps/api/tests/test_scan_handoff.py` — 18 cas verts (création par rôle, polling ownership/superadmin, soumission JWT, normalisation, annulation, double soumission 409, expiration 410, round-trip complet)
+  - [x] Doc : `docs/specs/FEAT-023-scan-handoff-ofeliascan.md` (BibliOfelia + contrat Android) + SPEC §6.10 nouvelle sous-section « Handoff single-scan »
+  - [ ] Déploiement Pi + test Val (lend/return/dashboard, fallback iOS, fallback Android sans OfeliaScan)
+  - [ ] **Côté OfeliaScan Android** : implémenter l'intent filter `ofeliascan://scan-one`, l'écran de scan unique, le POST callback (suit le contrat de `FEAT-023-scan-handoff-ofeliascan.md`). À traiter dans le repo OfeliaScan, sprint Android séparé.
+
+- [ ] **Task #22** FEAT-024 — Scanner caméra navigateur (fallback hors OfeliaScan, nécessite HTTPS)
+  - À spécifier dans `docs/specs/FEAT-024-*.md` après validation FEAT-023.
+  - Cible : iOS + Android-sans-OfeliaScan. Lib candidate : `html5-qrcode` (~150 KB, locale, EAN-13 + QR + code39).
+  - Prérequis HTTPS sur la box (`getUserMedia` exige un contexte sécurisé) : choix entre cert auto-signé installé sur les téléphones, ou DNS local + Let's Encrypt DNS-01.

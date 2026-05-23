@@ -8,6 +8,12 @@
     <link rel="stylesheet" href="{% static 'css/ofelia.css' %}">
     <script defer src="{% static 'js/htmx.min.js' %}"></script>
     <script defer src="{% static 'js/alpine.min.js' %}"></script>
+    {% if user.is_authenticated %}
+    <script id="scan-handoff-config" type="application/json">
+{"createUrl": "{% url 'api:scan-handoff-create' %}"}
+    </script>
+    <script defer src="{% static 'js/scan-handoff.js' %}"></script>
+    {% endif %}
 </head>
 <body hx-headers='{"X-CSRFToken": "{{ csrf_token }}"}'>
 

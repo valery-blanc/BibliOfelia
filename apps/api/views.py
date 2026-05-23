@@ -19,6 +19,11 @@ from rest_framework_simplejwt.token_blacklist.models import (
 )
 from rest_framework_simplejwt.views import TokenObtainPairView, TokenRefreshView
 
+from django.http import Http404
+from django.shortcuts import get_object_or_404
+from django.utils import timezone
+
+from apps.accounts.models import Role
 from apps.catalog.models import BibliographicRecord, ScanItem, ScanSession, ScanSessionState
 from apps.catalog.openlibrary import lookup_isbn, normalize_isbn
 from apps.core.models import Setting
@@ -31,12 +36,15 @@ from apps.inventory.models import (
 )
 from apps.inventory.services import close_session as close_inventory_session
 
+from .models import ScanHandoff, ScanHandoffState
 from .permissions import get_session_for_user
 from .serializers import (
     InventoryItemsBatchInputSerializer,
     InventorySessionCreateInputSerializer,
     OAuthTokenObtainSerializer,
     OAuthTokenRefreshSerializer,
+    ScanHandoffCreateInputSerializer,
+    ScanHandoffSubmitInputSerializer,
     ScanItemsBatchInputSerializer,
     ScanSessionCreateInputSerializer,
 )
@@ -472,3 +480,145 @@ class InventorySessionCloseView(APIView):
                 "scans_count": session.scans.count(),
             }
         )
+
+
+# ─── Scan handoff single-scan (FEAT-023) ───────────────────────────────────
+
+DEEP_LINK_SCHEME = "ofeliascan://scan-one"
+
+
+def _can_create_handoff(user) -> bool:
+    return user.is_authenticated and user.role in (Role.SUPERADMIN, Role.LIBRARIAN)
+
+
+def _can_view_handoff(handoff, user) -> bool:
+    if not user.is_authenticated:
+        return False
+    if user.role == Role.SUPERADMIN:
+        return True
+    return handoff.created_by_id == user.id
+
+
+def _serialize_handoff(handoff) -> dict:
+    return {
+        "token": str(handoff.token),
+        "state": handoff.effective_state(),
+        "target_kind": handoff.target_kind,
+        "value": handoff.value,
+        "value_kind": handoff.value_kind,
+        "created_at": handoff.created_at.isoformat().replace("+00:00", "Z"),
+        "expires_at": handoff.expires_at.isoformat().replace("+00:00", "Z"),
+        "completed_at": (
+            handoff.completed_at.isoformat().replace("+00:00", "Z")
+            if handoff.completed_at
+            else None
+        ),
+    }
+
+
+def _build_deep_link(token: str, target_kind: str) -> str:
+    return f"{DEEP_LINK_SCHEME}?token={token}&kind={target_kind}"
+
+
+def _handoff_error(code: str, message: str, http_status: int, **details):
+    return Response(
+        {"error": {"code": code, "message": message, "details": details}},
+        status=http_status,
+    )
+
+
+class ScanHandoffCreateView(APIView):
+    """`POST /scan-handoff` — crée un handoff pour la session web courante.
+
+    Réservé aux librarian/superadmin (le contributor_api OfeliaScan ne crée
+    pas de handoff, il les consomme). Retourne un token UUID + le deep-link
+    `ofeliascan://scan-one?token=...&kind=...` que le navigateur ouvre pour
+    déclencher OfeliaScan.
+    """
+
+    permission_classes = [IsAuthenticated]
+    throttle_scope = "scan"
+
+    def post(self, request):
+        if not _can_create_handoff(request.user):
+            return _handoff_error(
+                "forbidden",
+                "Seul un bibliothécaire peut créer un handoff de scan.",
+                status.HTTP_403_FORBIDDEN,
+            )
+        ser = ScanHandoffCreateInputSerializer(data=request.data)
+        ser.is_valid(raise_exception=True)
+        target_kind = ser.validated_data.get("target_kind", "auto")
+        handoff = ScanHandoff.objects.create(
+            created_by=request.user, target_kind=target_kind
+        )
+        body = _serialize_handoff(handoff)
+        body["deep_link"] = _build_deep_link(handoff.token, target_kind)
+        return Response(body, status=status.HTTP_201_CREATED)
+
+
+class ScanHandoffDetailView(APIView):
+    """`GET/POST /scan-handoff/{token}`.
+
+    `GET` (session-auth) : polling du résultat par le navigateur, réservé au
+    créateur du handoff (sinon 404, pas de fuite d'existence).
+
+    `POST` (JWT) : callback OfeliaScan — soumet la valeur scannée OU annule.
+    Le token UUID est la capability ; tout JWT authentifié peut soumettre
+    (la confidentialité du deep-link suffit en LAN).
+    """
+
+    permission_classes = [IsAuthenticated]
+    throttle_scope = "scan"
+
+    def _get_handoff(self, token):
+        return get_object_or_404(ScanHandoff, token=token)
+
+    def get(self, request, token):
+        handoff = self._get_handoff(token)
+        if not _can_view_handoff(handoff, request.user):
+            raise Http404()
+        return Response(_serialize_handoff(handoff))
+
+    def post(self, request, token):
+        handoff = self._get_handoff(token)
+        if handoff.state != ScanHandoffState.PENDING:
+            return _handoff_error(
+                "already_completed",
+                "Handoff déjà complété ou annulé.",
+                status.HTTP_409_CONFLICT,
+                state=handoff.state,
+            )
+        if handoff.is_expired:
+            return _handoff_error(
+                "expired",
+                "Le handoff a expiré.",
+                status.HTTP_410_GONE,
+                expires_at=handoff.expires_at.isoformat(),
+            )
+
+        ser = ScanHandoffSubmitInputSerializer(data=request.data)
+        ser.is_valid(raise_exception=True)
+        data = ser.validated_data
+
+        if data.get("cancelled"):
+            handoff.state = ScanHandoffState.CANCELLED
+            handoff.completed_at = timezone.now()
+            handoff.completed_by = request.user
+            handoff.save(update_fields=["state", "completed_at", "completed_by"])
+        else:
+            handoff.value = normalize_code(data["value"])
+            handoff.value_kind = data.get("kind") or "manual"
+            handoff.state = ScanHandoffState.COMPLETED
+            handoff.completed_at = timezone.now()
+            handoff.completed_by = request.user
+            handoff.save(
+                update_fields=[
+                    "value",
+                    "value_kind",
+                    "state",
+                    "completed_at",
+                    "completed_by",
+                ]
+            )
+        return Response(_serialize_handoff(handoff))

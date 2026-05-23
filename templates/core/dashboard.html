@@ -74,7 +74,9 @@
 
 {# ── Bannière scan ── #}
 {% if user.is_librarian %}
-<a href="{% url 'loans:lend' %}" class="scan-banner">
+<a href="{% url 'loans:lend' %}" class="scan-banner js-scan-handoff"
+   data-scan-kind="auto"
+   data-scan-dispatch-url="{% url 'core:search' %}">
     <div class="sb-icon">{% icon "scan-barcode" size="22px" %}</div>
     <div class="sb-text">
         <div class="sb-title">{% trans "Scanner une carte ou un livre" %}</div>

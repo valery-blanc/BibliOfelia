@@ -4,7 +4,7 @@ Spécification détaillée du logiciel de gestion de bibliothèque BibliOfelia, 
 
 Version : 1.0 (cible v1)
 Statut : draft pour Spec-Driven Development
-Dernière modif spec : 2026-05-23 — Refonte UI design OFELIA (§3.2 Frontend, §10.2 Navigation/Écrans : tuiles, tile strip, page head, polices Bricolage Grotesque/DM Sans, ofelia.css, logo OFELIA) ; FEAT-021 (API scan-sessions + inventory-sessions : contrat aligné sur le client OfeliaScan — corps `{"items":[...]}`, champs `scanned_value`/`metadata_*`/`item_state`, idempotency `local_id`, finalize sync = create-or-add-copies, ownership contributor_api — §6.10) ; FEAT-020 (intégration keebee : déploiement sur la Ofelia Box via le wizard keebee, clone + build sur la Pi, routage nginx `/bibliofelia/`, réglage `SECURE_COOKIES`, statique servi par nginx — §4, §11) ; FEAT-018 (terminologie UI : l'EAN13 interne d'un exemplaire est nommé « code Ofelia » dans toute l'interface ; rapport d'inventaire enrichi du code Ofelia et de l'ISBN — §5.2/§6.5/§6.7) ; Sprint 4 : FEAT-011 (dashboard enrichi §6.6 + rapports + paramètres + gestion comptes), FEAT-012 (impression étiquettes + cartes §6.7), FEAT-013 (notifications offline §6.8), FEAT-014 (sauvegardes §8 + planification django-q2), FEAT-015 (wizard premier démarrage §11.3 + données démo §11.4), FEAT-017 (onglet « Avancé » + page Connexion OfeliaScan + « Mon compte » §6.6/§6.10/§10.2), BUG-006 (i18n : `accounts/` déplacé sous `i18n_patterns` + chaînes EN/ES/MG complétées) ; Sprint 3 : FEAT-016 — API OfeliaScan (§6.10 : auth JWT, /pairing/info, /isbn/{isbn}, /health) ; FEAT-019 — publication mDNS via service Avahi sur l'hôte (§6.10) ; SPEC-CORR-002 — /pairing/info renvoie `base_url` (URL absolue) ; Sprint 2 : FEAT-005 à FEAT-010 (§6.1 à §6.5, §10) ; i18n 4 langues (§6.9) ; BUG-002 à BUG-005 ; §6.10 réécrit comme contrat d'API (SPEC-CORR-001)
+Dernière modif spec : 2026-05-23 — FEAT-023 (handoff single-scan OfeliaScan : nouveaux endpoints `/scan-handoff` + `/scan-handoff/{token}` ; modèle `ScanHandoff` ; deep-link `ofeliascan://scan-one` ; boutons « Scanner » des pages prêt/retour/dashboard câblés ; CSRF + polling 700 ms ; TTL 5 min — §6.10 nouvelle sous-section « Handoff single-scan ») ; Refonte UI design OFELIA (§3.2 Frontend, §10.2 Navigation/Écrans : tuiles, tile strip, page head, polices Bricolage Grotesque/DM Sans, ofelia.css, logo OFELIA) ; FEAT-021 (API scan-sessions + inventory-sessions : contrat aligné sur le client OfeliaScan — corps `{"items":[...]}`, champs `scanned_value`/`metadata_*`/`item_state`, idempotency `local_id`, finalize sync = create-or-add-copies, ownership contributor_api — §6.10) ; FEAT-020 (intégration keebee : déploiement sur la Ofelia Box via le wizard keebee, clone + build sur la Pi, routage nginx `/bibliofelia/`, réglage `SECURE_COOKIES`, statique servi par nginx — §4, §11) ; FEAT-018 (terminologie UI : l'EAN13 interne d'un exemplaire est nommé « code Ofelia » dans toute l'interface ; rapport d'inventaire enrichi du code Ofelia et de l'ISBN — §5.2/§6.5/§6.7) ; Sprint 4 : FEAT-011 (dashboard enrichi §6.6 + rapports + paramètres + gestion comptes), FEAT-012 (impression étiquettes + cartes §6.7), FEAT-013 (notifications offline §6.8), FEAT-014 (sauvegardes §8 + planification django-q2), FEAT-015 (wizard premier démarrage §11.3 + données démo §11.4), FEAT-017 (onglet « Avancé » + page Connexion OfeliaScan + « Mon compte » §6.6/§6.10/§10.2), BUG-006 (i18n : `accounts/` déplacé sous `i18n_patterns` + chaînes EN/ES/MG complétées) ; Sprint 3 : FEAT-016 — API OfeliaScan (§6.10 : auth JWT, /pairing/info, /isbn/{isbn}, /health) ; FEAT-019 — publication mDNS via service Avahi sur l'hôte (§6.10) ; SPEC-CORR-002 — /pairing/info renvoie `base_url` (URL absolue) ; Sprint 2 : FEAT-005 à FEAT-010 (§6.1 à §6.5, §10) ; i18n 4 langues (§6.9) ; BUG-002 à BUG-005 ; §6.10 réécrit comme contrat d'API (SPEC-CORR-001)
 
 ---
 
@@ -847,6 +847,58 @@ ce qui la distingue dans l'UI librarian de récolement (FEAT-010).
   Réponse `200` : `{session_id, state: "closed", closed_at, scans_count}`.
   Le rapport (présents/manquants/mal rangés/inconnus) reste un workflow
   librarian côté web (FEAT-010).
+
+#### Handoff single-scan — FEAT-023 / Task #21
+
+Distinct du flux bulk ci-dessus : protocole **single-scan + retour de
+valeur** entre la page web BibliOfelia (cookie de session) et OfeliaScan
+(JWT). Permet aux boutons « Scanner » du site (prêt, retour, dashboard) de
+déclencher un scan unique dans OfeliaScan et de récupérer immédiatement la
+valeur dans le champ correspondant. Voir `docs/specs/FEAT-023-scan-handoff-ofeliascan.md`
+pour le contrat Android complet.
+
+- `POST /scan-handoff` — auth requise. Permission : `librarian`/`superadmin`
+  (un `contributor_api` reçoit `403 forbidden`). Body :
+  `{"target_kind"?: "auto"|"book"|"card"}` (défaut `auto`).
+  Réponse `201` : `{token, state: "pending", target_kind, value: "",
+  value_kind: "", created_at, expires_at, completed_at: null, deep_link}`.
+  `deep_link = ofeliascan://scan-one?token=<UUID>&kind=<target_kind>`.
+  TTL 5 minutes, single-use.
+- `GET /scan-handoff/{token}` — auth requise. Permission : créateur du
+  handoff (sinon `404`, pas de fuite d'existence) ; superadmin voit tout.
+  Réponse `200` : même schéma sans `deep_link` ; `state` calculé à la volée
+  `pending|completed|cancelled|expired` (état `expired` = `pending` après TTL).
+- `POST /scan-handoff/{token}` — callback OfeliaScan (JWT). Tout user JWT
+  authentifié peut soumettre : le token UUID **est** la capability
+  (single-use, TTL court, transmis via deep-link LAN). Body :
+  `{"value", "kind": "ean13|isbn|card|item|manual"}` **ou**
+  `{"cancelled": true}` si l'utilisateur abandonne. `value` normalisé
+  (`normalize_code`). Réponses :
+  - `200` : handoff `completed` (ou `cancelled`) — renvoie l'état complet.
+  - `409 already_completed` : un POST précédent a déjà terminé le handoff.
+  - `410 expired` : `expires_at < now`.
+  - `404` : token inconnu.
+
+Côté navigateur : `static/js/scan-handoff.js` détecte `.js-scan-handoff` au
+clic, lit les attributs `data-scan-target` / `data-scan-kind` /
+`data-scan-autosubmit` / `data-scan-dispatch-url`, POST le handoff, ouvre
+le deep-link (`window.location.href`), poll toutes les 700 ms (timeout
+client 120 s), puis injecte la valeur dans l'input cible + soumet le
+formulaire englobant — ou redirige vers `core:search?q=<value>` pour le
+mode dashboard (la recherche globale `classify_query` dispatch ensuite).
+CSRF via cookie `csrftoken` → header `X-CSRFToken`.
+
+Boutons câblés (v1) : `loans/lend.html` (scan carte membre + scan livre),
+`loans/return.html` (scan livre rendu), `core/dashboard.html` (banner
+« Scanner une carte ou un livre »). Le récolement
+(`inventory/session_detail.html`) n'est pas câblé : il est déjà couvert
+par le flux bulk FEAT-021.
+
+Fallback hors OfeliaScan : sur iOS ou Android sans l'app, `window.location`
+échoue silencieusement, le timeout client de 120 s relâche le bouton, et
+le champ texte reste utilisable pour la saisie manuelle (= comportement
+pré-FEAT-023, pas de régression). Le scanner caméra navigateur est
+adressé séparément par FEAT-024 (nécessite HTTPS).
 
 #### Items
 
