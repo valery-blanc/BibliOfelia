@@ -17,14 +17,6 @@
     var POLL_INTERVAL_MS = 700;
     var TIMEOUT_MS = 120 * 1000;
 
-    function getCookie(name) {
-        var parts = ("; " + document.cookie).split("; " + name + "=");
-        if (parts.length === 2) {
-            return decodeURIComponent(parts.pop().split(";").shift());
-        }
-        return "";
-    }
-
     function getConfig() {
         var el = document.getElementById("scan-handoff-config");
         if (!el) return null;
@@ -32,23 +24,35 @@
     }
 
     function jsonHeaders() {
+        var cfg = getConfig() || {};
+        // `csrftoken` cookie est HttpOnly (CSRF_COOKIE_HTTPONLY=True) → on lit
+        // le token rendu par le template `{% csrf_token %}` (même approche que
+        // `hx-headers` sur <body> pour HTMX).
         return {
             "Content-Type": "application/json",
             "Accept": "application/json",
-            "X-CSRFToken": getCookie("csrftoken")
+            "X-CSRFToken": cfg.csrfToken || ""
         };
     }
 
     function createHandoff(targetKind) {
         var cfg = getConfig();
-        if (!cfg || !cfg.createUrl) return Promise.reject(new Error("config"));
+        if (!cfg || !cfg.createUrl) {
+            console.error("[scan-handoff] config introuvable dans #scan-handoff-config");
+            return Promise.reject(new Error("config"));
+        }
         return fetch(cfg.createUrl, {
             method: "POST",
             credentials: "same-origin",
             headers: jsonHeaders(),
             body: JSON.stringify({ target_kind: targetKind || "auto" })
         }).then(function (resp) {
-            if (!resp.ok) throw new Error("create-failed-" + resp.status);
+            if (!resp.ok) {
+                return resp.text().then(function (body) {
+                    console.error("[scan-handoff] POST", cfg.createUrl, "→", resp.status, body);
+                    throw new Error("create-failed-" + resp.status);
+                });
+            }
             return resp.json();
         });
     }
@@ -172,9 +176,9 @@
                     }
                 });
             }, POLL_INTERVAL_MS);
-        }).catch(function () {
+        }).catch(function (err) {
             setBusy(btn, false);
-            flashMessage(btn, "Erreur à la création du handoff. Réessayez.");
+            flashMessage(btn, "Erreur à la création du handoff (" + (err && err.message ? err.message : "?") + "). Ouvre la console pour le détail.");
         });
     }
 

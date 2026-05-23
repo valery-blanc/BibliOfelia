@@ -886,7 +886,7 @@ le deep-link (`window.location.href`), poll toutes les 700 ms (timeout
 client 120 s), puis injecte la valeur dans l'input cible + soumet le
 formulaire englobant — ou redirige vers `core:search?q=<value>` pour le
 mode dashboard (la recherche globale `classify_query` dispatch ensuite).
-CSRF via cookie `csrftoken` → header `X-CSRFToken`.
+CSRF : le token est rendu par le template `{% csrf_token %}` et injecté dans la config JSON `#scan-handoff-config` (le cookie `csrftoken` est `HttpOnly`, donc illisible par le JS — même contrainte que HTMX, traitée de la même façon dans `base.html`). Le JS pose ensuite l'en-tête `X-CSRFToken` sur le POST de création (BUG-011).
 
 Boutons câblés (v1) : `loans/lend.html` (scan carte membre + scan livre),
 `loans/return.html` (scan livre rendu), `core/dashboard.html` (banner

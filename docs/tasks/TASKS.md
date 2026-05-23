@@ -276,6 +276,7 @@ Mise à jour : 2026-05-23 (Sprint 7 démarré — FEAT-023 codé côté BibliOfe
   - [x] Doc : `docs/specs/FEAT-023-scan-handoff-ofeliascan.md` (BibliOfelia + contrat Android) + SPEC §6.10 nouvelle sous-section « Handoff single-scan »
   - [x] Déploiement Pi (rebuild conteneurs + migration `api.0001_initial`) — 2026-05-23
   - [x] **BUG-010** entrypoint Docker prod non exécutable au rebuild (Windows git ne pose pas l'exec bit) : `chmod +x /app/scripts/*.sh` ajouté au Dockerfile (cibles dev + prod) — `docs/bugs/BUG-010-entrypoint-exec-bit.md`
+  - [x] **BUG-011** scan-handoff POST silencieusement KO en prod (CSRF_COOKIE_HTTPONLY=True → JS ne pouvait pas lire `csrftoken`) : token rendu par `{% csrf_token %}` injecté dans `#scan-handoff-config`, JS utilise `cfg.csrfToken` au lieu de `getCookie('csrftoken')` — `docs/bugs/BUG-011-scan-handoff-csrf-token.md`
   - [ ] Test Val (lend/return/dashboard, fallback iOS, fallback Android sans OfeliaScan)
   - [ ] **Côté OfeliaScan Android** : implémenter l'intent filter `ofeliascan://scan-one`, l'écran de scan unique, le POST callback (suit le contrat de `FEAT-023-scan-handoff-ofeliascan.md`). À traiter dans le repo OfeliaScan, sprint Android séparé.
 

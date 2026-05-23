@@ -135,9 +135,12 @@ Comportement client :
 5. `cancelled` ou `expired` → bouton réactivé, message muet, l'utilisateur
    peut retaper à la main dans le champ texte (qui reste visible).
 
-CSRF : le bouton lit `csrftoken` dans le cookie et l'ajoute en header
-`X-CSRFToken` sur le POST de création (SessionAuthentication l'exige). Les
-GET et le POST OfeliaScan ne sont pas concernés (JWT bypass).
+CSRF : le cookie `csrftoken` est `HttpOnly` (`CSRF_COOKIE_HTTPONLY=True`,
+§9) donc inaccessible au JS. Le token est lu depuis le rendu de
+`{% csrf_token %}`, injecté dans `#scan-handoff-config`, et posé en header
+`X-CSRFToken` sur le POST de création (SessionAuthentication l'exige).
+Même pattern qu'`hx-headers` pour HTMX dans `base.html`. Les GET et le
+POST OfeliaScan ne sont pas concernés (JWT bypass). Voir BUG-011.
 
 ### Boutons câblés (v1)
 

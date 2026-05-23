@@ -10,7 +10,7 @@
     <script defer src="{% static 'js/alpine.min.js' %}"></script>
     {% if user.is_authenticated %}
     <script id="scan-handoff-config" type="application/json">
-{"createUrl": "{% url 'api:scan-handoff-create' %}"}
+{"createUrl": "{% url 'api:scan-handoff-create' %}", "csrfToken": "{{ csrf_token }}"}
     </script>
     <script defer src="{% static 'js/scan-handoff.js' %}"></script>
     {% endif %}
