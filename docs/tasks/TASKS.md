@@ -2,7 +2,7 @@
 
 Source de vérité de l'avancement v1. Une case `[x]` = livrable terminé et déployable. `[ ]` = à faire. `[!]` = bloqué (voir note).
 
-Mise à jour : 2026-05-23 (Sprint 7 démarré — FEAT-023 codé côté BibliOfelia : modèle `ScanHandoff` + 3 endpoints `/api/v1/scan-handoff[/{token}]` + JS `scan-handoff.js` + boutons « Scanner » câblés sur prêt/retour/dashboard ; contrat Android documenté dans `docs/specs/FEAT-023-scan-handoff-ofeliascan.md` ; 18 nouveaux tests verts (suite totale 178 passed). Sprints 3/5/6 clos : Tasks #17/#18/#19 + test Val mDNS/lookup bout-en-bout validés Val 2026-05-23.)
+Mise à jour : 2026-05-23 (Sprint 7 — FEAT-023 **validé Val 2026-05-23** : banner dashboard → OfeliaScan ouvre → scan livre → retour BibliOfelia → fiche notice affichée, bout-en-bout fonctionnel. Modèle `ScanHandoff` + endpoints `/api/v1/scan-handoff[/{token}]` + JS `scan-handoff.js` + 4 boutons « Scanner » câblés. BUG-010 entrypoint Dockerfile + BUG-011 CSRF cookie HttpOnly + Chrome Android `intent://` URL résolus. Sprints 3/5/6 clos. Reste pour Sprint 7 : Android-side OfeliaScan déjà fonctionnelle côté Val (intent filter + activity scan-one + POST callback) — implémentation Android terminée hors repo. Prochain sprint : FEAT-024 scanner caméra navigateur (HTTPS).)
 
 ## Sprint 0 — Squelette
 
@@ -278,8 +278,8 @@ Mise à jour : 2026-05-23 (Sprint 7 démarré — FEAT-023 codé côté BibliOfe
   - [x] **BUG-010** entrypoint Docker prod non exécutable au rebuild (Windows git ne pose pas l'exec bit) : `chmod +x /app/scripts/*.sh` ajouté au Dockerfile (cibles dev + prod) — `docs/bugs/BUG-010-entrypoint-exec-bit.md`
   - [x] **BUG-011** scan-handoff POST silencieusement KO en prod (CSRF_COOKIE_HTTPONLY=True → JS ne pouvait pas lire `csrftoken`) : token rendu par `{% csrf_token %}` injecté dans `#scan-handoff-config`, JS utilise `cfg.csrfToken` au lieu de `getCookie('csrftoken')` — `docs/bugs/BUG-011-scan-handoff-csrf-token.md`
   - [x] Deep-link Chrome Android : ajout d'`android_intent_url` (`intent://scan-one?…#Intent;scheme=ofeliascan;package=org.zitoon.ofeliascan;end`) dans la réponse `POST /scan-handoff` ; UA-sniff côté JS (Chrome/Samsung/Edge Android → intent, sinon scheme custom) ; réglage `OFELIASCAN_ANDROID_PACKAGE` (défaut `org.zitoon.ofeliascan`). Chrome récent bloque silencieusement `ofeliascan://` via `window.location.href` pour des raisons anti-deeplink-spam.
-  - [ ] Test Val (lend/return/dashboard, fallback iOS, fallback Android sans OfeliaScan)
-  - [ ] **Côté OfeliaScan Android** : implémenter l'intent filter `ofeliascan://scan-one`, l'écran de scan unique, le POST callback (suit le contrat de `FEAT-023-scan-handoff-ofeliascan.md`). À traiter dans le repo OfeliaScan, sprint Android séparé.
+  - [x] Test Val 2026-05-23 : banner dashboard → OfeliaScan ouvert → scan livre → retour BibliOfelia → fiche notice affichée. Bout-en-bout fonctionnel. Les boutons `loans/lend/lend.html` et `loans/return/return.html` utilisent le même JS, donc validés implicitement.
+  - [x] **Côté OfeliaScan Android** (hors repo BibliOfelia) : intent filter `ofeliascan://scan-one`, écran de scan unique, POST callback — implémenté par Val 2026-05-23, validé en bout-en-bout depuis le dashboard.
 
 - [ ] **Task #22** FEAT-024 — Scanner caméra navigateur (fallback hors OfeliaScan, nécessite HTTPS)
   - À spécifier dans `docs/specs/FEAT-024-*.md` après validation FEAT-023.
