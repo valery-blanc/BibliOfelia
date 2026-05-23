@@ -1,6 +1,6 @@
 # FEAT-024 — Scanner caméra navigateur (fallback hors OfeliaScan)
 
-Statut : **EN ATTENTE TEST VAL** (2026-05-23)
+Statut : **DONE — validé Val 2026-05-23** (caméra interne OK sur Android Firefox HTTPS, fallback OfeliaScan automatique en HTTP LAN, Chrome Android sans Play Store, bouton Annuler fonctionnel)
 Sprint : 7
 Task : #22 (cf. `docs/tasks/TASKS.md`)
 Spec : `SPEC_BIBLIOFELIA.md` §6.10 (sous-section « Scanner caméra navigateur »)
@@ -51,6 +51,30 @@ Détection au clic :
 Le module `scan-camera.js` expose `openCamera(btn, {onUnavailable})` ; le
 callback est invoqué uniquement pour les erreurs techniques, pas pour un
 cancel utilisateur.
+
+### Diagnostic verbose
+
+Quand la caméra ne peut pas démarrer, le **flashMessage affiche la raison
+exacte** (« HTTPS requis (URL en http:) », « navigateur sans
+getUserMedia », « module scan-camera.js non chargé », etc.). Idem pour
+les erreurs `Html5Qrcode` : `permission-denied`, `no-camera`,
+`camera-busy`, `lib-load-failed`. La même info est aussi loggée dans la
+console JS (`[scan] camera support: {...}`). Cela a permis d'identifier
+en quelques secondes le cas Val (cache navigateur servant l'ancien JS).
+
+### Chrome Android — éviter le Play Store
+
+L'intent URL générée côté serveur est complétée côté client par
+`S.browser_fallback_url=<page courante>` avant `;end`. Si OfeliaScan
+n'est pas installé, Chrome navigue vers la page courante (= reste sur
+BibliOfelia) **au lieu de rediriger vers le Play Store**.
+
+### Bouton « Annuler » pendant l'attente OfeliaScan
+
+Pendant la phase `setBusy(true)` du handoff, un lien « Annuler »
+s'affiche sous le bouton. Le clic stoppe immédiatement le polling et
+restaure le bouton — utile quand l'utilisateur revient manuellement sur
+la page sans qu'OfeliaScan ait POST. Tracking par `WeakMap<btn, {intervalId}>`.
 
 ## Architecture frontend
 

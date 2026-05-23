@@ -2,7 +2,7 @@
 
 Source de vérité de l'avancement v1. Une case `[x]` = livrable terminé et déployable. `[ ]` = à faire. `[!]` = bloqué (voir note).
 
-Mise à jour : 2026-05-23 (Sprint 7 — FEAT-024 code livré : scanner caméra navigateur via html5-qrcode local, toggle utilisateur device-scoped (localStorage), modal full-screen mobile / 480 px desktop, contrainte HTTPS sans cert auto-signé (option grisée en HTTP LAN), aucun nouveau endpoint Django, 179 tests verts ; déploiement Pi + test Val à venir. FEAT-023 **validé Val 2026-05-23** : banner dashboard → OfeliaScan ouvre → scan livre → retour BibliOfelia → fiche notice affichée, bout-en-bout fonctionnel. Modèle `ScanHandoff` + endpoints `/api/v1/scan-handoff[/{token}]` + JS `scan-handoff.js` + 4 boutons « Scanner » câblés. BUG-010 entrypoint Dockerfile + BUG-011 CSRF cookie HttpOnly + Chrome Android `intent://` URL résolus. Sprints 3/5/6 clos. Reste pour Sprint 7 : Android-side OfeliaScan déjà fonctionnelle côté Val (intent filter + activity scan-one + POST callback) — implémentation Android terminée hors repo. Prochain sprint : FEAT-024 scanner caméra navigateur (HTTPS).)
+Mise à jour : 2026-05-23 (Sprint 7 **CLOS** — FEAT-024 **validé Val 2026-05-23** : scanner caméra navigateur sur Android Firefox HTTPS OK, fallback OfeliaScan automatique en HTTP LAN, Chrome Android sans Play Store via `S.browser_fallback_url`, bouton Annuler pendant polling. Décision UX : caméra-d'abord automatique, pas de toggle utilisateur. Décision infra : pas de cert auto-signé. 3 commits Pi `d7c8e8f` → `9d2af81` → `e9993a5`. FEAT-023 **validé Val 2026-05-23** : banner dashboard → OfeliaScan ouvre → scan livre → retour BibliOfelia → fiche notice affichée, bout-en-bout fonctionnel. Modèle `ScanHandoff` + endpoints `/api/v1/scan-handoff[/{token}]` + JS `scan-handoff.js` + 4 boutons « Scanner » câblés. BUG-010 entrypoint Dockerfile + BUG-011 CSRF cookie HttpOnly + Chrome Android `intent://` URL résolus. Sprints 3/5/6 clos. Reste pour Sprint 7 : Android-side OfeliaScan déjà fonctionnelle côté Val (intent filter + activity scan-one + POST callback) — implémentation Android terminée hors repo. Prochain sprint : FEAT-024 scanner caméra navigateur (HTTPS).)
 
 ## Sprint 0 — Squelette
 
@@ -281,7 +281,7 @@ Mise à jour : 2026-05-23 (Sprint 7 — FEAT-024 code livré : scanner caméra n
   - [x] Test Val 2026-05-23 : banner dashboard → OfeliaScan ouvert → scan livre → retour BibliOfelia → fiche notice affichée. Bout-en-bout fonctionnel. Les boutons `loans/lend/lend.html` et `loans/return/return.html` utilisent le même JS, donc validés implicitement.
   - [x] **Côté OfeliaScan Android** (hors repo BibliOfelia) : intent filter `ofeliascan://scan-one`, écran de scan unique, POST callback — implémenté par Val 2026-05-23, validé en bout-en-bout depuis le dashboard.
 
-- [ ] **Task #22** FEAT-024 — Scanner caméra navigateur (fallback hors OfeliaScan)
+- [x] **Task #22** FEAT-024 — Scanner caméra navigateur (caméra-d'abord, fallback OfeliaScan auto) — validé Val 2026-05-23
   - [x] `docs/specs/FEAT-024-scanner-camera-navigateur.md` — spec
   - [x] Lib `static/js/html5-qrcode.min.js` v2.3.8 vendorée (375 KB, Apache-2.0)
   - [x] `static/js/scan-handoff.js` refacto : `window.BibliOfelia.scan = {applyResult, flashMessage, setBusy, readMode}` + court-circuit vers mode caméra si `localStorage['bibliofelia.scan-mode']==='camera'` && `isSecureContext`
@@ -292,5 +292,7 @@ Mise à jour : 2026-05-23 (Sprint 7 — FEAT-024 code livré : scanner caméra n
   - [x] i18n : 13 nouvelles chaînes traduites EN/ES/MG (FR = msgid par défaut)
   - [x] `pytest` → 179 passed (non-régression) ; `manage.py check` 0 issue
   - [x] **Cert auto-signé écarté** (décision Val 2026-05-23) : feature active uniquement en HTTPS (accès internet)
-  - [ ] Déploiement Pi + test Val (HTTP LAN = option Caméra grisée ; HTTPS externe = scan réel sur les 4 entrées + non-régression OfeliaScan)
-  - [ ] Confirmation Val → commit unique `FEAT-024: scanner caméra navigateur`
+  - [x] Déploiement Pi + test Val — **validé Val 2026-05-23** (Android Firefox HTTPS : caméra interne ouvre dans la page, scan d'un livre OK ; Android Chrome sans OfeliaScan = plus de redirection Play Store ; bouton Annuler fonctionnel)
+  - [x] **Itération 1 → 2** : suppression du toggle UI (« pas pratique, ne marche pas »), passage à caméra-d'abord automatique avec fallback OfeliaScan
+  - [x] **Itération 2 → 3** : diag verbose (flashMessage indique la raison technique du fallback), `S.browser_fallback_url=` sur intent Chrome Android, bouton « Annuler » pendant le polling OfeliaScan
+  - [x] 3 commits poussés : `d7c8e8f` (initial), `9d2af81` (rev caméra-d'abord), `e9993a5` (diag + Chrome fix + Annuler)
