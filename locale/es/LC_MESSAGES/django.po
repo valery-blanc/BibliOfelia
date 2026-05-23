@@ -6,7 +6,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: BibliOfelia 1.0\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2026-05-23 15:59+0000\n"
+"POT-Creation-Date: 2026-05-23 16:20+0000\n"
 "PO-Revision-Date: 2026-05-22 00:00+0000\n"
 "Last-Translator: Claude Code\n"
 "Language-Team: Español\n"
@@ -965,7 +965,7 @@ msgstr "Emitido por BibliOfelia el %(d)s."
 
 #: apps/setup/forms.py:20 apps/setup/views.py:29
 #: templates/accounts/login.html:27 templates/accounts/login.html:29
-#: templates/base.html:53 templates/base.html:55
+#: templates/base.html:43 templates/base.html:45
 #: templates/catalog/record_detail.html:26
 msgid "Langue"
 msgstr "Idioma"
@@ -1063,13 +1063,13 @@ msgstr "Pasos faltantes: %(m)s"
 msgid "Connexion"
 msgstr "Iniciar sesión"
 
-#: templates/accounts/login.html:19 templates/base.html:45
+#: templates/accounts/login.html:19 templates/base.html:35
 #, fuzzy
 #| msgid "Bibliothèque"
 msgid "Bibliothèque communautaire"
 msgstr "Biblioteca"
 
-#: templates/accounts/login.html:36 templates/base.html:62
+#: templates/accounts/login.html:36 templates/base.html:52
 #: templates/core/help.html:4 templates/core/help.html:7
 msgid "Aide"
 msgstr "Ayuda"
@@ -1093,7 +1093,7 @@ msgstr "Nombre de usuario"
 msgid "Se connecter"
 msgstr "Conectarse"
 
-#: templates/accounts/login.html:128 templates/base.html:100
+#: templates/accounts/login.html:128 templates/base.html:90
 msgid "Ofelia Box"
 msgstr "Ofelia Box"
 
@@ -1141,7 +1141,7 @@ msgid "Nouveau"
 msgstr "Nuevo"
 
 #: templates/accounts/user_form.html:9 templates/accounts/user_form.html:14
-#: templates/base.html:72
+#: templates/base.html:62
 msgid "Mon compte"
 msgstr "Mi cuenta"
 
@@ -1152,7 +1152,7 @@ msgstr "Mi cuenta"
 msgid "Enregistrer"
 msgstr "Guardar"
 
-#: templates/accounts/user_form.html:30 templates/base.html:22
+#: templates/accounts/user_form.html:30 templates/base.html:17
 #: templates/catalog/_record_form.html:46 templates/catalog/item_form.html:17
 #: templates/catalog/record_confirm_delete.html:21
 #: templates/core/admin/settings_section.html:26
@@ -1196,64 +1196,28 @@ msgid "Aucun compte."
 msgstr "Ninguna cuenta."
 
 #: templates/base.html:16
-msgid "Application OfeliaScan"
-msgstr "Aplicación OfeliaScan"
-
-#: templates/base.html:17
-msgid "Caméra de l’appareil"
-msgstr "Cámara del dispositivo"
-
-#: templates/base.html:18
-msgid "Choisir le mode de scan"
-msgstr "Elegir el modo de escaneo"
-
-#: templates/base.html:19
-msgid "Nécessite HTTPS — accédez via internet."
-msgstr "Requiere HTTPS — conéctese por internet."
-
-#: templates/base.html:20
-msgid "HTTPS requis"
-msgstr "HTTPS necesario"
-
-#: templates/base.html:21
 msgid "Scanner un code"
 msgstr "Escanear un código"
 
-#: templates/base.html:23
+#: templates/base.html:18
 msgid "Pointez la caméra vers le code-barres."
 msgstr "Apunte la cámara al código de barras."
 
-#: templates/base.html:24
+#: templates/base.html:19
 msgid "Ouverture de la caméra…"
 msgstr "Abriendo la cámara…"
 
-#: templates/base.html:25
-msgid "Impossible d’accéder à la caméra."
-msgstr "No se puede acceder a la cámara."
-
-#: templates/base.html:26
-msgid "Permission caméra refusée."
-msgstr "Permiso de cámara denegado."
-
-#: templates/base.html:27
-msgid "Aucune caméra détectée sur cet appareil."
-msgstr "No se detectó ninguna cámara en este dispositivo."
-
-#: templates/base.html:28
-msgid "Impossible de charger le scanner."
-msgstr "No se puede cargar el escáner."
-
-#: templates/base.html:29
+#: templates/base.html:20
 msgid "Valeur scannée :"
 msgstr "Valor escaneado:"
 
-#: templates/base.html:66
+#: templates/base.html:56
 #, fuzzy
 #| msgid "Nom d'utilisateur"
 msgid "Menu utilisateur"
 msgstr "Nombre de usuario"
 
-#: templates/base.html:77
+#: templates/base.html:67
 msgid "Déconnexion"
 msgstr "Cerrar sesión"
 

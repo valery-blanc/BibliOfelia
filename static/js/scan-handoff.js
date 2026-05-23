@@ -1,29 +1,26 @@
-/* FEAT-023/024 — Scan handoff single-scan (BibliOfelia web ↔ OfeliaScan)
- * + chemin caméra navigateur (`scan-camera.js`).
+/* FEAT-023/024 — Click handler des boutons `.js-scan-handoff`.
  *
- * Boutons marqués `.js-scan-handoff` :
- *   data-scan-target      : sélecteur CSS d'un <input> à pré-remplir
- *   data-scan-kind        : auto | book | card  (indication UI pour OfeliaScan)
- *   data-scan-autosubmit  : "true" pour soumettre le form après remplissage
- *   data-scan-dispatch-url: URL vers laquelle rediriger après scan (ex. /search/),
- *                           le JS ajoute ?q=<valeur> automatiquement
+ * Stratégie (révision Val 2026-05-23) :
+ *   1. Si la caméra du navigateur est disponible (HTTPS + getUserMedia + lib
+ *      chargée), on ouvre la caméra interne (modal in-page, on ne sort pas
+ *      du site).
+ *   2. Sinon (HTTP LAN, navigateur sans getUserMedia, ou la caméra plante
+ *      à l'init), on tombe automatiquement sur le handoff OfeliaScan qui
+ *      ouvre l'app Android et revient.
  *
- * Modes :
- *   - `ofeliascan` (défaut) : ouvre OfeliaScan via `ofeliascan://scan-one?token=...`,
- *     puis poll `/api/v1/scan-handoff/{token}` (TTL serveur 5 min, timeout client 120 s).
- *   - `camera`              : géré par `scan-camera.js` (cf. FEAT-024). Le mode est
- *     lu depuis `localStorage['bibliofelia.scan-mode']`. Quand actif, ce module
- *     délègue à `BibliOfelia.scan.openCamera(btn)` et ne fait pas de handoff.
+ * Attributs déclaratifs (FEAT-023, inchangés) :
+ *   data-scan-target       : sélecteur CSS d'un <input> à pré-remplir
+ *   data-scan-kind         : auto | book | card  (indication UI pour OfeliaScan)
+ *   data-scan-autosubmit   : "true" pour soumettre le form après remplissage
+ *   data-scan-dispatch-url : URL vers laquelle rediriger après scan
  *
- * Helpers partagés exposés via `window.BibliOfelia.scan` (utilisés par
- * `scan-camera.js`).
+ * Helpers exposés via `window.BibliOfelia.scan` (consommés par scan-camera.js).
  */
 (function () {
     "use strict";
 
     var POLL_INTERVAL_MS = 700;
     var TIMEOUT_MS = 120 * 1000;
-    var STORAGE_KEY = "bibliofelia.scan-mode";
 
     function getConfig() {
         var el = document.getElementById("scan-handoff-config");
@@ -33,9 +30,6 @@
 
     function jsonHeaders() {
         var cfg = getConfig() || {};
-        // `csrftoken` cookie est HttpOnly (CSRF_COOKIE_HTTPONLY=True) → on lit
-        // le token rendu par le template `{% csrf_token %}` (même approche que
-        // `hx-headers` sur <body> pour HTMX).
         return {
             "Content-Type": "application/json",
             "Accept": "application/json",
@@ -100,8 +94,7 @@
     }
 
     function flashMessage(btn, text) {
-        // Cherche un point d'ancrage stable : .scan-split d'abord, sinon le parent direct.
-        var anchor = btn.closest(".scan-split") || btn.parentNode;
+        var anchor = btn.parentNode;
         var note = anchor.querySelector(":scope > .scan-handoff-note");
         if (!note) {
             note = document.createElement("div");
@@ -114,10 +107,6 @@
     }
 
     function chooseDeepLinkUrl(handoff) {
-        // Sur Chrome / Samsung Browser Android, le scheme custom
-        // `ofeliascan://…` est de plus en plus souvent ignoré silencieusement
-        // (politique anti-deeplink-spam). L'URL `intent://…#Intent;package=…;end`
-        // contourne la restriction en ciblant explicitement l'app installée.
         var ua = navigator.userAgent || "";
         var isChromeLikeAndroid = /Android/i.test(ua) && /(Chrome|SamsungBrowser|EdgA)/i.test(ua);
         if (isChromeLikeAndroid && handoff.android_intent_url) {
@@ -168,16 +157,7 @@
         return false;
     }
 
-    function readMode() {
-        try {
-            var v = window.localStorage && window.localStorage.getItem(STORAGE_KEY);
-            return v === "camera" ? "camera" : "ofeliascan";
-        } catch (e) {
-            return "ofeliascan";
-        }
-    }
-
-    function handleHandoff(btn) {
+    function startHandoff(btn) {
         var targetKind = btn.dataset.scanKind || "auto";
         setBusy(btn, true, "⏳ " + (btn.dataset.busyLabelHandoff || "En attente d’OfeliaScan…"));
 
@@ -216,14 +196,19 @@
         });
     }
 
-    // Namespace partagé (consommé par `scan-camera.js`, `scan-mode-toggle.js`).
+    function cameraSupported() {
+        return window.isSecureContext === true
+            && !!navigator.mediaDevices
+            && typeof navigator.mediaDevices.getUserMedia === "function";
+    }
+
     window.BibliOfelia = window.BibliOfelia || {};
     window.BibliOfelia.scan = {
-        STORAGE_KEY: STORAGE_KEY,
         applyResult: applyResult,
         flashMessage: flashMessage,
         setBusy: setBusy,
-        readMode: readMode
+        startHandoff: startHandoff,
+        cameraSupported: cameraSupported
     };
 
     document.addEventListener("click", function (ev) {
@@ -235,18 +220,20 @@
         }
         ev.preventDefault();
 
-        var mode = readMode();
-        if (mode === "camera"
-                && window.BibliOfelia.scan.openCamera
-                && window.isSecureContext) {
-            window.BibliOfelia.scan.openCamera(btn);
+        // Priorité 1 : caméra interne (on reste dans la page).
+        if (cameraSupported() && window.BibliOfelia.scan.openCamera) {
+            window.BibliOfelia.scan.openCamera(btn, {
+                onUnavailable: function (reason) {
+                    console.warn("[scan] caméra indisponible (" + reason + "), bascule sur OfeliaScan.");
+                    flashMessage(btn, "Caméra indisponible — ouverture d’OfeliaScan.");
+                    startHandoff(btn);
+                }
+            });
             return;
         }
-        // Fallback gracieux : mode caméra demandé mais HTTPS absent ou module
-        // non chargé → on retombe sur le handoff OfeliaScan.
-        if (mode === "camera" && !window.isSecureContext) {
-            flashMessage(btn, "HTTPS requis pour la caméra. Bascule sur OfeliaScan.");
-        }
-        handleHandoff(btn);
+
+        // Priorité 2 : fallback OfeliaScan (HTTP LAN, navigateur sans
+        // getUserMedia, ou module caméra non chargé).
+        startHandoff(btn);
     });
 })();

@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2026-05-23 15:59+0000\n"
+"POT-Creation-Date: 2026-05-23 16:20+0000\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -959,7 +959,7 @@ msgstr ""
 
 #: apps/setup/forms.py:20 apps/setup/views.py:29
 #: templates/accounts/login.html:27 templates/accounts/login.html:29
-#: templates/base.html:53 templates/base.html:55
+#: templates/base.html:43 templates/base.html:45
 #: templates/catalog/record_detail.html:26
 msgid "Langue"
 msgstr ""
@@ -1057,11 +1057,11 @@ msgstr ""
 msgid "Connexion"
 msgstr ""
 
-#: templates/accounts/login.html:19 templates/base.html:45
+#: templates/accounts/login.html:19 templates/base.html:35
 msgid "Bibliothèque communautaire"
 msgstr ""
 
-#: templates/accounts/login.html:36 templates/base.html:62
+#: templates/accounts/login.html:36 templates/base.html:52
 #: templates/core/help.html:4 templates/core/help.html:7
 msgid "Aide"
 msgstr ""
@@ -1083,7 +1083,7 @@ msgstr ""
 msgid "Se connecter"
 msgstr ""
 
-#: templates/accounts/login.html:128 templates/base.html:100
+#: templates/accounts/login.html:128 templates/base.html:90
 msgid "Ofelia Box"
 msgstr ""
 
@@ -1130,7 +1130,7 @@ msgid "Nouveau"
 msgstr ""
 
 #: templates/accounts/user_form.html:9 templates/accounts/user_form.html:14
-#: templates/base.html:72
+#: templates/base.html:62
 msgid "Mon compte"
 msgstr ""
 
@@ -1141,7 +1141,7 @@ msgstr ""
 msgid "Enregistrer"
 msgstr ""
 
-#: templates/accounts/user_form.html:30 templates/base.html:22
+#: templates/accounts/user_form.html:30 templates/base.html:17
 #: templates/catalog/_record_form.html:46 templates/catalog/item_form.html:17
 #: templates/catalog/record_confirm_delete.html:21
 #: templates/core/admin/settings_section.html:26
@@ -1185,62 +1185,26 @@ msgid "Aucun compte."
 msgstr ""
 
 #: templates/base.html:16
-msgid "Application OfeliaScan"
-msgstr ""
-
-#: templates/base.html:17
-msgid "Caméra de l’appareil"
-msgstr ""
-
-#: templates/base.html:18
-msgid "Choisir le mode de scan"
-msgstr ""
-
-#: templates/base.html:19
-msgid "Nécessite HTTPS — accédez via internet."
-msgstr ""
-
-#: templates/base.html:20
-msgid "HTTPS requis"
-msgstr ""
-
-#: templates/base.html:21
 msgid "Scanner un code"
 msgstr ""
 
-#: templates/base.html:23
+#: templates/base.html:18
 msgid "Pointez la caméra vers le code-barres."
 msgstr ""
 
-#: templates/base.html:24
+#: templates/base.html:19
 msgid "Ouverture de la caméra…"
 msgstr ""
 
-#: templates/base.html:25
-msgid "Impossible d’accéder à la caméra."
-msgstr ""
-
-#: templates/base.html:26
-msgid "Permission caméra refusée."
-msgstr ""
-
-#: templates/base.html:27
-msgid "Aucune caméra détectée sur cet appareil."
-msgstr ""
-
-#: templates/base.html:28
-msgid "Impossible de charger le scanner."
-msgstr ""
-
-#: templates/base.html:29
+#: templates/base.html:20
 msgid "Valeur scannée :"
 msgstr ""
 
-#: templates/base.html:66
+#: templates/base.html:56
 msgid "Menu utilisateur"
 msgstr ""
 
-#: templates/base.html:77
+#: templates/base.html:67
 msgid "Déconnexion"
 msgstr ""
 

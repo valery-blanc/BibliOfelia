@@ -13,23 +13,13 @@
 {"createUrl": "{% url 'api:scan-handoff-create' %}", "csrfToken": "{{ csrf_token }}"}
     </script>
     <script id="scan-mode-i18n" type="application/json">
-{"mode_ofeliascan": "{% trans 'Application OfeliaScan' %}",
- "mode_camera": "{% trans 'Caméra de l’appareil' %}",
- "toggle_label": "{% trans 'Choisir le mode de scan' %}",
- "needs_https": "{% trans 'Nécessite HTTPS — accédez via internet.' %}",
- "needs_https_short": "{% trans 'HTTPS requis' %}",
- "modal_title": "{% trans 'Scanner un code' %}",
+{"modal_title": "{% trans 'Scanner un code' %}",
  "cancel": "{% trans 'Annuler' %}",
  "hint": "{% trans 'Pointez la caméra vers le code-barres.' %}",
  "opening": "{% trans 'Ouverture de la caméra…' %}",
- "camera_error": "{% trans 'Impossible d’accéder à la caméra.' %}",
- "permission_denied": "{% trans 'Permission caméra refusée.' %}",
- "no_camera": "{% trans 'Aucune caméra détectée sur cet appareil.' %}",
- "lib_error": "{% trans 'Impossible de charger le scanner.' %}",
  "scanned": "{% trans 'Valeur scannée :' %}"}
     </script>
     <script defer src="{% static 'js/scan-handoff.js' %}"></script>
-    <script defer src="{% static 'js/scan-mode-toggle.js' %}"></script>
     <script defer src="{% static 'js/scan-camera.js' %}"></script>
     {% endif %}
 </head>

@@ -1,19 +1,16 @@
-/* FEAT-024 — Scanner caméra navigateur (fallback hors OfeliaScan).
+/* FEAT-024 — Scanner caméra navigateur (mode par défaut).
  *
- * Activé quand `localStorage['bibliofelia.scan-mode'] === "camera"` et que la
- * page est servie en HTTPS (window.isSecureContext === true). `scan-handoff.js`
- * appelle `BibliOfelia.scan.openCamera(btn)` au lieu de créer un handoff.
+ * Appelé par scan-handoff.js : `BibliOfelia.scan.openCamera(btn, opts)` où
+ * `opts.onUnavailable(reason)` est invoqué si la caméra ne peut pas démarrer
+ * (lib KO, permission refusée, pas de caméra). Le caller bascule alors sur
+ * OfeliaScan automatiquement.
  *
- * Décodage 100 % local via html5-qrcode (BarcodeDetector API natif, fallback
- * ZXing-JS embarqué dans la lib). Lazy-load au premier usage pour ne pas
- * charger 375 KB sur chaque page.
+ * Cancel utilisateur (Esc, bouton Annuler, clic hors modal) → on restaure
+ * simplement le bouton, sans fallback (= l'utilisateur a explicitement
+ * abandonné, on ne le déroute pas vers une autre app).
  *
- * UX :
- *   - viseur 100 % largeur, overlay sombre, bouton « Annuler ».
- *   - à la première détection : stoppe la caméra, ferme le modal, applique
- *     le résultat via `BibliOfelia.scan.applyResult(btn, {value})`.
- *   - en cas d'erreur (permission, pas de caméra, lib KO) : flashMessage +
- *     restauration du bouton (l'utilisateur peut taper la valeur à la main).
+ * Décodage 100 % local via html5-qrcode (BarcodeDetector API natif + fallback
+ * ZXing-JS embarqué). Lib lazy-loadée au premier usage.
  */
 (function () {
     "use strict";
@@ -66,7 +63,6 @@
             + "  </div>"
             + "  <div class='scan-camera-viewfinder' id='scan-camera-viewfinder'></div>"
             + "  <div class='scan-camera-hint'>" + t("hint", "Pointez la caméra vers le code-barres.") + "</div>"
-            + "  <div class='scan-camera-error' role='alert'></div>"
             + "  <div class='scan-camera-actions'>"
             + "    <button type='button' class='btn btn--ghost scan-camera-cancel'>" + t("cancel", "Annuler") + "</button>"
             + "  </div>"
@@ -97,16 +93,12 @@
         });
     }
 
-    function showError(state, message) {
-        var err = state.overlay.querySelector(".scan-camera-error");
-        if (err) err.textContent = message;
-    }
-
-    function startScanner(state, btn) {
+    function startScanner(state, btn, opts) {
         var Html5Qrcode = window.Html5Qrcode;
         if (!Html5Qrcode) {
-            showError(state, t("lib_error", "Impossible de charger le scanner."));
-            return;
+            return closeModal(state).then(function () {
+                opts.onUnavailable("lib-not-loaded");
+            });
         }
         var formats;
         if (window.Html5QrcodeSupportedFormats) {
@@ -147,20 +139,21 @@
             state.scannerActive = true;
         }).catch(function (err) {
             console.error("[scan-camera] start failed", err);
-            var msg = t("camera_error", "Impossible d’accéder à la caméra.");
-            if (err && err.name === "NotAllowedError") {
-                msg = t("permission_denied", "Permission caméra refusée.");
-            } else if (err && err.name === "NotFoundError") {
-                msg = t("no_camera", "Aucune caméra détectée sur cet appareil.");
-            }
-            showError(state, msg);
+            var reason = "start-failed";
+            if (err && err.name === "NotAllowedError") reason = "permission-denied";
+            else if (err && err.name === "NotFoundError") reason = "no-camera";
+            else if (err && err.name === "NotReadableError") reason = "camera-busy";
+            closeModal(state).then(function () { opts.onUnavailable(reason); });
         });
     }
 
-    function openCamera(btn) {
+    function openCamera(btn, opts) {
+        opts = opts || {};
+        var onUnavailable = typeof opts.onUnavailable === "function"
+            ? opts.onUnavailable : function () {};
+
         if (!window.isSecureContext || !navigator.mediaDevices || !navigator.mediaDevices.getUserMedia) {
-            window.BibliOfelia.scan.flashMessage(btn,
-                t("needs_https", "Le scanner caméra nécessite HTTPS. Connectez-vous via internet."));
+            onUnavailable("insecure-context");
             return;
         }
 
@@ -174,29 +167,33 @@
             consumed: false,
             closed: false
         };
-        state.onKey = function (ev) { if (ev.key === "Escape") closeModal(state).then(function () {
-            window.BibliOfelia.scan.setBusy(btn, false);
-        }); };
+        state.onKey = function (ev) {
+            if (ev.key === "Escape") {
+                closeModal(state).then(function () {
+                    window.BibliOfelia.scan.setBusy(btn, false);
+                });
+            }
+        };
 
         document.body.appendChild(state.overlay);
         document.body.classList.add("scan-camera-open");
         document.addEventListener("keydown", state.onKey);
 
-        function cancel() {
+        function userCancel() {
             closeModal(state).then(function () {
                 window.BibliOfelia.scan.setBusy(btn, false);
             });
         }
-        state.overlay.querySelector(".scan-camera-close").addEventListener("click", cancel);
-        state.overlay.querySelector(".scan-camera-cancel").addEventListener("click", cancel);
+        state.overlay.querySelector(".scan-camera-close").addEventListener("click", userCancel);
+        state.overlay.querySelector(".scan-camera-cancel").addEventListener("click", userCancel);
         state.overlay.addEventListener("click", function (ev) {
-            if (ev.target === state.overlay) cancel();
+            if (ev.target === state.overlay) userCancel();
         });
 
-        loadLib().then(function () { startScanner(state, btn); })
+        loadLib().then(function () { startScanner(state, btn, { onUnavailable: onUnavailable }); })
             .catch(function (err) {
                 console.error("[scan-camera] lib load", err);
-                showError(state, t("lib_error", "Impossible de charger le scanner."));
+                closeModal(state).then(function () { onUnavailable("lib-load-failed"); });
             });
     }
 

@@ -32,28 +32,25 @@ les téléphones. La feature ne fonctionne **que quand on a accès à internet**
 (donc en HTTPS). En LAN HTTP, le mode reste explicitement indisponible —
 l'option apparaît grisée dans le toggle avec un tooltip explicatif.
 
-## Choix utilisateur (toggle)
+## Sélection automatique du mode (révision Val 2026-05-23)
 
-À côté de chaque bouton `.js-scan-handoff` (et en coin haut-droit du banner
-dashboard), un chevron ouvre un mini-popover listant deux modes :
+Pas de toggle UI — le bouton « Scanner » essaie **toujours d'abord la
+caméra interne** (on reste dans la page) et **bascule automatiquement sur
+OfeliaScan** quand la caméra n'est pas dispo. Aucun choix à faire pour le
+bibliothécaire.
 
-1. **Application OfeliaScan** (défaut) — comportement FEAT-023 inchangé.
-2. **Caméra de l'appareil** — ouvre le scanner navigateur.
+Détection au clic :
 
-Le choix est mémorisé en **`localStorage`** (clé
-`bibliofelia.scan-mode`, valeurs `ofeliascan|camera`) — donc **device-scoped**.
-Un même librarian utilisant volontiers iPad puis téléphone Android voit
-chaque appareil retenir indépendamment son mode.
+| Condition | Résultat |
+|---|---|
+| HTTPS + `mediaDevices.getUserMedia` dispo | → modal caméra ouvert |
+| HTTP LAN, ou navigateur sans `getUserMedia` | → handoff OfeliaScan direct |
+| Caméra refusée (`NotAllowedError`), absente (`NotFoundError`), occupée (`NotReadableError`), ou lib KO | → modal fermé silencieusement + handoff OfeliaScan + flashMessage « Caméra indisponible — ouverture d’OfeliaScan. » |
+| Utilisateur clique « Annuler » / Esc / hors modal | → bouton restauré, pas de fallback (cancel explicite) |
 
-États du popover :
-- Sélectionné : puce ● + fond cream.
-- Option Caméra grisée + tooltip « Nécessite HTTPS — accédez via internet. »
-  si `window.isSecureContext === false`.
-
-Si le mode mémorisé est `camera` mais l'utilisateur revient en HTTP LAN, le
-clic déclenche un flashMessage explicatif et **retombe automatiquement
-sur OfeliaScan** pour ce clic — la préférence stockée n'est pas modifiée
-(elle redeviendra effective dès que l'utilisateur sera de nouveau en HTTPS).
+Le module `scan-camera.js` expose `openCamera(btn, {onUnavailable})` ; le
+callback est invoqué uniquement pour les erreurs techniques, pas pour un
+cancel utilisateur.
 
 ## Architecture frontend
 
@@ -62,18 +59,14 @@ sur OfeliaScan** pour ce clic — la préférence stockée n'est pas modifiée
 | Fichier | Rôle |
 |---|---|
 | `static/js/html5-qrcode.min.js` | Lib vendorée v2.3.8 (375 KB, Apache-2.0). |
-| `static/js/scan-handoff.js` | *Modifié* — court-circuit vers caméra si mode=`camera` & `isSecureContext`. Expose `window.BibliOfelia.scan = {applyResult, flashMessage, setBusy, readMode}` pour réutilisation. |
-| `static/js/scan-camera.js` | Lazy-load lib, modal viseur, démarrage `Html5Qrcode` (`facingMode: environment`, formats EAN-13/EAN-8/UPC/CODE_128/CODE_39/QR/ITF), arrêt à la première détection. |
-| `static/js/scan-mode-toggle.js` | Injecte chevron + popover sur chaque `.js-scan-handoff`, persistance localStorage, détection `isSecureContext`. |
-| `static/css/ofelia.css` | *Étendu* — `.scan-split`, `.scan-mode-toggle`, `.scan-mode-popover`, `.scan-camera-modal` (full-screen mobile, 480 px desktop), print hide. |
-| `templates/base.html` | *Modifié* — charge les 3 JS en `defer`, injecte `#scan-mode-i18n` avec 13 chaînes traduites. |
+| `static/js/scan-handoff.js` | *Modifié* — click handler : caméra d'abord (si dispo) sinon OfeliaScan. Expose `window.BibliOfelia.scan = {applyResult, flashMessage, setBusy, startHandoff, cameraSupported}`. |
+| `static/js/scan-camera.js` | Lazy-load lib, modal viseur, démarrage `Html5Qrcode` (`facingMode: environment`, formats EAN-13/EAN-8/UPC/CODE_128/CODE_39/QR/ITF). Erreurs techniques → callback `onUnavailable` (le caller fait le fallback OfeliaScan). |
+| `static/css/ofelia.css` | *Étendu* — `.scan-camera-modal` uniquement (full-screen mobile, 480 px desktop). |
+| `templates/base.html` | *Modifié* — charge les 2 JS en `defer`, injecte `#scan-mode-i18n` (5 chaînes : modal_title, cancel, hint, opening, scanned). |
 
 Les 3 templates métier (`loans/lend.html` × 2 boutons, `loans/return.html`,
-`core/dashboard.html`) **ne sont pas touchés** : `scan-mode-toggle.js`
-détecte les `.js-scan-handoff` au `DOMContentLoaded` et auto-wrap chaque
-bouton dans un `<div class="scan-split">` (ou pose un overlay absolu pour le
-banner dashboard). Pour les boutons `btn--block`, la classe
-`.scan-split--block` est ajoutée automatiquement pour conserver la largeur 100 %.
+`core/dashboard.html`) **ne sont pas touchés** : le `.js-scan-handoff` reste
+le seul sélecteur, comportement transparent pour le bibliothécaire.
 
 ### Modal caméra
 
@@ -123,9 +116,13 @@ Hors périmètre :
 
 ## i18n
 
-13 nouvelles chaînes ajoutées dans `templates/base.html` (injection JSON
-`#scan-mode-i18n`), traduites en `en` / `es` / `mg`. FR = msgid par défaut
-(convention du projet).
+5 chaînes utiles ajoutées dans `templates/base.html` (injection JSON
+`#scan-mode-i18n`) : `modal_title`, `cancel`, `hint`, `opening`, `scanned`.
+Les 8 chaînes initialement prévues pour le toggle (modes, tooltip HTTPS,
+errors caméra) restent traduites dans les `.po` (encore référencées par
+`templates/base.html` au moment du `makemessages` initial — elles seront
+nettoyées par un futur `makemessages -a --no-obsolete`). FR = msgid par
+défaut (convention du projet).
 
 ## Vérification
 
@@ -134,11 +131,13 @@ Hors périmètre :
 3. Déploiement Pi : `git pull` + rebuild conteneurs. Pas de migration. Le
    `collectstatic` de `scripts/entrypoint.sh` publie les nouveaux JS/CSS.
 4. Test Val :
-   - **HTTP LAN** (`http://192.168.0.147/bibliofelia/`) → toggle chevron
-     ouvre le popover, option « Caméra » grisée avec tooltip HTTPS.
-   - **HTTPS externe** → basculer sur Caméra → cliquer un bouton Scanner →
-     autoriser caméra → scanner un livre réel → champ rempli + form soumis.
-   - Test sur les 4 entrées + non-régression OfeliaScan (mode par défaut).
+   - **HTTP LAN** (`http://192.168.0.147/bibliofelia/`) → clic Scanner → on
+     part directement sur le handoff OfeliaScan (caméra impossible sans HTTPS).
+   - **HTTPS externe** → clic Scanner → la caméra interne s'ouvre dans la
+     page, scan d'un livre réel → champ rempli + form soumis.
+   - Test sur les 4 entrées.
+   - Refuser la permission caméra une fois → vérifier le fallback automatique
+     vers OfeliaScan + flashMessage.
    - Test iOS Safari (valider le décodage via BarcodeDetector / fallback ZXing).
 
 ## Hors périmètre futur

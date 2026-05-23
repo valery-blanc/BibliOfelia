@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: BibliOfelia 1.0\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2026-05-23 15:59+0000\n"
+"POT-Creation-Date: 2026-05-23 16:20+0000\n"
 "PO-Revision-Date: 2026-05-22 00:00+0000\n"
 "Last-Translator: Claude Code\n"
 "Language-Team: Malagasy\n"
@@ -968,7 +968,7 @@ msgstr "Navoakan'i BibliOfelia tamin'ny %(d)s."
 
 #: apps/setup/forms.py:20 apps/setup/views.py:29
 #: templates/accounts/login.html:27 templates/accounts/login.html:29
-#: templates/base.html:53 templates/base.html:55
+#: templates/base.html:43 templates/base.html:45
 #: templates/catalog/record_detail.html:26
 msgid "Langue"
 msgstr "Fiteny"
@@ -1068,13 +1068,13 @@ msgstr "Dingana tsy ampy: %(m)s"
 msgid "Connexion"
 msgstr "Hiditra"
 
-#: templates/accounts/login.html:19 templates/base.html:45
+#: templates/accounts/login.html:19 templates/base.html:35
 #, fuzzy
 #| msgid "Bibliothèque"
 msgid "Bibliothèque communautaire"
 msgstr "Tranomboky"
 
-#: templates/accounts/login.html:36 templates/base.html:62
+#: templates/accounts/login.html:36 templates/base.html:52
 #: templates/core/help.html:4 templates/core/help.html:7
 msgid "Aide"
 msgstr "Fanampiana"
@@ -1098,7 +1098,7 @@ msgstr "Anaran'ny mpampiasa"
 msgid "Se connecter"
 msgstr "Hiditra"
 
-#: templates/accounts/login.html:128 templates/base.html:100
+#: templates/accounts/login.html:128 templates/base.html:90
 msgid "Ofelia Box"
 msgstr "Ofelia Box"
 
@@ -1145,7 +1145,7 @@ msgid "Nouveau"
 msgstr "Vaovao"
 
 #: templates/accounts/user_form.html:9 templates/accounts/user_form.html:14
-#: templates/base.html:72
+#: templates/base.html:62
 msgid "Mon compte"
 msgstr "Ny kaontiko"
 
@@ -1156,7 +1156,7 @@ msgstr "Ny kaontiko"
 msgid "Enregistrer"
 msgstr "Tahirizo"
 
-#: templates/accounts/user_form.html:30 templates/base.html:22
+#: templates/accounts/user_form.html:30 templates/base.html:17
 #: templates/catalog/_record_form.html:46 templates/catalog/item_form.html:17
 #: templates/catalog/record_confirm_delete.html:21
 #: templates/core/admin/settings_section.html:26
@@ -1200,64 +1200,28 @@ msgid "Aucun compte."
 msgstr "Tsy misy kaonty."
 
 #: templates/base.html:16
-msgid "Application OfeliaScan"
-msgstr "Rindrambaiko OfeliaScan"
-
-#: templates/base.html:17
-msgid "Caméra de l’appareil"
-msgstr "Fakan-tsarin'ny fitaovana"
-
-#: templates/base.html:18
-msgid "Choisir le mode de scan"
-msgstr "Fidio ny fomba fanaovana skano"
-
-#: templates/base.html:19
-msgid "Nécessite HTTPS — accédez via internet."
-msgstr "Mila HTTPS — midira amin'ny aterineto."
-
-#: templates/base.html:20
-msgid "HTTPS requis"
-msgstr "Mila HTTPS"
-
-#: templates/base.html:21
 msgid "Scanner un code"
 msgstr "Skano kaody iray"
 
-#: templates/base.html:23
+#: templates/base.html:18
 msgid "Pointez la caméra vers le code-barres."
 msgstr "Atondroy any amin'ny kaody tsipika ny fakan-tsary."
 
-#: templates/base.html:24
+#: templates/base.html:19
 msgid "Ouverture de la caméra…"
 msgstr "Mamoha ny fakan-tsary…"
 
-#: templates/base.html:25
-msgid "Impossible d’accéder à la caméra."
-msgstr "Tsy afaka miditra amin'ny fakan-tsary."
-
-#: templates/base.html:26
-msgid "Permission caméra refusée."
-msgstr "Tsy avela hampiasa ny fakan-tsary."
-
-#: templates/base.html:27
-msgid "Aucune caméra détectée sur cet appareil."
-msgstr "Tsy hita ny fakan-tsary amin'ity fitaovana ity."
-
-#: templates/base.html:28
-msgid "Impossible de charger le scanner."
-msgstr "Tsy afaka misintona ny mpiskana."
-
-#: templates/base.html:29
+#: templates/base.html:20
 msgid "Valeur scannée :"
 msgstr "Sanda voaskano :"
 
-#: templates/base.html:66
+#: templates/base.html:56
 #, fuzzy
 #| msgid "Nom d'utilisateur"
 msgid "Menu utilisateur"
 msgstr "Anaran'ny mpampiasa"
 
-#: templates/base.html:77
+#: templates/base.html:67
 msgid "Déconnexion"
 msgstr "Hivoaka"
 
