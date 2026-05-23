@@ -33,7 +33,8 @@ FROM base AS dev
 RUN pip install -r requirements-dev.txt
 
 COPY . /app
-RUN mkdir -p /app/data /app/media /app/staticfiles
+RUN chmod +x /app/scripts/*.sh \
+    && mkdir -p /app/data /app/media /app/staticfiles
 
 EXPOSE 8001
 ENTRYPOINT ["/usr/bin/tini", "--"]
@@ -43,7 +44,8 @@ CMD ["python", "manage.py", "runserver", "0.0.0.0:8001"]
 FROM base AS prod
 
 COPY . /app
-RUN mkdir -p /app/data /app/media /app/staticfiles \
+RUN chmod +x /app/scripts/*.sh \
+    && mkdir -p /app/data /app/media /app/staticfiles \
     && python manage.py collectstatic --noinput \
     && python manage.py compilemessages || true
 

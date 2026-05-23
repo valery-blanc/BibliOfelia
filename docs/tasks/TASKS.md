@@ -274,7 +274,9 @@ Mise à jour : 2026-05-23 (Sprint 7 démarré — FEAT-023 codé côté BibliOfe
   - [x] Templates : `loans/lend.html` (Scanner la carte + Scanner un livre, autosubmit), `loans/return.html` (Enregistrer le retour, autosubmit), `core/dashboard.html` (banner → redirige vers `core:search?q=<value>`)
   - [x] Tests : `apps/api/tests/test_scan_handoff.py` — 18 cas verts (création par rôle, polling ownership/superadmin, soumission JWT, normalisation, annulation, double soumission 409, expiration 410, round-trip complet)
   - [x] Doc : `docs/specs/FEAT-023-scan-handoff-ofeliascan.md` (BibliOfelia + contrat Android) + SPEC §6.10 nouvelle sous-section « Handoff single-scan »
-  - [ ] Déploiement Pi + test Val (lend/return/dashboard, fallback iOS, fallback Android sans OfeliaScan)
+  - [x] Déploiement Pi (rebuild conteneurs + migration `api.0001_initial`) — 2026-05-23
+  - [x] **BUG-010** entrypoint Docker prod non exécutable au rebuild (Windows git ne pose pas l'exec bit) : `chmod +x /app/scripts/*.sh` ajouté au Dockerfile (cibles dev + prod) — `docs/bugs/BUG-010-entrypoint-exec-bit.md`
+  - [ ] Test Val (lend/return/dashboard, fallback iOS, fallback Android sans OfeliaScan)
   - [ ] **Côté OfeliaScan Android** : implémenter l'intent filter `ofeliascan://scan-one`, l'écran de scan unique, le POST callback (suit le contrat de `FEAT-023-scan-handoff-ofeliascan.md`). À traiter dans le repo OfeliaScan, sprint Android séparé.
 
 - [ ] **Task #22** FEAT-024 — Scanner caméra navigateur (fallback hors OfeliaScan, nécessite HTTPS)
