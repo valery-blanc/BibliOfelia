@@ -2,7 +2,7 @@
 
 Source de vérité de l'avancement v1. Une case `[x]` = livrable terminé et déployable. `[ ]` = à faire. `[!]` = bloqué (voir note).
 
-Mise à jour : 2026-05-23 (Sprint 8 **CLOS** — FEAT-025 **validé Val 2026-05-23** : refonte design global, 23 templates métiers harmonisés sur le design system OFELIA. Lot A pilote validé en premier (record_detail, member_detail, reports/index, settings_index), puis Lots B+C+D livrés d'un bloc. Helpers CSS ajoutés (`.req`, `.help-hint`, `.field-error`, `.form-control`, `details.advanced-section`, `.isbn-row`, `.form-actions`), `_field.html` migré `.form-row` → `.field`. Découverte d'infra : templates **embarqués au build Docker**, pas bind-mountés → rebuild obligatoire pour tout changement de template (documenté dans FEAT-025). — Sprint 7 **CLOS** — FEAT-024 **validé Val 2026-05-23** : scanner caméra navigateur sur Android Firefox HTTPS OK, fallback OfeliaScan automatique en HTTP LAN, Chrome Android sans Play Store via `S.browser_fallback_url`, bouton Annuler pendant polling. Décision UX : caméra-d'abord automatique, pas de toggle utilisateur. Décision infra : pas de cert auto-signé. 3 commits Pi `d7c8e8f` → `9d2af81` → `e9993a5`. FEAT-023 **validé Val 2026-05-23** : banner dashboard → OfeliaScan ouvre → scan livre → retour BibliOfelia → fiche notice affichée, bout-en-bout fonctionnel. Modèle `ScanHandoff` + endpoints `/api/v1/scan-handoff[/{token}]` + JS `scan-handoff.js` + 4 boutons « Scanner » câblés. BUG-010 entrypoint Dockerfile + BUG-011 CSRF cookie HttpOnly + Chrome Android `intent://` URL résolus. Sprints 3/5/6 clos. Reste pour Sprint 7 : Android-side OfeliaScan déjà fonctionnelle côté Val (intent filter + activity scan-one + POST callback) — implémentation Android terminée hors repo. Prochain sprint : FEAT-024 scanner caméra navigateur (HTTPS).)
+Mise à jour : 2026-05-24 (Sprint 10 **CLOS** — FEAT-032 + FEAT-033 validés Val 2026-05-24 sur la Pi. FEAT-032 : UI librarian /catalog/locations/ + endpoint GET /api/v1/locations testés OK. FEAT-033 : relocate auto vérifiée via UI web — récolement scope=location → exemplaire déplacé. Découverte : OfeliaScan mobile envoie encore `scope_type=all` au POST /inventory-sessions → relocate ne se déclenche pas (comportement attendu côté serveur). MAJ OfeliaScan requise hors repo. Commit `9d4fe83` + push + déploiement Pi (rebuild Docker + migration `0003`). 266 tests verts. — Sprint 8 **CLOS** — FEAT-025 **validé Val 2026-05-23** : refonte design global, 23 templates métiers harmonisés sur le design system OFELIA. Lot A pilote validé en premier (record_detail, member_detail, reports/index, settings_index), puis Lots B+C+D livrés d'un bloc. Helpers CSS ajoutés (`.req`, `.help-hint`, `.field-error`, `.form-control`, `details.advanced-section`, `.isbn-row`, `.form-actions`), `_field.html` migré `.form-row` → `.field`. Découverte d'infra : templates **embarqués au build Docker**, pas bind-mountés → rebuild obligatoire pour tout changement de template (documenté dans FEAT-025). — Sprint 7 **CLOS** — FEAT-024 **validé Val 2026-05-23** : scanner caméra navigateur sur Android Firefox HTTPS OK, fallback OfeliaScan automatique en HTTP LAN, Chrome Android sans Play Store via `S.browser_fallback_url`, bouton Annuler pendant polling. Décision UX : caméra-d'abord automatique, pas de toggle utilisateur. Décision infra : pas de cert auto-signé. 3 commits Pi `d7c8e8f` → `9d2af81` → `e9993a5`. FEAT-023 **validé Val 2026-05-23** : banner dashboard → OfeliaScan ouvre → scan livre → retour BibliOfelia → fiche notice affichée, bout-en-bout fonctionnel. Modèle `ScanHandoff` + endpoints `/api/v1/scan-handoff[/{token}]` + JS `scan-handoff.js` + 4 boutons « Scanner » câblés. BUG-010 entrypoint Dockerfile + BUG-011 CSRF cookie HttpOnly + Chrome Android `intent://` URL résolus. Sprints 3/5/6 clos. Reste pour Sprint 7 : Android-side OfeliaScan déjà fonctionnelle côté Val (intent filter + activity scan-one + POST callback) — implémentation Android terminée hors repo. Prochain sprint : FEAT-024 scanner caméra navigateur (HTTPS).)
 
 ## Sprint 0 — Squelette
 
@@ -404,9 +404,9 @@ Mise à jour : 2026-05-23 (Sprint 8 **CLOS** — FEAT-025 **validé Val 2026-05-
 - [x] Tests `apps/api/tests/test_locations_api.py` (5 cas : auth, vide, tri, parent_code, payload shape)
 - [x] `SPEC_BIBLIOFELIA.md` : §6.1 paragraphe « Gestion des emplacements » + §6.10 sous-section « Catalogue des emplacements (lecture seule) » + entête mise à jour
 - [x] `pytest` : 241 → 256 verts, aucune régression
-- [ ] Test Val OK sur http://localhost:8001/fr/catalog/locations/
-- [ ] Déploiement Pi (rebuild Docker : templates embarqués)
-- [ ] Commit `FEAT-032: gestion emplacements UI + API`
+- [x] Test Val OK 2026-05-24 (CRUD complet validé sur dev local)
+- [x] Déploiement Pi 2026-05-24 (rebuild Docker `edubox-bibliofelia` + `-worker`, smoke test `/api/v1/locations` → 401 sans token, OK)
+- [x] Commit `9d4fe83` (Sprint 10 groupé FEAT-032 + FEAT-033) + push origin/main
 
 ### FEAT-033 — Réassignation automatique des exemplaires au récolement
 - [x] Doc `docs/specs/FEAT-033-relocate-on-inventory.md` (rédigée 2026-05-24, statut DONE)
@@ -419,11 +419,13 @@ Mise à jour : 2026-05-23 (Sprint 8 **CLOS** — FEAT-025 **validé Val 2026-05-
 - [x] Test existant `test_build_report_classifies_divergences` adapté : split en 2 (scope catégorie pour vérifier les misplaced, scope location pour vérifier que FEAT-033 les fait disparaître)
 - [x] `SPEC_BIBLIOFELIA.md` : §6.5 paragraphe « Réassignation automatique au récolement » + entête mise à jour
 - [x] `pytest` : 256 → 266 verts, aucune régression
-- [ ] Test Val OK (scénario UI : créer A1+B2, créer item en B2, lancer récolement scope A1, scanner l'EAN B2, vérifier reloc + bandeau)
-- [ ] Déploiement Pi (migration + rebuild Docker)
-- [ ] Commit `FEAT-033: réassignation auto location au récolement`
+- [x] Test Val OK 2026-05-24 (UI web + relocate vérifiée)
+- [x] Déploiement Pi 2026-05-24 (migration `0003` appliquée, containers healthy)
+- [x] Commit `9d4fe83` (groupé avec FEAT-032) + push origin/main
+- [!] **OfeliaScan mobile à mettre à jour** : 5 sessions de récolement reçues le 2026-05-24 avaient toutes `scope_type=all` (donc pas de relocate, par design). OfeliaScan doit envoyer `{"scope_type": "location", "scope_location_code": "<code>"}` au `POST /inventory-sessions` quand l'utilisateur scope sur un emplacement. Côté BibliOfelia : aucun changement supplémentaire requis, la logique relocate se déclenche automatiquement dès qu'une session arrive avec le bon scope. Action côté Claude Code OfeliaScan, hors repo.
 
 ### Clôture Sprint 10
-- [ ] Tests complets `pytest` verts (cible : 241 + ~14 nouveaux = ~255)
-- [ ] `MEMORY.md` mis à jour si décision structurante
-- [ ] Commit unique groupant FEAT-032 + FEAT-033 (ou deux commits si Val préfère) + push origin/main
+- [x] Tests complets `pytest` verts : 266 (241 → 256 FEAT-032 → 266 FEAT-033)
+- [x] `MEMORY.md` à jour (pas de décision structurante nouvelle, juste réutilisation des patterns existants)
+- [x] Commit unique Sprint 10 (`9d4fe83`) + push origin/main + déploiement Pi
+- [x] Sprint 10 **CLOS** côté BibliOfelia 2026-05-24. Action restante : MAJ OfeliaScan mobile pour qu'il envoie `scope_type=location` dans les sessions de récolement (hors repo, action Claude Code OfeliaScan).
