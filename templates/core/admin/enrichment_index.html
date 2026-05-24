@@ -1,0 +1,162 @@
+{% extends "base.html" %}
+{% load i18n biblio_icons %}
+
+{% block title %}{% trans "Enrichissement métadonnées" %}{% endblock %}
+
+{% block tile_strip %}{% include "partials/_tile_strip.html" with active="advanced" %}{% endblock %}
+
+{% block content %}
+<nav class="breadcrumb">
+    <a href="{% url 'core:advanced' %}">{% trans "Avancé" %}</a> /
+    <strong>{% trans "Enrichissement métadonnées" %}</strong>
+</nav>
+
+<header class="pagehead">
+    <div class="pagehead-icon" style="--ph-bg:var(--forest-light);--ph-fg:var(--forest)">
+        {% icon "refresh-cw" size="28px" %}
+    </div>
+    <div class="pagehead-text">
+        <h1 class="pagehead-title">{% trans "Enrichissement métadonnées" %}</h1>
+        <div class="pagehead-sub">{% trans "Complète le catalogue depuis OpenLibrary, Google Books, BNF et BNE." %}</div>
+    </div>
+</header>
+
+<div class="card">
+    <h2 class="section-title">{% trans "Lancer un enrichissement" %}</h2>
+    {% if not active_sources %}
+    <div role="alert" class="msg msg-warning">
+        {% icon "triangle-alert" size="16px" %}
+        {% trans "Aucune source activée." %}
+        <a href="{% url 'core:settings_section' section='sources' %}">{% trans "Configurer les sources de métadonnées" %}</a>.
+    </div>
+    {% else %}
+    <form method="post" action="{% url 'core:enrichment_start' %}" class="enrich-form">
+        {% csrf_token %}
+        <div class="enrich-section">
+            <div class="enrich-section-title">{% trans "Mode" %}</div>
+            <label class="enrich-option">
+                <input type="radio" name="mode" value="fill_missing" checked>
+                <span>{% trans "Compléter seulement les champs vides" %}</span>
+            </label>
+            <label class="enrich-option">
+                <input type="radio" name="mode" value="overwrite">
+                <span>{% trans "Écraser les données locales avec les sources externes" %}</span>
+            </label>
+        </div>
+
+        <div class="enrich-section">
+            <div class="enrich-section-title">{% trans "Sources à interroger" %}</div>
+            {% for src in active_sources %}
+            <label class="enrich-option">
+                <input type="checkbox" name="sources" value="{{ src }}" checked>
+                <span>{{ src }}</span>
+            </label>
+            {% endfor %}
+        </div>
+
+        <div class="enrich-section">
+            <div class="enrich-section-title">{% trans "Périmètre" %}</div>
+            <select name="scope" class="enrich-input">
+                <option value="all">{% trans "Toutes les notices avec un ISBN" %}</option>
+                <option value="no_author">{% trans "Notices sans auteur" %}</option>
+                <option value="missing_publisher">{% trans "Notices sans éditeur" %}</option>
+                <option value="isbns">{% trans "Liste d'ISBN (un par ligne)" %}</option>
+            </select>
+            <textarea name="isbns" rows="4" placeholder="9782070612758"
+                      class="enrich-input" style="margin-top:8px"></textarea>
+            <p class="enrich-hint">{% trans "Saisissez un ISBN par ligne (utilisé uniquement si « Liste d'ISBN » est sélectionnée)." %}</p>
+        </div>
+
+        <div class="form-actions" style="border:0;padding:0">
+            <button type="submit" class="btn btn--primary">
+                {% icon "refresh-cw" size="16px" %} {% trans "Lancer" %}
+            </button>
+        </div>
+    </form>
+
+    <style>
+    .enrich-form { font-size: 15px; }
+    .enrich-section { margin-bottom: 18px; }
+    .enrich-section-title {
+        font-weight: 600;
+        font-size: 15px;
+        margin-bottom: 6px;
+        color: var(--ink);
+    }
+    .enrich-option {
+        display: flex;
+        align-items: center;
+        gap: 8px;
+        padding: 2px 0;
+        font-weight: normal;
+        font-size: 15px;
+        line-height: 1.4;
+        cursor: pointer;
+    }
+    .enrich-option input[type="checkbox"],
+    .enrich-option input[type="radio"] {
+        margin: 0;
+        flex-shrink: 0;
+    }
+    .enrich-option span { display: inline-block; }
+    .enrich-input {
+        width: 100%;
+        font-size: 15px;
+    }
+    .enrich-hint {
+        font-size: 13px;
+        color: var(--grey);
+        margin: 6px 0 0;
+    }
+    </style>
+    {% endif %}
+</div>
+
+<h2 class="section-title" style="margin-top:28px">{% trans "Historique" %}</h2>
+{% if jobs %}
+<div class="table-wrap">
+    <table class="table">
+        <thead>
+            <tr>
+                <th>{% trans "Lancé le" %}</th>
+                <th>{% trans "Mode" %}</th>
+                <th>{% trans "État" %}</th>
+                <th style="text-align:right">{% trans "Traitées" %}</th>
+                <th style="text-align:right">{% trans "Mises à jour" %}</th>
+                <th style="text-align:right">{% trans "Erreurs" %}</th>
+                <th></th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for job in jobs %}
+            <tr>
+                <td>{{ job.started_at }}</td>
+                <td>{{ job.get_mode_display }}</td>
+                <td>
+                    {% if job.state == "finished" %}
+                        <span class="badge badge--ok">{{ job.get_state_display }}</span>
+                    {% elif job.state == "running" %}
+                        <span class="badge badge--info">{{ job.get_state_display }}</span>
+                    {% elif job.state == "failed" %}
+                        <span class="badge badge--late">{{ job.get_state_display }}</span>
+                    {% else %}
+                        <span class="badge badge--mut">{{ job.get_state_display }}</span>
+                    {% endif %}
+                </td>
+                <td style="text-align:right">{{ job.processed }} / {{ job.total }}</td>
+                <td style="text-align:right">{{ job.updated }}</td>
+                <td style="text-align:right">{{ job.errors }}</td>
+                <td style="text-align:right">
+                    <a href="{% url 'core:enrichment_detail' pk=job.pk %}" class="btn btn--ghost btn--sm">
+                        {% trans "Détails" %}
+                    </a>
+                </td>
+            </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+</div>
+{% else %}
+<div class="card"><p class="muted">{% trans "Aucun enrichissement lancé." %}</p></div>
+{% endif %}
+{% endblock %}

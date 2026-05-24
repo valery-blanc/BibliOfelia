@@ -22,6 +22,7 @@
     <script defer src="{% static 'js/scan-handoff.js' %}"></script>
     <script defer src="{% static 'js/scan-camera.js' %}"></script>
     {% endif %}
+    {% block extra_head %}{% endblock %}
 </head>
 <body hx-headers='{"X-CSRFToken": "{{ csrf_token }}"}'>
 
@@ -39,7 +40,8 @@
         <div class="topbar-actions">
             <form action="{% url 'set_language' %}" method="post" style="margin:0">
                 {% csrf_token %}
-                <input type="hidden" name="next" value="{{ request.path }}">
+                {# path_info (pas path) sinon translate_url ne sait pas resolve le préfixe SCRIPT_NAME. #}
+                <input type="hidden" name="next" value="{{ request.path_info }}">
                 <label class="lang-pill" title="{% trans 'Langue' %}">
                     {% icon "globe" size="14px" %}
                     <select name="language" onchange="this.form.submit()" aria-label="{% trans 'Langue' %}">

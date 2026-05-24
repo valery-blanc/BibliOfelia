@@ -4,7 +4,7 @@ Spécification détaillée du logiciel de gestion de bibliothèque BibliOfelia, 
 
 Version : 1.0 (cible v1)
 Statut : draft pour Spec-Driven Development
-Dernière modif spec : 2026-05-23 — FEAT-025 (refonte design global Sprint 8 : 23 templates métiers harmonisés sur le design system OFELIA — pagehead inline, tilestrip de navigation contextuelle, `.table-wrap`/`.table` stylées, boutons `.btn` arrondis 44 px, `.card`/`.list-row` partout ; ajout helpers form `.advanced-section`/`.isbn-row`/`.form-control`/`.help-hint`/`.field-error`/`.req`/`.form-actions` à ofelia.css ; `_field.html` migré de `.form-row` vers `.field` — §10.1/§10.2) ; FEAT-024 (scanner caméra navigateur : mode alternatif au handoff OfeliaScan, lib `html5-qrcode` locale, toggle utilisateur device-scoped en localStorage, contrainte HTTPS — §6.10 nouvelle sous-section « Scanner caméra navigateur ») ; FEAT-023 (handoff single-scan OfeliaScan : nouveaux endpoints `/scan-handoff` + `/scan-handoff/{token}` ; modèle `ScanHandoff` ; deep-link `ofeliascan://scan-one` ; boutons « Scanner » des pages prêt/retour/dashboard câblés ; CSRF + polling 700 ms ; TTL 5 min — §6.10 nouvelle sous-section « Handoff single-scan ») ; Refonte UI design OFELIA (§3.2 Frontend, §10.2 Navigation/Écrans : tuiles, tile strip, page head, polices Bricolage Grotesque/DM Sans, ofelia.css, logo OFELIA) ; FEAT-021 (API scan-sessions + inventory-sessions : contrat aligné sur le client OfeliaScan — corps `{"items":[...]}`, champs `scanned_value`/`metadata_*`/`item_state`, idempotency `local_id`, finalize sync = create-or-add-copies, ownership contributor_api — §6.10) ; FEAT-020 (intégration keebee : déploiement sur la Ofelia Box via le wizard keebee, clone + build sur la Pi, routage nginx `/bibliofelia/`, réglage `SECURE_COOKIES`, statique servi par nginx — §4, §11) ; FEAT-018 (terminologie UI : l'EAN13 interne d'un exemplaire est nommé « code Ofelia » dans toute l'interface ; rapport d'inventaire enrichi du code Ofelia et de l'ISBN — §5.2/§6.5/§6.7) ; Sprint 4 : FEAT-011 (dashboard enrichi §6.6 + rapports + paramètres + gestion comptes), FEAT-012 (impression étiquettes + cartes §6.7), FEAT-013 (notifications offline §6.8), FEAT-014 (sauvegardes §8 + planification django-q2), FEAT-015 (wizard premier démarrage §11.3 + données démo §11.4), FEAT-017 (onglet « Avancé » + page Connexion OfeliaScan + « Mon compte » §6.6/§6.10/§10.2), BUG-006 (i18n : `accounts/` déplacé sous `i18n_patterns` + chaînes EN/ES/MG complétées) ; Sprint 3 : FEAT-016 — API OfeliaScan (§6.10 : auth JWT, /pairing/info, /isbn/{isbn}, /health) ; FEAT-019 — publication mDNS via service Avahi sur l'hôte (§6.10) ; SPEC-CORR-002 — /pairing/info renvoie `base_url` (URL absolue) ; Sprint 2 : FEAT-005 à FEAT-010 (§6.1 à §6.5, §10) ; i18n 4 langues (§6.9) ; BUG-002 à BUG-005 ; §6.10 réécrit comme contrat d'API (SPEC-CORR-001)
+Dernière modif spec : 2026-05-24 — **Sprint 9 (suite & finalisation)** : hotfixes FEAT-031 (placeholder OfeliaScan `ISBN:<isbn> - <dd.mm.aaaa hh.mn>` language-neutral à la place de `"Sans titre — session …"` — détecté + écrasé par l'enrichissement ; sources étendues : cover image (Google Books `imageLinks`, OpenLibrary `cover.large`), summary (OL `description`/`notes`/`excerpts`, GB, BNF, BNE `dc:description`), subjects → tags (OL `subjects[].name`, GB `categories` split, BNF/BNE `dc:subject`) — cap 10 tags max, longueur 40 max, dedup ; **fusion field-by-field** entre les réponses parallèles : pour chaque champ on prend la 1re source non vide dans l'ordre préféré → summary GB en fallback si OL vide ; vue détail enrichie : `field ← source` ; affichage cover sur fiche notice ; affichage subtitle dans la carte meta ; sources en parallèle via ThreadPoolExecutor (~×4 plus rapide) ; idempotence `run_enrichment_job` + `q_options={timeout:3600, retry:7200}` pour éviter le multi-run django-q2 — §6.11) ; BUG `Item.internal_id` collision quand séquence à trous (suppression / sessions échouées) : remplacement `count()+1` → `MAX(internal_id)+1` (§5.2 Item) ; recherche ISBN/EAN13 dans `/catalog/` via `classify_query` (FTS5 ne couvre pas les ISBN) — §6.1 ; nouveau filtre **tag (icontains)** dans la barre de filtre catalogue — §6.1 ; BUG i18n sélecteur de langue : `{{ request.path }}` → `{{ request.path_info }}` (sans `FORCE_SCRIPT_NAME`) pour que `translate_url` fonctionne en prod nginx (§6.9) ; **traductions complètes EN/ES/MG** (197 chaînes appliquées, 48 fuzzy nettoyés via `scripts/apply_translations.py`) couvrant dashboard, tile_strip, lend/return/reservations/advanced, settings, enrichment, suppressions Sprint 9 — §6.9. — **Sprint 9** : FEAT-026 (suppression en masse de notices : checkboxes sur `record_list`, page de confirmation, CASCADE manuel prêts→LOST + résa→CANCELLED, superadmin uniquement — §6.1) ; FEAT-027 (suppression définitive d'exemplaire à côté de Pilonner ; prêts actifs → LOST, résa actives → CANCELLED, CASCADE prêts passés ; cas du vol et de l'erreur de saisie — §6.1) ; FEAT-028 (toggle ACTIVE ↔ SUSPENDED sur fiche membre ; check `MemberStatus.ACTIVE` ajouté dans `loans.services.check_item_loanable` ; réactivation depuis EXPIRED recalcule `expiration_date` — §6.2) ; FEAT-029 (suppression d'un membre superadmin : annule réservations, force-retourne prêts actifs, CASCADE manuel des prêts/résa/consultations, détache dépendants ; pas de migration — §6.2) ; FEAT-030 (suppression d'un user superadmin avec garde-fous : self interdit, dernier SUPERADMIN actif interdit ; auditlog préservé via FK SET_NULL existantes — §9.2) ; FEAT-031 (enrichissement multi-sources async : modules `apps/catalog/sources/{openlibrary,google_books,bnf,bne}` ; modèle `EnrichmentJob` + tâche django-q2 `run_enrichment_job` ; UI Avancé → Enrichissement avec choix mode/sources/scope ; rapport par notice — nouvelle sous-section §6.11) — FEAT-025 (refonte design global Sprint 8 : 23 templates métiers harmonisés sur le design system OFELIA — pagehead inline, tilestrip de navigation contextuelle, `.table-wrap`/`.table` stylées, boutons `.btn` arrondis 44 px, `.card`/`.list-row` partout ; ajout helpers form `.advanced-section`/`.isbn-row`/`.form-control`/`.help-hint`/`.field-error`/`.req`/`.form-actions` à ofelia.css ; `_field.html` migré de `.form-row` vers `.field` — §10.1/§10.2) ; FEAT-024 (scanner caméra navigateur : mode alternatif au handoff OfeliaScan, lib `html5-qrcode` locale, toggle utilisateur device-scoped en localStorage, contrainte HTTPS — §6.10 nouvelle sous-section « Scanner caméra navigateur ») ; FEAT-023 (handoff single-scan OfeliaScan : nouveaux endpoints `/scan-handoff` + `/scan-handoff/{token}` ; modèle `ScanHandoff` ; deep-link `ofeliascan://scan-one` ; boutons « Scanner » des pages prêt/retour/dashboard câblés ; CSRF + polling 700 ms ; TTL 5 min — §6.10 nouvelle sous-section « Handoff single-scan ») ; Refonte UI design OFELIA (§3.2 Frontend, §10.2 Navigation/Écrans : tuiles, tile strip, page head, polices Bricolage Grotesque/DM Sans, ofelia.css, logo OFELIA) ; FEAT-021 (API scan-sessions + inventory-sessions : contrat aligné sur le client OfeliaScan — corps `{"items":[...]}`, champs `scanned_value`/`metadata_*`/`item_state`, idempotency `local_id`, finalize sync = create-or-add-copies, ownership contributor_api — §6.10) ; FEAT-020 (intégration keebee : déploiement sur la Ofelia Box via le wizard keebee, clone + build sur la Pi, routage nginx `/bibliofelia/`, réglage `SECURE_COOKIES`, statique servi par nginx — §4, §11) ; FEAT-018 (terminologie UI : l'EAN13 interne d'un exemplaire est nommé « code Ofelia » dans toute l'interface ; rapport d'inventaire enrichi du code Ofelia et de l'ISBN — §5.2/§6.5/§6.7) ; Sprint 4 : FEAT-011 (dashboard enrichi §6.6 + rapports + paramètres + gestion comptes), FEAT-012 (impression étiquettes + cartes §6.7), FEAT-013 (notifications offline §6.8), FEAT-014 (sauvegardes §8 + planification django-q2), FEAT-015 (wizard premier démarrage §11.3 + données démo §11.4), FEAT-017 (onglet « Avancé » + page Connexion OfeliaScan + « Mon compte » §6.6/§6.10/§10.2), BUG-006 (i18n : `accounts/` déplacé sous `i18n_patterns` + chaînes EN/ES/MG complétées) ; Sprint 3 : FEAT-016 — API OfeliaScan (§6.10 : auth JWT, /pairing/info, /isbn/{isbn}, /health) ; FEAT-019 — publication mDNS via service Avahi sur l'hôte (§6.10) ; SPEC-CORR-002 — /pairing/info renvoie `base_url` (URL absolue) ; Sprint 2 : FEAT-005 à FEAT-010 (§6.1 à §6.5, §10) ; i18n 4 langues (§6.9) ; BUG-002 à BUG-005 ; §6.10 réécrit comme contrat d'API (SPEC-CORR-001)
 
 ---
 
@@ -458,12 +458,15 @@ Index dédiés :
 - Full-text via FTS5 sur titre, sous-titre, résumé, auteurs
 - Recherche exacte sur ISBN (13 ou 10) si la requête ressemble à un ISBN
 - Recherche exacte sur EAN13 d'exemplaire ou n° de carte membre
-- Filtres : catégorie, langue, statut exemplaire, état, emplacement, document_type
+- Filtres dans la page catalogue (`catalog:record_list`) : catégorie, type de document, langue, **tag** (recherche substring case-insensitive sur le nom — `science` matche « Science Fiction » et « science populaire »), recherche texte/ISBN/EAN13 dans la barre principale (route via `classify_query` : `isbn` → `Q(isbn_13=v) | Q(isbn_10=v)`, `item` → `items__ean13=v`, sinon FTS5).
 - Tri : pertinence, titre, auteur, date d'ajout
 
 #### Modification et suppression
 - Édition libre de notice et exemplaire pour bibliothécaires
-- Suppression : interdite si exemplaires liés actifs, sinon suppression logique (champ `discarded`)
+- **Pilonner un exemplaire** (`item_discard`) : passage du statut à `DISCARDED`, exemplaire conservé en base. Cas d'usage : livre abîmé sortant du fonds. Bloqué si statut `ON_LOAN` ou `RESERVED_FOR_PICKUP`.
+- **Supprimer définitivement un exemplaire** (FEAT-027 — `item_delete`) : DELETE hard. Cas d'usage : doublon, EAN13 mal saisi, vol. Aucun blocage : si l'exemplaire est prêté, le prêt actif passe à `LoanStatus.LOST` (`return_date=now`) ; si réservé, la réservation correspondante passe à `CANCELLED` ; les prêts passés sont supprimés en cascade (CASCADE manuel car `Loan.item=PROTECT`). Bouton à côté de "Pilonner" sur la fiche notice. Rôle librarian + superadmin.
+- **Supprimer une notice** (`record_delete`) : interdite si exemplaires actifs (AVAILABLE / ON_LOAN / RESERVED / IN_REPAIR), sinon DELETE en cascade.
+- **Suppression en masse** (FEAT-026 — `record_bulk_delete`) : checkboxes sur `record_list.html` (visibles superadmin uniquement) + barre d'action sticky qui ouvre une page de confirmation listant pour chaque notice le nombre d'exemplaires, de prêts actifs et de réservations actives impactés. Aucun blocage : prêts actifs → `LOST`, résa actives → `CANCELLED`, puis suppression en transaction unique (Item.record=CASCADE). Rôle superadmin uniquement.
 - Historique conservé via django-auditlog
 
 ### 6.2 Gestion des usagers
@@ -499,6 +502,21 @@ Index dédiés :
 - Tâche django-q2 quotidienne marque `expired` les cartes dont `expiration_date < today`
 - Avertissement à la bibliothécaire au scan d'une carte expirante (< 30 jours)
 - Renouvellement = mise à jour de `expiration_date` (1 clic)
+
+#### Désactivation / réactivation (FEAT-028)
+- Bouton **« Désactiver »** sur la fiche membre (rôle librarian + superadmin) : passe `MemberStatus.ACTIVE` → `SUSPENDED`. Le membre reste consultable, son historique est préservé, mais aucun nouveau prêt ne peut lui être enregistré (`loans.services.check_item_loanable` refuse toute member dont `status != ACTIVE`).
+- Bouton **« Réactiver »** quand le membre est `SUSPENDED`, `EXPIRED` ou `CLOSED` : repasse en `ACTIVE`. Si l'`expiration_date` est dépassée, elle est recalculée à `today + card_validity_months` (équivalent renew implicite).
+- Action atomique sans page de confirmation (réversible en 1 clic).
+
+#### Suppression d'un membre (FEAT-029)
+- Bouton **« Supprimer le membre »** sur la fiche membre, rôle superadmin uniquement. Page de confirmation listant les impacts (prêts en cours, réservations actives, prêts passés, comptes rattachés).
+- En exploitation normale, on désactive plutôt qu'on supprime (cf. FEAT-028). La suppression cible le nettoyage post-install (notices de démo non couvertes par `manage.py remove_demo`) et les membres fantômes.
+- Comportement à la confirmation (transaction atomique) :
+  - Réservations actives → `CANCELLED`.
+  - Prêts actifs → `RETURNED` + `return_date=now` + exemplaires repassés en `AVAILABLE`.
+  - Dépendants (`parent_account=member`) → `parent_account=NULL` (SET_NULL natif).
+  - CASCADE manuel : `member.loans.all().delete()`, `member.reservations.all().delete()`, `member.consultations.all().delete()` (les FK sont `PROTECT`, on cascade explicitement dans la vue).
+  - `member.delete()`.
 
 ### 6.3 Prêts et retours
 
@@ -733,7 +751,8 @@ Implémentation :
 - Fallback configuré : `MODELTRANSLATION_FALLBACK_LANGUAGES = ('fr',)` → si un champ traduit est vide pour la langue active, la valeur française est utilisée.
 - Code de langue `mg` (Malagasy) absent de `django.conf.locale.LANG_INFO` ; enregistré explicitement dans `config/settings/base.py` (sinon `KeyError` dans `modeltranslation.admin.TranslationAdmin`).
 - **Routage** : `i18n_patterns(prefix_default_language=True)` dans `config/urls.py` — toutes les URLs de l'interface portent un préfixe de langue (`/fr/…`, `/en/…`, `/es/…`, `/mg/…`), **y compris `accounts/`** (login/logout + gestion comptes, depuis BUG-006). Indispensable pour que le sélecteur de langue et le cookie de préférence soient respectés sur toutes les pages (cf. BUG-005). La racine `/` redirige vers `/<langue>/`. Seuls `setup/`, `admin/`, `api/v1/`, `i18n/` restent hors `i18n_patterns` (paths techniques sans i18n).
-- Sélecteur de langue dans l'en-tête : `set_language` natif de Django, persistance par cookie `django_language`.
+- Sélecteur de langue dans l'en-tête : `set_language` natif de Django, persistance par cookie `django_language`. Le champ caché `next` du formulaire utilise `{{ request.path_info }}` (chemin **sans** le préfixe `FORCE_SCRIPT_NAME=/bibliofelia` ajouté par nginx en prod) — sinon `translate_url` ne sait pas resolve le chemin et le préfixe de langue reste inchangé.
+- Traductions maintenues via `scripts/apply_translations.py` (dict Python → batch d'application aux 4 `.po`, suppression des `#, fuzzy`). Approche utile pour les vagues de chaînes nouvelles : on évite l'édition manuelle des `.po` et le mauvais recyclage par `msgmerge` (fuzzy avec traductions d'autres msgid).
 - Membre peut avoir une `preferred_language` distincte, utilisée pour reçus et cartes (Sprint 3).
 - Aucune dépendance à un service de traduction externe : tout est figé dans les fichiers .po.
 
@@ -812,6 +831,8 @@ librarian/superadmin voient tout.
     (`metadata_source=scan_app`), puis `+copy_count Item`s ;
   - `location_code` résolu via `Location.code` ; `item_state` validé sinon
     fallback `good` ; marqueur `[ScanSession:UUID]` ajouté aux `notes`.
+  - **Placeholder titre** : si OfeliaScan envoie un ISBN sans `metadata_title`, la notice est créée avec `title = "ISBN:<isbn> - <dd.mm.aaaa hh.mn>"` (language-neutral, pas de gettext). Ce placeholder est reconnu et écrasé par l'enrichissement FEAT-031 même en mode FILL_MISSING (préfixes détectés : `"ISBN:"` + legacy `"Sans titre — session "` pour rétrocompat). Constante : `apps/catalog/enrichment.py:_PLACEHOLDER_TITLE_PREFIXES`.
+  - **Génération `internal_id`** : `OFL-YYYYMMDD-NNNN` calculée par `Item._assign_codes()` via `MAX(internal_id)+1` (pas `count()+1` qui collisionnait quand la séquence avait des trous — sessions échouées, suppressions d'exemplaires).
   - Réponse `200` : `{session_id, state: "finalized", finalized_at,
     summary: {items_processed, records_created, records_matched, copies_added, errors}}`.
 
@@ -988,6 +1009,72 @@ Page d'administration **Connexion OfeliaScan** (`core:ofeliascan`,
   modèle « mot de passe Wi-Fi affiché »). Le compte Django garde un
   hash Argon2 ; le clair n'est qu'une copie de commodité.
 
+### 6.11 Enrichissement métadonnées multi-sources (FEAT-031)
+
+Tâche asynchrone qui interroge des sources externes pour compléter ou
+écraser les métadonnées du catalogue.
+
+**Pourquoi** : OpenLibrary unitaire (lookup ISBN à la création de notice)
+couvre mal certains fonds. Au lieu de re-saisir chaque notice, on lance un
+batch qui itère sur le périmètre choisi.
+
+**Sources branchées (`apps/catalog/sources/`)** :
+
+| Clé              | Module                  | Spécificité                                                     |
+|------------------|-------------------------|-----------------------------------------------------------------|
+| `openlibrary`    | `openlibrary.py`        | Gratuit, sans clé, bonne couverture FR/EN.                      |
+| `google_books`   | `google_books.py`       | Clé API obligatoire (Google Cloud, gratuite). Couverture mondiale. |
+| `bnf`            | `bnf.py` (SRU XML)      | Sans clé. Spécifique livres francophones.                       |
+| `bne`            | `bne.py` (SRU Alma XML) | Sans clé. Spécifique livres hispanophones.                      |
+
+Chaque module expose `lookup(isbn) -> dict | None` (clés normalisées :
+`title`, `subtitle`, `authors_text`, `publisher`, `publication_year`,
+`language`, `summary`, `subjects` (list), `cover_url` (str)). Les sources
+SRU (BNF, BNE) ne renvoient pas de `cover_url`.
+
+**Champs alimentés par l'enrichissement :**
+- Texte/scalaires : `title` (écrase aussi le placeholder OfeliaScan `ISBN:<isbn> - <dd.mm.aaaa hh.mn>`), `subtitle`, `publisher`, `publication_year`, `language`, `summary`.
+- Auteurs : split `;` côté source → `Author.get_or_create(full_name=…)` + `record.authors.add(…)`. En FILL_MISSING : seulement si pas d'auteur. En OVERWRITE : `record.authors.clear()` puis re-création.
+- Tags (depuis subjects) : cap **10 max par notice**, longueur **≤ 40 caractères**, dedup insensible à la casse. En FILL_MISSING : seulement si la notice n'a aucun tag. En OVERWRITE : `record.tags.clear()` puis ajout.
+- Cover : téléchargé via httpx (timeout 10s, **max 2 MB**, follow_redirects), stocké dans `record.cover_image` → `media/covers/<isbn>.jpg`. En FILL_MISSING : seulement si pas de cover. En OVERWRITE : remplace.
+
+**Configuration** : `Paramètres → Sources de métadonnées` (`MetadataSourcesForm`,
+section `sources` dans `core:settings_index`) — toggle on/off par source +
+champ pour la clé Google Books (persistance dans `Setting["metadata.sources"]`
+et `Setting["metadata.google_books_api_key"]`).
+
+**Lancement** : `Avancé → Enrichissement métadonnées` (`core:enrichment_index`,
+superadmin). Formulaire :
+- **Mode** : `fill_missing` (défaut, ne touche pas les champs déjà remplis)
+  ou `overwrite` (remplace).
+- **Sources** : sous-ensemble des sources actives.
+- **Périmètre** : toutes les notices avec un ISBN / notices sans auteur /
+  notices sans éditeur / liste d'ISBN libre (textarea).
+
+Le formulaire crée un `EnrichmentJob` (`PENDING`) et le pousse dans la file
+django-q2 (`async_task("apps.catalog.enrichment.run_enrichment_job", job.pk)`).
+Redirection vers la page de détail qui auto-rafraîchit toutes les 3 s tant
+que l'état est `pending` ou `running` (meta refresh, pas HTMX pour rester
+simple).
+
+**Tâche `run_enrichment_job(job_id)`** (`apps/catalog/enrichment.py`) :
+1. **Garde idempotence** : si `state != PENDING` (ex. re-enqueue par django-q2), `return` immédiat — évite le double-traitement.
+2. Passe `state=RUNNING`.
+3. Construit le queryset via `build_queryset(scope_filter)` (filtre toujours à `isbn_13` ou `isbn_10` non NULL).
+4. Pour chaque notice : `_try_sources()` interroge **toutes les sources actives en parallèle** (`ThreadPoolExecutor`, 1 thread/source) et renvoie `{source_name: data | None}` préservant l'ordre demandé.
+5. `merge_record(record, responses, source_order, mode)` fusionne **field-by-field** : pour chaque champ, prend la 1re source non vide dans `source_order`. Permet par exemple un `summary` depuis Google Books quand OpenLibrary répond mais sans description. Le badge `metadata_source` reflète la 1re source contributrice dans l'ordre préféré ; `metadata_quality=AUTO` à chaque écriture.
+6. Compteurs `processed/updated/skipped/errors` sauvegardés tous les 5 items + à la fin. `report` (JSONField) accumule une entrée par notice modifiée (`{record_id, isbn, changes: {field: source_name}}`) ou en erreur.
+7. Final : `state=FINISHED` (ou `FAILED` si exception non gérée).
+
+**Enqueue** : `async_task(..., q_options={"timeout": 3600, "retry": 7200, "ack_failure": True})` — désactive le re-enqueue automatique de django-q2 (`Q_CLUSTER.retry=120` global) qui provoquait des `processed > total` en doublonnant les workers sur une tâche batch.
+
+**Rapport** : la page détail liste les notices traitées avec, pour chaque champ modifié, la source qui l'a fourni (badge `field ← source`).
+
+**Modèle `EnrichmentJob`** : `started_at`, `finished_at`, `state` (PENDING /
+RUNNING / FINISHED / FAILED), `mode`, `sources` (JSON list), `scope_filter`
+(JSON dict), `total`, `processed`, `updated`, `skipped`, `errors`, `report`
+(JSON list), `created_by` (User, SET_NULL).
+
 ### 7.1 Modes de fonctionnement
 
 | Mode | Disponibilité internet | Comportement |
@@ -1085,6 +1172,13 @@ Implémentation (FEAT-004) :
   - Les autres rôles utiliseront l'UI custom (Sprint 2+).
 - Helpers : `apps.accounts.permissions.require_role(*roles)` (décorateur vue Django) et `HasRole` (permission DRF, lit `view.required_roles`).
 - Librarian ne peut pas `delete` les modèles porteurs d'historique (`BibliographicRecord`, `Loan`, `Member`) ; passe par `status=closed` ou escalade superadmin.
+
+#### Suppression d'un compte utilisateur (FEAT-030)
+- Action superadmin uniquement, depuis `accounts:user_list` (bouton « Supprimer » sur chaque ligne sauf soi-même) → page de confirmation listant les références historiques préservées.
+- **Garde-fous bloquants** :
+  1. Interdit de supprimer son propre compte (`request.user.pk == user.pk`).
+  2. Interdit de supprimer le dernier SUPERADMIN actif (`User.objects.filter(is_active, role=SUPERADMIN | is_superuser).exclude(pk=user.pk).count() == 0`).
+- Historique préservé via les FK `SET_NULL` natives : `loans.librarian`, `catalog.BibliographicRecord.created_by`, `catalog.ScanSession.created_by`, `catalog.EnrichmentJob.created_by`. L'auditlog conserve la trace de l'action (acteur devient NULL).
 
 ### 9.3 Reset administrateur
 

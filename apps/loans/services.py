@@ -14,7 +14,7 @@ from django.utils.translation import gettext_lazy as _
 
 from apps.catalog.models import Item, ItemStatus
 from apps.core.models import Setting
-from apps.members.models import Member
+from apps.members.models import Member, MemberStatus
 
 from .models import Loan, LoanStatus, Reservation, ReservationStatus
 
@@ -81,6 +81,13 @@ def check_item_loanable(item: Item, member: Member, basket_count: int = 0) -> Lo
     panier de prêt en cours (comptés dans la limite)."""
     check = LoanCheck()
     record = item.record
+
+    if member.status != MemberStatus.ACTIVE:
+        check.ok = False
+        check.errors.append(
+            _("Usager %(status)s : prêt impossible.") % {"status": member.get_status_display()}
+        )
+        return check
 
     # Vérité de la table Loan, pas du cache `item.status` : un exemplaire déjà
     # prêté ne peut pas l'être une 2e fois même si son statut a divergé (prêt

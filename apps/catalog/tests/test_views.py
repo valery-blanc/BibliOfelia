@@ -35,6 +35,74 @@ def test_record_list_visible_to_readonly(client, readonly, record):
     assert b"Fondation" in resp.content
 
 
+def test_record_list_search_by_isbn13(client, readonly):
+    """Bug remonté Val 2026-05-24 : la recherche par ISBN ne marchait pas
+    dans le catalogue (FTS5 n'indexe pas les ISBN). Désormais classify_query
+    route les ISBN vers un filtre direct sur isbn_13/isbn_10."""
+    rec = BibliographicRecord.objects.create(
+        title="Le livre cherché", isbn_13="9782070612758"
+    )
+    BibliographicRecord.objects.create(title="Autre livre")
+    client.force_login(readonly)
+    resp = client.get("/fr/catalog/", {"q": "9782070612758"})
+    assert resp.status_code == 200
+    assert b"Le livre cherch\xc3\xa9" in resp.content
+    assert b"Autre livre" not in resp.content
+
+
+def test_record_list_search_by_isbn10(client, readonly):
+    BibliographicRecord.objects.create(title="Match isbn10", isbn_10="2070612759")
+    client.force_login(readonly)
+    resp = client.get("/fr/catalog/", {"q": "2070612759"})
+    assert resp.status_code == 200
+    assert b"Match isbn10" in resp.content
+
+
+def test_record_list_search_by_item_ean13(client, readonly):
+    """EAN13 commençant par 290 → matche via items__ean13."""
+    rec = BibliographicRecord.objects.create(title="Notice avec exemplaire")
+    item = Item.objects.create(record=rec)
+    BibliographicRecord.objects.create(title="Sans exemplaire")
+    client.force_login(readonly)
+    resp = client.get("/fr/catalog/", {"q": item.ean13})
+    assert resp.status_code == 200
+    assert b"Notice avec exemplaire" in resp.content
+    assert b"Sans exemplaire" not in resp.content
+
+
+def test_record_list_search_by_tag_substring(client, readonly):
+    """Filtre `q_tag` : recherche substring case-insensitive sur les tags."""
+    from apps.catalog.models import Tag
+    rec1 = BibliographicRecord.objects.create(title="Livre A")
+    rec2 = BibliographicRecord.objects.create(title="Livre B")
+    rec3 = BibliographicRecord.objects.create(title="Livre C")
+    rec1.tags.add(Tag.objects.create(name="Science Fiction"))
+    rec2.tags.add(Tag.objects.create(name="science populaire"))
+    rec3.tags.add(Tag.objects.create(name="Histoire"))
+    client.force_login(readonly)
+    resp = client.get("/fr/catalog/", {"q_tag": "science"})
+    assert resp.status_code == 200
+    # Match Science Fiction et science populaire, pas Histoire
+    assert b"Livre A" in resp.content
+    assert b"Livre B" in resp.content
+    assert b"Livre C" not in resp.content
+
+
+def test_record_list_tag_filter_combines_with_other_filters(client, readonly):
+    """q_tag combiné avec un filtre langue : AND."""
+    from apps.catalog.models import Tag
+    tag = Tag.objects.create(name="Roman")
+    rec_fr = BibliographicRecord.objects.create(title="FR roman", language="fr")
+    rec_en = BibliographicRecord.objects.create(title="EN roman", language="en")
+    rec_fr.tags.add(tag)
+    rec_en.tags.add(tag)
+    client.force_login(readonly)
+    resp = client.get("/fr/catalog/", {"q_tag": "roman", "language": "fr"})
+    assert resp.status_code == 200
+    assert b"FR roman" in resp.content
+    assert b"EN roman" not in resp.content
+
+
 def test_record_create_forbidden_for_readonly(client, readonly):
     client.force_login(readonly)
     resp = client.get("/fr/catalog/new/")

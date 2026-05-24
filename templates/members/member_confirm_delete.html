@@ -1,0 +1,65 @@
+{% extends "base.html" %}
+{% load i18n biblio_icons %}
+
+{% block title %}{% trans "Supprimer l'usager" %}{% endblock %}
+
+{% block tile_strip %}{% include "partials/_tile_strip.html" with active="members" %}{% endblock %}
+
+{% block content %}
+<header class="pagehead">
+    <div class="pagehead-icon" style="--ph-bg:var(--blush);--ph-fg:#B83232">
+        {% icon "trash-2" size="28px" %}
+    </div>
+    <div class="pagehead-text">
+        <h1 class="pagehead-title">{% trans "Supprimer l'usager" %}</h1>
+        <div class="pagehead-sub">{{ member.full_name }} · {% trans "Carte" %} {{ member.card_number }}</div>
+    </div>
+</header>
+
+<div class="card">
+    <p>{% blocktrans with name=member.full_name %}Confirmez-vous la suppression de l'usager <strong>{{ name }}</strong> ? Cette action est irréversible.{% endblocktrans %}</p>
+
+    <h3 style="margin-top:18px">{% trans "Impacts" %}</h3>
+    <ul>
+        {% if active_loans %}
+        <li>
+            <strong>{{ active_loans|length }}</strong> {% trans "prêt(s) en cours seront clôturés (exemplaires libérés) :" %}
+            <ul>
+                {% for loan in active_loans %}
+                <li>{{ loan.item.record.title }} ({{ loan.item.internal_id }})</li>
+                {% endfor %}
+            </ul>
+        </li>
+        {% endif %}
+        {% if active_reservations_count %}
+        <li><strong>{{ active_reservations_count }}</strong> {% trans "réservation(s) active(s) seront annulées." %}</li>
+        {% endif %}
+        {% if past_loans_count %}
+        <li><strong>{{ past_loans_count }}</strong> {% trans "prêt(s) passé(s) seront supprimés (historique perdu)." %}</li>
+        {% endif %}
+        {% if dependents %}
+        <li>
+            <strong>{{ dependents|length }}</strong> {% trans "compte(s) rattaché(s) verront leur lien rompu :" %}
+            <ul>
+                {% for dep in dependents %}
+                <li>{{ dep.full_name }}</li>
+                {% endfor %}
+            </ul>
+        </li>
+        {% endif %}
+        {% if not active_loans and not active_reservations_count and not past_loans_count and not dependents %}
+        <li class="muted">{% trans "Aucun impact : usager sans prêt, réservation ni dépendant." %}</li>
+        {% endif %}
+    </ul>
+
+    <form method="post" style="margin-top:18px">
+        {% csrf_token %}
+        <div class="form-actions" style="border:0;padding:0;margin:0">
+            <button type="submit" class="btn btn--primary" style="background:#B83232;border-color:#B83232">
+                {% icon "trash-2" size="16px" %} {% trans "Supprimer définitivement" %}
+            </button>
+            <a href="{% url 'members:detail' member.pk %}" class="btn btn--ghost">{% trans "Annuler" %}</a>
+        </div>
+    </form>
+</div>
+{% endblock %}

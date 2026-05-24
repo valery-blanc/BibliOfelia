@@ -23,7 +23,7 @@
         <div class="topbar-actions">
             <form action="{% url 'set_language' %}" method="post" style="margin:0">
                 {% csrf_token %}
-                <input type="hidden" name="next" value="{{ request.path }}">
+                <input type="hidden" name="next" value="{{ request.path_info }}">
                 <label class="lang-pill" title="{% trans 'Langue' %}">
                     <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="width:14px;height:14px"><circle cx="12" cy="12" r="9"/><path d="M3 12h18"/><path d="M12 3a14 14 0 0 1 0 18"/><path d="M12 3a14 14 0 0 0 0 18"/></svg>
                     <select name="language" onchange="this.form.submit()" aria-label="{% trans 'Langue' %}">

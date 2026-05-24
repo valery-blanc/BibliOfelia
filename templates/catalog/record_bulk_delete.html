@@ -1,0 +1,80 @@
+{% extends "base.html" %}
+{% load i18n biblio_icons %}
+
+{% block title %}{% trans "Suppression en masse" %}{% endblock %}
+
+{% block tile_strip %}{% include "partials/_tile_strip.html" with active="catalogue" %}{% endblock %}
+
+{% block content %}
+<header class="pagehead">
+    <div class="pagehead-icon" style="--ph-bg:var(--blush);--ph-fg:#B83232">
+        {% icon "trash-2" size="28px" %}
+    </div>
+    <div class="pagehead-text">
+        <h1 class="pagehead-title">{% trans "Suppression en masse de notices" %}</h1>
+        <div class="pagehead-sub">
+            {% blocktrans count counter=count %}{{ counter }} notice sélectionnée{% plural %}{{ counter }} notices sélectionnées{% endblocktrans %}
+        </div>
+    </div>
+</header>
+
+{% if not summaries %}
+<div class="card">
+    <p class="muted">{% trans "Aucune notice sélectionnée." %}</p>
+    <a href="{% url 'catalog:record_list' %}" class="btn btn--ghost">{% trans "Retour au catalogue" %}</a>
+</div>
+{% else %}
+
+<div role="alert" class="msg msg-info" style="margin-bottom:16px">
+    {% icon "triangle-alert" size="16px" %}
+    {% trans "Les prêts en cours seront marqués « Perdu » et les réservations actives seront annulées." %}
+</div>
+
+<div class="card">
+    <h3>{% trans "Notices à supprimer" %}</h3>
+    <div class="table-wrap">
+        <table class="table">
+            <thead>
+                <tr>
+                    <th>{% trans "Titre" %}</th>
+                    <th style="text-align:right">{% trans "Exemplaires" %}</th>
+                    <th style="text-align:right">{% trans "Prêts en cours" %}</th>
+                    <th style="text-align:right">{% trans "Réservations actives" %}</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for s in summaries %}
+                <tr>
+                    <td>{{ s.record.title }}</td>
+                    <td style="text-align:right">{{ s.item_count }}</td>
+                    <td style="text-align:right">
+                        {% if s.active_loans %}
+                            <span class="badge badge--late">{{ s.active_loans }}</span>
+                        {% else %}—{% endif %}
+                    </td>
+                    <td style="text-align:right">
+                        {% if s.active_reservations %}
+                            <span class="badge badge--soon">{{ s.active_reservations }}</span>
+                        {% else %}—{% endif %}
+                    </td>
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    </div>
+
+    <form method="post" action="{% url 'catalog:record_bulk_delete' %}" style="margin-top:18px">
+        {% csrf_token %}
+        {% for pk in ids %}
+        <input type="hidden" name="ids" value="{{ pk }}">
+        {% endfor %}
+        <div class="form-actions" style="border:0;padding:0;margin:0">
+            <button type="submit" class="btn btn--primary" style="background:#B83232;border-color:#B83232">
+                {% icon "trash-2" size="16px" %} {% trans "Confirmer la suppression" %}
+            </button>
+            <a href="{% url 'catalog:record_list' %}" class="btn btn--ghost">{% trans "Annuler" %}</a>
+        </div>
+    </form>
+</div>
+{% endif %}
+{% endblock %}

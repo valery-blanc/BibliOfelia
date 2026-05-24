@@ -1,20 +1,25 @@
-"""Vues usagers : inscription, fiche, historique, carte, renouvellement.
-SPEC §6.2.
+"""Vues usagers : inscription, fiche, historique, carte, renouvellement,
+désactivation, suppression. SPEC §6.2.
 """
 from __future__ import annotations
 
 from collections import Counter
+from datetime import date
 
+from dateutil.relativedelta import relativedelta
 from django.contrib import messages
 from django.core.paginator import Paginator
+from django.db import transaction
 from django.db.models import Q
 from django.shortcuts import get_object_or_404, redirect, render
+from django.utils import timezone
 from django.utils.translation import gettext as _
 from django.views.decorators.http import require_POST
 
 from apps.accounts.models import Role
 from apps.accounts.permissions import require_role
-from apps.loans.models import LoanStatus
+from apps.catalog.models import ItemStatus
+from apps.loans.models import LoanStatus, ReservationStatus
 
 from .forms import MemberForm
 from .models import Member, MemberCategory, MemberStatus
@@ -171,3 +176,78 @@ def member_renew(request, pk):
         _("Carte renouvelée jusqu'au %(date)s.") % {"date": new_date},
     )
     return redirect("members:detail", pk=member.pk)
+
+
+@require_POST
+@require_role(*WRITE_ROLES)
+def member_toggle_active(request, pk):
+    """FEAT-028 : toggle ACTIVE ↔ SUSPENDED. Réactive aussi EXPIRED/CLOSED."""
+    member = get_object_or_404(Member, pk=pk)
+    if member.status == MemberStatus.ACTIVE:
+        member.status = MemberStatus.SUSPENDED
+        msg = _("Usager désactivé.")
+    else:
+        member.status = MemberStatus.ACTIVE
+        if member.expiration_date and member.expiration_date < date.today():
+            months = member.category.card_validity_months or 12
+            member.expiration_date = date.today() + relativedelta(months=months)
+        msg = _("Usager réactivé.")
+    member.save(update_fields=["status", "expiration_date"])
+    messages.success(request, msg)
+    return redirect("members:detail", pk=member.pk)
+
+
+_ACTIVE_RESERVATION_STATUSES = (
+    ReservationStatus.PENDING,
+    ReservationStatus.READY_FOR_PICKUP,
+)
+
+
+@require_role(Role.SUPERADMIN)
+def member_delete(request, pk):
+    """FEAT-029 : suppression d'un membre (admin).
+
+    Aucun blocage : prêts actifs → RETURNED + items libérés, réservations
+    actives → CANCELLED, dépendants détachés, prêts/résa/consultations
+    passés → CASCADE manuel (Loan/Reservation.member=PROTECT), puis delete.
+    """
+    member = get_object_or_404(Member, pk=pk)
+    active_loans = member.loans.filter(status__in=_ACTIVE_LOAN_STATUSES)
+    active_reservations = member.reservations.filter(
+        status__in=_ACTIVE_RESERVATION_STATUSES
+    )
+    past_loans_count = member.loans.exclude(
+        status__in=_ACTIVE_LOAN_STATUSES
+    ).count()
+    dependents = member.dependents.all()
+
+    if request.method == "POST":
+        with transaction.atomic():
+            active_reservations.update(status=ReservationStatus.CANCELLED)
+            for loan in list(active_loans.select_related("item")):
+                loan.status = LoanStatus.RETURNED
+                loan.return_date = timezone.now()
+                loan.save(update_fields=["status", "return_date"])
+                if loan.item.status == ItemStatus.ON_LOAN:
+                    loan.item.status = ItemStatus.AVAILABLE
+                    loan.item.save(update_fields=["status"])
+            dependents.update(parent_account=None)
+            member.loans.all().delete()
+            member.reservations.all().delete()
+            member.consultations.all().delete()
+            full_name = member.full_name
+            member.delete()
+        messages.success(request, _("Usager %(n)s supprimé.") % {"n": full_name})
+        return redirect("members:list")
+
+    return render(
+        request,
+        "members/member_confirm_delete.html",
+        {
+            "member": member,
+            "active_loans": active_loans,
+            "active_reservations_count": active_reservations.count(),
+            "past_loans_count": past_loans_count,
+            "dependents": dependents,
+        },
+    )

@@ -38,7 +38,16 @@
 {% endif %}
 
 <div class="card">
+    {% if record.cover_image %}
+    <div style="float:right;margin:0 0 16px 16px">
+        <img src="{{ record.cover_image.url }}" alt="{% trans 'Couverture' %}"
+             style="max-width:140px;max-height:200px;border-radius:6px;box-shadow:var(--shadow-sm)">
+    </div>
+    {% endif %}
     <dl class="record-meta">
+        {% if record.subtitle %}
+        <div style="grid-column:1/-1"><dt>{% trans "Sous-titre" %}</dt><dd>{{ record.subtitle }}</dd></div>
+        {% endif %}
         <div><dt>{% trans "Auteur(s)" %}</dt><dd>{% for a in record.authors.all %}{{ a.full_name }}{% if not forloop.last %}, {% endif %}{% empty %}—{% endfor %}</dd></div>
         <div><dt>{% trans "Catégorie" %}</dt><dd>{{ record.category.name|default:"—" }}</dd></div>
         <div><dt>{% trans "Type" %}</dt><dd>{{ record.get_document_type_display }}</dd></div>
@@ -105,9 +114,27 @@
                 </td>
                 <td style="text-align:right">
                     {% if user.is_librarian %}
-                    <a href="{% url 'catalog:item_edit' item.pk %}" class="btn btn--ghost btn--sm" title="{% trans 'Modifier' %}">
-                        {% icon "pencil" size="14px" %}
-                    </a>
+                    <div style="display:inline-flex;gap:4px">
+                        <a href="{% url 'catalog:item_edit' item.pk %}" class="btn btn--ghost btn--sm" title="{% trans 'Modifier' %}">
+                            {% icon "pencil" size="14px" %}
+                        </a>
+                        {% if item.status != "discarded" %}
+                        <form method="post" action="{% url 'catalog:item_discard' item.pk %}" style="margin:0"
+                              onsubmit="return confirm('{% trans "Pilonner cet exemplaire ? Il restera en base avec le statut « Pilonné »." %}')">
+                            {% csrf_token %}
+                            <button type="submit" class="btn btn--ghost btn--sm" title="{% trans 'Pilonner' %}" style="color:#A45A00">
+                                {% icon "archive" size="14px" %}
+                            </button>
+                        </form>
+                        {% endif %}
+                        <form method="post" action="{% url 'catalog:item_delete' item.pk %}" style="margin:0"
+                              onsubmit="return confirm('{% trans "Supprimer définitivement cet exemplaire ? Cette action est irréversible." %}')">
+                            {% csrf_token %}
+                            <button type="submit" class="btn btn--ghost btn--sm" title="{% trans 'Supprimer' %}" style="color:#B83232">
+                                {% icon "trash-2" size="14px" %}
+                            </button>
+                        </form>
+                    </div>
                     {% endif %}
                 </td>
             </tr>

@@ -1,0 +1,45 @@
+{% extends "base.html" %}
+{% load i18n biblio_icons %}
+
+{% block title %}{% trans "Supprimer le compte" %}{% endblock %}
+
+{% block tile_strip %}{% include "partials/_tile_strip.html" with active="advanced" %}{% endblock %}
+
+{% block content %}
+<nav class="breadcrumb">
+    <a href="{% url 'core:settings_index' %}">{% trans "Paramètres" %}</a> /
+    <a href="{% url 'accounts:user_list' %}">{% trans "Comptes" %}</a> /
+    <strong>{% trans "Supprimer" %}</strong>
+</nav>
+
+<header class="pagehead">
+    <div class="pagehead-icon" style="--ph-bg:var(--blush);--ph-fg:#B83232">
+        {% icon "trash-2" size="28px" %}
+    </div>
+    <div class="pagehead-text">
+        <h1 class="pagehead-title">{% trans "Supprimer le compte" %}</h1>
+        <div class="pagehead-sub">{{ target.username }} · {{ target.get_role_display }}</div>
+    </div>
+</header>
+
+<div class="card">
+    <p>{% blocktrans with username=target.username %}Confirmez-vous la suppression du compte <strong>{{ username }}</strong> ?{% endblocktrans %}</p>
+
+    <h3 style="margin-top:18px">{% trans "Historique conservé (référence remplacée par « —»)" %}</h3>
+    <ul>
+        <li><strong>{{ impacts.loans_handled }}</strong> {% trans "prêt(s) gérés" %}</li>
+        <li><strong>{{ impacts.records_created }}</strong> {% trans "notice(s) créée(s)" %}</li>
+        <li><strong>{{ impacts.scan_sessions }}</strong> {% trans "session(s) de scan OfeliaScan" %}</li>
+    </ul>
+
+    <form method="post" style="margin-top:18px">
+        {% csrf_token %}
+        <div class="form-actions" style="border:0;padding:0;margin:0">
+            <button type="submit" class="btn btn--primary" style="background:#B83232;border-color:#B83232">
+                {% icon "trash-2" size="16px" %} {% trans "Supprimer définitivement" %}
+            </button>
+            <a href="{% url 'accounts:user_list' %}" class="btn btn--ghost">{% trans "Annuler" %}</a>
+        </div>
+    </form>
+</div>
+{% endblock %}

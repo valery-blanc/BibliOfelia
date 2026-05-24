@@ -14,4 +14,15 @@ urlpatterns = [
     path("<int:record_pk>/items/new/", views.item_create, name="item_create"),
     path("items/<int:pk>/edit/", views.item_edit, name="item_edit"),
     path("items/<int:pk>/discard/", views.item_discard, name="item_discard"),
+    path("items/<int:pk>/delete/", views.item_delete, name="item_delete"),
+    path(
+        "bulk-delete/",
+        views.record_bulk_delete_confirm,
+        name="record_bulk_delete_confirm",
+    ),
+    path(
+        "bulk-delete/apply/",
+        views.record_bulk_delete,
+        name="record_bulk_delete",
+    ),
 ]

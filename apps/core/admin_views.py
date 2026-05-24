@@ -23,6 +23,7 @@ from .forms import (
     LabelFormatForm,
     LanguagesForm,
     LibraryIdentityForm,
+    MetadataSourcesForm,
     ZeroTierForm,
 )
 from .models import Setting
@@ -37,6 +38,7 @@ FORMS = {
     "backup": ("Sauvegardes", BackupConfigForm),
     "labels": ("Étiquettes", LabelFormatForm),
     "zerotier": ("ZeroTier", ZeroTierForm),
+    "sources": ("Sources de métadonnées", MetadataSourcesForm),
 }
 
 
@@ -223,3 +225,73 @@ def diagnostics(request):
         "q_recent_tasks": QTask.objects.all()[:20],
         "q_schedules": Schedule.objects.all(),
     })
+
+
+# ----------------------------------------------------------------------
+# FEAT-031 — Enrichissement métadonnées multi-sources
+# ----------------------------------------------------------------------
+@require_role(Role.SUPERADMIN)
+def enrichment_index(request):
+    """Liste des jobs d'enrichissement passés et formulaire de lancement."""
+    from apps.catalog.models import EnrichmentJob
+    from .forms import MetadataSourcesForm
+
+    jobs = EnrichmentJob.objects.all()[:30]
+    return render(request, "core/admin/enrichment_index.html", {
+        "jobs": jobs,
+        "active_sources": MetadataSourcesForm.active_sources(),
+    })
+
+
+@require_POST
+@require_role(Role.SUPERADMIN)
+def enrichment_start(request):
+    """Crée un EnrichmentJob et le pousse dans la file django-q2."""
+    from django_q.tasks import async_task
+
+    from apps.catalog.models import EnrichmentJob, EnrichmentMode
+    from .forms import MetadataSourcesForm
+
+    mode = request.POST.get("mode", EnrichmentMode.FILL_MISSING)
+    if mode not in dict(EnrichmentMode.choices):
+        mode = EnrichmentMode.FILL_MISSING
+
+    sources = request.POST.getlist("sources") or MetadataSourcesForm.active_sources()
+    sources = [s for s in sources if s in ("openlibrary", "google_books", "bnf", "bne")]
+
+    scope_kind = request.POST.get("scope", "all")
+    scope_filter = {"kind": scope_kind}
+    if scope_kind == "isbns":
+        raw = request.POST.get("isbns", "")
+        scope_filter["isbns"] = [
+            line.strip() for line in raw.splitlines() if line.strip()
+        ]
+
+    job = EnrichmentJob.objects.create(
+        mode=mode,
+        sources=sources,
+        scope_filter=scope_filter,
+        created_by=request.user,
+    )
+    # timeout 1h + retry 2h : enrichissement = batch potentiellement long, ne
+    # pas laisser django-q2 le ré-enqueue toutes les 120 s (Q_CLUSTER.retry).
+    # `run_enrichment_job` est idempotente par sécurité au cas où.
+    async_task(
+        "apps.catalog.enrichment.run_enrichment_job", job.pk,
+        q_options={"timeout": 3600, "retry": 7200, "ack_failure": True},
+    )
+    messages.success(
+        request,
+        _("Enrichissement #%(id)s lancé. Suivez l'avancement ici.") % {"id": job.pk},
+    )
+    return redirect("core:enrichment_detail", pk=job.pk)
+
+
+@require_role(Role.SUPERADMIN)
+def enrichment_detail(request, pk: int):
+    from apps.catalog.models import EnrichmentJob
+
+    job = EnrichmentJob.objects.filter(pk=pk).first()
+    if not job:
+        return redirect("core:enrichment_index")
+    return render(request, "core/admin/enrichment_detail.html", {"job": job})

@@ -6,7 +6,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: BibliOfelia 1.0\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2026-05-23 16:20+0000\n"
+"POT-Creation-Date: 2026-05-23 23:52+0000\n"
 "PO-Revision-Date: 2026-05-22 00:00+0000\n"
 "Last-Translator: Claude Code\n"
 "Language-Team: Español\n"
@@ -18,8 +18,8 @@ msgstr ""
 
 #: apps/accounts/forms.py:15 apps/setup/forms.py:56
 #: templates/accounts/login.html:110 templates/accounts/password_reset.html:4
-#: templates/accounts/user_list.html:35 templates/core/admin/ofeliascan.html:35
-#: templates/core/admin/ofeliascan.html:72
+#: templates/accounts/user_list.html:60 templates/core/admin/ofeliascan.html:47
+#: templates/core/admin/ofeliascan.html:87
 msgid "Mot de passe"
 msgstr "Contraseña"
 
@@ -39,60 +39,68 @@ msgstr "Las contraseñas no coinciden."
 msgid "Nouveau mot de passe"
 msgstr "Nueva contraseña"
 
-#: apps/accounts/views.py:34
+#: apps/accounts/views.py:35
 #, python-format
 msgid "Compte %(u)s créé."
 msgstr "Cuenta %(u)s creada."
 
-#: apps/accounts/views.py:53
+#: apps/accounts/views.py:54
 msgid "Accès réservé."
 msgstr "Acceso restringido."
 
-#: apps/accounts/views.py:60
+#: apps/accounts/views.py:61
 #, python-format
 msgid "Compte %(u)s mis à jour."
 msgstr "Cuenta %(u)s actualizada."
 
-#: apps/accounts/views.py:85
+#: apps/accounts/views.py:86
 msgid "Communiquez ce mot de passe à l'utilisateur puis fermez la page."
 msgstr "Comunique esta contraseña al usuario y cierre la página."
 
-#: apps/accounts/views.py:92
+#: apps/accounts/views.py:93
 #, python-format
 msgid "Mot de passe réinitialisé pour %(u)s."
 msgstr "Contraseña restablecida para %(u)s."
 
-#: apps/api/models.py:23 apps/core/forms.py:172 apps/loans/models.py:20
-#: templates/loans/reservations.html:66
+#: apps/accounts/views.py:120
+msgid "Vous ne pouvez pas supprimer votre propre compte."
+msgstr "No puede eliminar su propia cuenta."
+
+#: apps/accounts/views.py:133
+msgid "Impossible : il doit rester au moins un superadmin actif."
+msgstr "Imposible: debe permanecer al menos un superadmin activo."
+
+#: apps/accounts/views.py:140
+msgid "Compte %(u)s supprimé."
+msgstr "Cuenta %(u)s eliminada."
+
+#: apps/api/models.py:23 apps/catalog/models.py:356 apps/core/forms.py:216
+#: apps/loans/models.py:20 templates/loans/reservations.html:66
 msgid "En attente"
 msgstr "En espera"
 
-#: apps/api/models.py:24
+#: apps/api/models.py:24 apps/catalog/models.py:358
 msgid "Terminé"
-msgstr ""
+msgstr "Finalizado"
 
 #: apps/api/models.py:25
-#, fuzzy
-#| msgid "Annulée"
 msgid "Annulé"
-msgstr "Cancelada"
+msgstr "Cancelado"
 
 #: apps/api/models.py:29
 msgid "Auto-détection"
-msgstr ""
+msgstr "Detección automática"
 
 #: apps/api/models.py:30 apps/catalog/models.py:23
 msgid "Livre"
 msgstr "Libro"
 
 #: apps/api/models.py:31
-#, fuzzy
-#| msgid "Cartes membres"
 msgid "Carte membre"
-msgstr "Tarjetas de socio"
+msgstr "Tarjeta de miembro"
 
-#: apps/catalog/forms.py:17 templates/catalog/record_detail.html:21
-#: templates/catalog/record_list.html:73
+#: apps/catalog/forms.py:17 templates/catalog/record_detail.html:51
+#: templates/catalog/record_list.html:97 templates/catalog/record_list.html:125
 msgid "Auteur(s)"
 msgstr "Autor(es)"
 
@@ -133,11 +141,11 @@ msgstr "CD de audio"
 msgid "Autre"
 msgstr "Otro"
 
-#: apps/catalog/models.py:32 apps/catalog/models.py:254
+#: apps/catalog/models.py:32 apps/catalog/models.py:268
 msgid "Saisie manuelle"
 msgstr "Entrada manual"
 
-#: apps/catalog/models.py:33
+#: apps/catalog/models.py:33 apps/core/forms.py:31
 msgid "OpenLibrary"
 msgstr "OpenLibrary"
 
@@ -194,7 +202,7 @@ msgid "En réparation"
 msgstr "En reparación"
 
 #: apps/catalog/models.py:56 apps/loans/models.py:15
-#: templates/members/member_detail.html:75
+#: templates/members/member_detail.html:148
 msgid "Perdu"
 msgstr "Perdido"
 
@@ -270,231 +278,285 @@ msgstr "ejemplar"
 msgid "exemplaires"
 msgstr "ejemplares"
 
-#: apps/catalog/models.py:252
+#: apps/catalog/models.py:266
 msgid "EAN13"
-msgstr ""
+msgstr "EAN13"
 
-#: apps/catalog/models.py:253 templates/inventory/session_report.html:25
-#: templates/inventory/session_report.html:53
+#: apps/catalog/models.py:267 templates/inventory/session_report.html:55
 msgid "ISBN"
 msgstr "ISBN"
 
-#: apps/catalog/models.py:258
+#: apps/catalog/models.py:272
 msgid "Ouverte"
-msgstr ""
+msgstr "Abierta"
 
-#: apps/catalog/models.py:259 apps/inventory/models.py:25
+#: apps/catalog/models.py:273 apps/inventory/models.py:25
 msgid "Validée"
 msgstr "Validada"
 
-#: apps/catalog/models.py:283
-#, fuzzy
-#| msgid "session de récolement"
+#: apps/catalog/models.py:297
 msgid "session de scan"
-msgstr "sesión de inventario"
+msgstr "sesión de escaneo"
 
-#: apps/catalog/models.py:284
-#, fuzzy
-#| msgid "sessions de récolement"
+#: apps/catalog/models.py:298
 msgid "sessions de scan"
-msgstr "sesiones de inventario"
+msgstr "sesiones de escaneo"
 
-#: apps/catalog/models.py:324
+#: apps/catalog/models.py:338
 msgid "item scanné"
-msgstr ""
+msgstr "ítem escaneado"
 
-#: apps/catalog/models.py:325
+#: apps/catalog/models.py:339
 msgid "items scannés"
-msgstr ""
+msgstr "ítems escaneados"
 
-#: apps/catalog/views.py:114
+#: apps/catalog/models.py:357 apps/inventory/models.py:23
+#: apps/loans/models.py:12
+msgid "En cours"
+msgstr "En curso"
+
+#: apps/catalog/models.py:359
+msgid "Échec"
+msgstr "Fallido"
+
+#: apps/catalog/models.py:363
+msgid "Compléter les champs vides uniquement"
+msgstr "Completar solo los campos vacíos"
+
+#: apps/catalog/models.py:364
+msgid "Écraser avec les données externes"
+msgstr "Sobrescribir con datos externos"
+
+#: apps/catalog/models.py:399
+msgid "enrichissement métadonnées"
+msgstr "enriquecimiento de metadatos"
+
+#: apps/catalog/models.py:400
+msgid "enrichissements métadonnées"
+msgstr "enriquecimientos de metadatos"
+
+#: apps/catalog/views.py:136
 msgid "Notice créée."
 msgstr "Registro creado."
 
-#: apps/catalog/views.py:119 apps/catalog/views.py:159
+#: apps/catalog/views.py:141 apps/catalog/views.py:181
 #: templates/catalog/record_list.html:25 templates/core/dashboard.html:149
 msgid "Nouvelle notice"
-msgstr "Nuevo registro"
+msgstr "Nueva ficha"
 
-#: apps/catalog/views.py:131
+#: apps/catalog/views.py:153
 msgid "Notice mise à jour."
 msgstr "Registro actualizado."
 
-#: apps/catalog/views.py:136
+#: apps/catalog/views.py:158
 msgid "Modifier la notice"
 msgstr "Editar registro"
 
-#: apps/catalog/views.py:147
+#: apps/catalog/views.py:169
 msgid "Notice trouvée sur OpenLibrary."
 msgstr "Registro encontrado en OpenLibrary."
 
-#: apps/catalog/views.py:151
+#: apps/catalog/views.py:173
 msgid "Aucune réponse d'OpenLibrary — saisissez la notice à la main."
 msgstr "Sin respuesta de OpenLibrary — introduzca el registro manualmente."
 
-#: apps/catalog/views.py:173
+#: apps/catalog/views.py:195
 msgid "Suppression impossible : des exemplaires actifs sont rattachés."
 msgstr "No se puede eliminar: hay ejemplares activos asociados."
 
-#: apps/catalog/views.py:177
+#: apps/catalog/views.py:199
 msgid "Notice supprimée."
 msgstr "Registro eliminado."
 
-#: apps/catalog/views.py:203
+#: apps/catalog/views.py:225
 #, python-format
 msgid "%(n)s exemplaire(s) ajouté(s)."
 msgstr "%(n)s ejemplar(es) añadido(s)."
 
-#: apps/catalog/views.py:220
+#: apps/catalog/views.py:242
 msgid "Exemplaire mis à jour."
 msgstr "Ejemplar actualizado."
 
-#: apps/catalog/views.py:235
+#: apps/catalog/views.py:257
 msgid "Impossible : l'exemplaire est prêté ou réservé."
 msgstr "No es posible: el ejemplar está prestado o reservado."
 
-#: apps/catalog/views.py:239
+#: apps/catalog/views.py:261
 msgid "Exemplaire retiré du fonds."
 msgstr "Ejemplar retirado del fondo."
 
-#: apps/core/admin_views.py:59
+#: apps/catalog/views.py:292
+msgid "Exemplaire supprimé."
+msgstr "Ejemplar eliminado."
+
+#: apps/catalog/views.py:358
+msgid "%(n)s notice(s) supprimée(s)."
+msgstr "%(n)s ficha(s) eliminada(s)."
+
+#: apps/core/admin_views.py:61
 #, python-format
 msgid "Paramètres %(label)s enregistrés."
 msgstr "Ajustes %(label)s guardados."
 
-#: apps/core/admin_views.py:76
+#: apps/core/admin_views.py:78
 #, python-format
 msgid "Sauvegarde effectuée : %(p)s"
 msgstr "Copia de seguridad: %(p)s"
 
-#: apps/core/admin_views.py:78
+#: apps/core/admin_views.py:80
 #, python-format
 msgid "Échec sauvegarde : %(e)s"
 msgstr "Copia de seguridad fallida: %(e)s"
 
-#: apps/core/admin_views.py:91
+#: apps/core/admin_views.py:93
 msgid "Aucun fichier fourni."
 msgstr "No se proporcionó archivo."
 
-#: apps/core/admin_views.py:103
+#: apps/core/admin_views.py:105
 msgid "Restauration terminée. Redémarrez l'application avant tout autre usage."
 msgstr "Restauración completa. Reinicie la aplicación antes de continuar."
 
-#: apps/core/admin_views.py:166
+#: apps/core/admin_views.py:168
 msgid "Identifiant requis."
 msgstr "Identificador obligatorio."
 
-#: apps/core/admin_views.py:172
+#: apps/core/admin_views.py:174
 msgid "Cet identifiant est déjà utilisé par un autre compte."
 msgstr "Este identificador ya lo usa otra cuenta."
 
-#: apps/core/admin_views.py:191
+#: apps/core/admin_views.py:193
 #, python-format
 msgid "Identifiant « %(u)s » autorisé."
 msgstr "Identificador «%(u)s» autorizado."
 
-#: apps/core/admin_views.py:202
+#: apps/core/admin_views.py:204
 #, python-format
 msgid "Identifiant « %(u)s » révoqué."
 msgstr "Identificador «%(u)s» revocado."
 
-#: apps/core/forms.py:23 apps/setup/forms.py:24
+#: apps/core/admin_views.py:285
+#, python-format
+msgid "Enrichissement #%(id)s lancé. Suivez l'avancement ici."
+msgstr "Enriquecimiento #%(id)s iniciado. Siga el progreso aquí."
+
+#: apps/core/forms.py:27
+msgid "Clé API Google Books"
+msgstr "Clave API de Google Books"
+
+#: apps/core/forms.py:29
+msgid ""
+"Obligatoire pour activer Google Books. Gratuite via Google Cloud Console."
+msgstr "Obligatorio para activar Google Books. Gratuita en Google Cloud Console."
+
+#: apps/core/forms.py:32
+msgid "Google Books"
+msgstr "Google Books"
+
+#: apps/core/forms.py:33
+msgid "BNF (livres FR)"
+msgstr "BNF (libros FR)"
+
+#: apps/core/forms.py:34
+msgid "BNE (livres ES)"
+msgstr "BNE (libros ES)"
+
+#: apps/core/forms.py:67 apps/setup/forms.py:24
 msgid "Nom de la bibliothèque"
 msgstr "Nombre de la biblioteca"
 
-#: apps/core/forms.py:25 apps/setup/forms.py:26
+#: apps/core/forms.py:69 apps/setup/forms.py:26
 msgid "Nom de la box (mDNS)"
 msgstr "Nombre de la caja (mDNS)"
 
-#: apps/core/forms.py:26
+#: apps/core/forms.py:70
 msgid "Visible par OfeliaScan lors de l'appairage."
 msgstr "Visible para OfeliaScan al emparejar."
 
-#: apps/core/forms.py:28 apps/setup/forms.py:31
+#: apps/core/forms.py:72 apps/setup/forms.py:31
 msgid "Adresse"
 msgstr "Dirección"
 
-#: apps/core/forms.py:29
+#: apps/core/forms.py:73
 msgid "Contact (email)"
 msgstr "Contacto (email)"
 
-#: apps/core/forms.py:30 templates/members/member_detail.html:23
-#: templates/reports/reservations_pickup.html:22
+#: apps/core/forms.py:74 templates/members/member_detail.html:83
+#: templates/reports/reservations_pickup.html:35
 msgid "Téléphone"
 msgstr "Teléfono"
 
-#: apps/core/forms.py:59 apps/setup/forms.py:37 apps/setup/views.py:31
+#: apps/core/forms.py:103 apps/setup/forms.py:37 apps/setup/views.py:31
 msgid "Langues activées"
 msgstr "Idiomas activos"
 
-#: apps/core/forms.py:62 apps/setup/forms.py:42
+#: apps/core/forms.py:106 apps/setup/forms.py:42
 msgid "Langue par défaut"
 msgstr "Idioma por defecto"
 
-#: apps/core/forms.py:82 apps/setup/forms.py:47
+#: apps/core/forms.py:126 apps/setup/forms.py:47
 msgid "La langue par défaut doit être activée."
 msgstr "El idioma por defecto debe estar activado."
 
-#: apps/core/forms.py:97 apps/setup/forms.py:77
+#: apps/core/forms.py:141 apps/setup/forms.py:77
 msgid "Chemin clé USB"
 msgstr "Ruta llave USB"
 
-#: apps/core/forms.py:99
+#: apps/core/forms.py:143
 msgid "Sauvegarde horaire"
 msgstr "Copia horaria"
 
-#: apps/core/forms.py:100
+#: apps/core/forms.py:144
 msgid "Sauvegarde cloud (rclone)"
 msgstr "Copia en la nube (rclone)"
 
-#: apps/core/forms.py:102 apps/setup/forms.py:82
+#: apps/core/forms.py:146 apps/setup/forms.py:82
 msgid "Remote rclone"
 msgstr "Destino rclone"
 
-#: apps/core/forms.py:103
+#: apps/core/forms.py:147
 msgid "Ex: ofelia:bibliofelia"
 msgstr "Ej: ofelia:bibliofelia"
 
-#: apps/core/forms.py:106
+#: apps/core/forms.py:150
 msgid "Passphrase de chiffrement configurée"
 msgstr "Frase de cifrado configurada"
 
-#: apps/core/forms.py:108
+#: apps/core/forms.py:152
 msgid "Renseignée via la commande `setup_backup_encryption`."
 msgstr "Establecido mediante el comando `setup_backup_encryption`."
 
-#: apps/core/forms.py:135
+#: apps/core/forms.py:179
 msgid "Étiquette exemplaire — largeur (mm)"
 msgstr "Etiqueta ejemplar — ancho (mm)"
 
-#: apps/core/forms.py:137
+#: apps/core/forms.py:181
 msgid "Étiquette exemplaire — hauteur (mm)"
 msgstr "Etiqueta ejemplar — alto (mm)"
 
-#: apps/core/forms.py:139
+#: apps/core/forms.py:183
 msgid "Caractères max titre"
 msgstr "Caracteres máximos del título"
 
-#: apps/core/forms.py:142
+#: apps/core/forms.py:186
 msgid "Cartes par feuille A4"
 msgstr "Tarjetas por hoja A4"
 
-#: apps/core/forms.py:168
+#: apps/core/forms.py:212
 msgid "Identifiant réseau ZeroTier"
 msgstr "ID de red ZeroTier"
 
-#: apps/core/forms.py:171 templates/catalog/record_detail.html:43
-#: templates/inventory/session_list.html:29
-#: templates/inventory/session_report.html:25
-#: templates/members/member_history.html:32
+#: apps/core/forms.py:215 templates/catalog/record_detail.html:91
+#: templates/inventory/session_list.html:55
+#: templates/inventory/session_report.html:57
+#: templates/members/member_history.html:65
 msgid "Statut"
 msgstr "Estado"
 
-#: apps/core/forms.py:172
+#: apps/core/forms.py:216
 msgid "Désactivé"
 msgstr "Desactivado"
 
-#: apps/core/forms.py:173
+#: apps/core/forms.py:217
 msgid "Connecté"
 msgstr "Conectado"
 
@@ -517,10 +579,6 @@ msgstr "Una ubicación"
 #: apps/inventory/models.py:19
 msgid "Une catégorie"
 msgstr "Una categoría"
-
-#: apps/inventory/models.py:23 apps/loans/models.py:12
-msgid "En cours"
-msgstr "En curso"
 
 #: apps/inventory/models.py:24
 msgid "Clôturée"
@@ -636,41 +694,46 @@ msgstr "reserva"
 msgid "réservations"
 msgstr "reservas"
 
-#: apps/loans/services.py:90
+#: apps/loans/services.py:88
+#, python-format
+msgid "Usager %(status)s : prêt impossible."
+msgstr "Usuario %(status)s: préstamo imposible."
+
+#: apps/loans/services.py:97
 msgid "Cet ouvrage est déjà prêté."
 msgstr "Este libro ya está prestado."
 
-#: apps/loans/services.py:97
+#: apps/loans/services.py:104
 msgid "Exemplaire mis de côté pour un autre usager."
 msgstr "Ejemplar apartado para otro usuario."
 
-#: apps/loans/services.py:101
+#: apps/loans/services.py:108
 msgid "Exemplaire non disponible au prêt."
 msgstr "Ejemplar no disponible para préstamo."
 
-#: apps/loans/services.py:107
+#: apps/loans/services.py:114
 msgid "Ce type de document n'est pas autorisé pour cet usager."
 msgstr "Este tipo de documento no está permitido para este usuario."
 
-#: apps/loans/services.py:114
+#: apps/loans/services.py:121
 #, python-format
 msgid "Limite de prêts atteinte (%(limit)s) pour cet usager."
 msgstr "Límite de préstamos alcanzado (%(limit)s) para este usuario."
 
-#: apps/loans/services.py:125
+#: apps/loans/services.py:132
 msgid "Une réservation d'un autre usager existe sur cette notice."
 msgstr "Otro usuario tiene una reserva sobre este registro."
 
-#: apps/loans/services.py:230
+#: apps/loans/services.py:237
 msgid "Ce prêt n'est pas renouvelable."
 msgstr "Este préstamo no se puede renovar."
 
-#: apps/loans/services.py:236
+#: apps/loans/services.py:243
 #, python-format
 msgid "Nombre maximum de renouvellements atteint (%(n)s)."
 msgstr "Número máximo de renovaciones alcanzado (%(n)s)."
 
-#: apps/loans/services.py:244
+#: apps/loans/services.py:251
 msgid "Une réservation est en attente sur cette notice."
 msgstr "Hay una reserva pendiente sobre este registro."
 
@@ -756,7 +819,8 @@ msgstr "Por defecto: hoy."
 msgid "Langue de la bibliothèque"
 msgstr "Idioma de la biblioteca"
 
-#: apps/members/models.py:21 templates/accounts/user_list.html:21
+#: apps/members/models.py:21 templates/accounts/user_list.html:37
+#: templates/accounts/user_list.html:49
 msgid "Actif"
 msgstr "Activo"
 
@@ -816,36 +880,49 @@ msgstr "Tarjeta caducada hace %(n)s días."
 msgid "Carte expirante dans %(n)s jours."
 msgstr "Tarjeta caduca en %(n)s días."
 
-#: apps/members/views.py:100
+#: apps/members/views.py:105
 msgid "Sans catégorie"
 msgstr "Sin categoría"
 
-#: apps/members/views.py:125
+#: apps/members/views.py:130
 #, python-format
 msgid "Usager inscrit — carte n° %(card)s."
 msgstr "Usuario inscrito — tarjeta n.º %(card)s."
 
-#: apps/members/views.py:131
+#: apps/members/views.py:136
 msgid "Nouvel usager"
 msgstr "Nuevo usuario"
 
-#: apps/members/views.py:142
+#: apps/members/views.py:147
 msgid "Fiche usager mise à jour."
 msgstr "Ficha de usuario actualizada."
 
-#: apps/members/views.py:149
+#: apps/members/views.py:154
 msgid "Modifier l'usager"
 msgstr "Editar usuario"
 
-#: apps/members/views.py:159
+#: apps/members/views.py:164
 #, python-format
 msgid "Nouvelle carte émise : n° %(card)s."
 msgstr "Nueva tarjeta emitida: n.º %(card)s."
 
-#: apps/members/views.py:171
+#: apps/members/views.py:176
 #, python-format
 msgid "Carte renouvelée jusqu'au %(date)s."
 msgstr "Tarjeta renovada hasta el %(date)s."
+
+#: apps/members/views.py:188
+msgid "Usager désactivé."
+msgstr "Usuario desactivado."
+
+#: apps/members/views.py:194
+msgid "Usager réactivé."
+msgstr "Usuario reactivado."
+
+#: apps/members/views.py:240
+#, python-format
+msgid "Usager %(n)s supprimé."
+msgstr "Usuario %(n)s eliminado."
 
 #: apps/printing/services.py:182
 msgid "Carte de membre"
@@ -891,7 +968,7 @@ msgstr "Hasta"
 msgid "La date de début doit précéder la fin."
 msgstr "La fecha de inicio debe preceder a la final."
 
-#: apps/reports/forms.py:35 templates/catalog/record_detail.html:25
+#: apps/reports/forms.py:35 templates/catalog/record_detail.html:55
 msgid "Année"
 msgstr "Año"
 
@@ -916,7 +993,7 @@ msgstr "Préstamos devueltos"
 #: apps/reports/pdf.py:52 templates/core/dashboard.html:107
 #: templates/loans/return.html:85
 msgid "Prêts en retard"
-msgstr "Préstamos atrasados"
+msgstr "Préstamos vencidos"
 
 #: apps/reports/pdf.py:53
 msgid "Prêts perdus"
@@ -942,15 +1019,16 @@ msgstr "Ejemplares añadidos"
 msgid "Top 10 ouvrages empruntés"
 msgstr "Top 10 obras prestadas"
 
-#: apps/reports/pdf.py:74 templates/catalog/record_list.html:72
-#: templates/inventory/session_report.html:25 templates/loans/return.html:90
-#: templates/members/member_detail.html:63
-#: templates/members/member_history.html:17
-#: templates/members/member_history.html:32
-#: templates/printing/labels_picker.html:27
-#: templates/reports/inactive_list.html:43
-#: templates/reports/overdue_list.html:22
-#: templates/reports/reservations_pickup.html:23
+#: apps/reports/pdf.py:74 templates/catalog/record_bulk_delete.html:39
+#: templates/catalog/record_list.html:96 templates/catalog/record_list.html:124
+#: templates/inventory/session_report.html:56 templates/loans/return.html:90
+#: templates/members/member_detail.html:122
+#: templates/members/member_history.html:30
+#: templates/members/member_history.html:62
+#: templates/printing/labels_picker.html:48
+#: templates/reports/inactive_list.html:63
+#: templates/reports/overdue_list.html:38
+#: templates/reports/reservations_pickup.html:36
 msgid "Titre"
 msgstr "Título"
 
@@ -965,8 +1043,8 @@ msgstr "Emitido por BibliOfelia el %(d)s."
 
 #: apps/setup/forms.py:20 apps/setup/views.py:29
 #: templates/accounts/login.html:27 templates/accounts/login.html:29
-#: templates/base.html:43 templates/base.html:45
-#: templates/catalog/record_detail.html:26
+#: templates/base.html:46 templates/base.html:48
+#: templates/catalog/record_detail.html:56
 msgid "Langue"
 msgstr "Idioma"
 
@@ -975,8 +1053,8 @@ msgid "Visible par OfeliaScan."
 msgstr "Visible para OfeliaScan."
 
 #: apps/setup/forms.py:52 templates/accounts/login.html:106
-#: templates/accounts/user_list.html:18 templates/core/admin/ofeliascan.html:34
-#: templates/core/admin/ofeliascan.html:69
+#: templates/accounts/user_list.html:34 templates/core/admin/ofeliascan.html:46
+#: templates/core/admin/ofeliascan.html:83
 msgid "Identifiant"
 msgstr "Usuario"
 
@@ -984,9 +1062,9 @@ msgstr "Usuario"
 msgid "Prénom"
 msgstr "Nombre"
 
-#: apps/setup/forms.py:54 templates/accounts/user_list.html:19
-#: templates/printing/cards_picker.html:16
-#: templates/reports/inactive_list.html:21
+#: apps/setup/forms.py:54 templates/accounts/user_list.html:35
+#: templates/printing/cards_picker.html:31
+#: templates/reports/inactive_list.html:38
 msgid "Nom"
 msgstr "Apellido"
 
@@ -1063,26 +1141,22 @@ msgstr "Pasos faltantes: %(m)s"
 msgid "Connexion"
 msgstr "Iniciar sesión"
 
-#: templates/accounts/login.html:19 templates/base.html:35
-#, fuzzy
-#| msgid "Bibliothèque"
+#: templates/accounts/login.html:19 templates/base.html:36
 msgid "Bibliothèque communautaire"
-msgstr "Biblioteca"
+msgstr "Biblioteca comunitaria"
 
-#: templates/accounts/login.html:36 templates/base.html:52
-#: templates/core/help.html:4 templates/core/help.html:7
+#: templates/accounts/login.html:36 templates/base.html:55
+#: templates/core/help.html:4 templates/core/help.html:12
 msgid "Aide"
 msgstr "Ayuda"
 
 #: templates/accounts/login.html:87
 msgid "Connectez-vous à votre bibliothèque"
-msgstr ""
+msgstr "Inicie sesión en su biblioteca"
 
 #: templates/accounts/login.html:95
-#, fuzzy
-#| msgid "Identifiants invalides."
 msgid "Identifiants invalides. Veuillez réessayer."
-msgstr "Credenciales no válidas."
+msgstr "Credenciales no válidas. Inténtelo de nuevo."
 
 #: templates/accounts/login.html:103
 msgid "Nom d'utilisateur"
@@ -1093,42 +1167,108 @@ msgstr "Nombre de usuario"
 msgid "Se connecter"
 msgstr "Conectarse"
 
-#: templates/accounts/login.html:128 templates/base.html:90
+#: templates/accounts/login.html:128 templates/base.html:93
 msgid "Ofelia Box"
 msgstr "Ofelia Box"
 
-#: templates/accounts/password_reset.html:8 templates/accounts/user_form.html:8
-#: templates/accounts/user_list.html:4 templates/accounts/user_list.html:9
+#: templates/accounts/password_reset.html:10
+#: templates/accounts/user_confirm_delete.html:11
+#: templates/accounts/user_form.html:10 templates/accounts/user_list.html:4
+#: templates/accounts/user_list.html:11
 msgid "Comptes"
 msgstr "Cuentas"
 
-#: templates/accounts/password_reset.html:12
+#: templates/accounts/password_reset.html:19
 msgid "Réinitialiser le mot de passe"
 msgstr "Restablecer contraseña"
 
-#: templates/accounts/password_reset.html:16
+#: templates/accounts/password_reset.html:26
 msgid "Nouveau mot de passe (à communiquer à l'utilisateur) :"
 msgstr "Nueva contraseña (comunicar al usuario):"
 
-#: templates/accounts/password_reset.html:18
+#: templates/accounts/password_reset.html:30
 msgid "Retour à la liste"
 msgstr "Volver a la lista"
 
-#: templates/accounts/password_reset.html:31
+#: templates/accounts/password_reset.html:47
 msgid "Définir le mot de passe"
 msgstr "Definir contraseña"
 
-#: templates/accounts/password_reset.html:38
-msgid "Générer aléatoirement"
-msgstr "Generar aleatoriamente"
-
-#: templates/accounts/password_reset.html:39
+#: templates/accounts/password_reset.html:56
 msgid "Génère un mot de passe fort à communiquer manuellement à l'utilisateur."
 msgstr ""
 "Genera una contraseña fuerte para compartir manualmente con el usuario."
 
-#: templates/accounts/user_form.html:4 templates/accounts/user_form.html:13
-#: templates/accounts/user_list.html:13
+#: templates/accounts/password_reset.html:59
+msgid "Générer aléatoirement"
+msgstr "Generar aleatoriamente"
+
+#: templates/accounts/user_confirm_delete.html:4
+#: templates/accounts/user_confirm_delete.html:20
+msgid "Supprimer le compte"
+msgstr "Eliminar cuenta"
+
+#: templates/accounts/user_confirm_delete.html:10
+#: templates/accounts/user_list.html:10
+#: templates/core/admin/backup_restore.html:10
+#: templates/core/admin/diagnostics.html:10
+#: templates/core/admin/settings_index.html:4
+#: templates/core/admin/settings_index.html:14
+#: templates/core/admin/settings_section.html:4
+#: templates/core/admin/settings_section.html:10
+#: templates/core/advanced.html:175
+msgid "Paramètres"
+msgstr "Ajustes"
+
+#: templates/accounts/user_confirm_delete.html:12
+#: templates/accounts/user_list.html:64 templates/catalog/record_detail.html:35
+#: templates/catalog/record_detail.html:133
+#: templates/members/member_detail.html:71
+msgid "Supprimer"
+msgstr "Eliminar"
+
+#: templates/accounts/user_confirm_delete.html:26
+msgid "Confirmez-vous la suppression du compte <strong>%(username)s</strong> ?"
+msgstr "¿Confirma la eliminación de la cuenta <strong>%(username)s</strong>?"
+
+#: templates/accounts/user_confirm_delete.html:28
+msgid "Historique conservé (référence remplacée par « —»)"
+msgstr "Historial conservado (referencia sustituida por «—»)"
+
+#: templates/accounts/user_confirm_delete.html:30
+msgid "prêt(s) gérés"
+msgstr "préstamo(s) gestionado(s)"
+
+#: templates/accounts/user_confirm_delete.html:31
+msgid "notice(s) créée(s)"
+msgstr "ficha(s) creada(s)"
+
+#: templates/accounts/user_confirm_delete.html:32
+msgid "session(s) de scan OfeliaScan"
+msgstr "sesión(es) de escaneo OfeliaScan"
+
+#: templates/accounts/user_confirm_delete.html:39
+#: templates/catalog/record_confirm_delete.html:32
+#: templates/members/member_confirm_delete.html:59
+msgid "Supprimer définitivement"
+msgstr "Eliminar definitivamente"
+
+#: templates/accounts/user_confirm_delete.html:41
+#: templates/accounts/user_form.html:45 templates/base.html:17
+#: templates/catalog/_record_form.html:57 templates/catalog/item_form.html:35
+#: templates/catalog/record_bulk_delete.html:75
+#: templates/catalog/record_confirm_delete.html:34
+#: templates/core/admin/settings_section.html:40
+#: templates/inventory/session_form.html:29 templates/loans/mark_lost.html:30
+#: templates/loans/reservation_form.html:27
+#: templates/loans/reservations.html:52 templates/loans/reservations.html:88
+#: templates/members/member_confirm_delete.html:61
+#: templates/members/member_form.html:44 templates/members/member_form.html:46
+msgid "Annuler"
+msgstr "Cancelar"
+
+#: templates/accounts/user_form.html:4 templates/accounts/user_form.html:21
+#: templates/accounts/user_list.html:25
 msgid "Nouveau compte"
 msgstr "Cuenta nueva"
 
@@ -1136,62 +1276,41 @@ msgstr "Cuenta nueva"
 msgid "Éditer compte"
 msgstr "Editar cuenta"
 
-#: templates/accounts/user_form.html:9
+#: templates/accounts/user_form.html:11
 msgid "Nouveau"
 msgstr "Nuevo"
 
-#: templates/accounts/user_form.html:9 templates/accounts/user_form.html:14
-#: templates/base.html:62
+#: templates/accounts/user_form.html:11 templates/accounts/user_form.html:22
+#: templates/base.html:65
 msgid "Mon compte"
 msgstr "Mi cuenta"
 
-#: templates/accounts/user_form.html:29 templates/catalog/_record_form.html:45
-#: templates/catalog/item_form.html:16
-#: templates/core/admin/settings_section.html:25
-#: templates/loans/consultation.html:16 templates/members/member_form.html:30
+#: templates/accounts/user_form.html:43 templates/catalog/_record_form.html:55
+#: templates/catalog/item_form.html:33
+#: templates/core/admin/settings_section.html:38
+#: templates/loans/consultation.html:27 templates/members/member_form.html:41
 msgid "Enregistrer"
 msgstr "Guardar"
 
-#: templates/accounts/user_form.html:30 templates/base.html:17
-#: templates/catalog/_record_form.html:46 templates/catalog/item_form.html:17
-#: templates/catalog/record_confirm_delete.html:21
-#: templates/core/admin/settings_section.html:26
-#: templates/inventory/session_form.html:17 templates/loans/mark_lost.html:16
-#: templates/loans/reservation_form.html:15
-#: templates/loans/reservations.html:52 templates/loans/reservations.html:88
-#: templates/members/member_form.html:32 templates/members/member_form.html:34
-msgid "Annuler"
-msgstr "Cancelar"
-
-#: templates/accounts/user_list.html:8
-#: templates/core/admin/backup_restore.html:8
-#: templates/core/admin/diagnostics.html:8
-#: templates/core/admin/settings_index.html:4
-#: templates/core/admin/settings_index.html:7
-#: templates/core/admin/settings_section.html:4
-#: templates/core/admin/settings_section.html:8
-#: templates/core/advanced.html:163
-msgid "Paramètres"
-msgstr "Ajustes"
-
-#: templates/accounts/user_list.html:12
-#: templates/core/admin/settings_index.html:20 templates/core/advanced.html:173
+#: templates/accounts/user_list.html:19
+#: templates/core/admin/settings_index.html:56 templates/core/advanced.html:185
 msgid "Comptes utilisateurs"
 msgstr "Cuentas de usuario"
 
 #: templates/accounts/user_list.html:20
+#: templates/core/admin/settings_index.html:57
+msgid "Bibliothécaires, contributeurs, administration"
+msgstr "Bibliotecarios, contribuidores, administración"
+
+#: templates/accounts/user_list.html:36
 msgid "Rôle"
 msgstr "Rol"
 
-#: templates/accounts/user_list.html:22 templates/core/admin/ofeliascan.html:37
-msgid "Actions"
-msgstr "Acciones"
-
-#: templates/accounts/user_list.html:33
+#: templates/accounts/user_list.html:57
 msgid "Éditer"
 msgstr "Editar"
 
-#: templates/accounts/user_list.html:39
+#: templates/accounts/user_list.html:71
 msgid "Aucun compte."
 msgstr "Ninguna cuenta."
 
@@ -1211,127 +1330,192 @@ msgstr "Abriendo la cámara…"
 msgid "Valeur scannée :"
 msgstr "Valor escaneado:"
 
-#: templates/base.html:56
-#, fuzzy
-#| msgid "Nom d'utilisateur"
+#: templates/base.html:59
 msgid "Menu utilisateur"
-msgstr "Nombre de usuario"
+msgstr "Menú de usuario"
 
-#: templates/base.html:67
+#: templates/base.html:70
 msgid "Déconnexion"
 msgstr "Cerrar sesión"
 
-#: templates/catalog/_record_form.html:21
+#: templates/catalog/_record_form.html:29
 msgid "Récupérer"
 msgstr "Obtener"
 
-#: templates/catalog/_record_form.html:33 templates/members/member_form.html:19
+#: templates/catalog/_record_form.html:41 templates/members/member_form.html:28
 msgid "Options avancées"
 msgstr "Opciones avanzadas"
 
-#: templates/catalog/item_form.html:4 templates/catalog/item_form.html:7
+#: templates/catalog/item_form.html:4 templates/catalog/item_form.html:15
 msgid "Modifier l'exemplaire"
 msgstr "Editar ejemplar"
 
-#: templates/catalog/item_form.html:4 templates/catalog/item_form.html:7
+#: templates/catalog/item_form.html:4 templates/catalog/item_form.html:16
 msgid "Ajouter des exemplaires"
 msgstr "Añadir ejemplares"
 
-#: templates/catalog/item_form.html:8
+#: templates/catalog/item_form.html:19
 msgid "Notice :"
 msgstr "Registro:"
 
+#: templates/catalog/record_bulk_delete.html:4
+msgid "Suppression en masse"
+msgstr "Eliminación masiva"
+
+#: templates/catalog/record_bulk_delete.html:14
+msgid "Suppression en masse de notices"
+msgstr "Eliminación masiva de fichas"
+#: templates/catalog/record_bulk_delete.html:16
+#, fuzzy, python-format
+#| msgid "%(counter)s notice"
+#| msgid_plural "%(counter)s notices"
+msgid "%(counter)s notice sélectionnée"
+msgid_plural "%(counter)s notices sélectionnées"
+msgstr[0] "%(counter)s registro"
+msgstr[1] "%(counter)s registros"
+
+#: templates/catalog/record_bulk_delete.html:23
+msgid "Aucune notice sélectionnée."
+msgstr "Ninguna ficha seleccionada."
+
+#: templates/catalog/record_bulk_delete.html:24
+msgid "Retour au catalogue"
+msgstr "Volver al catálogo"
+#: templates/catalog/record_bulk_delete.html:30
+msgid ""
+"Les prêts en cours seront marqués « Perdu » et les réservations actives "
+"seront annulées."
+msgstr "Los préstamos activos se marcarán «Perdidos» y las reservas activas se cancelarán."
+
+#: templates/catalog/record_bulk_delete.html:34
+msgid "Notices à supprimer"
+msgstr "Fichas a eliminar"
+
+#: templates/catalog/record_bulk_delete.html:40
+#: templates/catalog/record_detail.html:74 templates/core/dashboard.html:123
+msgid "Exemplaires"
+msgstr "Ejemplares"
+
+#: templates/catalog/record_bulk_delete.html:41
+#: templates/core/dashboard.html:103 templates/loans/lend.html:78
+#: templates/members/member_detail.html:114
+#: templates/members/member_history.html:24
+msgid "Prêts en cours"
+msgstr "Préstamos activos"
+
+#: templates/catalog/record_bulk_delete.html:42
+msgid "Réservations actives"
+msgstr "Reservas activas"
+
+#: templates/catalog/record_bulk_delete.html:73
+msgid "Confirmer la suppression"
+msgstr "Confirmar eliminación"
 #: templates/catalog/record_confirm_delete.html:4
-#: templates/catalog/record_confirm_delete.html:7
+#: templates/catalog/record_confirm_delete.html:14
 msgid "Supprimer la notice"
 msgstr "Eliminar registro"
 
-#: templates/catalog/record_confirm_delete.html:8
-#, python-format
-msgid "Confirmez-vous la suppression de « %(title)s » ?"
-msgstr "¿Confirma la eliminación de «%(title)s»?"
-
-#: templates/catalog/record_confirm_delete.html:12
+#: templates/catalog/record_confirm_delete.html:22
 msgid ""
 "Des exemplaires actifs sont rattachés à cette notice. Retirez-les d'abord."
 msgstr "Hay ejemplares activos asociados a este registro. Retírelos primero."
 
-#: templates/catalog/record_confirm_delete.html:14
+#: templates/catalog/record_confirm_delete.html:24
 #: templates/core/dashboard.html:48 templates/core/dashboard.html:142
 #: templates/loans/return.html:4 templates/loans/return.html:18
-#: templates/members/member_history.html:32
+#: templates/members/member_history.html:64
 #: templates/partials/_tile_strip.html:40
 msgid "Retour"
 msgstr "Devolución"
 
-#: templates/catalog/record_confirm_delete.html:19
-msgid "Supprimer définitivement"
-msgstr "Eliminar definitivamente"
+#: templates/catalog/record_confirm_delete.html:27
+msgid ""
+"Confirmez-vous la suppression de « %(title)s » ? Cette action est "
+"irréversible."
+msgstr "¿Confirma la eliminación de «%(title)s»? Esta acción es irreversible."
 
-#: templates/catalog/record_detail.html:11
-#: templates/members/member_detail.html:45
+#: templates/catalog/record_detail.html:16
+msgid "Notice catalogue"
+msgstr "Ficha de catálogo"
+
+#: templates/catalog/record_detail.html:23
+#: templates/catalog/record_detail.html:118
+#: templates/members/member_detail.html:39
 msgid "Modifier"
 msgstr "Modificar"
 
-#: templates/catalog/record_detail.html:12
+#: templates/catalog/record_detail.html:32
 #: templates/loans/reservation_form.html:4
 msgid "Réserver"
 msgstr "Reservar"
 
-#: templates/catalog/record_detail.html:13
-msgid "Supprimer"
-msgstr "Eliminar"
-
-#: templates/catalog/record_detail.html:22
-#: templates/catalog/record_list.html:74
-#: templates/members/member_detail.html:20
-#: templates/printing/cards_picker.html:17
+#: templates/catalog/record_detail.html:43
+msgid "Couverture"
+msgstr "Portada"
+#: templates/catalog/record_detail.html:49
+msgid "Sous-titre"
+msgstr "Subtítulo"
+#: templates/catalog/record_detail.html:52
+#: templates/catalog/record_list.html:98 templates/catalog/record_list.html:126
+#: templates/members/member_detail.html:80
+#: templates/printing/cards_picker.html:32
 msgid "Catégorie"
 msgstr "Categoría"
 
-#: templates/catalog/record_detail.html:23
+#: templates/catalog/record_detail.html:53
 msgid "Type"
 msgstr "Tipo"
 
-#: templates/catalog/record_detail.html:24
+#: templates/catalog/record_detail.html:54
 msgid "Éditeur"
 msgstr "Editorial"
 
-#: templates/catalog/record_detail.html:28
+#: templates/catalog/record_detail.html:60
 msgid "Tags"
 msgstr "Etiquetas"
 
-#: templates/catalog/record_detail.html:35 templates/core/dashboard.html:123
-msgid "Exemplaires"
-msgstr "Ejemplares"
-
-#: templates/catalog/record_detail.html:37
+#: templates/catalog/record_detail.html:77
 msgid "Ajouter un exemplaire"
 msgstr "Añadir un ejemplar"
 
-#: templates/catalog/record_detail.html:43
-#: templates/inventory/session_report.html:25
+#: templates/catalog/record_detail.html:87
+#: templates/inventory/session_report.html:53
 msgid "Code interne"
 msgstr "Código interno"
 
-#: templates/catalog/record_detail.html:43
-#: templates/inventory/session_report.html:25
-#: templates/printing/labels_picker.html:29
-#: templates/reports/inactive_list.html:43
+#: templates/catalog/record_detail.html:88
+#: templates/inventory/session_report.html:54
+#: templates/printing/labels_picker.html:50
+#: templates/reports/inactive_list.html:62
 msgid "Code Ofelia"
 msgstr "Código Ofelia"
 
-#: templates/catalog/record_detail.html:43
-#: templates/printing/labels_picker.html:10
-#: templates/printing/labels_picker.html:28
+#: templates/catalog/record_detail.html:89
+#: templates/printing/labels_picker.html:21
+#: templates/printing/labels_picker.html:49
 msgid "Emplacement"
 msgstr "Ubicación"
 
-#: templates/catalog/record_detail.html:43
+#: templates/catalog/record_detail.html:90
+#: templates/core/admin/enrichment_index.html:123
 msgid "État"
 msgstr "Condición"
 
-#: templates/catalog/record_detail.html:63
+#: templates/catalog/record_detail.html:123
+msgid ""
+"Pilonner cet exemplaire ? Il restera en base avec le statut « Pilonné »."
+msgstr "¿Pilonar este ejemplar? Permanecerá en la base con estado «Pilonado»."
+
+#: templates/catalog/record_detail.html:125
+msgid "Pilonner"
+msgstr "Pilonar"
+
+#: templates/catalog/record_detail.html:131
+msgid ""
+"Supprimer définitivement cet exemplaire ? Cette action est irréversible."
+msgstr "¿Eliminar definitivamente este ejemplar? Esta acción es irreversible."
+
+#: templates/catalog/record_detail.html:147
 msgid "Aucun exemplaire pour cette notice."
 msgstr "Ningún ejemplar para este registro."
 
@@ -1341,10 +1525,8 @@ msgid "Catalogue"
 msgstr "Catálogo"
 
 #: templates/catalog/record_list.html:19 templates/core/dashboard.html:21
-#, fuzzy
-#| msgid "Ajouter des exemplaires"
 msgid "Tous les livres et leurs exemplaires"
-msgstr "Añadir ejemplares"
+msgstr "Todos los libros y sus ejemplares"
 
 #: templates/catalog/record_list.html:35
 msgid "Titre, auteur, ISBN…"
@@ -1355,50 +1537,61 @@ msgid "Toutes catégories"
 msgstr "Todas las categorías"
 
 #: templates/catalog/record_list.html:45
-#, fuzzy
-#| msgid "Tout type"
 msgid "Tous types"
 msgstr "Todos los tipos"
 
 #: templates/catalog/record_list.html:51
-#, fuzzy
-#| msgid "Toute langue"
 msgid "Toutes langues"
 msgstr "Todos los idiomas"
 
-#: templates/catalog/record_list.html:57 templates/members/member_list.html:69
-#: templates/printing/labels_picker.html:12
-#: templates/reports/inactive_list.html:12
-#: templates/reports/overdue_list.html:11
+#: templates/catalog/record_list.html:59
+msgid "Tag…"
+msgstr "Etiqueta…"
+
+#: templates/catalog/record_list.html:63 templates/members/member_list.html:69
+#: templates/printing/labels_picker.html:29
+#: templates/reports/inactive_list.html:25
+#: templates/reports/overdue_list.html:25
 msgid "Filtrer"
 msgstr "Filtrar"
 
-#: templates/catalog/record_list.html:62
+#: templates/catalog/record_list.html:68
 #, python-format
 msgid "%(counter)s notice"
 msgid_plural "%(counter)s notices"
 msgstr[0] "%(counter)s registro"
 msgstr[1] "%(counter)s registros"
 
-#: templates/catalog/record_list.html:75
+#: templates/catalog/record_list.html:82
+msgid "notice(s) sélectionnée(s)"
+msgstr "ficha(s) seleccionada(s)"
+
+#: templates/catalog/record_list.html:84
+msgid "Supprimer la sélection"
+msgstr "Eliminar selección"
+
+#: templates/catalog/record_list.html:94
+msgid "Tout cocher"
+msgstr "Seleccionar todo"
+#: templates/catalog/record_list.html:99 templates/catalog/record_list.html:127
 msgid "Ex."
-msgstr ""
+msgstr "Ej."
 
-#: templates/catalog/record_list.html:109
+#: templates/catalog/record_list.html:162
 msgid "ex."
-msgstr ""
+msgstr "ej."
 
-#: templates/catalog/record_list.html:118
+#: templates/catalog/record_list.html:171
 #: templates/members/member_list.html:109 templates/setup/step.html:31
 msgid "Précédent"
 msgstr "Anterior"
 
-#: templates/catalog/record_list.html:122
+#: templates/catalog/record_list.html:175
 #: templates/members/member_list.html:113
 msgid "Suivant"
 msgstr "Siguiente"
 
-#: templates/catalog/record_list.html:129
+#: templates/catalog/record_list.html:182
 msgid "Aucune notice ne correspond."
 msgstr "Ningún registro coincide."
 
@@ -1406,19 +1599,19 @@ msgstr "Ningún registro coincide."
 msgid "Restaurer une sauvegarde"
 msgstr "Restaurar una copia"
 
-#: templates/core/admin/backup_restore.html:9 templates/core/advanced.html:193
+#: templates/core/admin/backup_restore.html:11 templates/core/advanced.html:205
 msgid "Sauvegardes"
 msgstr "Copias de seguridad"
 
-#: templates/core/admin/backup_restore.html:10
+#: templates/core/admin/backup_restore.html:12
 msgid "Restauration"
 msgstr "Restauración"
 
-#: templates/core/admin/backup_restore.html:13
+#: templates/core/admin/backup_restore.html:20
 msgid "Restaurer la base depuis un fichier"
 msgstr "Restaurar la base desde un archivo"
 
-#: templates/core/admin/backup_restore.html:16
+#: templates/core/admin/backup_restore.html:26
 msgid ""
 "\n"
 "    Cette action écrase la base actuelle. Une copie de la base courante est\n"
@@ -1433,95 +1626,252 @@ msgstr ""
 "    Detenga el servicio antes de restaurar si es posible.\n"
 "    "
 
-#: templates/core/admin/backup_restore.html:27
+#: templates/core/admin/backup_restore.html:38
 msgid "Fichier .sqlite3 ou .sqlite3.gz"
 msgstr "Archivo .sqlite3 o .sqlite3.gz"
 
-#: templates/core/admin/backup_restore.html:30
+#: templates/core/admin/backup_restore.html:43
 msgid "Restaurer"
 msgstr "Restaurar"
 
 #: templates/core/admin/diagnostics.html:4
-#: templates/core/admin/diagnostics.html:9
-#: templates/core/admin/diagnostics.html:12
-#: templates/core/admin/settings_index.html:21 templates/core/advanced.html:203
+#: templates/core/admin/diagnostics.html:11
+#: templates/core/admin/diagnostics.html:19
+#: templates/core/admin/settings_index.html:67 templates/core/advanced.html:215
 msgid "Diagnostic"
 msgstr "Diagnóstico"
 
-#: templates/core/admin/diagnostics.html:15 templates/core/dashboard.html:238
+#: templates/core/admin/diagnostics.html:20
+#: templates/core/admin/settings_index.html:68
+msgid "État du système, sauvegardes, planificateur"
+msgstr "Estado del sistema, copias de seguridad, planificador"
+
+#: templates/core/admin/diagnostics.html:24 templates/core/dashboard.html:238
 msgid "État système"
 msgstr "Estado del sistema"
 
-#: templates/core/admin/diagnostics.html:17 templates/core/dashboard.html:241
+#: templates/core/admin/diagnostics.html:27 templates/core/dashboard.html:241
 msgid "Version"
 msgstr "Versión"
 
-#: templates/core/admin/diagnostics.html:18 templates/core/dashboard.html:245
+#: templates/core/admin/diagnostics.html:29 templates/core/dashboard.html:245
 msgid "Espace disque"
 msgstr "Espacio en disco"
 
-#: templates/core/admin/diagnostics.html:20 templates/core/dashboard.html:252
+#: templates/core/admin/diagnostics.html:33 templates/core/dashboard.html:252
 msgid "Dernière sauvegarde"
-msgstr "Última copia"
+msgstr "Última copia de seguridad"
 
-#: templates/core/admin/diagnostics.html:26
+#: templates/core/admin/diagnostics.html:37 templates/core/dashboard.html:255
+msgid "> 24h"
+msgstr "> 24h"
+
+#: templates/core/admin/diagnostics.html:39
 msgid "Aucune sauvegarde enregistrée."
 msgstr "Sin copia registrada."
 
-#: templates/core/admin/diagnostics.html:32
+#: templates/core/admin/diagnostics.html:46
 msgid "Derniers paramètres modifiés"
 msgstr "Últimos ajustes modificados"
 
-#: templates/core/admin/diagnostics.html:34
+#: templates/core/admin/diagnostics.html:50
 msgid "Clé"
 msgstr "Clave"
 
-#: templates/core/admin/diagnostics.html:34
+#: templates/core/admin/diagnostics.html:50
 msgid "Maj"
 msgstr "Actualización"
 
-#: templates/core/admin/diagnostics.html:44
+#: templates/core/admin/diagnostics.html:59
+#: templates/inventory/session_report.html:86
+#: templates/inventory/session_report.html:106
+#: templates/inventory/session_report.html:117
+#: templates/members/member_history.html:53
+#: templates/members/member_history.html:89
+msgid "Aucun."
+msgstr "Ninguno."
+
+#: templates/core/admin/diagnostics.html:62
 msgid "File django-q2"
 msgstr "Cola django-q2"
 
-#: templates/core/admin/diagnostics.html:45
+#: templates/core/admin/diagnostics.html:64
 msgid "Tâches planifiées"
 msgstr "Tareas programadas"
 
-#: templates/core/admin/diagnostics.html:47
-#: templates/core/admin/diagnostics.html:51
+#: templates/core/admin/diagnostics.html:75
+#: templates/core/admin/diagnostics.html:95
 msgid "Aucune."
 msgstr "Ninguna."
 
-#: templates/core/admin/diagnostics.html:49
+#: templates/core/admin/diagnostics.html:80
 msgid "Dernières exécutions"
 msgstr "Últimas ejecuciones"
 
-#: templates/core/admin/ofeliascan.html:4
-#: templates/core/admin/ofeliascan.html:9
-#: templates/core/admin/ofeliascan.html:12 templates/core/advanced.html:183
-msgid "Connexion OfeliaScan"
-msgstr "Conexión OfeliaScan"
+#: templates/core/admin/diagnostics.html:89
+msgid "Erreur"
+msgstr "Error"
 
-#: templates/core/admin/ofeliascan.html:8 templates/core/advanced.html:4
+#: templates/core/admin/enrichment_detail.html:4
+#: templates/core/admin/enrichment_detail.html:26
+#, python-format
+msgid "Enrichissement #%(id)s"
+msgstr "Enriquecimiento #%(id)s"
+
+#: templates/core/admin/enrichment_detail.html:16
+#: templates/core/admin/enrichment_index.html:10
+#: templates/core/admin/ofeliascan.html:10 templates/core/advanced.html:4
 #: templates/core/advanced.html:18 templates/core/dashboard.html:67
 #: templates/partials/_tile_strip.html:58
 msgid "Avancé"
 msgstr "Avanzado"
 
-#: templates/core/admin/ofeliascan.html:14
-msgid ""
-"Paramètres à saisir dans l'application mobile OfeliaScan pour qu'elle se "
-"connecte à cette box."
-msgstr ""
-"Ajustes a introducir en la aplicación móvil OfeliaScan para que se conecte a "
-"esta caja."
+#: templates/core/admin/enrichment_detail.html:17
+msgid "Enrichissement"
+msgstr "Enriquecimiento"
 
-#: templates/core/admin/ofeliascan.html:17
+#: templates/core/admin/enrichment_detail.html:44
+msgid "Sources"
+msgstr "Fuentes"
+#: templates/core/admin/enrichment_detail.html:45
+#: templates/core/admin/enrichment_index.html:58
+#: templates/inventory/session_list.html:54
+msgid "Périmètre"
+msgstr "Alcance"
+
+#: templates/core/admin/enrichment_detail.html:46
+msgid "Total"
+msgstr "Total"
+
+#: templates/core/admin/enrichment_detail.html:47
+#: templates/core/admin/enrichment_index.html:124
+msgid "Traitées"
+msgstr "Procesadas"
+
+#: templates/core/admin/enrichment_detail.html:48
+#: templates/core/admin/enrichment_index.html:125
+msgid "Mises à jour"
+msgstr "Actualizadas"
+
+#: templates/core/admin/enrichment_detail.html:49
+msgid "Inchangées"
+msgstr "Sin cambios"
+
+#: templates/core/admin/enrichment_detail.html:50
+#: templates/core/admin/enrichment_index.html:126
+msgid "Erreurs"
+msgstr "Errores"
+#: templates/core/admin/enrichment_detail.html:52
+msgid "Terminé le"
+msgstr "Finalizado el"
+
+#: templates/core/admin/enrichment_detail.html:58
+msgid "Rapport"
+msgstr "Informe"
+#: templates/core/admin/enrichment_detail.html:63
+msgid "Notice"
+msgstr "Ficha"
+
+#: templates/core/admin/enrichment_detail.html:65
+msgid "Champs modifiés (← source)"
+msgstr "Campos modificados (← fuente)"
+
+#: templates/core/admin/enrichment_index.html:4
+#: templates/core/admin/enrichment_index.html:11
+#: templates/core/admin/enrichment_index.html:19
+#: templates/core/advanced.html:150
+msgid "Enrichissement métadonnées"
+msgstr "Enriquecimiento de metadatos"
+
+#: templates/core/admin/enrichment_index.html:20
+msgid "Complète le catalogue depuis OpenLibrary, Google Books, BNF et BNE."
+msgstr "Completar el catálogo desde OpenLibrary, Google Books, BNF y BNE."
+
+#: templates/core/admin/enrichment_index.html:25
+msgid "Lancer un enrichissement"
+msgstr "Iniciar un enriquecimiento"
+#: templates/core/admin/enrichment_index.html:29
+msgid "Aucune source activée."
+msgstr "Ninguna fuente activada."
+
+#: templates/core/admin/enrichment_index.html:30
+msgid "Configurer les sources de métadonnées"
+msgstr "Configurar fuentes de metadatos"
+
+#: templates/core/admin/enrichment_index.html:36
+#: templates/core/admin/enrichment_index.html:122
+msgid "Mode"
+msgstr "Modo"
+
+#: templates/core/admin/enrichment_index.html:39
+msgid "Compléter seulement les champs vides"
+msgstr "Completar solo los campos vacíos"
+
+#: templates/core/admin/enrichment_index.html:43
+msgid "Écraser les données locales avec les sources externes"
+msgstr "Sobrescribir datos locales con fuentes externas"
+
+#: templates/core/admin/enrichment_index.html:48
+msgid "Sources à interroger"
+msgstr "Fuentes a consultar"
+
+#: templates/core/admin/enrichment_index.html:60
+msgid "Toutes les notices avec un ISBN"
+msgstr "Todas las fichas con un ISBN"
+#: templates/core/admin/enrichment_index.html:61
+msgid "Notices sans auteur"
+msgstr "Fichas sin autor"
+#: templates/core/admin/enrichment_index.html:62
+msgid "Notices sans éditeur"
+msgstr "Fichas sin editor"
+
+#: templates/core/admin/enrichment_index.html:63
+msgid "Liste d'ISBN (un par ligne)"
+msgstr "Lista de ISBN (uno por línea)"
+#: templates/core/admin/enrichment_index.html:67
+msgid ""
+"Saisissez un ISBN par ligne (utilisé uniquement si « Liste d'ISBN » est "
+"sélectionnée)."
+msgstr "Introduzca un ISBN por línea (utilizado solo si se selecciona «Lista de ISBN»)."
+
+#: templates/core/admin/enrichment_index.html:72
+msgid "Lancer"
+msgstr "Iniciar"
+#: templates/core/admin/enrichment_index.html:115
+#: templates/inventory/session_list.html:47
+#: templates/members/member_detail.html:42
+#: templates/members/member_history.html:4
+msgid "Historique"
+msgstr "Historial"
+#: templates/core/admin/enrichment_index.html:121
+msgid "Lancé le"
+msgstr "Iniciado el"
+
+#: templates/core/admin/enrichment_index.html:151
+msgid "Détails"
+msgstr "Detalles"
+
+#: templates/core/admin/enrichment_index.html:160
+msgid "Aucun enrichissement lancé."
+msgstr "Ningún enriquecimiento iniciado."
+
+#: templates/core/admin/ofeliascan.html:4
+#: templates/core/admin/ofeliascan.html:11
+#: templates/core/admin/ofeliascan.html:19 templates/core/advanced.html:195
+msgid "Connexion OfeliaScan"
+msgstr "Conexión OfeliaScan"
+
+#: templates/core/admin/ofeliascan.html:20
+msgid ""
+"Paramètres à saisir dans l'application mobile pour qu'elle se connecte à "
+"cette box."
+msgstr "Parámetros a introducir en la aplicación móvil para que se conecte a esta caja."
+
+#: templates/core/admin/ofeliascan.html:24
 msgid "Adresse de la box"
 msgstr "Dirección de la caja"
 
-#: templates/core/admin/ofeliascan.html:18
+#: templates/core/admin/ofeliascan.html:27
 msgid ""
 "OfeliaScan détecte normalement la box automatiquement (mDNS). En cas de "
 "besoin, saisissez l'adresse ci-dessous."
@@ -1529,31 +1879,31 @@ msgstr ""
 "OfeliaScan detecta normalmente la caja automáticamente (mDNS). Si es "
 "necesario, introduzca la dirección de abajo."
 
-#: templates/core/admin/ofeliascan.html:20
+#: templates/core/admin/ofeliascan.html:30
 msgid "Nom de la box"
 msgstr "Nombre de la caja"
 
-#: templates/core/admin/ofeliascan.html:21
+#: templates/core/admin/ofeliascan.html:31
 msgid "Nom d'hôte"
 msgstr "Nombre de host"
 
-#: templates/core/admin/ofeliascan.html:22
+#: templates/core/admin/ofeliascan.html:32
 msgid "Adresse IP locale"
 msgstr "Dirección IP local"
 
-#: templates/core/admin/ofeliascan.html:23
+#: templates/core/admin/ofeliascan.html:33
 msgid "Hôte courant (navigateur)"
 msgstr "Host actual (navegador)"
 
-#: templates/core/admin/ofeliascan.html:24
+#: templates/core/admin/ofeliascan.html:34
 msgid "Chemin de l'API"
 msgstr "Ruta de la API"
 
-#: templates/core/admin/ofeliascan.html:29
+#: templates/core/admin/ofeliascan.html:38
 msgid "Identifiants autorisés"
 msgstr "Credenciales autorizadas"
 
-#: templates/core/admin/ofeliascan.html:30
+#: templates/core/admin/ofeliascan.html:40
 msgid ""
 "Comptes (rôle Contributeur OfeliaScan) acceptés par l'API. Le mot de passe "
 "est affiché en clair pour être recopié dans l'application."
@@ -1561,27 +1911,27 @@ msgstr ""
 "Cuentas (rol Contribuidor OfeliaScan) aceptadas por la API. La contraseña se "
 "muestra en claro para copiarla en la aplicación."
 
-#: templates/core/admin/ofeliascan.html:36
+#: templates/core/admin/ofeliascan.html:48
 msgid "Créé le"
 msgstr "Creado el"
 
-#: templates/core/admin/ofeliascan.html:48
+#: templates/core/admin/ofeliascan.html:60
 msgid "Révoquer cet identifiant ? OfeliaScan ne pourra plus se connecter avec."
 msgstr "¿Revocar esta credencial? OfeliaScan ya no podrá conectarse con ella."
 
-#: templates/core/admin/ofeliascan.html:52
+#: templates/core/admin/ofeliascan.html:65
 msgid "Révoquer"
 msgstr "Revocar"
 
-#: templates/core/admin/ofeliascan.html:57
+#: templates/core/admin/ofeliascan.html:71
 msgid "Aucun identifiant autorisé."
 msgstr "Ninguna credencial autorizada."
 
-#: templates/core/admin/ofeliascan.html:64
+#: templates/core/admin/ofeliascan.html:77
 msgid "Autoriser un nouvel identifiant"
 msgstr "Autorizar una nueva credencial"
 
-#: templates/core/admin/ofeliascan.html:76
+#: templates/core/admin/ofeliascan.html:92
 msgid ""
 "Laissez le mot de passe proposé ou saisissez le vôtre. Il sera affiché en "
 "clair dans le tableau ci-dessus."
@@ -1589,16 +1939,36 @@ msgstr ""
 "Mantenga la contraseña propuesta o introduzca la suya. Se mostrará en claro "
 "en la tabla de arriba."
 
-#: templates/core/admin/ofeliascan.html:77
+#: templates/core/admin/ofeliascan.html:96
 msgid "Autoriser"
 msgstr "Autorizar"
 
-#: templates/core/admin/settings_index.html:9
+#: templates/core/admin/settings_index.html:15
 msgid ""
 "Configuration de la bibliothèque, des sauvegardes et de la connectivité."
 msgstr "Configuración de biblioteca, copias y conectividad."
 
-#: templates/core/admin/settings_index.html:25
+#: templates/core/admin/settings_index.html:39
+msgid "Nom de la bibliothèque, contact, fuseau horaire"
+msgstr "Nombre de la biblioteca, contacto, zona horaria"
+
+#: templates/core/admin/settings_index.html:40
+msgid "Langues actives et langue par défaut"
+msgstr "Idiomas activos y idioma predeterminado"
+
+#: templates/core/admin/settings_index.html:41
+msgid "Fréquence locale et destination cloud (rclone)"
+msgstr "Frecuencia local y destino en la nube (rclone)"
+
+#: templates/core/admin/settings_index.html:42
+msgid "Format des étiquettes codes Ofelia"
+msgstr "Formato de etiquetas con códigos Ofelia"
+
+#: templates/core/admin/settings_index.html:43
+msgid "Réseau privé pour accès à distance"
+msgstr "Red privada para acceso remoto"
+
+#: templates/core/admin/settings_index.html:75
 msgid ""
 "Les catégories, tags et emplacements se gèrent depuis l'administration "
 "Django pour l'instant."
@@ -1606,25 +1976,25 @@ msgstr ""
 "Las categorías, etiquetas y ubicaciones se gestionan desde admin Django por "
 "ahora."
 
-#: templates/core/admin/settings_index.html:26
+#: templates/core/admin/settings_index.html:76
 msgid "Ouvrir l'admin"
 msgstr "Abrir admin"
 
-#: templates/core/admin/settings_section.html:32
+#: templates/core/admin/settings_section.html:45
 msgid "Actions sauvegarde"
 msgstr "Acciones de copia"
 
-#: templates/core/admin/settings_section.html:35
+#: templates/core/admin/settings_section.html:50
 msgid "Sauvegarder maintenant"
 msgstr "Copiar ahora"
 
-#: templates/core/admin/settings_section.html:38
+#: templates/core/admin/settings_section.html:54
 msgid "Restaurer depuis un fichier…"
 msgstr "Restaurar desde un archivo…"
 
 #: templates/core/advanced.html:19
 msgid "Outils complémentaires"
-msgstr ""
+msgstr "Herramientas complementarias"
 
 #: templates/core/advanced.html:24
 msgid ""
@@ -1639,7 +2009,7 @@ msgid "Impression"
 msgstr "Impresión"
 
 #: templates/core/advanced.html:43 templates/printing/labels_picker.html:4
-#: templates/printing/labels_picker.html:7
+#: templates/printing/labels_picker.html:14
 msgid "Étiquettes codes Ofelia"
 msgstr "Etiquetas códigos Ofelia"
 
@@ -1651,7 +2021,7 @@ msgstr ""
 "Genera etiquetas (código Ofelia + título + ubicación) para pegar en las "
 "obras. Hoja PDF A4 o envío directo a impresora CUPS."
 
-#: templates/core/advanced.html:53 templates/printing/cards_picker.html:7
+#: templates/core/advanced.html:53 templates/printing/cards_picker.html:14
 msgid "Cartes membres"
 msgstr "Tarjetas de socio"
 
@@ -1664,7 +2034,7 @@ msgstr ""
 "defecto), para plastificar tras imprimir."
 
 #: templates/core/advanced.html:67 templates/reports/index.html:4
-#: templates/reports/index.html:7
+#: templates/reports/index.html:14
 msgid "Rapports"
 msgstr "Informes"
 
@@ -1692,8 +2062,9 @@ msgstr ""
 "Lista de préstamos que superan el umbral de atraso (configurable, 7 días por "
 "defecto), lista para imprimir."
 
-#: templates/core/advanced.html:96 templates/reports/reservations_pickup.html:4
-#: templates/reports/reservations_pickup.html:7
+#: templates/core/advanced.html:96 templates/reports/index.html:36
+#: templates/reports/reservations_pickup.html:4
+#: templates/reports/reservations_pickup.html:14
 msgid "Réservations à retirer"
 msgstr "Reservas para retirar"
 
@@ -1706,7 +2077,7 @@ msgstr ""
 "manual a los usuarios."
 
 #: templates/core/advanced.html:106 templates/reports/inactive_list.html:4
-#: templates/reports/inactive_list.html:7
+#: templates/reports/inactive_list.html:14 templates/reports/index.html:46
 msgid "Inactifs"
 msgstr "Inactivos"
 
@@ -1718,7 +2089,7 @@ msgstr ""
 "Usuarios y ejemplares sin ningún préstamo en un período — útil para el "
 "inventario y la gestión del fondo."
 
-#: templates/core/advanced.html:116 templates/reports/index.html:30
+#: templates/core/advanced.html:116 templates/reports/index.html:72
 msgid "Rapport annuel d'activité (PDF)"
 msgstr "Informe anual de actividad (PDF)"
 
@@ -1731,7 +2102,7 @@ msgstr ""
 "fondo."
 
 #: templates/core/advanced.html:130 templates/inventory/session_list.html:4
-#: templates/inventory/session_list.html:8
+#: templates/inventory/session_list.html:14
 msgid "Inventaire"
 msgstr "Inventario"
 
@@ -1747,11 +2118,17 @@ msgstr ""
 "Verificación del fondo: crear una sesión, registrar los ejemplares "
 "escaneados, detectar las diferencias."
 
-#: templates/core/advanced.html:154
+#: templates/core/advanced.html:151
+msgid ""
+"Compléter ou écraser les métadonnées du catalogue depuis OpenLibrary, Google "
+"Books, BNF et BNE — en tâche de fond."
+msgstr "Completar o sobrescribir los metadatos del catálogo desde OpenLibrary, Google Books, BNF y BNE — como tarea en segundo plano."
+
+#: templates/core/advanced.html:166
 msgid "Administration"
 msgstr "Administración"
 
-#: templates/core/advanced.html:164
+#: templates/core/advanced.html:176
 msgid ""
 "Identité de la bibliothèque, langues activées, format des étiquettes/cartes, "
 "sauvegardes, ZeroTier."
@@ -1759,7 +2136,7 @@ msgstr ""
 "Identidad de la biblioteca, idiomas activos, formato de etiquetas/tarjetas, "
 "copias de seguridad, ZeroTier."
 
-#: templates/core/advanced.html:174
+#: templates/core/advanced.html:186
 msgid ""
 "Création, édition, réinitialisation de mot de passe des comptes "
 "bibliothécaires et administrateurs."
@@ -1767,7 +2144,7 @@ msgstr ""
 "Creación, edición, restablecimiento de contraseña de cuentas de "
 "bibliotecarios y administradores."
 
-#: templates/core/advanced.html:184
+#: templates/core/advanced.html:196
 msgid ""
 "Identifiants autorisés pour l'application mobile OfeliaScan et adresse de la "
 "box."
@@ -1775,7 +2152,7 @@ msgstr ""
 "Credenciales autorizadas para la aplicación móvil OfeliaScan y dirección de "
 "la caja."
 
-#: templates/core/advanced.html:194
+#: templates/core/advanced.html:206
 msgid ""
 "Déclencher une sauvegarde manuelle, configurer la fréquence et le cloud, "
 "restaurer depuis un fichier."
@@ -1783,7 +2160,7 @@ msgstr ""
 "Iniciar una copia manual, configurar la frecuencia y la nube, restaurar "
 "desde un archivo."
 
-#: templates/core/advanced.html:204
+#: templates/core/advanced.html:216
 msgid ""
 "État système : version, espace disque, file django-q2, derniers paramètres "
 "modifiés."
@@ -1791,11 +2168,11 @@ msgstr ""
 "Estado del sistema: versión, espacio en disco, cola django-q2, últimos "
 "ajustes modificados."
 
-#: templates/core/advanced.html:213
+#: templates/core/advanced.html:225
 msgid "Administration Django"
 msgstr "Administración Django"
 
-#: templates/core/advanced.html:214
+#: templates/core/advanced.html:226
 msgid ""
 "Gestion fine : catégories, tags, emplacements, catégories d'usagers (réservé "
 "Claude / support distant)."
@@ -1805,28 +2182,28 @@ msgstr ""
 
 #: templates/core/dashboard.html:4 templates/partials/_tile_strip.html:11
 msgid "Accueil"
-msgstr ""
+msgstr "Inicio"
 
 #: templates/core/dashboard.html:10
 msgid "Bonjour,"
-msgstr ""
+msgstr "Hola,"
 
 #: templates/core/dashboard.html:11
 msgid "Voici ce qui se passe à la bibliothèque aujourd'hui."
-msgstr ""
+msgstr "Esto es lo que sucede en la biblioteca hoy."
 
 #: templates/core/dashboard.html:15
 msgid "Sections principales"
-msgstr ""
+msgstr "Secciones principales"
 
 #: templates/core/dashboard.html:29 templates/members/member_list.html:4
 #: templates/members/member_list.html:18 templates/partials/_tile_strip.html:25
 msgid "Membres"
-msgstr ""
+msgstr "Miembros"
 
 #: templates/core/dashboard.html:30 templates/members/member_list.html:19
 msgid "Lecteurs inscrits, cartes et historique"
-msgstr ""
+msgstr "Lectores registrados, tarjetas e historial"
 
 #: templates/core/dashboard.html:39 templates/loans/lend.html:4
 #: templates/loans/lend.html:18 templates/partials/_tile_strip.html:33
@@ -1834,17 +2211,13 @@ msgid "Prêt"
 msgstr "Préstamo"
 
 #: templates/core/dashboard.html:40 templates/loans/lend.html:19
-#, fuzzy
-#| msgid "Enregistrer le retour"
 msgid "Enregistrer un nouveau prêt"
-msgstr "Registrar la devolución"
+msgstr "Registrar un nuevo préstamo"
 
 #: templates/core/dashboard.html:49 templates/core/dashboard.html:143
 #: templates/loans/return.html:19
-#, fuzzy
-#| msgid "Enregistrer le retour"
 msgid "Enregistrer un retour"
-msgstr "Registrar la devolución"
+msgstr "Registrar una devolución"
 
 #: templates/core/dashboard.html:57 templates/loans/reservations.html:4
 #: templates/loans/reservations.html:18 templates/partials/_tile_strip.html:47
@@ -1852,99 +2225,68 @@ msgid "Réservations"
 msgstr "Reservas"
 
 #: templates/core/dashboard.html:58 templates/loans/reservations.html:19
-#, fuzzy
-#| msgid "En attente"
 msgid "Livres en attente"
-msgstr "En espera"
+msgstr "Libros pendientes"
 
 #: templates/core/dashboard.html:68
-#, fuzzy
-#| msgid "Impression cartes"
 msgid "Impression, rapports, paramètres"
-msgstr "Impresión de tarjetas"
+msgstr "Impresión, informes, parámetros"
 
 #: templates/core/dashboard.html:82
-#, fuzzy
-#| msgid "Scanner le code-barres du livre"
 msgid "Scanner une carte ou un livre"
-msgstr "Escanee el código de barras del libro"
+msgstr "Escanear una tarjeta o un libro"
 
 #: templates/core/dashboard.html:83
 msgid "Caisse rapide — prêt, retour, recherche par code-barres"
-msgstr ""
+msgstr "Caja rápida — préstamo, devolución, búsqueda por código de barras"
 
 #: templates/core/dashboard.html:85
 msgid "Scanner"
-msgstr ""
+msgstr "Escáner"
 
 #: templates/core/dashboard.html:94
-#, fuzzy
-#| msgid "Titre, auteur, ISBN…"
 msgid "Titre, auteur, ISBN, n° de carte…"
-msgstr "Título, autor, ISBN…"
+msgstr "Título, autor, ISBN, n.º de tarjeta…"
 
 #: templates/core/dashboard.html:95
-#, fuzzy
-#| msgid "Recherche"
 msgid "Recherche globale"
-msgstr "Búsqueda"
-
-#: templates/core/dashboard.html:103 templates/loans/lend.html:78
-#: templates/members/member_detail.html:60
-#: templates/members/member_history.html:14
-msgid "Prêts en cours"
-msgstr "Préstamos en curso"
+msgstr "Búsqueda global"
 
 #: templates/core/dashboard.html:111
 msgid "Réservations prêtes"
 msgstr "Reservas listas"
 
 #: templates/core/dashboard.html:115
-#, fuzzy
-#| msgid "Usagers inscrits"
 msgid "Membres inscrits"
-msgstr "Usuarios inscritos"
+msgstr "Miembros registrados"
 
 #: templates/core/dashboard.html:119
-#, fuzzy
-#| msgid "Notice :"
 msgid "Notices"
-msgstr "Registro:"
+msgstr "Fichas"
 
 #: templates/core/dashboard.html:129
-#, fuzzy
-#| msgid "Actions sauvegarde"
 msgid "Actions rapides"
-msgstr "Acciones de copia"
+msgstr "Acciones rápidas"
 
 #: templates/core/dashboard.html:135
 msgid "Nouveau prêt"
 msgstr "Nuevo préstamo"
 
 #: templates/core/dashboard.html:136
-#, fuzzy
-#| msgid "Prêter %(n)s livre"
-#| msgid_plural "Prêter %(n)s livres"
 msgid "Prêter un livre"
-msgstr "Prestar %(n)s libro"
+msgstr "Prestar un libro"
 
 #: templates/core/dashboard.html:150
-#, fuzzy
-#| msgid "Ajouter un exemplaire"
 msgid "Ajouter un livre"
-msgstr "Añadir un ejemplar"
+msgstr "Añadir un libro"
 
 #: templates/core/dashboard.html:156 templates/members/member_list.html:25
-#, fuzzy
-#| msgid "Nouveau compte"
 msgid "Nouveau membre"
-msgstr "Cuenta nueva"
+msgstr "Nuevo miembro"
 
 #: templates/core/dashboard.html:157
-#, fuzzy
-#| msgid "Inscrit le"
 msgid "Inscrire un lecteur"
-msgstr "Inscrito el"
+msgstr "Registrar un lector"
 
 #: templates/core/dashboard.html:166
 msgid "Tendance — 30 derniers jours"
@@ -1956,7 +2298,7 @@ msgstr "Préstamos por día"
 
 #: templates/core/dashboard.html:183
 msgid "Pas encore de données"
-msgstr ""
+msgstr "Aún no hay datos"
 
 #: templates/core/dashboard.html:188
 msgid "Pas encore de prêts enregistrés sur la période."
@@ -1967,20 +2309,16 @@ msgid "Activité"
 msgstr "Actividad"
 
 #: templates/core/dashboard.html:196
-#, fuzzy
-#| msgid "Usagers actifs (mois)"
 msgid "Membres actifs (mois)"
-msgstr "Usuarios activos (mes)"
+msgstr "Miembros activos (mes)"
 
 #: templates/core/dashboard.html:200
-#, fuzzy
-#| msgid "Usagers actifs (année)"
 msgid "Membres actifs (année)"
-msgstr "Usuarios activos (año)"
+msgstr "Miembros activos (año)"
 
 #: templates/core/dashboard.html:204
 msgid "Notices ajoutées (mois)"
-msgstr "Registros añadidos (mes)"
+msgstr "Fichas añadidas (mes)"
 
 #: templates/core/dashboard.html:208
 msgid "Exemplaires ajoutés (mois)"
@@ -1988,7 +2326,7 @@ msgstr "Ejemplares añadidos (mes)"
 
 #: templates/core/dashboard.html:212
 msgid "Notices ajoutées (année)"
-msgstr "Registros añadidos (año)"
+msgstr "Fichas añadidas (año)"
 
 #: templates/core/dashboard.html:222
 msgid "Top 10 ce mois-ci"
@@ -1996,31 +2334,25 @@ msgstr "Top 10 este mes"
 
 #: templates/core/dashboard.html:233
 msgid "Aucun prêt ce mois."
-msgstr "Sin préstamos este mes."
-
-#: templates/core/dashboard.html:255
-#, fuzzy
-#| msgid "&gt; 24h"
-msgid "> 24h"
-msgstr "&gt; 24h"
+msgstr "Ningún préstamo este mes."
 
 #: templates/core/dashboard.html:256
-#, fuzzy
-#| msgid "Aucune."
 msgid "Aucune"
-msgstr "Ninguna."
+msgstr "Ninguna"
 
 #: templates/core/dashboard.html:260
-#, fuzzy
-#| msgid "Réserver"
 msgid "Réseau"
-msgstr "Reservar"
+msgstr "Red"
 
-#: templates/core/help.html:10
+#: templates/core/help.html:13
+msgid "Petit guide pour démarrer"
+msgstr "Guía rápida para empezar"
+
+#: templates/core/help.html:18
 msgid "Recherche"
 msgstr "Búsqueda"
 
-#: templates/core/help.html:11
+#: templates/core/help.html:19
 msgid ""
 "La barre de recherche en haut de l'écran accepte un titre,\n"
 "    un nom d'auteur, un ISBN, ou un code scanné. Scanner une carte d'usager "
@@ -2032,11 +2364,11 @@ msgstr ""
 "usuario o el código de barras de un ejemplar abre directamente la ficha "
 "correspondiente."
 
-#: templates/core/help.html:17
+#: templates/core/help.html:25
 msgid "Prêt et retour"
 msgstr "Préstamo y devolución"
 
-#: templates/core/help.html:18
+#: templates/core/help.html:26
 msgid ""
 "L'écran « Prêt » se déroule de haut en bas : scannez la carte\n"
 "    de l'usager, puis chaque livre, puis validez. L'écran « Retour » ne "
@@ -2047,11 +2379,11 @@ msgstr ""
 "usuario, luego cada libro y después confirme. La pantalla «Devolución» solo "
 "pide los libros."
 
-#: templates/core/help.html:24
+#: templates/core/help.html:32
 msgid "Mode simple et mode avancé"
 msgstr "Modo simple y modo avanzado"
 
-#: templates/core/help.html:25
+#: templates/core/help.html:33
 msgid ""
 "Par défaut, les options rares sont masquées. Le menu en haut\n"
 "    à droite permet de basculer en mode avancé pour les afficher."
@@ -2059,225 +2391,202 @@ msgstr ""
 "Por defecto, las opciones poco frecuentes están ocultas. El menú de la parte "
 "superior derecha permite cambiar al modo avanzado para mostrarlas."
 
-#: templates/inventory/session_detail.html:13
-#: templates/inventory/session_list.html:29
-msgid "Périmètre"
-msgstr "Alcance"
-
-#: templates/inventory/session_detail.html:14
+#: templates/inventory/session_detail.html:28
 msgid "Identifiant OfeliaScan"
 msgstr "Identificador OfeliaScan"
 
-#: templates/inventory/session_detail.html:15
+#: templates/inventory/session_detail.html:29
 msgid "Démarrée le"
 msgstr "Iniciada el"
 
-#: templates/inventory/session_detail.html:19
+#: templates/inventory/session_detail.html:33
 msgid "Avancement"
 msgstr "Progreso"
 
-#: templates/inventory/session_detail.html:21
+#: templates/inventory/session_detail.html:36
 msgid "exemplaires pointés / attendus dans le périmètre"
 msgstr "ejemplares escaneados / esperados en el alcance"
 
-#: templates/inventory/session_detail.html:26
-msgid "Scanner ou saisir le code Ofelia d'un document"
-msgstr "Escanee o introduzca el código Ofelia de un documento"
+#: templates/inventory/session_detail.html:40
+msgid "Scanner un code Ofelia"
+msgstr "Escanear un código Ofelia"
 
-#: templates/inventory/session_detail.html:32
+#: templates/inventory/session_detail.html:47
 msgid "Scanner le code Ofelia"
 msgstr "Escanear el código Ofelia"
 
-#: templates/inventory/session_detail.html:34
+#: templates/inventory/session_detail.html:50
 msgid "Pointer"
 msgstr "Escanear"
 
-#: templates/inventory/session_detail.html:44
+#: templates/inventory/session_detail.html:62
 msgid "Clôturer et voir le rapport"
 msgstr "Cerrar y ver el informe"
 
-#: templates/inventory/session_detail.html:47
+#: templates/inventory/session_detail.html:67
 msgid "Voir le rapport"
 msgstr "Ver el informe"
 
-#: templates/inventory/session_detail.html:54
+#: templates/inventory/session_detail.html:74
 msgid "Derniers pointages"
 msgstr "Últimos escaneos"
 
-#: templates/inventory/session_detail.html:58
+#: templates/inventory/session_detail.html:83
 msgid "inconnu"
 msgstr "desconocido"
 
 #: templates/inventory/session_form.html:4
-#: templates/inventory/session_form.html:7
+#: templates/inventory/session_form.html:14
 msgid "Nouvelle session d'inventaire"
 msgstr "Nueva sesión de inventario"
 
-#: templates/inventory/session_form.html:8
+#: templates/inventory/session_form.html:15
 msgid ""
 "Choisissez le périmètre à pointer. Un identifiant sera généré pour "
 "OfeliaScan."
 msgstr ""
 "Elija el alcance a escanear. Se generará un identificador para OfeliaScan."
 
-#: templates/inventory/session_form.html:16
+#: templates/inventory/session_form.html:27
 msgid "Lancer l'inventaire"
 msgstr "Iniciar el inventario"
 
-#: templates/inventory/session_list.html:10
+#: templates/inventory/session_list.html:15
+msgid "Sessions de récolement et historique"
+msgstr "Sesiones de inventario e historial"
+
+#: templates/inventory/session_list.html:21
 msgid "Nouvelle session"
 msgstr "Nueva sesión"
 
-#: templates/inventory/session_list.html:15
+#: templates/inventory/session_list.html:27
 msgid "Sessions en cours"
 msgstr "Sesiones en curso"
 
-#: templates/inventory/session_list.html:22
+#: templates/inventory/session_list.html:44
 msgid "Aucune session en cours."
 msgstr "Ninguna sesión en curso."
 
-#: templates/inventory/session_list.html:26
-#: templates/members/member_detail.html:46
-#: templates/members/member_history.html:4
-msgid "Historique"
-msgstr "Historial"
-
-#: templates/inventory/session_list.html:29
+#: templates/inventory/session_list.html:53
 msgid "Session"
 msgstr "Sesión"
 
-#: templates/inventory/session_list.html:29
+#: templates/inventory/session_list.html:56
 msgid "Clôturée le"
 msgstr "Cerrada el"
 
-#: templates/inventory/session_list.html:41
+#: templates/inventory/session_list.html:72
 msgid "Aucune session clôturée."
 msgstr "Ninguna sesión cerrada."
 
 #: templates/inventory/session_report.html:4
-#: templates/inventory/session_report.html:8
+#: templates/inventory/session_report.html:14
 msgid "Rapport d'inventaire"
 msgstr "Informe de inventario"
 
-#: templates/inventory/session_report.html:9
-#: templates/loans/reservations.html:23 templates/reports/inactive_list.html:13
-#: templates/reports/overdue_list.html:12
-#: templates/reports/reservations_pickup.html:10
+#: templates/inventory/session_report.html:19
+#: templates/loans/reservations.html:23 templates/reports/inactive_list.html:28
+#: templates/reports/overdue_list.html:28
+#: templates/reports/reservations_pickup.html:21
 #: templates/setup/completed.html:26
 msgid "Imprimer"
 msgstr "Imprimir"
 
-#: templates/inventory/session_report.html:14
+#: templates/inventory/session_report.html:27
 msgid "Attendus"
 msgstr "Esperados"
 
-#: templates/inventory/session_report.html:15
+#: templates/inventory/session_report.html:31
 msgid "Présents"
 msgstr "Presentes"
 
-#: templates/inventory/session_report.html:16
+#: templates/inventory/session_report.html:35
 msgid "Manquants"
 msgstr "Faltantes"
 
-#: templates/inventory/session_report.html:17
+#: templates/inventory/session_report.html:39
 msgid "Hors périmètre"
 msgstr "Fuera del alcance"
 
-#: templates/inventory/session_report.html:18
+#: templates/inventory/session_report.html:43
 msgid "Inconnus"
 msgstr "Desconocidos"
 
-#: templates/inventory/session_report.html:22
+#: templates/inventory/session_report.html:47
 msgid "Exemplaires manquants"
 msgstr "Ejemplares faltantes"
 
-#: templates/inventory/session_report.html:39
+#: templates/inventory/session_report.html:75
 msgid "Marquer perdu"
 msgstr "Marcar como perdido"
 
-#: templates/inventory/session_report.html:47
-#: templates/inventory/session_report.html:54
-#: templates/inventory/session_report.html:61
-#: templates/members/member_history.html:25
-#: templates/members/member_history.html:41
-msgid "Aucun."
-msgstr "Ninguno."
-
-#: templates/inventory/session_report.html:51
+#: templates/inventory/session_report.html:89
 msgid "Pointés hors périmètre (mauvaise location)"
 msgstr "Escaneados fuera del alcance (ubicación incorrecta)"
 
-#: templates/inventory/session_report.html:58
+#: templates/inventory/session_report.html:109
 msgid "Codes inconnus du système"
 msgstr "Códigos desconocidos por el sistema"
 
-#: templates/inventory/session_report.html:67
+#: templates/inventory/session_report.html:125
 msgid "Clôturer"
 msgstr "Cerrar"
 
-#: templates/inventory/session_report.html:69
+#: templates/inventory/session_report.html:131
 msgid "Rouvrir"
 msgstr "Reabrir"
 
-#: templates/inventory/session_report.html:70
+#: templates/inventory/session_report.html:137
 msgid "Valider définitivement"
 msgstr "Validar definitivamente"
 
-#: templates/loans/consultation.html:4 templates/loans/consultation.html:7
+#: templates/loans/consultation.html:4 templates/loans/consultation.html:14
 msgid "Consultation sur place"
 msgstr "Consulta en sala"
 
-#: templates/loans/consultation.html:8
+#: templates/loans/consultation.html:15
 msgid "Compte les documents consultés sans sortie de la bibliothèque."
 msgstr "Cuenta los documentos consultados sin salir de la biblioteca."
 
 #: templates/loans/lend.html:24
 msgid "1 · Membre"
-msgstr ""
+msgstr "1 · Miembro"
 
 #: templates/loans/lend.html:35
 msgid "Scanner ou saisir le n° de carte"
 msgstr "Escanee o introduzca el n.º de tarjeta"
 
 #: templates/loans/lend.html:42
-#, fuzzy
-#| msgid "Remplacer la carte"
 msgid "Scanner la carte"
-msgstr "Reemplazar la tarjeta"
+msgstr "Escanear la tarjeta"
 
 #: templates/loans/lend.html:84
 msgid "échéance"
 msgstr "vencimiento"
 
 #: templates/loans/lend.html:94
-#, fuzzy
-#| msgid "Livre"
 msgid "2 · Livres"
-msgstr "Libro"
+msgstr "2 · Libros"
 
 #: templates/loans/lend.html:104
 msgid "Scanner le code-barres du livre"
 msgstr "Escanee el código de barras del libro"
 
 #: templates/loans/lend.html:111
-#, fuzzy
-#| msgid "Déclarer un livre perdu"
 msgid "Scanner un livre"
-msgstr "Declarar un libro perdido"
+msgstr "Escanear un libro"
 
 #: templates/loans/lend.html:118
 msgid "Panier"
-msgstr ""
+msgstr "Carrito"
 
 #: templates/loans/lend.html:143
 msgid "Aucun livre scanné pour l'instant."
 msgstr "Ningún libro escaneado por ahora."
 
 #: templates/loans/lend.html:149
-#, fuzzy
-#| msgid "Confirmer"
 msgid "3 · Confirmer"
-msgstr "Confirmar"
+msgstr "3 · Confirmar"
 
 #: templates/loans/lend.html:155
 msgid "Note (facultatif)"
@@ -2294,76 +2603,68 @@ msgid_plural "Prêter %(n)s livres"
 msgstr[0] "Prestar %(n)s libro"
 msgstr[1] "Prestar %(n)s libros"
 
-#: templates/loans/mark_lost.html:4 templates/loans/mark_lost.html:14
+#: templates/loans/mark_lost.html:4 templates/loans/mark_lost.html:28
 msgid "Déclarer perdu"
 msgstr "Declarar perdido"
 
-#: templates/loans/mark_lost.html:7
+#: templates/loans/mark_lost.html:14
 msgid "Déclarer un livre perdu"
 msgstr "Declarar un libro perdido"
 
-#: templates/loans/mark_lost.html:8
+#: templates/loans/mark_lost.html:20
 #, python-format
 msgid "Confirmer que « %(title)s » prêté à %(member)s est perdu ?"
 msgstr "¿Confirmar que «%(title)s» prestado a %(member)s está perdido?"
 
-#: templates/loans/mark_lost.html:9
+#: templates/loans/mark_lost.html:22
 msgid ""
 "L'exemplaire passera en statut « perdu ». Aucune facturation automatique."
 msgstr "El ejemplar pasará al estado «perdido». Sin facturación automática."
 
-#: templates/loans/reservation_form.html:7
+#: templates/loans/reservation_form.html:14
 msgid "Réserver une notice"
 msgstr "Reservar un registro"
 
-#: templates/loans/reservation_form.html:14
+#: templates/loans/reservation_form.html:25
 msgid "Enregistrer la réservation"
 msgstr "Guardar la reserva"
 
 #: templates/loans/reservations.html:30
-#, fuzzy
-#| msgid "Prêt à retirer"
 msgid "Prêtes à retirer"
-msgstr "Listo para recoger"
+msgstr "Listas para retirar"
 
 #: templates/loans/reservations.html:46
-#, fuzzy
-#| msgid "Prêt"
 msgid "Prête"
-msgstr "Préstamo"
+msgstr "Lista"
 
 #: templates/loans/reservations.html:48
 msgid "Mis de côté le"
 msgstr "Apartado el"
 
 #: templates/loans/reservations.html:60
-#: templates/reports/reservations_pickup.html:38
+#: templates/reports/reservations_pickup.html:51
 msgid "Aucune réservation prête."
 msgstr "Ninguna reserva lista."
 
 #: templates/loans/reservations.html:79
-#, fuzzy
-#| msgid "Réservé le"
 msgid "réservé le"
-msgstr "Reservado el"
+msgstr "reservado el"
 
 #: templates/loans/reservations.html:82
 msgid "Pos."
-msgstr ""
+msgstr "Pos."
 
 #: templates/loans/reservations.html:84
 msgid "Exp."
-msgstr ""
+msgstr "Exp."
 
 #: templates/loans/reservations.html:96
 msgid "Aucune réservation en attente."
 msgstr "Ninguna reserva pendiente."
 
 #: templates/loans/return.html:25
-#, fuzzy
-#| msgid "Déclarer un livre perdu"
 msgid "Scanner un livre à rendre"
-msgstr "Declarar un libro perdido"
+msgstr "Escanear un libro para devolver"
 
 #: templates/loans/return.html:32
 msgid "Scanner le code-barres du livre rendu"
@@ -2379,7 +2680,7 @@ msgstr "Devoluciones de la sesión"
 
 #: templates/loans/return.html:51
 msgid "Vider"
-msgstr ""
+msgstr "Vaciar"
 
 #: templates/loans/return.html:65
 msgid "perdu réintégré"
@@ -2391,47 +2692,69 @@ msgstr "ningún préstamo activo"
 
 #: templates/loans/return.html:75
 msgid "À temps"
-msgstr ""
+msgstr "A tiempo"
 
 #: templates/loans/return.html:91
 msgid "Membre"
-msgstr ""
+msgstr "Miembro"
 
-#: templates/loans/return.html:92 templates/members/member_detail.html:63
-#: templates/members/member_history.html:17
-#: templates/reports/overdue_list.html:20
+#: templates/loans/return.html:92 templates/members/member_detail.html:123
+#: templates/members/member_history.html:32
+#: templates/reports/overdue_list.html:36
 msgid "Échéance"
 msgstr "Vencimiento"
 
-#: templates/members/member_detail.html:19
-msgid "N° de carte"
-msgstr "N.º de tarjeta"
+#: templates/members/member_confirm_delete.html:4
+#: templates/members/member_confirm_delete.html:14
+msgid "Supprimer l'usager"
+msgstr "Eliminar usuario"
 
-#: templates/members/member_detail.html:21
-msgid "Inscrit le"
-msgstr "Inscrito el"
+#: templates/members/member_confirm_delete.html:15
+#: templates/members/member_detail.html:16
+#: templates/members/member_detail.html:106
+#: templates/printing/cards_picker.html:30
+#: templates/reports/inactive_list.html:37
+#: templates/reports/overdue_list.html:40
+#: templates/reports/reservations_pickup.html:34
+msgid "Carte"
+msgstr "Tarjeta"
 
-#: templates/members/member_detail.html:22
-msgid "Expire le"
-msgstr "Caduca el"
+#: templates/members/member_confirm_delete.html:20
+#, python-format
+msgid ""
+"Confirmez-vous la suppression de l'usager <strong>%(name)s</strong> ? Cette "
+"action est irréversible."
+msgstr "¿Confirma la eliminación del usuario <strong>%(name)s</strong>? Esta acción es irreversible."
 
-#: templates/members/member_detail.html:25
-msgid "Compte parent"
-msgstr "Cuenta matriz"
+#: templates/members/member_confirm_delete.html:22
+msgid "Impacts"
+msgstr "Impactos"
 
-#: templates/members/member_detail.html:28
-msgid "Ancienne carte"
-msgstr "Tarjeta anterior"
+#: templates/members/member_confirm_delete.html:26
+msgid "prêt(s) en cours seront clôturés (exemplaires libérés) :"
+msgstr "préstamo(s) activo(s) serán cerrados (ejemplares liberados):"
 
-#: templates/members/member_detail.html:34
-msgid "Membres rattachés"
-msgstr "Miembros vinculados"
+#: templates/members/member_confirm_delete.html:35
+msgid "réservation(s) active(s) seront annulées."
+msgstr "reserva(s) activa(s) serán canceladas."
 
-#: templates/members/member_detail.html:49
+#: templates/members/member_confirm_delete.html:38
+msgid "prêt(s) passé(s) seront supprimés (historique perdu)."
+msgstr "préstamo(s) pasado(s) serán eliminados (historial perdido)."
+
+#: templates/members/member_confirm_delete.html:42
+msgid "compte(s) rattaché(s) verront leur lien rompu :"
+msgstr "cuenta(s) vinculada(s) tendrán su enlace roto:"
+
+#: templates/members/member_confirm_delete.html:51
+msgid "Aucun impact : usager sans prêt, réservation ni dépendant."
+msgstr "Sin impacto: usuario sin préstamos, reservas ni dependientes."
+
+#: templates/members/member_detail.html:47
 msgid "Renouveler la carte"
 msgstr "Renovar la tarjeta"
 
-#: templates/members/member_detail.html:52
+#: templates/members/member_detail.html:51
 msgid "Émettre une nouvelle carte ? L'ancien numéro sera désactivé."
 msgstr "¿Emitir una nueva tarjeta? El número anterior se desactivará."
 
@@ -2439,68 +2762,92 @@ msgstr "¿Emitir una nueva tarjeta? El número anterior se desactivará."
 msgid "Remplacer la carte"
 msgstr "Reemplazar la tarjeta"
 
-#: templates/members/member_detail.html:73
+#: templates/members/member_detail.html:61
+msgid "Désactiver"
+msgstr "Desactivar"
+
+#: templates/members/member_detail.html:65
+msgid "Réactiver"
+msgstr "Reactivar"
+
+#: templates/members/member_detail.html:79
+msgid "N° de carte"
+msgstr "N.º de tarjeta"
+
+#: templates/members/member_detail.html:81
+msgid "Inscrit le"
+msgstr "Inscrito el"
+
+#: templates/members/member_detail.html:82
+msgid "Expire le"
+msgstr "Caduca el"
+
+#: templates/members/member_detail.html:86
+msgid "Compte parent"
+msgstr "Cuenta matriz"
+
+#: templates/members/member_detail.html:91
+msgid "Ancienne carte"
+msgstr "Tarjeta anterior"
+
+#: templates/members/member_detail.html:97
+msgid "Membres rattachés"
+msgstr "Miembros vinculados"
+
+#: templates/members/member_detail.html:144
 msgid "Renouveler"
 msgstr "Renovar"
 
-#: templates/members/member_detail.html:83
+#: templates/members/member_detail.html:160
 msgid "Aucun prêt en cours."
 msgstr "Ningún préstamo en curso."
 
-#: templates/members/member_history.html:8
+#: templates/members/member_history.html:14
 msgid "Historique de prêt"
 msgstr "Historial de préstamos"
 
-#: templates/members/member_history.html:9
-msgid "Fiche usager"
-msgstr "Ficha de usuario"
-
-#: templates/members/member_history.html:11
+#: templates/members/member_history.html:15
 #, python-format
 msgid "%(n)s prêt au total"
 msgid_plural "%(n)s prêts au total"
 msgstr[0] "%(n)s préstamo en total"
 msgstr[1] "%(n)s préstamos en total"
 
-#: templates/members/member_history.html:17
-#: templates/members/member_history.html:32
+#: templates/members/member_history.html:19
+msgid "Fiche usager"
+msgstr "Ficha de usuario"
+
+#: templates/members/member_history.html:31
+#: templates/members/member_history.html:63
 msgid "Prêté le"
 msgstr "Prestado el"
 
-#: templates/members/member_history.html:29
+#: templates/members/member_history.html:56
 msgid "Historique complet"
 msgstr "Historial completo"
 
-#: templates/members/member_history.html:46
+#: templates/members/member_history.html:93
 msgid "Consultations sur place"
 msgstr "Consultas en sala"
 
-#: templates/members/member_history.html:49
+#: templates/members/member_history.html:102
 #, python-format
 msgid "%(n)s document"
 msgid_plural "%(n)s documents"
 msgstr[0] "%(n)s documento"
 msgstr[1] "%(n)s documentos"
 
-#: templates/members/member_history.html:56
+#: templates/members/member_history.html:112
 msgid "Statistiques par catégorie"
 msgstr "Estadísticas por categoría"
 
-#: templates/members/member_history.html:63
-msgid "Aucune donnée."
-msgstr "Ningún dato."
-
 #: templates/members/member_list.html:36
-#, fuzzy
-#| msgid "Aucun prêt ce mois."
 msgid "Actifs ce mois"
-msgstr "Sin préstamos este mes."
+msgstr "Activos este mes"
 
 #: templates/members/member_list.html:44
-#, fuzzy
-#| msgid "Nouveau compte"
 msgid "Nouveaux ce mois"
-msgstr "Cuenta nueva"
+msgstr "Nuevos este mes"
 
 #: templates/members/member_list.html:53
 msgid "Nom ou n° de carte…"
@@ -2511,121 +2858,122 @@ msgid "Tout statut"
 msgstr "Todos los estados"
 
 #: templates/members/member_list.html:120
-#, fuzzy
-#| msgid "Aucun usager ne correspond."
 msgid "Aucun membre ne correspond."
-msgstr "Ningún usuario coincide."
+msgstr "Ningún miembro coincide."
 
 #: templates/partials/_tile_strip.html:4
-#, fuzzy
-#| msgid "Actions"
 msgid "Sections"
-msgstr "Acciones"
+msgstr "Secciones"
 
 #: templates/printing/cards_picker.html:4
 msgid "Impression cartes"
 msgstr "Impresión de tarjetas"
 
-#: templates/printing/cards_picker.html:10
-#: templates/printing/labels_picker.html:17
+#: templates/printing/cards_picker.html:15
+msgid "Sélectionnez les usagers puis générez la planche PDF"
+msgstr "Seleccione los usuarios y genere la lámina PDF"
+
+#: templates/printing/cards_picker.html:22
+#: templates/printing/labels_picker.html:36
 msgid "Générer PDF"
 msgstr "Generar PDF"
 
-#: templates/printing/cards_picker.html:15
-#: templates/reports/inactive_list.html:21
-#: templates/reports/overdue_list.html:24
-#: templates/reports/reservations_pickup.html:21
-msgid "Carte"
-msgstr "Tarjeta"
-
-#: templates/printing/cards_picker.html:18
+#: templates/printing/cards_picker.html:33
 msgid "Expiration"
 msgstr "Caducidad"
 
-#: templates/printing/cards_picker.html:31
+#: templates/printing/cards_picker.html:46
 msgid "Aucun usager."
 msgstr "Ningún usuario."
 
-#: templates/printing/labels_picker.html:11
+#: templates/printing/labels_picker.html:15
+msgid "Sélectionnez les exemplaires à imprimer puis générez le PDF"
+msgstr "Seleccione los ejemplares a imprimir y genere el PDF"
+
+#: templates/printing/labels_picker.html:26
 msgid "Derniers ajouts"
 msgstr "Últimas incorporaciones"
 
-#: templates/printing/labels_picker.html:19
+#: templates/printing/labels_picker.html:39
 msgid "Imprimer (CUPS)"
 msgstr "Imprimir (CUPS)"
 
-#: templates/printing/labels_picker.html:26
-#: templates/reports/inactive_list.html:43
+#: templates/printing/labels_picker.html:47
+#: templates/reports/inactive_list.html:61
 msgid "ID interne"
 msgstr "ID interno"
 
-#: templates/printing/labels_picker.html:42
+#: templates/printing/labels_picker.html:63
 msgid "Aucun exemplaire."
 msgstr "Ningún ejemplar."
 
-#: templates/reports/inactive_list.html:10
+#: templates/reports/inactive_list.html:15
+msgid "Usagers et exemplaires sans activité récente"
+msgstr "Usuarios y ejemplares sin actividad reciente"
+
+#: templates/reports/inactive_list.html:21
 msgid "Seuil d'inactivité (jours)"
 msgstr "Umbral de inactividad (días)"
 
-#: templates/reports/inactive_list.html:17
+#: templates/reports/inactive_list.html:32
 msgid "Usagers inactifs"
 msgstr "Usuarios inactivos"
 
-#: templates/reports/inactive_list.html:21
+#: templates/reports/inactive_list.html:39
 msgid "Inscription"
 msgstr "Inscripción"
 
-#: templates/reports/inactive_list.html:32
+#: templates/reports/inactive_list.html:50
 msgid "Aucun usager inactif sur la période."
 msgstr "Sin usuarios inactivos en el período."
 
-#: templates/reports/inactive_list.html:39
+#: templates/reports/inactive_list.html:56
 msgid "Exemplaires inactifs"
 msgstr "Ejemplares inactivos"
 
-#: templates/reports/inactive_list.html:54
+#: templates/reports/inactive_list.html:74
 msgid "Aucun exemplaire inactif sur la période."
 msgstr "Sin ejemplares inactivos en el período."
 
-#: templates/reports/index.html:10
+#: templates/reports/index.html:15
+msgid "Listes imprimables, exports CSV et rapport annuel PDF."
+msgstr "Listas imprimibles, exportaciones CSV e informe anual PDF."
+
+#: templates/reports/index.html:19
 msgid "Listes imprimables"
 msgstr "Listas imprimibles"
 
-#: templates/reports/index.html:12
-msgid "Liste des retards (> 7 jours par défaut)"
-msgstr "Lista de atrasos (>7 días por defecto)"
+#: templates/reports/index.html:26 templates/reports/overdue_list.html:14
+msgid "Liste des retards"
+msgstr "Lista de atrasos"
 
-#: templates/reports/index.html:13
-msgid "Réservations à retirer (relance)"
-msgstr "Reservas para retirar (recordatorio)"
+#: templates/reports/index.html:27
+msgid "Retards de plus de 7 jours par défaut"
+msgstr "Retrasos de más de 7 días por defecto"
 
-#: templates/reports/index.html:14
-msgid "Inactifs (usagers + exemplaires)"
-msgstr "Inactivos (usuarios + ejemplares)"
+#: templates/reports/index.html:37
+msgid "Liste de relance pour les usagers"
+msgstr "Lista de recordatorio para usuarios"
 
-#: templates/reports/index.html:19
+#: templates/reports/index.html:47
+msgid "Usagers et exemplaires inactifs"
+msgstr "Usuarios y ejemplares inactivos"
+
+#: templates/reports/index.html:53
 msgid "Export CSV des prêts"
 msgstr "Exportar préstamos CSV"
 
-#: templates/reports/index.html:25
+#: templates/reports/index.html:67
 msgid "Télécharger CSV"
 msgstr "Descargar CSV"
 
-#: templates/reports/index.html:33
+#: templates/reports/index.html:80
 msgid "Générer le PDF"
 msgstr "Generar PDF"
 
 #: templates/reports/overdue_list.html:4
 msgid "Retards"
 msgstr "Atrasos"
-
-#: templates/reports/overdue_list.html:7
-msgid "Liste des retards"
-msgstr "Lista de atrasos"
-
-#: templates/reports/overdue_list.html:10
-msgid "Seuil (jours)"
-msgstr "Umbral (días)"
 
 #: templates/reports/overdue_list.html:15
 #, python-format
@@ -2635,43 +2983,47 @@ msgstr[0] "%(count)s préstamo atrasado."
 msgstr[1] "%(count)s préstamos atrasados."
 
 #: templates/reports/overdue_list.html:21
-#: templates/reports/reservations_pickup.html:24
+msgid "Seuil (jours)"
+msgstr "Umbral (días)"
+
+#: templates/reports/overdue_list.html:37
+#: templates/reports/reservations_pickup.html:37
 msgid "Exemplaire"
 msgstr "Ejemplar"
 
-#: templates/reports/overdue_list.html:23
-#: templates/reports/reservations_pickup.html:20
+#: templates/reports/overdue_list.html:39
+#: templates/reports/reservations_pickup.html:33
 msgid "Usager"
 msgstr "Usuario"
 
-#: templates/reports/overdue_list.html:25
+#: templates/reports/overdue_list.html:41
 msgid "Jours"
 msgstr "Días"
 
-#: templates/reports/overdue_list.html:39
+#: templates/reports/overdue_list.html:55
 msgid "Aucun retard."
 msgstr "Sin atrasos."
 
-#: templates/reports/period_error.html:4 templates/reports/period_error.html:7
+#: templates/reports/period_error.html:4 templates/reports/period_error.html:14
 msgid "Période invalide"
 msgstr "Período inválido"
 
-#: templates/reports/period_error.html:11
+#: templates/reports/period_error.html:23
 msgid "Retour aux rapports"
 msgstr "Volver a informes"
 
-#: templates/reports/reservations_pickup.html:11
-msgid "Gérer les réservations"
-msgstr "Gestionar reservas"
-
-#: templates/reports/reservations_pickup.html:14
+#: templates/reports/reservations_pickup.html:15
 #, python-format
 msgid "%(count)s réservation à retirer."
 msgid_plural "%(count)s réservations à retirer."
 msgstr[0] "%(count)s reserva para retirar."
 msgstr[1] "%(count)s reservas para retirar."
 
-#: templates/reports/reservations_pickup.html:19
+#: templates/reports/reservations_pickup.html:24
+msgid "Gérer les réservations"
+msgstr "Gestionar reservas"
+
+#: templates/reports/reservations_pickup.html:32
 msgid "Disponible depuis"
 msgstr "Disponible desde"
 

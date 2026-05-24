@@ -54,6 +54,23 @@
             {% icon "credit-card" size="16px" %} {% trans "Remplacer la carte" %}
         </button>
     </form>
+    <form method="post" action="{% url 'members:toggle_active' member.pk %}" style="margin:0">
+        {% csrf_token %}
+        {% if member.status == "active" %}
+        <button type="submit" class="btn btn--ghost" style="color:#B83232">
+            {% icon "ban" size="16px" %} {% trans "Désactiver" %}
+        </button>
+        {% else %}
+        <button type="submit" class="btn btn--ghost" style="color:#2E7D32">
+            {% icon "check" size="16px" %} {% trans "Réactiver" %}
+        </button>
+        {% endif %}
+    </form>
+    {% if user.is_superadmin %}
+    <a href="{% url 'members:delete' member.pk %}" class="btn btn--ghost" style="color:#B83232">
+        {% icon "trash-2" size="16px" %} {% trans "Supprimer" %}
+    </a>
+    {% endif %}
 </div>
 {% endif %}
 

@@ -53,6 +53,12 @@
         <option value="{{ code }}" {% if selected.language == code %}selected{% endif %}>{{ name }}</option>
         {% endfor %}
     </select>
+    <div class="search" style="width:auto;min-width:160px;margin:0">
+        <span class="search-icon">{% icon "search" size="18px" %}</span>
+        <input type="search" name="q_tag" value="{{ q_tag }}"
+               placeholder="{% trans 'Tag…' %}"
+               style="width:100%">
+    </div>
     <button type="submit" class="btn btn--primary">
         {% icon "search" size="16px" %} {% trans "Filtrer" %}
     </button>
@@ -65,6 +71,52 @@
 {% if page_obj %}
 
 {# Table desktop #}
+{% if user.is_superadmin %}
+<form method="post" action="{% url 'catalog:record_bulk_delete_confirm' %}"
+      x-data="{count:0}"
+      x-init="$watch('count', v => v)"
+      class="hide-sm">
+    {% csrf_token %}
+    <div x-show="count > 0"
+         style="display:flex;align-items:center;gap:12px;padding:10px 14px;background:var(--blush);border:1px solid #B83232;border-radius:8px;margin-bottom:10px">
+        <span><strong x-text="count"></strong> {% trans "notice(s) sélectionnée(s)" %}</span>
+        <button type="submit" class="btn btn--primary" style="background:#B83232;border-color:#B83232">
+            {% icon "trash-2" size="14px" %} {% trans "Supprimer la sélection" %}
+        </button>
+    </div>
+    <div class="table-wrap">
+        <table class="table">
+            <thead>
+                <tr>
+                    <th style="width:30px">
+                        <input type="checkbox"
+                               @change="document.querySelectorAll('input[name=ids]').forEach(c => c.checked = $event.target.checked); count = document.querySelectorAll('input[name=ids]:checked').length"
+                               title="{% trans 'Tout cocher' %}">
+                    </th>
+                    <th>{% trans "Titre" %}</th>
+                    <th>{% trans "Auteur(s)" %}</th>
+                    <th>{% trans "Catégorie" %}</th>
+                    <th style="text-align:right">{% trans "Ex." %}</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for record in page_obj %}
+                <tr>
+                    <td><input type="checkbox" name="ids" value="{{ record.pk }}"
+                               @change="count = document.querySelectorAll('input[name=ids]:checked').length"></td>
+                    <td>
+                        <a href="{% url 'catalog:record_detail' record.pk %}" class="cell-link">{{ record.title }}</a>
+                    </td>
+                    <td class="muted">{% for a in record.authors.all %}{{ a.full_name }}{% if not forloop.last %}, {% endif %}{% endfor %}</td>
+                    <td class="muted">{{ record.category.name|default:"—" }}</td>
+                    <td style="text-align:right;font-weight:600">{{ record.items.count }}</td>
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    </div>
+</form>
+{% else %}
 <div class="table-wrap hide-sm">
     <table class="table">
         <thead>
@@ -89,6 +141,7 @@
         </tbody>
     </table>
 </div>
+{% endif %}
 
 {# Liste mobile #}
 <div class="list only-sm">
@@ -115,11 +168,11 @@
 {% if page_obj.paginator.num_pages > 1 %}
 <nav class="pager">
     {% if page_obj.has_previous %}
-    <a href="?q={{ q }}&page={{ page_obj.previous_page_number }}" class="btn btn--ghost btn--sm">{% trans "Précédent" %}</a>
+    <a href="?q={{ q }}&q_tag={{ q_tag }}&page={{ page_obj.previous_page_number }}" class="btn btn--ghost btn--sm">{% trans "Précédent" %}</a>
     {% endif %}
     <span class="pager-info">{{ page_obj.number }} / {{ page_obj.paginator.num_pages }}</span>
     {% if page_obj.has_next %}
-    <a href="?q={{ q }}&page={{ page_obj.next_page_number }}" class="btn btn--ghost btn--sm">{% trans "Suivant" %}</a>
+    <a href="?q={{ q }}&q_tag={{ q_tag }}&page={{ page_obj.next_page_number }}" class="btn btn--ghost btn--sm">{% trans "Suivant" %}</a>
     {% endif %}
 </nav>
 {% endif %}

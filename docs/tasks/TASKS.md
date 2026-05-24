@@ -315,3 +315,74 @@ Mise à jour : 2026-05-23 (Sprint 8 **CLOS** — FEAT-025 **validé Val 2026-05-
   - [x] SPEC §10.2 mise à jour (sous-section FEAT-025), entête de version FEAT-025
   - [x] Test Val OK 2026-05-23 (toutes les pages OK)
 
+## Sprint 9 — Suppressions / désactivation / enrichissement métadonnées
+
+> Ouvert le 2026-05-23. 6 nouvelles features (cf. `temp.txt`) regroupées en un sprint unique.
+> Ordre d'implémentation : FEAT-026 → 027 → 028 → 029 → 030 → 031.
+
+### FEAT-026 — Suppression en masse d'ouvrages depuis le catalogue (admin)
+- [x] Doc `docs/specs/FEAT-026-bulk-delete-records.md`
+- [x] Vue `record_bulk_delete_confirm` + `record_bulk_delete` + URLs (superadmin)
+- [x] Template `record_list.html` : colonne checkbox + barre d'action (Alpine)
+- [x] Template `record_bulk_delete.html` : confirmation avec impacts
+- [x] CASCADE manuel : prêts actifs → LOST, résa actives → CANCELLED, puis delete (Item.record=CASCADE)
+- [x] Tests : `apps/catalog/tests/test_bulk_delete.py` (6 cas)
+
+### FEAT-027 — Suppression définitive d'un exemplaire (librarian + admin)
+- [x] Doc `docs/specs/FEAT-027-delete-item.md`
+- [x] Vue `item_delete` + URL + bouton sur record_detail.html à côté de "Pilonner"
+- [x] Prêts actifs → LOST, résa actives → CANCELLED, CASCADE prêts passés
+- [x] Tests : `apps/catalog/tests/test_item_delete.py` (5 cas)
+
+### FEAT-028 — Désactiver/réactiver un membre (librarian + admin)
+- [x] Doc `docs/specs/FEAT-028-toggle-member-active.md`
+- [x] Vue `member_toggle_active` + URL : toggle ACTIVE ↔ SUSPENDED, réactive aussi EXPIRED
+- [x] Bouton sur fiche membre + check `MemberStatus.ACTIVE` dans `loans.services.check_item_loanable`
+- [x] Tests inclus dans `apps/members/tests/test_toggle_and_delete.py`
+
+### FEAT-029 — Suppression d'un membre (admin)
+- [x] Doc `docs/specs/FEAT-029-delete-member.md`
+- [x] Vue `member_delete` + URL (superadmin) : annule résa, force-retourne prêts actifs, CASCADE manuel, détache dépendants
+- [x] Page de confirmation `member_confirm_delete.html`
+- [x] Tests inclus dans `apps/members/tests/test_toggle_and_delete.py` (13 cas combinés FEAT-028+029)
+
+### FEAT-030 — Suppression d'un user (admin)
+- [x] Doc `docs/specs/FEAT-030-delete-user.md`
+- [x] Vue `user_delete` + URL + page `user_confirm_delete.html`
+- [x] Garde-fous : self interdit + dernier SUPERADMIN actif interdit
+- [x] Tests : `apps/accounts/tests/test_user_delete.py` (6 cas)
+
+### FEAT-031 — Enrichissement métadonnées catalogue multi-sources (async)
+- [x] Doc `docs/specs/FEAT-031-enrichissement-metadonnees.md`
+- [x] Module `apps/catalog/sources/` : `openlibrary.py`, `google_books.py`, `bnf.py` (SRU), `bne.py` (SRU)
+- [x] Service `apps/catalog/enrichment.py:run_enrichment_job(job_id)` (tâche django-q2)
+- [x] Modèle `EnrichmentJob` + migration `apps/catalog/migrations/0006_enrichmentjob.py`
+- [x] Settings : `MetadataSourcesForm` + section `sources` exposée dans `core:settings_index`
+- [x] Vues admin : `core:enrichment_index` / `core:enrichment_start` / `core:enrichment_detail` (HTMX-like meta refresh 3s)
+- [x] Lien depuis `templates/core/advanced.html`
+- [x] Tests : `apps/catalog/tests/test_enrichment.py` (12 cas)
+
+### Fin de sprint
+- [x] `pytest` complet : **241 passed** (179 → 241, +62 nouveaux, 0 régression)
+- [x] `manage.py check` : 0 issue
+- [x] Smoke GET 200 sur `/fr/admin/enrichment/`, `/fr/admin/settings/sources/`, `/fr/catalog/`, `/fr/members/`, `/fr/accounts/users/`, `/fr/advanced/`
+- [x] Déploiement Pi `192.168.0.147` (plusieurs vagues : initial + hotfixes)
+- [x] Test Val bout-en-bout des 6 features — validé 2026-05-24
+
+### Hotfixes / découvertes post-déploiement (2026-05-24)
+
+- [x] **FEAT-031 hotfix #1** : django-q2 re-enqueue toutes les 120s → multi-worker concurrent → `processed > total`. Fix : `q_options={timeout:3600, retry:7200, ack_failure:True}` + idempotence (early return si `state != PENDING`).
+- [x] **FEAT-031 hotfix #2** : sources interrogées en parallèle (ThreadPoolExecutor, ~×4 plus rapide) + suppression du `time.sleep(0.5)` entre sources.
+- [x] **FEAT-031 hotfix #3** : placeholder titre OfeliaScan → language-neutral `ISBN:<isbn> - <dd.mm.aaaa hh.mn>` (`apps/api/services.py`), détecté + écrasé par FEAT-031 même en FILL_MISSING (préfixes `ISBN:` + legacy `Sans titre — session ` pour rétrocompat).
+- [x] **FEAT-031 hotfix #4** : extraction étendue dans les 4 sources — summary (OL `description`/`notes`/`excerpts`), subjects (OL `subjects[].name`, GB `categories`, BNF/BNE `dc:subject`), cover_url (GB `imageLinks`, OL `cover.large`). Refactor `merge_record` en fusion **field-by-field** : `_try_sources` renvoie `{source_name: data | None}`, pour chaque champ on prend la 1re source non vide dans l'ordre préféré → summary GB en fallback si OL vide. Tags depuis subjects (cap 10, ≤40 chars, dedup). Cover téléchargée (httpx, max 2 MB) → `record.cover_image`. Rapport enrichi : `field ← source`.
+- [x] **FEAT-031 hotfix #5** : style formulaire enrichissement aligné (police 15px, alignement checkbox/radio, espaces réduits) ; champ tag dans `/catalog/` wrappé dans `<div class="search">` pour cohérence.
+- [x] **FEAT-031 hotfix #6** : déplacement "Enrichissement métadonnées" de la section Administration vers Inventaire dans `templates/core/advanced.html`.
+- [x] **BUG-012** Item.internal_id collision UNIQUE : `count()+1` → `MAX()+1` (`apps/catalog/models.py`). Robuste aux trous dans la séquence. 3 tests `apps/catalog/tests/test_item_codes.py`. Nettoyage de 17 notices orphelines sur la Pi (sessions précédemment échouées).
+- [x] **BUG-013** sélecteur de langue cassé en prod : `{{ request.path }}` → `{{ request.path_info }}` (sans préfixe `FORCE_SCRIPT_NAME`) dans `base.html` et `accounts/login.html`. Diagnostic : `translate_url` ne resolve pas `/bibliofelia/fr/...` → URL inchangée → reste FR.
+- [x] **Recherche ISBN dans `/catalog/`** : la barre filtrait via FTS5 (qui n'indexe pas les ISBN). Désormais `classify_query` route ISBN → `Q(isbn_13=v) | Q(isbn_10=v)`, EAN13 d'exemplaire → `items__ean13`. Tests : `apps/catalog/tests/test_views.py` (3 cas).
+- [x] **Filtre tag dans `/catalog/`** : nouveau champ `q_tag` (substring icontains, dedup) à côté des autres filtres. Combinable avec les autres filtres (AND). 2 tests.
+- [x] **i18n complète EN/ES/MG** : 197 chaînes traduites via `scripts/apply_translations.py` (dict Python → batch d'application aux 4 `.po`, suppression des `#, fuzzy`), 48 fuzzy nettoyés au passage. Couvre dashboard, tile_strip, lend/return/reservations, advanced, settings sources, enrichment, suppressions Sprint 9, topbar (Bibliothèque communautaire). Fix bonus : `{# #}` Django ne supporte pas le multi-ligne (le commentaire s'affichait comme texte) → commentaire ramené sur une ligne.
+- [x] **Tests complets** : `pytest` toujours vert (241 → 241 stable, ratio post-hotfix). Aucune régression.
+- [x] **MEMORY.md mis à jour** (`feedback_small_library_simplicity.md` ajouté avant le sprint).
+- [x] **SPEC_BIBLIOFELIA.md** : entête mise à jour, §6.1 + §6.9 + §6.10 + §6.11 enrichies, BUG-012 + BUG-013 documentés.
+- [x] Commit unique Sprint 9 + push origin/main

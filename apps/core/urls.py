@@ -17,4 +17,7 @@ urlpatterns = [
     path("admin/backup/restore/", admin_views.backup_restore, name="backup_restore"),
     path("admin/ofeliascan/", admin_views.ofeliascan_access, name="ofeliascan"),
     path("admin/diagnostics/", admin_views.diagnostics, name="diagnostics"),
+    path("admin/enrichment/", admin_views.enrichment_index, name="enrichment_index"),
+    path("admin/enrichment/start/", admin_views.enrichment_start, name="enrichment_start"),
+    path("admin/enrichment/<int:pk>/", admin_views.enrichment_detail, name="enrichment_detail"),
 ]

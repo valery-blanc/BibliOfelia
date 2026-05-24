@@ -227,17 +227,31 @@ class Item(models.Model):
         super().save(*args, **kwargs)
 
     def _assign_codes(self) -> None:
-        """Génère internal_id (OFL-YYYYMMDD-NNNN) et ean13 (290 + seq + checksum)."""
+        """Génère internal_id (OFL-YYYYMMDD-NNNN) et ean13 (290 + seq + checksum).
+
+        BUG 2026-05-24 : on utilisait `count()+1`, mais en présence de trous
+        dans la séquence (suppressions, rollbacks de sessions échouées) le
+        count produisait une seq déjà prise → UNIQUE constraint. On prend
+        désormais `MAX(internal_id)+1` (zero-padding 4 chiffres → max
+        alphabétique = max numérique).
+        """
+        from django.db.models import Max
+
         if not self.internal_id:
             today = timezone.localdate()
             day_str = today.strftime("%Y%m%d")
-            seq_today = (
+            max_id = (
                 Item.objects.filter(internal_id__startswith=f"OFL-{day_str}-")
                 .exclude(pk=self.pk)
-                .count()
-                + 1
+                .aggregate(m=Max("internal_id"))["m"]
             )
-            self.internal_id = f"OFL-{day_str}-{seq_today:04d}"
+            max_seq = 0
+            if max_id:
+                try:
+                    max_seq = int(max_id.rsplit("-", 1)[-1])
+                except (ValueError, IndexError):
+                    max_seq = 0
+            self.internal_id = f"OFL-{day_str}-{max_seq + 1:04d}"
         if not self.ean13:
             self.ean13 = build_ean13(ITEM_EAN13_PREFIX, self.pk)
 
@@ -333,3 +347,58 @@ class ScanItem(models.Model):
 
     def __str__(self) -> str:
         return f"{self.local_id} ({self.scan_kind}={self.scanned_value or '∅'})"
+
+
+# ─── Enrichissement métadonnées (FEAT-031, Sprint 9) ───────────────────────
+
+
+class EnrichmentJobState(models.TextChoices):
+    PENDING = "pending", _("En attente")
+    RUNNING = "running", _("En cours")
+    FINISHED = "finished", _("Terminé")
+    FAILED = "failed", _("Échec")
+
+
+class EnrichmentMode(models.TextChoices):
+    FILL_MISSING = "fill_missing", _("Compléter les champs vides uniquement")
+    OVERWRITE = "overwrite", _("Écraser avec les données externes")
+
+
+class EnrichmentJob(models.Model):
+    """Travail d'enrichissement multi-sources des métadonnées du catalogue."""
+
+    started_at = models.DateTimeField(auto_now_add=True)
+    finished_at = models.DateTimeField(null=True, blank=True)
+    state = models.CharField(
+        max_length=12,
+        choices=EnrichmentJobState.choices,
+        default=EnrichmentJobState.PENDING,
+    )
+    mode = models.CharField(
+        max_length=20,
+        choices=EnrichmentMode.choices,
+        default=EnrichmentMode.FILL_MISSING,
+    )
+    sources = models.JSONField(default=list)
+    scope_filter = models.JSONField(default=dict)
+    total = models.PositiveIntegerField(default=0)
+    processed = models.PositiveIntegerField(default=0)
+    updated = models.PositiveIntegerField(default=0)
+    skipped = models.PositiveIntegerField(default=0)
+    errors = models.PositiveIntegerField(default=0)
+    report = models.JSONField(default=list)
+    created_by = models.ForeignKey(
+        settings.AUTH_USER_MODEL,
+        null=True,
+        blank=True,
+        related_name="enrichment_jobs",
+        on_delete=models.SET_NULL,
+    )
+
+    class Meta:
+        verbose_name = _("enrichissement métadonnées")
+        verbose_name_plural = _("enrichissements métadonnées")
+        ordering = ["-started_at"]
+
+    def __str__(self) -> str:
+        return f"EnrichmentJob#{self.pk} {self.state}"

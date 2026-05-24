@@ -3,15 +3,18 @@ from __future__ import annotations
 
 from django.contrib import messages
 from django.core.paginator import Paginator
+from django.db import transaction
 from django.db.models import Q
 from django.shortcuts import get_object_or_404, redirect, render
 from django.urls import reverse
+from django.utils import timezone
 from django.utils.translation import gettext as _
 from django.views.decorators.http import require_POST
 
 from apps.accounts.models import Role
 from apps.accounts.permissions import require_role
-from apps.core.search import fts_search
+from apps.core.search import classify_query, fts_search
+from apps.loans.models import LoanStatus, ReservationStatus
 
 from .forms import BibliographicRecordForm, ItemBulkCreateForm, ItemForm
 from .models import (
@@ -36,16 +39,31 @@ _ACTIVE_ITEM_STATUSES = (
 
 @require_role(*READ_ROLES)
 def record_list(request):
-    """Liste + recherche filtrée des notices. SPEC §6.1 (Recherche)."""
+    """Liste + recherche filtrée des notices. SPEC §6.1 (Recherche).
+
+    `q` peut être :
+    - un EAN13 d'exemplaire (290…) → filtre via `items__ean13`
+    - un ISBN 10/13 → filtre direct sur `isbn_13`/`isbn_10`
+    - du texte libre → FTS5 sur titre/sous-titre/auteurs/résumé
+    """
     q = (request.GET.get("q") or "").strip()
     records = BibliographicRecord.objects.select_related("category").prefetch_related(
         "authors"
     )
     relevance = None
     if q:
-        ids = fts_search(q)
-        records = records.filter(pk__in=ids)
-        relevance = {pk: i for i, pk in enumerate(ids)}
+        kind, value = classify_query(q)
+        if kind == "isbn":
+            records = records.filter(Q(isbn_13=value) | Q(isbn_10=value))
+        elif kind == "item":
+            records = records.filter(items__ean13=value).distinct()
+        elif kind == "member":
+            # Pas de sens dans le catalogue : on traite comme texte vide
+            records = records.none()
+        else:
+            ids = fts_search(value)
+            records = records.filter(pk__in=ids)
+            relevance = {pk: i for i, pk in enumerate(ids)}
 
     category = request.GET.get("category") or ""
     if category:
@@ -56,6 +74,9 @@ def record_list(request):
     doc_type = request.GET.get("document_type") or ""
     if doc_type:
         records = records.filter(document_type=doc_type)
+    q_tag = (request.GET.get("q_tag") or "").strip()
+    if q_tag:
+        records = records.filter(tags__name__icontains=q_tag).distinct()
 
     records = list(records)
     if relevance is not None:
@@ -68,6 +89,7 @@ def record_list(request):
     context = {
         "page_obj": page,
         "q": q,
+        "q_tag": q_tag,
         "total": len(records),
         "categories": Category.objects.all(),
         "document_types": DocumentType.choices,
@@ -238,3 +260,100 @@ def item_discard(request, pk):
         item.save(update_fields=["status"])
         messages.success(request, _("Exemplaire retiré du fonds."))
     return redirect("catalog:record_detail", pk=item.record_id)
+
+
+_OPEN_LOAN_STATUSES = (LoanStatus.ACTIVE, LoanStatus.OVERDUE)
+_OPEN_RESERVATION_STATUSES = (
+    ReservationStatus.PENDING,
+    ReservationStatus.READY_FOR_PICKUP,
+)
+
+
+@require_POST
+@require_role(*WRITE_ROLES)
+def item_delete(request, pk):
+    """FEAT-027 : suppression définitive d'un exemplaire.
+
+    Aucun blocage : prêts actifs → LOST (cas du vol), réservations actives
+    → CANCELLED, prêts passés supprimés (CASCADE manuel car Loan.item=PROTECT).
+    """
+    item = get_object_or_404(Item, pk=pk)
+    record_pk = item.record_id
+    with transaction.atomic():
+        item.loans.filter(status__in=_OPEN_LOAN_STATUSES).update(
+            status=LoanStatus.LOST,
+            return_date=timezone.now(),
+        )
+        item.fulfilled_reservations.filter(
+            status__in=_OPEN_RESERVATION_STATUSES
+        ).update(status=ReservationStatus.CANCELLED)
+        item.loans.all().delete()
+        item.delete()
+    messages.success(request, _("Exemplaire supprimé."))
+    return redirect("catalog:record_detail", pk=record_pk)
+
+
+def _summarize_for_bulk_delete(records):
+    """Calcule pour chaque notice : nb items, nb prêts actifs, nb résa actives."""
+    summaries = []
+    for record in records:
+        items = list(record.items.all())
+        active_loans = sum(1 for i in items if i.status == ItemStatus.ON_LOAN)
+        active_reservations = record.reservations.filter(
+            status__in=_OPEN_RESERVATION_STATUSES
+        ).count()
+        summaries.append({
+            "record": record,
+            "item_count": len(items),
+            "active_loans": active_loans,
+            "active_reservations": active_reservations,
+        })
+    return summaries
+
+
+@require_POST
+@require_role(Role.SUPERADMIN)
+def record_bulk_delete_confirm(request):
+    """FEAT-026 : page de confirmation pour la suppression en masse."""
+    ids = [int(x) for x in request.POST.getlist("ids") if x.isdigit()]
+    records = (
+        BibliographicRecord.objects
+        .filter(pk__in=ids)
+        .prefetch_related("items", "reservations")
+        .order_by("title")
+    )
+    summaries = _summarize_for_bulk_delete(records)
+    return render(
+        request,
+        "catalog/record_bulk_delete.html",
+        {"summaries": summaries, "ids": ids, "count": len(summaries)},
+    )
+
+
+@require_POST
+@require_role(Role.SUPERADMIN)
+def record_bulk_delete(request):
+    """FEAT-026 : exécution de la suppression en masse.
+
+    Pour chaque notice : prêts actifs sur les items → LOST, résa actives
+    sur la notice → CANCELLED, CASCADE manuel des prêts/consultations, puis
+    delete (qui cascade les items via Item.record=CASCADE).
+    """
+    ids = [int(x) for x in request.POST.getlist("ids") if x.isdigit()]
+    qs = BibliographicRecord.objects.filter(pk__in=ids)
+    deleted = 0
+    with transaction.atomic():
+        for record in qs:
+            from apps.loans.models import Loan, InHouseConsultation, Reservation
+            Loan.objects.filter(
+                item__record=record, status__in=_OPEN_LOAN_STATUSES
+            ).update(status=LoanStatus.LOST, return_date=timezone.now())
+            Reservation.objects.filter(
+                record=record, status__in=_OPEN_RESERVATION_STATUSES
+            ).update(status=ReservationStatus.CANCELLED)
+            Loan.objects.filter(item__record=record).delete()
+            InHouseConsultation.objects.filter(item__record=record).delete()
+            record.delete()
+            deleted += 1
+    messages.success(request, _("%(n)s notice(s) supprimée(s).") % {"n": deleted})
+    return redirect("catalog:record_list")

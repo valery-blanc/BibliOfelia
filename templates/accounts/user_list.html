@@ -59,6 +59,11 @@
                         <a href="{% url 'accounts:user_password_reset' pk=u.pk %}" class="btn btn--ghost btn--sm">
                             {% icon "shield" size="14px" %} <span class="hide-sm">{% trans "Mot de passe" %}</span>
                         </a>
+                        {% if u.pk != request.user.pk %}
+                        <a href="{% url 'accounts:user_delete' pk=u.pk %}" class="btn btn--ghost btn--sm" style="color:#B83232">
+                            {% icon "trash-2" size="14px" %} <span class="hide-sm">{% trans "Supprimer" %}</span>
+                        </a>
+                        {% endif %}
                     </div>
                 </td>
             </tr>

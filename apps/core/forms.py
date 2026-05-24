@@ -17,6 +17,50 @@ def _initial_dict(key: str, default=None) -> dict:
     return v if isinstance(v, dict) else (default or {})
 
 
+class MetadataSourcesForm(forms.Form):
+    """FEAT-031 : configuration des sources externes d'enrichissement."""
+
+    KEY = "metadata.sources"
+    KEY_API_KEY = "metadata.google_books_api_key"
+
+    google_books_api_key = forms.CharField(
+        label=_("Clé API Google Books"),
+        required=False,
+        help_text=_("Obligatoire pour activer Google Books. Gratuite via Google Cloud Console."),
+    )
+    openlibrary_enabled = forms.BooleanField(label=_("OpenLibrary"), required=False, initial=True)
+    google_books_enabled = forms.BooleanField(label=_("Google Books"), required=False, initial=False)
+    bnf_enabled = forms.BooleanField(label=_("BNF (livres FR)"), required=False, initial=True)
+    bne_enabled = forms.BooleanField(label=_("BNE (livres ES)"), required=False, initial=True)
+
+    def __init__(self, *args, **kwargs):
+        super().__init__(*args, **kwargs)
+        if not self.is_bound:
+            data = _initial_dict(self.KEY, {})
+            self.fields["google_books_api_key"].initial = Setting.get(self.KEY_API_KEY, "")
+            self.fields["openlibrary_enabled"].initial = data.get("openlibrary", True)
+            self.fields["google_books_enabled"].initial = data.get("google_books", False)
+            self.fields["bnf_enabled"].initial = data.get("bnf", True)
+            self.fields["bne_enabled"].initial = data.get("bne", True)
+
+    def save(self) -> None:
+        data = self.cleaned_data
+        Setting.set(self.KEY_API_KEY, data.get("google_books_api_key", "").strip())
+        Setting.set(self.KEY, {
+            "openlibrary": bool(data["openlibrary_enabled"]),
+            "google_books": bool(data["google_books_enabled"]),
+            "bnf": bool(data["bnf_enabled"]),
+            "bne": bool(data["bne_enabled"]),
+        })
+
+    @staticmethod
+    def active_sources() -> list[str]:
+        """Retourne la liste des sources activées dans Settings."""
+        data = Setting.get(MetadataSourcesForm.KEY, {}) or {}
+        order = ["openlibrary", "google_books", "bnf", "bne"]
+        return [s for s in order if data.get(s, s in ("openlibrary", "bnf", "bne"))]
+
+
 class LibraryIdentityForm(forms.Form):
     KEY = "library_identity"
 

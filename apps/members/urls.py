@@ -12,4 +12,6 @@ urlpatterns = [
     path("<int:pk>/history/", views.member_history, name="history"),
     path("<int:pk>/replace-card/", views.member_replace_card, name="replace_card"),
     path("<int:pk>/renew/", views.member_renew, name="renew"),
+    path("<int:pk>/toggle-active/", views.member_toggle_active, name="toggle_active"),
+    path("<int:pk>/delete/", views.member_delete, name="delete"),
 ]

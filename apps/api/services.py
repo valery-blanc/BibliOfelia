@@ -52,8 +52,17 @@ def _resolve_state(value: str) -> str:
 
 
 def _create_record(item: ScanItem, isbn: str) -> BibliographicRecord:
-    """Crée un BibliographicRecord depuis les metadata d'un ScanItem."""
-    title = item.metadata_title.strip() or f"Sans titre — session {item.session.session_id}"
+    """Crée un BibliographicRecord depuis les metadata d'un ScanItem.
+
+    Si OfeliaScan envoie un ISBN sans titre, on stocke un placeholder
+    language-neutral : ``ISBN:<isbn> - <dd.mm.aaaa hh.mn>``. Détecté et
+    écrasé par FEAT-031 (cf. `apps/catalog/enrichment.py`).
+    """
+    if not item.metadata_title.strip():
+        stamp = timezone.localtime(timezone.now()).strftime("%d.%m.%Y %H.%M")
+        title = f"ISBN:{isbn or '??'} - {stamp}"
+    else:
+        title = item.metadata_title.strip()
     rec = BibliographicRecord.objects.create(
         title=title,
         publisher=item.metadata_publisher or "",
