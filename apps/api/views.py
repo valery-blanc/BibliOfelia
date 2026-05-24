@@ -24,7 +24,13 @@ from django.shortcuts import get_object_or_404
 from django.utils import timezone
 
 from apps.accounts.models import Role
-from apps.catalog.models import BibliographicRecord, ScanItem, ScanSession, ScanSessionState
+from apps.catalog.models import (
+    BibliographicRecord,
+    Location,
+    ScanItem,
+    ScanSession,
+    ScanSessionState,
+)
 from apps.catalog.openlibrary import lookup_isbn, normalize_isbn
 from apps.core.models import Setting
 from apps.core.search import normalize_code
@@ -34,13 +40,17 @@ from apps.inventory.models import (
     InventorySession,
     InventoryStatus,
 )
-from apps.inventory.services import close_session as close_inventory_session
+from apps.inventory.services import (
+    maybe_relocate,
+    close_session as close_inventory_session,
+)
 
 from .models import ScanHandoff, ScanHandoffState
 from .permissions import get_session_for_user
 from .serializers import (
     InventoryItemsBatchInputSerializer,
     InventorySessionCreateInputSerializer,
+    LocationSerializer,
     OAuthTokenObtainSerializer,
     OAuthTokenRefreshSerializer,
     ScanHandoffCreateInputSerializer,
@@ -446,6 +456,8 @@ class InventorySessionItemsView(APIView):
                 )
                 existing.add(storage_ean)
                 accepted += 1
+                # FEAT-033 : relocate auto si session scopée sur une location
+                maybe_relocate(item, session)
             except Exception as exc:  # pragma: no cover
                 rejected.append({"scanned_value": entry["scanned_value"], "reason": str(exc)})
 
@@ -643,3 +655,22 @@ class ScanHandoffDetailView(APIView):
                 ]
             )
         return Response(_serialize_handoff(handoff))
+
+
+# ─── FEAT-032 — Catalogue des emplacements ────────────────────────────────
+
+
+class LocationListView(APIView):
+    """`GET /locations` — liste des emplacements pour le picker OfeliaScan.
+
+    Lecture seule. La création/édition/suppression se fait depuis l'UI
+    librarian (`/catalog/locations/`) — OfeliaScan n'a pas vocation à créer
+    de Location lui-même.
+    """
+
+    permission_classes = [IsAuthenticated]
+    throttle_scope = "scan"
+
+    def get(self, request):
+        qs = Location.objects.select_related("parent").order_by("code")
+        return Response({"locations": LocationSerializer(qs, many=True).data})

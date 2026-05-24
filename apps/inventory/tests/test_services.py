@@ -77,7 +77,39 @@ def test_record_scan_unknown_code(record):
     assert scan.item_id is None
 
 
-def test_build_report_classifies_divergences(record, locations):
+def test_build_report_classifies_divergences_scope_category(record, locations):
+    """Classification présents / manquants / mal-rangés / inconnus en scope
+    catégorie (qui n'active PAS la relocate automatique de FEAT-033)."""
+    from apps.catalog.models import Category
+
+    a1, b2 = locations
+    cat_a = Category.objects.create(code="A", name="A")
+    cat_b = Category.objects.create(code="B", name="B")
+    record.category = cat_a
+    record.save(update_fields=["category"])
+    record_b = BibliographicRecord.objects.create(title="Autre", category=cat_b)
+
+    present = Item.objects.create(record=record, location=a1)
+    missing = Item.objects.create(record=record, location=a1)
+    misplaced = Item.objects.create(record=record_b, location=b2)
+    session = InventorySession.objects.create(
+        scope_type=InventoryScope.CATEGORY, scope_category=cat_a
+    )
+    record_scan(session, present.ean13)
+    record_scan(session, misplaced.ean13)  # bonne catégorie ? non → misplaced
+    record_scan(session, "9990000000017")
+
+    report = build_report(session)
+    assert [i.pk for i in report["present"]] == [present.pk]
+    assert [i.pk for i in report["missing"]] == [missing.pk]
+    assert [i.pk for i in report["misplaced"]] == [misplaced.pk]
+    assert report["unknown"] == ["9990000000017"]
+
+
+def test_build_report_with_relocate_in_location_scope(record, locations):
+    """FEAT-033 : en scope location, un item mal-rangé scanné est *déplacé*
+    automatiquement et devient présent. Plus de catégorie « misplaced » en
+    pratique (sauf items déjà déplacés dans une session antérieure)."""
     a1, b2 = locations
     present = Item.objects.create(record=record, location=a1)
     missing = Item.objects.create(record=record, location=a1)
@@ -86,14 +118,16 @@ def test_build_report_classifies_divergences(record, locations):
         scope_type=InventoryScope.LOCATION, scope_location=a1
     )
     record_scan(session, present.ean13)
-    record_scan(session, misplaced.ean13)
+    record_scan(session, misplaced.ean13)  # B2 → A1 par FEAT-033
     record_scan(session, "9990000000017")
 
     report = build_report(session)
-    assert [i.pk for i in report["present"]] == [present.pk]
+    session.refresh_from_db()
+    assert {i.pk for i in report["present"]} == {present.pk, misplaced.pk}
     assert [i.pk for i in report["missing"]] == [missing.pk]
-    assert [i.pk for i in report["misplaced"]] == [misplaced.pk]
+    assert report["misplaced"] == []
     assert report["unknown"] == ["9990000000017"]
+    assert session.relocate_count == 1
 
 
 def test_session_status_transitions():

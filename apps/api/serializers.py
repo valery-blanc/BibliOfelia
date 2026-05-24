@@ -11,7 +11,7 @@ from rest_framework_simplejwt.serializers import TokenObtainPairSerializer
 from rest_framework_simplejwt.settings import api_settings
 from rest_framework_simplejwt.tokens import RefreshToken
 
-from apps.catalog.models import ScanKind
+from apps.catalog.models import Location, ScanKind
 
 TOKEN_TYPE = "Bearer"
 
@@ -199,3 +199,19 @@ class ScanHandoffSubmitInputSerializer(serializers.Serializer):
                 {"value": "Champ `value` requis sauf si `cancelled=true`."}
             )
         return attrs
+
+
+# ─── FEAT-032 — Catalogue des emplacements (lecture seule) ────────────────
+
+
+class LocationSerializer(serializers.ModelSerializer):
+    """`GET /locations` — liste des emplacements pour le picker OfeliaScan."""
+
+    parent_code = serializers.SerializerMethodField()
+
+    class Meta:
+        model = Location
+        fields = ["code", "description", "parent_code"]
+
+    def get_parent_code(self, obj):
+        return obj.parent.code if obj.parent_id else None

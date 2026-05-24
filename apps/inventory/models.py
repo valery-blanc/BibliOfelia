@@ -49,6 +49,10 @@ class InventorySession(models.Model):
     # via l'API REST) plutôt que depuis l'UI web. Permet à l'UI librarian de
     # distinguer les sessions « mobiles » dans la liste (FEAT-021 / Task #20).
     mobile_created = models.BooleanField(default=False)
+    # FEAT-033 : nombre d'exemplaires dont la `location` a été corrigée
+    # automatiquement vers `scope_location` pendant la session (réassignation
+    # au scan). Incrémenté par `_maybe_relocate` dans services.py.
+    relocate_count = models.PositiveIntegerField(default=0)
 
     class Meta:
         verbose_name = _("session de récolement")

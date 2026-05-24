@@ -141,6 +141,16 @@
         </div>
         <div class="lrow-end">{% icon "chevron-right" size="18px" %}</div>
     </a>
+    <a href="{% url 'catalog:location_list' %}" class="list-row">
+        <div class="lrow-icon" style="--lr-bg:var(--olive-light);--lr-fg:#6B5A0E">
+            {% icon "map-pin" size="18px" %}
+        </div>
+        <div class="lrow-body">
+            <div class="lrow-title" style="color:var(--burgundy)">{% trans "Emplacements" %}</div>
+            <div class="lrow-sub">{% trans "Définir les zones de rangement (Salle adulte, Réserve, A1…). Utilisé au catalogage et au récolement." %}</div>
+        </div>
+        <div class="lrow-end">{% icon "chevron-right" size="18px" %}</div>
+    </a>
     {% if user.is_superadmin %}
     <a href="{% url 'core:enrichment_index' %}" class="list-row">
         <div class="lrow-icon" style="--lr-bg:var(--olive-light);--lr-fg:#6B5A0E">

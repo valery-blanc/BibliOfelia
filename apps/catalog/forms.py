@@ -5,7 +5,7 @@ from django import forms
 from django.conf import settings
 from django.utils.translation import gettext_lazy as _
 
-from .models import Author, BibliographicRecord, Item
+from .models import Author, BibliographicRecord, Item, Location
 
 
 class BibliographicRecordForm(forms.ModelForm):
@@ -102,3 +102,45 @@ class ItemBulkCreateForm(ItemForm):
     )
 
     field_order = ["copies"]
+
+
+class LocationForm(forms.ModelForm):
+    """FEAT-032 : création/édition d'un emplacement par un bibliothécaire."""
+
+    class Meta:
+        model = Location
+        fields = ["code", "description", "parent"]
+        widgets = {
+            "description": forms.Textarea(attrs={"rows": 3}),
+        }
+        help_texts = {
+            "code": _("Court, sans espace : A1, JEU-BD, RES…"),
+            "parent": _("Sous-emplacement de… (optionnel)."),
+        }
+
+    def __init__(self, *args, **kwargs):
+        super().__init__(*args, **kwargs)
+        self.fields["parent"].required = False
+        self.fields["description"].required = False
+        qs = Location.objects.all()
+        if self.instance and self.instance.pk:
+            # éviter de proposer self comme parent
+            qs = qs.exclude(pk=self.instance.pk)
+        self.fields["parent"].queryset = qs.order_by("code")
+
+    def clean(self):
+        cleaned = super().clean()
+        code = cleaned.get("code")
+        parent = cleaned.get("parent")
+        if code:
+            qs = Location.objects.filter(code=code, parent=parent)
+            if self.instance and self.instance.pk:
+                qs = qs.exclude(pk=self.instance.pk)
+            if qs.exists():
+                self.add_error(
+                    "code",
+                    _("Un emplacement avec ce code existe déjà pour ce parent."),
+                )
+        if parent and self.instance.pk and parent.pk == self.instance.pk:
+            self.add_error("parent", _("Un emplacement ne peut pas être son propre parent."))
+        return cleaned

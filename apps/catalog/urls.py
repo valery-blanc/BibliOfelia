@@ -25,4 +25,9 @@ urlpatterns = [
         views.record_bulk_delete,
         name="record_bulk_delete",
     ),
+    # FEAT-032 : gestion des emplacements
+    path("locations/", views.location_list, name="location_list"),
+    path("locations/new/", views.location_create, name="location_create"),
+    path("locations/<int:pk>/edit/", views.location_edit, name="location_edit"),
+    path("locations/<int:pk>/delete/", views.location_delete, name="location_delete"),
 ]

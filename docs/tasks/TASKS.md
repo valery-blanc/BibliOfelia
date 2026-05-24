@@ -386,3 +386,44 @@ Mise à jour : 2026-05-23 (Sprint 8 **CLOS** — FEAT-025 **validé Val 2026-05-
 - [x] **MEMORY.md mis à jour** (`feedback_small_library_simplicity.md` ajouté avant le sprint).
 - [x] **SPEC_BIBLIOFELIA.md** : entête mise à jour, §6.1 + §6.9 + §6.10 + §6.11 enrichies, BUG-012 + BUG-013 documentés.
 - [x] Commit unique Sprint 9 + push origin/main
+
+## Sprint 10 — Emplacements (UI + API) + réassignation au récolement
+
+> Ouvert le 2026-05-24. Déclenché par la modification d'OfeliaScan : envoi du `location_code` dans les sessions de catalogage et `scope_location_code` dans les sessions de récolement. Constat : aucune UI librarian pour créer/modifier les `Location`, et aucun endpoint API pour qu'OfeliaScan propose un picker. En complément, on profite du récolement pour corriger automatiquement la `location` des exemplaires scannés (insight Val : la source de vérité physique, c'est le scan terrain).
+
+### FEAT-032 — Gestion des emplacements (UI librarian + API)
+- [x] Doc `docs/specs/FEAT-032-locations.md` (rédigée 2026-05-24, statut DONE)
+- [x] Vues function-based `apps/catalog/views.py` : `location_list`, `location_create`, `location_edit`, `location_delete` (cohérent avec le pattern existant — pas de CBV)
+- [x] Form `apps/catalog/forms.py:LocationForm` (validation `(code, parent)` unique côté form + queryset parent exclut self)
+- [x] Routes `apps/catalog/urls.py` : `/catalog/locations/`, `/new/`, `/<pk>/edit/`, `/<pk>/delete/`
+- [x] Templates : `templates/catalog/location_list.html`, `location_form.html`, `location_confirm_delete.html` (design olive cohérent section Inventaire)
+- [x] Carte « Emplacements » ajoutée dans `templates/core/advanced.html` (section Inventaire, style olive, icône `map-pin`)
+- [x] Endpoint API `GET /api/v1/locations` (`apps/api/views.py:LocationListView` + `LocationSerializer` dans `apps/api/serializers.py`)
+- [x] Route API `apps/api/urls.py` : `path("locations", ...)` (pas de slash final, cohérent avec les autres endpoints)
+- [x] Tests `apps/catalog/tests/test_locations.py` (10 cas : list/create/edit/delete + permissions + parent self + (code,parent) unique)
+- [x] Tests `apps/api/tests/test_locations_api.py` (5 cas : auth, vide, tri, parent_code, payload shape)
+- [x] `SPEC_BIBLIOFELIA.md` : §6.1 paragraphe « Gestion des emplacements » + §6.10 sous-section « Catalogue des emplacements (lecture seule) » + entête mise à jour
+- [x] `pytest` : 241 → 256 verts, aucune régression
+- [ ] Test Val OK sur http://localhost:8001/fr/catalog/locations/
+- [ ] Déploiement Pi (rebuild Docker : templates embarqués)
+- [ ] Commit `FEAT-032: gestion emplacements UI + API`
+
+### FEAT-033 — Réassignation automatique des exemplaires au récolement
+- [x] Doc `docs/specs/FEAT-033-relocate-on-inventory.md` (rédigée 2026-05-24, statut DONE)
+- [x] Migration `apps/inventory/migrations/0003_inventorysession_relocate_count.py` (PositiveIntegerField default=0)
+- [x] Service `apps/inventory/services.py` : `maybe_relocate(item, session)` (renommé public pour import propre depuis api/views.py) + appel dans `record_scan`
+- [x] API `apps/api/views.py:InventorySessionItemsView` : appel `maybe_relocate` après chaque `InventoryScan.objects.create` (la vue API n'utilise pas `record_scan` à cause de la logique BUG-008 multi-exemplaires ISBN)
+- [x] Template `templates/inventory/session_report.html` : bandeau olive avec compteur si `session.relocate_count > 0` et `scope_type=location`
+- [x] Tests `apps/inventory/tests/test_relocate.py` (8 cas : scope location/all/category, item ailleurs/None/déjà bon, EAN inconnu, accumulation, idempotence)
+- [x] Tests étendus `apps/api/tests/test_inventory_api.py` (+`TestInventoryRelocate.test_relocate_via_api_batch`)
+- [x] Test existant `test_build_report_classifies_divergences` adapté : split en 2 (scope catégorie pour vérifier les misplaced, scope location pour vérifier que FEAT-033 les fait disparaître)
+- [x] `SPEC_BIBLIOFELIA.md` : §6.5 paragraphe « Réassignation automatique au récolement » + entête mise à jour
+- [x] `pytest` : 256 → 266 verts, aucune régression
+- [ ] Test Val OK (scénario UI : créer A1+B2, créer item en B2, lancer récolement scope A1, scanner l'EAN B2, vérifier reloc + bandeau)
+- [ ] Déploiement Pi (migration + rebuild Docker)
+- [ ] Commit `FEAT-033: réassignation auto location au récolement`
+
+### Clôture Sprint 10
+- [ ] Tests complets `pytest` verts (cible : 241 + ~14 nouveaux = ~255)
+- [ ] `MEMORY.md` mis à jour si décision structurante
+- [ ] Commit unique groupant FEAT-032 + FEAT-033 (ou deux commits si Val préfère) + push origin/main

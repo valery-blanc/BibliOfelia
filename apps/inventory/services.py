@@ -3,6 +3,7 @@ SPEC §6.5.
 """
 from __future__ import annotations
 
+from django.db import models
 from django.utils import timezone
 
 from apps.catalog.models import Item, ItemStatus
@@ -39,7 +40,39 @@ def record_scan(session: InventorySession, raw_ean: str, device: str = ""):
         ean13=ean,
         defaults={"item": item, "device": device},
     )
+    maybe_relocate(item, session)
     return scan, created
+
+
+def maybe_relocate(item: Item | None, session: InventorySession) -> bool:
+    """FEAT-033 : si la session est scopée sur une location et que
+    l'exemplaire scanné n'y est pas (ou n'a pas d'emplacement), on le force
+    vers `session.scope_location`. Retourne True si déplacé.
+
+    Logique : pendant un récolement sur l'emplacement X, on tient
+    physiquement les livres en main à cet endroit — donc ils y sont, point.
+    Le scan terrain est la source de vérité.
+
+    Ne fait rien pour `scope_type=all` ou `scope_type=category` (pas de
+    location-cible évidente). Ne fait rien si l'EAN ne matche aucun Item.
+    """
+    if item is None:
+        return False
+    if session.scope_type != InventoryScope.LOCATION:
+        return False
+    if not session.scope_location_id:
+        return False
+    if item.location_id == session.scope_location_id:
+        return False
+    item.location_id = session.scope_location_id
+    item.save(update_fields=["location"])
+    InventorySession.objects.filter(pk=session.pk).update(
+        relocate_count=models.F("relocate_count") + 1
+    )
+    # Garder l'instance Python à jour pour les appelants (tests, vue
+    # `record_scan` qui retourne ensuite la session).
+    session.relocate_count = (session.relocate_count or 0) + 1
+    return True
 
 
 def build_report(session: InventorySession) -> dict:

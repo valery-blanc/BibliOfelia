@@ -54,4 +54,6 @@ urlpatterns = [
         views.ScanHandoffDetailView.as_view(),
         name="scan-handoff-detail",
     ),
+    # FEAT-032 — Catalogue des emplacements (lecture seule)
+    path("locations", views.LocationListView.as_view(), name="locations"),
 ]

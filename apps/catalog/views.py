@@ -4,7 +4,7 @@ from __future__ import annotations
 from django.contrib import messages
 from django.core.paginator import Paginator
 from django.db import transaction
-from django.db.models import Q
+from django.db.models import Count, Q
 from django.shortcuts import get_object_or_404, redirect, render
 from django.urls import reverse
 from django.utils import timezone
@@ -16,13 +16,14 @@ from apps.accounts.permissions import require_role
 from apps.core.search import classify_query, fts_search
 from apps.loans.models import LoanStatus, ReservationStatus
 
-from .forms import BibliographicRecordForm, ItemBulkCreateForm, ItemForm
+from .forms import BibliographicRecordForm, ItemBulkCreateForm, ItemForm, LocationForm
 from .models import (
     BibliographicRecord,
     Category,
     DocumentType,
     Item,
     ItemStatus,
+    Location,
 )
 from .openlibrary import lookup_isbn
 
@@ -357,3 +358,89 @@ def record_bulk_delete(request):
             deleted += 1
     messages.success(request, _("%(n)s notice(s) supprimée(s).") % {"n": deleted})
     return redirect("catalog:record_list")
+
+
+# ─── FEAT-032 : gestion des emplacements (Location) ────────────────────────
+
+
+@require_role(*WRITE_ROLES)
+def location_list(request):
+    """Liste des emplacements avec compteur d'exemplaires rattachés."""
+    locations = (
+        Location.objects.select_related("parent")
+        .annotate(items_count=Count("items"))
+        .order_by("code")
+    )
+    return render(
+        request,
+        "catalog/location_list.html",
+        {"locations": locations, "total": locations.count()},
+    )
+
+
+@require_role(*WRITE_ROLES)
+def location_create(request):
+    if request.method == "POST":
+        form = LocationForm(request.POST)
+        if form.is_valid():
+            form.save()
+            messages.success(request, _("Emplacement créé."))
+            return redirect("catalog:location_list")
+    else:
+        form = LocationForm()
+    return render(
+        request,
+        "catalog/location_form.html",
+        {
+            "form": form,
+            "form_action": reverse("catalog:location_create"),
+            "form_title": _("Nouvel emplacement"),
+        },
+    )
+
+
+@require_role(*WRITE_ROLES)
+def location_edit(request, pk):
+    location = get_object_or_404(Location, pk=pk)
+    if request.method == "POST":
+        form = LocationForm(request.POST, instance=location)
+        if form.is_valid():
+            form.save()
+            messages.success(request, _("Emplacement mis à jour."))
+            return redirect("catalog:location_list")
+    else:
+        form = LocationForm(instance=location)
+    return render(
+        request,
+        "catalog/location_form.html",
+        {
+            "form": form,
+            "form_action": reverse("catalog:location_edit", args=[pk]),
+            "form_title": _("Modifier l'emplacement"),
+            "location": location,
+        },
+    )
+
+
+@require_role(*WRITE_ROLES)
+def location_delete(request, pk):
+    location = get_object_or_404(
+        Location.objects.annotate(items_count=Count("items")), pk=pk
+    )
+    children_count = location.children.count()
+    if request.method == "POST":
+        # SET_NULL côté Item.location et InventorySession.scope_location :
+        # les exemplaires rattachés perdent leur emplacement, l'historique des
+        # sessions de récolement est conservé.
+        location.delete()
+        messages.success(request, _("Emplacement supprimé."))
+        return redirect("catalog:location_list")
+    return render(
+        request,
+        "catalog/location_confirm_delete.html",
+        {
+            "location": location,
+            "items_count": location.items_count,
+            "children_count": children_count,
+        },
+    )

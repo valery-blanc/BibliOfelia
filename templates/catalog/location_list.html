@@ -1,0 +1,65 @@
+{% extends "base.html" %}
+{% load i18n biblio_icons %}
+
+{% block title %}{% trans "Emplacements" %}{% endblock %}
+
+{% block tile_strip %}{% include "partials/_tile_strip.html" with active="advanced" %}{% endblock %}
+
+{% block content %}
+<nav class="breadcrumb">
+    <a href="{% url 'core:advanced' %}">{% trans "Avancé" %}</a> /
+    <strong>{% trans "Emplacements" %}</strong>
+</nav>
+
+<header class="pagehead">
+    <div class="pagehead-icon" style="--ph-bg:var(--olive-light);--ph-fg:#6B5A0E">
+        {% icon "map-pin" size="28px" %}
+    </div>
+    <div class="pagehead-text">
+        <h1 class="pagehead-title">{% trans "Emplacements" %}</h1>
+        <div class="pagehead-sub">{% trans "Zones de rangement utilisées au catalogage et au récolement" %}</div>
+    </div>
+    <div class="pagehead-action">
+        <a href="{% url 'catalog:location_create' %}" class="btn btn--primary">
+            {% icon "plus" size="16px" %}
+            <span class="hide-sm">{% trans "Nouvel emplacement" %}</span>
+        </a>
+    </div>
+</header>
+
+<div class="table-wrap">
+    <table class="table">
+        <thead>
+            <tr>
+                <th>{% trans "Code" %}</th>
+                <th>{% trans "Description" %}</th>
+                <th>{% trans "Parent" %}</th>
+                <th style="text-align:right">{% trans "Exemplaires" %}</th>
+                <th></th>
+            </tr>
+        </thead>
+        <tbody>
+        {% for loc in locations %}
+            <tr>
+                <td><span class="cell-title">{{ loc.code }}</span></td>
+                <td>{{ loc.description|truncatechars:80|default:"—" }}</td>
+                <td>{% if loc.parent %}{{ loc.parent.code }}{% else %}<span class="muted">—</span>{% endif %}</td>
+                <td style="text-align:right">{{ loc.items_count }}</td>
+                <td style="text-align:right">
+                    <div style="display:inline-flex;gap:6px">
+                        <a href="{% url 'catalog:location_edit' pk=loc.pk %}" class="btn btn--ghost btn--sm">
+                            {% icon "pencil" size="14px" %} <span class="hide-sm">{% trans "Éditer" %}</span>
+                        </a>
+                        <a href="{% url 'catalog:location_delete' pk=loc.pk %}" class="btn btn--ghost btn--sm" style="color:#B83232">
+                            {% icon "trash-2" size="14px" %} <span class="hide-sm">{% trans "Supprimer" %}</span>
+                        </a>
+                    </div>
+                </td>
+            </tr>
+        {% empty %}
+            <tr><td colspan="5" class="muted" style="text-align:center;padding:24px">{% trans "Aucun emplacement défini. Cliquez sur « Nouvel emplacement » pour commencer." %}</td></tr>
+        {% endfor %}
+        </tbody>
+    </table>
+</div>
+{% endblock %}

@@ -198,6 +198,39 @@ class TestInventoryItems:
 
 
 @pytest.mark.django_db
+class TestInventoryRelocate:
+    """FEAT-033 : la réassignation auto fonctionne aussi via l'API
+    OfeliaScan (la vue n'utilise pas record_scan mais appelle
+    maybe_relocate explicitement)."""
+
+    def test_relocate_via_api_batch(self, client, scanner):
+        _auth(client)
+        rec = BibliographicRecord.objects.create(title="T")
+        a1 = Location.objects.create(code="A1")
+        b2 = Location.objects.create(code="B2")
+        item = Item.objects.create(record=rec, ean13="2900000000017", location=b2)
+
+        resp = client.post(
+            "/api/v1/inventory-sessions",
+            {"scope_type": "location", "scope_location_code": "A1"},
+            format="json",
+        )
+        sid = resp.json()["session_id"]
+
+        client.post(
+            f"/api/v1/inventory-sessions/{sid}/items",
+            {"items": [{"scanned_value": "2900000000017",
+                        "scanned_at": "2026-05-22T14:30:00Z"}]},
+            format="json",
+        )
+
+        item.refresh_from_db()
+        session = InventorySession.objects.get(session_id=sid)
+        assert item.location_id == a1.pk
+        assert session.relocate_count == 1
+
+
+@pytest.mark.django_db
 class TestInventoryClose:
     def test_close_sets_state_and_closed_at(self, client, scanner):
         _auth(client)

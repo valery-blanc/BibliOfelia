@@ -1,0 +1,53 @@
+{% extends "base.html" %}
+{% load i18n biblio_icons %}
+
+{% block title %}{% trans "Supprimer l'emplacement" %}{% endblock %}
+
+{% block tile_strip %}{% include "partials/_tile_strip.html" with active="advanced" %}{% endblock %}
+
+{% block content %}
+<nav class="breadcrumb">
+    <a href="{% url 'core:advanced' %}">{% trans "Avancé" %}</a> /
+    <a href="{% url 'catalog:location_list' %}">{% trans "Emplacements" %}</a> /
+    <strong>{% trans "Supprimer" %}</strong>
+</nav>
+
+<header class="pagehead">
+    <div class="pagehead-icon" style="--ph-bg:var(--blush);--ph-fg:#B83232">
+        {% icon "trash-2" size="28px" %}
+    </div>
+    <div class="pagehead-text">
+        <h1 class="pagehead-title">{% trans "Supprimer l'emplacement" %}</h1>
+        <div class="pagehead-sub">{{ location.code }}{% if location.description %} · {{ location.description|truncatechars:60 }}{% endif %}</div>
+    </div>
+</header>
+
+<div class="card">
+    <p>{% blocktrans with code=location.code %}Confirmez-vous la suppression de l'emplacement <strong>{{ code }}</strong> ?{% endblocktrans %}</p>
+
+    <h3 style="margin-top:18px">{% trans "Conséquences" %}</h3>
+    <ul>
+        <li>
+            <strong>{{ items_count }}</strong>
+            {% blocktrans count counter=items_count %}exemplaire rattaché perdra son emplacement (affiché « — » dans la fiche).{% plural %}exemplaires rattachés perdront leur emplacement (affichés « — » dans la fiche).{% endblocktrans %}
+        </li>
+        {% if children_count %}
+        <li>
+            <strong>{{ children_count }}</strong>
+            {% blocktrans count counter=children_count %}sous-emplacement perdra son parent (deviendra racine).{% plural %}sous-emplacements perdront leur parent (deviendront racine).{% endblocktrans %}
+        </li>
+        {% endif %}
+        <li>{% trans "Les sessions de récolement passées qui ciblaient cet emplacement conservent leur historique." %}</li>
+    </ul>
+
+    <form method="post" style="margin-top:18px">
+        {% csrf_token %}
+        <div class="form-actions" style="border:0;padding:0;margin:0">
+            <button type="submit" class="btn btn--primary" style="background:#B83232;border-color:#B83232">
+                {% icon "trash-2" size="16px" %} {% trans "Supprimer définitivement" %}
+            </button>
+            <a href="{% url 'catalog:location_list' %}" class="btn btn--ghost">{% trans "Annuler" %}</a>
+        </div>
+    </form>
+</div>
+{% endblock %}
