@@ -29,12 +29,17 @@
         <form method="post" action="{% url 'loans:lend' %}">
             {% csrf_token %}
             <input type="hidden" name="action" value="set_member">
-            <div class="search" style="margin-bottom:14px">
-                <span class="search-icon">{% icon "scan-barcode" size="18px" %}</span>
-                <input type="text" name="card" autofocus autocomplete="off"
-                       placeholder="{% trans 'Scanner ou saisir le n° de carte' %}">
+            <div class="search-with-submit" style="margin-bottom:14px">
+                <div class="search" style="flex:1">
+                    <span class="search-icon">{% icon "scan-barcode" size="18px" %}</span>
+                    <input type="text" name="card" autofocus autocomplete="off"
+                           placeholder="{% trans 'Scanner ou saisir le n° de carte' %}">
+                </div>
+                <button type="submit" class="btn btn--primary btn--sm" style="flex-shrink:0">
+                    {% trans "Valider" %}
+                </button>
             </div>
-            <button type="submit"
+            <button type="button"
                     class="btn btn--ghost btn--block js-scan-handoff"
                     data-scan-target="input[name=card]"
                     data-scan-kind="card"
@@ -96,14 +101,19 @@
     <form method="post" action="{% url 'loans:lend' %}">
         {% csrf_token %}
         <input type="hidden" name="action" value="add_item">
-        <div class="search" style="margin-bottom:14px">
-            <span class="search-icon">{% icon "scan-barcode" size="18px" %}</span>
-            <input type="text" name="ean"
-                   {% if member %}autofocus{% endif %}
-                   autocomplete="off"
-                   placeholder="{% trans 'Scanner le code-barres du livre' %}">
+        <div class="search-with-submit" style="margin-bottom:14px">
+            <div class="search" style="flex:1">
+                <span class="search-icon">{% icon "scan-barcode" size="18px" %}</span>
+                <input type="text" name="ean"
+                       {% if member %}autofocus{% endif %}
+                       autocomplete="off"
+                       placeholder="{% trans 'Scanner le code-barres du livre' %}">
+            </div>
+            <button type="submit" class="btn btn--primary btn--sm" style="flex-shrink:0">
+                {% trans "Valider" %}
+            </button>
         </div>
-        <button type="submit"
+        <button type="button"
                 class="btn btn--accent btn--block btn--lg js-scan-handoff"
                 data-scan-target="input[name=ean]"
                 data-scan-kind="book"

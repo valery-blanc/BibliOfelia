@@ -32,6 +32,13 @@
         {% include "partials/_field.html" with field=form.registration_date %}
         {% include "partials/_field.html" with field=form.expiration_date %}
         {% include "partials/_field.html" with field=form.parent_account %}
+        {% if form.instance.photo %}
+        <div class="field">
+            <label>{% trans "Photo actuelle" %}</label>
+            <img src="{{ form.instance.photo.url }}" alt=""
+                 style="max-width:120px;max-height:160px;border-radius:10px;box-shadow:var(--shadow-sm);display:block;margin-bottom:8px">
+        </div>
+        {% endif %}
         {% include "partials/_field.html" with field=form.photo %}
         {% include "partials/_field.html" with field=form.notes %}
     </details>
@@ -47,4 +54,22 @@
         {% endif %}
     </div>
 </form>
+
+<script>
+// FEAT-037 : quand on touche à la date d'inscription, mettre la date
+// d'expiration à +1 an automatiquement (l'utilisateur peut écraser après).
+(function () {
+    var reg = document.querySelector('input[name="registration_date"]');
+    var exp = document.querySelector('input[name="expiration_date"]');
+    if (!reg || !exp) return;
+    reg.addEventListener("change", function () {
+        if (!reg.value) return;
+        var d = new Date(reg.value + "T00:00:00");
+        if (isNaN(d.getTime())) return;
+        d.setFullYear(d.getFullYear() + 1);
+        var pad = function (n) { return n < 10 ? "0" + n : "" + n; };
+        exp.value = d.getFullYear() + "-" + pad(d.getMonth() + 1) + "-" + pad(d.getDate());
+    });
+})();
+</script>
 {% endblock %}

@@ -37,6 +37,60 @@ def member(category):
     )
 
 
+def test_member_new_pre_fills_today_and_today_plus_one_year(client, librarian):
+    """FEAT-037 : à la création, registration_date = today et
+    expiration_date = today + 1 an déjà remplis dans le form."""
+    from dateutil.relativedelta import relativedelta
+
+    client.force_login(librarian)
+    resp = client.get("/fr/members/new/")
+    body = resp.content.decode()
+    today_iso = date.today().isoformat()
+    plus1_iso = (date.today() + relativedelta(years=1)).isoformat()
+    assert f'value="{today_iso}"' in body
+    assert f'value="{plus1_iso}"' in body
+
+
+def test_member_edit_pre_fills_dates_in_iso_format(client, librarian, member):
+    """BUG-015 : les inputs type=date doivent être pré-remplis au format ISO
+    (sinon le navigateur affiche un input vide → effacement involontaire)."""
+    member.birth_date = date(1980, 5, 12)
+    member.registration_date = date(2026, 1, 15)
+    member.expiration_date = date(2027, 1, 15)
+    member.save()
+    client.force_login(librarian)
+    resp = client.get(f"/fr/members/{member.pk}/edit/")
+    body = resp.content.decode()
+    assert 'value="1980-05-12"' in body
+    assert 'value="2026-01-15"' in body
+    assert 'value="2027-01-15"' in body
+
+
+def test_member_edit_preserves_dates_on_blank_resubmit(client, librarian, member, category):
+    """BUG-015 régression : éditer sans toucher aux dates ne doit pas les effacer."""
+    member.birth_date = date(1980, 5, 12)
+    member.registration_date = date(2026, 1, 15)
+    member.expiration_date = date(2027, 1, 15)
+    member.save()
+    client.force_login(librarian)
+    resp = client.post(
+        f"/fr/members/{member.pk}/edit/",
+        {
+            "first_name": member.first_name,
+            "last_name": member.last_name,
+            "category": category.pk,
+            "birth_date": "1980-05-12",
+            "registration_date": "2026-01-15",
+            "expiration_date": "2027-01-15",
+        },
+    )
+    assert resp.status_code == 302
+    member.refresh_from_db()
+    assert member.birth_date == date(1980, 5, 12)
+    assert member.registration_date == date(2026, 1, 15)
+    assert member.expiration_date == date(2027, 1, 15)
+
+
 def test_member_create_generates_card(client, librarian, category):
     client.force_login(librarian)
     resp = client.post(

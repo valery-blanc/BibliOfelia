@@ -44,6 +44,29 @@ def dashboard(request):
     growth_month = reports.collection_growth(periods["month_start"], today)
     growth_year = reports.collection_growth(periods["year_start"], today)
 
+    reminders = list(
+        Loan.objects.filter(
+            status__in=[LoanStatus.ACTIVE, LoanStatus.OVERDUE],
+            due_date__lt=today,
+        )
+        .select_related("item__record", "member")
+        .order_by("due_date")[:10]
+    )
+    for loan in reminders:
+        loan.days_overdue_count = (today - loan.due_date).days
+    overdue_total = overdue
+
+    # FEAT-036 : réservations prêtes pour lesquelles le membre n'a pas encore
+    # été contacté (téléphone). Affichées dans un cadre dédié sur le dashboard.
+    notifications_pending = list(
+        Reservation.objects.filter(
+            status=ReservationStatus.READY_FOR_PICKUP,
+            notified_at__isnull=True,
+        )
+        .select_related("record", "member", "fulfilled_by_item")
+        .order_by("ready_since", "created_at")
+    )
+
     return render(request, "core/dashboard.html", {
         "kpi_active_loans": active_loans,
         "kpi_overdue": overdue,
@@ -60,6 +83,10 @@ def dashboard(request):
         "growth_month": growth_month,
         "growth_year": growth_year,
         "system_status": reports.system_status(),
+        "reminders": reminders,
+        "reminders_total": overdue_total,
+        "notifications_pending": notifications_pending,
+        "today": today,
     })
 
 

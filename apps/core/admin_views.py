@@ -23,6 +23,7 @@ from .forms import (
     LabelFormatForm,
     LanguagesForm,
     LibraryIdentityForm,
+    LoanReservationDefaultsForm,
     MetadataSourcesForm,
     ZeroTierForm,
 )
@@ -35,6 +36,7 @@ from django.views.decorators.http import require_POST
 FORMS = {
     "identity": ("Identité", LibraryIdentityForm),
     "languages": ("Langues", LanguagesForm),
+    "loans": ("Durées prêts & réservations", LoanReservationDefaultsForm),
     "backup": ("Sauvegardes", BackupConfigForm),
     "labels": ("Étiquettes", LabelFormatForm),
     "zerotier": ("ZeroTier", ZeroTierForm),

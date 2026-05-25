@@ -206,6 +206,53 @@ class LabelFormatForm(forms.Form):
         }, "Format étiquettes / cartes")
 
 
+class LoanReservationDefaultsForm(forms.Form):
+    """FEAT-034 + FEAT-035 : durées par défaut des prêts et des réservations."""
+
+    default_loan_days = forms.IntegerField(
+        label=_("Durée par défaut d'un prêt (jours)"),
+        min_value=1, max_value=365,
+        help_text=_("Utilisée si ni la catégorie de document ni la catégorie de membre n'en définit une. Défaut : 21 jours (3 semaines)."),
+    )
+    reservation_expiry_days = forms.IntegerField(
+        label=_("Validité d'une réservation en attente (jours)"),
+        min_value=1, max_value=365,
+        help_text=_("Délai au-delà duquel une réservation pour laquelle aucun exemplaire ne s'est libéré expire automatiquement."),
+    )
+    pickup_hold_days = forms.IntegerField(
+        label=_("Durée de mise de côté à retirer (jours)"),
+        min_value=1, max_value=60,
+        help_text=_("Une fois un exemplaire mis de côté pour un membre, il a ce délai pour venir le retirer avant que la réservation ne bascule au membre suivant."),
+    )
+
+    def __init__(self, *args, **kwargs):
+        super().__init__(*args, **kwargs)
+        if not self.is_bound:
+            self.fields["default_loan_days"].initial = int(
+                Setting.get("default_loan_days", 21) or 21
+            )
+            self.fields["reservation_expiry_days"].initial = int(
+                Setting.get("reservation_expiry_days", 7) or 7
+            )
+            self.fields["pickup_hold_days"].initial = int(
+                Setting.get("pickup_hold_days", 5) or 5
+            )
+
+    def save(self) -> None:
+        Setting.set(
+            "default_loan_days", int(self.cleaned_data["default_loan_days"]),
+            "Durée par défaut d'un prêt (fallback global)",
+        )
+        Setting.set(
+            "reservation_expiry_days", int(self.cleaned_data["reservation_expiry_days"]),
+            "Délai d'expiration d'une réservation pending",
+        )
+        Setting.set(
+            "pickup_hold_days", int(self.cleaned_data["pickup_hold_days"]),
+            "Délai de garde après mise à dispo",
+        )
+
+
 class ZeroTierForm(forms.Form):
     KEY = "zerotier"
 

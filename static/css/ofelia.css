@@ -527,6 +527,52 @@ ul { list-style: none; padding: 0; }
 }
 .search-icon svg { width: 18px; height: 18px; }
 
+/* FEAT-036 : cadre « infos importantes » sur le dashboard (notifications à
+   faire, …). Visuellement plus marqué qu'une simple .card. */
+.alert-box {
+  background: var(--blush-light, #FCE7E1);
+  border: 1px solid var(--blush, #E8B5A7);
+  border-radius: 14px;
+  padding: 14px 18px;
+  margin: 14px 0 18px;
+  box-shadow: var(--shadow-sm);
+}
+.alert-box-header {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  margin-bottom: 10px;
+}
+.alert-box-icon {
+  width: 36px; height: 36px;
+  border-radius: 10px;
+  background: var(--burgundy, #6B2138);
+  color: #fff;
+  display: flex; align-items: center; justify-content: center;
+  flex-shrink: 0;
+}
+.alert-box-title { font-weight: 700; font-size: 15px; }
+.alert-box-sub { font-size: 13px; color: var(--ink-soft, #5A5048); }
+.alert-box-list { display: flex; flex-direction: column; gap: 8px; }
+.alert-row {
+  display: flex; align-items: center; gap: 12px;
+  background: var(--paper, #fff);
+  border-radius: 10px;
+  padding: 10px 12px;
+}
+.alert-row-body { flex: 1; min-width: 0; }
+
+/* BUG-014 : couple input + bouton Valider sur lend/return, pour la saisie
+   clavier d'un code Ofelia ou d'un n° de carte. Le bouton "Scanner" reste
+   au-dessous en `type="button"` pour ne pas absorber la touche Entrée. */
+.search-with-submit {
+  display: flex;
+  gap: 10px;
+  align-items: stretch;
+}
+.search-with-submit .search { margin: 0; }
+.search-with-submit > .btn { padding-left: 18px; padding-right: 18px; }
+
 /* ────────── Boutons ────────── */
 .btn {
   display: inline-flex;

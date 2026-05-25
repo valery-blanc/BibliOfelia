@@ -35,6 +35,66 @@ def test_record_list_visible_to_readonly(client, readonly, record):
     assert b"Fondation" in resp.content
 
 
+def test_record_detail_shows_pending_waiting_list(client, readonly, record):
+    """FEAT-034 : la fiche notice affiche la liste d'attente (réservations
+    PENDING) au niveau notice même si aucun exemplaire n'est encore mis de côté."""
+    from datetime import date, timedelta
+
+    from apps.loans.models import Reservation, ReservationStatus
+    from apps.members.models import Member, MemberCategory
+
+    cat = MemberCategory.objects.create(code="AD", name="Adulte")
+    m1 = Member.objects.create(first_name="Alice", last_name="A", category=cat)
+    m2 = Member.objects.create(first_name="Bob", last_name="B", category=cat)
+    Reservation.objects.create(
+        record=record, member=m1, status=ReservationStatus.PENDING,
+        expires_at=date.today() + timedelta(days=7),
+    )
+    Reservation.objects.create(
+        record=record, member=m2, status=ReservationStatus.PENDING,
+        expires_at=date.today() + timedelta(days=7),
+    )
+    client.force_login(readonly)
+    resp = client.get(f"/fr/catalog/{record.pk}/")
+    assert resp.status_code == 200
+    body = resp.content.decode()
+    assert "Liste d&#x27;attente" in body or "Liste d'attente" in body
+    assert "Alice A" in body
+    assert "Bob B" in body
+
+
+def test_record_detail_shows_active_reservation_holder(client, readonly, record):
+    """FEAT-034 : pour un exemplaire mis de côté, la fiche notice affiche le
+    membre qui retient l'exemplaire."""
+    from datetime import date, timedelta
+
+    from apps.core.models import Setting
+    from apps.loans.models import Reservation, ReservationStatus
+    from apps.members.models import Member, MemberCategory
+
+    Setting.set("pickup_hold_days", 5)
+    cat = MemberCategory.objects.create(code="AD", name="Adulte")
+    holder = Member.objects.create(
+        first_name="Marie", last_name="Curie", category=cat
+    )
+    item = Item.objects.create(record=record, status=ItemStatus.RESERVED_FOR_PICKUP)
+    Reservation.objects.create(
+        record=record,
+        member=holder,
+        status=ReservationStatus.READY_FOR_PICKUP,
+        ready_since=date.today(),
+        expires_at=date.today() + timedelta(days=14),
+        fulfilled_by_item=item,
+    )
+
+    client.force_login(readonly)
+    resp = client.get(f"/fr/catalog/{record.pk}/")
+    assert resp.status_code == 200
+    body = resp.content.decode()
+    assert "Marie Curie" in body
+    assert holder.card_number in body
+
+
 def test_record_list_search_by_isbn13(client, readonly):
     """Bug remonté Val 2026-05-24 : la recherche par ISBN ne marchait pas
     dans le catalogue (FTS5 n'indexe pas les ISBN). Désormais classify_query

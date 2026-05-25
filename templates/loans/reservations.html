@@ -32,25 +32,56 @@
 </h2>
 
 {% if ready %}
-<div class="list">
+<div class="stack-md">
     {% for r in ready %}
-    <div class="list-row" style="border-left:4px solid var(--forest)">
-        <div class="lrow-icon" style="--lr-bg:var(--forest-light);--lr-fg:var(--forest)">
-            {% icon "bookmark-check" size="18px" %}
-        </div>
-        <div class="lrow-body">
-            <div class="lrow-title">{{ r.record.title }}</div>
-            <div class="lrow-sub">{{ r.member.full_name }}</div>
-        </div>
-        <div class="lrow-end" style="display:flex;flex-direction:column;align-items:flex-end;gap:6px">
-            <span class="badge badge--ok">{% icon "check" size="12px" %} {% trans "Prête" %}</span>
-            {% if r.ready_since %}
-            <div style="font-size:11.5px;color:var(--grey)">{% trans "Mis de côté le" %} {{ r.ready_since }}</div>
-            {% endif %}
-            <form method="post" action="{% url 'loans:reservation_cancel' r.pk %}" style="margin:0">
-                {% csrf_token %}
-                <button type="submit" class="btn btn--ghost btn--sm">{% trans "Annuler" %}</button>
-            </form>
+    <div class="card" style="border-left:4px solid var(--forest);padding:16px 18px">
+        <div style="display:flex;align-items:flex-start;gap:14px">
+            <div class="lrow-icon" style="--lr-bg:var(--forest-light);--lr-fg:var(--forest);flex-shrink:0">
+                {% icon "bookmark-check" size="20px" %}
+            </div>
+            <div style="flex:1;min-width:0">
+                <div style="font-size:17px;font-weight:600;line-height:1.3">{{ r.record.title }}</div>
+                {% if r.fulfilled_by_item %}
+                <div style="font-size:14px;color:var(--grey);margin-top:2px;font-family:var(--font-mono,monospace)">{{ r.fulfilled_by_item.ean13 }}</div>
+                {% endif %}
+                <div style="margin-top:10px;font-size:16px;font-weight:600">
+                    <a href="{% url 'members:detail' r.member.pk %}" class="cell-link">{{ r.member.full_name }}</a>
+                    <span class="muted" style="font-weight:400">· {{ r.member.card_number }}</span>
+                </div>
+                <dl style="margin:10px 0 0;display:grid;grid-template-columns:auto 1fr;gap:4px 14px;font-size:14px">
+                    <dt class="muted">{% trans "Réservé le" %}</dt>
+                    <dd>{{ r.created_at|date:"Y-m-d H:i" }}</dd>
+                    <dt class="muted">{% trans "Mis de côté le" %}</dt>
+                    <dd>
+                        {% if r.ready_at_dt %}{{ r.ready_at_dt|date:"Y-m-d H:i" }}
+                        {% elif r.ready_since %}{{ r.ready_since|date:"Y-m-d" }}
+                        {% else %}—{% endif %}
+                    </dd>
+                    {% if r.pickup_deadline %}
+                    <dt class="muted">{% trans "À retirer avant le" %}</dt>
+                    <dd><strong>{{ r.pickup_deadline|date:"Y-m-d" }}</strong></dd>
+                    {% endif %}
+                </dl>
+            </div>
+            <div style="display:flex;flex-direction:column;align-items:flex-end;gap:8px;flex-shrink:0">
+                {% if r.notified_at %}
+                <span class="badge badge--ok" title="{{ r.notified_at|date:'Y-m-d H:i' }}">
+                    {% icon "check" size="12px" %} {% trans "Notifié" %}
+                </span>
+                <div style="font-size:11.5px;color:var(--grey)">{{ r.notified_at|date:"Y-m-d H:i" }}</div>
+                {% else %}
+                <form method="post" action="{% url 'loans:reservation_notify' r.pk %}" style="margin:0">
+                    {% csrf_token %}
+                    <button type="submit" class="btn btn--primary btn--sm">
+                        {% icon "check" size="14px" %} {% trans "Notifier" %}
+                    </button>
+                </form>
+                {% endif %}
+                <form method="post" action="{% url 'loans:reservation_cancel' r.pk %}" style="margin:0">
+                    {% csrf_token %}
+                    <button type="submit" class="btn btn--ghost btn--sm">{% trans "Annuler" %}</button>
+                </form>
+            </div>
         </div>
     </div>
     {% endfor %}
@@ -75,11 +106,15 @@
             {% icon "bookmark" size="18px" %}
         </div>
         <div class="lrow-body">
-            <div class="lrow-title">{{ r.record.title }}</div>
-            <div class="lrow-sub">{{ r.member.full_name }} · {% trans "réservé le" %} {{ r.created_at|date:"Y-m-d" }}</div>
+            <div class="lrow-title" style="font-size:16px">{{ r.record.title }}</div>
+            <div class="lrow-sub" style="font-size:14px">
+                <a href="{% url 'members:detail' r.member.pk %}" class="cell-link">{{ r.member.full_name }}</a>
+                · {{ r.member.card_number }}
+                · {% trans "réservé le" %} {{ r.created_at|date:"Y-m-d H:i" }}
+            </div>
         </div>
         <div class="lrow-end" style="display:flex;flex-direction:column;align-items:flex-end;gap:6px">
-            <span class="badge badge--info">{% trans "Pos." %} 1</span>
+            <span class="badge badge--info">{% trans "Pos." %} {{ r.queue_position }}</span>
             {% if r.expires_at %}
             <div style="font-size:11.5px;color:var(--grey)">{% trans "Exp." %} {{ r.expires_at }}</div>
             {% endif %}

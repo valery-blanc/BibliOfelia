@@ -46,6 +46,7 @@ class Command(BaseCommand):
         "library_address": ("", "Adresse de la bibliothèque"),
         "default_language": ("fr", "Langue par défaut"),
         "enabled_languages": (["fr", "en", "es", "mg"], "Langues activées"),
+        "default_loan_days": (21, "Durée par défaut d'un prêt (fallback global)"),
         "reservation_expiry_days": (7, "Délai d'expiration d'une réservation pending"),
         "pickup_hold_days": (5, "Délai de garde après mise à dispo"),
         "overdue_grace_days": (0, "Tolérance retard avant notification"),

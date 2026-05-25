@@ -119,6 +119,9 @@ class Reservation(models.Model):
         related_name="fulfilling_reservations",
         on_delete=models.SET_NULL,
     )
+    # FEAT-036 : le bibliothécaire coche cette case quand il a appelé le membre
+    # pour lui dire que son livre est prêt à retirer (pas d'internet côté membre).
+    notified_at = models.DateTimeField(null=True, blank=True)
 
     class Meta:
         verbose_name = _("réservation")

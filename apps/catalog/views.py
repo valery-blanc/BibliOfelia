@@ -105,11 +105,50 @@ def record_list(request):
 
 @require_role(*READ_ROLES)
 def record_detail(request, pk):
+    from apps.loans.models import Reservation, ReservationStatus
+    from apps.loans.services import pickup_expiration_for
+
     record = get_object_or_404(
-        BibliographicRecord.objects.prefetch_related("authors", "tags", "items"),
+        BibliographicRecord.objects.prefetch_related("authors", "tags", "items__location"),
         pk=pk,
     )
-    return render(request, "catalog/record_detail.html", {"record": record})
+    items = list(record.items.all())
+    # FEAT-034 : pour chaque exemplaire en RESERVED_FOR_PICKUP, joindre la
+    # réservation active pour afficher membre + date d'expiration côté UI.
+    held_ids = [it.pk for it in items if it.status == ItemStatus.RESERVED_FOR_PICKUP]
+    reservations_by_item: dict[int, Reservation] = {}
+    if held_ids:
+        for res in (
+            Reservation.objects.filter(
+                fulfilled_by_item_id__in=held_ids,
+                status=ReservationStatus.READY_FOR_PICKUP,
+            )
+            .select_related("member")
+        ):
+            reservations_by_item[res.fulfilled_by_item_id] = res
+    for it in items:
+        res = reservations_by_item.get(it.pk)
+        it.active_reservation = res
+        it.reservation_expires_on = pickup_expiration_for(res) if res else None
+    # FEAT-034 : liste d'attente niveau notice (PENDING + READY_FOR_PICKUP
+    # non rattachées à un exemplaire visible). FIFO par date de création.
+    pending_reservations = (
+        Reservation.objects.filter(
+            record=record,
+            status__in=[ReservationStatus.PENDING, ReservationStatus.READY_FOR_PICKUP],
+        )
+        .select_related("member", "fulfilled_by_item")
+        .order_by("created_at")
+    )
+    return render(
+        request,
+        "catalog/record_detail.html",
+        {
+            "record": record,
+            "items": items,
+            "pending_reservations": pending_reservations,
+        },
+    )
 
 
 def _render_record_form(request, form, form_action, title, show_lookup=False):

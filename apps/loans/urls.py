@@ -13,4 +13,5 @@ urlpatterns = [
     path("reservations/", views.reservation_list, name="reservations"),
     path("reservations/new/<int:record_pk>/", views.reservation_create, name="reservation_create"),
     path("reservations/<int:pk>/cancel/", views.reservation_cancel, name="reservation_cancel"),
+    path("reservations/<int:pk>/notify/", views.reservation_notify, name="reservation_notify"),
 ]

@@ -22,12 +22,14 @@
         <div class="lrow-icon" style="
             {% if slug == 'identity' %}--lr-bg:var(--burgundy-light);--lr-fg:var(--burgundy)
             {% elif slug == 'languages' %}--lr-bg:var(--sky-light);--lr-fg:var(--sky-dark)
+            {% elif slug == 'loans' %}--lr-bg:var(--orange-light);--lr-fg:var(--orange)
             {% elif slug == 'backup' %}--lr-bg:var(--forest-light);--lr-fg:var(--forest)
             {% elif slug == 'labels' %}--lr-bg:var(--amber-light);--lr-fg:#946906
             {% elif slug == 'zerotier' %}--lr-bg:var(--olive-light);--lr-fg:var(--ink)
             {% endif %}">
             {% if slug == 'identity' %}{% icon "id-card" size="18px" %}
             {% elif slug == 'languages' %}{% icon "languages" size="18px" %}
+            {% elif slug == 'loans' %}{% icon "calendar" size="18px" %}
             {% elif slug == 'backup' %}{% icon "database" size="18px" %}
             {% elif slug == 'labels' %}{% icon "printer" size="18px" %}
             {% elif slug == 'zerotier' %}{% icon "globe" size="18px" %}
@@ -38,6 +40,7 @@
             <div class="lrow-sub">
                 {% if slug == 'identity' %}{% trans "Nom de la bibliothèque, contact, fuseau horaire" %}
                 {% elif slug == 'languages' %}{% trans "Langues actives et langue par défaut" %}
+                {% elif slug == 'loans' %}{% trans "Durée par défaut d'un prêt et délais de réservation" %}
                 {% elif slug == 'backup' %}{% trans "Fréquence locale et destination cloud (rclone)" %}
                 {% elif slug == 'labels' %}{% trans "Format des étiquettes codes Ofelia" %}
                 {% elif slug == 'zerotier' %}{% trans "Réseau privé pour accès à distance" %}

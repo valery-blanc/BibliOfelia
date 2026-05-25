@@ -42,13 +42,15 @@ def _setting_int(key: str, default: int) -> int:
 
 def compute_due_date(member: Member, record, today: date | None = None) -> date:
     """Durée de prêt : règle du type de document si définie, sinon catégorie
-    d'usager (SPEC §6.3 / §6.6)."""
+    d'usager, sinon `Setting.default_loan_days` (FEAT-035), sinon constante."""
     today = today or date.today()
     days = None
     if record.category_id and record.category.default_loan_duration_days:
         days = record.category.default_loan_duration_days
     if not days:
-        days = member.category.default_loan_duration_days or DEFAULT_LOAN_DAYS
+        days = member.category.default_loan_duration_days
+    if not days:
+        days = _setting_int("default_loan_days", DEFAULT_LOAN_DAYS)
     return today + timedelta(days=days)
 
 
@@ -307,6 +309,16 @@ def satisfy_reservations_for_item(item: Item) -> Reservation | None:
     return reservation
 
 
+def mark_reservation_notified(reservation: Reservation) -> bool:
+    """FEAT-036 : note l'instant où le bibliothécaire a contacté le membre.
+    Idempotent : retourne True si nouveau, False si déjà notifié."""
+    if reservation.notified_at is not None:
+        return False
+    reservation.notified_at = timezone.now()
+    reservation.save(update_fields=["notified_at"])
+    return True
+
+
 def cancel_reservation(reservation: Reservation) -> None:
     """Annule une réservation et libère l'exemplaire mis de côté le cas échéant."""
     freed_item = (
@@ -326,6 +338,47 @@ def _release_held_item(item: Item) -> None:
     item.status = ItemStatus.AVAILABLE
     item.save(update_fields=["status"])
     satisfy_reservations_for_item(item)
+
+
+def pickup_expiration_for(reservation: Reservation, today: date | None = None) -> date | None:
+    """Date d'expiration d'une réservation `READY_FOR_PICKUP` (FEAT-034). None
+    si la réservation n'est pas encore mise de côté."""
+    if reservation.status != ReservationStatus.READY_FOR_PICKUP or reservation.ready_since is None:
+        return None
+    hold_days = _setting_int("pickup_hold_days", DEFAULT_PICKUP_HOLD_DAYS)
+    return reservation.ready_since + timedelta(days=hold_days)
+
+
+def reservations_due_soon(within_days: int = 2, today: date | None = None) -> list[dict]:
+    """FEAT-034 : réservations `READY_FOR_PICKUP` dont la date limite de retrait
+    est aujourd'hui+`within_days` ou déjà dépassée. Triées par expiration
+    ascendante. Renvoie une liste de dicts `{reservation, expires_on, days_left}`
+    pour éviter d'attacher des attributs au modèle côté template."""
+    today = today or date.today()
+    hold_days = _setting_int("pickup_hold_days", DEFAULT_PICKUP_HOLD_DAYS)
+    threshold = today + timedelta(days=within_days)
+    ready_deadline = threshold - timedelta(days=hold_days)
+    qs = (
+        Reservation.objects.filter(
+            status=ReservationStatus.READY_FOR_PICKUP,
+            ready_since__lte=ready_deadline,
+        )
+        .select_related("record", "member", "fulfilled_by_item")
+        .order_by("ready_since")
+    )
+    result = []
+    for reservation in qs:
+        expires_on = reservation.ready_since + timedelta(days=hold_days)
+        delta = (expires_on - today).days
+        result.append({
+            "reservation": reservation,
+            "expires_on": expires_on,
+            "days_left": delta,
+            "days_overdue": -delta if delta < 0 else 0,
+            "is_overdue": delta < 0,
+            "is_today": delta == 0,
+        })
+    return result
 
 
 @transaction.atomic

@@ -18,6 +18,30 @@ from apps.loans.services import create_loan
 pytestmark = pytest.mark.django_db
 
 
+def test_lend_page_has_keyboard_submittable_form(client, librarian):
+    """BUG-014 : la page /loans/lend/ doit pouvoir être soumise au clavier
+    sans être interceptée par le scan-handoff. Le bouton scan est `type="button"`
+    et un bouton « Valider » visible (`type="submit"`) cohabite avec l'input."""
+    client.force_login(librarian)
+    resp = client.get("/fr/loans/lend/")
+    body = resp.content.decode()
+    # Bouton scan = type=button (n'absorbe pas la touche Entrée)
+    assert 'type="button"' in body and "js-scan-handoff" in body
+    # Au moins un bouton submit visible « Valider »
+    assert "Valider" in body
+    assert "search-with-submit" in body
+
+
+def test_return_page_has_keyboard_submittable_form(client, librarian):
+    """BUG-014 : idem sur /loans/return/."""
+    client.force_login(librarian)
+    resp = client.get("/fr/loans/return/")
+    body = resp.content.decode()
+    assert 'type="button"' in body and "js-scan-handoff" in body
+    assert "Valider" in body
+    assert "search-with-submit" in body
+
+
 def test_lend_full_workflow(client, librarian, member, item):
     client.force_login(librarian)
     client.post("/fr/loans/lend/", {"action": "set_member", "card": member.card_number})

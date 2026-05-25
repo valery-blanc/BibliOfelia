@@ -23,7 +23,10 @@ from .services import (
     create_loan,
     create_reservation,
     declare_lost,
+    mark_reservation_notified,
+    pickup_expiration_for,
     renew_loan,
+    reservations_due_soon,
     return_item,
 )
 
@@ -165,6 +168,7 @@ def return_items(request):
         {
             "return_log": request.session.get("return_log", []),
             "overdue_loans": overdue_loans,
+            "reservations_due": reservations_due_soon(within_days=2),
         },
     )
 
@@ -254,19 +258,52 @@ def consultation(request):
 # ==========================================================================
 @require_role(*WRITE_ROLES)
 def reservation_list(request):
-    ready = (
+    ready = list(
         Reservation.objects.filter(status=ReservationStatus.READY_FOR_PICKUP)
-        .select_related("record", "member", "fulfilled_by_item")
-        .order_by("ready_since")
+        .select_related("record", "member", "fulfilled_by_item", "fulfilled_by_loan")
+        .order_by("ready_since", "created_at")
     )
-    pending = (
+    # FEAT-036 : enrichir avec l'instant exact de mise de côté + date limite
+    # de retrait. `ready_since` est une DateField (rétrocompat) ; on prend
+    # l'horodatage précis depuis `fulfilled_by_loan.return_date` quand on l'a.
+    for r in ready:
+        r.ready_at_dt = (
+            r.fulfilled_by_loan.return_date
+            if r.fulfilled_by_loan and r.fulfilled_by_loan.return_date
+            else None
+        )
+        r.pickup_deadline = pickup_expiration_for(r)
+    pending = list(
         Reservation.objects.filter(status=ReservationStatus.PENDING)
         .select_related("record", "member")
         .order_by("created_at")
     )
+    # Position FIFO dans la file pour chaque notice
+    pos_by_record: dict = {}
+    for r in pending:
+        pos_by_record[r.record_id] = pos_by_record.get(r.record_id, 0) + 1
+        r.queue_position = pos_by_record[r.record_id]
     return render(
         request, "loans/reservations.html", {"ready": ready, "pending": pending}
     )
+
+
+@require_POST
+@require_role(*WRITE_ROLES)
+def reservation_notify(request, pk):
+    reservation = get_object_or_404(Reservation, pk=pk)
+    if mark_reservation_notified(reservation):
+        messages.success(
+            request,
+            _("Notification enregistrée pour %(m)s.")
+            % {"m": reservation.member.full_name},
+        )
+    else:
+        messages.info(request, _("Ce membre a déjà été notifié."))
+    next_url = request.POST.get("next") or request.META.get("HTTP_REFERER")
+    if next_url:
+        return redirect(next_url)
+    return redirect("loans:reservations")
 
 
 @require_role(*WRITE_ROLES)

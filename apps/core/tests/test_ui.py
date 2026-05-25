@@ -71,3 +71,34 @@ def test_search_requires_login(client):
     resp = client.get("/fr/search/", {"q": "x"})
     assert resp.status_code == 302
     assert "/accounts/login/" in resp.url
+
+
+# --- FEAT-035 : section relances sur le dashboard ----------------------
+def test_dashboard_shows_overdue_reminders(client, librarian, member):
+    """FEAT-035 : un prêt en retard apparaît dans la section « Relances »."""
+    from datetime import date, timedelta
+
+    from apps.catalog.models import BibliographicRecord, Item
+    from apps.loans.models import Loan, LoanStatus
+
+    rec = BibliographicRecord.objects.create(title="Le Retard")
+    item = Item.objects.create(record=rec)
+    Loan.objects.create(
+        item=item,
+        member=member,
+        due_date=date.today() - timedelta(days=4),
+        status=LoanStatus.ACTIVE,
+    )
+    client.force_login(librarian)
+    resp = client.get("/fr/")
+    assert resp.status_code == 200
+    body = resp.content.decode()
+    assert "Relances à faire" in body
+    assert "Le Retard" in body
+
+
+def test_dashboard_no_reminders_section_when_no_overdue(client, librarian):
+    client.force_login(librarian)
+    resp = client.get("/fr/")
+    body = resp.content.decode()
+    assert "Relances à faire" not in body

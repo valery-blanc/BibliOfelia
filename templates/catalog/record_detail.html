@@ -71,7 +71,7 @@
 </div>
 
 <h2 class="section-title" style="margin-top:28px">
-    <span>{% trans "Exemplaires" %} <small>({{ record.items.all|length }})</small></span>
+    <span>{% trans "Exemplaires" %} <small>({{ items|length }})</small></span>
     {% if user.is_librarian %}
     <a href="{% url 'catalog:item_create' record.pk %}" class="btn btn--accent btn--sm">
         {% icon "plus" size="16px" %} <span class="hide-sm">{% trans "Ajouter un exemplaire" %}</span>
@@ -79,7 +79,7 @@
     {% endif %}
 </h2>
 
-{% if record.items.all %}
+{% if items %}
 <div class="table-wrap">
     <table class="table">
         <thead>
@@ -93,7 +93,7 @@
             </tr>
         </thead>
         <tbody>
-            {% for item in record.items.all %}
+            {% for item in items %}
             <tr>
                 <td><span class="cell-title">{{ item.internal_id }}</span></td>
                 <td>{{ item.ean13 }}</td>
@@ -106,6 +106,14 @@
                         <span class="badge badge--info">{{ item.get_status_display }}</span>
                     {% elif item.status == "reserved_for_pickup" %}
                         <span class="badge badge--soon">{{ item.get_status_display }}</span>
+                        {% if item.active_reservation %}
+                        <div class="muted text-xs" style="margin-top:4px">
+                            {% blocktrans with member=item.active_reservation.member.full_name card=item.active_reservation.member.card_number %}Mis de côté pour {{ member }} ({{ card }}){% endblocktrans %}
+                            {% if item.reservation_expires_on %}
+                            · {% blocktrans with d=item.reservation_expires_on %}à retirer avant le {{ d }}{% endblocktrans %}
+                            {% endif %}
+                        </div>
+                        {% endif %}
                     {% elif item.status == "lost" %}
                         <span class="badge badge--late">{{ item.get_status_display }}</span>
                     {% else %}
@@ -147,4 +155,56 @@
     <p class="muted">{% trans "Aucun exemplaire pour cette notice." %}</p>
 </div>
 {% endif %}
+
+{# ── Liste d'attente des réservations (FEAT-034) ── #}
+{% if pending_reservations %}
+<h2 class="section-title" style="margin-top:28px">
+    {% trans "Liste d'attente" %} <small>({{ pending_reservations|length }})</small>
+</h2>
+<div class="table-wrap">
+    <table class="table">
+        <thead>
+            <tr>
+                <th style="width:60px">#</th>
+                <th>{% trans "Membre" %}</th>
+                <th>{% trans "Réservé le" %}</th>
+                <th>{% trans "Statut" %}</th>
+                {% if user.is_librarian %}<th></th>{% endif %}
+            </tr>
+        </thead>
+        <tbody>
+            {% for res in pending_reservations %}
+            <tr>
+                <td class="cell-title">{{ forloop.counter }}</td>
+                <td>
+                    <a href="{% url 'members:detail' res.member.pk %}" class="cell-link">{{ res.member.full_name }}</a>
+                    <div class="muted text-xs">{{ res.member.card_number }}</div>
+                </td>
+                <td>{{ res.created_at|date:"Y-m-d" }}</td>
+                <td>
+                    {% if res.status == "ready_for_pickup" %}
+                    <span class="badge badge--soon">{% trans "À retirer" %}</span>
+                    {% if res.fulfilled_by_item %}<div class="muted text-xs" style="margin-top:4px">{{ res.fulfilled_by_item.ean13 }}</div>{% endif %}
+                    {% else %}
+                    <span class="badge badge--mut">{% trans "En attente" %}</span>
+                    {% endif %}
+                </td>
+                {% if user.is_librarian %}
+                <td style="text-align:right">
+                    <form method="post" action="{% url 'loans:reservation_cancel' res.pk %}" style="margin:0"
+                          onsubmit="return confirm('{% trans "Annuler cette réservation ?" %}')">
+                        {% csrf_token %}
+                        <button type="submit" class="btn btn--ghost btn--sm" title="{% trans 'Annuler' %}" style="color:#B83232">
+                            {% icon "x" size="14px" %}
+                        </button>
+                    </form>
+                </td>
+                {% endif %}
+            </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+</div>
+{% endif %}
+
 {% endblock %}

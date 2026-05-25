@@ -72,6 +72,43 @@
 
 </div>
 
+{# ── Cadre infos importantes (FEAT-036) ── #}
+{% if user.is_librarian and notifications_pending %}
+<section class="alert-box" aria-label="{% trans 'Notifications à faire' %}">
+    <div class="alert-box-header">
+        <div class="alert-box-icon">{% icon "bookmark-check" size="20px" %}</div>
+        <div>
+            <div class="alert-box-title">{% trans "Notifications à faire" %}</div>
+            <div class="alert-box-sub">{% blocktrans count n=notifications_pending|length %}{{ n }} membre à appeler pour qu'il vienne chercher son livre.{% plural %}{{ n }} membres à appeler pour qu'ils viennent chercher leur livre.{% endblocktrans %}</div>
+        </div>
+        <a href="{% url 'loans:reservations' %}" class="cell-link text-sm" style="margin-left:auto">{% trans "Voir tout" %}</a>
+    </div>
+    <div class="alert-box-list">
+        {% for r in notifications_pending|slice:":5" %}
+        <div class="alert-row">
+            <div class="alert-row-body">
+                <div style="font-weight:600">{{ r.member.full_name }} <span class="muted" style="font-weight:400">· {{ r.member.card_number }}</span></div>
+                <div class="muted text-sm">{{ r.record.title|truncatechars:60 }}{% if r.fulfilled_by_item %} · {{ r.fulfilled_by_item.ean13 }}{% endif %}</div>
+            </div>
+            <form method="post" action="{% url 'loans:reservation_notify' r.pk %}" style="margin:0">
+                {% csrf_token %}
+                <input type="hidden" name="next" value="{% url 'core:dashboard' %}">
+                <button type="submit" class="btn btn--primary btn--sm">
+                    {% icon "check" size="14px" %} {% trans "Notifier" %}
+                </button>
+            </form>
+        </div>
+        {% endfor %}
+        {% if notifications_pending|length > 5 %}
+        <div class="muted text-xs" style="margin-top:6px;text-align:right">
+            {% blocktrans with n=notifications_pending|length|add:"-5" %}+{{ n }} autres{% endblocktrans %} —
+            <a href="{% url 'loans:reservations' %}" class="cell-link">{% trans "voir tout" %}</a>
+        </div>
+        {% endif %}
+    </div>
+</section>
+{% endif %}
+
 {# ── Bannière scan ── #}
 {% if user.is_librarian %}
 <a href="{% url 'loans:lend' %}" class="scan-banner js-scan-handoff"
@@ -263,5 +300,55 @@
         </div>
     </div>
 </div>
+
+{# ── Relances à faire (FEAT-035) ── #}
+{% if user.is_librarian and reminders %}
+<h2 class="section-title" style="margin-top:28px">
+    <span>{% trans "Relances à faire" %} <small>({{ reminders_total }})</small></span>
+    <a href="{% url 'loans:return_items' %}" class="cell-link text-sm">{% trans "Voir tout" %}</a>
+</h2>
+<div class="card" style="padding:0">
+    <div class="table-wrap hide-sm">
+        <table class="table">
+            <thead>
+                <tr>
+                    <th>{% trans "Titre" %}</th>
+                    <th>{% trans "Membre" %}</th>
+                    <th>{% trans "Échéance" %}</th>
+                    <th>{% trans "Retard" %}</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for loan in reminders %}
+                <tr>
+                    <td class="cell-title">{{ loan.item.record.title|truncatechars:50 }}</td>
+                    <td><a href="{% url 'members:detail' loan.member.pk %}" class="cell-link">{{ loan.member.full_name }}</a></td>
+                    <td>{{ loan.due_date }}</td>
+                    <td>
+                        <span class="badge badge--late">{% blocktrans count n=loan.days_overdue_count %}{{ n }} jour{% plural %}{{ n }} jours{% endblocktrans %}</span>
+                    </td>
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    </div>
+    <div class="list only-sm">
+        {% for loan in reminders %}
+        <div class="list-row">
+            <div class="lrow-icon" style="--lr-bg:var(--blush-light);--lr-fg:#B83232">
+                {% icon "triangle-alert" size="18px" %}
+            </div>
+            <div class="lrow-body">
+                <div class="lrow-title">{{ loan.item.record.title }}</div>
+                <div class="lrow-sub">{{ loan.member.full_name }} · {{ loan.due_date }}</div>
+            </div>
+            <div class="lrow-end">
+                <span class="badge badge--late">{{ loan.days_overdue_count }} j</span>
+            </div>
+        </div>
+        {% endfor %}
+    </div>
+</div>
+{% endif %}
 
 {% endblock %}

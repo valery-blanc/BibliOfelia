@@ -3,6 +3,7 @@ from __future__ import annotations
 
 from datetime import date
 
+from dateutil.relativedelta import relativedelta
 from django import forms
 from django.conf import settings
 from django.utils.translation import gettext_lazy as _
@@ -25,9 +26,12 @@ class MemberForm(forms.ModelForm):
             "expiration_date", "parent_account", "photo", "notes",
         ]
         widgets = {
-            "birth_date": forms.DateInput(attrs={"type": "date"}),
-            "registration_date": forms.DateInput(attrs={"type": "date"}),
-            "expiration_date": forms.DateInput(attrs={"type": "date"}),
+            # BUG-015 : format ISO obligatoire pour <input type="date">,
+            # sinon Django rend au format locale (« 25 mai 2026 »), illisible
+            # par le widget HTML5 → input vide en édition.
+            "birth_date": forms.DateInput(attrs={"type": "date"}, format="%Y-%m-%d"),
+            "registration_date": forms.DateInput(attrs={"type": "date"}, format="%Y-%m-%d"),
+            "expiration_date": forms.DateInput(attrs={"type": "date"}, format="%Y-%m-%d"),
             "address": forms.Textarea(attrs={"rows": 2}),
             "notes": forms.Textarea(attrs={"rows": 2}),
         }
@@ -40,6 +44,15 @@ class MemberForm(forms.ModelForm):
         )
         if not self.fields["registration_date"].initial:
             self.fields["registration_date"].initial = date.today
+        # FEAT-037 : à la création, pré-remplir expiration_date = today + 1 an.
+        # Le JS recalcule à chaque change de registration_date. Le serveur reste
+        # autoritaire (Member.save() recalcule via category.card_validity_months
+        # si le champ est vidé à la main).
+        creating = not (self.instance and self.instance.pk)
+        if creating and not self.fields["expiration_date"].initial:
+            self.fields["expiration_date"].initial = (
+                date.today() + relativedelta(years=1)
+            )
         self.fields["preferred_language"].widget = forms.Select(
             choices=[("", _("Langue de la bibliothèque"))] + list(settings.LANGUAGES)
         )
