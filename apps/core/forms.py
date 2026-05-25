@@ -173,37 +173,96 @@ class BackupConfigForm(forms.Form):
         }, "Configuration sauvegardes")
 
 
-class LabelFormatForm(forms.Form):
-    KEY = "label_format"
+class MemberCardFormatForm(forms.Form):
+    """FEAT-038 : paramètres impression des cartes membres."""
 
-    item_width_mm = forms.IntegerField(label=_("Étiquette exemplaire — largeur (mm)"),
-                                       min_value=10, max_value=200, initial=50)
-    item_height_mm = forms.IntegerField(label=_("Étiquette exemplaire — hauteur (mm)"),
-                                        min_value=10, max_value=200, initial=25)
-    item_title_max_chars = forms.IntegerField(label=_("Caractères max titre"),
-                                              min_value=10, max_value=80, initial=30)
-    card_per_a4 = forms.ChoiceField(
+    KEY = "card_format"
+
+    per_a4 = forms.ChoiceField(
         label=_("Cartes par feuille A4"),
         choices=[("4", "4"), ("6", "6"), ("8", "8"), ("10", "10")],
         initial="8",
+    )
+    show_logo = forms.BooleanField(
+        label=_("Logo OFELIA en fond"),
+        required=False,
+        initial=True,
+        help_text=_("Affiche le logo grandes lettres OFELIA centré sur chaque carte."),
+    )
+    show_photo = forms.BooleanField(
+        label=_("Photo du membre"),
+        required=False,
+        initial=True,
+        help_text=_("Affiche la photo en haut à gauche quand le membre en a une."),
     )
 
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)
         if not self.is_bound:
             data = _initial_dict(self.KEY)
-            self.fields["item_width_mm"].initial = data.get("item_width_mm", 50)
-            self.fields["item_height_mm"].initial = data.get("item_height_mm", 25)
-            self.fields["item_title_max_chars"].initial = data.get("item_title_max_chars", 30)
-            self.fields["card_per_a4"].initial = str(data.get("card_per_a4", 8))
+            self.fields["per_a4"].initial = str(data.get("per_a4", 8))
+            self.fields["show_logo"].initial = bool(data.get("show_logo", True))
+            self.fields["show_photo"].initial = bool(data.get("show_photo", True))
 
     def save(self) -> None:
         Setting.set(self.KEY, {
-            "item_width_mm": self.cleaned_data["item_width_mm"],
-            "item_height_mm": self.cleaned_data["item_height_mm"],
-            "item_title_max_chars": self.cleaned_data["item_title_max_chars"],
-            "card_per_a4": int(self.cleaned_data["card_per_a4"]),
-        }, "Format étiquettes / cartes")
+            "per_a4": int(self.cleaned_data["per_a4"]),
+            "show_logo": bool(self.cleaned_data["show_logo"]),
+            "show_photo": bool(self.cleaned_data["show_photo"]),
+        }, "Format cartes membres")
+
+
+class ItemLabelFormatForm(forms.Form):
+    """FEAT-039 : paramètres impression des étiquettes codes Ofelia."""
+
+    KEY = "item_label_format"
+
+    width_mm = forms.IntegerField(
+        label=_("Largeur (mm)"),
+        min_value=20, max_value=200, initial=70,
+    )
+    height_mm = forms.IntegerField(
+        label=_("Hauteur (mm)"),
+        min_value=20, max_value=200, initial=42,
+    )
+    title_max_chars = forms.IntegerField(
+        label=_("Caractères max titre"),
+        min_value=10, max_value=120, initial=50,
+        help_text=_("Cumulé sur les lignes du titre."),
+    )
+    title_lines = forms.IntegerField(
+        label=_("Lignes de titre"),
+        min_value=1, max_value=3, initial=2,
+    )
+    author_lines = forms.IntegerField(
+        label=_("Lignes d'auteurs"),
+        min_value=1, max_value=3, initial=2,
+    )
+    show_logo = forms.BooleanField(
+        label=_("Logo Ofelia"),
+        required=False, initial=True,
+    )
+
+    def __init__(self, *args, **kwargs):
+        super().__init__(*args, **kwargs)
+        if not self.is_bound:
+            data = _initial_dict(self.KEY)
+            self.fields["width_mm"].initial = data.get("width_mm", 70)
+            self.fields["height_mm"].initial = data.get("height_mm", 42)
+            self.fields["title_max_chars"].initial = data.get("title_max_chars", 50)
+            self.fields["title_lines"].initial = data.get("title_lines", 2)
+            self.fields["author_lines"].initial = data.get("author_lines", 2)
+            self.fields["show_logo"].initial = bool(data.get("show_logo", True))
+
+    def save(self) -> None:
+        Setting.set(self.KEY, {
+            "width_mm": self.cleaned_data["width_mm"],
+            "height_mm": self.cleaned_data["height_mm"],
+            "title_max_chars": self.cleaned_data["title_max_chars"],
+            "title_lines": self.cleaned_data["title_lines"],
+            "author_lines": self.cleaned_data["author_lines"],
+            "show_logo": bool(self.cleaned_data["show_logo"]),
+        }, "Format étiquettes codes Ofelia")
 
 
 class LoanReservationDefaultsForm(forms.Form):

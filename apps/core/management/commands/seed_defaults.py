@@ -54,11 +54,20 @@ class Command(BaseCommand):
         "cloud_backup_enabled": (False, "Sauvegarde cloud activée"),
         "printer_label_format": (
             {"width_mm": 50, "height_mm": 25},
-            "Format étiquette exemplaire",
+            "Format étiquette exemplaire (legacy)",
         ),
         "printer_card_format": (
             {"per_sheet": 8, "paper": "A4"},
-            "Format carte membre",
+            "Format carte membre (legacy)",
+        ),
+        "card_format": (
+            {"per_a4": 8, "show_logo": True, "show_photo": True},
+            "Format cartes membres (FEAT-038)",
+        ),
+        "item_label_format": (
+            {"width_mm": 70, "height_mm": 42, "title_max_chars": 50,
+             "title_lines": 2, "author_lines": 2, "show_logo": True},
+            "Format étiquettes codes Ofelia (FEAT-039)",
         ),
         "setup_completed": (False, "Wizard d'installation terminé"),
     }

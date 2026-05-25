@@ -98,6 +98,35 @@ Ne JAMAIS suggérer un `/clear` si un seul de ces éléments est en suspens. Si 
 
 S'applique MÊME pour les petites modifs en chat. Si trop petit pour un BUG/FEAT dédié, au minimum mettre à jour la SPEC si le comportement change.
 
+### Traductions i18n (OBLIGATOIRE — gate avant commit)
+
+**Règle pérenne (Sprint 12)** : aucune chaîne FR ne doit rester en dur dans une page sans `{% trans %}` ou `_()` (gettext), et aucune chaîne traduisible ne doit rester sans traduction EN/ES/MG.
+
+Workflow obligatoire **avant chaque commit** :
+
+```powershell
+# 1) Extraire les nouvelles chaînes des templates et du code Python
+docker compose -f docker-compose.dev.yml exec -T web python manage.py makemessages -a --no-obsolete -l en -l es -l mg
+
+# 2) Pour chaque chaîne FR ajoutée pendant le sprint :
+#    - ajouter une entrée dans scripts/translations_sprint<NN>.py (FR → EN/ES/MG)
+#    - rejouer : `python scripts/translations_sprint<NN>.py`
+
+# 3) Vérification bloquante — exit code != 0 si une chaîne manque
+python scripts/i18n_check.py
+
+# 4) Compiler les .mo (re-fait au boot Docker via dev-entrypoint.sh) :
+docker compose -f docker-compose.dev.yml exec -T web python manage.py compilemessages
+```
+
+**Le commit ne doit JAMAIS se faire si `i18n_check.py` retourne != 0.**
+
+Outils :
+- `scripts/i18n_check.py` — audit pass/fail (stdlib, sans Docker)
+- `scripts/translations_sprint<NN>.py` — dict du sprint courant (créer un nouveau fichier par sprint)
+- `scripts/apply_translations.py` — backlog historique (Sprints 1-11)
+- `scripts/list_untranslated.py` — liste détaillée des chaînes manquantes en EN
+
 ### Bug Fix Workflow
 
 1. Documenter dans `docs/bugs/BUG-XXX-short-name.md` (symptôme, reproduction, logs/traceback, section spec impactée)
@@ -106,7 +135,8 @@ S'applique MÊME pour les petites modifs en chat. Si trop petit pour un BUG/FEAT
 4. Doc complète : `BUG-XXX-*.md` → statut `FIXED` + fix décrit ; **`SPEC_BIBLIOFELIA.md` OBLIGATOIRE** → section comportement corrigé ; `TASKS.md` → cocher `[x]`
 5. Lancer l'app : `docker compose -f docker-compose.dev.yml up --build` (ou déployer sur la Pi pour Task #18+)
 6. Demander à l'utilisateur de tester et **attendre confirmation explicite** — NE PAS committer avant
-7. Une fois confirmé : commit unique groupant code + docs + TASKS.md : `"FIX BUG-XXX: description courte"`
+7. **Avant commit** : passer le gate i18n (`python scripts/i18n_check.py` → 0)
+8. Une fois confirmé : commit unique groupant code + docs + TASKS.md : `"FIX BUG-XXX: description courte"`
 
 ### Feature Evolution Workflow
 
@@ -117,8 +147,9 @@ S'applique MÊME pour les petites modifs en chat. Si trop petit pour un BUG/FEAT
 5. Doc complète : `FEAT-XXX-*.md` → `DONE` + implémentation décrite ; **`SPEC_BIBLIOFELIA.md` OBLIGATOIRE** → intégrer le nouveau comportement, incrémenter la version ; `TASKS.md` → cocher `[x]`
 6. Lancer l'app et vérifier
 7. Demander à l'utilisateur de tester et **attendre confirmation explicite** — NE PAS committer avant
-8. Une fois confirmé : commit unique `"FEAT-XXX: description courte"`
-9. Mettre à jour `CLAUDE.md` si des règles d'architecture ont changé
+8. **Avant commit** : passer le gate i18n (`python scripts/i18n_check.py` → 0)
+9. Une fois confirmé : commit unique `"FEAT-XXX: description courte"`
+10. Mettre à jour `CLAUDE.md` si des règles d'architecture ont changé
 
 ## Connexion Pi
 

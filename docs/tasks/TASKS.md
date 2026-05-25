@@ -2,7 +2,7 @@
 
 Source de vérité de l'avancement v1. Une case `[x]` = livrable terminé et déployable. `[ ]` = à faire. `[!]` = bloqué (voir note).
 
-Mise à jour : 2026-05-25 (Sprint 11 **CLOS** — BUG-014 (saisie clavier sur `/loans/lend/` + `/loans/return/` : bouton scan repassé `type="button"` + bouton « Valider » visible séparé pour la saisie clavier), FEAT-034 (UI réservations : liste d'attente PENDING sur fiche notice, expiration affichée sur exemplaires mis de côté, section « Réservations à relancer » sur page Retour, paramètres `default_loan_days`/`reservation_expiry_days`/`pickup_hold_days` exposés dans `/settings/loans/`), FEAT-035 (Setting `default_loan_days` global défaut 21, section « Relances à faire » bas du dashboard avec 10 prêts en retard), FEAT-036 (`Reservation.notified_at` + endpoint `POST /loans/reservations/<pk>/notify/`, page Réservations enrichie code Ofelia / dates avec heure / date limite retrait / police 16-17 px + cadre « Notifications à faire » entre tuiles et bannière scan sur dashboard), BUG-015 (DateInput format ISO `%Y-%m-%d` sur `MemberForm`, sinon locale FR remplit pas l'input HTML5), FEAT-037 (photo membre dans pagehead fiche + miniature sur form, expiration_date = registration_date + 1 an auto JS au change + initial `today + 1 an` à la création). 287 tests verts (266 → 287, +21). Migration `loans/0002_reservation_notified_at`. 5 vagues de déploiement Pi. 2 nouvelles entrées MEMORY (DateInput ISO format, bouton scan type=button + Valider visible). — Sprint 10 **CLOS end-to-end** — FEAT-032 + FEAT-033 validés Val 2026-05-24 sur la Pi, **+ OfeliaScan mobile mis à jour le 2026-05-24** : test prod 18:26 → session récolement scope=A1 reçue d'OfeliaScan avec 16 scans, 16 exemplaires relocate de J1 → A1 automatiquement. Bout-en-bout fonctionnel : catalogage OfeliaScan envoie `location_code`, picker récolement OfeliaScan envoie `scope_type=location` + `scope_location_code`, BibliOfelia déplace les items au scan. FEAT-032 : UI librarian /catalog/locations/ + endpoint GET /api/v1/locations testés OK. FEAT-033 : relocate auto vérifiée via UI web ET via OfeliaScan mobile. Commit `9d4fe83` + push + déploiement Pi (rebuild Docker + migration `0003`). 266 tests verts. — Sprint 8 **CLOS** — FEAT-025 **validé Val 2026-05-23** : refonte design global, 23 templates métiers harmonisés sur le design system OFELIA. Lot A pilote validé en premier (record_detail, member_detail, reports/index, settings_index), puis Lots B+C+D livrés d'un bloc. Helpers CSS ajoutés (`.req`, `.help-hint`, `.field-error`, `.form-control`, `details.advanced-section`, `.isbn-row`, `.form-actions`), `_field.html` migré `.form-row` → `.field`. Découverte d'infra : templates **embarqués au build Docker**, pas bind-mountés → rebuild obligatoire pour tout changement de template (documenté dans FEAT-025). — Sprint 7 **CLOS** — FEAT-024 **validé Val 2026-05-23** : scanner caméra navigateur sur Android Firefox HTTPS OK, fallback OfeliaScan automatique en HTTP LAN, Chrome Android sans Play Store via `S.browser_fallback_url`, bouton Annuler pendant polling. Décision UX : caméra-d'abord automatique, pas de toggle utilisateur. Décision infra : pas de cert auto-signé. 3 commits Pi `d7c8e8f` → `9d2af81` → `e9993a5`. FEAT-023 **validé Val 2026-05-23** : banner dashboard → OfeliaScan ouvre → scan livre → retour BibliOfelia → fiche notice affichée, bout-en-bout fonctionnel. Modèle `ScanHandoff` + endpoints `/api/v1/scan-handoff[/{token}]` + JS `scan-handoff.js` + 4 boutons « Scanner » câblés. BUG-010 entrypoint Dockerfile + BUG-011 CSRF cookie HttpOnly + Chrome Android `intent://` URL résolus. Sprints 3/5/6 clos. Reste pour Sprint 7 : Android-side OfeliaScan déjà fonctionnelle côté Val (intent filter + activity scan-one + POST callback) — implémentation Android terminée hors repo. Prochain sprint : FEAT-024 scanner caméra navigateur (HTTPS).)
+Mise à jour : 2026-05-26 (Sprint 12 **CLOS** — FEAT-038 (cartes membres : fond crème, logo OFELIA filigrane, photo HG, langue BG, bloc droite), FEAT-039 (étiquettes 70×42 mm, titre wrap 2 lignes, auteurs 2 lignes, logo Ofelia), split paramétrage `labels` → `printing_cards` + `printing_labels`. BUG-013 v2 (sélecteur de langue qui perdait `/bibliofelia/` à chaque déploiement : wrapper `apps/core/i18n_views.py:set_language` force `FORCE_SCRIPT_NAME` + échange code langue même sur URL non résolue). **Gate i18n pérenne** : `scripts/i18n_check.py` exit != 0 si chaîne manquante ; documenté dans CLAUDE.md comme obligatoire avant tout commit ; 207 entrées EN/ES/MG appliquées (Sprints 10-12 incl. FORMS labels enrobés `gettext_lazy`). 304 tests verts (287 → 304). Sprint 11 **CLOS** — — BUG-014 (saisie clavier sur `/loans/lend/` + `/loans/return/` : bouton scan repassé `type="button"` + bouton « Valider » visible séparé pour la saisie clavier), FEAT-034 (UI réservations : liste d'attente PENDING sur fiche notice, expiration affichée sur exemplaires mis de côté, section « Réservations à relancer » sur page Retour, paramètres `default_loan_days`/`reservation_expiry_days`/`pickup_hold_days` exposés dans `/settings/loans/`), FEAT-035 (Setting `default_loan_days` global défaut 21, section « Relances à faire » bas du dashboard avec 10 prêts en retard), FEAT-036 (`Reservation.notified_at` + endpoint `POST /loans/reservations/<pk>/notify/`, page Réservations enrichie code Ofelia / dates avec heure / date limite retrait / police 16-17 px + cadre « Notifications à faire » entre tuiles et bannière scan sur dashboard), BUG-015 (DateInput format ISO `%Y-%m-%d` sur `MemberForm`, sinon locale FR remplit pas l'input HTML5), FEAT-037 (photo membre dans pagehead fiche + miniature sur form, expiration_date = registration_date + 1 an auto JS au change + initial `today + 1 an` à la création). 287 tests verts (266 → 287, +21). Migration `loans/0002_reservation_notified_at`. 5 vagues de déploiement Pi. 2 nouvelles entrées MEMORY (DateInput ISO format, bouton scan type=button + Valider visible). — Sprint 10 **CLOS end-to-end** — FEAT-032 + FEAT-033 validés Val 2026-05-24 sur la Pi, **+ OfeliaScan mobile mis à jour le 2026-05-24** : test prod 18:26 → session récolement scope=A1 reçue d'OfeliaScan avec 16 scans, 16 exemplaires relocate de J1 → A1 automatiquement. Bout-en-bout fonctionnel : catalogage OfeliaScan envoie `location_code`, picker récolement OfeliaScan envoie `scope_type=location` + `scope_location_code`, BibliOfelia déplace les items au scan. FEAT-032 : UI librarian /catalog/locations/ + endpoint GET /api/v1/locations testés OK. FEAT-033 : relocate auto vérifiée via UI web ET via OfeliaScan mobile. Commit `9d4fe83` + push + déploiement Pi (rebuild Docker + migration `0003`). 266 tests verts. — Sprint 8 **CLOS** — FEAT-025 **validé Val 2026-05-23** : refonte design global, 23 templates métiers harmonisés sur le design system OFELIA. Lot A pilote validé en premier (record_detail, member_detail, reports/index, settings_index), puis Lots B+C+D livrés d'un bloc. Helpers CSS ajoutés (`.req`, `.help-hint`, `.field-error`, `.form-control`, `details.advanced-section`, `.isbn-row`, `.form-actions`), `_field.html` migré `.form-row` → `.field`. Découverte d'infra : templates **embarqués au build Docker**, pas bind-mountés → rebuild obligatoire pour tout changement de template (documenté dans FEAT-025). — Sprint 7 **CLOS** — FEAT-024 **validé Val 2026-05-23** : scanner caméra navigateur sur Android Firefox HTTPS OK, fallback OfeliaScan automatique en HTTP LAN, Chrome Android sans Play Store via `S.browser_fallback_url`, bouton Annuler pendant polling. Décision UX : caméra-d'abord automatique, pas de toggle utilisateur. Décision infra : pas de cert auto-signé. 3 commits Pi `d7c8e8f` → `9d2af81` → `e9993a5`. FEAT-023 **validé Val 2026-05-23** : banner dashboard → OfeliaScan ouvre → scan livre → retour BibliOfelia → fiche notice affichée, bout-en-bout fonctionnel. Modèle `ScanHandoff` + endpoints `/api/v1/scan-handoff[/{token}]` + JS `scan-handoff.js` + 4 boutons « Scanner » câblés. BUG-010 entrypoint Dockerfile + BUG-011 CSRF cookie HttpOnly + Chrome Android `intent://` URL résolus. Sprints 3/5/6 clos. Reste pour Sprint 7 : Android-side OfeliaScan déjà fonctionnelle côté Val (intent filter + activity scan-one + POST callback) — implémentation Android terminée hors repo. Prochain sprint : FEAT-024 scanner caméra navigateur (HTTPS).)
 
 ## Sprint 0 — Squelette
 
@@ -501,3 +501,51 @@ Mise à jour : 2026-05-25 (Sprint 11 **CLOS** — BUG-014 (saisie clavier sur `/
 - [x] MEMORY.md mis à jour (2 nouvelles entrées feedback : DateInput ISO format, bouton scan dans un form)
 - [x] SPEC §6.2 + §6.3 + §6.4 + §6.6 mises à jour
 - [x] Commit unique Sprint 11 + push origin/main
+
+## Sprint 12 — Impressions : refonte cartes membres + étiquettes livres
+
+> Ouvert le 2026-05-25 (temp.txt). 2 features : refonte visuelle des cartes
+> membres (photo + logo Ofelia + fond crème) et refonte des étiquettes livres
+> (titre 2 lignes + logo + agrandissement). Splitter le formulaire de
+> paramétrage `/admin/settings/labels/` en 2 sections distinctes regroupées
+> dans la catégorie « Impressions ».
+
+### FEAT-038 — Refonte impression cartes membres
+- [ ] Doc `docs/specs/FEAT-038-print-member-cards.md`
+- [ ] Copier `Logo_ofelia_grandes_lettres.png` → `static/img/ofelia-grandes-lettres.png`
+- [ ] `apps/core/forms.py` : nouveau `MemberCardFormatForm` (KEY=`card_format`)
+- [ ] `apps/printing/services.py` : refonte `_draw_member_card` (photo HG, langue BG, fond crème, logo centré, bloc info droite)
+- [ ] Tests `apps/printing/tests/test_services.py` : cartes membre
+- [ ] SPEC §6.7 mise à jour
+
+### FEAT-039 — Étiquettes livres : refonte + paramétrage séparé
+- [ ] Doc `docs/specs/FEAT-039-print-item-labels.md`
+- [ ] `apps/core/forms.py` : nouveau `ItemLabelFormatForm` (KEY=`item_label_format`)
+- [ ] `apps/printing/services.py` : refonte `_draw_item_label` (titre wrap 2 lignes, logo ofelia, 80×40 mm)
+- [ ] `apps/core/admin_views.py` : `FORMS` mis à jour (sections `printing_cards` + `printing_labels`)
+- [ ] `templates/core/admin/settings_index.html` : regroupement « Impressions »
+- [ ] `apps/core/management/commands/seed_defaults.py` : `card_format` + `item_label_format`
+- [ ] Tests `apps/printing/tests/test_services.py` : étiquettes livres
+- [ ] SPEC §6.7 mise à jour
+
+### BUG-013 v2 — Sélecteur de langue qui perd `/bibliofelia/` (pérenne)
+- [x] Doc `docs/bugs/BUG-013-set-language-script-name.md` (régression v2 + fix pérenne)
+- [x] `apps/core/i18n_views.py` : wrapper `set_language` qui force `FORCE_SCRIPT_NAME` + échange code langue même si URL non résolue
+- [x] `config/urls.py` : route `path("i18n/setlang/", core_set_language, name="set_language")` qui remplace `django.conf.urls.i18n`
+- [x] Tests `apps/core/tests/test_i18n_setlang.py` (4 cas)
+- [x] Déploiement Pi 2026-05-26 + smoke test multi-langues
+
+### i18n — gate bloquant pérenne (Sprint 12)
+- [x] `scripts/i18n_check.py` — audit pass/fail (stdlib, exit 1 si chaînes manquantes ou fuzzy)
+- [x] `scripts/translations_sprint12.py` — batch des 63 chaînes manquantes (FEAT-032/035/036/037/038/039)
+- [x] Application : 189 entrées remplacées (63 × 3 langues), 0 chaîne manquante post-fix
+- [x] `CLAUDE.md` : section « Traductions i18n (OBLIGATOIRE — gate avant commit) » + étape « passer le gate i18n » ajoutée aux Bug Fix / Feature Workflows
+- [x] `MEMORY.md` : entrée [[feedback-i18n-gate]]
+- [x] Déploiement Pi 2026-05-26 (po + compilemessages OK)
+
+### Clôture Sprint 12
+- [x] `pytest` complet vert (287 → 304, +17 : 13 printing + 4 i18n setlang)
+- [x] Build Docker + déploiement Pi (3 vagues : FEAT-038/039, iter2 70×42, BUG-013 v2 + i18n)
+- [x] Gate i18n : `python scripts/i18n_check.py` → OK (0 chaîne manquante, 207 entrées appliquées via translations_sprint12.py incl. FORMS labels gettext_lazy)
+- [x] Test Val OK 2026-05-26 (impressions cartes + étiquettes 70×42/auteurs 2 lignes + sélecteur de langue persistant + /admin/settings traduit)
+- [x] Commit unique Sprint 12 + push origin/main

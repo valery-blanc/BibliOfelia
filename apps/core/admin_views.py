@@ -14,16 +14,18 @@ from django.contrib import messages
 from django.shortcuts import redirect, render
 from django.utils import timezone
 from django.utils.translation import gettext as _
+from django.utils.translation import gettext_lazy
 
 from apps.accounts.models import Role
 from apps.accounts.permissions import require_role
 
 from .forms import (
     BackupConfigForm,
-    LabelFormatForm,
+    ItemLabelFormatForm,
     LanguagesForm,
     LibraryIdentityForm,
     LoanReservationDefaultsForm,
+    MemberCardFormatForm,
     MetadataSourcesForm,
     ZeroTierForm,
 )
@@ -34,13 +36,14 @@ from django.views.decorators.http import require_POST
 
 
 FORMS = {
-    "identity": ("Identité", LibraryIdentityForm),
-    "languages": ("Langues", LanguagesForm),
-    "loans": ("Durées prêts & réservations", LoanReservationDefaultsForm),
-    "backup": ("Sauvegardes", BackupConfigForm),
-    "labels": ("Étiquettes", LabelFormatForm),
-    "zerotier": ("ZeroTier", ZeroTierForm),
-    "sources": ("Sources de métadonnées", MetadataSourcesForm),
+    "identity": (gettext_lazy("Identité"), LibraryIdentityForm),
+    "languages": (gettext_lazy("Langues"), LanguagesForm),
+    "loans": (gettext_lazy("Durées prêts & réservations"), LoanReservationDefaultsForm),
+    "backup": (gettext_lazy("Sauvegardes"), BackupConfigForm),
+    "printing_cards": (gettext_lazy("Impressions — Cartes membres"), MemberCardFormatForm),
+    "printing_labels": (gettext_lazy("Impressions — Étiquettes codes Ofelia"), ItemLabelFormatForm),
+    "zerotier": (gettext_lazy("ZeroTier"), ZeroTierForm),
+    "sources": (gettext_lazy("Sources de métadonnées"), MetadataSourcesForm),
 }
 
 

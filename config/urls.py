@@ -9,10 +9,15 @@ from django.conf.urls.static import static
 from django.contrib import admin
 from django.urls import include, path
 
+from apps.core.i18n_views import set_language as core_set_language
+
 urlpatterns = [
     path("admin/", admin.site.urls),
     path("api/v1/", include("apps.api.urls", namespace="api")),
-    path("i18n/", include("django.conf.urls.i18n")),
+    # BUG-013 (récurrent) : wrapper qui force `FORCE_SCRIPT_NAME` sur la
+    # redirection de `set_language`. Remplace `django.conf.urls.i18n` qui
+    # casse en prod quand l'URL courante ne se résout pas.
+    path("i18n/setlang/", core_set_language, name="set_language"),
     path("setup/", include("apps.setup.urls", namespace="setup")),
 ]
 
