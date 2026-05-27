@@ -4,6 +4,7 @@
 - Liste des retards (imprimable)
 - Liste des inactifs (membres + livres)
 - Export CSV prêts par période
+- Export CSV catalogue complet, prêts/réservations en cours, inactifs (FEAT-040)
 - Rapport annuel PDF
 """
 from __future__ import annotations
@@ -13,13 +14,21 @@ from datetime import date
 
 from django.http import HttpResponse
 from django.shortcuts import render
+from django.utils.translation import gettext as _
 
 from apps.accounts.models import Role
 from apps.accounts.permissions import require_role
+from apps.loans.models import ReservationStatus
 
 from . import services
 from .forms import PeriodForm, YearForm
 from .pdf import render_annual_pdf
+
+
+def _csv_response(filename: str) -> HttpResponse:
+    resp = HttpResponse(content_type="text/csv; charset=utf-8")
+    resp["Content-Disposition"] = f'attachment; filename="{filename}"'
+    return resp
 
 
 @require_role(Role.LIBRARIAN, Role.SUPERADMIN, Role.READONLY)
@@ -97,6 +106,151 @@ def loans_csv(request):
             loan.item.record.title,
             loan.member.card_number,
             f"{loan.member.last_name} {loan.member.first_name}".strip(),
+        ])
+    return resp
+
+
+# ─── FEAT-040 : exports CSV ────────────────────────────────────────────────
+
+
+@require_role(Role.LIBRARIAN, Role.SUPERADMIN)
+def catalog_csv(request):
+    """Export CSV de tout le catalogue (1 ligne par exemplaire)."""
+    today = date.today().isoformat()
+    resp = _csv_response(f"catalog_{today}.csv")
+    writer = csv.writer(resp)
+    writer.writerow([
+        "item_internal_id", "item_ean13", "item_state", "item_status",
+        "item_location_code", "item_acquisition_date", "item_acquisition_source",
+        "item_donor",
+        "record_id", "record_title", "record_subtitle", "record_authors",
+        "record_publisher", "record_publication_year", "record_language",
+        "record_isbn_13", "record_isbn_10", "record_category", "record_tags",
+        "record_document_type", "record_series_name", "record_series_volume",
+        "record_summary",
+    ])
+    for item in services.catalog_full_csv_rows().iterator(chunk_size=500):
+        rec = item.record
+        authors = "; ".join(a.full_name for a in rec.authors.all())
+        tags = "; ".join(t.name for t in rec.tags.all())
+        writer.writerow([
+            item.internal_id,
+            item.ean13,
+            item.state,
+            item.status,
+            item.location.code if item.location else "",
+            item.acquisition_date.isoformat() if item.acquisition_date else "",
+            item.acquisition_source,
+            item.donor,
+            rec.pk,
+            rec.title,
+            rec.subtitle,
+            authors,
+            rec.publisher,
+            rec.publication_year or "",
+            rec.language,
+            rec.isbn_13 or "",
+            rec.isbn_10 or "",
+            rec.category.name if rec.category else "",
+            tags,
+            rec.document_type,
+            rec.series_name,
+            rec.series_volume,
+            rec.summary,
+        ])
+    return resp
+
+
+@require_role(Role.LIBRARIAN, Role.SUPERADMIN)
+def active_loans_reservations_csv(request):
+    """Export CSV des prêts en cours + réservations en cours (2 sections)."""
+    today = date.today().isoformat()
+    resp = _csv_response(f"active_loans_reservations_{today}.csv")
+    writer = csv.writer(resp)
+    writer.writerow([
+        "kind", "id", "status", "created_at",
+        "member_card", "member_name", "record_title", "item_internal_id",
+        "due_or_expiry_date",
+    ])
+    for loan in services.active_loans_for_export().iterator():
+        writer.writerow([
+            "loan",
+            loan.pk,
+            loan.status,
+            loan.loan_date.isoformat() if loan.loan_date else "",
+            loan.member.card_number,
+            f"{loan.member.last_name} {loan.member.first_name}".strip(),
+            loan.item.record.title,
+            loan.item.internal_id,
+            loan.due_date.isoformat() if loan.due_date else "",
+        ])
+    for res in services.active_reservations_for_export().iterator():
+        deadline = ""
+        if res.status == ReservationStatus.READY_FOR_PICKUP:
+            from apps.loans.services import pickup_expiration_for
+
+            d = pickup_expiration_for(res)
+            deadline = d.isoformat() if d else ""
+        writer.writerow([
+            "reservation",
+            res.pk,
+            res.status,
+            res.created_at.isoformat() if res.created_at else "",
+            res.member.card_number,
+            f"{res.member.last_name} {res.member.first_name}".strip(),
+            res.record.title,
+            res.fulfilled_by_item.internal_id if res.fulfilled_by_item else "",
+            deadline,
+        ])
+    return resp
+
+
+@require_role(Role.LIBRARIAN, Role.SUPERADMIN)
+def inactive_members_csv(request):
+    days = int(request.GET.get("days", 365))
+    members = services.inactive_members(days=days)
+    today = date.today().isoformat()
+    resp = _csv_response(f"inactive_members_{days}d_{today}.csv")
+    writer = csv.writer(resp)
+    writer.writerow([
+        "card_number", "last_name", "first_name", "registration_date",
+        "last_activity",
+    ])
+    for m in members:
+        if m.last_activity:
+            last = m.last_activity.date().isoformat()
+        else:
+            last = _("Aucune activité")
+        writer.writerow([
+            m.card_number,
+            m.last_name,
+            m.first_name,
+            m.registration_date.isoformat() if m.registration_date else "",
+            last,
+        ])
+    return resp
+
+
+@require_role(Role.LIBRARIAN, Role.SUPERADMIN)
+def inactive_items_csv(request):
+    days = int(request.GET.get("days", 365))
+    items = services.inactive_items(days=days)
+    today = date.today().isoformat()
+    resp = _csv_response(f"inactive_items_{days}d_{today}.csv")
+    writer = csv.writer(resp)
+    writer.writerow([
+        "internal_id", "ean13", "record_title", "last_activity",
+    ])
+    for it in items:
+        if it.last_activity:
+            last = it.last_activity.date().isoformat()
+        else:
+            last = _("Aucune activité")
+        writer.writerow([
+            it.internal_id,
+            it.ean13,
+            it.record.title,
+            last,
         ])
     return resp
 

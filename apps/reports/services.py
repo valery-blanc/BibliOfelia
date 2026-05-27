@@ -11,7 +11,7 @@ from datetime import date, datetime, timedelta
 from pathlib import Path
 
 from django.conf import settings
-from django.db.models import Count, Q
+from django.db.models import Count, Max, Q
 from django.utils.translation import gettext_lazy as _
 
 
@@ -185,7 +185,7 @@ def reservations_ready_for_pickup():
 
 
 def inactive_members(days: int = 365):
-    """Usagers sans prêt depuis `days` jours."""
+    """Usagers sans prêt depuis `days` jours. Annoté `last_activity` (FEAT-040)."""
     from apps.members.models import Member
 
     cutoff = date.today() - timedelta(days=days)
@@ -194,7 +194,8 @@ def inactive_members(days: int = 365):
             recent=Count(
                 "loans",
                 filter=Q(loans__loan_date__date__gte=cutoff),
-            )
+            ),
+            last_activity=Max("loans__loan_date"),
         )
         .filter(recent=0)
         .order_by("last_name", "first_name")
@@ -202,7 +203,7 @@ def inactive_members(days: int = 365):
 
 
 def inactive_items(days: int = 365):
-    """Exemplaires sans prêt depuis `days` jours."""
+    """Exemplaires sans prêt depuis `days` jours. Annoté `last_activity` (FEAT-040)."""
     from apps.catalog.models import Item
 
     cutoff = date.today() - timedelta(days=days)
@@ -211,11 +212,50 @@ def inactive_items(days: int = 365):
             recent=Count(
                 "loans",
                 filter=Q(loans__loan_date__date__gte=cutoff),
-            )
+            ),
+            last_activity=Max("loans__loan_date"),
         )
         .filter(recent=0)
         .select_related("record")
         .order_by("internal_id")
+    )
+
+
+# ----------------------------------------------------------------------
+# FEAT-040 : exports CSV catalogue + prêts/réservations en cours
+# ----------------------------------------------------------------------
+def catalog_full_csv_rows():
+    """Itère sur tous les exemplaires avec métadonnées notice complètes."""
+    from apps.catalog.models import Item
+
+    return (
+        Item.objects.select_related("record", "record__category", "location")
+        .prefetch_related("record__authors", "record__tags")
+        .order_by("record__title", "internal_id")
+    )
+
+
+def active_loans_for_export():
+    """Prêts en cours (ACTIVE + OVERDUE) pour export CSV."""
+    from apps.loans.models import Loan, LoanStatus
+
+    return (
+        Loan.objects.filter(status__in=[LoanStatus.ACTIVE, LoanStatus.OVERDUE])
+        .select_related("item__record", "member")
+        .order_by("due_date")
+    )
+
+
+def active_reservations_for_export():
+    """Réservations en cours (PENDING + READY_FOR_PICKUP) pour export CSV."""
+    from apps.loans.models import Reservation, ReservationStatus
+
+    return (
+        Reservation.objects.filter(
+            status__in=[ReservationStatus.PENDING, ReservationStatus.READY_FOR_PICKUP]
+        )
+        .select_related("record", "member", "fulfilled_by_item")
+        .order_by("created_at")
     )
 
 

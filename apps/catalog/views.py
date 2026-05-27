@@ -370,6 +370,107 @@ def record_bulk_delete_confirm(request):
     )
 
 
+# ─── FEAT-041 : affectation en masse catégorie / emplacement ──────────────
+
+
+@require_POST
+@require_role(*WRITE_ROLES)
+def record_bulk_assign_category_confirm(request):
+    ids = [int(x) for x in request.POST.getlist("ids") if x.isdigit()]
+    records = (
+        BibliographicRecord.objects.filter(pk__in=ids)
+        .select_related("category")
+        .order_by("title")
+    )
+    return render(
+        request,
+        "catalog/record_bulk_assign_category.html",
+        {
+            "records": records,
+            "ids": ids,
+            "count": records.count(),
+            "categories": Category.objects.all().order_by("code"),
+        },
+    )
+
+
+@require_POST
+@require_role(*WRITE_ROLES)
+def record_bulk_assign_category(request):
+    ids = [int(x) for x in request.POST.getlist("ids") if x.isdigit()]
+    raw = request.POST.get("category") or ""
+    category_id = int(raw) if raw.isdigit() else None
+    category = (
+        Category.objects.filter(pk=category_id).first() if category_id else None
+    )
+    updated = (
+        BibliographicRecord.objects.filter(pk__in=ids).update(
+            category_id=category.pk if category else None
+        )
+    )
+    if category:
+        messages.success(
+            request,
+            _("%(n)s notice(s) affectée(s) à la catégorie %(c)s.")
+            % {"n": updated, "c": category.name},
+        )
+    else:
+        messages.success(
+            request,
+            _("%(n)s notice(s) sans catégorie (catégorie vidée).") % {"n": updated},
+        )
+    return redirect("catalog:record_list")
+
+
+@require_POST
+@require_role(*WRITE_ROLES)
+def record_bulk_assign_location_confirm(request):
+    ids = [int(x) for x in request.POST.getlist("ids") if x.isdigit()]
+    records = (
+        BibliographicRecord.objects.filter(pk__in=ids)
+        .prefetch_related("items")
+        .order_by("title")
+    )
+    item_count = Item.objects.filter(record_id__in=ids).count()
+    return render(
+        request,
+        "catalog/record_bulk_assign_location.html",
+        {
+            "records": records,
+            "ids": ids,
+            "count": records.count(),
+            "item_count": item_count,
+            "locations": Location.objects.all().order_by("code"),
+        },
+    )
+
+
+@require_POST
+@require_role(*WRITE_ROLES)
+def record_bulk_assign_location(request):
+    ids = [int(x) for x in request.POST.getlist("ids") if x.isdigit()]
+    raw = request.POST.get("location") or ""
+    location_id = int(raw) if raw.isdigit() else None
+    location = (
+        Location.objects.filter(pk=location_id).first() if location_id else None
+    )
+    updated = Item.objects.filter(record_id__in=ids).update(
+        location_id=location.pk if location else None
+    )
+    if location:
+        messages.success(
+            request,
+            _("%(n)s exemplaire(s) affecté(s) à l'emplacement %(l)s.")
+            % {"n": updated, "l": location.code},
+        )
+    else:
+        messages.success(
+            request,
+            _("%(n)s exemplaire(s) sans emplacement (emplacement vidé).") % {"n": updated},
+        )
+    return redirect("catalog:record_list")
+
+
 @require_POST
 @require_role(Role.SUPERADMIN)
 def record_bulk_delete(request):

@@ -70,27 +70,41 @@
 
 {% if page_obj %}
 
-{# Table desktop #}
-{% if user.is_superadmin %}
-<form method="post" action="{% url 'catalog:record_bulk_delete_confirm' %}"
+{# Vues desktop (table) + mobile (cards) dans le même form pour bulk-select #}
+{% if user.is_librarian or user.is_superadmin %}
+<form method="post"
       x-data="{count:0}"
-      x-init="$watch('count', v => v)"
-      class="hide-sm">
+      x-init="$watch('count', v => v)">
     {% csrf_token %}
     <div x-show="count > 0"
-         style="display:flex;align-items:center;gap:12px;padding:10px 14px;background:var(--blush);border:1px solid #B83232;border-radius:8px;margin-bottom:10px">
-        <span><strong x-text="count"></strong> {% trans "notice(s) sélectionnée(s)" %}</span>
-        <button type="submit" class="btn btn--primary" style="background:#B83232;border-color:#B83232">
-            {% icon "trash-2" size="14px" %} {% trans "Supprimer la sélection" %}
-        </button>
+         style="display:flex;flex-direction:column;align-items:stretch;gap:10px;padding:14px;background:var(--amber-light);border:1px solid var(--amber);border-radius:8px;margin-bottom:10px">
+        <span style="font-size:14px"><strong x-text="count"></strong> {% trans "notice(s) sélectionnée(s)" %}</span>
+        <div style="display:flex;flex-wrap:wrap;row-gap:14px;column-gap:10px">
+            <button type="submit" class="btn btn--primary"
+                    formaction="{% url 'catalog:record_bulk_assign_category_confirm' %}">
+                {% icon "bookmark" size="14px" %} {% trans "Affecter une catégorie" %}
+            </button>
+            <button type="submit" class="btn btn--primary"
+                    formaction="{% url 'catalog:record_bulk_assign_location_confirm' %}">
+                {% icon "archive" size="14px" %} {% trans "Affecter un emplacement" %}
+            </button>
+            {% if user.is_superadmin %}
+            <button type="submit" class="btn btn--primary" style="background:#B83232;border-color:#B83232"
+                    formaction="{% url 'catalog:record_bulk_delete_confirm' %}">
+                {% icon "trash-2" size="14px" %} {% trans "Supprimer la sélection" %}
+            </button>
+            {% endif %}
+        </div>
     </div>
-    <div class="table-wrap">
+
+    {# Table desktop — checkboxes name=ids_desktop #}
+    <div class="table-wrap hide-sm">
         <table class="table">
             <thead>
                 <tr>
                     <th style="width:30px">
                         <input type="checkbox"
-                               @change="document.querySelectorAll('input[name=ids]').forEach(c => c.checked = $event.target.checked); count = document.querySelectorAll('input[name=ids]:checked').length"
+                               @change="document.querySelectorAll('input[name=ids_desktop]').forEach(c => c.checked = $event.target.checked); count = document.querySelectorAll('input[name=ids_desktop]:checked').length"
                                title="{% trans 'Tout cocher' %}">
                     </th>
                     <th>{% trans "Titre" %}</th>
@@ -102,8 +116,9 @@
             <tbody>
                 {% for record in page_obj %}
                 <tr>
-                    <td><input type="checkbox" name="ids" value="{{ record.pk }}"
-                               @change="count = document.querySelectorAll('input[name=ids]:checked').length"></td>
+                    <td><input type="checkbox" name="ids_desktop" value="{{ record.pk }}"
+                               data-rid="{{ record.pk }}"
+                               @change="document.querySelector('input[name=ids_mobile][data-rid=\'{{ record.pk }}\']').checked = $event.target.checked; count = document.querySelectorAll('input[name=ids_desktop]:checked').length"></td>
                     <td>
                         <a href="{% url 'catalog:record_detail' record.pk %}" class="cell-link">{{ record.title }}</a>
                     </td>
@@ -115,6 +130,54 @@
             </tbody>
         </table>
     </div>
+
+    {# Liste mobile avec checkboxes name=ids_mobile (BUG-016) #}
+    <div class="list only-sm">
+        <label class="list-row" style="cursor:pointer;background:var(--cream)">
+            <input type="checkbox"
+                   @change="document.querySelectorAll('input[name=ids_mobile]').forEach(c => c.checked = $event.target.checked); count = document.querySelectorAll('input[name=ids_mobile]:checked').length"
+                   style="width:18px;height:18px;flex-shrink:0">
+            <div class="lrow-body">
+                <div class="lrow-title">{% trans "Tout cocher" %}</div>
+            </div>
+        </label>
+        {% for record in page_obj %}
+        <div class="list-row" style="gap:10px">
+            <input type="checkbox" name="ids_mobile" value="{{ record.pk }}"
+                   data-rid="{{ record.pk }}"
+                   @change="document.querySelector('input[name=ids_desktop][data-rid=\'{{ record.pk }}\']').checked = $event.target.checked; count = document.querySelectorAll('input[name=ids_mobile]:checked').length"
+                   style="width:18px;height:18px;flex-shrink:0;align-self:center">
+            <a href="{% url 'catalog:record_detail' record.pk %}" class="list-row" style="flex:1;padding:0;background:transparent;border:0;box-shadow:none">
+                <div class="lrow-icon" style="--lr-bg:var(--amber-light);--lr-fg:#946906">
+                    {% icon "book-open" size="18px" %}
+                </div>
+                <div class="lrow-body">
+                    <div class="lrow-title" style="color:var(--burgundy)">{{ record.title }}</div>
+                    <div class="lrow-sub">
+                        {% for a in record.authors.all %}{{ a.full_name }}{% if not forloop.last %}, {% endif %}{% endfor %}
+                        {% if record.category %} · {{ record.category.name }}{% endif %}
+                    </div>
+                </div>
+                <div class="lrow-end">
+                    <strong>{{ record.items.count }}</strong>
+                    <div style="font-size:11px;color:var(--grey)">{% trans "ex." %}</div>
+                </div>
+            </a>
+        </div>
+        {% endfor %}
+    </div>
+    {# Au submit : transformer les inputs visibles en name=ids #}
+    <script>
+    document.currentScript.parentElement.addEventListener('submit', function() {
+        const isDesktop = window.matchMedia('(min-width: 600px)').matches;
+        const src = isDesktop ? 'ids_desktop' : 'ids_mobile';
+        document.querySelectorAll('input[name=' + src + ']:checked').forEach(function(c) {
+            const h = document.createElement('input');
+            h.type = 'hidden'; h.name = 'ids'; h.value = c.value;
+            c.form.appendChild(h);
+        });
+    });
+    </script>
 </form>
 {% else %}
 <div class="table-wrap hide-sm">
@@ -141,9 +204,6 @@
         </tbody>
     </table>
 </div>
-{% endif %}
-
-{# Liste mobile #}
 <div class="list only-sm">
     {% for record in page_obj %}
     <a href="{% url 'catalog:record_detail' record.pk %}" class="list-row">
@@ -164,6 +224,7 @@
     </a>
     {% endfor %}
 </div>
+{% endif %}
 
 {% if page_obj.paginator.num_pages > 1 %}
 <nav class="pager">

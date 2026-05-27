@@ -27,6 +27,12 @@
     <button type="button" class="btn btn--ghost" onclick="window.print()">
         {% icon "printer" size="16px" %} {% trans "Imprimer" %}
     </button>
+    <a href="{% url 'reports:inactive_members_csv' %}?days={{ days }}" class="btn btn--ghost">
+        {% icon "file-text" size="16px" %} {% trans "CSV usagers" %}
+    </a>
+    <a href="{% url 'reports:inactive_items_csv' %}?days={{ days }}" class="btn btn--ghost">
+        {% icon "file-text" size="16px" %} {% trans "CSV exemplaires" %}
+    </a>
 </form>
 
 <h2 class="section-title">{% trans "Usagers inactifs" %} <small>({{ members|length }})</small></h2>
@@ -37,6 +43,7 @@
                 <th>{% trans "Carte" %}</th>
                 <th>{% trans "Nom" %}</th>
                 <th>{% trans "Inscription" %}</th>
+                <th>{% trans "Dernière activité" %}</th>
             </tr>
         </thead>
         <tbody>
@@ -45,9 +52,10 @@
                 <td>{{ m.card_number }}</td>
                 <td><span class="cell-title">{{ m.last_name }} {{ m.first_name }}</span></td>
                 <td>{{ m.registration_date|date:"Y-m-d" }}</td>
+                <td>{% if m.last_activity %}{{ m.last_activity|date:"Y-m-d" }}{% else %}<span class="muted">{% trans "Aucune activité" %}</span>{% endif %}</td>
             </tr>
         {% empty %}
-            <tr><td colspan="3" class="muted" style="text-align:center;padding:24px">{% trans "Aucun usager inactif sur la période." %}</td></tr>
+            <tr><td colspan="4" class="muted" style="text-align:center;padding:24px">{% trans "Aucun usager inactif sur la période." %}</td></tr>
         {% endfor %}
         </tbody>
     </table>
@@ -61,6 +69,7 @@
                 <th>{% trans "ID interne" %}</th>
                 <th>{% trans "Code Ofelia" %}</th>
                 <th>{% trans "Titre" %}</th>
+                <th>{% trans "Dernière activité" %}</th>
             </tr>
         </thead>
         <tbody>
@@ -69,9 +78,10 @@
                 <td>{{ it.internal_id }}</td>
                 <td>{{ it.ean13 }}</td>
                 <td><span class="cell-title">{{ it.record.title|truncatechars:60 }}</span></td>
+                <td>{% if it.last_activity %}{{ it.last_activity|date:"Y-m-d" }}{% else %}<span class="muted">{% trans "Aucune activité" %}</span>{% endif %}</td>
             </tr>
         {% empty %}
-            <tr><td colspan="3" class="muted" style="text-align:center;padding:24px">{% trans "Aucun exemplaire inactif sur la période." %}</td></tr>
+            <tr><td colspan="4" class="muted" style="text-align:center;padding:24px">{% trans "Aucun exemplaire inactif sur la période." %}</td></tr>
         {% endfor %}
         </tbody>
     </table>

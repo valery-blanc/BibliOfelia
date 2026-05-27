@@ -25,6 +25,27 @@ urlpatterns = [
         views.record_bulk_delete,
         name="record_bulk_delete",
     ),
+    # FEAT-041 : affectation en masse catégorie / emplacement
+    path(
+        "bulk-assign-category/",
+        views.record_bulk_assign_category_confirm,
+        name="record_bulk_assign_category_confirm",
+    ),
+    path(
+        "bulk-assign-category/apply/",
+        views.record_bulk_assign_category,
+        name="record_bulk_assign_category",
+    ),
+    path(
+        "bulk-assign-location/",
+        views.record_bulk_assign_location_confirm,
+        name="record_bulk_assign_location_confirm",
+    ),
+    path(
+        "bulk-assign-location/apply/",
+        views.record_bulk_assign_location,
+        name="record_bulk_assign_location",
+    ),
     # FEAT-032 : gestion des emplacements
     path("locations/", views.location_list, name="location_list"),
     path("locations/new/", views.location_create, name="location_create"),

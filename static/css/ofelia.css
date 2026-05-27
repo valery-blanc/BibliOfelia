@@ -702,11 +702,17 @@ ul { list-style: none; padding: 0; }
 .table-wrap {
   border: 1px solid var(--line);
   border-radius: var(--r-md);
-  overflow: hidden;
+  overflow-x: auto;
+  overflow-y: hidden;
+  -webkit-overflow-scrolling: touch;
   background: var(--paper);
   box-shadow: var(--shadow-sm);
 }
 .table { width: 100%; border-collapse: collapse; font-size: 14px; }
+/* BUG-017 : sur mobile, garantir un scroll horizontal au lieu de comprimer */
+@media (max-width: 599px) {
+  .table-wrap .table { min-width: 560px; }
+}
 .table th, .table td {
   text-align: left;
   padding: 12px 14px;

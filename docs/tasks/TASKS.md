@@ -549,3 +549,48 @@ Mise à jour : 2026-05-26 (Sprint 12 **CLOS** — FEAT-038 (cartes membres : fon
 - [x] Gate i18n : `python scripts/i18n_check.py` → OK (0 chaîne manquante, 207 entrées appliquées via translations_sprint12.py incl. FORMS labels gettext_lazy)
 - [x] Test Val OK 2026-05-26 (impressions cartes + étiquettes 70×42/auteurs 2 lignes + sélecteur de langue persistant + /admin/settings traduit)
 - [x] Commit unique Sprint 12 + push origin/main
+
+## Sprint 13 — Exports CSV rapports + actions de masse catalogue + traductions catégories
+
+> Ouvert 2026-05-27 (temp.txt). 3 features (FEAT-040 / 041 / 042). Aucun bugfix.
+
+### FEAT-040 — Exports CSV rapports + dernière activité
+- [x] Doc `docs/specs/FEAT-040-csv-exports-and-last-activity.md`
+- [x] `apps/reports/services.py` : `catalog_full_csv_rows`, `active_loans_for_export`, `active_reservations_for_export`, annotation `last_activity=Max(loans__loan_date)` sur inactifs
+- [x] `apps/reports/views.py` : 4 nouvelles vues CSV (`catalog_csv`, `active_loans_reservations_csv`, `inactive_members_csv`, `inactive_items_csv`)
+- [x] `apps/reports/urls.py` : 4 routes
+- [x] `templates/reports/index.html` : 2 cards exports catalogue + prêts/résa
+- [x] `templates/reports/inactive_list.html` : 2 boutons CSV + colonne « Dernière activité »
+- [x] Tests `apps/reports/tests/test_csv_exports.py` (7 cas)
+- [x] SPEC §6.6 mise à jour
+
+### FEAT-041 — Bulk affect category + location (catalogue)
+- [x] Doc `docs/specs/FEAT-041-bulk-affect-category-location.md`
+- [x] `apps/catalog/views.py` : 4 vues (`record_bulk_assign_category[_confirm]`, `record_bulk_assign_location[_confirm]`)
+- [x] `apps/catalog/urls.py` : 4 routes
+- [x] Templates : `record_bulk_assign_category.html`, `record_bulk_assign_location.html`
+- [x] `templates/catalog/record_list.html` : tableau de sélection ouvert aux librarians + 2 boutons via `formaction`
+- [x] Tests `apps/catalog/tests/test_bulk_assign.py` (7 cas)
+- [x] SPEC §6.1 mise à jour
+
+### FEAT-042 — Traductions FR→EN/ES/MG catégories seed
+- [x] Doc `docs/specs/FEAT-042-default-category-translations.md`
+- [x] `apps/core/management/commands/seed_defaults.py` : tuples 4 langues + backfill idempotent
+- [x] Tests `apps/catalog/tests/test_seed_translations.py` (3) + `apps/members/tests/test_seed_translations.py` (2)
+- [x] SPEC §5.2 mise à jour
+
+### BUG-016 — Mobile : sélection multiple catalogue absente (cleanup Sprint 13)
+- [x] Doc `docs/bugs/BUG-016-mobile-bulk-select-catalogue.md`
+- [x] `templates/catalog/record_list.html` : un seul form englobe desktop + mobile, ajout checkboxes sur cards mobiles + ligne « Tout cocher »
+- [x] Note : aucune sélection multiple côté `members` à ce jour (pas de feature) → hors scope
+
+### BUG-017 — Mobile : table sans scroll horizontal (cleanup Sprint 13)
+- [x] Doc `docs/bugs/BUG-017-mobile-table-no-horizontal-scroll.md`
+- [x] `static/css/ofelia.css` : `.table-wrap` `overflow: hidden` → `overflow-x: auto / overflow-y: hidden` + `min-width: 560px` sur la table en ≤ 599 px
+
+### Clôture Sprint 13
+- [x] `pytest` complet vert : 304 → 323 (+19, 0 régression)
+- [x] Gate i18n `scripts/i18n_check.py` → 0 chaîne manquante (translations_sprint13.py = 25 entrées × 3 langues + 14 fuzzy nettoyés par langue)
+- [x] Test Val OK 2026-05-27 (FEAT-040 + 041 + 042 bout-en-bout sur la Pi)
+- [x] BUG-016 + BUG-017 + itération espacement boutons + fix compteur double (ids_desktop/ids_mobile) — test Val OK 2026-05-27 mobile
+- [x] Commit unique Sprint 13 (3 FEAT + 2 BUG) + push origin/main

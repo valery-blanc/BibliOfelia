@@ -1,6 +1,11 @@
 """Crée les objets par défaut au premier démarrage (idempotent).
 
 SPEC §5.2 : seed Settings + Categories + MemberCategories.
+
+FEAT-042 (Sprint 13) : les noms de Categories et MemberCategories du seed
+sont fournis dans les 4 langues activées (fr/en/es/mg) et `seed_defaults`
+backfille `name_en`/`name_es`/`name_mg` sur les installations existantes
+**uniquement si le champ est vide** (préserve les traductions manuelles).
 """
 from django.core.management.base import BaseCommand
 from django.db import transaction
@@ -8,34 +13,52 @@ from django.db import transaction
 from apps.core.models import Setting
 
 
+# FEAT-042 : (code, parent_code, default_loan_duration_days,
+#            name_fr, name_en, name_es, name_mg)
 CATEGORIES = [
-    # (code, name_fr, parent_code, default_loan_duration_days)
-    ("ENF", "Enfance", None, None),
-    ("ENF-ALB", "Albums", "ENF", None),
-    ("ENF-LEC", "Premières lectures", "ENF", None),
-    ("ENF-ROM", "Romans jeunesse", "ENF", None),
-    ("ADU", "Adultes", None, None),
-    ("ADU-ROM", "Romans", "ADU", None),
-    ("ADU-NOU", "Nouvelles", "ADU", None),
-    ("ADU-POE", "Poésie", "ADU", None),
-    ("ADU-THE", "Théâtre", "ADU", None),
-    ("DOC", "Documentaires", None, None),
-    ("DOC-SCI", "Sciences", "DOC", None),
-    ("DOC-HIS", "Histoire", "DOC", None),
-    ("DOC-GEO", "Géographie", "DOC", None),
-    ("DOC-PRA", "Pratique", "DOC", None),
-    ("DOC-REL", "Religions", "DOC", None),
-    ("PER", "Périodiques", None, 7),
+    ("ENF",     None,  None, "Enfance",              "Childhood",          "Infancia",                  "Fahazazana"),
+    ("ENF-ALB", "ENF", None, "Albums",               "Picture books",      "Álbumes ilustrados",        "Boky misy sary"),
+    ("ENF-LEC", "ENF", None, "Premières lectures",   "Early reading",      "Primeras lecturas",         "Famakiana voalohany"),
+    ("ENF-ROM", "ENF", None, "Romans jeunesse",      "Children's novels",  "Novelas juveniles",         "Tantara ho an'ny ankizy"),
+    ("ADU",     None,  None, "Adultes",              "Adults",             "Adultos",                   "Olon-dehibe"),
+    ("ADU-ROM", "ADU", None, "Romans",               "Novels",             "Novelas",                   "Tantara foronina"),
+    ("ADU-NOU", "ADU", None, "Nouvelles",            "Short stories",      "Cuentos",                   "Tantara fohy"),
+    ("ADU-POE", "ADU", None, "Poésie",               "Poetry",             "Poesía",                    "Tononkalo"),
+    ("ADU-THE", "ADU", None, "Théâtre",              "Theatre",            "Teatro",                    "Tantara an-tsehatra"),
+    ("DOC",     None,  None, "Documentaires",        "Non-fiction",        "Documentales",              "Boky fampianarana"),
+    ("DOC-SCI", "DOC", None, "Sciences",             "Sciences",           "Ciencias",                  "Siansa"),
+    ("DOC-HIS", "DOC", None, "Histoire",             "History",            "Historia",                  "Tantara"),
+    ("DOC-GEO", "DOC", None, "Géographie",           "Geography",          "Geografía",                 "Jeografia"),
+    ("DOC-PRA", "DOC", None, "Pratique",             "Practical",          "Práctico",                  "Fampiharana"),
+    ("DOC-REL", "DOC", None, "Religions",            "Religions",          "Religiones",                "Fivavahana"),
+    ("PER",     None,  7,    "Périodiques",          "Periodicals",        "Publicaciones periódicas",  "Gazety sy gazety boky"),
 ]
 
+# FEAT-042 : (code, max_loans, default_loan_duration_days, card_validity_months,
+#            name_fr, name_en, name_es, name_mg)
 MEMBER_CATEGORIES = [
-    # (code, name, max_concurrent_loans, default_loan_duration_days, card_validity_months)
-    ("ENFANT", "Enfant (< 14 ans)", 3, 21, 12),
-    ("ADO", "Adolescent (14-17 ans)", 5, 21, 12),
-    ("ADULTE", "Adulte", 5, 21, 12),
-    ("ENSEIGNANT", "Enseignant", 15, 60, 12),
-    ("COLLECTIF", "Collectif (école/famille)", 20, 30, 12),
+    ("ENFANT",     3,  21, 12, "Enfant (< 14 ans)",          "Child (under 14)",        "Niño (menor de 14 años)",       "Ankizy (latsaky ny 14 taona)"),
+    ("ADO",        5,  21, 12, "Adolescent (14-17 ans)",     "Teenager (14-17)",        "Adolescente (14-17 años)",      "Tanora (14-17 taona)"),
+    ("ADULTE",     5,  21, 12, "Adulte",                     "Adult",                   "Adulto",                        "Olon-dehibe"),
+    ("ENSEIGNANT", 15, 60, 12, "Enseignant",                 "Teacher",                 "Docente",                       "Mpampianatra"),
+    ("COLLECTIF",  20, 30, 12, "Collectif (école/famille)",  "Group (school/family)",   "Colectivo (escuela/familia)",   "Vondrona (sekoly/fianakaviana)"),
 ]
+
+
+def _backfill_translations(obj, name_fr: str, name_en: str, name_es: str, name_mg: str) -> bool:
+    """Remplit les `name_<lang>` vides sans écraser les traductions existantes."""
+    changed = False
+    for attr, value in (
+        ("name_fr", name_fr),
+        ("name_en", name_en),
+        ("name_es", name_es),
+        ("name_mg", name_mg),
+    ):
+        current = getattr(obj, attr, None)
+        if not current and value:
+            setattr(obj, attr, value)
+            changed = True
+    return changed
 
 
 class Command(BaseCommand):
@@ -86,23 +109,41 @@ class Command(BaseCommand):
                 settings_created += 1
 
         cat_created = 0
+        cat_backfilled = 0
         cat_by_code: dict[str, Category] = {}
-        for code, name, parent_code, dur in CATEGORIES:
+        for code, parent_code, dur, name_fr, name_en, name_es, name_mg in CATEGORIES:
             parent = cat_by_code.get(parent_code) if parent_code else None
             obj, created = Category.objects.get_or_create(
                 code=code,
-                defaults={"name": name, "parent": parent, "default_loan_duration_days": dur},
+                defaults={
+                    "name": name_fr,
+                    "name_fr": name_fr,
+                    "name_en": name_en,
+                    "name_es": name_es,
+                    "name_mg": name_mg,
+                    "parent": parent,
+                    "default_loan_duration_days": dur,
+                },
             )
             cat_by_code[code] = obj
             if created:
                 cat_created += 1
+            else:
+                if _backfill_translations(obj, name_fr, name_en, name_es, name_mg):
+                    obj.save()
+                    cat_backfilled += 1
 
         mcat_created = 0
-        for code, name, max_loans, dur, validity in MEMBER_CATEGORIES:
-            _, created = MemberCategory.objects.get_or_create(
+        mcat_backfilled = 0
+        for code, max_loans, dur, validity, name_fr, name_en, name_es, name_mg in MEMBER_CATEGORIES:
+            obj, created = MemberCategory.objects.get_or_create(
                 code=code,
                 defaults={
-                    "name": name,
+                    "name": name_fr,
+                    "name_fr": name_fr,
+                    "name_en": name_en,
+                    "name_es": name_es,
+                    "name_mg": name_mg,
                     "max_concurrent_loans": max_loans,
                     "default_loan_duration_days": dur,
                     "card_validity_months": validity,
@@ -110,10 +151,15 @@ class Command(BaseCommand):
             )
             if created:
                 mcat_created += 1
+            else:
+                if _backfill_translations(obj, name_fr, name_en, name_es, name_mg):
+                    obj.save()
+                    mcat_backfilled += 1
 
         self.stdout.write(
             self.style.SUCCESS(
                 f"seed_defaults : {settings_created} Setting, "
-                f"{cat_created} Category, {mcat_created} MemberCategory créés."
+                f"{cat_created} Category créées (+{cat_backfilled} backfill traductions), "
+                f"{mcat_created} MemberCategory créées (+{mcat_backfilled} backfill traductions)."
             )
         )
