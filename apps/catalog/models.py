@@ -234,26 +234,78 @@ class Item(models.Model):
         count produisait une seq déjà prise → UNIQUE constraint. On prend
         désormais `MAX(internal_id)+1` (zero-padding 4 chiffres → max
         alphabétique = max numérique).
+
+        FEAT-043 : pour éviter qu'un code Ofelia déjà imprimé sur une
+        étiquette physique soit réattribué à un nouveau livre après une
+        suppression, le MAX inclut désormais les codes retirés
+        (RetiredItemCode). Les codes supprimés ne sont jamais réutilisés.
         """
         from django.db.models import Max
 
         if not self.internal_id:
             today = timezone.localdate()
             day_str = today.strftime("%Y%m%d")
-            max_id = (
-                Item.objects.filter(internal_id__startswith=f"OFL-{day_str}-")
+            prefix = f"OFL-{day_str}-"
+            max_item = (
+                Item.objects.filter(internal_id__startswith=prefix)
                 .exclude(pk=self.pk)
                 .aggregate(m=Max("internal_id"))["m"]
             )
+            max_retired = (
+                RetiredItemCode.objects.filter(internal_id__startswith=prefix)
+                .aggregate(m=Max("internal_id"))["m"]
+            )
+            candidates = [v for v in (max_item, max_retired) if v]
             max_seq = 0
-            if max_id:
+            if candidates:
+                top = max(candidates)
                 try:
-                    max_seq = int(max_id.rsplit("-", 1)[-1])
+                    max_seq = int(top.rsplit("-", 1)[-1])
                 except (ValueError, IndexError):
                     max_seq = 0
             self.internal_id = f"OFL-{day_str}-{max_seq + 1:04d}"
         if not self.ean13:
             self.ean13 = build_ean13(ITEM_EAN13_PREFIX, self.pk)
+
+
+class RetiredItemCode(models.Model):
+    """FEAT-043 : tombstone d'un code Ofelia (internal_id) supprimé.
+
+    Les étiquettes pouvant être imprimées et collées sur un livre, un code
+    retiré ne doit jamais être réattribué à un nouvel exemplaire. Un
+    signal `pre_delete` sur Item insère ici une ligne avant la suppression.
+    """
+
+    REASON_BULK_DELETE = "bulk_delete"
+    REASON_ITEM_DELETE = "item_delete"
+    REASON_CHOICES = [
+        (REASON_BULK_DELETE, _("Suppression en masse de notices")),
+        (REASON_ITEM_DELETE, _("Suppression d'exemplaire")),
+    ]
+
+    internal_id = models.CharField(max_length=20, primary_key=True)
+    ean13 = models.CharField(max_length=13, blank=True)
+    record_title_snapshot = models.CharField(max_length=255, blank=True)
+    retired_at = models.DateTimeField(auto_now_add=True)
+    retired_by = models.ForeignKey(
+        settings.AUTH_USER_MODEL,
+        null=True,
+        blank=True,
+        on_delete=models.SET_NULL,
+        related_name="retired_item_codes",
+    )
+    reason = models.CharField(max_length=20, choices=REASON_CHOICES, default=REASON_ITEM_DELETE)
+
+    class Meta:
+        verbose_name = _("code Ofelia retiré")
+        verbose_name_plural = _("codes Ofelia retirés")
+        ordering = ["-retired_at"]
+        indexes = [
+            models.Index(fields=["internal_id"], name="retired_internal_id_idx"),
+        ]
+
+    def __str__(self) -> str:
+        return self.internal_id
 
 
 # ─── Sessions de scan OfeliaScan ───────────────────────────────────────────

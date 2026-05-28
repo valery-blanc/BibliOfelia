@@ -5,6 +5,9 @@
 
 {% block tile_strip %}{% include "partials/_tile_strip.html" with active="catalogue" %}{% endblock %}
 
+{# Vue @require_POST → cf. record_bulk_delete.html. #}
+{% block lang_next %}/{{ LANGUAGE_CODE }}/catalog/{% endblock %}
+
 {% block content %}
 <header class="pagehead">
     <div class="pagehead-icon" style="--ph-bg:var(--amber-light);--ph-fg:#946906">

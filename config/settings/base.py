@@ -92,6 +92,7 @@ MIDDLEWARE = [
     "auditlog.middleware.AuditlogMiddleware",
     "axes.middleware.AxesMiddleware",
     "apps.setup.middleware.SetupRequiredMiddleware",
+    "apps.core.middleware.MethodNotAllowedPrettyMiddleware",
 ]
 
 ROOT_URLCONF = "config.urls"

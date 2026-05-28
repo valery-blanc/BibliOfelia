@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2026-05-27 20:27+0000\n"
+"POT-Creation-Date: 2026-05-28 16:36+0000\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -77,13 +77,13 @@ msgstr ""
 msgid "Compte %(u)s supprimé."
 msgstr ""
 
-#: apps/api/models.py:23 apps/catalog/models.py:356 apps/core/forms.py:322
+#: apps/api/models.py:23 apps/catalog/models.py:408 apps/core/forms.py:322
 #: apps/loans/models.py:20 templates/catalog/record_detail.html:189
 #: templates/loans/reservations.html:97
 msgid "En attente"
 msgstr ""
 
-#: apps/api/models.py:24 apps/catalog/models.py:358
+#: apps/api/models.py:24 apps/catalog/models.py:410
 msgid "Terminé"
 msgstr ""
 
@@ -104,8 +104,8 @@ msgid "Carte membre"
 msgstr ""
 
 #: apps/catalog/forms.py:17 templates/catalog/record_detail.html:51
-#: templates/catalog/record_list.html:108
-#: templates/catalog/record_list.html:136
+#: templates/catalog/record_list.html:111
+#: templates/catalog/record_list.html:188
 msgid "Auteur(s)"
 msgstr ""
 
@@ -162,7 +162,7 @@ msgstr ""
 msgid "Autre"
 msgstr ""
 
-#: apps/catalog/models.py:32 apps/catalog/models.py:268
+#: apps/catalog/models.py:32 apps/catalog/models.py:320
 msgid "Saisie manuelle"
 msgstr ""
 
@@ -299,159 +299,175 @@ msgstr ""
 msgid "exemplaires"
 msgstr ""
 
-#: apps/catalog/models.py:266
+#: apps/catalog/models.py:282 templates/catalog/record_bulk_delete.html:19
+msgid "Suppression en masse de notices"
+msgstr ""
+
+#: apps/catalog/models.py:283
+msgid "Suppression d'exemplaire"
+msgstr ""
+
+#: apps/catalog/models.py:300
+msgid "code Ofelia retiré"
+msgstr ""
+
+#: apps/catalog/models.py:301
+msgid "codes Ofelia retirés"
+msgstr ""
+
+#: apps/catalog/models.py:318
 msgid "EAN13"
 msgstr ""
 
-#: apps/catalog/models.py:267 templates/inventory/session_report.html:67
+#: apps/catalog/models.py:319 templates/inventory/session_report.html:67
 msgid "ISBN"
 msgstr ""
 
-#: apps/catalog/models.py:272
+#: apps/catalog/models.py:324
 msgid "Ouverte"
 msgstr ""
 
-#: apps/catalog/models.py:273 apps/inventory/models.py:25
+#: apps/catalog/models.py:325 apps/inventory/models.py:25
 msgid "Validée"
 msgstr ""
 
-#: apps/catalog/models.py:297
+#: apps/catalog/models.py:349
 msgid "session de scan"
 msgstr ""
 
-#: apps/catalog/models.py:298
+#: apps/catalog/models.py:350
 msgid "sessions de scan"
 msgstr ""
 
-#: apps/catalog/models.py:338
+#: apps/catalog/models.py:390
 msgid "item scanné"
 msgstr ""
 
-#: apps/catalog/models.py:339
+#: apps/catalog/models.py:391
 msgid "items scannés"
 msgstr ""
 
-#: apps/catalog/models.py:357 apps/inventory/models.py:23
+#: apps/catalog/models.py:409 apps/inventory/models.py:23
 #: apps/loans/models.py:12
 msgid "En cours"
 msgstr ""
 
-#: apps/catalog/models.py:359
+#: apps/catalog/models.py:411
 msgid "Échec"
 msgstr ""
 
-#: apps/catalog/models.py:363
+#: apps/catalog/models.py:415
 msgid "Compléter les champs vides uniquement"
 msgstr ""
 
-#: apps/catalog/models.py:364
+#: apps/catalog/models.py:416
 msgid "Écraser avec les données externes"
 msgstr ""
 
-#: apps/catalog/models.py:399
+#: apps/catalog/models.py:451
 msgid "enrichissement métadonnées"
 msgstr ""
 
-#: apps/catalog/models.py:400
+#: apps/catalog/models.py:452
 msgid "enrichissements métadonnées"
 msgstr ""
 
-#: apps/catalog/views.py:176
+#: apps/catalog/views.py:177
 msgid "Notice créée."
 msgstr ""
 
-#: apps/catalog/views.py:181 apps/catalog/views.py:221
+#: apps/catalog/views.py:182 apps/catalog/views.py:222
 #: templates/catalog/record_list.html:25 templates/core/dashboard.html:186
 msgid "Nouvelle notice"
 msgstr ""
 
-#: apps/catalog/views.py:193
+#: apps/catalog/views.py:194
 msgid "Notice mise à jour."
 msgstr ""
 
-#: apps/catalog/views.py:198
+#: apps/catalog/views.py:199
 msgid "Modifier la notice"
 msgstr ""
 
-#: apps/catalog/views.py:209
+#: apps/catalog/views.py:210
 msgid "Notice trouvée sur OpenLibrary."
 msgstr ""
 
-#: apps/catalog/views.py:213
+#: apps/catalog/views.py:214
 msgid "Aucune réponse d'OpenLibrary — saisissez la notice à la main."
 msgstr ""
 
-#: apps/catalog/views.py:235
+#: apps/catalog/views.py:236
 msgid "Suppression impossible : des exemplaires actifs sont rattachés."
 msgstr ""
 
-#: apps/catalog/views.py:239
+#: apps/catalog/views.py:240
 msgid "Notice supprimée."
 msgstr ""
 
-#: apps/catalog/views.py:265
+#: apps/catalog/views.py:266
 #, python-format
 msgid "%(n)s exemplaire(s) ajouté(s)."
 msgstr ""
 
-#: apps/catalog/views.py:282
+#: apps/catalog/views.py:283
 msgid "Exemplaire mis à jour."
 msgstr ""
 
-#: apps/catalog/views.py:297
+#: apps/catalog/views.py:298
 msgid "Impossible : l'exemplaire est prêté ou réservé."
 msgstr ""
 
-#: apps/catalog/views.py:301
+#: apps/catalog/views.py:302
 msgid "Exemplaire retiré du fonds."
 msgstr ""
 
-#: apps/catalog/views.py:332
+#: apps/catalog/views.py:333
 msgid "Exemplaire supprimé."
 msgstr ""
 
-#: apps/catalog/views.py:414
+#: apps/catalog/views.py:415
 #, python-format
 msgid "%(n)s notice(s) affectée(s) à la catégorie %(c)s."
 msgstr ""
 
-#: apps/catalog/views.py:420
+#: apps/catalog/views.py:421
 #, python-format
 msgid "%(n)s notice(s) sans catégorie (catégorie vidée)."
 msgstr ""
 
-#: apps/catalog/views.py:463
+#: apps/catalog/views.py:464
 #, python-format
 msgid "%(n)s exemplaire(s) affecté(s) à l'emplacement %(l)s."
 msgstr ""
 
-#: apps/catalog/views.py:469
+#: apps/catalog/views.py:470
 #, python-format
 msgid "%(n)s exemplaire(s) sans emplacement (emplacement vidé)."
 msgstr ""
 
-#: apps/catalog/views.py:499
+#: apps/catalog/views.py:516
 #, python-format
 msgid "%(n)s notice(s) supprimée(s)."
 msgstr ""
 
-#: apps/catalog/views.py:527
+#: apps/catalog/views.py:544
 msgid "Emplacement créé."
 msgstr ""
 
-#: apps/catalog/views.py:537 templates/catalog/location_list.html:25
+#: apps/catalog/views.py:554 templates/catalog/location_list.html:25
 msgid "Nouvel emplacement"
 msgstr ""
 
-#: apps/catalog/views.py:549
+#: apps/catalog/views.py:566
 msgid "Emplacement mis à jour."
 msgstr ""
 
-#: apps/catalog/views.py:559
+#: apps/catalog/views.py:576
 msgid "Modifier l'emplacement"
 msgstr ""
 
-#: apps/catalog/views.py:576
+#: apps/catalog/views.py:593
 msgid "Emplacement supprimé."
 msgstr ""
 
@@ -1186,11 +1202,11 @@ msgstr ""
 msgid "Top 10 ouvrages empruntés"
 msgstr ""
 
-#: apps/reports/pdf.py:74 templates/catalog/record_bulk_assign_category.html:33
-#: templates/catalog/record_bulk_assign_location.html:34
-#: templates/catalog/record_bulk_delete.html:39
-#: templates/catalog/record_list.html:107
-#: templates/catalog/record_list.html:135 templates/core/dashboard.html:315
+#: apps/reports/pdf.py:74 templates/catalog/record_bulk_assign_category.html:36
+#: templates/catalog/record_bulk_assign_location.html:37
+#: templates/catalog/record_bulk_delete.html:44
+#: templates/catalog/record_list.html:110
+#: templates/catalog/record_list.html:187 templates/core/dashboard.html:315
 #: templates/inventory/session_report.html:68 templates/loans/return.html:127
 #: templates/members/member_detail.html:129
 #: templates/members/member_history.html:30
@@ -1219,7 +1235,7 @@ msgstr ""
 
 #: apps/setup/forms.py:20 apps/setup/views.py:29
 #: templates/accounts/login.html:27 templates/accounts/login.html:29
-#: templates/base.html:45 templates/base.html:47
+#: templates/base.html:50 templates/base.html:52
 #: templates/catalog/record_detail.html:56
 msgid "Langue"
 msgstr ""
@@ -1309,6 +1325,58 @@ msgstr ""
 msgid "Étapes manquantes : %(m)s"
 msgstr ""
 
+#: templates/400.html:4 templates/400.html:5
+msgid "Requête invalide"
+msgstr ""
+
+#: templates/400.html:6
+msgid "La requête envoyée au serveur n'a pas été comprise."
+msgstr ""
+
+#: templates/400.html:9
+msgid "Réessayez l'opération, ou revenez à la page précédente."
+msgstr ""
+
+#: templates/403.html:4 templates/403.html:8
+msgid "Accès interdit"
+msgstr ""
+
+#: templates/403.html:9
+msgid "Vous n'avez pas les droits nécessaires pour accéder à cette page."
+msgstr ""
+
+#: templates/403.html:12
+msgid ""
+"Connectez-vous avec un compte autorisé, ou demandez à un administrateur "
+"d'élargir vos droits."
+msgstr ""
+
+#: templates/404.html:4 templates/404.html:8
+msgid "Page introuvable"
+msgstr ""
+
+#: templates/404.html:9
+msgid "La page demandée n'existe pas ou a été déplacée."
+msgstr ""
+
+#: templates/404.html:12
+msgid "Vérifiez l'URL, ou revenez à la page précédente ou à l'accueil."
+msgstr ""
+
+#: templates/405.html:4 templates/405.html:5
+msgid "Méthode non autorisée"
+msgstr ""
+
+#: templates/405.html:6
+msgid ""
+"Cette page ne peut pas être ouverte directement depuis un lien : elle attend "
+"une action validée depuis une autre page."
+msgstr ""
+
+#: templates/405.html:9
+msgid "Vous pouvez revenir à la page précédente ou retourner à l'accueil."
+msgstr ""
+
 #: templates/accounts/login.html:7 templates/accounts/login.html:86
 msgid "Connexion"
 msgstr ""
@@ -1317,7 +1385,7 @@ msgstr ""
 msgid "Bibliothèque communautaire"
 msgstr ""
 
-#: templates/accounts/login.html:36 templates/base.html:54
+#: templates/accounts/login.html:36 templates/base.html:59
 #: templates/core/help.html:4 templates/core/help.html:12
 msgid "Aide"
 msgstr ""
@@ -1339,7 +1407,7 @@ msgstr ""
 msgid "Se connecter"
 msgstr ""
 
-#: templates/accounts/login.html:128 templates/base.html:92
+#: templates/accounts/login.html:128 templates/base.html:97
 msgid "Ofelia Box"
 msgstr ""
 
@@ -1434,9 +1502,9 @@ msgstr ""
 #: templates/catalog/_record_form.html:57 templates/catalog/item_form.html:35
 #: templates/catalog/location_confirm_delete.html:49
 #: templates/catalog/location_form.html:42
-#: templates/catalog/record_bulk_assign_category.html:66
-#: templates/catalog/record_bulk_assign_location.html:67
-#: templates/catalog/record_bulk_delete.html:75
+#: templates/catalog/record_bulk_assign_category.html:69
+#: templates/catalog/record_bulk_assign_location.html:70
+#: templates/catalog/record_bulk_delete.html:80
 #: templates/catalog/record_confirm_delete.html:34
 #: templates/catalog/record_detail.html:197
 #: templates/core/admin/settings_section.html:40
@@ -1462,7 +1530,7 @@ msgid "Nouveau"
 msgstr ""
 
 #: templates/accounts/user_form.html:11 templates/accounts/user_form.html:22
-#: templates/base.html:64
+#: templates/base.html:69
 msgid "Mon compte"
 msgstr ""
 
@@ -1511,11 +1579,11 @@ msgstr ""
 msgid "Valeur scannée :"
 msgstr ""
 
-#: templates/base.html:58
+#: templates/base.html:63
 msgid "Menu utilisateur"
 msgstr ""
 
-#: templates/base.html:69
+#: templates/base.html:74
 msgid "Déconnexion"
 msgstr ""
 
@@ -1611,8 +1679,8 @@ msgid "Parent"
 msgstr ""
 
 #: templates/catalog/location_list.html:37
-#: templates/catalog/record_bulk_assign_location.html:35
-#: templates/catalog/record_bulk_delete.html:40
+#: templates/catalog/record_bulk_assign_location.html:38
+#: templates/catalog/record_bulk_delete.html:45
 #: templates/catalog/record_detail.html:74 templates/core/dashboard.html:160
 msgid "Exemplaires"
 msgstr ""
@@ -1627,50 +1695,50 @@ msgstr ""
 msgid "Affecter une catégorie"
 msgstr ""
 
-#: templates/catalog/record_bulk_assign_category.html:14
+#: templates/catalog/record_bulk_assign_category.html:17
 msgid "Affecter une catégorie en masse"
 msgstr ""
 
-#: templates/catalog/record_bulk_assign_category.html:16
-#: templates/catalog/record_bulk_assign_location.html:16
-#: templates/catalog/record_bulk_delete.html:16
+#: templates/catalog/record_bulk_assign_category.html:19
+#: templates/catalog/record_bulk_assign_location.html:19
+#: templates/catalog/record_bulk_delete.html:21
 #, python-format
 msgid "%(counter)s notice sélectionnée"
 msgid_plural "%(counter)s notices sélectionnées"
 msgstr[0] ""
 msgstr[1] ""
 
-#: templates/catalog/record_bulk_assign_category.html:23
-#: templates/catalog/record_bulk_assign_location.html:24
-#: templates/catalog/record_bulk_delete.html:23
+#: templates/catalog/record_bulk_assign_category.html:26
+#: templates/catalog/record_bulk_assign_location.html:27
+#: templates/catalog/record_bulk_delete.html:28
 msgid "Aucune notice sélectionnée."
 msgstr ""
 
-#: templates/catalog/record_bulk_assign_category.html:24
-#: templates/catalog/record_bulk_assign_location.html:25
-#: templates/catalog/record_bulk_delete.html:24
+#: templates/catalog/record_bulk_assign_category.html:27
+#: templates/catalog/record_bulk_assign_location.html:28
+#: templates/catalog/record_bulk_delete.html:29
 msgid "Retour au catalogue"
 msgstr ""
 
-#: templates/catalog/record_bulk_assign_category.html:28
-#: templates/catalog/record_bulk_assign_location.html:29
+#: templates/catalog/record_bulk_assign_category.html:31
+#: templates/catalog/record_bulk_assign_location.html:32
 msgid "Notices concernées"
 msgstr ""
 
-#: templates/catalog/record_bulk_assign_category.html:34
+#: templates/catalog/record_bulk_assign_category.html:37
 msgid "Catégorie actuelle"
 msgstr ""
 
-#: templates/catalog/record_bulk_assign_category.html:54
+#: templates/catalog/record_bulk_assign_category.html:57
 msgid "Nouvelle catégorie"
 msgstr ""
 
-#: templates/catalog/record_bulk_assign_category.html:56
+#: templates/catalog/record_bulk_assign_category.html:59
 msgid "— (vider la catégorie)"
 msgstr ""
 
-#: templates/catalog/record_bulk_assign_category.html:64
-#: templates/catalog/record_bulk_assign_location.html:65
+#: templates/catalog/record_bulk_assign_category.html:67
+#: templates/catalog/record_bulk_assign_location.html:68
 msgid "Appliquer"
 msgstr ""
 
@@ -1679,22 +1747,22 @@ msgstr ""
 msgid "Affecter un emplacement"
 msgstr ""
 
-#: templates/catalog/record_bulk_assign_location.html:14
+#: templates/catalog/record_bulk_assign_location.html:17
 msgid "Affecter un emplacement en masse"
 msgstr ""
 
-#: templates/catalog/record_bulk_assign_location.html:17
+#: templates/catalog/record_bulk_assign_location.html:20
 #, python-format
 msgid "%(n)s exemplaire concerné"
 msgid_plural "%(n)s exemplaires concernés"
 msgstr[0] ""
 msgstr[1] ""
 
-#: templates/catalog/record_bulk_assign_location.html:55
+#: templates/catalog/record_bulk_assign_location.html:58
 msgid "Nouvel emplacement (appliqué à tous les exemplaires)"
 msgstr ""
 
-#: templates/catalog/record_bulk_assign_location.html:57
+#: templates/catalog/record_bulk_assign_location.html:60
 msgid "— (vider l'emplacement)"
 msgstr ""
 
@@ -1702,32 +1770,29 @@ msgstr ""
 msgid "Suppression en masse"
 msgstr ""
 
-#: templates/catalog/record_bulk_delete.html:14
-msgid "Suppression en masse de notices"
-msgstr ""
-
-#: templates/catalog/record_bulk_delete.html:30
+#: templates/catalog/record_bulk_delete.html:35
 msgid ""
-"Les prêts en cours seront marqués « Perdu » et les réservations actives "
-"seront annulées."
+"Les notices et tous leurs exemplaires seront supprimés. Les prêts en cours "
+"seront marqués « Perdu » et les réservations actives seront annulées. Ces "
+"suppressions sont définitives."
 msgstr ""
 
-#: templates/catalog/record_bulk_delete.html:34
+#: templates/catalog/record_bulk_delete.html:39
 msgid "Notices à supprimer"
 msgstr ""
 
-#: templates/catalog/record_bulk_delete.html:41
+#: templates/catalog/record_bulk_delete.html:46
 #: templates/core/dashboard.html:140 templates/loans/lend.html:83
 #: templates/members/member_detail.html:121
 #: templates/members/member_history.html:24
 msgid "Prêts en cours"
 msgstr ""
 
-#: templates/catalog/record_bulk_delete.html:42
+#: templates/catalog/record_bulk_delete.html:47
 msgid "Réservations actives"
 msgstr ""
 
-#: templates/catalog/record_bulk_delete.html:73
+#: templates/catalog/record_bulk_delete.html:78
 msgid "Confirmer la suppression"
 msgstr ""
 
@@ -1780,8 +1845,8 @@ msgid "Sous-titre"
 msgstr ""
 
 #: templates/catalog/record_detail.html:52
-#: templates/catalog/record_list.html:109
-#: templates/catalog/record_list.html:137
+#: templates/catalog/record_list.html:112
+#: templates/catalog/record_list.html:189
 #: templates/members/member_detail.html:87
 #: templates/printing/cards_picker.html:32
 msgid "Catégorie"
@@ -1919,38 +1984,40 @@ msgid_plural "%(counter)s notices"
 msgstr[0] ""
 msgstr[1] ""
 
-#: templates/catalog/record_list.html:82
+#: templates/catalog/record_list.html:81
 msgid "notice(s) sélectionnée(s)"
 msgstr ""
 
 #: templates/catalog/record_list.html:94
-msgid "Supprimer la sélection"
+msgid "Supprimer les notices sélectionnées"
 msgstr ""
 
-#: templates/catalog/record_list.html:105
+#: templates/catalog/record_list.html:108
+#: templates/catalog/record_list.html:141
 msgid "Tout cocher"
 msgstr ""
 
-#: templates/catalog/record_list.html:110
-#: templates/catalog/record_list.html:138
+#: templates/catalog/record_list.html:113
+#: templates/catalog/record_list.html:190
 msgid "Ex."
 msgstr ""
 
-#: templates/catalog/record_list.html:173
+#: templates/catalog/record_list.html:163
+#: templates/catalog/record_list.html:222
 msgid "ex."
 msgstr ""
 
-#: templates/catalog/record_list.html:182
+#: templates/catalog/record_list.html:232
 #: templates/members/member_list.html:109 templates/setup/step.html:31
 msgid "Précédent"
 msgstr ""
 
-#: templates/catalog/record_list.html:186
+#: templates/catalog/record_list.html:236
 #: templates/members/member_list.html:113
 msgid "Suivant"
 msgstr ""
 
-#: templates/catalog/record_list.html:193
+#: templates/catalog/record_list.html:243
 msgid "Aucune notice ne correspond."
 msgstr ""
 
@@ -2059,6 +2126,7 @@ msgid "Dernières exécutions"
 msgstr ""
 
 #: templates/core/admin/diagnostics.html:89
+#: templates/errors/_error_page.html:16
 msgid "Erreur"
 msgstr ""
 
@@ -2507,7 +2575,8 @@ msgid ""
 "Claude / support distant)."
 msgstr ""
 
-#: templates/core/dashboard.html:4 templates/partials/_tile_strip.html:11
+#: templates/core/dashboard.html:4 templates/errors/_error_page.html:32
+#: templates/partials/_tile_strip.html:11
 msgid "Accueil"
 msgstr ""
 
@@ -2758,6 +2827,10 @@ msgstr ""
 msgid ""
 "Par défaut, les options rares sont masquées. Le menu en haut\n"
 "    à droite permet de basculer en mode avancé pour les afficher."
+msgstr ""
+
+#: templates/errors/_error_page.html:28
+msgid "Page précédente"
 msgstr ""
 
 #: templates/inventory/session_detail.html:28

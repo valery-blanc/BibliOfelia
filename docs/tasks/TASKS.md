@@ -594,3 +594,35 @@ Mise à jour : 2026-05-26 (Sprint 12 **CLOS** — FEAT-038 (cartes membres : fon
 - [x] Test Val OK 2026-05-27 (FEAT-040 + 041 + 042 bout-en-bout sur la Pi)
 - [x] BUG-016 + BUG-017 + itération espacement boutons + fix compteur double (ids_desktop/ids_mobile) — test Val OK 2026-05-27 mobile
 - [x] Commit unique Sprint 13 (3 FEAT + 2 BUG) + push origin/main
+
+---
+
+## Sprint 14 — UX bulk-delete + non-réutilisation des codes Ofelia
+
+### FEAT-043 — Tombstones des codes Ofelia (anti-réattribution)
+- [x] Modèle `RetiredItemCode` (`internal_id` PK, `ean13`, `record_title_snapshot`, `retired_at`, `retired_by`, `reason`) — `apps/catalog/models.py`
+- [x] Migration `catalog/0007_retired_item_codes.py`
+- [x] Signal `pre_delete` sur `Item` → `RetiredItemCode.get_or_create` — `apps/catalog/signals.py` + `apps.py:ready()`
+- [x] `Item._assign_codes()` : `MAX` calculé en union `Item ∪ RetiredItemCode`
+- [x] Vue `record_bulk_delete` : pré-création des tombstones avec `reason=bulk_delete` + `retired_by=request.user`
+- [x] Tests `apps/catalog/tests/test_retired_codes.py` (5 tests, tous verts)
+- [x] Doc FEAT-043 + SPEC §5.2 (paragraphe « Non-réutilisation des codes Ofelia »)
+
+### UX bulk-delete
+- [x] `record_list.html` : bouton « Supprimer la sélection » → « Supprimer les notices sélectionnées »
+- [x] `record_bulk_delete.html` : warning enrichi (« Les notices et tous leurs exemplaires seront supprimés. Les prêts en cours seront marqués « Perdu » et les réservations actives seront annulées. Ces suppressions sont définitives. »)
+
+### Fix 405 sur sélecteur de langue + pages d'erreur Ofelia (400/403/404/405/500)
+- [x] `base.html` : block `lang_next` overridable (default `request.path_info`)
+- [x] Override `lang_next = /<lang>/catalog/` dans `record_bulk_delete.html`, `record_bulk_assign_category.html`, `record_bulk_assign_location.html`
+- [x] `apps/core/middleware.py:MethodNotAllowedPrettyMiddleware` — substitue toute 405 par notre template (Django n'a pas de `handler405`)
+- [x] `templates/errors/_error_page.html` — layout partagé (étend `base.html`, blocks `error_title`/`error_subtitle`/`error_icon`/`error_body`)
+- [x] `templates/400.html` (Requête invalide), `403.html` (Accès interdit), `404.html` (Page introuvable), `405.html` (Méthode non autorisée) — étendent `_error_page.html`
+- [x] `templates/500.html` — **standalone** (handler500 n'exécute pas les context processors → pas d'extends base.html, textes FR/EN/ES/MG en dur)
+
+### Clôture Sprint 14
+- [x] `pytest` complet vert (catalog + core + loans + members + inventory)
+- [x] Gate i18n `scripts/i18n_check.py` → 0
+- [x] Déploiement Pi (192.168.0.147) + rebuild Docker
+- [x] Test Val OK 2026-05-28 (UI bulk-delete + non-réutilisation code Ofelia + pages d'erreur 404/403/405)
+- [ ] Commit unique Sprint 14 + push origin/main

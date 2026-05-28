@@ -1,0 +1,13 @@
+{% extends "errors/_error_page.html" %}
+{% load i18n biblio_icons %}
+
+{% block title %}{% trans "Accès interdit" %}{% endblock %}
+{% block error_icon_bg %}var(--blush){% endblock %}
+{% block error_icon_fg %}#B83232{% endblock %}
+{% block error_icon %}{% icon "shield" size="28px" %}{% endblock %}
+{% block error_title %}{% trans "Accès interdit" %}{% endblock %}
+{% block error_subtitle %}{% trans "Vous n'avez pas les droits nécessaires pour accéder à cette page." %}{% endblock %}
+
+{% block error_body %}
+<p>{% trans "Connectez-vous avec un compte autorisé, ou demandez à un administrateur d'élargir vos droits." %}</p>
+{% endblock %}

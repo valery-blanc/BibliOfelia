@@ -1,0 +1,10 @@
+{% extends "errors/_error_page.html" %}
+{% load i18n %}
+
+{% block title %}{% trans "Méthode non autorisée" %}{% endblock %}
+{% block error_title %}{% trans "Méthode non autorisée" %}{% endblock %}
+{% block error_subtitle %}{% blocktrans %}Cette page ne peut pas être ouverte directement depuis un lien : elle attend une action validée depuis une autre page.{% endblocktrans %}{% endblock %}
+
+{% block error_body %}
+<p>{% trans "Vous pouvez revenir à la page précédente ou retourner à l'accueil." %}</p>
+{% endblock %}

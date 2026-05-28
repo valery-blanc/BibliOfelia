@@ -91,7 +91,7 @@
             {% if user.is_superadmin %}
             <button type="submit" class="btn btn--primary" style="background:#B83232;border-color:#B83232"
                     formaction="{% url 'catalog:record_bulk_delete_confirm' %}">
-                {% icon "trash-2" size="14px" %} {% trans "Supprimer la sélection" %}
+                {% icon "trash-2" size="14px" %} {% trans "Supprimer les notices sélectionnées" %}
             </button>
             {% endif %}
         </div>

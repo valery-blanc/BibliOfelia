@@ -1,0 +1,36 @@
+{% extends "base.html" %}
+{% load i18n biblio_icons %}
+
+{% block tile_strip %}{% endblock %}
+
+{# Les pages d'erreur sont servies hors-contexte de la route métier — on
+   évite que le sélecteur de langue retombe sur la même URL erronée. #}
+{% block lang_next %}/{{ LANGUAGE_CODE }}/{% endblock %}
+
+{% block content %}
+<header class="pagehead">
+    <div class="pagehead-icon" style="--ph-bg:{% block error_icon_bg %}var(--amber-light){% endblock %};--ph-fg:{% block error_icon_fg %}#946906{% endblock %}">
+        {% block error_icon %}{% icon "triangle-alert" size="28px" %}{% endblock %}
+    </div>
+    <div class="pagehead-text">
+        <h1 class="pagehead-title">{% block error_title %}{% trans "Erreur" %}{% endblock %}</h1>
+        <div class="pagehead-sub">
+            {% block error_subtitle %}{% endblock %}
+        </div>
+    </div>
+</header>
+
+<div class="card" style="max-width:640px">
+    {% block error_body %}{% endblock %}
+    <div class="form-actions" style="border:0;padding:0;margin-top:18px">
+        {% if back_url %}
+        <a href="{{ back_url }}" class="btn btn--primary">
+            {% icon "arrow-left" size="14px" %} {% trans "Page précédente" %}
+        </a>
+        {% endif %}
+        <a href="{% url 'core:dashboard' %}" class="btn btn--ghost">
+            {% icon "house" size="14px" %} {% trans "Accueil" %}
+        </a>
+    </div>
+</div>
+{% endblock %}

@@ -24,6 +24,7 @@ from .models import (
     Item,
     ItemStatus,
     Location,
+    RetiredItemCode,
 )
 from .openlibrary import lookup_isbn
 
@@ -483,6 +484,7 @@ def record_bulk_delete(request):
     ids = [int(x) for x in request.POST.getlist("ids") if x.isdigit()]
     qs = BibliographicRecord.objects.filter(pk__in=ids)
     deleted = 0
+    user = request.user if request.user.is_authenticated else None
     with transaction.atomic():
         for record in qs:
             from apps.loans.models import Loan, InHouseConsultation, Reservation
@@ -494,6 +496,21 @@ def record_bulk_delete(request):
             ).update(status=ReservationStatus.CANCELLED)
             Loan.objects.filter(item__record=record).delete()
             InHouseConsultation.objects.filter(item__record=record).delete()
+            # FEAT-043 : tombstone explicite (reason=bulk_delete, retired_by)
+            # avant le CASCADE (le signal pre_delete utilise get_or_create
+            # donc ne réécrira pas ces lignes).
+            for item in record.items.all():
+                if not item.internal_id:
+                    continue
+                RetiredItemCode.objects.get_or_create(
+                    internal_id=item.internal_id,
+                    defaults={
+                        "ean13": item.ean13 or "",
+                        "record_title_snapshot": (record.title or "")[:255],
+                        "retired_by": user,
+                        "reason": RetiredItemCode.REASON_BULK_DELETE,
+                    },
+                )
             record.delete()
             deleted += 1
     messages.success(request, _("%(n)s notice(s) supprimée(s).") % {"n": deleted})

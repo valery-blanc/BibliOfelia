@@ -1,0 +1,13 @@
+{% extends "errors/_error_page.html" %}
+{% load i18n biblio_icons %}
+
+{% block title %}{% trans "Page introuvable" %}{% endblock %}
+{% block error_icon_bg %}var(--blush){% endblock %}
+{% block error_icon_fg %}#B83232{% endblock %}
+{% block error_icon %}{% icon "circle-help" size="28px" %}{% endblock %}
+{% block error_title %}{% trans "Page introuvable" %}{% endblock %}
+{% block error_subtitle %}{% trans "La page demandée n'existe pas ou a été déplacée." %}{% endblock %}
+
+{% block error_body %}
+<p>{% trans "Vérifiez l'URL, ou revenez à la page précédente ou à l'accueil." %}</p>
+{% endblock %}

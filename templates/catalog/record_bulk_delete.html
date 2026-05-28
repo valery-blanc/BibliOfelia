@@ -5,6 +5,11 @@
 
 {% block tile_strip %}{% include "partials/_tile_strip.html" with active="catalogue" %}{% endblock %}
 
+{# La vue est @require_POST → un GET vers cette URL renvoie 405. Le sélecteur de langue
+   doit donc rediriger vers la page parente GET-able. On donne un path_info (sans préfixe
+   FORCE_SCRIPT_NAME) pour que `translate_url` côté set_language sache résoudre la route. #}
+{% block lang_next %}/{{ LANGUAGE_CODE }}/catalog/{% endblock %}
+
 {% block content %}
 <header class="pagehead">
     <div class="pagehead-icon" style="--ph-bg:var(--blush);--ph-fg:#B83232">
@@ -27,7 +32,7 @@
 
 <div role="alert" class="msg msg-info" style="margin-bottom:16px">
     {% icon "triangle-alert" size="16px" %}
-    {% trans "Les prêts en cours seront marqués « Perdu » et les réservations actives seront annulées." %}
+    {% trans "Les notices et tous leurs exemplaires seront supprimés. Les prêts en cours seront marqués « Perdu » et les réservations actives seront annulées. Ces suppressions sont définitives." %}
 </div>
 
 <div class="card">

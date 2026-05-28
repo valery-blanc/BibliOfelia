@@ -40,8 +40,12 @@
         <div class="topbar-actions">
             <form action="{% url 'set_language' %}" method="post" style="margin:0">
                 {% csrf_token %}
-                {# path_info (pas path) sinon translate_url ne sait pas resolve le préfixe SCRIPT_NAME. #}
-                <input type="hidden" name="next" value="{{ request.path_info }}">
+                {% comment %}
+                path_info (pas path) sinon translate_url ne sait pas resolve le préfixe SCRIPT_NAME.
+                FEAT-043 : le block `lang_next` permet aux pages POST-only (confirms bulk-*) de
+                rediriger vers leur parent GET-able après changement de langue, évitant un 405.
+                {% endcomment %}
+                <input type="hidden" name="next" value="{% block lang_next %}{{ request.path_info }}{% endblock %}">
                 <label class="lang-pill" title="{% trans 'Langue' %}">
                     {% icon "globe" size="14px" %}
                     <select name="language" onchange="this.form.submit()" aria-label="{% trans 'Langue' %}">

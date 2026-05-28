@@ -1,0 +1,11 @@
+{% extends "errors/_error_page.html" %}
+{% load i18n %}
+
+{% block title %}{% trans "Requête invalide" %}{% endblock %}
+{% block error_icon %}{% load biblio_icons %}{% icon "circle-alert" size="28px" %}{% endblock %}
+{% block error_title %}{% trans "Requête invalide" %}{% endblock %}
+{% block error_subtitle %}{% trans "La requête envoyée au serveur n'a pas été comprise." %}{% endblock %}
+
+{% block error_body %}
+<p>{% trans "Réessayez l'opération, ou revenez à la page précédente." %}</p>
+{% endblock %}

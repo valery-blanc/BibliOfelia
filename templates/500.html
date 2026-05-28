@@ -1,0 +1,56 @@
+{% load static %}<!doctype html>
+<html lang="fr" class="app">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+    <meta name="theme-color" content="#6B2138">
+    <title>Erreur serveur — BibliOfelia</title>
+    <link rel="stylesheet" href="{% static 'css/ofelia.css' %}">
+</head>
+<body>
+{# Page 500 standalone : `handler500` n'exécute PAS les context processors
+   (pas de `request`, `user`, `LANGUAGE_CODE`, `library_name`). On ne peut
+   donc pas étendre base.html ni utiliser {% trans %}. Textes en 4 langues
+   en dur (FR / EN / ES / MG). #}
+<header class="topbar">
+    <div class="topbar-inner">
+        <div class="topbar-brand">
+            <img class="topbar-logo" src="{% static 'img/ofelia-logo.png' %}" alt="OFELIA">
+            <div class="topbar-titles">
+                <span class="topbar-lib">BibliOfelia</span>
+                <span class="topbar-sub">Bibliothèque communautaire</span>
+            </div>
+        </div>
+    </div>
+</header>
+
+<main class="page">
+    <header class="pagehead">
+        <div class="pagehead-icon" style="--ph-bg:var(--blush);--ph-fg:#B83232">
+            <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><line x1="12" y1="8" x2="12" y2="12"/><line x1="12" y1="16" x2="12.01" y2="16"/></svg>
+        </div>
+        <div class="pagehead-text">
+            <h1 class="pagehead-title">Erreur serveur</h1>
+            <div class="pagehead-sub">
+                Une erreur inattendue s'est produite. L'équipe technique a été notifiée.<br>
+                <em>Server error — Error del servidor — Hadisoana amin'ny serveur</em>
+            </div>
+        </div>
+    </header>
+
+    <div class="card" style="max-width:640px">
+        <p>Vous pouvez réessayer dans quelques instants ou retourner à l'accueil.</p>
+        <p><em>You can try again in a few moments or return to the home page.</em></p>
+        <div class="form-actions" style="border:0;padding:0;margin-top:18px">
+            <a href="{% url 'core:dashboard' %}" class="btn btn--primary">Accueil / Home</a>
+        </div>
+    </div>
+</main>
+
+<footer class="footer">
+    <div class="footer-inner">
+        <span>BibliOfelia — Ofelia Box</span>
+    </div>
+</footer>
+</body>
+</html>
