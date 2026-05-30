@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2026-05-28 16:36+0000\n"
+"POT-Creation-Date: 2026-05-30 14:13+0000\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -104,8 +104,8 @@ msgid "Carte membre"
 msgstr ""
 
 #: apps/catalog/forms.py:17 templates/catalog/record_detail.html:51
-#: templates/catalog/record_list.html:111
-#: templates/catalog/record_list.html:188
+#: templates/catalog/record_list.html:120
+#: templates/catalog/record_list.html:197
 msgid "Auteur(s)"
 msgstr ""
 
@@ -377,7 +377,7 @@ msgid "Notice créée."
 msgstr ""
 
 #: apps/catalog/views.py:182 apps/catalog/views.py:222
-#: templates/catalog/record_list.html:25 templates/core/dashboard.html:186
+#: templates/catalog/record_list.html:25 templates/core/dashboard.html:185
 msgid "Nouvelle notice"
 msgstr ""
 
@@ -1173,7 +1173,7 @@ msgstr ""
 msgid "Prêts retournés"
 msgstr ""
 
-#: apps/reports/pdf.py:52 templates/core/dashboard.html:144
+#: apps/reports/pdf.py:52 templates/core/dashboard.html:143
 #: templates/loans/return.html:122
 msgid "Prêts en retard"
 msgstr ""
@@ -1205,8 +1205,8 @@ msgstr ""
 #: apps/reports/pdf.py:74 templates/catalog/record_bulk_assign_category.html:36
 #: templates/catalog/record_bulk_assign_location.html:37
 #: templates/catalog/record_bulk_delete.html:44
-#: templates/catalog/record_list.html:110
-#: templates/catalog/record_list.html:187 templates/core/dashboard.html:315
+#: templates/catalog/record_list.html:119
+#: templates/catalog/record_list.html:196 templates/core/dashboard.html:314
 #: templates/inventory/session_report.html:68 templates/loans/return.html:127
 #: templates/members/member_detail.html:129
 #: templates/members/member_history.html:30
@@ -1235,7 +1235,7 @@ msgstr ""
 
 #: apps/setup/forms.py:20 apps/setup/views.py:29
 #: templates/accounts/login.html:27 templates/accounts/login.html:29
-#: templates/base.html:50 templates/base.html:52
+#: templates/base.html:59 templates/base.html:61
 #: templates/catalog/record_detail.html:56
 msgid "Langue"
 msgstr ""
@@ -1325,15 +1325,15 @@ msgstr ""
 msgid "Étapes manquantes : %(m)s"
 msgstr ""
 
-#: templates/400.html:4 templates/400.html:5
+#: templates/400.html:4 templates/400.html:6
 msgid "Requête invalide"
 msgstr ""
 
-#: templates/400.html:6
+#: templates/400.html:7
 msgid "La requête envoyée au serveur n'a pas été comprise."
 msgstr ""
 
-#: templates/400.html:9
+#: templates/400.html:10
 msgid "Réessayez l'opération, ou revenez à la page précédente."
 msgstr ""
 
@@ -1381,12 +1381,12 @@ msgstr ""
 msgid "Connexion"
 msgstr ""
 
-#: templates/accounts/login.html:19 templates/base.html:36
+#: templates/accounts/login.html:19 templates/base.html:45
 msgid "Bibliothèque communautaire"
 msgstr ""
 
-#: templates/accounts/login.html:36 templates/base.html:59
-#: templates/core/help.html:4 templates/core/help.html:12
+#: templates/accounts/login.html:36 templates/core/help.html:4
+#: templates/core/help.html:12
 msgid "Aide"
 msgstr ""
 
@@ -1407,7 +1407,7 @@ msgstr ""
 msgid "Se connecter"
 msgstr ""
 
-#: templates/accounts/login.html:128 templates/base.html:97
+#: templates/accounts/login.html:128 templates/base.html:106
 msgid "Ofelia Box"
 msgstr ""
 
@@ -1499,7 +1499,7 @@ msgstr ""
 
 #: templates/accounts/user_confirm_delete.html:41
 #: templates/accounts/user_form.html:45 templates/base.html:17
-#: templates/catalog/_record_form.html:57 templates/catalog/item_form.html:35
+#: templates/catalog/_record_form.html:65 templates/catalog/item_form.html:35
 #: templates/catalog/location_confirm_delete.html:49
 #: templates/catalog/location_form.html:42
 #: templates/catalog/record_bulk_assign_category.html:69
@@ -1530,11 +1530,11 @@ msgid "Nouveau"
 msgstr ""
 
 #: templates/accounts/user_form.html:11 templates/accounts/user_form.html:22
-#: templates/base.html:69
+#: templates/base.html:78
 msgid "Mon compte"
 msgstr ""
 
-#: templates/accounts/user_form.html:43 templates/catalog/_record_form.html:55
+#: templates/accounts/user_form.html:43 templates/catalog/_record_form.html:63
 #: templates/catalog/item_form.html:33 templates/catalog/location_form.html:40
 #: templates/core/admin/settings_section.html:38
 #: templates/loans/consultation.html:27 templates/members/member_form.html:48
@@ -1579,19 +1579,65 @@ msgstr ""
 msgid "Valeur scannée :"
 msgstr ""
 
-#: templates/base.html:63
+#: templates/base.html:21
+msgid "Caméra indisponible"
+msgstr ""
+
+#: templates/base.html:22
+msgid "Saisissez le code à la main."
+msgstr ""
+
+#: templates/base.html:23
+msgid "Accès caméra impossible : la page n’est pas en HTTPS."
+msgstr ""
+
+#: templates/base.html:24
+msgid "Ce navigateur ne permet pas l’accès à la caméra."
+msgstr ""
+
+#: templates/base.html:25
+msgid "Permission caméra refusée."
+msgstr ""
+
+#: templates/base.html:26
+msgid "Aucune caméra détectée sur cet appareil."
+msgstr ""
+
+#: templates/base.html:27
+msgid "La caméra est déjà utilisée par une autre application."
+msgstr ""
+
+#: templates/base.html:28
+msgid "Le scanner n’a pas pu être chargé."
+msgstr ""
+
+#: templates/base.html:29
+msgid "Impossible de démarrer la caméra."
+msgstr ""
+
+#: templates/base.html:68
+msgid "Guide utilisateur"
+msgstr ""
+
+#: templates/base.html:72
 msgid "Menu utilisateur"
 msgstr ""
 
-#: templates/base.html:74
+#: templates/base.html:83
 msgid "Déconnexion"
 msgstr ""
 
-#: templates/catalog/_record_form.html:29
+#: templates/catalog/_record_form.html:27
+#: templates/catalog/_record_form.html:28 templates/catalog/record_list.html:43
+#: templates/catalog/record_list.html:44 templates/loans/return.html:44
+msgid "Scanner le code-barres"
+msgstr ""
+
+#: templates/catalog/_record_form.html:37
 msgid "Récupérer"
 msgstr ""
 
-#: templates/catalog/_record_form.html:41 templates/members/member_form.html:28
+#: templates/catalog/_record_form.html:49 templates/members/member_form.html:28
 msgid "Options avancées"
 msgstr ""
 
@@ -1618,7 +1664,7 @@ msgstr ""
 #: templates/core/admin/enrichment_detail.html:16
 #: templates/core/admin/enrichment_index.html:10
 #: templates/core/admin/ofeliascan.html:10 templates/core/advanced.html:4
-#: templates/core/advanced.html:18 templates/core/dashboard.html:67
+#: templates/core/advanced.html:18 templates/core/dashboard.html:90
 #: templates/partials/_tile_strip.html:58
 msgid "Avancé"
 msgstr ""
@@ -1681,7 +1727,7 @@ msgstr ""
 #: templates/catalog/location_list.html:37
 #: templates/catalog/record_bulk_assign_location.html:38
 #: templates/catalog/record_bulk_delete.html:45
-#: templates/catalog/record_detail.html:74 templates/core/dashboard.html:160
+#: templates/catalog/record_detail.html:74 templates/core/dashboard.html:159
 msgid "Exemplaires"
 msgstr ""
 
@@ -1691,7 +1737,7 @@ msgid ""
 msgstr ""
 
 #: templates/catalog/record_bulk_assign_category.html:4
-#: templates/catalog/record_list.html:85
+#: templates/catalog/record_list.html:94
 msgid "Affecter une catégorie"
 msgstr ""
 
@@ -1743,7 +1789,7 @@ msgid "Appliquer"
 msgstr ""
 
 #: templates/catalog/record_bulk_assign_location.html:4
-#: templates/catalog/record_list.html:89
+#: templates/catalog/record_list.html:98
 msgid "Affecter un emplacement"
 msgstr ""
 
@@ -1782,7 +1828,7 @@ msgid "Notices à supprimer"
 msgstr ""
 
 #: templates/catalog/record_bulk_delete.html:46
-#: templates/core/dashboard.html:140 templates/loans/lend.html:83
+#: templates/core/dashboard.html:139 templates/loans/lend.html:83
 #: templates/members/member_detail.html:121
 #: templates/members/member_history.html:24
 msgid "Prêts en cours"
@@ -1807,7 +1853,7 @@ msgid ""
 msgstr ""
 
 #: templates/catalog/record_confirm_delete.html:24
-#: templates/core/dashboard.html:48 templates/core/dashboard.html:179
+#: templates/core/dashboard.html:71 templates/core/dashboard.html:178
 #: templates/loans/return.html:4 templates/loans/return.html:18
 #: templates/members/member_history.html:64
 #: templates/partials/_tile_strip.html:40
@@ -1845,8 +1891,8 @@ msgid "Sous-titre"
 msgstr ""
 
 #: templates/catalog/record_detail.html:52
-#: templates/catalog/record_list.html:112
-#: templates/catalog/record_list.html:189
+#: templates/catalog/record_list.html:121
+#: templates/catalog/record_list.html:198
 #: templates/members/member_detail.html:87
 #: templates/printing/cards_picker.html:32
 msgid "Catégorie"
@@ -1923,7 +1969,7 @@ msgstr ""
 msgid "Liste d'attente"
 msgstr ""
 
-#: templates/catalog/record_detail.html:169 templates/core/dashboard.html:316
+#: templates/catalog/record_detail.html:169 templates/core/dashboard.html:315
 #: templates/loans/return.html:128
 msgid "Membre"
 msgstr ""
@@ -1942,11 +1988,11 @@ msgid "Annuler cette réservation ?"
 msgstr ""
 
 #: templates/catalog/record_list.html:4 templates/catalog/record_list.html:18
-#: templates/core/dashboard.html:20 templates/partials/_tile_strip.html:18
+#: templates/core/dashboard.html:43 templates/partials/_tile_strip.html:18
 msgid "Catalogue"
 msgstr ""
 
-#: templates/catalog/record_list.html:19 templates/core/dashboard.html:21
+#: templates/catalog/record_list.html:19 templates/core/dashboard.html:44
 msgid "Tous les livres et leurs exemplaires"
 msgstr ""
 
@@ -1954,70 +2000,70 @@ msgstr ""
 msgid "Titre, auteur, ISBN…"
 msgstr ""
 
-#: templates/catalog/record_list.html:39 templates/members/member_list.html:57
+#: templates/catalog/record_list.html:48 templates/members/member_list.html:66
 msgid "Toutes catégories"
 msgstr ""
 
-#: templates/catalog/record_list.html:45
+#: templates/catalog/record_list.html:54
 msgid "Tous types"
 msgstr ""
 
-#: templates/catalog/record_list.html:51
+#: templates/catalog/record_list.html:60
 msgid "Toutes langues"
 msgstr ""
 
-#: templates/catalog/record_list.html:59
+#: templates/catalog/record_list.html:68
 msgid "Tag…"
 msgstr ""
 
-#: templates/catalog/record_list.html:63 templates/members/member_list.html:69
+#: templates/catalog/record_list.html:72 templates/members/member_list.html:78
 #: templates/printing/labels_picker.html:29
 #: templates/reports/inactive_list.html:25
 #: templates/reports/overdue_list.html:25
 msgid "Filtrer"
 msgstr ""
 
-#: templates/catalog/record_list.html:68
+#: templates/catalog/record_list.html:77
 #, python-format
 msgid "%(counter)s notice"
 msgid_plural "%(counter)s notices"
 msgstr[0] ""
 msgstr[1] ""
 
-#: templates/catalog/record_list.html:81
+#: templates/catalog/record_list.html:90
 msgid "notice(s) sélectionnée(s)"
 msgstr ""
 
-#: templates/catalog/record_list.html:94
+#: templates/catalog/record_list.html:103
 msgid "Supprimer les notices sélectionnées"
 msgstr ""
 
-#: templates/catalog/record_list.html:108
-#: templates/catalog/record_list.html:141
+#: templates/catalog/record_list.html:117
+#: templates/catalog/record_list.html:150
 msgid "Tout cocher"
 msgstr ""
 
-#: templates/catalog/record_list.html:113
-#: templates/catalog/record_list.html:190
+#: templates/catalog/record_list.html:122
+#: templates/catalog/record_list.html:199
 msgid "Ex."
 msgstr ""
 
-#: templates/catalog/record_list.html:163
-#: templates/catalog/record_list.html:222
+#: templates/catalog/record_list.html:172
+#: templates/catalog/record_list.html:231
 msgid "ex."
 msgstr ""
 
-#: templates/catalog/record_list.html:232
-#: templates/members/member_list.html:109 templates/setup/step.html:31
+#: templates/catalog/record_list.html:241
+#: templates/members/member_list.html:118 templates/setup/step.html:31
 msgid "Précédent"
 msgstr ""
 
-#: templates/catalog/record_list.html:236
-#: templates/members/member_list.html:113
+#: templates/catalog/record_list.html:245
+#: templates/members/member_list.html:122
 msgid "Suivant"
 msgstr ""
 
-#: templates/catalog/record_list.html:243
+#: templates/catalog/record_list.html:252
 msgid "Aucune notice ne correspond."
 msgstr ""
 
@@ -2063,23 +2109,23 @@ msgstr ""
 msgid "État du système, sauvegardes, planificateur"
 msgstr ""
 
-#: templates/core/admin/diagnostics.html:24 templates/core/dashboard.html:275
+#: templates/core/admin/diagnostics.html:24 templates/core/dashboard.html:274
 msgid "État système"
 msgstr ""
 
-#: templates/core/admin/diagnostics.html:27 templates/core/dashboard.html:278
+#: templates/core/admin/diagnostics.html:27 templates/core/dashboard.html:277
 msgid "Version"
 msgstr ""
 
-#: templates/core/admin/diagnostics.html:29 templates/core/dashboard.html:282
+#: templates/core/admin/diagnostics.html:29 templates/core/dashboard.html:281
 msgid "Espace disque"
 msgstr ""
 
-#: templates/core/admin/diagnostics.html:33 templates/core/dashboard.html:289
+#: templates/core/admin/diagnostics.html:33 templates/core/dashboard.html:288
 msgid "Dernière sauvegarde"
 msgstr ""
 
-#: templates/core/admin/diagnostics.html:37 templates/core/dashboard.html:292
+#: templates/core/admin/diagnostics.html:37 templates/core/dashboard.html:291
 msgid "> 24h"
 msgstr ""
 
@@ -2588,51 +2634,71 @@ msgstr ""
 msgid "Voici ce qui se passe à la bibliothèque aujourd'hui."
 msgstr ""
 
-#: templates/core/dashboard.html:15
+#: templates/core/dashboard.html:21
+msgid "Scanner une carte ou un livre"
+msgstr ""
+
+#: templates/core/dashboard.html:22
+msgid "Caisse rapide — prêt, retour, recherche par code-barres"
+msgstr ""
+
+#: templates/core/dashboard.html:24
+msgid "Scanner"
+msgstr ""
+
+#: templates/core/dashboard.html:32
+msgid "Titre, auteur, ISBN, n° de carte…"
+msgstr ""
+
+#: templates/core/dashboard.html:33
+msgid "Recherche globale"
+msgstr ""
+
+#: templates/core/dashboard.html:38
 msgid "Sections principales"
 msgstr ""
 
-#: templates/core/dashboard.html:29 templates/members/member_list.html:4
+#: templates/core/dashboard.html:52 templates/members/member_list.html:4
 #: templates/members/member_list.html:18 templates/partials/_tile_strip.html:25
 msgid "Membres"
 msgstr ""
 
-#: templates/core/dashboard.html:30 templates/members/member_list.html:19
+#: templates/core/dashboard.html:53 templates/members/member_list.html:19
 msgid "Lecteurs inscrits, cartes et historique"
 msgstr ""
 
-#: templates/core/dashboard.html:39 templates/loans/lend.html:4
+#: templates/core/dashboard.html:62 templates/loans/lend.html:4
 #: templates/loans/lend.html:18 templates/partials/_tile_strip.html:33
 msgid "Prêt"
 msgstr ""
 
-#: templates/core/dashboard.html:40 templates/loans/lend.html:19
+#: templates/core/dashboard.html:63 templates/loans/lend.html:19
 msgid "Enregistrer un nouveau prêt"
 msgstr ""
 
-#: templates/core/dashboard.html:49 templates/core/dashboard.html:180
+#: templates/core/dashboard.html:72 templates/core/dashboard.html:179
 #: templates/loans/return.html:19
 msgid "Enregistrer un retour"
 msgstr ""
 
-#: templates/core/dashboard.html:57 templates/loans/reservations.html:4
+#: templates/core/dashboard.html:80 templates/loans/reservations.html:4
 #: templates/loans/reservations.html:18 templates/partials/_tile_strip.html:47
 msgid "Réservations"
 msgstr ""
 
-#: templates/core/dashboard.html:58 templates/loans/reservations.html:19
+#: templates/core/dashboard.html:81 templates/loans/reservations.html:19
 msgid "Livres en attente"
 msgstr ""
 
-#: templates/core/dashboard.html:68
+#: templates/core/dashboard.html:91
 msgid "Impression, rapports, paramètres"
 msgstr ""
 
-#: templates/core/dashboard.html:77 templates/core/dashboard.html:81
+#: templates/core/dashboard.html:100 templates/core/dashboard.html:104
 msgid "Notifications à faire"
 msgstr ""
 
-#: templates/core/dashboard.html:82
+#: templates/core/dashboard.html:105
 #, python-format
 msgid "%(n)s membre à appeler pour qu'il vienne chercher son livre."
 msgid_plural ""
@@ -2640,151 +2706,131 @@ msgid_plural ""
 msgstr[0] ""
 msgstr[1] ""
 
-#: templates/core/dashboard.html:84 templates/core/dashboard.html:308
+#: templates/core/dashboard.html:107 templates/core/dashboard.html:307
 msgid "Voir tout"
 msgstr ""
 
-#: templates/core/dashboard.html:97 templates/loans/reservations.html:76
+#: templates/core/dashboard.html:120 templates/loans/reservations.html:76
 msgid "Notifier"
 msgstr ""
 
-#: templates/core/dashboard.html:104
+#: templates/core/dashboard.html:127
 #, python-format
 msgid "+%(n)s autres"
 msgstr ""
 
-#: templates/core/dashboard.html:105
+#: templates/core/dashboard.html:128
 msgid "voir tout"
 msgstr ""
 
-#: templates/core/dashboard.html:119
-msgid "Scanner une carte ou un livre"
-msgstr ""
-
-#: templates/core/dashboard.html:120
-msgid "Caisse rapide — prêt, retour, recherche par code-barres"
-msgstr ""
-
-#: templates/core/dashboard.html:122
-msgid "Scanner"
-msgstr ""
-
-#: templates/core/dashboard.html:131
-msgid "Titre, auteur, ISBN, n° de carte…"
-msgstr ""
-
-#: templates/core/dashboard.html:132
-msgid "Recherche globale"
-msgstr ""
-
-#: templates/core/dashboard.html:148
+#: templates/core/dashboard.html:147
 msgid "Réservations prêtes"
 msgstr ""
 
-#: templates/core/dashboard.html:152
+#: templates/core/dashboard.html:151
 msgid "Membres inscrits"
 msgstr ""
 
-#: templates/core/dashboard.html:156
+#: templates/core/dashboard.html:155
 msgid "Notices"
 msgstr ""
 
-#: templates/core/dashboard.html:166
+#: templates/core/dashboard.html:165
 msgid "Actions rapides"
 msgstr ""
 
-#: templates/core/dashboard.html:172
+#: templates/core/dashboard.html:171
 msgid "Nouveau prêt"
 msgstr ""
 
-#: templates/core/dashboard.html:173
+#: templates/core/dashboard.html:172
 msgid "Prêter un livre"
 msgstr ""
 
-#: templates/core/dashboard.html:187
+#: templates/core/dashboard.html:186
 msgid "Ajouter un livre"
 msgstr ""
 
-#: templates/core/dashboard.html:193 templates/members/member_list.html:25
+#: templates/core/dashboard.html:192 templates/members/member_list.html:25
 msgid "Nouveau membre"
 msgstr ""
 
-#: templates/core/dashboard.html:194
+#: templates/core/dashboard.html:193
 msgid "Inscrire un lecteur"
 msgstr ""
 
-#: templates/core/dashboard.html:203
+#: templates/core/dashboard.html:202
 msgid "Tendance — 30 derniers jours"
 msgstr ""
 
-#: templates/core/dashboard.html:207
+#: templates/core/dashboard.html:206
 msgid "Prêts par jour"
 msgstr ""
 
-#: templates/core/dashboard.html:220
+#: templates/core/dashboard.html:219
 msgid "Pas encore de données"
 msgstr ""
 
-#: templates/core/dashboard.html:225
+#: templates/core/dashboard.html:224
 msgid "Pas encore de prêts enregistrés sur la période."
 msgstr ""
 
-#: templates/core/dashboard.html:230
+#: templates/core/dashboard.html:229
 msgid "Activité"
 msgstr ""
 
-#: templates/core/dashboard.html:233
+#: templates/core/dashboard.html:232
 msgid "Membres actifs (mois)"
 msgstr ""
 
-#: templates/core/dashboard.html:237
+#: templates/core/dashboard.html:236
 msgid "Membres actifs (année)"
 msgstr ""
 
-#: templates/core/dashboard.html:241
+#: templates/core/dashboard.html:240
 msgid "Notices ajoutées (mois)"
 msgstr ""
 
-#: templates/core/dashboard.html:245
+#: templates/core/dashboard.html:244
 msgid "Exemplaires ajoutés (mois)"
 msgstr ""
 
-#: templates/core/dashboard.html:249
+#: templates/core/dashboard.html:248
 msgid "Notices ajoutées (année)"
 msgstr ""
 
-#: templates/core/dashboard.html:259
+#: templates/core/dashboard.html:258
 msgid "Top 10 ce mois-ci"
 msgstr ""
 
-#: templates/core/dashboard.html:270
+#: templates/core/dashboard.html:269
 msgid "Aucun prêt ce mois."
 msgstr ""
 
-#: templates/core/dashboard.html:293
+#: templates/core/dashboard.html:292
 msgid "Aucune"
 msgstr ""
 
-#: templates/core/dashboard.html:297
+#: templates/core/dashboard.html:296
 msgid "Réseau"
 msgstr ""
 
-#: templates/core/dashboard.html:307
+#: templates/core/dashboard.html:306
 msgid "Relances à faire"
 msgstr ""
 
-#: templates/core/dashboard.html:317 templates/loans/return.html:129
+#: templates/core/dashboard.html:316 templates/loans/return.html:129
 #: templates/members/member_detail.html:130
 #: templates/members/member_history.html:32
 #: templates/reports/overdue_list.html:36
 msgid "Échéance"
 msgstr ""
 
-#: templates/core/dashboard.html:318
+#: templates/core/dashboard.html:317
 msgid "Retard"
 msgstr ""
 
-#: templates/core/dashboard.html:328
+#: templates/core/dashboard.html:327
 #, python-format
 msgid "%(n)s jour"
 msgid_plural "%(n)s jours"
@@ -3013,7 +3059,8 @@ msgstr ""
 msgid "Valider"
 msgstr ""
 
-#: templates/loans/lend.html:47
+#: templates/loans/lend.html:47 templates/members/member_list.html:61
+#: templates/members/member_list.html:62
 msgid "Scanner la carte"
 msgstr ""
 
@@ -3129,10 +3176,6 @@ msgstr ""
 
 #: templates/loans/return.html:33
 msgid "Scanner le code-barres du livre rendu"
-msgstr ""
-
-#: templates/loans/return.html:44
-msgid "Scanner le code-barres"
 msgstr ""
 
 #: templates/loans/return.html:52
@@ -3334,11 +3377,11 @@ msgstr ""
 msgid "Nom ou n° de carte…"
 msgstr ""
 
-#: templates/members/member_list.html:63
+#: templates/members/member_list.html:72
 msgid "Tout statut"
 msgstr ""
 
-#: templates/members/member_list.html:120
+#: templates/members/member_list.html:129
 msgid "Aucun membre ne correspond."
 msgstr ""
 

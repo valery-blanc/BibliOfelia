@@ -1,73 +1,38 @@
-/* FEAT-023/024 — Click handler des boutons `.js-scan-handoff`.
+/* FEAT-044 — Click handler des boutons `.js-scan-handoff`.
  *
- * Stratégie (révision Val 2026-05-23) :
- *   1. Si la caméra du navigateur est disponible (HTTPS + getUserMedia + lib),
- *      on ouvre la caméra interne (modal in-page, on ne sort pas du site).
- *   2. Sinon, fallback automatique sur le handoff OfeliaScan, avec dans la
- *      flashMessage la raison technique exacte (utile pour diagnostiquer).
+ * Révision Val 2026-05-30 : les boutons « Scanner » du site (dashboard,
+ * prêt-carte, prêt-livre, retour, recherche catalogue/membres, champ ISBN)
+ * utilisent UNIQUEMENT la caméra du navigateur (modal in-page, décodage
+ * 100 % local — cf. scan-camera.js, double moteur html5-qrcode/Quagga). Le
+ * handoff OfeliaScan a été retiré de ce flux — OfeliaScan reste réservé au
+ * catalogage et au récolement en masse (FEAT-021).
  *
- * Attributs déclaratifs (FEAT-023) :
+ * Au clic :
+ *   - caméra disponible (HTTPS + getUserMedia + module chargé) → modal viseur.
+ *   - caméra indisponible (HTTP, permission refusée, pas de caméra, lib KO…)
+ *     → message d'erreur explicite à l'écran indiquant la raison exacte et
+ *       invitant à saisir le code à la main. PAS de redirection silencieuse.
+ *
+ * Attributs déclaratifs (hérités de FEAT-023) :
  *   data-scan-target       : sélecteur CSS du <input> à pré-remplir
- *   data-scan-kind         : auto | book | card
  *   data-scan-autosubmit   : "true" pour soumettre le form
- *   data-scan-dispatch-url : URL de redirection (?q= ajouté)
+ *   data-scan-dispatch-url : URL de redirection (?q= ajouté → core:search
+ *                            aiguille ensuite vers notice / fiche membre)
  *
  * Helpers exposés via `window.BibliOfelia.scan` (consommés par scan-camera.js).
  */
 (function () {
     "use strict";
 
-    var POLL_INTERVAL_MS = 700;
-    var TIMEOUT_MS = 120 * 1000;
-    var activeHandoffs = new WeakMap(); // btn → { intervalId, cancelEl }
-
-    function getConfig() {
-        var el = document.getElementById("scan-handoff-config");
-        if (!el) return null;
-        try { return JSON.parse(el.textContent); } catch (e) { return null; }
+    function getI18n() {
+        var el = document.getElementById("scan-mode-i18n");
+        if (!el) return {};
+        try { return JSON.parse(el.textContent) || {}; } catch (e) { return {}; }
     }
 
-    function jsonHeaders() {
-        var cfg = getConfig() || {};
-        return {
-            "Content-Type": "application/json",
-            "Accept": "application/json",
-            "X-CSRFToken": cfg.csrfToken || ""
-        };
-    }
-
-    function createHandoff(targetKind) {
-        var cfg = getConfig();
-        if (!cfg || !cfg.createUrl) {
-            console.error("[scan-handoff] config introuvable dans #scan-handoff-config");
-            return Promise.reject(new Error("config"));
-        }
-        return fetch(cfg.createUrl, {
-            method: "POST",
-            credentials: "same-origin",
-            headers: jsonHeaders(),
-            body: JSON.stringify({ target_kind: targetKind || "auto" })
-        }).then(function (resp) {
-            if (!resp.ok) {
-                return resp.text().then(function (body) {
-                    console.error("[scan-handoff] POST", cfg.createUrl, "→", resp.status, body);
-                    throw new Error("create-failed-" + resp.status);
-                });
-            }
-            return resp.json();
-        });
-    }
-
-    function pollHandoff(token) {
-        var cfg = getConfig();
-        var url = cfg.createUrl + "/" + token;
-        return fetch(url, {
-            credentials: "same-origin",
-            headers: { "Accept": "application/json" }
-        }).then(function (resp) {
-            if (!resp.ok) return { state: "error", status: resp.status };
-            return resp.json();
-        });
+    function t(key, fallback) {
+        var i18n = getI18n();
+        return (i18n && i18n[key]) || fallback;
     }
 
     function setBusy(btn, busy, label) {
@@ -80,7 +45,7 @@
             if (label) {
                 btn.innerHTML = label;
             } else {
-                btn.innerHTML = "⏳ " + (btn.dataset.busyLabel || "En attente…");
+                btn.innerHTML = "⏳ " + (btn.dataset.busyLabel || "…");
             }
         } else {
             btn.disabled = false;
@@ -89,79 +54,29 @@
                 btn.innerHTML = btn.dataset.originalLabel;
                 delete btn.dataset.originalLabel;
             }
-            removeCancelLink(btn);
         }
     }
 
-    function addCancelLink(btn) {
-        removeCancelLink(btn);
-        var link = document.createElement("button");
-        link.type = "button";
-        link.className = "scan-handoff-cancel";
-        link.textContent = "Annuler";
-        link.style.cssText = "display:block;margin-top:6px;background:none;border:none;color:var(--burgundy);text-decoration:underline;cursor:pointer;font-size:13px;padding:4px;";
-        link.addEventListener("click", function (ev) {
-            ev.preventDefault();
-            ev.stopPropagation();
-            cancelHandoff(btn);
-        });
-        btn.parentNode.appendChild(link);
-        var state = activeHandoffs.get(btn) || {};
-        state.cancelEl = link;
-        activeHandoffs.set(btn, state);
-    }
-
-    function removeCancelLink(btn) {
-        var state = activeHandoffs.get(btn);
-        if (state && state.cancelEl && state.cancelEl.parentNode) {
-            state.cancelEl.parentNode.removeChild(state.cancelEl);
-            state.cancelEl = null;
-        }
-    }
-
-    function cancelHandoff(btn) {
-        var state = activeHandoffs.get(btn);
-        if (state && state.intervalId) {
-            clearInterval(state.intervalId);
-        }
-        activeHandoffs.delete(btn);
-        setBusy(btn, false);
-        flashMessage(btn, "Scan annulé.");
-    }
-
-    function flashMessage(btn, text) {
+    function flashMessage(btn, text, isError) {
         var anchor = btn.parentNode;
         var note = anchor.querySelector(":scope > .scan-handoff-note");
         if (!note) {
             note = document.createElement("div");
             note.className = "scan-handoff-note muted text-sm";
-            note.style.cssText = "margin-top:8px;font-size:13px;color:var(--grey);";
             anchor.appendChild(note);
         }
+        note.style.cssText = isError
+            ? "margin-top:8px;font-size:13px;color:var(--burgundy);font-weight:600;"
+            : "margin-top:8px;font-size:13px;color:var(--grey);";
         note.textContent = text;
-        setTimeout(function () { if (note && note.parentNode) note.parentNode.removeChild(note); }, 6000);
-    }
-
-    function chooseDeepLinkUrl(handoff) {
-        // Sur Chrome / Samsung Browser / Edge Android, on cible l'intent:// qui
-        // contourne le blocage silencieux du scheme custom. On ajoute
-        // `S.browser_fallback_url=<page courante>` pour empêcher Chrome de
-        // rediriger vers le Play Store si OfeliaScan n'est pas installé.
-        var ua = navigator.userAgent || "";
-        var isChromeLikeAndroid = /Android/i.test(ua) && /(Chrome|SamsungBrowser|EdgA)/i.test(ua);
-        if (isChromeLikeAndroid && handoff.android_intent_url) {
-            var fallback = encodeURIComponent(window.location.href);
-            return handoff.android_intent_url.replace(
-                /;end$/,
-                ";S.browser_fallback_url=" + fallback + ";end"
-            );
+        if (note._timer) { clearTimeout(note._timer); note._timer = null; }
+        // Les erreurs restent affichées (le bibliothécaire doit lire la raison et
+        // savoir qu'il peut saisir à la main) ; les messages neutres s'effacent.
+        if (!isError) {
+            note._timer = setTimeout(function () {
+                if (note && note.parentNode) note.parentNode.removeChild(note);
+            }, 6000);
         }
-        return handoff.deep_link;
-    }
-
-    function openDeepLink(url) {
-        console.log("[scan-handoff] ouverture deep-link:", url);
-        try { window.location.href = url; } catch (e) { console.warn("[scan-handoff]", e); }
     }
 
     function applyResult(btn, res) {
@@ -195,55 +110,6 @@
         return false;
     }
 
-    function startHandoff(btn) {
-        var targetKind = btn.dataset.scanKind || "auto";
-        setBusy(btn, true, "⏳ " + (btn.dataset.busyLabelHandoff || "En attente d’OfeliaScan…"));
-        addCancelLink(btn);
-
-        createHandoff(targetKind).then(function (handoff) {
-            openDeepLink(chooseDeepLinkUrl(handoff));
-
-            var started = Date.now();
-            var intervalId = setInterval(function () {
-                // Si l'utilisateur a annulé via le lien, on n'est plus dans la map.
-                if (!activeHandoffs.has(btn)) {
-                    clearInterval(intervalId);
-                    return;
-                }
-                if (Date.now() - started > TIMEOUT_MS) {
-                    clearInterval(intervalId);
-                    activeHandoffs.delete(btn);
-                    setBusy(btn, false);
-                    flashMessage(btn, "Délai d’attente OfeliaScan dépassé (2 min). Tapez la valeur à la main si l’app n’est pas installée.");
-                    return;
-                }
-                pollHandoff(handoff.token).then(function (res) {
-                    if (!res || res.state === "pending") return;
-                    clearInterval(intervalId);
-                    activeHandoffs.delete(btn);
-                    if (res.state === "completed") {
-                        var consumed = applyResult(btn, res);
-                        if (!consumed) {
-                            setBusy(btn, false);
-                            flashMessage(btn, "Valeur scannée : " + res.value);
-                        }
-                    } else if (res.state === "cancelled") {
-                        setBusy(btn, false);
-                        flashMessage(btn, "Scan annulé dans OfeliaScan.");
-                    } else if (res.state === "expired" || res.state === "error") {
-                        setBusy(btn, false);
-                        flashMessage(btn, "Le handoff a expiré. Recommencez.");
-                    }
-                });
-            }, POLL_INTERVAL_MS);
-            activeHandoffs.set(btn, { intervalId: intervalId, cancelEl: (activeHandoffs.get(btn) || {}).cancelEl });
-        }).catch(function (err) {
-            activeHandoffs.delete(btn);
-            setBusy(btn, false);
-            flashMessage(btn, "Erreur création handoff (" + (err && err.message ? err.message : "?") + ").");
-        });
-    }
-
     function cameraSupportInfo() {
         var info = {
             ok: false,
@@ -261,23 +127,47 @@
         return cameraSupportInfo().ok;
     }
 
-    function explainCameraFailure(info) {
-        if (!info.isSecureContext) return "HTTPS requis (URL en " + info.protocol + ")";
-        if (!info.hasMediaDevices) return "navigateur sans navigator.mediaDevices";
-        if (!info.hasGetUserMedia) return "navigateur sans getUserMedia";
-        if (!info.hasModule) return "module scan-camera.js non chargé";
-        return "raison inconnue";
+    /* Traduit un code de raison technique en message lisible. Les codes
+     * proviennent soit de cameraSupportInfo() (contexte pré-ouverture), soit
+     * du callback onUnavailable de scan-camera.js (erreurs getUserMedia). */
+    function reasonText(code) {
+        var map = {
+            "insecure-context": t("reason_https", "Accès caméra impossible : la page n’est pas en HTTPS."),
+            "no-getusermedia": t("reason_no_getusermedia", "Ce navigateur ne permet pas l’accès à la caméra."),
+            "no-module": t("reason_lib", "Le scanner n’a pas pu être chargé."),
+            "permission-denied": t("reason_permission", "Permission caméra refusée."),
+            "no-camera": t("reason_no_camera", "Aucune caméra détectée sur cet appareil."),
+            "camera-busy": t("reason_busy", "La caméra est déjà utilisée par une autre application."),
+            "lib-load-failed": t("reason_lib", "Le scanner n’a pas pu être chargé."),
+            "lib-not-loaded": t("reason_lib", "Le scanner n’a pas pu être chargé."),
+            "start-failed": t("reason_unknown", "Impossible de démarrer la caméra.")
+        };
+        return map[code] || t("reason_unknown", "Impossible de démarrer la caméra.");
+    }
+
+    function supportFailureCode(info) {
+        if (!info.isSecureContext) return "insecure-context";
+        if (!info.hasMediaDevices || !info.hasGetUserMedia) return "no-getusermedia";
+        if (!info.hasModule) return "no-module";
+        return "start-failed";
+    }
+
+    function showCameraError(btn, code, detail) {
+        setBusy(btn, false);
+        // Détail technique en console (support) ; message humain à l'écran.
+        try { console.warn("[scan] caméra indisponible:", code, detail || ""); } catch (e) { /* noop */ }
+        var msg = t("cam_unavailable", "Caméra indisponible") + " — " + reasonText(code)
+            + " " + t("cam_manual_hint", "Saisissez le code à la main.");
+        flashMessage(btn, msg, true);
     }
 
     window.BibliOfelia = window.BibliOfelia || {};
-    window.BibliOfelia.scan = {
-        applyResult: applyResult,
-        flashMessage: flashMessage,
-        setBusy: setBusy,
-        startHandoff: startHandoff,
-        cameraSupported: cameraSupported,
-        cameraSupportInfo: cameraSupportInfo
-    };
+    window.BibliOfelia.scan = window.BibliOfelia.scan || {};
+    window.BibliOfelia.scan.applyResult = applyResult;
+    window.BibliOfelia.scan.flashMessage = flashMessage;
+    window.BibliOfelia.scan.setBusy = setBusy;
+    window.BibliOfelia.scan.cameraSupported = cameraSupported;
+    window.BibliOfelia.scan.cameraSupportInfo = cameraSupportInfo;
 
     document.addEventListener("click", function (ev) {
         var btn = ev.target.closest(".js-scan-handoff");
@@ -289,20 +179,15 @@
         ev.preventDefault();
 
         var info = cameraSupportInfo();
-        console.log("[scan] camera support:", info);
-
-        if (info.ok) {
-            window.BibliOfelia.scan.openCamera(btn, {
-                onUnavailable: function (reason) {
-                    console.warn("[scan] caméra indisponible (" + reason + "), fallback OfeliaScan.");
-                    flashMessage(btn, "Caméra indisponible (" + reason + ") — ouverture d’OfeliaScan.");
-                    startHandoff(btn);
-                }
-            });
+        if (!info.ok) {
+            showCameraError(btn, supportFailureCode(info));
             return;
         }
 
-        flashMessage(btn, "Caméra interne indisponible : " + explainCameraFailure(info) + ". OfeliaScan utilisé en secours.");
-        startHandoff(btn);
+        window.BibliOfelia.scan.openCamera(btn, {
+            onUnavailable: function (reason, detail) {
+                showCameraError(btn, reason, detail);
+            }
+        });
     });
 })();

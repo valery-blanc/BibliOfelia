@@ -721,3 +721,28 @@ Mise à jour : 2026-05-26 (Sprint 12 **CLOS** — FEAT-038 (cartes membres : fon
 - [x] Smoke test Playwright sur Pi : 6 captures (4 home + faire-pret FR + glossaire EN) — rendu nominal OK
 - [x] `scripts/deploy_pi.sh` : script de redéploiement futur (build strict + tar + scp + extract + nginx reload)
 - [ ] **Validation finale Val** : ouvrir `http://192.168.0.147/bibliofelia/docs/` dans le navigateur, vérifier le bouton ? de la topbar BibliOfelia, naviguer dans les 4 langues
+
+## Sprint 16 — Scanner caméra navigateur en mode unique (FEAT-044)
+
+Objectif (demande Val 2026-05-30) : les 4 boutons « Scanner » du site (dashboard, prêt-carte, prêt-livre, retour) utilisent **uniquement la caméra du navigateur** ; suppression de l'appel OfeliaScan dans ce flux. OfeliaScan reste pour le catalogage et le récolement en masse.
+
+- [x] **FEAT-044** Caméra unique sur les boutons « Scanner » du site
+  - [x] Réécrire `static/js/scan-handoff.js` : retrait complet du handoff OfeliaScan (createHandoff/pollHandoff/startHandoff/deep-link/intent/WeakMap/config). Caméra = unique chemin. Sur échec → message d'erreur explicite (raison exacte) + invitation à saisir à la main, pas de redirection silencieuse.
+  - [x] `static/js/scan-camera.js` inchangé (callback `onUnavailable` → erreur au lieu de fallback)
+  - [x] `templates/base.html` : suppression du bloc `#scan-handoff-config` (createUrl orphelin) + ajout des 9 chaînes d'erreur dans `#scan-mode-i18n`
+  - [x] Routage notice/membre déjà assuré par `global_search` (`apps/core/views.py:94`) + `data-scan-dispatch-url` : aucune modif serveur
+  - [x] Templates métier inchangés (les 4 boutons `.js-scan-handoff` gardent leurs attributs)
+  - [x] Docs : `docs/specs/FEAT-044-scanner-camera-unique.md`, SPEC §6.10, ce TASKS.md
+  - [x] Gate i18n : `makemessages` + `scripts/translations_sprint16.py` + `i18n_check.py` → 0
+  - [x] Déploiement Pi (rebuild Docker — templates/JS embarqués au build) — 2026-05-30
+  - [x] **Mise au point décodage** (test bout-en-bout Val) :
+    - [x] Fix 404 lib : URL `html5-qrcode`/`quagga` injectée via `{% static %}` (`#scan-camera-config`) → résout préfixe `/bibliofelia/` + hash ManifestStaticFilesStorage
+    - [x] Fix iOS `NotAllowedError` : `primeCameraPermission()` (getUserMedia dans le geste avant lazy-load)
+    - [x] Garde anti « ghost-click » mobile (`DISMISS_GUARD_MS=600`)
+    - [x] **Double moteur** : html5-qrcode + BarcodeDetector natif (Chrome) / **QuaggaJS** vendoré (`static/js/quagga.min.js`, iOS/Firefox)
+    - [x] Fiabilité : EAN-13 uniquement + clé de contrôle + préfixe `290/291/978/979` + consensus 2 lectures + haute résolution 1920×1080
+  - [x] **Boutons scan inline** (`.scan-inline-btn`, cercle plein) ajoutés : recherche catalogue, recherche membres, champ ISBN du formulaire notice
+  - [x] **Layout dashboard** : bannière scan + recherche remontées au-dessus des tuiles (sous la topbar)
+  - [x] Nettoyage du code de debug (panneau de log à l'écran, traces `slog`/`build`)
+  - [x] **Validé Val 2026-05-30** : Chrome Android excellent ; Firefox/Safari fonctionnels via Quagga
+  - [ ] (Suivi séparé) HTTPS local sur la box pour faire marcher la caméra aussi en LAN HTTP — chantier nginx/cert côté keebee, hors de ce sprint.

@@ -20,6 +20,14 @@
             <label for="{{ form.isbn_13.id_for_label }}">ISBN-13</label>
             <div class="isbn-row">
                 {{ form.isbn_13 }}
+                <button type="button"
+                        class="btn btn--primary scan-inline-btn js-scan-handoff"
+                        data-scan-target="input[name=isbn_13]"
+                        data-scan-kind="book"
+                        title="{% trans 'Scanner le code-barres' %}"
+                        aria-label="{% trans 'Scanner le code-barres' %}">
+                    {% icon "scan-barcode" size="16px" %}
+                </button>
                 {% if show_lookup %}
                 <button type="button" class="btn btn--ghost"
                         hx-get="{% url 'catalog:isbn_lookup' %}"

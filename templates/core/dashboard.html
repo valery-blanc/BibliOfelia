@@ -11,6 +11,29 @@
     <div class="hero-sub">{% trans "Voici ce qui se passe à la bibliothèque aujourd'hui." %}</div>
 </section>
 
+{# ── Scan + recherche (placés en haut, sous la topbar, au-dessus des tuiles) ── #}
+{% if user.is_librarian %}
+<a href="{% url 'loans:lend' %}" class="scan-banner js-scan-handoff"
+   data-scan-kind="auto"
+   data-scan-dispatch-url="{% url 'core:search' %}">
+    <div class="sb-icon">{% icon "scan-barcode" size="22px" %}</div>
+    <div class="sb-text">
+        <div class="sb-title">{% trans "Scanner une carte ou un livre" %}</div>
+        <div class="sb-sub">{% trans "Caisse rapide — prêt, retour, recherche par code-barres" %}</div>
+    </div>
+    <span class="sb-btn">{% trans "Scanner" %}</span>
+</a>
+{% endif %}
+
+<div class="search">
+    <span class="search-icon">{% icon "search" size="18px" %}</span>
+    <form action="{% url 'core:search' %}" method="get">
+        <input type="search" name="q" value="{{ request.GET.q|default:'' }}"
+               placeholder="{% trans 'Titre, auteur, ISBN, n° de carte…' %}"
+               autocomplete="off" aria-label="{% trans 'Recherche globale' %}">
+    </form>
+</div>
+
 {# ── Grille de tuiles ── #}
 <div class="tilegrid" role="navigation" aria-label="{% trans 'Sections principales' %}">
 
@@ -108,30 +131,6 @@
     </div>
 </section>
 {% endif %}
-
-{# ── Bannière scan ── #}
-{% if user.is_librarian %}
-<a href="{% url 'loans:lend' %}" class="scan-banner js-scan-handoff"
-   data-scan-kind="auto"
-   data-scan-dispatch-url="{% url 'core:search' %}">
-    <div class="sb-icon">{% icon "scan-barcode" size="22px" %}</div>
-    <div class="sb-text">
-        <div class="sb-title">{% trans "Scanner une carte ou un livre" %}</div>
-        <div class="sb-sub">{% trans "Caisse rapide — prêt, retour, recherche par code-barres" %}</div>
-    </div>
-    <span class="sb-btn">{% trans "Scanner" %}</span>
-</a>
-{% endif %}
-
-{# ── Recherche globale ── #}
-<div class="search">
-    <span class="search-icon">{% icon "search" size="18px" %}</span>
-    <form action="{% url 'core:search' %}" method="get">
-        <input type="search" name="q" value="{{ request.GET.q|default:'' }}"
-               placeholder="{% trans 'Titre, auteur, ISBN, n° de carte…' %}"
-               autocomplete="off" aria-label="{% trans 'Recherche globale' %}">
-    </form>
-</div>
 
 {# ── KPI ── #}
 <div class="kpis">

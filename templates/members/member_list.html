@@ -53,6 +53,15 @@
                placeholder="{% trans 'Nom ou n° de carte…' %}"
                style="width:100%">
     </div>
+    <button type="button"
+            class="btn btn--primary scan-inline-btn js-scan-handoff"
+            data-scan-target="input[name=q]"
+            data-scan-kind="card"
+            data-scan-autosubmit="true"
+            title="{% trans 'Scanner la carte' %}"
+            aria-label="{% trans 'Scanner la carte' %}">
+        {% icon "scan-barcode" size="16px" %}
+    </button>
     <select name="category" class="filter-select" style="width:auto;min-width:160px">
         <option value="">{% trans "Toutes catégories" %}</option>
         {% for cat in categories %}

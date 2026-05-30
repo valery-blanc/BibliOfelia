@@ -603,6 +603,17 @@ ul { list-style: none; padding: 0; }
 .btn--lg { padding: 14px 22px; font-size: 15px; }
 .btn--block { width: 100%; }
 .btn--sm { padding: 8px 14px; font-size: 13px; min-height: 36px; }
+/* FEAT-044 : petit bouton scan inline — cercle plein dont le diamètre s'aligne
+   sur la hauteur de l'input voisin (align-self: stretch + aspect-ratio 1). */
+.scan-inline-btn {
+  flex-shrink: 0;
+  align-self: stretch;
+  aspect-ratio: 1 / 1;
+  min-width: 44px;
+  padding: 0;
+  border-radius: 50%;
+}
+.scan-inline-btn svg { width: 20px; height: 20px; }
 
 /* ────────── KPI ────────── */
 .kpis {

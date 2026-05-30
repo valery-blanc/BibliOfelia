@@ -9,15 +9,24 @@
     <script defer src="{% static 'js/htmx.min.js' %}"></script>
     <script defer src="{% static 'js/alpine.min.js' %}"></script>
     {% if user.is_authenticated %}
-    <script id="scan-handoff-config" type="application/json">
-{"createUrl": "{% url 'api:scan-handoff-create' %}", "csrfToken": "{{ csrf_token }}"}
+    <script id="scan-camera-config" type="application/json">
+{"libUrl": "{% static 'js/html5-qrcode.min.js' %}", "quaggaUrl": "{% static 'js/quagga.min.js' %}"}
     </script>
     <script id="scan-mode-i18n" type="application/json">
 {"modal_title": "{% trans 'Scanner un code' %}",
  "cancel": "{% trans 'Annuler' %}",
  "hint": "{% trans 'Pointez la caméra vers le code-barres.' %}",
  "opening": "{% trans 'Ouverture de la caméra…' %}",
- "scanned": "{% trans 'Valeur scannée :' %}"}
+ "scanned": "{% trans 'Valeur scannée :' %}",
+ "cam_unavailable": "{% trans 'Caméra indisponible' %}",
+ "cam_manual_hint": "{% trans 'Saisissez le code à la main.' %}",
+ "reason_https": "{% trans 'Accès caméra impossible : la page n’est pas en HTTPS.' %}",
+ "reason_no_getusermedia": "{% trans 'Ce navigateur ne permet pas l’accès à la caméra.' %}",
+ "reason_permission": "{% trans 'Permission caméra refusée.' %}",
+ "reason_no_camera": "{% trans 'Aucune caméra détectée sur cet appareil.' %}",
+ "reason_busy": "{% trans 'La caméra est déjà utilisée par une autre application.' %}",
+ "reason_lib": "{% trans 'Le scanner n’a pas pu être chargé.' %}",
+ "reason_unknown": "{% trans 'Impossible de démarrer la caméra.' %}"}
     </script>
     <script defer src="{% static 'js/scan-handoff.js' %}"></script>
     <script defer src="{% static 'js/scan-camera.js' %}"></script>
