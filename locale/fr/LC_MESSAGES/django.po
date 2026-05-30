@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2026-05-30 14:13+0000\n"
+"POT-Creation-Date: 2026-05-30 18:54+0000\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -118,27 +118,54 @@ msgstr ""
 msgid "L'ISBN doit comporter %(n)s caractères."
 msgstr ""
 
+#: apps/catalog/forms.py:92 templates/catalog/record_detail.html:89
+#: templates/printing/labels_picker.html:21
+#: templates/printing/labels_picker.html:49
+msgid "Emplacement"
+msgstr ""
+
+#: apps/catalog/forms.py:93 templates/catalog/record_detail.html:90
+#: templates/core/admin/enrichment_index.html:123
+msgid "État"
+msgstr ""
+
+#: apps/catalog/forms.py:94
+msgid "Date d'acquisition"
+msgstr ""
+
+#: apps/catalog/forms.py:95
+msgid "Source d'acquisition"
+msgstr ""
+
+#: apps/catalog/forms.py:96
+msgid "Donateur"
+msgstr ""
+
 #: apps/catalog/forms.py:97
+msgid "Notes"
+msgstr ""
+
+#: apps/catalog/forms.py:105
 msgid "Nombre d'exemplaires"
 msgstr ""
 
-#: apps/catalog/forms.py:101
+#: apps/catalog/forms.py:109
 msgid "Jusqu'à 20 exemplaires identiques d'un coup."
 msgstr ""
 
-#: apps/catalog/forms.py:117
+#: apps/catalog/forms.py:125
 msgid "Court, sans espace : A1, JEU-BD, RES…"
 msgstr ""
 
-#: apps/catalog/forms.py:118
+#: apps/catalog/forms.py:126
 msgid "Sous-emplacement de… (optionnel)."
 msgstr ""
 
-#: apps/catalog/forms.py:142
+#: apps/catalog/forms.py:150
 msgid "Un emplacement avec ce code existe déjà pour ce parent."
 msgstr ""
 
-#: apps/catalog/forms.py:145
+#: apps/catalog/forms.py:153
 msgid "Un emplacement ne peut pas être son propre parent."
 msgstr ""
 
@@ -1926,17 +1953,6 @@ msgstr ""
 msgid "Code Ofelia"
 msgstr ""
 
-#: templates/catalog/record_detail.html:89
-#: templates/printing/labels_picker.html:21
-#: templates/printing/labels_picker.html:49
-msgid "Emplacement"
-msgstr ""
-
-#: templates/catalog/record_detail.html:90
-#: templates/core/admin/enrichment_index.html:123
-msgid "État"
-msgstr ""
-
 #: templates/catalog/record_detail.html:111
 #, python-format
 msgid "Mis de côté pour %(member)s (%(card)s)"
@@ -2618,7 +2634,7 @@ msgstr ""
 #: templates/core/advanced.html:236
 msgid ""
 "Gestion fine : catégories, tags, emplacements, catégories d'usagers (réservé "
-"Claude / support distant)."
+"au support technique)."
 msgstr ""
 
 #: templates/core/dashboard.html:4 templates/errors/_error_page.html:32

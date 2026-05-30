@@ -85,8 +85,16 @@ class ItemForm(forms.ModelForm):
             "donor", "notes",
         ]
         widgets = {
-            "acquisition_date": forms.DateInput(attrs={"type": "date"}),
+            "acquisition_date": forms.DateInput(attrs={"type": "date"}, format="%Y-%m-%d"),
             "notes": forms.Textarea(attrs={"rows": 2}),
+        }
+        labels = {
+            "location": _("Emplacement"),
+            "state": _("État"),
+            "acquisition_date": _("Date d'acquisition"),
+            "acquisition_source": _("Source d'acquisition"),
+            "donor": _("Donateur"),
+            "notes": _("Notes"),
         }
 
 

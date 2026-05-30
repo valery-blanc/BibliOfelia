@@ -746,3 +746,17 @@ Objectif (demande Val 2026-05-30) : les 4 boutons « Scanner » du site (dashboa
   - [x] Nettoyage du code de debug (panneau de log à l'écran, traces `slog`/`build`)
   - [x] **Validé Val 2026-05-30** : Chrome Android excellent ; Firefox/Safari fonctionnels via Quagga
   - [ ] (Suivi séparé) HTTPS local sur la box pour faire marcher la caméra aussi en LAN HTTP — chantier nginx/cert côté keebee, hors de ce sprint.
+
+## Correctifs i18n post-FEAT-044 (BUG-018)
+
+Signalés par Val 2026-05-30 (navigation espagnole).
+
+- [x] **BUG-018** Chaînes non traduites (dashboard / formulaire exemplaires / Avancé)
+  - [x] (A) Alerte relance dashboard : `msgstr[0]/[1]` du `blocktrans count` renseignés EN/ES/MG (édition directe `.po` — pluriels non gérés par les scripts)
+  - [x] (B) `ItemForm.Meta.labels` traduits (`_()`) : Emplacement, État, Date d'acquisition, Source d'acquisition, Donateur, Notes (`apps/catalog/forms.py`) ; +`format="%Y-%m-%d"` sur `acquisition_date`
+  - [x] (C) Faux positif « En attente d'OfeliaScan… » = build périmée (handoff retiré FEAT-044, « Annuler » caméra déjà traduit) → rebuild Box
+  - [x] (D) `templates/core/advanced.html` : « (réservé Claude / support distant) » → « (réservé au support technique) »
+  - [x] Traductions `scripts/translations_sprint17.py` + `makemessages` + `compilemessages` ; gate `i18n_check.py` → 0
+  - [x] Docs : `docs/bugs/BUG-018-*.md`, SPEC en-tête
+  - [x] Test Val (UI espagnole, dev local) — OK 2026-05-30
+  - [ ] Déploiement Pi (rebuild Docker — couvre aussi C, build périmée) — en attente
