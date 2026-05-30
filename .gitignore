@@ -17,6 +17,7 @@ htmlcov/
 
 # Environnements
 .venv/
+.venv-doc/
 venv/
 env/
 .env
@@ -70,3 +71,7 @@ secrets/
 # Notes de travail locales de Val (bugs / petites features) — jamais dans git
 temp.txt
 temp_*.txt
+
+# Documentation utilisateur (Sprint 15)
+docs/user-guide/site/
+docs/user-guide/preview/

@@ -1,0 +1,20 @@
+# Dependances pour la generation du guide utilisateur (Sprint 15).
+# Ne sont PAS embarquees dans l'image Docker de l'app : utilisees uniquement
+# sur le poste de build de la documentation.
+#
+# Installation :
+#   python -m venv .venv-doc
+#   .venv-doc\Scripts\activate    (Windows)
+#   pip install -r requirements-doc.txt
+#   playwright install chromium
+
+# Site statique
+mkdocs==1.6.1
+mkdocs-material==9.5.49
+mkdocs-static-i18n==1.2.3
+
+# Captures d'ecran
+playwright==1.49.1
+
+# Annotations sur les captures (fleches, encadres)
+Pillow==11.0.0

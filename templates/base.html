@@ -55,7 +55,7 @@
                     </select>
                 </label>
             </form>
-            <a href="{% url 'core:help' %}" class="icon-btn hide-sm" title="{% trans 'Aide' %}" aria-label="{% trans 'Aide' %}">
+            <a href="{{ docs_url }}" target="_blank" rel="noopener" class="icon-btn hide-sm" title="{% trans 'Guide utilisateur' %}" aria-label="{% trans 'Guide utilisateur' %}">
                 {% icon "circle-help" size="18px" %}
             </a>
             <details class="user-dropdown">

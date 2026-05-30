@@ -51,9 +51,38 @@ _LAST_NAMES = ["Rasoa", "Andria", "Rakoto", "Razafy", "Dubois", "Martin",
                "Roy", "Vidal"]
 
 
+def install_demo(librarian=None) -> dict:
+    """Crée les données de démo. Idempotent : si la démo est déjà installée
+    (au moins une notice marquée DEMO_MARKER), retourne les compteurs courants
+    sans rien créer.
+
+    `librarian` (optionnel) : User attribué aux prêts créés. Sans librarian,
+    les prêts sont créés sans bibliothécaire (champ SET_NULL).
+    """
+    from apps.catalog.models import BibliographicRecord
+    from apps.loans.models import Loan
+    from apps.members.models import Member
+
+    # Garde d'idempotence : si la démo est déjà installée, ne rien refaire.
+    existing = BibliographicRecord.objects.filter(summary=DEMO_MARKER).count()
+    if existing:
+        return {
+            "records": existing,
+            "items": _count_items(),
+            "members": Member.objects.filter(notes=DEMO_MARKER).count(),
+            "loans": Loan.objects.filter(item__notes=DEMO_MARKER).count(),
+            "skipped": True,
+        }
+    return _install_demo_inner(librarian)
+
+
+def _count_items() -> int:
+    from apps.catalog.models import Item
+    return Item.objects.filter(notes=DEMO_MARKER).count()
+
+
 @transaction.atomic
-def install_demo() -> dict:
-    """Crée les données de démo. Retourne un compteur."""
+def _install_demo_inner(librarian=None) -> dict:
     from apps.catalog.models import (
         Author, BibliographicRecord, Category, Item, ItemStatus, Location,
     )
@@ -127,7 +156,7 @@ def install_demo() -> dict:
     for it in pool_items[:15]:
         member = rng.choice(members)
         try:
-            create_loan(item=it, member=member)
+            create_loan(item=it, member=member, librarian=librarian)
             loans += 1
         except Exception:
             continue
@@ -138,15 +167,91 @@ def install_demo() -> dict:
     }
 
 
+def install_doc_extras(librarian=None) -> dict:
+    """Ajoute au-dessus de install_demo() les états utiles aux captures du guide :
+    - 2 réservations PENDING (avec membre + notice existants)
+    - 3 prêts en retard (due_date forcée dans le passé)
+    - 1 carte de membre expirée
+
+    Idempotent : si au moins une réservation marquée DEMO existe, skip.
+    """
+    from apps.loans.models import Reservation
+    from apps.members.models import Member
+
+    if Reservation.objects.filter(
+        record__summary=DEMO_MARKER,
+        member__notes=DEMO_MARKER,
+    ).exists():
+        return {"skipped": True}
+
+    return _install_doc_extras_inner(librarian)
+
+
+@transaction.atomic
+def _install_doc_extras_inner(librarian=None) -> dict:
+    from apps.catalog.models import BibliographicRecord
+    from apps.loans.models import Loan, LoanStatus, Reservation, ReservationStatus
+    from apps.loans.services import create_reservation
+    from apps.members.models import Member
+
+    rng = random.Random(43)
+    records = list(
+        BibliographicRecord.objects.filter(summary=DEMO_MARKER).order_by("pk")
+    )
+    members = list(Member.objects.filter(notes=DEMO_MARKER).order_by("pk"))
+    if not records or not members:
+        return {"error": "install_demo doit etre execute avant install_doc_extras"}
+
+    # 2 réservations PENDING
+    reservations = 0
+    for rec in rng.sample(records, k=min(2, len(records))):
+        m = rng.choice(members)
+        create_reservation(record=rec, member=m)
+        reservations += 1
+
+    # 3 prêts en retard : on prend 3 prêts actifs et on force due_date dans le passé
+    overdue = 0
+    active_loans = list(
+        Loan.objects.filter(
+            status=LoanStatus.ACTIVE,
+            item__notes=DEMO_MARKER,
+        ).order_by("pk")[:3]
+    )
+    for ln in active_loans:
+        ln.due_date = date.today() - timedelta(days=rng.randint(7, 30))
+        ln.save(update_fields=["due_date"])
+        overdue += 1
+
+    # 1 carte de membre expirée
+    expired = 0
+    candidate = (
+        Member.objects.filter(notes=DEMO_MARKER, expiration_date__gt=date.today())
+        .order_by("pk").first()
+    )
+    if candidate:
+        candidate.expiration_date = date.today() - timedelta(days=15)
+        candidate.save(update_fields=["expiration_date"])
+        expired = 1
+
+    return {
+        "reservations": reservations,
+        "overdue_loans": overdue,
+        "expired_cards": expired,
+    }
+
+
 @transaction.atomic
 def remove_demo() -> dict:
     """Supprime les objets marqués DEMO. Retourne un compteur."""
     from apps.catalog.models import Author, BibliographicRecord, Item, Location
-    from apps.loans.models import Loan
+    from apps.loans.models import Loan, Reservation
     from apps.members.models import Member, MemberCategory
 
     counters = {}
-    # Ordre : Loan → Item → Record → Author/Location/MemberCategory → Member
+    # Ordre : Reservation → Loan → Item → Record → Author/Location/MemberCategory → Member
+    counters["reservations"] = Reservation.objects.filter(
+        record__summary=DEMO_MARKER
+    ).delete()[0]
     counters["loans"] = Loan.objects.filter(
         item__notes=DEMO_MARKER
     ).delete()[0]

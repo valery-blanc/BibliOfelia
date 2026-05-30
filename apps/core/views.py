@@ -121,7 +121,13 @@ def global_search(request):
 
 @login_required
 def help_page(request):
-    return render(request, "core/help.html", {})
+    """Sprint 15 : l'aide est désormais le site MkDocs servi à `<SCRIPT_NAME>/docs/`.
+    On redirige les anciens liens et le bouton "?" vers ce site externe."""
+    from django.http import HttpResponseRedirect
+    from django.conf import settings as dj_settings
+
+    script_name = dj_settings.FORCE_SCRIPT_NAME or ""
+    return HttpResponseRedirect(script_name.rstrip("/") + "/docs/")
 
 
 @login_required

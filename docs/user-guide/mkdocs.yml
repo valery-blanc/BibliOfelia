@@ -1,0 +1,149 @@
+site_name: Guide BibliOfelia
+site_description: Guide utilisateur pour les bibliothecaires
+site_author: Projet Ofelia
+site_url: http://ofelia.local/bibliofelia/docs/
+docs_dir: docs
+site_dir: site
+use_directory_urls: true
+
+theme:
+  name: material
+  language: fr
+  custom_dir: overrides
+  font: false  # pas de Google Fonts — contrainte hors-ligne (extra.css charge Bricolage + DM Sans en local)
+  logo: assets/img/ofelia-logo.png
+  favicon: assets/img/ofelia-logo.png
+  palette:
+    scheme: default
+    primary: custom
+    accent: custom
+  features:
+    - navigation.tracking
+    - navigation.tabs
+    - navigation.sections
+    - navigation.top
+    - navigation.indexes
+    - search.suggest
+    - search.highlight
+    - content.code.copy
+    - toc.integrate
+
+extra_css:
+  - stylesheets/extra.css
+
+plugins:
+  - search:
+      lang:
+        - fr
+        - en
+  - i18n:
+      docs_structure: suffix
+      languages:
+        - locale: fr
+          default: true
+          name: Français
+          build: true
+        - locale: en
+          name: English
+          build: true
+          nav_translations:
+            Accueil: Home
+            Premiers pas: Getting started
+            Catalogue: Catalog
+            Usagers: Members
+            Prets et retours: Loans and returns
+            Reservations: Reservations
+            OfeliaScan mobile: OfeliaScan mobile
+            Impressions: Printing
+            Rapports: Reports
+            Cas courants: Common cases
+            FAQ: FAQ
+            Glossaire: Glossary
+        - locale: es
+          name: Español
+          build: true
+          nav_translations:
+            Accueil: Inicio
+            Premiers pas: Primeros pasos
+            Catalogue: Catálogo
+            Usagers: Miembros
+            Prets et retours: Préstamos y devoluciones
+            Reservations: Reservas
+            OfeliaScan mobile: OfeliaScan móvil
+            Impressions: Impresión
+            Rapports: Informes
+            Cas courants: Casos frecuentes
+            FAQ: FAQ
+            Glossaire: Glosario
+        - locale: mg
+          name: Malagasy
+          build: true
+          nav_translations:
+            Accueil: Fandraisana
+            Premiers pas: Voalohany
+            Catalogue: Boky
+            Usagers: Mpianatra
+            Prets et retours: Fampindramana
+            Reservations: Famandrihana
+            OfeliaScan mobile: OfeliaScan finday
+            Impressions: Fanontana
+            Rapports: Tatitra
+            Cas courants: Ohatra mahazatra
+            FAQ: Fanontaniana
+            Glossaire: Voambolana
+
+markdown_extensions:
+  - admonition
+  - attr_list
+  - md_in_html
+  - pymdownx.details
+  - pymdownx.highlight
+  - pymdownx.superfences
+  - pymdownx.tabbed:
+      alternate_style: true
+  - toc:
+      permalink: true
+
+nav:
+  - Accueil: index.md
+  - Premiers pas:
+      - Se connecter: premiers-pas/connexion.md
+      - Tour du dashboard: premiers-pas/dashboard.md
+      - Changer de langue: premiers-pas/langue.md
+      - Modes de saisie: premiers-pas/saisie.md
+  - Catalogue:
+      - Ajouter un livre: catalogue/ajouter-livre.md
+      - Gerer les exemplaires: catalogue/exemplaires.md
+      - Localisations: catalogue/localisations.md
+      - Recherche: catalogue/recherche.md
+      - Operations en lot: catalogue/operations-lot.md
+  - Usagers:
+      - Inscrire un membre: usagers/inscription.md
+      - Fiche membre: usagers/fiche.md
+      - Carte de membre: usagers/carte.md
+      - Renouvellement et expiration: usagers/renouvellement.md
+  - Prets et retours:
+      - Faire un pret: prets-retours/faire-pret.md
+      - Enregistrer un retour: prets-retours/retour.md
+      - Prolonger un pret: prets-retours/prolongation.md
+      - Consultation sur place: prets-retours/consultation.md
+  - Reservations:
+      - Creer une reservation: reservations/creer.md
+      - Notifications et relances: reservations/notifications.md
+      - Retrait et expiration: reservations/retrait.md
+  - OfeliaScan mobile:
+      - Activer OfeliaScan: ofeliascan/activer.md
+      - Pret et retour mobile: ofeliascan/pret-retour.md
+      - Recolement: ofeliascan/recolement.md
+  - Impressions:
+      - Cartes de membres: impressions/cartes.md
+      - Etiquettes de livres: impressions/etiquettes.md
+  - Rapports:
+      - KPIs du dashboard: rapports/kpis.md
+      - Exports CSV: rapports/exports.md
+  - Cas courants:
+      - Livre perdu ou abime: cas-courants/livre-perdu.md
+      - Carte perdue ou volee: cas-courants/carte-perdue.md
+      - Retard prolonge: cas-courants/retard.md
+  - FAQ: faq.md
+  - Glossaire: glossaire.md

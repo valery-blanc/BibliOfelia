@@ -7,10 +7,14 @@ from django.conf import settings
 
 
 def global_settings(request):
+    script_name = settings.FORCE_SCRIPT_NAME or ""
     return {
         "library_name": _safe_setting("library_name", "BibliOfelia"),
         "app_version": "0.1.0-dev",
         "enabled_languages": settings.LANGUAGES,
+        # Guide utilisateur statique (Sprint 15) servi par nginx à `<SCRIPT_NAME>/docs/`.
+        # En dev (FORCE_SCRIPT_NAME=""), lancer `mkdocs serve` séparément.
+        "docs_url": script_name.rstrip("/") + "/docs/",
     }
 
 

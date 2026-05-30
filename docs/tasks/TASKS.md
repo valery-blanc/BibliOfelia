@@ -625,4 +625,99 @@ Mise à jour : 2026-05-26 (Sprint 12 **CLOS** — FEAT-038 (cartes membres : fon
 - [x] Gate i18n `scripts/i18n_check.py` → 0
 - [x] Déploiement Pi (192.168.0.147) + rebuild Docker
 - [x] Test Val OK 2026-05-28 (UI bulk-delete + non-réutilisation code Ofelia + pages d'erreur 404/403/405)
-- [ ] Commit unique Sprint 14 + push origin/main
+- [x] Commit unique Sprint 14 + push origin/main (afddac9)
+
+## Sprint 15 — Guide utilisateur bibliothécaires (site MkDocs, FR + EN + ES + MG)
+
+> Lancé 2026-05-29. Objectif : produire un site statique de documentation utilisateur pour bibliothécaires, avec captures d'écran annotées, en 4 langues, déployable sur la Box à `/bibliofelia/docs/`.
+
+### Task #1 — Scaffolding + 3 captures échantillon (POC)
+- [x] `requirements-doc.txt` : mkdocs 1.6 + mkdocs-material 9.5 + mkdocs-static-i18n 1.2 + playwright 1.49 + Pillow 11
+- [x] `.venv-doc/` créé + dépendances installées + Chromium Playwright téléchargé
+- [x] `docs/user-guide/mkdocs.yml` : config Material, palette deep purple/amber, navigation tabs+sections, search FR/EN, fonts désactivées (contrainte hors-ligne)
+- [x] `docs/user-guide/docs/index.md` + `premiers-pas/{connexion,dashboard}.md` + `prets-retours/faire-pret.md` (pages POC)
+- [x] `apps/setup/management/commands/seed_demo.py` : wrapper sur `install_demo()` + création compte `demo_librarian` (rôle LIBRARIAN, password `OfeliaDemo2026!`) idempotent et tolérant
+- [x] `docs/user-guide/scripts/capture_screenshots.py` : Playwright headless, viewport 1440×900, locale fr-FR, capture login + dashboard (full page) + form prêt (full page)
+- [x] 3 captures générées : `docs/user-guide/docs/assets/screenshots/fr/{login,dashboard,lend-form}.png`
+- [x] `mkdocs build` OK (1.86 s)
+- [x] `.gitignore` mis à jour (`.venv-doc/`, `docs/user-guide/site/`, `docs/user-guide/preview/`)
+- [ ] Test Val : valider le rendu des 3 captures + le scaffolding avant Task #2
+
+### Task #2 — Jeu de données démo stable
+- [x] `install_demo()` rendu idempotent : garde sur `BibliographicRecord.summary=DEMO_MARKER` ; re-run = no-op + retour des compteurs actuels (`skipped=True`)
+- [x] Fix bug `create_loan(item=, member=)` sans librarian → ajout `librarian=user` (passé par seed_demo) ; **15 prêts effectivement créés** (avant : 0 silencieux à cause de TypeError caché par try/except)
+- [x] Nouvelle fonction `install_doc_extras(librarian)` : 2 réservations PENDING + 3 prêts forcés en retard + 1 carte de membre expirée (idempotent via garde sur Reservation existante)
+- [x] `remove_demo()` : prise en compte des réservations (delete avant loans)
+- [x] Commande `seed_demo` enrichie : `--reset` (purge + reinstall), `--librarian-username/password`, ordre user → reset → install_demo → install_doc_extras, sortie verbeuse
+- [x] Test idempotence manuel : 2 runs successifs OK (1er = installation, 2e = skip)
+- [x] 163 tests verts (`pytest apps/catalog apps/loans apps/members`)
+- [x] Dashboard re-capturé avec état riche : 16 prêts en cours, 3 retards (section « Relances à faire » visible), Top 10 rempli
+
+### Task #3 — Script de capture exhaustif FR (24 écrans + annotations)
+- [x] `capture_screenshots.py` refondu : liste `PAGES` structurée (group, name, url, full_page), boucle générique, helpers `open_first_record` / `open_first_member` pour les fiches dynamiques, options `--lang/--only/--headed`
+- [x] 24 captures FR générées dans `docs/user-guide/docs/assets/screenshots/fr/{group}/{name}.png` (login, dashboard, help, advanced, record-list/create/detail, item-create, location-list/create, member-list/create/detail/history, lend, return, consultation, reservation-list, cards-picker, labels-picker, reports-index, overdue-list, reservations-pickup, inactive)
+- [x] `annotate.py` : helper Pillow pour encadrés rouges + pastilles numérotées (font Segoe UI Bold ou Arial Bold via Windows Fonts)
+- [x] Smoke test annotations validé (4 boxes sur tuiles dashboard) puis nettoyé
+- [ ] Coordonnées d'annotation à capturer via `page.locator().bounding_box()` au moment de la rédaction (Task 4) — pas de hardcoding
+
+### Task #3b — Thème OFELIA pour MkDocs (cohérence avec l'app)
+- [x] Tokens OFELIA récupérés depuis `static/css/ofelia.css` (burgundy `#6B2138`, cream `#F7F5F0`, ink `#3D3530`, orange `#ED7538`, forest, blush, sky)
+- [x] Polices Bricolage Grotesque (3 subsets) + DM Sans (2 subsets) copiées dans `docs/user-guide/docs/stylesheets/fonts/` (contrainte hors-ligne respectée)
+- [x] Logos `ofelia-logo.png` + `ofelia-grandes-lettres.png` copiés dans `docs/user-guide/docs/assets/img/`
+- [x] `docs/user-guide/docs/stylesheets/extra.css` : surcharge palette Material (default + slate), titres en Bricolage, corps en DM Sans, headings burgundy, admonitions OFELIA (forest=tip, orange=warning, sky=info, burgundy=danger), tables/codeblocks ton crème
+- [x] `mkdocs.yml` : `logo: assets/img/ofelia-logo.png`, `favicon`, `palette: primary/accent: custom`, `extra_css: stylesheets/extra.css`
+- [x] Rebuild OK, preview captures site-home + site-faire-pret validées par Val
+- [x] MEMORY : `feedback_doc_reuse_design.md` créée (règle pérenne : pour tout livrable visuel, réutiliser la charte OFELIA existante)
+
+### Task #4 — Rédaction guide FR (22 pages)
+- [x] Page pilote `prets-retours/faire-pret.md` rédigée + capture annotée pixel-perfect (4 zones numérotées via `capture_annotated.py` + `boxes_from_selectors`) → validation Val OK sur ton, niveau de détail, format
+- [x] **Premiers pas** (4) : `connexion`, `dashboard`, `langue`, `saisie`
+- [x] **Catalogue** (5) : `ajouter-livre`, `exemplaires`, `localisations`, `recherche`, `operations-lot`
+- [x] **Usagers** (4) : `inscription`, `fiche`, `carte`, `renouvellement`
+- [x] **Prêts et retours** (3 + pilote) : `retour`, `prolongation`, `consultation`
+- [x] **Réservations** (3) : `creer`, `notifications`, `retrait`
+- [x] **OfeliaScan** (3) : `activer`, `pret-retour`, `recolement`
+- [x] **Impressions** (2) : `cartes`, `etiquettes`
+- [x] **Rapports** (2) : `kpis`, `exports`
+- [x] **Cas courants** (3) : `livre-perdu`, `carte-perdue`, `retard`
+- [x] **Annexes** (2) : `faq`, `glossaire`
+- [x] `mkdocs.yml` nav complète (10 sections + 22 pages)
+- [x] Build mkdocs sans warning, liens internes tous résolus
+- [x] Preview de 8 pages clés validées (home, faire-pret, ajouter-livre, inscription, reservation-creer, recolement, livre-perdu, glossaire)
+- [x] Validation Val sur ton et fond : OK, avec corrections demandées (codes + langage trop technique + FAQ facturation + toggle dark + brancher bouton aide)
+
+### Task #4b — Corrections demandées par Val
+- [x] **Glossaire refondu** : section dédiée « Les différents codes » distinguant ISBN-13, ISBN-10, code Ofelia (290/291), code interne (OFL-YYYYMMDD-NNNN), n° de membre — chacun expliqué avec exemples et usage (prêt, catalogage, scan)
+- [x] **Termes techniques retirés** : `FTS5` (recherche.md → "recherche tolérante"), `Tombstone` (livre-perdu.md, carte-perdue.md, glossaire.md → formulations en langage simple), `UTF-8` (exports.md → "caractères accentués s'affichent correctement")
+- [x] **FAQ** : suppression de la question facturation
+- [x] **Nomenclature corrigée partout** : "code interne" → "code Ofelia" quand il s'agit du code-barres scannable (recherche.md, exemplaires.md, faire-pret.md, inscription.md)
+- [x] **Toggle mode sombre supprimé** : `mkdocs.yml` palette simplifiée à `scheme: default` (style imposé)
+- [x] **Bouton « ? » topbar BibliOfelia** branché vers `docs_url` :
+  - `apps/core/context_processors.py` : ajout `docs_url = FORCE_SCRIPT_NAME.rstrip('/') + '/docs/'`
+  - `templates/base.html` : `href` change vers `{{ docs_url }}` + `target="_blank"`, libellé « Guide utilisateur »
+  - `apps/core/views.py:help_page` : 302 vers `docs_url` (ancien `/help/` reste fonctionnel comme redirect)
+- [x] Tests `apps/core` verts (32 passed)
+
+### Task #5 — Capture EN/ES/MG + traduction des 22 pages
+- [x] Plugin `mkdocs-static-i18n` activé en mode `suffix` dans mkdocs.yml + `nav_translations` (12 sections × 3 langues)
+- [x] Captures EN/ES/MG via `capture_screenshots.py --lang en/es/mg` (72 captures supplémentaires)
+- [x] Désactivation de `navigation.instant` (incompatible avec le switcher de langue contextuel)
+- [x] Création de `overrides/partials/languages/mg.html` (Material n'a pas de partial Malagasy par défaut) avec `custom_dir: overrides`
+- [x] Traduction des 22 markdowns en EN (`.en.md`)
+- [x] Traduction des 22 markdowns en ES (`.es.md`)
+- [x] Traduction des 22 markdowns en MG (`.mg.md`) — **bandeau d'avertissement sur `index.mg.md` indiquant qu'une relecture par locuteur natif reste à faire**
+- [x] Build 4 langues OK (FR=racine, EN=/en/, ES=/es/, MG=/mg/) — 6.58 s
+- [x] Preview validée (4 home + faire-pret EN + glossaire ES + glossaire MG)
+
+### Task #6 — Déploiement nginx Box `/bibliofelia/docs/`
+- [x] `mkdocs.yml` : `site_url: http://ofelia.local/bibliofelia/docs/` pour résoudre correctement les URLs absolues
+- [x] Build production statique (4 langues, ~23 Mo total)
+- [x] Tar + scp + extract sur Pi vers `/var/lib/bibliofelia-docs/` (chown ofelia:ofelia)
+- [x] **keebee/nginx/conf.d/ofelia-locations.inc** : nouveau `location /bibliofelia/docs/` AVANT `/bibliofelia/` (alias + try_files index.html, expires 1d) — push sur Pi `/opt/edubox/nginx/conf.d/`
+- [x] **keebee/docker-compose.yml** : ajout volume `/var/lib/bibliofelia-docs:/var/lib/bibliofelia-docs:ro` sur container `nginx-proxy` — push sur Pi `/opt/edubox/docker-compose.yml`
+- [x] `docker compose up -d nginx-proxy` pour recréer avec nouveau volume monté
+- [x] Tests HTTP : FR/EN/ES/MG/CSS/Logo tous 200 sur `http://192.168.0.147/bibliofelia/docs/...`
+- [x] **Rebuild image BibliOfelia** : push code (Tasks 4b + 5) via tar/scp/extract dans `/opt/edubox/bibliofelia/` (git stash des dirty changes avant), `docker compose up -d --build bibliofelia` — image recréée, bouton `?` et `help_page → /docs/` actifs
+- [x] Smoke test Playwright sur Pi : 6 captures (4 home + faire-pret FR + glossaire EN) — rendu nominal OK
+- [x] `scripts/deploy_pi.sh` : script de redéploiement futur (build strict + tar + scp + extract + nginx reload)
+- [ ] **Validation finale Val** : ouvrir `http://192.168.0.147/bibliofelia/docs/` dans le navigateur, vérifier le bouton ? de la topbar BibliOfelia, naviguer dans les 4 langues
