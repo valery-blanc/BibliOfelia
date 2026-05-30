@@ -759,4 +759,4 @@ Signalés par Val 2026-05-30 (navigation espagnole).
   - [x] Traductions `scripts/translations_sprint17.py` + `makemessages` + `compilemessages` ; gate `i18n_check.py` → 0
   - [x] Docs : `docs/bugs/BUG-018-*.md`, SPEC en-tête
   - [x] Test Val (UI espagnole, dev local) — OK 2026-05-30
-  - [ ] Déploiement Pi (rebuild Docker — couvre aussi C, build périmée) — en attente
+  - [x] Déploiement Pi (rebuild Docker `edubox-bibliofelia` + worker, couvre aussi C) — 2026-05-30
