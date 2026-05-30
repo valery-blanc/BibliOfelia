@@ -28,7 +28,7 @@
 {% if open_sessions %}
 <div class="list">
     {% for s in open_sessions %}
-    <a href="{% url 'inventory:detail' s.pk %}" class="list-row">
+    <a href="{% url 'inventory:report' s.pk %}" class="list-row">
         <div class="lrow-icon" style="--lr-bg:var(--olive-light);--lr-fg:var(--ink)">
             {% icon "clipboard-list" size="18px" %}
         </div>

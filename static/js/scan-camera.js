@@ -5,6 +5,11 @@
  * démarrer (lib KO, permission refusée, pas de caméra). Le caller affiche alors
  * un message d'erreur explicite (plus de fallback OfeliaScan sur le site).
  *
+ * Mode continu (FEAT-045, récolement/catalogage) : `opts.continuous=true` +
+ * `opts.onCode(value)`. Le viseur reste ouvert ; chaque code confirmé déclenche
+ * un bip + un compteur live + `onCode`, puis le scan reprend après un cooldown.
+ * `opts.onClose()` est appelé à la fermeture manuelle (« Terminer »).
+ *
  * Double moteur de décodage, choisi selon les capacités du navigateur :
  *   - `BarcodeDetector` natif dispo (Chrome/Edge Android, Chrome desktop)
  *     → html5-qrcode avec useBarCodeDetectorIfSupported (quasi natif, rapide).
@@ -102,11 +107,53 @@
             + "  </div>"
             + "  <div class='scan-camera-viewfinder' id='scan-camera-viewfinder'></div>"
             + "  <div class='scan-camera-hint'>" + t("hint", "Pointez la caméra vers le code-barres.") + "</div>"
+            + "  <div class='scan-camera-count' id='scan-camera-count' hidden></div>"
+            + "  <div class='scan-camera-last' id='scan-camera-last' hidden></div>"
             + "  <div class='scan-camera-actions'>"
             + "    <button type='button' class='btn btn--ghost scan-camera-cancel'>" + t("cancel", "Annuler") + "</button>"
             + "  </div>"
             + "</div>";
         return overlay;
+    }
+
+    // Bip de confirmation (WebAudio) — mode continu. Tolérant (no-op si bloqué).
+    function playBeep() {
+        try {
+            var Ctx = window.AudioContext || window.webkitAudioContext;
+            if (!Ctx) return;
+            var ctx = playBeep._ctx || (playBeep._ctx = new Ctx());
+            var osc = ctx.createOscillator();
+            var gain = ctx.createGain();
+            osc.connect(gain);
+            gain.connect(ctx.destination);
+            osc.frequency.value = 880;
+            gain.gain.value = 0.06;
+            osc.start();
+            setTimeout(function () { try { osc.stop(); } catch (e) { /* noop */ } }, 110);
+        } catch (e) { /* noop */ }
+    }
+
+    function vibrate(ms) {
+        try { if (navigator.vibrate) navigator.vibrate(ms || 120); } catch (e) { /* noop */ }
+    }
+
+    // Feedback d'une nouvelle trouvaille en mode continu — piloté par le
+    // contrôleur de page (qui connaît la dé-duplication et les métadonnées).
+    // opts : {count, label}. Bip + vibration + compteur + dernier livre trouvé.
+    function continuousFeedback(opts) {
+        opts = opts || {};
+        playBeep();
+        vibrate(120);
+        var countEl = document.getElementById("scan-camera-count");
+        if (countEl && typeof opts.count !== "undefined" && opts.count !== null) {
+            countEl.hidden = false;
+            countEl.textContent = t("scanned_count", "Scannés :") + " " + opts.count;
+        }
+        var lastEl = document.getElementById("scan-camera-last");
+        if (lastEl && opts.label) {
+            lastEl.hidden = false;
+            lastEl.textContent = opts.label;
+        }
     }
 
     // Quagga injecte un <video> + un <canvas.drawingBuffer> dans le viseur :
@@ -150,10 +197,16 @@
         return { reason: reason, detail: detail };
     }
 
+    // Cooldown entre 2 codes acceptés en mode continu : évite qu'un même livre
+    // tenu en vue ne re-déclenche en boucle (le serveur reste idempotent, mais
+    // ça lisse le feedback). ~1,8 s.
+    var CONTINUOUS_COOLDOWN_MS = 800;
+
     // Garde-fous communs aux deux moteurs : checksum + préfixe, puis consensus
     // (2 lectures identiques d'affilée). Retourne true si la valeur est confirmée.
     function handleRead(state, v) {
         if (state.consumed) return false;
+        if (state.continuous && Date.now() < (state.cooldownUntil || 0)) return false;
         v = (v || "").trim();
         if (!isAcceptableCode(v)) return false;
         if (state.lastRead === v) {
@@ -163,11 +216,25 @@
             state.readStreak = 1;
         }
         if (state.readStreak < 2) return false;
-        state.consumed = true;
+        if (state.continuous) {
+            // On réarme pour le code suivant au lieu de latcher `consumed`.
+            state.cooldownUntil = Date.now() + CONTINUOUS_COOLDOWN_MS;
+            state.lastRead = null;
+            state.readStreak = 0;
+        } else {
+            state.consumed = true;
+        }
         return true;
     }
 
-    function consumeResult(state, btn, v) {
+    // Code confirmé : mode continu = on émet `onCode` (le contrôleur de page
+    // gère dé-dup + feedback via continuousFeedback) ; mode unique = ferme le
+    // modal et applique la valeur (legacy).
+    function onConfirmed(state, btn, v) {
+        if (state.continuous) {
+            if (typeof state.onCode === "function") state.onCode(v);
+            return;
+        }
         closeModal(state).then(function () {
             window.BibliOfelia.scan.setBusy(btn, false);
             var consumed = window.BibliOfelia.scan.applyResult(btn, { value: v });
@@ -203,6 +270,16 @@
         var config = {
             fps: 10,
             formatsToSupport: formats,
+            // Zone de décodage restreinte à une bande centrale (~1/4 de hauteur) :
+            // un seul code-barres y tient → aucune ambiguïté quand plusieurs codes
+            // sont dans le champ. html5-qrcode ombre l'extérieur de cette bande
+            // (guide visuel intégré).
+            qrbox: function (vw, vh) {
+                return {
+                    width: Math.max(150, Math.floor(vw * 0.92)),
+                    height: Math.max(70, Math.floor(vh * 0.25))
+                };
+            },
             // Haute résolution → petits codes nets ; via videoConstraints (le 1er
             // arg de start() doit avoir exactement 1 clé).
             videoConstraints: {
@@ -215,7 +292,7 @@
             { facingMode: "environment" },
             config,
             function onScan(decodedText) {
-                if (handleRead(state, decodedText)) consumeResult(state, btn, (decodedText || "").trim());
+                if (handleRead(state, decodedText)) onConfirmed(state, btn, (decodedText || "").trim());
             },
             function onScanFailure(/* err */) { /* tentatives ratées normales */ }
         ).then(function () {
@@ -239,7 +316,7 @@
         function onDet(result) {
             if (state.consumed || !result || !result.codeResult) return;
             var v = result.codeResult.code;
-            if (handleRead(state, v)) consumeResult(state, btn, (v || "").trim());
+            if (handleRead(state, v)) onConfirmed(state, btn, (v || "").trim());
         }
         state.stopEngine = function () {
             try { Quagga.offDetected(onDet); } catch (e) { /* idem */ }
@@ -255,7 +332,10 @@
                     facingMode: "environment",
                     width: { ideal: 1920 },
                     height: { ideal: 1080 }
-                }
+                },
+                // Zone de décodage restreinte à une bande centrale (~1/4 de
+                // hauteur) : un seul code-barres y tient (cf. qrbox côté html5).
+                area: { top: "37%", right: "0%", left: "0%", bottom: "37%" }
             },
             decoder: { readers: ["ean_reader"] }, // EAN-13 uniquement
             locator: { patchSize: "medium", halfSample: true },
@@ -271,6 +351,11 @@
             }
             Quagga.onDetected(onDet);
             try { Quagga.start(); } catch (e) { /* start est sync ici */ }
+            // Guide visuel : Quagga n'ombre pas l'extérieur de l'area, on ajoute
+            // une bande (haut/bas assombris) alignée sur l'area de décodage.
+            var band = document.createElement("div");
+            band.className = "scan-camera-band";
+            target.appendChild(band);
             state.scannerActive = true;
         });
     }
@@ -291,6 +376,8 @@
         opts = opts || {};
         var onUnavailable = typeof opts.onUnavailable === "function"
             ? opts.onUnavailable : function () {};
+        var onClose = typeof opts.onClose === "function" ? opts.onClose : function () {};
+        var continuous = opts.continuous === true;
 
         if (!window.isSecureContext || !navigator.mediaDevices || !navigator.mediaDevices.getUserMedia) {
             var ctxDetail = "secureContext=" + (window.isSecureContext === true)
@@ -311,6 +398,10 @@
             scannerActive: false,
             consumed: false,
             closed: false,
+            continuous: continuous,
+            onCode: typeof opts.onCode === "function" ? opts.onCode : null,
+            count: 0,
+            cooldownUntil: 0,
             // Garde anti « ghost click » mobile : le tap qui ouvre le modal
             // plein écran peut être re-livré à l'overlay sous le doigt et le
             // fermer instantanément → on ignore toute fermeture trop précoce.
@@ -320,12 +411,24 @@
         function tooEarlyToClose() {
             return (Date.now() - state.openedAt) < DISMISS_GUARD_MS;
         }
+        function dismiss() {
+            closeModal(state).then(function () {
+                window.BibliOfelia.scan.setBusy(btn, false);
+                onClose();
+            });
+        }
         state.onKey = function (ev) {
             if (ev.key === "Escape") {
                 if (tooEarlyToClose()) return;
-                closeModal(state).then(function () { window.BibliOfelia.scan.setBusy(btn, false); });
+                dismiss();
             }
         };
+
+        // En mode continu, l'action n'est pas « Annuler » mais « Terminer ».
+        if (continuous) {
+            var cancelBtn = state.overlay.querySelector(".scan-camera-cancel");
+            if (cancelBtn) cancelBtn.textContent = t("done", "Terminer");
+        }
 
         document.body.appendChild(state.overlay);
         document.body.classList.add("scan-camera-open");
@@ -333,7 +436,7 @@
 
         function userCancel() {
             if (tooEarlyToClose()) return;
-            closeModal(state).then(function () { window.BibliOfelia.scan.setBusy(btn, false); });
+            dismiss();
         }
         state.overlay.querySelector(".scan-camera-close").addEventListener("click", userCancel);
         state.overlay.querySelector(".scan-camera-cancel").addEventListener("click", userCancel);
@@ -360,4 +463,5 @@
     window.BibliOfelia = window.BibliOfelia || {};
     window.BibliOfelia.scan = window.BibliOfelia.scan || {};
     window.BibliOfelia.scan.openCamera = openCamera;
+    window.BibliOfelia.scan.continuousFeedback = continuousFeedback;
 })();

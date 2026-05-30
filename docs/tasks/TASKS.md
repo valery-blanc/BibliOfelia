@@ -511,22 +511,23 @@ Mise à jour : 2026-05-26 (Sprint 12 **CLOS** — FEAT-038 (cartes membres : fon
 > dans la catégorie « Impressions ».
 
 ### FEAT-038 — Refonte impression cartes membres
-- [ ] Doc `docs/specs/FEAT-038-print-member-cards.md`
-- [ ] Copier `Logo_ofelia_grandes_lettres.png` → `static/img/ofelia-grandes-lettres.png`
-- [ ] `apps/core/forms.py` : nouveau `MemberCardFormatForm` (KEY=`card_format`)
-- [ ] `apps/printing/services.py` : refonte `_draw_member_card` (photo HG, langue BG, fond crème, logo centré, bloc info droite)
-- [ ] Tests `apps/printing/tests/test_services.py` : cartes membre
-- [ ] SPEC §6.7 mise à jour
+> Sous-cases cochées rétroactivement 2026-05-30 (sprint clos + validé Val 2026-05-26, voir Clôture Sprint 12).
+- [x] Doc `docs/specs/FEAT-038-print-member-cards.md`
+- [x] Copier `Logo_ofelia_grandes_lettres.png` → `static/img/ofelia-grandes-lettres.png`
+- [x] `apps/core/forms.py` : nouveau `MemberCardFormatForm` (KEY=`card_format`)
+- [x] `apps/printing/services.py` : refonte `_draw_member_card` (photo HG, langue BG, fond crème, logo centré, bloc info droite)
+- [x] Tests `apps/printing/tests/test_services.py` : cartes membre
+- [x] SPEC §6.7 mise à jour
 
 ### FEAT-039 — Étiquettes livres : refonte + paramétrage séparé
-- [ ] Doc `docs/specs/FEAT-039-print-item-labels.md`
-- [ ] `apps/core/forms.py` : nouveau `ItemLabelFormatForm` (KEY=`item_label_format`)
-- [ ] `apps/printing/services.py` : refonte `_draw_item_label` (titre wrap 2 lignes, logo ofelia, 80×40 mm)
-- [ ] `apps/core/admin_views.py` : `FORMS` mis à jour (sections `printing_cards` + `printing_labels`)
-- [ ] `templates/core/admin/settings_index.html` : regroupement « Impressions »
-- [ ] `apps/core/management/commands/seed_defaults.py` : `card_format` + `item_label_format`
-- [ ] Tests `apps/printing/tests/test_services.py` : étiquettes livres
-- [ ] SPEC §6.7 mise à jour
+- [x] Doc `docs/specs/FEAT-039-print-item-labels.md`
+- [x] `apps/core/forms.py` : nouveau `ItemLabelFormatForm` (KEY=`item_label_format`)
+- [x] `apps/printing/services.py` : refonte `_draw_item_label` (titre wrap 2 lignes, logo ofelia, 80×40 mm)
+- [x] `apps/core/admin_views.py` : `FORMS` mis à jour (sections `printing_cards` + `printing_labels`)
+- [x] `templates/core/admin/settings_index.html` : regroupement « Impressions »
+- [x] `apps/core/management/commands/seed_defaults.py` : `card_format` + `item_label_format`
+- [x] Tests `apps/printing/tests/test_services.py` : étiquettes livres
+- [x] SPEC §6.7 mise à jour
 
 ### BUG-013 v2 — Sélecteur de langue qui perd `/bibliofelia/` (pérenne)
 - [x] Doc `docs/bugs/BUG-013-set-language-script-name.md` (régression v2 + fix pérenne)
@@ -746,6 +747,36 @@ Objectif (demande Val 2026-05-30) : les 4 boutons « Scanner » du site (dashboa
   - [x] Nettoyage du code de debug (panneau de log à l'écran, traces `slog`/`build`)
   - [x] **Validé Val 2026-05-30** : Chrome Android excellent ; Firefox/Safari fonctionnels via Quagga
   - [ ] (Suivi séparé) HTTPS local sur la box pour faire marcher la caméra aussi en LAN HTTP — chantier nginx/cert côté keebee, hors de ce sprint.
+
+## Sprint 17 — Récolement & catalogage en scan caméra continu (remplacement OfeliaScan)
+
+> Ouvert 2026-05-30 (temp.txt). Décisions Val : (1) coder maintenant, HTTPS LAN
+> box traité à part — tests sur accès HTTPS ; (2) **récolement d'abord**
+> (FEAT-045) puis catalogage (FEAT-046) ; (3) catalogage web réutilise
+> `ScanSession`/`ScanItem` + `finalize_scan_session()` (OfeliaScan).
+
+### FEAT-045 — Récolement en scan caméra continu
+- [x] Doc `docs/specs/FEAT-045-recolement-camera-continu.md`
+- [x] `static/js/scan-camera.js` : mode continu (`opts.continuous` + `onCode`, bip, compteur viseur, cooldown 1,8 s, bouton « Terminer », `onClose`)
+- [x] `static/js/scan-inventory.js` (nouveau) : contrôleur page rapport (POST live + compteurs + saisie manuelle + reload à la fermeture)
+- [x] `apps/inventory/forms.py` : scope ALL/LOCATION uniquement, `scope_category` retiré, emplacement obligatoire si LOCATION
+- [x] `apps/inventory/views.py` : `add_scan` → JSON ; `create`/`reopen` → redirigent vers `report` ; suppression `session_detail`
+- [x] `apps/inventory/urls.py` : suppression route `detail`
+- [x] `templates/inventory/session_list.html` : sessions ouvertes → `report`
+- [x] `templates/inventory/session_form.html` : sous-titre sans OfeliaScan + JS grise/active l'emplacement
+- [x] `templates/inventory/session_report.html` : panneau scan + compteurs live + saisie manuelle + `scan-inventory.js`
+- [x] `templates/inventory/session_detail.html` : supprimé
+- [x] `templates/base.html` : chaînes i18n mode continu (« Terminer », « Scannés : »)
+- [x] Tests `apps/inventory/tests/` (endpoint JSON, redirections, form scope, render) — 11 verts ; suite complète 331 verts
+- [x] SPEC §6.5 + en-tête mises à jour
+- [x] Gate i18n `scripts/i18n_check.py` → 0 (`scripts/translations_sprint18.py`, 51 entrées)
+- [x] Itération 2 (retours Val) : dé-dup par code + bip/vibration + « exemplaire N » (`copy_index`) ; rapport **par notice** trié auteur/titre, codes Ofelia en pastilles vert/rouge ; suppression statut + « Marquer perdu » (`resolve_missing`). 336 tests verts.
+- [x] Itération 3 (retour Val) : zone de décodage restreinte à une bande centrale (~1/4 hauteur) — `qrbox` (html5) + `inputStream.area` 37/37 % (Quagga) + guide visuel `.scan-camera-band` → un seul code-barres lu à la fois.
+- [x] Déploiement Pi + test Val (HTTPS) — **validé Val 2026-05-31** (itér. 1+2+3 déployées, scan continu + dé-dup + exemplaire N + rapport par notice + bande de décodage)
+- [x] Commit unique FEAT-045 + push origin/main
+
+### FEAT-046 — Catalogage en scan caméra continu (à venir)
+- [ ] À spécifier après validation FEAT-045
 
 ## Correctifs i18n post-FEAT-044 (BUG-018)
 

@@ -130,6 +130,35 @@ def test_build_report_with_relocate_in_location_scope(record, locations):
     assert session.relocate_count == 1
 
 
+def test_build_report_by_record_groups_and_colors(record, locations):
+    """FEAT-045 : regroupement par notice, codes trouvés/manquants, tri auteur/titre."""
+    from apps.catalog.models import Author
+
+    a1, _b2 = locations
+    record.authors.add(Author.objects.create(full_name="Zola"))
+    found = Item.objects.create(record=record, location=a1)
+    missing = Item.objects.create(record=record, location=a1)
+
+    other = BibliographicRecord.objects.create(title="Aaa")
+    other.authors.add(Author.objects.create(full_name="Andersen"))
+    other_item = Item.objects.create(record=other, location=a1)
+
+    session = InventorySession.objects.create(
+        scope_type=InventoryScope.LOCATION, scope_location=a1
+    )
+    record_scan(session, found.ean13)
+    record_scan(session, other_item.ean13)
+
+    by_record = build_report(session)["by_record"]
+    # Tri par auteur : Andersen avant Zola.
+    assert [r["author"] for r in by_record] == ["Andersen", "Zola"]
+    zola = next(r for r in by_record if r["author"] == "Zola")
+    assert zola["total"] == 2 and zola["found_count"] == 1
+    by_code = {it["ean13"]: it["found"] for it in zola["items"]}
+    assert by_code[found.ean13] is True
+    assert by_code[missing.ean13] is False
+
+
 def test_session_status_transitions():
     session = InventorySession.objects.create()
     close_session(session)

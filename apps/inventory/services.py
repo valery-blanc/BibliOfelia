@@ -3,10 +3,12 @@ SPEC §6.5.
 """
 from __future__ import annotations
 
+from collections import defaultdict
+
 from django.db import models
 from django.utils import timezone
 
-from apps.catalog.models import Item, ItemStatus
+from apps.catalog.models import BibliographicRecord, Item, ItemStatus
 from apps.core.search import normalize_code
 
 from .models import InventoryScan, InventoryScope, InventorySession, InventoryStatus
@@ -97,6 +99,47 @@ def build_report(session: InventorySession) -> dict:
             id__in=present_ids | missing_ids | misplaced_ids
         ).select_related("record", "location")
     }
+
+    # FEAT-045 : regroupement par notice des exemplaires attendus (présents +
+    # manquants), trié par auteur puis titre. Chaque code Ofelia est marqué
+    # trouvé (vert) ou manquant (rouge) dans le template.
+    expected_by_record: dict[int, list[Item]] = defaultdict(list)
+    for iid in present_ids | missing_ids:
+        it = items.get(iid)
+        if it:
+            expected_by_record[it.record_id].append(it)
+    records = {
+        r.id: r
+        for r in BibliographicRecord.objects.filter(
+            id__in=expected_by_record.keys()
+        ).prefetch_related("authors")
+    }
+    by_record = []
+    for rid, its in expected_by_record.items():
+        rec = records.get(rid)
+        if rec is None:
+            continue
+        author = ", ".join(a.full_name for a in rec.authors.all())
+        its_sorted = sorted(its, key=lambda i: i.ean13)
+        by_record.append(
+            {
+                "record": rec,
+                "author": author,
+                "title": rec.title,
+                "items": [
+                    {
+                        "ean13": i.ean13,
+                        "internal_id": i.internal_id,
+                        "found": i.id in present_ids,
+                    }
+                    for i in its_sorted
+                ],
+                "found_count": sum(1 for i in its if i.id in present_ids),
+                "total": len(its),
+            }
+        )
+    by_record.sort(key=lambda r: (r["author"].lower(), r["title"].lower()))
+
     return {
         "expected_count": len(expected_ids),
         "scanned_count": len(scanned_item_ids) + len(unknown),
@@ -104,6 +147,7 @@ def build_report(session: InventorySession) -> dict:
         "missing": [items[i] for i in missing_ids if i in items],
         "misplaced": [items[i] for i in misplaced_ids if i in items],
         "unknown": unknown,
+        "by_record": by_record,
     }
 
 

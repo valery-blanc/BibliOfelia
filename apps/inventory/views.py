@@ -2,13 +2,15 @@
 from __future__ import annotations
 
 from django.contrib import messages
+from django.http import JsonResponse
 from django.shortcuts import get_object_or_404, redirect, render
+from django.urls import reverse
 from django.utils.translation import gettext as _
 from django.views.decorators.http import require_POST
 
 from apps.accounts.models import Role
 from apps.accounts.permissions import require_role
-from apps.catalog.models import Item, ItemStatus
+from apps.core.search import normalize_code
 
 from .forms import InventorySessionForm
 from .models import InventorySession, InventoryStatus
@@ -18,7 +20,7 @@ from .services import (
     finalize_session,
     record_scan,
     reopen_session,
-    session_progress,
+    scope_items,
 )
 
 READ_ROLES = (Role.LIBRARIAN, Role.SUPERADMIN, Role.READONLY)
@@ -48,42 +50,58 @@ def session_create(request):
             session.created_by = request.user
             session.save()
             messages.success(request, _("Session de récolement créée."))
-            return redirect("inventory:detail", pk=session.pk)
+            return redirect(reverse("inventory:report", args=[session.pk]) + "?scan=1")
     else:
         form = InventorySessionForm()
     return render(request, "inventory/session_form.html", {"form": form})
 
 
-@require_role(*READ_ROLES)
-def session_detail(request, pk):
-    session = get_object_or_404(
-        InventorySession.objects.select_related("scope_location", "scope_category"),
-        pk=pk,
-    )
-    return render(
-        request,
-        "inventory/session_detail.html",
-        {
-            "session": session,
-            "progress": session_progress(session),
-            "scans": session.scans.select_related("item__record")[:100],
-        },
-    )
-
-
 @require_POST
 @require_role(*WRITE_ROLES)
 def add_scan(request, pk):
+    """Pointage caméra continu (FEAT-045). Endpoint JSON appelé par
+    `scan-inventory.js` pour chaque code Ofelia confirmé."""
     session = get_object_or_404(InventorySession, pk=pk)
     if not session.is_open:
-        messages.error(request, _("Cette session est clôturée."))
-        return redirect("inventory:detail", pk=pk)
-    _scan, created = record_scan(session, request.POST.get("ean", ""))
-    if created:
-        messages.success(request, _("Exemplaire pointé."))
-    else:
-        messages.warning(request, _("Cet exemplaire a déjà été pointé."))
-    return redirect("inventory:detail", pk=pk)
+        return JsonResponse(
+            {"ok": False, "error": _("Cette session est clôturée.")}, status=409
+        )
+    ean = normalize_code(request.POST.get("ean", ""))
+    if not ean:
+        return JsonResponse(
+            {"ok": False, "error": _("Code vide.")}, status=400
+        )
+    scan, created = record_scan(session, ean)
+    item_payload = None
+    if scan.item_id:
+        item = scan.item
+        authors = ""
+        copy_index = None
+        if item.record_id:
+            authors = ", ".join(a.full_name for a in item.record.authors.all())
+            # Nᵉ exemplaire de cette notice pointé dans la session (FEAT-045) :
+            # « exemplaire X » affiché pendant le scan pour distinguer les copies.
+            copy_index = session.scans.filter(item__record_id=item.record_id).count()
+        item_payload = {
+            "internal_id": item.internal_id,
+            "title": item.record.title if item.record_id else "",
+            "author": authors,
+            "copy_index": copy_index,
+            "location_code": item.location.code if item.location_id else "",
+        }
+    return JsonResponse(
+        {
+            "ok": True,
+            "created": created,
+            "known": scan.item_id is not None,
+            "ean": ean,
+            "item": item_payload,
+            "counts": {
+                "expected": scope_items(session).count(),
+                "scanned": session.scans.count(),
+            },
+        }
+    )
 
 
 @require_POST
@@ -104,7 +122,7 @@ def session_reopen(request, pk):
     else:
         reopen_session(session)
         messages.success(request, _("Récolement rouvert."))
-    return redirect("inventory:detail", pk=pk)
+    return redirect("inventory:report", pk=pk)
 
 
 @require_POST
@@ -122,19 +140,11 @@ def session_report(request, pk):
     return render(
         request,
         "inventory/session_report.html",
-        {"session": session, "report": build_report(session)},
+        {
+            "session": session,
+            "report": build_report(session),
+            # FEAT-045 : codes déjà pointés → le scanner les ignore (dé-dup
+            # client, y compris au « Continuer l'inventaire »).
+            "scanned_eans": list(session.scans.values_list("ean13", flat=True)),
+        },
     )
-
-
-@require_POST
-@require_role(*WRITE_ROLES)
-def resolve_missing(request, pk):
-    """Action sur une divergence : marquer un exemplaire manquant comme perdu."""
-    session = get_object_or_404(InventorySession, pk=pk)
-    item = get_object_or_404(Item, pk=request.POST.get("item_pk"))
-    item.status = ItemStatus.LOST
-    item.save(update_fields=["status"])
-    messages.success(
-        request, _("%(id)s marqué perdu.") % {"id": item.internal_id}
-    )
-    return redirect("inventory:report", pk=session.pk)

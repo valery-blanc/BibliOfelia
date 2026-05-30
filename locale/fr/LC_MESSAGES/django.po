@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2026-05-30 18:54+0000\n"
+"POT-Creation-Date: 2026-05-30 21:51+0000\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -318,7 +318,7 @@ msgstr ""
 msgid "notices bibliographiques"
 msgstr ""
 
-#: apps/catalog/models.py:209
+#: apps/catalog/models.py:209 templates/inventory/session_report.html:15
 msgid "exemplaire"
 msgstr ""
 
@@ -346,7 +346,7 @@ msgstr ""
 msgid "EAN13"
 msgstr ""
 
-#: apps/catalog/models.py:319 templates/inventory/session_report.html:67
+#: apps/catalog/models.py:319
 msgid "ISBN"
 msgstr ""
 
@@ -748,7 +748,6 @@ msgstr ""
 #: apps/core/forms.py:321 templates/catalog/record_detail.html:91
 #: templates/catalog/record_detail.html:171
 #: templates/inventory/session_list.html:55
-#: templates/inventory/session_report.html:69
 #: templates/members/member_history.html:65
 msgid "Statut"
 msgstr ""
@@ -761,12 +760,14 @@ msgstr ""
 msgid "Connecté"
 msgstr ""
 
-#: apps/inventory/forms.py:19
-msgid "Choisissez un emplacement."
+#: apps/inventory/forms.py:25 templates/core/admin/enrichment_detail.html:45
+#: templates/core/admin/enrichment_index.html:58
+#: templates/inventory/session_list.html:54
+msgid "Périmètre"
 msgstr ""
 
-#: apps/inventory/forms.py:21
-msgid "Choisissez une catégorie."
+#: apps/inventory/forms.py:36
+msgid "Choisissez un emplacement."
 msgstr ""
 
 #: apps/inventory/models.py:17
@@ -801,41 +802,32 @@ msgstr ""
 msgid "pointages de récolement"
 msgstr ""
 
-#: apps/inventory/views.py:50
+#: apps/inventory/views.py:52
 msgid "Session de récolement créée."
 msgstr ""
 
-#: apps/inventory/views.py:79
+#: apps/inventory/views.py:67
 msgid "Cette session est clôturée."
 msgstr ""
 
-#: apps/inventory/views.py:83
-msgid "Exemplaire pointé."
+#: apps/inventory/views.py:72
+msgid "Code vide."
 msgstr ""
 
-#: apps/inventory/views.py:85
-msgid "Cet exemplaire a déjà été pointé."
-msgstr ""
-
-#: apps/inventory/views.py:94
+#: apps/inventory/views.py:112
 msgid "Récolement clôturé — consultez le rapport."
 msgstr ""
 
-#: apps/inventory/views.py:103
+#: apps/inventory/views.py:121
 msgid "Une session validée ne peut pas être rouverte."
 msgstr ""
 
-#: apps/inventory/views.py:106
+#: apps/inventory/views.py:124
 msgid "Récolement rouvert."
 msgstr ""
 
-#: apps/inventory/views.py:115
+#: apps/inventory/views.py:133
 msgid "Récolement validé définitivement."
-msgstr ""
-
-#: apps/inventory/views.py:138
-#, python-format
-msgid "%(id)s marqué perdu."
 msgstr ""
 
 #: apps/loans/forms.py:31
@@ -1234,7 +1226,7 @@ msgstr ""
 #: templates/catalog/record_bulk_delete.html:44
 #: templates/catalog/record_list.html:119
 #: templates/catalog/record_list.html:196 templates/core/dashboard.html:314
-#: templates/inventory/session_report.html:68 templates/loans/return.html:127
+#: templates/inventory/session_report.html:107 templates/loans/return.html:127
 #: templates/members/member_detail.html:129
 #: templates/members/member_history.html:30
 #: templates/members/member_history.html:62
@@ -1262,7 +1254,7 @@ msgstr ""
 
 #: apps/setup/forms.py:20 apps/setup/views.py:29
 #: templates/accounts/login.html:27 templates/accounts/login.html:29
-#: templates/base.html:59 templates/base.html:61
+#: templates/base.html:61 templates/base.html:63
 #: templates/catalog/record_detail.html:56
 msgid "Langue"
 msgstr ""
@@ -1408,7 +1400,7 @@ msgstr ""
 msgid "Connexion"
 msgstr ""
 
-#: templates/accounts/login.html:19 templates/base.html:45
+#: templates/accounts/login.html:19 templates/base.html:47
 msgid "Bibliothèque communautaire"
 msgstr ""
 
@@ -1434,7 +1426,7 @@ msgstr ""
 msgid "Se connecter"
 msgstr ""
 
-#: templates/accounts/login.html:128 templates/base.html:106
+#: templates/accounts/login.html:128 templates/base.html:108
 msgid "Ofelia Box"
 msgstr ""
 
@@ -1557,7 +1549,7 @@ msgid "Nouveau"
 msgstr ""
 
 #: templates/accounts/user_form.html:11 templates/accounts/user_form.html:22
-#: templates/base.html:78
+#: templates/base.html:80
 msgid "Mon compte"
 msgstr ""
 
@@ -1607,50 +1599,58 @@ msgid "Valeur scannée :"
 msgstr ""
 
 #: templates/base.html:21
-msgid "Caméra indisponible"
+msgid "Terminer"
 msgstr ""
 
 #: templates/base.html:22
+msgid "Scannés :"
+msgstr ""
+
+#: templates/base.html:23 templates/inventory/session_report.html:16
+msgid "Caméra indisponible"
+msgstr ""
+
+#: templates/base.html:24 templates/inventory/session_report.html:17
 msgid "Saisissez le code à la main."
 msgstr ""
 
-#: templates/base.html:23
+#: templates/base.html:25
 msgid "Accès caméra impossible : la page n’est pas en HTTPS."
 msgstr ""
 
-#: templates/base.html:24
+#: templates/base.html:26
 msgid "Ce navigateur ne permet pas l’accès à la caméra."
 msgstr ""
 
-#: templates/base.html:25
+#: templates/base.html:27
 msgid "Permission caméra refusée."
 msgstr ""
 
-#: templates/base.html:26
+#: templates/base.html:28
 msgid "Aucune caméra détectée sur cet appareil."
 msgstr ""
 
-#: templates/base.html:27
+#: templates/base.html:29
 msgid "La caméra est déjà utilisée par une autre application."
 msgstr ""
 
-#: templates/base.html:28
+#: templates/base.html:30
 msgid "Le scanner n’a pas pu être chargé."
 msgstr ""
 
-#: templates/base.html:29
+#: templates/base.html:31
 msgid "Impossible de démarrer la caméra."
 msgstr ""
 
-#: templates/base.html:68
+#: templates/base.html:70
 msgid "Guide utilisateur"
 msgstr ""
 
-#: templates/base.html:72
+#: templates/base.html:74
 msgid "Menu utilisateur"
 msgstr ""
 
-#: templates/base.html:83
+#: templates/base.html:85
 msgid "Déconnexion"
 msgstr ""
 
@@ -1942,12 +1942,10 @@ msgid "Ajouter un exemplaire"
 msgstr ""
 
 #: templates/catalog/record_detail.html:87
-#: templates/inventory/session_report.html:65
 msgid "Code interne"
 msgstr ""
 
 #: templates/catalog/record_detail.html:88
-#: templates/inventory/session_report.html:66
 #: templates/printing/labels_picker.html:50
 #: templates/reports/inactive_list.html:70
 msgid "Code Ofelia"
@@ -2162,9 +2160,8 @@ msgid "Maj"
 msgstr ""
 
 #: templates/core/admin/diagnostics.html:59
-#: templates/inventory/session_report.html:98
-#: templates/inventory/session_report.html:118
-#: templates/inventory/session_report.html:129
+#: templates/inventory/session_report.html:149
+#: templates/inventory/session_report.html:160
 #: templates/members/member_history.html:53
 #: templates/members/member_history.html:89
 msgid "Aucun."
@@ -2204,12 +2201,6 @@ msgstr ""
 
 #: templates/core/admin/enrichment_detail.html:44
 msgid "Sources"
-msgstr ""
-
-#: templates/core/admin/enrichment_detail.html:45
-#: templates/core/admin/enrichment_index.html:58
-#: templates/inventory/session_list.html:54
-msgid "Périmètre"
 msgstr ""
 
 #: templates/core/admin/enrichment_detail.html:46
@@ -2895,62 +2886,17 @@ msgstr ""
 msgid "Page précédente"
 msgstr ""
 
-#: templates/inventory/session_detail.html:28
-msgid "Identifiant OfeliaScan"
-msgstr ""
-
-#: templates/inventory/session_detail.html:29
-msgid "Démarrée le"
-msgstr ""
-
-#: templates/inventory/session_detail.html:33
-msgid "Avancement"
-msgstr ""
-
-#: templates/inventory/session_detail.html:36
-msgid "exemplaires pointés / attendus dans le périmètre"
-msgstr ""
-
-#: templates/inventory/session_detail.html:40
-msgid "Scanner un code Ofelia"
-msgstr ""
-
-#: templates/inventory/session_detail.html:47
-msgid "Scanner le code Ofelia"
-msgstr ""
-
-#: templates/inventory/session_detail.html:50
-msgid "Pointer"
-msgstr ""
-
-#: templates/inventory/session_detail.html:62
-msgid "Clôturer et voir le rapport"
-msgstr ""
-
-#: templates/inventory/session_detail.html:67
-msgid "Voir le rapport"
-msgstr ""
-
-#: templates/inventory/session_detail.html:74
-msgid "Derniers pointages"
-msgstr ""
-
-#: templates/inventory/session_detail.html:83
-msgid "inconnu"
-msgstr ""
-
 #: templates/inventory/session_form.html:4
 #: templates/inventory/session_form.html:14
 msgid "Nouvelle session d'inventaire"
 msgstr ""
 
 #: templates/inventory/session_form.html:15
-msgid ""
-"Choisissez le périmètre à pointer. Un identifiant sera généré pour "
-"OfeliaScan."
+msgid "Choisissez le périmètre à pointer, puis lancez le scan caméra."
 msgstr ""
 
 #: templates/inventory/session_form.html:27
+#: templates/inventory/session_report.html:57
 msgid "Lancer l'inventaire"
 msgstr ""
 
@@ -2983,11 +2929,19 @@ msgid "Aucune session clôturée."
 msgstr ""
 
 #: templates/inventory/session_report.html:4
-#: templates/inventory/session_report.html:14
+#: templates/inventory/session_report.html:30
 msgid "Rapport d'inventaire"
 msgstr ""
 
-#: templates/inventory/session_report.html:19
+#: templates/inventory/session_report.html:13
+msgid "Inconnu du catalogue"
+msgstr ""
+
+#: templates/inventory/session_report.html:14
+msgid "Déjà pointé"
+msgstr ""
+
+#: templates/inventory/session_report.html:35
 #: templates/loans/reservations.html:23 templates/reports/inactive_list.html:28
 #: templates/reports/overdue_list.html:28
 #: templates/reports/reservations_pickup.html:21
@@ -2995,7 +2949,7 @@ msgstr ""
 msgid "Imprimer"
 msgstr ""
 
-#: templates/inventory/session_report.html:30
+#: templates/inventory/session_report.html:46
 #, python-format
 msgid ""
 "exemplaire a été déplacé automatiquement vers <strong>%(code)s</strong> "
@@ -3006,51 +2960,92 @@ msgid_plural ""
 msgstr[0] ""
 msgstr[1] ""
 
-#: templates/inventory/session_report.html:39
+#: templates/inventory/session_report.html:55
+msgid "Ouverture…"
+msgstr ""
+
+#: templates/inventory/session_report.html:57
+msgid "Continuer l'inventaire"
+msgstr ""
+
+#: templates/inventory/session_report.html:60
+msgid "pointés"
+msgstr ""
+
+#: templates/inventory/session_report.html:61
+msgid "attendus"
+msgstr ""
+
+#: templates/inventory/session_report.html:66
+msgid "Saisir un code Ofelia à la main"
+msgstr ""
+
+#: templates/inventory/session_report.html:67 templates/loans/lend.html:39
+#: templates/loans/lend.html:113 templates/loans/return.html:36
+msgid "Valider"
+msgstr ""
+
+#: templates/inventory/session_report.html:76
 msgid "Attendus"
 msgstr ""
 
-#: templates/inventory/session_report.html:43
+#: templates/inventory/session_report.html:80
 msgid "Présents"
 msgstr ""
 
-#: templates/inventory/session_report.html:47
+#: templates/inventory/session_report.html:84
 msgid "Manquants"
 msgstr ""
 
-#: templates/inventory/session_report.html:51
+#: templates/inventory/session_report.html:88
 msgid "Hors périmètre"
 msgstr ""
 
-#: templates/inventory/session_report.html:55
+#: templates/inventory/session_report.html:92
 msgid "Inconnus"
 msgstr ""
 
-#: templates/inventory/session_report.html:59
-msgid "Exemplaires manquants"
+#: templates/inventory/session_report.html:96
+msgid "Exemplaires par notice"
 msgstr ""
 
-#: templates/inventory/session_report.html:87
-msgid "Marquer perdu"
+#: templates/inventory/session_report.html:98
+msgid "Trouvé"
 msgstr ""
 
-#: templates/inventory/session_report.html:101
+#: templates/inventory/session_report.html:99
+msgid "Manquant"
+msgstr ""
+
+#: templates/inventory/session_report.html:106
+msgid "Auteur"
+msgstr ""
+
+#: templates/inventory/session_report.html:108
+msgid "Codes Ofelia"
+msgstr ""
+
+#: templates/inventory/session_report.html:129
+msgid "Aucun exemplaire attendu dans ce périmètre."
+msgstr ""
+
+#: templates/inventory/session_report.html:132
 msgid "Pointés hors périmètre (mauvaise location)"
 msgstr ""
 
-#: templates/inventory/session_report.html:121
+#: templates/inventory/session_report.html:152
 msgid "Codes inconnus du système"
 msgstr ""
 
-#: templates/inventory/session_report.html:137
+#: templates/inventory/session_report.html:168
 msgid "Clôturer"
 msgstr ""
 
-#: templates/inventory/session_report.html:143
+#: templates/inventory/session_report.html:174
 msgid "Rouvrir"
 msgstr ""
 
-#: templates/inventory/session_report.html:149
+#: templates/inventory/session_report.html:180
 msgid "Valider définitivement"
 msgstr ""
 
@@ -3068,11 +3063,6 @@ msgstr ""
 
 #: templates/loans/lend.html:36
 msgid "Scanner ou saisir le n° de carte"
-msgstr ""
-
-#: templates/loans/lend.html:39 templates/loans/lend.html:113
-#: templates/loans/return.html:36
-msgid "Valider"
 msgstr ""
 
 #: templates/loans/lend.html:47 templates/members/member_list.html:61

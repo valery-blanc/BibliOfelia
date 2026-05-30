@@ -1,9 +1,25 @@
 {% extends "base.html" %}
-{% load i18n biblio_icons %}
+{% load i18n biblio_icons static %}
 
 {% block title %}{% trans "Rapport d'inventaire" %}{% endblock %}
 
 {% block tile_strip %}{% include "partials/_tile_strip.html" with active="advanced" %}{% endblock %}
+
+{% block extra_head %}
+<script id="scan-inventory-config" type="application/json">
+{"scanUrl": "{% url 'inventory:add_scan' session.pk %}",
+ "csrfToken": "{{ csrf_token }}",
+ "i18n": {
+   "unknown": "{% trans 'Inconnu du catalogue' %}",
+   "already": "{% trans 'Déjà pointé' %}",
+   "copy": "{% trans 'exemplaire' %}",
+   "cam_unavailable": "{% trans 'Caméra indisponible' %}",
+   "cam_manual_hint": "{% trans 'Saisissez le code à la main.' %}"
+ }}
+</script>
+{{ scanned_eans|json_script:"inv-scanned-eans" }}
+<script defer src="{% static 'js/scan-inventory.js' %}"></script>
+{% endblock %}
 
 {% block content %}
 <header class="pagehead">
@@ -33,6 +49,27 @@
 </div>
 {% endif %}
 
+{% if session.status == 'open' and user.is_librarian %}
+<div class="card scan-panel{% if request.GET.scan %} scan-panel--pulse{% endif %}" style="margin-bottom:18px">
+    <div class="scan-panel-head">
+        <button type="button" class="btn btn--primary js-scan-inventory" data-busy-label="{% trans 'Ouverture…' %}">
+            {% icon "scan-barcode" size="18px" %}
+            {% if report.scanned_count %}{% trans "Continuer l'inventaire" %}{% else %}{% trans "Lancer l'inventaire" %}{% endif %}
+        </button>
+        <div class="scan-panel-counts">
+            <strong id="inv-scan-count">{{ report.scanned_count }}</strong> {% trans "pointés" %}
+            / <span id="inv-scan-expected">{{ report.expected_count }}</span> {% trans "attendus" %}
+        </div>
+    </div>
+    <form id="inv-manual-form" class="scan-manual">
+        <input type="text" name="ean" inputmode="numeric" autocomplete="off" class="form-control"
+               placeholder="{% trans 'Saisir un code Ofelia à la main' %}">
+        <button type="submit" class="btn btn--ghost btn--sm">{% trans "Valider" %}</button>
+    </form>
+    <div id="inv-scan-live" class="inv-scan-live"></div>
+</div>
+{% endif %}
+
 <div class="kpis" style="grid-template-columns:repeat(5,1fr)">
     <div class="kpi" style="--kpi-color:var(--sky)">
         <div class="kpi-num">{{ report.expected_count }}</div>
@@ -56,38 +93,32 @@
     </div>
 </div>
 
-<h2 class="section-title">{% trans "Exemplaires manquants" %}</h2>
-{% if report.missing %}
+<h2 class="section-title">{% trans "Exemplaires par notice" %}</h2>
+<div class="code-legend">
+    <span class="code-pill code-pill--found">{% trans "Trouvé" %}</span>
+    <span class="code-pill code-pill--missing">{% trans "Manquant" %}</span>
+</div>
+{% if report.by_record %}
 <div class="table-wrap">
     <table class="table">
         <thead>
             <tr>
-                <th>{% trans "Code interne" %}</th>
-                <th>{% trans "Code Ofelia" %}</th>
-                <th>{% trans "ISBN" %}</th>
+                <th>{% trans "Auteur" %}</th>
                 <th>{% trans "Titre" %}</th>
-                <th>{% trans "Statut" %}</th>
-                <th></th>
+                <th>{% trans "Codes Ofelia" %}</th>
             </tr>
         </thead>
         <tbody>
-            {% for item in report.missing %}
+            {% for row in report.by_record %}
             <tr>
-                <td>{{ item.internal_id }}</td>
-                <td>{{ item.ean13 }}</td>
-                <td>{{ item.record.isbn_13|default:"—" }}</td>
-                <td><span class="cell-title">{{ item.record.title }}</span></td>
-                <td><span class="badge badge--late">{{ item.get_status_display }}</span></td>
-                <td style="text-align:right">
-                    {% if user.is_librarian and session.status != 'finalized' %}
-                    <form method="post" action="{% url 'inventory:resolve_missing' session.pk %}" style="margin:0">
-                        {% csrf_token %}
-                        <input type="hidden" name="item_pk" value="{{ item.pk }}">
-                        <button type="submit" class="btn btn--ghost btn--sm" style="color:#B83232">
-                            {% trans "Marquer perdu" %}
-                        </button>
-                    </form>
-                    {% endif %}
+                <td>{{ row.author|default:"—" }}</td>
+                <td><span class="cell-title">{{ row.title }}</span></td>
+                <td>
+                    <div class="code-pills">
+                        {% for it in row.items %}
+                        <span class="code-pill {% if it.found %}code-pill--found{% else %}code-pill--missing{% endif %}" title="{{ it.internal_id }}">{{ it.ean13 }}</span>
+                        {% endfor %}
+                    </div>
                 </td>
             </tr>
             {% endfor %}
@@ -95,7 +126,7 @@
     </table>
 </div>
 {% else %}
-<div class="card"><p class="muted">{% trans "Aucun." %}</p></div>
+<div class="card"><p class="muted">{% trans "Aucun exemplaire attendu dans ce périmètre." %}</p></div>
 {% endif %}
 
 <h2 class="section-title" style="margin-top:28px">{% trans "Pointés hors périmètre (mauvaise location)" %}</h2>

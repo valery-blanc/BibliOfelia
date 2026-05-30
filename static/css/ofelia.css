@@ -1194,6 +1194,38 @@ details.advanced-section[open] > summary { margin: -16px -16px 14px; }
 }
 body.scan-camera-open { overflow: hidden; }
 
+/* Bande de décodage centrale (~1/4 hauteur) pour le moteur Quagga — FEAT-045.
+   html5-qrcode ombre lui-même l'extérieur de son qrbox. Le box-shadow géant
+   assombrit tout sauf la bande claire. */
+.scan-camera-band {
+  position: absolute;
+  left: 4%;
+  right: 4%;
+  top: 37%;
+  bottom: 37%;
+  border: 2px solid var(--orange, #ED7538);
+  border-radius: 8px;
+  box-shadow: 0 0 0 100vmax rgba(0, 0, 0, 0.45);
+  pointer-events: none;
+}
+
+/* Compteur live dans le viseur (mode continu — FEAT-045). */
+.scan-camera-count {
+  padding: 6px 16px 0;
+  font-weight: 700;
+  color: var(--forest, #3a6b35);
+  text-align: center;
+}
+/* Dernier exemplaire trouvé (titre — auteur) affiché dans le viseur. */
+.scan-camera-last {
+  padding: 2px 16px 8px;
+  font-size: 15px;
+  font-weight: 600;
+  color: var(--ink);
+  text-align: center;
+}
+.scan-camera-last:empty { display: none; }
+
 @media (max-width: 480px) {
   .scan-camera-modal { padding: 0; }
   .scan-camera-card { max-width: 100%; max-height: 100vh; height: 100%; border-radius: 0; }
@@ -1203,3 +1235,52 @@ body.scan-camera-open { overflow: hidden; }
 @media print {
   .scan-camera-modal { display: none !important; }
 }
+
+/* Panneau de scan de la page rapport de récolement (FEAT-045). */
+.scan-panel-head {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+  flex-wrap: wrap;
+}
+.scan-panel-counts { font-size: 16px; color: var(--ink); }
+.scan-panel--pulse .js-scan-inventory {
+  animation: scanpulse 1.2s ease-in-out 3;
+}
+@keyframes scanpulse {
+  0%, 100% { box-shadow: 0 0 0 0 rgba(237, 117, 56, 0.5); }
+  50% { box-shadow: 0 0 0 8px rgba(237, 117, 56, 0); }
+}
+.scan-manual {
+  display: flex;
+  gap: 8px;
+  margin-top: 12px;
+  max-width: 420px;
+}
+.scan-manual input { flex: 1; }
+.inv-scan-live { margin-top: 12px; display: flex; flex-direction: column; gap: 4px; }
+.inv-scan-row {
+  font-size: 14px;
+  padding: 6px 10px;
+  border-radius: 8px;
+  border-left: 3px solid var(--line);
+}
+.inv-scan-row.is-ok { background: var(--forest-light, #eef4ec); border-left-color: var(--forest, #3a6b35); }
+.inv-scan-row.is-dup { background: var(--amber-light, #fbf2dd); border-left-color: var(--amber, #ED7538); }
+.inv-scan-row.is-unknown { background: #fbe9e9; border-left-color: #B83232; }
+
+/* Pastilles de codes Ofelia par notice (rapport — FEAT-045) :
+   vert = exemplaire trouvé, rouge = manquant. */
+.code-pills { display: flex; flex-wrap: wrap; gap: 6px; }
+.code-pill {
+  display: inline-block;
+  font-family: ui-monospace, SFMono-Regular, Menlo, monospace;
+  font-size: 12px;
+  font-weight: 600;
+  padding: 3px 8px;
+  border-radius: 6px;
+  white-space: nowrap;
+}
+.code-pill--found { background: #e2efe0; color: #2f5b2c; }
+.code-pill--missing { background: #fbe1e1; color: #9c2626; text-decoration: line-through; }
+.code-legend { display: flex; gap: 10px; margin: 0 0 12px; }

@@ -6,7 +6,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: BibliOfelia 1.0\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2026-05-30 18:54+0000\n"
+"POT-Creation-Date: 2026-05-30 21:51+0000\n"
 "PO-Revision-Date: 2026-05-22 00:00+0000\n"
 "Last-Translator: Claude Code\n"
 "Language-Team: English\n"
@@ -316,7 +316,7 @@ msgstr "bibliographic record"
 msgid "notices bibliographiques"
 msgstr "bibliographic records"
 
-#: apps/catalog/models.py:209
+#: apps/catalog/models.py:209 templates/inventory/session_report.html:15
 msgid "exemplaire"
 msgstr "copy"
 
@@ -344,7 +344,7 @@ msgstr "retired Ofelia codes"
 msgid "EAN13"
 msgstr "EAN13"
 
-#: apps/catalog/models.py:319 templates/inventory/session_report.html:67
+#: apps/catalog/models.py:319
 msgid "ISBN"
 msgstr "ISBN"
 
@@ -752,7 +752,6 @@ msgstr "ZeroTier network ID"
 #: apps/core/forms.py:321 templates/catalog/record_detail.html:91
 #: templates/catalog/record_detail.html:171
 #: templates/inventory/session_list.html:55
-#: templates/inventory/session_report.html:69
 #: templates/members/member_history.html:65
 msgid "Statut"
 msgstr "Status"
@@ -765,13 +764,15 @@ msgstr "Disabled"
 msgid "Connecté"
 msgstr "Connected"
 
-#: apps/inventory/forms.py:19
+#: apps/inventory/forms.py:25 templates/core/admin/enrichment_detail.html:45
+#: templates/core/admin/enrichment_index.html:58
+#: templates/inventory/session_list.html:54
+msgid "Périmètre"
+msgstr "Scope"
+
+#: apps/inventory/forms.py:36
 msgid "Choisissez un emplacement."
 msgstr "Choose a location."
-
-#: apps/inventory/forms.py:21
-msgid "Choisissez une catégorie."
-msgstr "Choose a category."
 
 #: apps/inventory/models.py:17
 msgid "Tout le fonds"
@@ -805,42 +806,33 @@ msgstr "inventory scan"
 msgid "pointages de récolement"
 msgstr "inventory scans"
 
-#: apps/inventory/views.py:50
+#: apps/inventory/views.py:52
 msgid "Session de récolement créée."
 msgstr "Inventory session created."
 
-#: apps/inventory/views.py:79
+#: apps/inventory/views.py:67
 msgid "Cette session est clôturée."
 msgstr "This session is closed."
 
-#: apps/inventory/views.py:83
-msgid "Exemplaire pointé."
-msgstr "Copy scanned."
+#: apps/inventory/views.py:72
+msgid "Code vide."
+msgstr "Empty code."
 
-#: apps/inventory/views.py:85
-msgid "Cet exemplaire a déjà été pointé."
-msgstr "This copy has already been scanned."
-
-#: apps/inventory/views.py:94
+#: apps/inventory/views.py:112
 msgid "Récolement clôturé — consultez le rapport."
 msgstr "Inventory closed — see the report."
 
-#: apps/inventory/views.py:103
+#: apps/inventory/views.py:121
 msgid "Une session validée ne peut pas être rouverte."
 msgstr "A finalized session cannot be reopened."
 
-#: apps/inventory/views.py:106
+#: apps/inventory/views.py:124
 msgid "Récolement rouvert."
 msgstr "Inventory reopened."
 
-#: apps/inventory/views.py:115
+#: apps/inventory/views.py:133
 msgid "Récolement validé définitivement."
 msgstr "Inventory finalized for good."
-
-#: apps/inventory/views.py:138
-#, python-format
-msgid "%(id)s marqué perdu."
-msgstr "%(id)s marked as lost."
 
 #: apps/loans/forms.py:31
 msgid "Réserver pour"
@@ -1238,7 +1230,7 @@ msgstr "Top 10 borrowed works"
 #: templates/catalog/record_bulk_delete.html:44
 #: templates/catalog/record_list.html:119
 #: templates/catalog/record_list.html:196 templates/core/dashboard.html:314
-#: templates/inventory/session_report.html:68 templates/loans/return.html:127
+#: templates/inventory/session_report.html:107 templates/loans/return.html:127
 #: templates/members/member_detail.html:129
 #: templates/members/member_history.html:30
 #: templates/members/member_history.html:62
@@ -1266,7 +1258,7 @@ msgstr "No activity"
 
 #: apps/setup/forms.py:20 apps/setup/views.py:29
 #: templates/accounts/login.html:27 templates/accounts/login.html:29
-#: templates/base.html:59 templates/base.html:61
+#: templates/base.html:61 templates/base.html:63
 #: templates/catalog/record_detail.html:56
 msgid "Langue"
 msgstr "Language"
@@ -1416,7 +1408,7 @@ msgstr "You can go back to the previous page or return to the home page."
 msgid "Connexion"
 msgstr "Sign in"
 
-#: templates/accounts/login.html:19 templates/base.html:45
+#: templates/accounts/login.html:19 templates/base.html:47
 msgid "Bibliothèque communautaire"
 msgstr "Community library"
 
@@ -1442,7 +1434,7 @@ msgstr "Username"
 msgid "Se connecter"
 msgstr "Sign in"
 
-#: templates/accounts/login.html:128 templates/base.html:106
+#: templates/accounts/login.html:128 templates/base.html:108
 msgid "Ofelia Box"
 msgstr "Ofelia Box"
 
@@ -1565,7 +1557,7 @@ msgid "Nouveau"
 msgstr "New"
 
 #: templates/accounts/user_form.html:11 templates/accounts/user_form.html:22
-#: templates/base.html:78
+#: templates/base.html:80
 msgid "Mon compte"
 msgstr "My account"
 
@@ -1615,50 +1607,58 @@ msgid "Valeur scannée :"
 msgstr "Scanned value:"
 
 #: templates/base.html:21
+msgid "Terminer"
+msgstr "Finish"
+
+#: templates/base.html:22
+msgid "Scannés :"
+msgstr "Scanned:"
+
+#: templates/base.html:23 templates/inventory/session_report.html:16
 msgid "Caméra indisponible"
 msgstr "Camera unavailable"
 
-#: templates/base.html:22
+#: templates/base.html:24 templates/inventory/session_report.html:17
 msgid "Saisissez le code à la main."
 msgstr "Enter the code by hand."
 
-#: templates/base.html:23
+#: templates/base.html:25
 msgid "Accès caméra impossible : la page n’est pas en HTTPS."
 msgstr "Camera access impossible: the page is not on HTTPS."
 
-#: templates/base.html:24
+#: templates/base.html:26
 msgid "Ce navigateur ne permet pas l’accès à la caméra."
 msgstr "This browser does not allow camera access."
 
-#: templates/base.html:25
+#: templates/base.html:27
 msgid "Permission caméra refusée."
 msgstr "Camera permission denied."
 
-#: templates/base.html:26
+#: templates/base.html:28
 msgid "Aucune caméra détectée sur cet appareil."
 msgstr "No camera detected on this device."
 
-#: templates/base.html:27
+#: templates/base.html:29
 msgid "La caméra est déjà utilisée par une autre application."
 msgstr "The camera is already in use by another application."
 
-#: templates/base.html:28
+#: templates/base.html:30
 msgid "Le scanner n’a pas pu être chargé."
 msgstr "The scanner could not be loaded."
 
-#: templates/base.html:29
+#: templates/base.html:31
 msgid "Impossible de démarrer la caméra."
 msgstr "Unable to start the camera."
 
-#: templates/base.html:68
+#: templates/base.html:70
 msgid "Guide utilisateur"
 msgstr "User guide"
 
-#: templates/base.html:72
+#: templates/base.html:74
 msgid "Menu utilisateur"
 msgstr "User menu"
 
-#: templates/base.html:83
+#: templates/base.html:85
 msgid "Déconnexion"
 msgstr "Log out"
 
@@ -1956,12 +1956,10 @@ msgid "Ajouter un exemplaire"
 msgstr "Add a copy"
 
 #: templates/catalog/record_detail.html:87
-#: templates/inventory/session_report.html:65
 msgid "Code interne"
 msgstr "Internal ID"
 
 #: templates/catalog/record_detail.html:88
-#: templates/inventory/session_report.html:66
 #: templates/printing/labels_picker.html:50
 #: templates/reports/inactive_list.html:70
 msgid "Code Ofelia"
@@ -2183,9 +2181,8 @@ msgid "Maj"
 msgstr "Update"
 
 #: templates/core/admin/diagnostics.html:59
-#: templates/inventory/session_report.html:98
-#: templates/inventory/session_report.html:118
-#: templates/inventory/session_report.html:129
+#: templates/inventory/session_report.html:149
+#: templates/inventory/session_report.html:160
 #: templates/members/member_history.html:53
 #: templates/members/member_history.html:89
 msgid "Aucun."
@@ -2226,12 +2223,6 @@ msgstr "Enrichment"
 #: templates/core/admin/enrichment_detail.html:44
 msgid "Sources"
 msgstr "Sources"
-
-#: templates/core/admin/enrichment_detail.html:45
-#: templates/core/admin/enrichment_index.html:58
-#: templates/inventory/session_list.html:54
-msgid "Périmètre"
-msgstr "Scope"
 
 #: templates/core/admin/enrichment_detail.html:46
 msgid "Total"
@@ -2684,7 +2675,9 @@ msgstr "Django administration"
 msgid ""
 "Gestion fine : catégories, tags, emplacements, catégories d'usagers (réservé "
 "au support technique)."
-msgstr "Fine-grained management: categories, tags, locations, user categories (reserved for technical support)."
+msgstr ""
+"Fine-grained management: categories, tags, locations, user categories "
+"(reserved for technical support)."
 
 #: templates/core/dashboard.html:4 templates/errors/_error_page.html:32
 #: templates/partials/_tile_strip.html:11
@@ -2953,63 +2946,17 @@ msgstr ""
 msgid "Page précédente"
 msgstr "Previous page"
 
-#: templates/inventory/session_detail.html:28
-msgid "Identifiant OfeliaScan"
-msgstr "OfeliaScan identifier"
-
-#: templates/inventory/session_detail.html:29
-msgid "Démarrée le"
-msgstr "Started on"
-
-#: templates/inventory/session_detail.html:33
-msgid "Avancement"
-msgstr "Progress"
-
-#: templates/inventory/session_detail.html:36
-msgid "exemplaires pointés / attendus dans le périmètre"
-msgstr "copies scanned / expected within scope"
-
-#: templates/inventory/session_detail.html:40
-msgid "Scanner un code Ofelia"
-msgstr "Scan an Ofelia code"
-
-#: templates/inventory/session_detail.html:47
-msgid "Scanner le code Ofelia"
-msgstr "Scan the Ofelia code"
-
-#: templates/inventory/session_detail.html:50
-msgid "Pointer"
-msgstr "Scan"
-
-#: templates/inventory/session_detail.html:62
-msgid "Clôturer et voir le rapport"
-msgstr "Close and view the report"
-
-#: templates/inventory/session_detail.html:67
-msgid "Voir le rapport"
-msgstr "View the report"
-
-#: templates/inventory/session_detail.html:74
-msgid "Derniers pointages"
-msgstr "Latest scans"
-
-#: templates/inventory/session_detail.html:83
-msgid "inconnu"
-msgstr "unknown"
-
 #: templates/inventory/session_form.html:4
 #: templates/inventory/session_form.html:14
 msgid "Nouvelle session d'inventaire"
 msgstr "New inventory session"
 
 #: templates/inventory/session_form.html:15
-msgid ""
-"Choisissez le périmètre à pointer. Un identifiant sera généré pour "
-"OfeliaScan."
-msgstr ""
-"Choose the scope to scan. An identifier will be generated for OfeliaScan."
+msgid "Choisissez le périmètre à pointer, puis lancez le scan caméra."
+msgstr "Choose the scope to check, then start the camera scan."
 
 #: templates/inventory/session_form.html:27
+#: templates/inventory/session_report.html:57
 msgid "Lancer l'inventaire"
 msgstr "Start the inventory"
 
@@ -3042,11 +2989,19 @@ msgid "Aucune session clôturée."
 msgstr "No closed session."
 
 #: templates/inventory/session_report.html:4
-#: templates/inventory/session_report.html:14
+#: templates/inventory/session_report.html:30
 msgid "Rapport d'inventaire"
 msgstr "Inventory report"
 
-#: templates/inventory/session_report.html:19
+#: templates/inventory/session_report.html:13
+msgid "Inconnu du catalogue"
+msgstr "Not in catalogue"
+
+#: templates/inventory/session_report.html:14
+msgid "Déjà pointé"
+msgstr "Already checked"
+
+#: templates/inventory/session_report.html:35
 #: templates/loans/reservations.html:23 templates/reports/inactive_list.html:28
 #: templates/reports/overdue_list.html:28
 #: templates/reports/reservations_pickup.html:21
@@ -3054,7 +3009,7 @@ msgstr "Inventory report"
 msgid "Imprimer"
 msgstr "Print"
 
-#: templates/inventory/session_report.html:30
+#: templates/inventory/session_report.html:46
 #, python-format
 msgid ""
 "exemplaire a été déplacé automatiquement vers <strong>%(code)s</strong> "
@@ -3065,51 +3020,92 @@ msgid_plural ""
 msgstr[0] ""
 msgstr[1] ""
 
-#: templates/inventory/session_report.html:39
+#: templates/inventory/session_report.html:55
+msgid "Ouverture…"
+msgstr "Opening…"
+
+#: templates/inventory/session_report.html:57
+msgid "Continuer l'inventaire"
+msgstr "Continue inventory"
+
+#: templates/inventory/session_report.html:60
+msgid "pointés"
+msgstr "checked"
+
+#: templates/inventory/session_report.html:61
+msgid "attendus"
+msgstr "expected"
+
+#: templates/inventory/session_report.html:66
+msgid "Saisir un code Ofelia à la main"
+msgstr "Enter an Ofelia code by hand"
+
+#: templates/inventory/session_report.html:67 templates/loans/lend.html:39
+#: templates/loans/lend.html:113 templates/loans/return.html:36
+msgid "Valider"
+msgstr "Submit"
+
+#: templates/inventory/session_report.html:76
 msgid "Attendus"
 msgstr "Expected"
 
-#: templates/inventory/session_report.html:43
+#: templates/inventory/session_report.html:80
 msgid "Présents"
 msgstr "Present"
 
-#: templates/inventory/session_report.html:47
+#: templates/inventory/session_report.html:84
 msgid "Manquants"
 msgstr "Missing"
 
-#: templates/inventory/session_report.html:51
+#: templates/inventory/session_report.html:88
 msgid "Hors périmètre"
 msgstr "Out of scope"
 
-#: templates/inventory/session_report.html:55
+#: templates/inventory/session_report.html:92
 msgid "Inconnus"
 msgstr "Unknown"
 
-#: templates/inventory/session_report.html:59
-msgid "Exemplaires manquants"
-msgstr "Missing copies"
+#: templates/inventory/session_report.html:96
+msgid "Exemplaires par notice"
+msgstr "Copies by record"
 
-#: templates/inventory/session_report.html:87
-msgid "Marquer perdu"
-msgstr "Mark as lost"
+#: templates/inventory/session_report.html:98
+msgid "Trouvé"
+msgstr "Found"
 
-#: templates/inventory/session_report.html:101
+#: templates/inventory/session_report.html:99
+msgid "Manquant"
+msgstr "Missing"
+
+#: templates/inventory/session_report.html:106
+msgid "Auteur"
+msgstr "Author"
+
+#: templates/inventory/session_report.html:108
+msgid "Codes Ofelia"
+msgstr "Ofelia codes"
+
+#: templates/inventory/session_report.html:129
+msgid "Aucun exemplaire attendu dans ce périmètre."
+msgstr "No copies expected in this scope."
+
+#: templates/inventory/session_report.html:132
 msgid "Pointés hors périmètre (mauvaise location)"
 msgstr "Scanned out of scope (wrong location)"
 
-#: templates/inventory/session_report.html:121
+#: templates/inventory/session_report.html:152
 msgid "Codes inconnus du système"
 msgstr "Codes unknown to the system"
 
-#: templates/inventory/session_report.html:137
+#: templates/inventory/session_report.html:168
 msgid "Clôturer"
 msgstr "Close"
 
-#: templates/inventory/session_report.html:143
+#: templates/inventory/session_report.html:174
 msgid "Rouvrir"
 msgstr "Reopen"
 
-#: templates/inventory/session_report.html:149
+#: templates/inventory/session_report.html:180
 msgid "Valider définitivement"
 msgstr "Finalize"
 
@@ -3128,11 +3124,6 @@ msgstr "1 · Member"
 #: templates/loans/lend.html:36
 msgid "Scanner ou saisir le n° de carte"
 msgstr "Scan or enter the card number"
-
-#: templates/loans/lend.html:39 templates/loans/lend.html:113
-#: templates/loans/return.html:36
-msgid "Valider"
-msgstr "Submit"
 
 #: templates/loans/lend.html:47 templates/members/member_list.html:61
 #: templates/members/member_list.html:62
