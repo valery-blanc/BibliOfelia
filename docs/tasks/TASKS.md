@@ -798,9 +798,12 @@ Objectif (demande Val 2026-05-30) : les 4 boutons « Scanner » du site (dashboa
 - [x] `apps/printing/views.py` + `labels_picker.html` : filtre `?catalog_session=` (n'imprimer que les étiquettes du lot, pré-cochées)
 - [x] Entrée UI « Cataloguer en scannant » (catalogue + Avancé)
 - [x] i18n : `scripts/translations_sprint19.py` (42 entrées × EN/ES/MG, overwrite + de-fuzzy) → `i18n_check.py` → 0 + `compilemessages`
-- [x] Tests `apps/catalog/tests/test_cataloging.py` (12 cas) ; `pytest` vert + `makemigrations --check` → No changes
-- [ ] Lancer dev / test Val (HTTPS ou localhost) → confirmation
-- [ ] Déploiement Pi + commit unique FEAT-046 + push origin/main
+- [x] Tests `apps/catalog/tests/test_cataloging.py` (13 cas) ; `pytest` vert (**349 passed**) + `makemigrations --check` → No changes
+- [x] Déploiement Pi (rebuild Docker, migration `0008` au boot, conteneur healthy)
+- [x] **Itér. 1 (retour Val)** — hub simplifié + mobile : titre/auteur/langue lecture seule (auteur au-dessus du titre, colonne large) ; catégorie/emplacement/état par lot (cases à cocher + « tout cocher ») ; Ex.+corbeille inchangés ; scroll horizontal mobile.
+- [x] **Itér. 2 (BUG doublons ISBN)** — `ATOMIC_REQUESTS` tenait la transaction ouverte pendant le lookup → ligne invisible aux POST concurrents. Fix `@transaction.non_atomic_requests` + création avant lookup + réconciliation + garde client `inFlight`.
+- [x] **Itér. 3 (titres FR manquants)** — `lookup_isbn_multi()` (OpenLibrary + Google Books + BnF + BNE en parallèle, titre SRU nettoyé au ` / `). Vérifié live Box.
+- [x] **Test Val OK 2026-05-31** (Box HTTPS) — commit `1fa6c91` + push origin/main
 
 ## Correctifs i18n post-FEAT-044 (BUG-018)
 
