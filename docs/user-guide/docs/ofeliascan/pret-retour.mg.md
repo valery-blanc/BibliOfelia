@@ -6,6 +6,13 @@ ordinateur no manoratra ny asa.
 
 Ny foto-kevitra: ny finday-nao dia "scanner tsy misy tariby".
 
+!!! tip "Ny tsotra indrindra: ny fakantsarin'ny tranonkala"
+    Ho an'ny fampindramana na famerenana, ny haingana indrindra dia ny
+    fampiasana ny **fakantsarin'ny navigateur** tafiditra ao amin'ny pejy
+    Fampindramana sy Famerenana (jereo ny [Mi-scan amin'ny
+    fakantsary](../premiers-pas/scanner-camera.md)). Ny OfeliaScan voalaza
+    etsy ambany dia mbola safidy ho an'izay tia application manokana.
+
 ## Workflow mahazatra ho an'ny fampindramana
 
 1. Amin'ny ordinateur, sokafy ny pejy **Fampindramana**

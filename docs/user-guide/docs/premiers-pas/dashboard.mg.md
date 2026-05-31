@@ -56,6 +56,5 @@ filaharana iray dia manokatra ny takelakan'ny mpianatra.
 
 !!! tip "Lavitra scanner"
     Ny bandeau **Hijery karatra na boky** eo afovoan'ny tabilao dia
-    manokatra [OfeliaScan](../ofeliascan/activer.md) amin'ny
-    findayinao mba hijery code-barre mivantana ary tonga amin'ny
-    pejy marina tsy mila mitety.
+    manokatra ny [fakantsarin'ny fitaovanao](scanner-camera.md) mba hamaky
+    code-barre mivantana ary tonga amin'ny pejy marina tsy mila mitety.

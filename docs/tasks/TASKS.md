@@ -805,6 +805,61 @@ Objectif (demande Val 2026-05-30) : les 4 boutons « Scanner » du site (dashboa
 - [x] **Itér. 3 (titres FR manquants)** — `lookup_isbn_multi()` (OpenLibrary + Google Books + BnF + BNE en parallèle, titre SRU nettoyé au ` / `). Vérifié live Box.
 - [x] **Test Val OK 2026-05-31** (Box HTTPS) — commit `1fa6c91` + push origin/main
 
+## Sprint 18 — Nettoyage UI + guide utilisateur scan caméra
+
+> Ouvert 2026-05-31 (temp.txt). Décisions Val : config impressions/sources
+> retirée des Paramètres (défauts seed conservés) ; fix volume `/backup`
+> éphémère **hors sprint** (juste documenté — voir [[project_backup_ephemeral]]).
+
+### FEAT-047 — Nettoyage UI Paramètres + Avancé
+- [x] Read and validate spec
+- [x] Doc `docs/specs/FEAT-047-nettoyage-ui-parametres-avance.md`
+- [x] `apps/core/admin_views.py` : retirer `printing_cards`/`printing_labels`/`zerotier`/`sources` de `FORMS` + nettoyer imports
+- [x] `templates/core/admin/settings_index.html` : retirer lien « Comptes utilisateurs » + branches mortes
+- [x] `templates/core/advanced.html` : Rapports → « Tous les rapports » seul ; Emplacements → icône étagère
+- [x] `static/icons/library.svg` (Lucide étagère) + bascule `map-pin`→`library` sur location_list/location_form/session_report
+- [x] Gate i18n `scripts/i18n_check.py` → 0 ; `manage.py check` 0 issue ; `pytest` 349 verts
+- [ ] Déploiement Pi + test Val
+- [x] SPEC §6.6 + en-tête mises à jour
+- [ ] Commit (après confirmation Val)
+
+### Task — Guide utilisateur : scan caméra (catalogage / récolement / prêt-retour)
+> Refléter dans `docs/user-guide/` (4 langues) que le scan passe désormais par
+> la **caméra du navigateur** (FEAT-044 prêt/retour, FEAT-045 récolement,
+> FEAT-046 catalogage par scan). OfeliaScan conservé (décision Val : « on garde
+> ofeliascan pour l'instant ») comme complément mobile/masse.
+- [x] Nouvelle page `premiers-pas/scanner-camera.md` (×4) : caméra navigateur, HTTPS, mode continu vs unique, repli clavier
+- [x] Update `premiers-pas/saisie.md` (×4) : ajout du mode caméra navigateur + recadrage OfeliaScan
+- [x] Nouvelle page `catalogue/catalogage-scan.md` (×4) : catalogage caméra continu (FEAT-046)
+- [x] Rewrite `ofeliascan/recolement.md` (×4) : récolement caméra continu (FEAT-045) + note OfeliaScan masse
+- [x] Note de cadrage en tête de `ofeliascan/activer.md` + `pret-retour.md` (×4) : caméra = défaut du site, OfeliaScan = complément
+- [x] Recadrage des références scan obsolètes : `faire-pret.md`, `retour.md`, `dashboard.md`, `recherche.md` (×4)
+- [x] `mkdocs.yml` : nav (scanner-camera + catalogage-scan)
+- [x] **Restructure (retour Val)** : nouvelle section **Inventaire** (miroir app Avancé→Inventaire) regroupant Récolement + Catalogage par scan. Déplacement `ofeliascan/recolement.*` + `catalogue/catalogage-scan.*` → `inventaire/` (×4 langues), tous les liens internes corrigés (scanner-camera, localisations, etiquettes, glossaire, faq, activer), labels « Récolement OfeliaScan » → « Récolement », nav_translations Inventaire EN/ES/MG (Inventory/Inventario/Fijerena rakitra)
+- [x] 1er build+déploi Box (avant restructure) — smoke test HTTP 200 FR/EN/ES/MG OK
+- [x] Re-build mkdocs `--strict` (post-restructure) — OK, 0 warning (2026-05-31)
+- [x] Re-déploiement Box `/bibliofelia/docs/` — section Inventaire smoke test 200 FR/EN/ES/MG
+- [x] Test Val (navigateur) — approuvé 2026-05-31
+- [x] Commit (après confirmation Val) — groupé avec FEAT-048
+
+### FEAT-048 — Réorganisation des menus du guide utilisateur
+> Demandé Val 2026-05-31. Regrouper les rubriques, alléger le menu, unifier le
+> top menu. Décisions Val : Prêts = 7 pages (prêts/retours + réservations) ;
+> cas courants réécrits en Q/R dans la FAQ (fichiers supprimés) ; suppression de
+> `navigation.tabs` (top menu instable) ; OfeliaScan retiré du nav mais
+> fichiers conservés (réintégration ultérieure).
+- [x] `deploy_pi.sh` : détection rsync + fallback `tar | ssh` (rsync absent en Git Bash Windows)
+- [x] `mkdocs.yml` : fusion Accueil→Premiers pas, Inventaire→Catalogue, Réservations→Prêts ; retrait menus OfeliaScan + Cas courants ; `not_in_nav: /ofeliascan/` ; suppression `navigation.tabs` ; `nav_translations` mises à jour (9 entrées/langue)
+- [x] `faq.md` (×4) : nouvelle section « Cas difficiles » (4 Q/R, ancres `attr_list` stables `#livre-perdu`/`#supprimer-notice`/`#carte-perdue`/`#retard`) + clôture nettoyée
+- [x] Suppression des 12 fichiers `cas-courants/*` ; repointage des ~28 liens internes → `faq.md#…` (script `repoint.py`, 24 fichiers)
+- [x] `index.md` (×4) : sommaire d'accueil réécrit (8 rubriques)
+- [x] `extra.css` : police menu latéral 0.78→0.68rem + interligne resserré (voir plus de sous-chapitres)
+- [x] Build `--strict` 0 warning ; doc équilibrée 32 pages × 4 langues ; gate app `i18n_check.py` → 0
+- [x] Déploiement Box + smoke test (200 pages clés, 404 anciennes URLs cas-courants, ancres FAQ présentes, OfeliaScan hors-nav toujours joignable)
+- [x] Accents restaurés dans tout le nav (Prêts, Récolement, Caméra…) + i18n du menu **complétée** : sous-pages traduites EN/ES/MG (36 éléments/langue, build `--strict` 0 warning). Corrige les `<title>` EN/ES/MG qui restaient en français.
+- [x] Test Val (navigateur) — approuvé 2026-05-31
+- [x] Commit (après confirmation Val)
+
 ## Correctifs i18n post-FEAT-044 (BUG-018)
 
 Signalés par Val 2026-05-30 (navigation espagnole).

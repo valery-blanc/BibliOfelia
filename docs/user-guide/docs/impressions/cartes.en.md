@@ -52,4 +52,4 @@ Each page contains several cards at business card size (85 × 54 mm).
 ## See also
 
 - [Enroll a member](../usagers/inscription.md)
-- [Replace a lost card](../cas-courants/carte-perdue.md)
+- [Replace a lost card](../faq.md#carte-perdue)

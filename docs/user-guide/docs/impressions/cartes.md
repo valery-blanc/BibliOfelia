@@ -56,4 +56,4 @@ carte de visite (85 × 54 mm).
 ## Voir aussi
 
 - [Inscrire un membre](../usagers/inscription.md)
-- [Remplacer une carte perdue](../cas-courants/carte-perdue.md)
+- [Remplacer une carte perdue](../faq.md#carte-perdue)

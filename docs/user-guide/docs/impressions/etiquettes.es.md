@@ -57,9 +57,9 @@ La convención recomendada:
   visible
 
 Elija una ubicación constante para todos sus libros: facilita el
-escaneo durante el [inventario](../ofeliascan/recolement.md).
+escaneo durante el [inventario](../inventaire/recolement.md).
 
 ## Ver también
 
 - [Gestionar los ejemplares](../catalogue/exemplaires.md)
-- [Inventario OfeliaScan](../ofeliascan/recolement.md)
+- [Inventario](../inventaire/recolement.md)

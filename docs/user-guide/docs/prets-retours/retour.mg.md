@@ -23,9 +23,9 @@ Azonao atao ny mampifandimby antontana boky famerenana ao anatin'ny
 segondra.
 
 !!! tip "Tsy misy scanner?"
-    Soraty ny code an'ny kopia amin'ny clavier dia **Enter**, na
-    click amin'ny **Hanamarina**. Azonao koa atao ny mampiasa
-    OfeliaScan avy amin'ny finday.
+    Tsindrio **Hijery boky** mba hanokatra ny [fakantsarin'ny
+    fitaovanao](../premiers-pas/scanner-camera.md), na soraty ny code an'ny
+    kopia amin'ny clavier dia **Enter** / **Hanamarina**.
 
 ## Toe-javatra manokana
 
@@ -44,7 +44,7 @@ tsy te-hampihena ny famerenana isika. Raha te hampandre ny
 mpianatra hoe tara ny boky ianao, ataovy am-bava izany.
 
 Mba hanaraha-maso ireo tara amin'ny fomba mitohy, jereo [Ohatra:
-tara mihalava](../cas-courants/retard.md).
+tara mihalava](../faq.md#retard).
 
 ### Mamoaka famandrihana ny boky
 

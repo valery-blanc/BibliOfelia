@@ -47,9 +47,9 @@ ho an'ireo boky vaovao na tena taloha.
 
 ### Ahoana no mandamina rakitra iray?
 
-Manaova récolement OfeliaScan amin'ny toerana vaovao: ny boky
+Manaova récolement amin'ny toerana vaovao: ny boky
 voajery rehetra dia ho voasokajy automatika. Jereo
-[Récolement](ofeliascan/recolement.md).
+[Récolement](inventaire/recolement.md).
 
 ## Momba ny famandrihana
 
@@ -100,7 +100,51 @@ rafitra** an'ny tabilao.
 
 Raha tsy anio na omaly, ampandreneso ny mpitantana.
 
+## Tranga sarotra
+
+### Very na simba loatra ny boky, ahoana no fanesorana azy? { #livre-perdu }
+
+Ho an'ny boky very nandritra ny fampindramana: sokafy ny
+[takelakan'ny mpianatra](usagers/fiche.md), tadiavo ny fampindramana
+ao amin'ny **Fampindramana mihazo** dia tsindrio **Very**. Ny
+fampindramana sy ny kopia dia mandeha amin'ny toetra *Very*; ny
+mpianatra dia mitazona ny tantarany ary afaka manohy mampindrana. Ho
+an'ny boky naverina simba loatra: soraty ny famerenana, dia eo amin'ny
+[takelakan'ny kopia](catalogue/exemplaires.md) tsindrio **Foanana**.
+Ny BibliOfelia dia tsy mitantana sazy na facturation: anjaranao ny
+fanoloana araka ny fitsipikao anatiny.
+
+### Ahoana no fanafoanana notice tanteraka amin'ny boky? { #supprimer-notice }
+
+Raha tsy misy kopia intsony ny notice (very daholo, nomena, nariana),
+sokafy ny takelany dia tsindrio **Hanafoana notice**, na ampiasao ny
+[asa marobe](catalogue/operations-lot.md). Ny code Ofelia an'ny kopia
+voafoana dia mijanona voatahiry mandrakizay: ny etikety mbola
+mihodinkodina dia tsy hahafantatra boky hafa tsy nahy mihitsy.
+
+### Very ny karatry ny mpianatra, inona no atao? { #carte-perdue }
+
+Sokafy ny [takelakan'ny mpianatra](usagers/fiche.md) dia tsindrio
+**Hanolo ny karatra**: ny BibliOfelia dia manome laharana vaovao,
+mametraka ny taloha ankilany mandrakizay ary mitazona ny tantara
+manontolo. Ny karatra taloha dia tsy miasa intsony (ny scan rehetra
+dia mamerina hadisoana) — simbao izy raha miseho indray. Mandritra ny
+fiandrasana ny karatra vaovao, afaka mampindrana ny mpianatra raha
+karohina amin'ny anarany. Atontay indray ny karatra avy amin'ny
+[Manonta karatra](impressions/cartes.md).
+
+### Ahoana no fitantanana tara mihalava? { #retard }
+
+Araho ny tara amin'ny kaontera **Fampindramana tara** eo amin'ny
+tabilao sy **Tatitra → Fampindramana tara**. Arakaraka ny halehibe:
+(1) antsoy ny mpianatra (hita eo amin'ny takelany ny telefoniny); (2)
+raha hisakana ny fampindramana, **hampijanona** vonjimaika ny
+mpianatra avy amin'ny takelany dia hampandeha indray rehefa miverina
+ny boky; (3) ho an'ny tara volana maro, marika ny fampindramana ho
+**Very**. Ny BibliOfelia dia tsy mamorona taratasy fampandrenesana: ny
+telefonina, SMS na fanambarana no mahomby indrindra amin'ny tranomboky
+kely.
+
 ## Fanontaniana tsy voasoratra?
 
-Jereo ny [Ohatra mahazatra](cas-courants/livre-perdu.md) na
-mifandray amin'ny mpitantana ny Box-nao.
+Mifandray amin'ny mpitantana ny Box-nao.

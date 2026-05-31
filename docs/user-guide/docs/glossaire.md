@@ -27,8 +27,8 @@ pour les prêts, les retours, le récolement.
 Une fois imprimé, ce code ne change jamais. Si une étiquette ou une
 carte est perdue, **on n'imprime pas la même** : on en crée une
 nouvelle avec un autre code (voir
-[Livre perdu](cas-courants/livre-perdu.md) et
-[Carte perdue](cas-courants/carte-perdue.md)).
+[Livre perdu](faq.md#livre-perdu) et
+[Carte perdue](faq.md#carte-perdue)).
 
 ### Code interne (sur la fiche du livre, pas sur l'étiquette)
 
@@ -139,7 +139,7 @@ L'emprunt d'un livre par un membre, avec une date de retour. Voir
 
 L'inventaire d'un rayon : on parcourt les étagères et on scanne
 chaque livre pour vérifier qu'il est à sa place. Voir
-[Récolement](ofeliascan/recolement.md).
+[Récolement](inventaire/recolement.md).
 
 ### Réservation
 

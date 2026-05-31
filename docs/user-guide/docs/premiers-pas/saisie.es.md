@@ -1,7 +1,22 @@
-# Modos de entrada: escáner, OfeliaScan o teclado
+# Modos de entrada: cámara, escáner o teclado
 
 BibliOfelia está diseñado para funcionar con o sin equipo específico.
 Elija el modo que corresponda a su equipo.
+
+## La cámara del navegador (sin equipo)
+
+Todos los botones **Escanear** del sitio abren la **cámara** de su
+dispositivo (teléfono, tableta, webcam) — sin aplicación que instalar. Es
+el modo por defecto para escanear libros y tarjetas.
+
+**Ventajas:**
+
+- Nada que instalar ni conectar
+- Funciona en teléfono y tableta, al desplazarse entre los estantes
+- Modo **continuo** para el inventario y la catalogación (escaneo en serie)
+
+**Limitación:** requiere una conexión **segura (https://)**. Consulte
+[Escanear con la cámara](scanner-camera.md) para más detalles.
 
 ## El escáner (recomendado para el uso diario)
 
@@ -18,20 +33,23 @@ automáticamente. Es el modo más rápido y menos cansado.
 **Limitación:** el escáner debe estar conectado al puesto donde
 trabaja.
 
-## OfeliaScan (teléfono móvil)
+## OfeliaScan (aplicación móvil, como complemento)
 
-OfeliaScan es la aplicación Android compañera de BibliOfelia. Escanea
-con la cámara del teléfono y el resultado se envía a BibliOfelia.
+OfeliaScan es la aplicación Android compañera de BibliOfelia. Sigue siendo
+útil como complemento móvil, en particular para enviar lotes grandes de
+catalogación o de inventario.
 
 **Ventajas:**
 
-- No necesita escáner ni puesto al lado de cada estantería
-- Ideal para inventario (caminar entre los estantes)
+- Una aplicación dedicada, para quienes la prefieren a la cámara del
+  navegador
+- Envío de lotes enteros a BibliOfelia
 
 **Limitaciones:**
 
 - Primera vez: hay que [emparejar el teléfono](../ofeliascan/activer.md)
-- Más lento que un escáner (la cámara debe leer el código)
+- Para un escaneo puntual, la [cámara del navegador](scanner-camera.md) es
+  más directa (nada que instalar)
 
 ## El teclado (siempre disponible)
 

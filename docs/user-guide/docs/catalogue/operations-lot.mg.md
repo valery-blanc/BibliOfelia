@@ -39,7 +39,7 @@ notice voafidy**.
 
     Vakio tsara ny hafatra fanamarinana alohan'ny hanamarinana ireo.
     Ireo code an'ny kopia voafoana dia tsy ho afaka ampiasaina
-    intsony (jereo [Ohatra: boky very](../cas-courants/livre-perdu.md)).
+    intsony (jereo [Ohatra: boky very](../faq.md#livre-perdu)).
 
 ## Toro hevitra: mifidy ny rehetra amin'ny pejy
 

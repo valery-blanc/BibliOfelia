@@ -17,16 +17,14 @@ cards and labels.
 
 ## Contents
 
-1. **Getting started** — sign in, dashboard, input methods
-2. **Catalog** — books, copies, search, bulk operations
+1. **Getting started** — home, sign in, dashboard, input methods, camera scan
+2. **Catalog** — books, copies, search, bulk operations, inventory
 3. **Members** — enrollment, profile, member card
-4. **Loans and returns** — daily routine
-5. **Reservations** — queue, notifications, pickup
-6. **OfeliaScan mobile** — Android scanner
-7. **Printing** — member cards + book labels
-8. **Reports** — KPIs and CSV exports
-9. **Common cases** — lost book, lost card, overdue
-10. **FAQ and glossary**
+4. **Loans** — loans, returns, renewals, on-site, reservations
+5. **Printing** — member cards + book labels
+6. **Reports** — KPIs and CSV exports
+7. **FAQ** — frequent questions and difficult cases (lost book, lost card, overdue)
+8. **Glossary**
 
 !!! tip "This guide is available in 4 languages"
     Use the selector at the top right to switch between

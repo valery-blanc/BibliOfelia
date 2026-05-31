@@ -1,7 +1,7 @@
 # Hacer un préstamo
 
 Registrar un préstamo es la acción más frecuente del día. Con un
-escáner u OfeliaScan, toma menos de 10 segundos.
+escáner o la cámara de su dispositivo, toma menos de 10 segundos.
 
 ![Página Préstamo con las zonas de acción marcadas 1, 2, 3, 4](../assets/screenshots/es/prets-retours/lend.png)
 
@@ -25,9 +25,10 @@ encontrarlo:
   de la tarjeta) en el campo ➊, luego pulse **Enter** o haga clic
   en **Validar**.
 
-Si no tiene la tarjeta ni el número, haga clic en **➋ Escanear la
-tarjeta** para abrir OfeliaScan en su teléfono y escanear desde el
-móvil — práctico si el escáner no está conectado.
+También puede hacer clic en **➋ Escanear la tarjeta** para abrir la
+**cámara** de su dispositivo y leer el código de barras de la tarjeta —
+práctico si el escáner no está conectado (véase [Escanear con la
+cámara](../premiers-pas/scanner-camera.md)).
 
 !!! info "¿El miembro no tiene su tarjeta?"
     Sin problema: use la búsqueda global arriba del sitio (escriba
@@ -48,8 +49,8 @@ Introduzca el o los libros a prestar de la misma forma:
 - **Teclado**: escriba el código Ofelia (los dígitos bajo el código
   de barras de la etiqueta) en el campo ➌, luego **Enter** o
   **Validar**.
-- **Móvil**: haga clic en el botón naranja **➍ Escanear un libro**
-  para abrir OfeliaScan.
+- **Cámara**: haga clic en el botón naranja **➍ Escanear un libro**
+  para abrir la cámara de su dispositivo.
 
 Puede encadenar varios libros para un mismo miembro — cada escaneo
 añade una línea al carrito. Para retirar un libro del carrito, haga
@@ -91,5 +92,5 @@ límite o la supera, aparece en la sección **Seguimientos** del
   sus libros
 - [Renovar un préstamo](prolongation.md) — extender la fecha de
   devolución
-- [Activar OfeliaScan](../ofeliascan/activer.md) — configurar el
-  escáner móvil la primera vez
+- [Escanear con la cámara](../premiers-pas/scanner-camera.md) — cómo
+  funciona la cámara del sitio

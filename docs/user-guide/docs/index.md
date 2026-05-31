@@ -17,16 +17,14 @@ le catalogue, imprimer des cartes et des etiquettes.
 
 ## Sommaire
 
-1. **Premiers pas** — connexion, dashboard, modes de saisie
-2. **Catalogue** — livres, exemplaires, recherche, operations en lot
+1. **Premiers pas** — accueil, connexion, dashboard, modes de saisie, scan camera
+2. **Catalogue** — livres, exemplaires, recherche, operations en lot, recolement
 3. **Usagers** — inscription, fiche, carte de membre
-4. **Prets et retours** — geste du quotidien
-5. **Reservations** — file d'attente, notifications, retraits
-6. **OfeliaScan mobile** — scanner Android
-7. **Impressions** — cartes membres + etiquettes livres
-8. **Rapports** — KPIs et exports CSV
-9. **Cas courants** — livre perdu, carte perdue, retard
-10. **FAQ et glossaire**
+4. **Prets** — prets, retours, prolongations, consultation, reservations
+5. **Impressions** — cartes membres + etiquettes livres
+6. **Rapports** — KPIs et exports CSV
+7. **FAQ** — questions frequentes et cas difficiles (livre perdu, carte perdue, retard)
+8. **Glossaire**
 
 !!! tip "Ce guide est disponible en 4 langues"
     Utilisez le selecteur en haut a droite pour basculer en

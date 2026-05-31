@@ -1,7 +1,22 @@
-# Modes de saisie : douchette, OfeliaScan ou clavier ?
+# Modes de saisie : caméra, douchette ou clavier ?
 
 BibliOfelia est conçu pour fonctionner avec ou sans matériel spécifique.
 Choisissez le mode qui correspond à votre équipement.
+
+## La caméra du navigateur (sans matériel)
+
+Tous les boutons **Scanner** du site ouvrent la **caméra** de votre
+appareil (téléphone, tablette, webcam) — aucune application à installer.
+C'est le mode par défaut pour scanner livres et cartes.
+
+**Avantages :**
+
+- Rien à installer ni à brancher
+- Marche sur téléphone et tablette, en se déplaçant dans les rayons
+- Mode **continu** pour le récolement et le catalogage (scan à la chaîne)
+
+**Limite :** nécessite une connexion **sécurisée (https://)**. Voir
+[Scanner avec la caméra](scanner-camera.md) pour le détail.
 
 ## La douchette (recommandé pour le quotidien)
 
@@ -18,21 +33,22 @@ automatiquement. C'est le mode le plus rapide et le moins fatigant.
 **Limite :** la douchette doit être branchée au poste depuis lequel
 vous travaillez.
 
-## OfeliaScan (téléphone mobile)
+## OfeliaScan (application mobile, en complément)
 
-OfeliaScan est l'application Android compagnon de BibliOfelia. Vous
-scannez avec la caméra de votre téléphone, et le résultat est envoyé à
-BibliOfelia.
+OfeliaScan est l'application Android compagnon de BibliOfelia. Elle reste
+utile comme complément mobile, notamment pour envoyer de gros lots de
+catalogage ou de récolement.
 
 **Avantages :**
 
-- Pas besoin de douchette ni de poste à côté de chaque étagère
-- Idéal pour le récolement (faire l'inventaire dans les rayons)
+- Application dédiée, pour ceux qui la préfèrent à la caméra du navigateur
+- Envoi de lots entiers à BibliOfelia
 
 **Limites :**
 
 - Première utilisation : il faut [appairer le téléphone](../ofeliascan/activer.md)
-- Plus lent qu'une douchette (la caméra doit lire le code)
+- Pour un scan ponctuel, la [caméra du navigateur](scanner-camera.md) est
+  plus directe (rien à installer)
 
 ## Le clavier (toujours disponible)
 

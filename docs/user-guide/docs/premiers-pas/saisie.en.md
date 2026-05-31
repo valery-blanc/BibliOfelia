@@ -1,7 +1,22 @@
-# Input methods: scanner, OfeliaScan or keyboard?
+# Input methods: camera, scanner or keyboard?
 
 BibliOfelia is designed to work with or without specific hardware.
 Choose the mode that fits your equipment.
+
+## The browser camera (no hardware)
+
+Every **Scan** button on the site opens the **camera** of your device
+(phone, tablet, webcam) — no app to install. This is the default mode for
+scanning books and cards.
+
+**Advantages:**
+
+- Nothing to install or plug in
+- Works on phone and tablet, while moving through the stacks
+- **Continuous** mode for inventory and cataloguing (scanning in a row)
+
+**Limitation:** requires a **secure (https://)** connection. See [Scanning
+with the camera](scanner-camera.md) for details.
 
 ## The barcode scanner (recommended for daily use)
 
@@ -18,20 +33,22 @@ automatically. This is the fastest, least tiring mode.
 **Limitation:** the scanner must be plugged into the workstation
 you're using.
 
-## OfeliaScan (mobile phone)
+## OfeliaScan (mobile app, as a complement)
 
-OfeliaScan is the Android companion app for BibliOfelia. You scan with
-your phone camera, and the result is sent to BibliOfelia.
+OfeliaScan is the Android companion app for BibliOfelia. It remains useful
+as a mobile complement, in particular for sending large batches of
+cataloguing or inventory.
 
 **Advantages:**
 
-- No need for a scanner or workstation next to every shelf
-- Ideal for inventory (walking through the stacks)
+- A dedicated app, for those who prefer it to the browser camera
+- Sending whole batches to BibliOfelia
 
 **Limitations:**
 
 - First-time setup: you must [pair the phone](../ofeliascan/activer.md)
-- Slower than a scanner (the camera has to read the code)
+- For a one-off scan, the [browser camera](scanner-camera.md) is more direct
+  (nothing to install)
 
 ## The keyboard (always available)
 

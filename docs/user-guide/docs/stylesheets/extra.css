@@ -224,12 +224,22 @@ body, .md-typeset {
   background: transparent;
 }
 .md-nav {
-  font-size: 0.78rem;
+  font-size: 0.68rem;
+  line-height: 1.35;
+}
+/* Densifier le menu lateral : on veut voir un maximum de sous-chapitres
+   d'un seul coup d'oeil meme quand une section en compte beaucoup. */
+.md-nav__list .md-nav__link {
+  margin-top: 0.32em;
+  margin-bottom: 0.32em;
+}
+.md-nav__item--section > .md-nav__link {
+  margin-bottom: 0.2em;
 }
 .md-nav__title {
   color: var(--ofelia-ink);
   font-weight: 700;
-  font-size: 0.85rem;
+  font-size: 0.74rem;
 }
 .md-nav__link {
   color: var(--ofelia-ink-soft);

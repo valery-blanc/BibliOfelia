@@ -56,4 +56,4 @@ formato tarjeta de visita (85 × 54 mm).
 ## Ver también
 
 - [Inscribir un miembro](../usagers/inscription.md)
-- [Reemplazar una tarjeta perdida](../cas-courants/carte-perdue.md)
+- [Reemplazar una tarjeta perdida](../faq.md#carte-perdue)

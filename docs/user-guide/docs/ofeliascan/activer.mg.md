@@ -5,6 +5,13 @@ Rehefa voa-install sy voapifandray amin'ny Ofelia Box-nao izy, dia
 ahafahanao mijery code-barre avy amin'ny finday ary mandefa ny
 vokany mivantana ho an'ny BibliOfelia amin'ny ordinateur.
 
+!!! info "Tafiditra ao amin'ny tranonkala izao ny fakantsary"
+    Tsy mila OfeliaScan intsony ianao ho an'ny scan andavanandro: ny bokotra
+    **Scanner** eo amin'ny tranonkala dia manokatra mivantana ny **fakantsarin'ny
+    navigateur** (jereo ny [Mi-scan amin'ny fakantsary](../premiers-pas/scanner-camera.md)).
+    Mbola ilaina ho **fanampin'ny finday** ny OfeliaScan, indrindra ho an'ny
+    fandefasana **lot lehibe** catalogage na récolement.
+
 ## Rahoviana no ampiasaina?
 
 - **Récolement**: mizotra amin'ny rakitra fa tsy manindrana
@@ -45,22 +52,9 @@ ampiasaina.
     iray. Tsirairay no mahita ny scans-ny manokana ao amin'ny
     BibliOfelia.
 
-## Ampiasao ny bandeau Hijery
-
-Eo amin'ny **tabilao** sy ny pejy **Fampindramana** / **Famerenana**,
-bandeau **Hijery karatra na boky** no manokatra mivantana OfeliaScan
-amin'ny finday:
-
-1. Click amin'ny bandeau ao amin'ny BibliOfelia (amin'ny PC)
-2. OfeliaScan dia misokatra amin'ny finday
-3. Jereo ny code-barre
-4. BibliOfelia dia miova automatika amin'ny pejy marina
-
-Io no fomba haingana indrindra hampifandimbiana scan mobile sy asa
-amin'ny toerana.
-
 ## Jereo koa
 
+- [Mi-scan amin'ny fakantsary](../premiers-pas/scanner-camera.md) — ny scan
+  tafiditra ao amin'ny tranonkala
 - [Fampindramana sy famerenana amin'ny OfeliaScan](pret-retour.md)
-- [Récolement](recolement.md) — ny fampiasana mahery indrindra an'ny
-  OfeliaScan
+- [Récolement](../inventaire/recolement.md) — fijerena ny rakitra amin'ny scan

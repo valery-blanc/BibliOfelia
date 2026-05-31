@@ -49,9 +49,9 @@ pour les livres très récents ou très anciens.
 
 ### Comment réorganiser un rayon ?
 
-Faites un récolement OfeliaScan dans la nouvelle localisation : tous
+Faites un récolement dans la nouvelle localisation : tous
 les livres scannés seront automatiquement reclassés. Voir
-[Récolement](ofeliascan/recolement.md).
+[Récolement](inventaire/recolement.md).
 
 ## Sur les réservations
 
@@ -102,7 +102,48 @@ sur la Box. Vous voyez la **Dernière sauvegarde** dans le panneau
 
 Si elle ne date pas d'aujourd'hui ou d'hier, prévenez l'administrateur.
 
+## Sur les cas difficiles
+
+### Un livre est perdu ou trop abîmé, comment le sortir ? { #livre-perdu }
+
+Pour un livre perdu pendant un prêt : ouvrez la [fiche du
+membre](usagers/fiche.md), trouvez le prêt dans **Prêts en cours** et
+cliquez sur **Perdu**. Le prêt et l'exemplaire passent au statut
+*Perdu* ; le membre garde son historique et peut continuer
+d'emprunter. Pour un livre rendu trop abîmé : enregistrez le retour,
+puis sur la [fiche de l'exemplaire](catalogue/exemplaires.md) cliquez
+sur **Mettre au rebut**. BibliOfelia ne gère ni amende ni facturation :
+le remplacement relève de vos règles internes.
+
+### Comment supprimer définitivement une notice du catalogue ? { #supprimer-notice }
+
+Si une notice n'a plus aucun exemplaire (tous perdus, donnés, jetés),
+ouvrez sa fiche et cliquez sur **Supprimer la notice**, ou utilisez une
+[opération en lot](catalogue/operations-lot.md). Le code Ofelia d'un
+exemplaire supprimé reste réservé à vie : une étiquette qui circule
+encore ne pourra jamais désigner un autre livre par erreur.
+
+### Un membre a perdu sa carte, que faire ? { #carte-perdue }
+
+Ouvrez la [fiche du membre](usagers/fiche.md) et cliquez sur
+**Remplacer la carte** : BibliOfelia attribue un nouveau numéro, met
+l'ancien de côté pour de bon et conserve tout l'historique. L'ancienne
+carte ne fonctionne plus (tout scan renvoie une erreur), détruisez-la
+si elle réapparaît. En attendant la nouvelle carte, le membre peut
+emprunter en étant recherché par son nom. Réimprimez la carte depuis
+[Imprimer les cartes](impressions/cartes.md).
+
+### Comment gérer un retard prolongé ? { #retard }
+
+Suivez les retards via le compteur **Prêts en retard** du tableau de
+bord et **Rapports → Prêts en retard**. Selon la gravité : (1) appelez
+le membre (téléphone visible sur sa fiche) ; (2) pour bloquer ses
+emprunts, **désactivez** temporairement le membre depuis sa fiche et
+réactivez-le au retour des livres ; (3) pour un retard de plusieurs
+mois, marquez le prêt **Perdu**. BibliOfelia ne génère pas de lettre de
+relance : téléphone, SMS ou affichage restent les plus efficaces dans
+une petite bibliothèque.
+
 ## Une question qui n'est pas listée ?
 
-Consultez les [Cas courants](cas-courants/livre-perdu.md) ou
-contactez l'administrateur de votre Box.
+Contactez l'administrateur de votre Box.

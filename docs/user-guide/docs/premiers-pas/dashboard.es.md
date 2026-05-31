@@ -53,7 +53,6 @@ atrasados con el nombre del miembro, el plazo vencido y el número de
 días de atraso. Un clic en una línea abre la ficha del miembro.
 
 !!! tip "Atajo escáner"
-    El banner **Escanear una tarjeta o un libro** en medio del panel
-    abre [OfeliaScan](../ofeliascan/activer.md) en su teléfono para
-    escanear directamente un código de barras y llegar a la página
-    correcta sin navegar.
+    El banner **Escanear una tarjeta o un libro** en medio del panel abre
+    la [cámara de su dispositivo](scanner-camera.md) para leer directamente
+    un código de barras y llegar a la página correcta sin navegar.

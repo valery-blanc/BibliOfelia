@@ -1,7 +1,22 @@
-# Fomba fampidirana: scanner, OfeliaScan na clavier?
+# Fomba fampidirana: fakantsary, scanner na clavier?
 
 Natao mba hiasa miaraka na tsy misy fitaovana manokana ny
 BibliOfelia. Safidio ny fomba mifanaraka amin'ny fitaovanao.
+
+## Ny fakantsarin'ny navigateur (tsy misy fitaovana)
+
+Ny bokotra **Scanner** rehetra eo amin'ny tranonkala dia manokatra ny
+**fakantsarin'ny** fitaovanao (finday, tablette, webcam) — tsy misy
+application apetraka. Io no fomba default hi-scan ny boky sy ny karatra.
+
+**Tombony:**
+
+- Tsy misy apetraka na akatona
+- Miasa amin'ny finday sy tablette, mandeha ao anatin'ny rakitra
+- Mode **tsy tapaka** ho an'ny récolement sy ny catalogage (scan mifandimby)
+
+**Fetra:** mila fifandraisana **voaaro (https://)**. Jereo ny [Mi-scan amin'ny
+fakantsary](scanner-camera.md) ho an'ny antsipiriany.
 
 ## Ny scanner (atolotra ho an'ny fampiasana isan'andro)
 
@@ -18,22 +33,23 @@ automatika. Io no fomba haingana indrindra sady tsy mahasasatra.
 **Fetra:** ny scanner dia tokony tafiditra amin'ny ordinateur izay
 iasanao.
 
-## OfeliaScan (telefonina finday)
+## OfeliaScan (application finday, ho fanampiny)
 
-OfeliaScan no aplikasiona Android namana an'ny BibliOfelia.
-Hijery amin'ny caméra an'ny finday ianao, ary ny vokany dia
-alefan'ny BibliOfelia.
+OfeliaScan no aplikasiona Android namana an'ny BibliOfelia. Mbola ilaina ho
+fanampin'ny finday izy, indrindra ho an'ny fandefasana lot lehibe catalogage
+na récolement.
 
 **Tombony:**
 
-- Tsy mila scanner na ordinateur eo akaikin'ny rakitra tsirairay
-- Tsara amin'ny récolement (manao inventaire ao amin'ny rakitra)
+- Application manokana, ho an'izay tia azy noho ny fakantsarin'ny navigateur
+- Fandefasana lot iray manontolo amin'ny BibliOfelia
 
 **Fetra:**
 
 - Voalohany: tokony hampifandraisina amin'ny finday
   ([appairage](../ofeliascan/activer.md))
-- Misalasala kokoa noho ny scanner (ilain'ny caméra hamaky ny code)
+- Ho an'ny scan tsindraindray, ny [fakantsarin'ny navigateur](scanner-camera.md)
+  no mivantana kokoa (tsy misy apetraka)
 
 ## Ny clavier (mety amin'ny fotoana rehetra)
 

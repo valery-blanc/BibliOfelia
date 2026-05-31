@@ -40,7 +40,7 @@ location from the one recorded, BibliOfelia automatically updates the
 copy's location. This is the fastest way to refresh your catalog
 after a major rearrangement.
 
-See [OfeliaScan inventory](../ofeliascan/recolement.md).
+See [Inventory](../inventaire/recolement.md).
 
 ## Deleting a location
 

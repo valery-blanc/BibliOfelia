@@ -20,9 +20,9 @@ Scannez les livres rendus l'un après l'autre. Chaque scan :
 Vous pouvez enchaîner toute une pile de retours en quelques secondes.
 
 !!! tip "Pas de douchette ?"
-    Tapez le code de l'exemplaire au clavier puis **Entrée**, ou
-    cliquez sur **Valider**. Vous pouvez aussi utiliser OfeliaScan
-    depuis le téléphone.
+    Cliquez sur **Scanner un livre** pour ouvrir la [caméra de votre
+    appareil](../premiers-pas/scanner-camera.md), ou tapez le code de
+    l'exemplaire au clavier puis **Entrée** / **Valider**.
 
 ## Cas particuliers
 
@@ -41,7 +41,7 @@ veut pas ralentir le retour. Si vous souhaitez signaler au membre que
 le livre était en retard, c'est à vous de le faire de vive voix.
 
 Pour suivre les retards systématiquement, voir
-[Cas courants : retard prolongé](../cas-courants/retard.md).
+[Cas courants : retard prolongé](../faq.md#retard).
 
 ### Le livre déclenche une réservation
 

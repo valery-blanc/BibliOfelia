@@ -6,6 +6,13 @@ el ordenador quien registra la operación.
 
 El principio: su teléfono es un "escáner inalámbrico".
 
+!!! tip "Lo más sencillo: la cámara del sitio"
+    Para un préstamo o una devolución, lo más rápido es usar la **cámara del
+    navegador** integrada en las páginas Préstamo y Devolución (véase
+    [Escanear con la cámara](../premiers-pas/scanner-camera.md)). OfeliaScan,
+    descrito a continuación, sigue siendo una opción para quienes prefieren
+    una aplicación dedicada.
+
 ## Flujo de trabajo típico para un préstamo
 
 1. En el ordenador, abra la página **Préstamo**

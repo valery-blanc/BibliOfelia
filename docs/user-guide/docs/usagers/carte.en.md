@@ -51,11 +51,11 @@ reprint the old one) to invalidate the lost card:
 
 A new number is assigned and the old one is "retired": it will never
 be reassigned to another member (see [Common cases: lost
-card](../cas-courants/carte-perdue.md)).
+card](../faq.md#carte-perdue)).
 
 Then print the new card normally.
 
 ## See also
 
-- [Lost or stolen card](../cas-courants/carte-perdue.md)
+- [Lost or stolen card](../faq.md#carte-perdue)
 - [Renewal and expiration](renouvellement.md)

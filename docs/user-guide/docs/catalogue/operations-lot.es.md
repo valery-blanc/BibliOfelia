@@ -40,7 +40,7 @@ seleccionados**.
 
     Lea atentamente el mensaje de confirmación antes de validar. Los
     códigos de los ejemplares eliminados no podrán reutilizarse (vea
-    [Casos frecuentes: libro perdido](../cas-courants/livre-perdu.md)).
+    [Casos frecuentes: libro perdido](../faq.md#livre-perdu)).
 
 ## Truco: seleccionar todo en la página
 

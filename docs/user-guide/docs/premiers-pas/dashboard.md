@@ -52,6 +52,5 @@ membre concerné.
 
 !!! tip "Raccourci scanner"
     Le bandeau **Scanner une carte ou un livre** au milieu du dashboard
-    permet d'ouvrir [OfeliaScan](../ofeliascan/activer.md) sur votre
-    téléphone pour scanner directement un code-barres et atterrir sur la
-    bonne page sans naviguer.
+    ouvre la [caméra de votre appareil](scanner-camera.md) pour lire
+    directement un code-barres et atterrir sur la bonne page sans naviguer.

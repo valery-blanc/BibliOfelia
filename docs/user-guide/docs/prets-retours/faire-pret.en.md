@@ -1,7 +1,7 @@
 # Lending a book
 
 Registering a loan is the most frequent action of the day. With a
-barcode scanner or OfeliaScan, it takes less than 10 seconds.
+barcode scanner or your device's camera, it takes less than 10 seconds.
 
 ![Lend page with action zones 1, 2, 3, 4 highlighted](../assets/screenshots/en/prets-retours/lend.png)
 
@@ -22,9 +22,9 @@ The member presents their card. You have two ways to find them:
 - **By keyboard**: type the card number (the digits at the bottom of
   the card) into field ➊, then press **Enter** or click **Validate**.
 
-If you don't have the card or the number, click on **➋ Scan the
-card** to open OfeliaScan on your phone and scan from mobile —
-handy if the scanner is not plugged in.
+You can also click **➋ Scan the card** to open your device's **camera**
+and read the card barcode — handy if the scanner is not plugged in (see
+[Scanning with the camera](../premiers-pas/scanner-camera.md)).
 
 !!! info "Member doesn't have their card?"
     No problem: use the global search at the top of the site (type
@@ -43,8 +43,8 @@ Enter the book(s) to lend the same way:
   basket and the field clears for the next one.
 - **Keyboard**: type the Ofelia code (the digits under the barcode on
   the label) into field ➌, then **Enter** or **Validate**.
-- **Mobile**: click the orange **➍ Scan a book** button to open
-  OfeliaScan.
+- **Camera**: click the orange **➍ Scan a book** button to open your
+  device's camera.
 
 You can chain several books for the same member — each scan adds a
 line to the basket. To remove a book from the basket, click the cross
@@ -81,5 +81,5 @@ When a loan approaches its limit or passes it, it appears in the
 
 - [Register a return](retour.md) — when the member brings books back
 - [Renew a loan](prolongation.md) — extend the return date
-- [Activate OfeliaScan](../ofeliascan/activer.md) — set up the mobile
-  scanner for the first time
+- [Scanning with the camera](../premiers-pas/scanner-camera.md) — how the
+  site's camera works

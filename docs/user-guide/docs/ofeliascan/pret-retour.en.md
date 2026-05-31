@@ -5,6 +5,12 @@ barcodes. BibliOfelia on the computer is what records the operation.
 
 The principle: your phone is a "wireless scanner".
 
+!!! tip "The simplest way: the site's camera"
+    For a loan or a return, the fastest option is the **browser camera**
+    built into the Loan and Return pages (see [Scanning with the
+    camera](../premiers-pas/scanner-camera.md)). OfeliaScan, described below,
+    remains an option for those who prefer a dedicated app.
+
 ## Typical workflow for a loan
 
 1. On the computer, open the **Lend** page

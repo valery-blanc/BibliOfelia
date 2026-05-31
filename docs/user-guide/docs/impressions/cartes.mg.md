@@ -58,4 +58,4 @@ karatra maromaro amin'ny endrika karatra fitsidihana (85 × 54 mm).
 ## Jereo koa
 
 - [Manoratra mpianatra](../usagers/inscription.md)
-- [Hanolo karatra very](../cas-courants/carte-perdue.md)
+- [Hanolo karatra very](../faq.md#carte-perdue)

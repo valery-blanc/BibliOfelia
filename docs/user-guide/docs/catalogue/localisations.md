@@ -44,7 +44,7 @@ BibliOfelia met à jour automatiquement la localisation de
 l'exemplaire. C'est la façon la plus rapide de remettre votre catalogue
 à jour après un grand rangement.
 
-Voir [Récolement OfeliaScan](../ofeliascan/recolement.md).
+Voir [Récolement](../inventaire/recolement.md).
 
 ## Supprimer une localisation
 

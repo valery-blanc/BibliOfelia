@@ -55,11 +55,11 @@ karatra very:
 
 Laharana vaovao no nomena ary ny taloha dia "voapetraka": tsy ho
 omena mpianatra hafa mihitsy intsony (jereo [Ohatra: karatra
-very](../cas-courants/carte-perdue.md)).
+very](../faq.md#carte-perdue)).
 
 Avy eo atontao ny karatra vaovao araka ny mahazatra.
 
 ## Jereo koa
 
-- [Karatra very na nangalarina](../cas-courants/carte-perdue.md)
+- [Karatra very na nangalarina](../faq.md#carte-perdue)
 - [Fanavaozana sy fahataperana](renouvellement.md)

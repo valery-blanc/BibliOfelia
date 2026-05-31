@@ -48,7 +48,7 @@ quel ordre. BibliOfelia fait le reste.
 
 ## Recherche par code-barres
 
-Avec une [douchette](../premiers-pas/saisie.md) ou
-[OfeliaScan](../ofeliascan/activer.md), vous pouvez scanner directement
-le code-barres d'un livre depuis n'importe quelle page : la fiche du
-livre ou de l'exemplaire s'ouvre instantanément.
+Avec une [douchette](../premiers-pas/saisie.md) ou la [caméra de votre
+appareil](../premiers-pas/scanner-camera.md) (icône caméra à côté de la
+barre de recherche), vous pouvez scanner directement le code-barres d'un
+livre : la fiche du livre ou de l'exemplaire s'ouvre instantanément.

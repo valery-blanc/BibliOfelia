@@ -5,6 +5,13 @@ vez instalada y emparejada a su Ofelia Box, le permite escanear los
 códigos de barras desde el teléfono y enviar el resultado directamente
 a BibliOfelia en el ordenador.
 
+!!! info "La cámara ya está integrada en el sitio"
+    Ya no necesita OfeliaScan para los escaneos corrientes: los botones
+    **Escanear** del sitio abren directamente la **cámara del navegador**
+    (véase [Escanear con la cámara](../premiers-pas/scanner-camera.md)).
+    OfeliaScan sigue siendo útil como **complemento móvil**, en particular
+    para enviar **lotes grandes** de catalogación o de inventario.
+
 ## ¿Cuándo usarlo?
 
 - **Inventario**: recorrer los estantes sin empujar un puesto con
@@ -43,21 +50,9 @@ El teléfono ahora está vinculado a su Box. Lo recordará en cada uso.
     Varios bibliotecarios pueden emparejar su teléfono a la misma
     Box. Cada uno ve sus propios escaneos en BibliOfelia.
 
-## Usar el banner Escanear
-
-En el **panel** y en las páginas **Préstamo** / **Devolución**, un
-banner **Escanear una tarjeta o un libro** abre directamente
-OfeliaScan en su teléfono:
-
-1. Haga clic en el banner en BibliOfelia (en el PC)
-2. OfeliaScan se abre en su teléfono
-3. Escanee el código de barras
-4. BibliOfelia cambia automáticamente a la página correcta
-
-Es la forma más rápida de encadenar escaneo móvil y acción en el
-puesto.
-
 ## Ver también
 
+- [Escanear con la cámara](../premiers-pas/scanner-camera.md) — el escaneo
+  integrado en el sitio
 - [Préstamo y devolución con OfeliaScan](pret-retour.md)
-- [Inventario](recolement.md) — el uso más potente de OfeliaScan
+- [Inventario](../inventaire/recolement.md) — revisar los estantes escaneando

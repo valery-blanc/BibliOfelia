@@ -44,7 +44,7 @@ toerana hafa noho ny voasoratra ianao, ny BibliOfelia dia manavao
 automatika ny toeran'ny kopia. Io no fomba haingana indrindra
 hanavaozana ny boky aorian'ny fandaminana lehibe.
 
-Jereo [Récolement OfeliaScan](../ofeliascan/recolement.md).
+Jereo [Récolement](../inventaire/recolement.md).
 
 ## Foanana toerana
 

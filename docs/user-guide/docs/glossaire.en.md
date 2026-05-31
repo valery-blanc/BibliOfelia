@@ -25,8 +25,8 @@ and cards. It is what is scanned for loans, returns, inventory.
 
 Once printed, this code never changes. If a label or a card is lost,
 **you don't print the same**: you create a new one with another code
-(see [Lost book](cas-courants/livre-perdu.md) and [Lost
-card](cas-courants/carte-perdue.md)).
+(see [Lost book](faq.md#livre-perdu) and [Lost
+card](faq.md#carte-perdue)).
 
 ### Internal code (on the book's record, not on the label)
 
@@ -134,7 +134,7 @@ The borrowing of a book by a member, with a return date. See
 ### Inventory
 
 Aisle check: walk the shelves and scan each book to verify it is in
-the right place. See [Inventory](ofeliascan/recolement.md).
+the right place. See [Inventory](inventaire/recolement.md).
 
 ### Reservation
 

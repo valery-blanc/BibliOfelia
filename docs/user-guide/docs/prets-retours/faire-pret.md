@@ -1,7 +1,7 @@
 # Faire un prêt
 
 Enregistrer un prêt est le geste le plus fréquent de la journée. Avec une
-douchette ou OfeliaScan, il prend moins de 10 secondes.
+douchette ou la caméra de votre appareil, il prend moins de 10 secondes.
 
 ![Page Prêt avec les zones d'action repérées 1, 2, 3, 4](../assets/screenshots/fr/prets-retours/lend-annotated.png)
 
@@ -22,9 +22,10 @@ Le membre se présente avec sa carte. Vous avez deux façons de le retrouver :
   carte) dans le champ ➊, puis appuyez sur **Entrée** ou cliquez sur
   **Valider**.
 
-Si vous n'avez ni la carte ni le numéro, cliquez sur **➋ Scanner la carte**
-pour ouvrir OfeliaScan sur votre téléphone et scanner depuis le mobile —
-pratique si la douchette n'est pas branchée.
+Vous pouvez aussi cliquer sur **➋ Scanner la carte** pour ouvrir la
+**caméra** de votre appareil et lire le code-barres de la carte —
+pratique si la douchette n'est pas branchée (voir [Scanner avec la
+caméra](../premiers-pas/scanner-camera.md)).
 
 !!! info "Le membre n'a pas sa carte ?"
     Pas de problème : utilisez la recherche globale en haut du site
@@ -43,8 +44,8 @@ Saisissez le ou les livres à prêter de la même façon :
   panier et le champ se vide pour le suivant.
 - **Clavier** : tapez le code Ofelia (les chiffres sous le code-barres
   de l'étiquette) dans le champ ➌, puis **Entrée** ou **Valider**.
-- **Mobile** : cliquez sur le bouton orange **➍ Scanner un livre** pour
-  ouvrir OfeliaScan.
+- **Caméra** : cliquez sur le bouton orange **➍ Scanner un livre** pour
+  ouvrir la caméra de votre appareil.
 
 Vous pouvez enchaîner plusieurs livres pour un même membre — chaque scan
 ajoute une ligne au panier. Pour retirer un livre du panier, cliquez sur la
@@ -82,5 +83,5 @@ dépasse, il apparaît dans la section **Relances à faire** du
 
 - [Enregistrer un retour](retour.md) — quand le membre rapporte ses livres
 - [Prolonger un prêt](prolongation.md) — étendre la date de retour
-- [Activer OfeliaScan](../ofeliascan/activer.md) — configurer le scanner
-  mobile la première fois
+- [Scanner avec la caméra](../premiers-pas/scanner-camera.md) — comment la
+  caméra du site fonctionne

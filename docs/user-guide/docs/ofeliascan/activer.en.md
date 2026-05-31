@@ -5,6 +5,13 @@ installed and paired with your Ofelia Box, it lets you scan barcodes
 from a phone and send the result directly to BibliOfelia on the
 computer.
 
+!!! info "The camera is now built into the site"
+    You no longer need OfeliaScan for everyday scans: the **Scan** buttons
+    on the site open the **browser camera** directly (see [Scanning with the
+    camera](../premiers-pas/scanner-camera.md)). OfeliaScan remains useful as
+    a **mobile complement**, in particular for sending **large batches** of
+    cataloguing or inventory.
+
 ## When to use it?
 
 - **Inventory**: walking the stacks without pushing a workstation
@@ -41,21 +48,9 @@ The phone is now linked to your Box. It will remember on each use.
     Several librarians can pair their phone to the same Box. Each
     sees their own scans in BibliOfelia.
 
-## Use the Scanner banner
-
-On the **dashboard** and on the **Lend** / **Return** pages, a
-**Scan a card or a book** banner directly opens OfeliaScan on your
-phone:
-
-1. Click the banner in BibliOfelia (on the PC)
-2. OfeliaScan opens on your phone
-3. Scan the barcode
-4. BibliOfelia automatically switches to the right page
-
-This is the fastest way to chain mobile scanning and on-station
-action.
-
 ## See also
 
+- [Scanning with the camera](../premiers-pas/scanner-camera.md) — the scan
+  built into the site
 - [Loan and return with OfeliaScan](pret-retour.md)
-- [Inventory](recolement.md) — the most powerful use of OfeliaScan
+- [Inventory](../inventaire/recolement.md) — checking the stacks by scanning

@@ -1,8 +1,8 @@
 # Mampindrana boky
 
 Ny fanoratana fampindramana no asa matetika indrindra amin'ny andro.
-Miaraka amin'ny scanner na OfeliaScan, dia maharitra latsaky ny 10
-segondra izany.
+Miaraka amin'ny scanner na ny fakantsarin'ny fitaovanao, dia maharitra
+latsaky ny 10 segondra izany.
 
 ![Pejy Fampindramana misy toerana asa 1, 2, 3, 4](../assets/screenshots/mg/prets-retours/lend.png)
 
@@ -27,9 +27,10 @@ ahitanao azy ianao:
   ambanin'ny karatra) ao amin'ny toerana ➊, dia tsindrio **Enter**
   na click amin'ny **Hanamarina**.
 
-Raha tsy manana ny karatra na ny laharana ianao, click amin'ny
-**➋ Hijery karatra** mba hanokatra OfeliaScan amin'ny finday sy
-hijery avy amin'ny mobile — mahasoa raha tsy tafiditra ny scanner.
+Azonao atao koa ny click amin'ny **➋ Hijery karatra** mba hanokatra ny
+**fakantsarin'ny** fitaovanao sy hamaky ny code-barre an'ny karatra —
+mahasoa raha tsy tafiditra ny scanner (jereo ny [Mi-scan amin'ny
+fakantsary](../premiers-pas/scanner-camera.md)).
 
 !!! info "Tsy manana ny karatrany ny mpianatra?"
     Tsy olana izany: ampiasao ny fikarohana ankapobeny ambonin'ny
@@ -51,8 +52,8 @@ Ampidiro ireo boky hampindramina amin'ny fomba mitovy:
 - **Clavier**: soraty ny code Ofelia (ny isa eo ambanin'ny code-barre
   an'ny etikety) ao amin'ny toerana ➌, dia **Enter** na
   **Hanamarina**.
-- **Mobile**: click amin'ny bokotra volom-boasary **➍ Hijery boky**
-  mba hanokatra OfeliaScan.
+- **Fakantsary**: click amin'ny bokotra volom-boasary **➍ Hijery boky**
+  mba hanokatra ny fakantsarin'ny fitaovanao.
 
 Azonao atao ny mampifandimby boky maro ho an'ny mpianatra iray —
 scan tsirairay no manampy filaharana iray ao amin'ny panier. Mba
@@ -95,5 +96,5 @@ hatonina** an'ny [tabilao](../premiers-pas/dashboard.md).
   mpianatra
 - [Hanitatra fampindramana](prolongation.md) — manaitra ny daty
   famerenana
-- [Hampandeha OfeliaScan](../ofeliascan/activer.md) — mametra ny
-  scanner mobile voalohany
+- [Mi-scan amin'ny fakantsary](../premiers-pas/scanner-camera.md) — ny
+  fiasan'ny fakantsarin'ny tranonkala

@@ -58,9 +58,9 @@ Ny convention atolotra:
   loatra
 
 Safidio toerana mitovy ho an'ny boky rehetra: mampihaingana ny scan
-mandritra ny [récolement](../ofeliascan/recolement.md).
+mandritra ny [récolement](../inventaire/recolement.md).
 
 ## Jereo koa
 
 - [Fitantanana kopia](../catalogue/exemplaires.md)
-- [Récolement OfeliaScan](../ofeliascan/recolement.md)
+- [Récolement](../inventaire/recolement.md)

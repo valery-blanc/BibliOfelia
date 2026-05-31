@@ -51,7 +51,7 @@ filaharana inona na inona. Ny BibliOfelia no manao ny ambiny.
 
 ## Fikarohana amin'ny code-barre
 
-Miaraka amin'ny [scanner](../premiers-pas/saisie.md) na
-[OfeliaScan](../ofeliascan/activer.md), azonao jereo mivantana ny
-code-barre an'ny boky avy amin'ny pejy rehetra: ny takelakan'ny
-boky na kopia dia misokatra avy hatrany.
+Miaraka amin'ny [scanner](../premiers-pas/saisie.md) na ny [fakantsarin'ny
+fitaovanao](../premiers-pas/scanner-camera.md) (icône fakantsary eo akaikin'ny
+tsipika fikarohana), azonao jereo mivantana ny code-barre an'ny boky: ny
+takelakan'ny boky na kopia dia misokatra avy hatrany.

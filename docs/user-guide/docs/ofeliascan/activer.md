@@ -5,6 +5,14 @@ fois installée et appairée à votre Ofelia Box, elle vous permet de
 scanner les codes-barres depuis le téléphone et d'envoyer le résultat
 directement à BibliOfelia sur l'ordinateur.
 
+!!! info "La caméra est désormais intégrée au site"
+    Vous n'avez plus besoin d'OfeliaScan pour les scans courants : les
+    boutons **Scanner** du site ouvrent directement la **caméra du
+    navigateur** (voir [Scanner avec la
+    caméra](../premiers-pas/scanner-camera.md)). OfeliaScan reste utile
+    comme **complément mobile**, notamment pour envoyer de **gros lots** de
+    catalogage ou de récolement.
+
 ## Quand l'utiliser ?
 
 - **Récolement** : faire l'inventaire dans les rayons sans pousser un
@@ -44,21 +52,9 @@ chaque utilisation.
     Plusieurs bibliothécaires peuvent appairer leur téléphone à la
     même Box. Chacun voit ses propres scans dans BibliOfelia.
 
-## Utiliser le bandeau Scanner
-
-Sur le **tableau de bord** et sur les pages **Prêt** / **Retour**, un
-bandeau **Scanner une carte ou un livre** ouvre directement OfeliaScan
-sur votre téléphone :
-
-1. Cliquez sur le bandeau dans BibliOfelia (sur le PC)
-2. OfeliaScan s'ouvre sur votre téléphone
-3. Scannez le code-barres
-4. BibliOfelia bascule automatiquement sur la bonne page
-
-C'est le moyen le plus rapide d'enchaîner scan mobile et action sur le
-poste.
-
 ## Voir aussi
 
+- [Scanner avec la caméra](../premiers-pas/scanner-camera.md) — le scan
+  intégré au site
 - [Prêt et retour avec OfeliaScan](pret-retour.md)
-- [Récolement](recolement.md) — l'usage le plus puissant d'OfeliaScan
+- [Récolement](../inventaire/recolement.md) — vérifier les rayons en scannant

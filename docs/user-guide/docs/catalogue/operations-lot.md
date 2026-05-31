@@ -39,7 +39,7 @@ sélectionnées**.
 
     Lisez attentivement le message de confirmation avant de valider.
     Les codes des exemplaires supprimés ne pourront pas être réutilisés
-    (voir [Cas courants : livre perdu](../cas-courants/livre-perdu.md)).
+    (voir [Cas courants : livre perdu](../faq.md#livre-perdu)).
 
 ## Astuce : tout sélectionner sur la page
 

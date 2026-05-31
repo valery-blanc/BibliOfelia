@@ -51,9 +51,9 @@ Recommended convention:
 - **Comics / Albums**: on the back cover, in the least visible corner
 
 Choose a constant placement for all your books: it speeds up scanning
-during [inventory](../ofeliascan/recolement.md).
+during [inventory](../inventaire/recolement.md).
 
 ## See also
 
 - [Manage copies](../catalogue/exemplaires.md)
-- [OfeliaScan inventory](../ofeliascan/recolement.md)
+- [Inventory](../inventaire/recolement.md)

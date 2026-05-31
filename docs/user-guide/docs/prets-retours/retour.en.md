@@ -20,8 +20,9 @@ Scan the returned books one after another. Each scan:
 You can chain a whole pile of returns in seconds.
 
 !!! tip "No scanner?"
-    Type the copy's code on the keyboard then **Enter**, or click
-    **Validate**. You can also use OfeliaScan from your phone.
+    Click **Scan a book** to open your [device's
+    camera](../premiers-pas/scanner-camera.md), or type the copy's code on
+    the keyboard then **Enter** / **Validate**.
 
 ## Edge cases
 
@@ -40,7 +41,7 @@ want to slow down returns. If you want to remind the member the book
 was overdue, do so verbally.
 
 To track overdue returns systematically, see [Common cases: long
-overdue](../cas-courants/retard.md).
+overdue](../faq.md#retard).
 
 ### The book triggers a reservation
 

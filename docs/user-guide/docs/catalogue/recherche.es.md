@@ -50,7 +50,7 @@ BibliOfelia hace el resto.
 
 ## Búsqueda por código de barras
 
-Con un [escáner](../premiers-pas/saisie.md) o
-[OfeliaScan](../ofeliascan/activer.md), puede escanear directamente
-el código de barras de un libro desde cualquier página: la ficha del
-libro o del ejemplar se abre al instante.
+Con un [escáner](../premiers-pas/saisie.md) o la [cámara de su
+dispositivo](../premiers-pas/scanner-camera.md) (icono de cámara junto a la
+barra de búsqueda), puede escanear directamente el código de barras de un
+libro: la ficha del libro o del ejemplar se abre al instante.

@@ -52,11 +52,11 @@ Si un membre perd sa carte, vous devez attribuer un **nouveau numéro**
 
 Un nouveau numéro est attribué et l'ancien est "tombé" : il ne sera
 jamais réattribué à un autre membre (voir [Cas courants : carte
-perdue](../cas-courants/carte-perdue.md)).
+perdue](../faq.md#carte-perdue)).
 
 Imprimez ensuite la nouvelle carte normalement.
 
 ## Voir aussi
 
-- [Cartes perdues ou volées](../cas-courants/carte-perdue.md)
+- [Cartes perdues ou volées](../faq.md#carte-perdue)
 - [Renouvellement et expiration](renouvellement.md)

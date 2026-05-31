@@ -21,9 +21,9 @@ Escanee los libros devueltos uno tras otro. Cada escaneo:
 Puede encadenar toda una pila de devoluciones en segundos.
 
 !!! tip "¿Sin escáner?"
-    Escriba el código del ejemplar con el teclado y luego **Enter**,
-    o haga clic en **Validar**. También puede usar OfeliaScan desde
-    el teléfono.
+    Haga clic en **Escanear un libro** para abrir la [cámara de su
+    dispositivo](../premiers-pas/scanner-camera.md), o escriba el código del
+    ejemplar con el teclado y luego **Enter** / **Validar**.
 
 ## Casos particulares
 
@@ -42,7 +42,7 @@ queremos ralentizar la devolución. Si quiere informar al miembro que
 el libro estaba vencido, hágalo de viva voz.
 
 Para seguir los atrasos sistemáticamente, vea [Casos frecuentes:
-atraso prolongado](../cas-courants/retard.md).
+atraso prolongado](../faq.md#retard).
 
 ### El libro desencadena una reserva
 

@@ -49,7 +49,6 @@ with the member's name, the missed due date and the number of days
 late. Clicking a row opens the member's profile.
 
 !!! tip "Scanner shortcut"
-    The **Scan a card or a book** banner in the middle of the
-    dashboard opens [OfeliaScan](../ofeliascan/activer.md) on your
-    phone to scan a barcode directly and land on the right page
-    without navigating.
+    The **Scan a card or a book** banner in the middle of the dashboard
+    opens your [device's camera](scanner-camera.md) to read a barcode
+    directly and land on the right page without navigating.

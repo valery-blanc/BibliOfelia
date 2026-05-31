@@ -46,9 +46,9 @@ libros muy recientes o muy antiguos.
 
 ### ¿Cómo reorganizar un estante?
 
-Haga un inventario OfeliaScan en la nueva ubicación: todos los
+Haga un inventario en la nueva ubicación: todos los
 libros escaneados se reclasificarán automáticamente. Vea
-[Inventario](ofeliascan/recolement.md).
+[Inventario](inventaire/recolement.md).
 
 ## Sobre las reservas
 
@@ -99,7 +99,48 @@ del sistema** del panel.
 
 Si no es de hoy o ayer, avise al administrador.
 
+## Casos difíciles
+
+### Un libro está perdido o muy dañado, ¿cómo lo saco? { #livre-perdu }
+
+Para un libro perdido durante un préstamo: abra la [ficha del
+miembro](usagers/fiche.md), encuentre el préstamo en **Préstamos
+activos** y haga clic en **Perdido**. El préstamo y el ejemplar pasan
+al estado *Perdido*; el miembro conserva su historial y puede seguir
+prestando. Para un libro devuelto demasiado dañado: registre la
+devolución, luego en la [ficha del ejemplar](catalogue/exemplaires.md)
+haga clic en **Descartar**. BibliOfelia no gestiona ni multas ni
+facturación: el reemplazo depende de sus reglas internas.
+
+### ¿Cómo eliminar definitivamente un registro del catálogo? { #supprimer-notice }
+
+Si un registro ya no tiene ningún ejemplar (todos perdidos, donados,
+tirados), abra su ficha y haga clic en **Eliminar el registro**, o use
+una [operación en lote](catalogue/operations-lot.md). El código Ofelia
+de un ejemplar eliminado queda reservado para siempre: una etiqueta que
+aún circule nunca podrá designar otro libro por error.
+
+### Un miembro perdió su tarjeta, ¿qué hago? { #carte-perdue }
+
+Abra la [ficha del miembro](usagers/fiche.md) y haga clic en
+**Reemplazar la tarjeta**: BibliOfelia asigna un nuevo número, retira
+el antiguo definitivamente y conserva todo el historial. La tarjeta
+antigua ya no funciona (cualquier escaneo devuelve un error) —
+destrúyala si reaparece. Mientras espera la nueva tarjeta, el miembro
+puede prestar siendo buscado por su nombre. Reimprima la tarjeta desde
+[Imprimir las tarjetas](impressions/cartes.md).
+
+### ¿Cómo gestionar un atraso prolongado? { #retard }
+
+Siga los atrasos con el contador **Préstamos vencidos** del panel y
+**Informes → Préstamos vencidos**. Según la gravedad: (1) llame al
+miembro (teléfono visible en su ficha); (2) para bloquear sus
+préstamos, **desactive** temporalmente al miembro desde su ficha y
+reactívelo cuando devuelva los libros; (3) para un atraso de varios
+meses, marque el préstamo como **Perdido**. BibliOfelia no genera
+cartas de aviso: el teléfono, el SMS o un tablero siguen siendo lo más
+eficaz en una biblioteca pequeña.
+
 ## ¿Una pregunta que no aparece?
 
-Consulte los [Casos frecuentes](cas-courants/livre-perdu.md) o
-contacte al administrador de su Box.
+Contacte al administrador de su Box.

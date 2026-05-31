@@ -46,6 +46,7 @@ with or without accents, in any order. BibliOfelia handles the rest.
 
 ## Search by barcode
 
-With a [scanner](../premiers-pas/saisie.md) or
-[OfeliaScan](../ofeliascan/activer.md), you can scan a book's barcode
-directly from any page: the book or copy page opens instantly.
+With a [scanner](../premiers-pas/saisie.md) or your [device's
+camera](../premiers-pas/scanner-camera.md) (camera icon next to the search
+bar), you can scan a book's barcode directly: the book or copy page opens
+instantly.

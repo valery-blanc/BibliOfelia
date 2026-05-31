@@ -31,10 +31,21 @@ ssh -i "$SSH_KEY" -o ConnectTimeout=5 "$PI_USER@$PI_HOST" "echo connect_ok" >/de
 echo "==> Creation du dossier cible sur la Pi (si absent)..."
 ssh -i "$SSH_KEY" "$PI_USER@$PI_HOST" "sudo mkdir -p $PI_TARGET && sudo chown $PI_USER:$PI_USER $PI_TARGET"
 
-echo "==> rsync du site vers $PI_USER@$PI_HOST:$PI_TARGET ..."
-rsync -avz --delete -e "ssh -i $SSH_KEY" \
-    "./site/" \
-    "$PI_USER@$PI_HOST:$PI_TARGET/"
+if command -v rsync >/dev/null 2>&1; then
+    echo "==> rsync du site vers $PI_USER@$PI_HOST:$PI_TARGET ..."
+    rsync -avz --delete -e "ssh -i $SSH_KEY" \
+        "./site/" \
+        "$PI_USER@$PI_HOST:$PI_TARGET/"
+else
+    # rsync absent (cas typique en Git Bash sous Windows) : on bascule sur
+    # un transfert tar over ssh. On purge d'abord la cible pour reproduire
+    # la semantique de `rsync --delete` (suppression des fichiers obsoletes).
+    echo "==> rsync indisponible en local — bascule sur tar over ssh..."
+    ssh -i "$SSH_KEY" "$PI_USER@$PI_HOST" \
+        "rm -rf $PI_TARGET/* $PI_TARGET/.[!.]* 2>/dev/null; mkdir -p $PI_TARGET"
+    tar -czf - -C ./site . \
+        | ssh -i "$SSH_KEY" "$PI_USER@$PI_HOST" "tar -xzf - -C $PI_TARGET"
+fi
 
 echo "==> Reload nginx..."
 ssh -i "$SSH_KEY" "$PI_USER@$PI_HOST" "sudo docker exec edubox-nginx nginx -t && sudo docker exec edubox-nginx nginx -s reload"

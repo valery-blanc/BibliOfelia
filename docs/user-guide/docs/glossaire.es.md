@@ -26,8 +26,8 @@ préstamos, las devoluciones, el inventario.
 
 Una vez impreso, este código nunca cambia. Si una etiqueta o una
 tarjeta se pierde, **no se imprime la misma**: se crea una nueva
-con otro código (vea [Libro perdido](cas-courants/livre-perdu.md)
-y [Tarjeta perdida](cas-courants/carte-perdue.md)).
+con otro código (vea [Libro perdido](faq.md#livre-perdu)
+y [Tarjeta perdida](faq.md#carte-perdue)).
 
 ### Código interno (en la ficha del libro, no en la etiqueta)
 
@@ -140,7 +140,7 @@ devolución. Vea [Hacer un préstamo](prets-retours/faire-pret.md).
 
 Inventario físico de un estante: se recorren los estantes y se
 escanea cada libro para verificar que está en su sitio. Vea
-[Inventario](ofeliascan/recolement.md).
+[Inventario](inventaire/recolement.md).
 
 ### Reserva
 

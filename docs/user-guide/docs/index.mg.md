@@ -25,16 +25,14 @@ karatra sy etikety.
 
 ## Fizahan-takila
 
-1. **Voalohany** — fidirana, tabilao, fomba fampidirana
-2. **Boky** — boky, kopia, fikarohana, asa marobe
+1. **Voalohany** — fandraisana, fidirana, tabilao, fomba fampidirana, scan
+2. **Boky** — boky, kopia, fikarohana, asa marobe, récolement
 3. **Mpianatra** — fisoratana, takelaka, karatra
-4. **Fampindramana sy famerenana** — asa isan'andro
-5. **Famandrihana** — laharana, fampandrenesana, fakana
-6. **OfeliaScan finday** — scanner Android
-7. **Fanontana** — karatra sy etikety
-8. **Tatitra** — KPI sy fanondranana CSV
-9. **Ohatra mahazatra** — very, simba, tara
-10. **Fanontaniana sy voambolana**
+4. **Fampindramana** — fampindramana, famerenana, fanavaozana, famandrihana
+5. **Fanontana** — karatra sy etikety
+6. **Tatitra** — KPI sy fanondranana CSV
+7. **Fanontaniana** — fanontaniana matetika sy tranga sarotra (very, simba, tara)
+8. **Voambolana**
 
 !!! tip "Misy amin'ny fiteny 4 ity torolàlana ity"
     Ampiasao ny mpisafidy any ambony havanana mba hifindra

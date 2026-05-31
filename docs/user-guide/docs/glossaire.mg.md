@@ -27,8 +27,8 @@ famerenana, récolement.
 Rehefa voatonta, tsy miova mihitsy ity code ity. Raha very ny
 etikety na ny karatra, **tsy atontaonao ny mitovy**: mamorona vaovao
 miaraka amin'ny code hafa (jereo [Boky
-very](cas-courants/livre-perdu.md) sy [Karatra
-very](cas-courants/carte-perdue.md)).
+very](faq.md#livre-perdu) sy [Karatra
+very](faq.md#carte-perdue)).
 
 ### Code interne (eo amin'ny takelaky ny boky, fa tsy eo amin'ny etikety)
 
@@ -141,7 +141,7 @@ famerenana. Jereo [Mampindrana boky](prets-retours/faire-pret.md).
 
 Fijerena rakitra: mandalo amin'ny rakitra ary mijery boky tsirairay
 mba hanamarinana fa ao amin'ny toerany. Jereo
-[Récolement](ofeliascan/recolement.md).
+[Récolement](inventaire/recolement.md).
 
 ### Famandrihana
 

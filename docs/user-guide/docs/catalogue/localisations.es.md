@@ -44,7 +44,7 @@ ubicación diferente a la registrada, BibliOfelia actualiza
 automáticamente la ubicación del ejemplar. Es la forma más rápida de
 actualizar su catálogo tras una gran reorganización.
 
-Vea [Inventario OfeliaScan](../ofeliascan/recolement.md).
+Vea [Inventario](../inventaire/recolement.md).
 
 ## Eliminar una ubicación
 

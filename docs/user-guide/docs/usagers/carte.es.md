@@ -53,11 +53,11 @@ Si un miembro pierde su tarjeta, debe asignar un **nuevo número**
 
 Se asigna un nuevo número y el antiguo se "retira": nunca será
 reasignado a otro miembro (vea [Casos frecuentes: tarjeta
-perdida](../cas-courants/carte-perdue.md)).
+perdida](../faq.md#carte-perdue)).
 
 Luego imprima la nueva tarjeta normalmente.
 
 ## Ver también
 
-- [Tarjetas perdidas o robadas](../cas-courants/carte-perdue.md)
+- [Tarjetas perdidas o robadas](../faq.md#carte-perdue)
 - [Renovación y expiración](renouvellement.md)

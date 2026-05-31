@@ -19,7 +19,6 @@ theme:
     accent: custom
   features:
     - navigation.tracking
-    - navigation.tabs
     - navigation.sections
     - navigation.top
     - navigation.indexes
@@ -51,14 +50,38 @@ plugins:
             Premiers pas: Getting started
             Catalogue: Catalog
             Usagers: Members
-            Prets et retours: Loans and returns
-            Reservations: Reservations
-            OfeliaScan mobile: OfeliaScan mobile
+            Prêts: Loans
             Impressions: Printing
             Rapports: Reports
-            Cas courants: Common cases
             FAQ: FAQ
             Glossaire: Glossary
+            Se connecter: Sign in
+            Tour du dashboard: Dashboard tour
+            Changer de langue: Change language
+            Modes de saisie: Input methods
+            Scanner avec la caméra: Scan with the camera
+            Ajouter un livre: Add a book
+            Gérer les exemplaires: Manage copies
+            Localisations: Locations
+            Recherche: Search
+            Opérations en lot: Bulk operations
+            Récolement: Inventory check
+            Cataloguer en scannant: Catalogue by scanning
+            Inscrire un membre: Enroll a member
+            Fiche membre: Member profile
+            Carte de membre: Member card
+            Renouvellement et expiration: Renewal and expiration
+            Faire un prêt: Lend a book
+            Enregistrer un retour: Register a return
+            Prolonger un prêt: Extend a loan
+            Consultation sur place: On-site consultation
+            Créer une réservation: Create a reservation
+            Notifications et relances: Notifications and follow-ups
+            Retrait et expiration: Pickup and expiration
+            Cartes de membres: Member cards
+            Étiquettes de livres: Book labels
+            KPIs du dashboard: Dashboard KPIs
+            Exports CSV: CSV exports
         - locale: es
           name: Español
           build: true
@@ -67,14 +90,38 @@ plugins:
             Premiers pas: Primeros pasos
             Catalogue: Catálogo
             Usagers: Miembros
-            Prets et retours: Préstamos y devoluciones
-            Reservations: Reservas
-            OfeliaScan mobile: OfeliaScan móvil
+            Prêts: Préstamos
             Impressions: Impresión
             Rapports: Informes
-            Cas courants: Casos frecuentes
             FAQ: FAQ
             Glossaire: Glosario
+            Se connecter: Iniciar sesión
+            Tour du dashboard: Recorrido del panel
+            Changer de langue: Cambiar de idioma
+            Modes de saisie: Modos de entrada
+            Scanner avec la caméra: Escanear con la cámara
+            Ajouter un livre: Añadir un libro
+            Gérer les exemplaires: Gestionar los ejemplares
+            Localisations: Ubicaciones
+            Recherche: Búsqueda
+            Opérations en lot: Operaciones en lote
+            Récolement: Inventario
+            Cataloguer en scannant: Catalogar escaneando
+            Inscrire un membre: Inscribir un miembro
+            Fiche membre: Ficha del miembro
+            Carte de membre: Tarjeta de miembro
+            Renouvellement et expiration: Renovación y expiración
+            Faire un prêt: Hacer un préstamo
+            Enregistrer un retour: Registrar una devolución
+            Prolonger un prêt: Prolongar un préstamo
+            Consultation sur place: Consulta in situ
+            Créer une réservation: Crear una reserva
+            Notifications et relances: Notificaciones y seguimientos
+            Retrait et expiration: Recogida y expiración
+            Cartes de membres: Tarjetas de miembros
+            Étiquettes de livres: Etiquetas de libros
+            KPIs du dashboard: KPIs del panel
+            Exports CSV: Exportaciones CSV
         - locale: mg
           name: Malagasy
           build: true
@@ -83,14 +130,38 @@ plugins:
             Premiers pas: Voalohany
             Catalogue: Boky
             Usagers: Mpianatra
-            Prets et retours: Fampindramana
-            Reservations: Famandrihana
-            OfeliaScan mobile: OfeliaScan finday
+            Prêts: Fampindramana
             Impressions: Fanontana
             Rapports: Tatitra
-            Cas courants: Ohatra mahazatra
             FAQ: Fanontaniana
             Glossaire: Voambolana
+            Se connecter: Fidirana
+            Tour du dashboard: Fitsidihana ny tabilao
+            Changer de langue: Manova fiteny
+            Modes de saisie: Fomba fampidirana
+            Scanner avec la caméra: Scan amin'ny caméra
+            Ajouter un livre: Manampy boky
+            Gérer les exemplaires: Fitantanana kopia
+            Localisations: Toerana
+            Recherche: Fikarohana
+            Opérations en lot: Asa marobe
+            Récolement: Récolement
+            Cataloguer en scannant: Catalogue amin'ny scan
+            Inscrire un membre: Fisoratana mpianatra
+            Fiche membre: Takelaka mpianatra
+            Carte de membre: Karatra mpianatra
+            Renouvellement et expiration: Fanavaozana sy fahataperana
+            Faire un prêt: Mampindrana boky
+            Enregistrer un retour: Soraty ny famerenana
+            Prolonger un prêt: Manalava fampindramana
+            Consultation sur place: Fijerena an-toerana
+            Créer une réservation: Mamorona famandrihana
+            Notifications et relances: Fampandrenesana sy tara
+            Retrait et expiration: Fakana sy fahataperana
+            Cartes de membres: Karatra mpianatra
+            Étiquettes de livres: Etikety boky
+            KPIs du dashboard: KPI tabilao
+            Exports CSV: Fanondranana CSV
 
 markdown_extensions:
   - admonition
@@ -104,46 +175,44 @@ markdown_extensions:
   - toc:
       permalink: true
 
+# Pages conservees mais hors navigation (reintegration ulterieure possible).
+not_in_nav: |
+  /ofeliascan/
+
 nav:
-  - Accueil: index.md
   - Premiers pas:
+      - Accueil: index.md
       - Se connecter: premiers-pas/connexion.md
       - Tour du dashboard: premiers-pas/dashboard.md
       - Changer de langue: premiers-pas/langue.md
       - Modes de saisie: premiers-pas/saisie.md
+      - Scanner avec la caméra: premiers-pas/scanner-camera.md
   - Catalogue:
       - Ajouter un livre: catalogue/ajouter-livre.md
-      - Gerer les exemplaires: catalogue/exemplaires.md
+      - Gérer les exemplaires: catalogue/exemplaires.md
       - Localisations: catalogue/localisations.md
       - Recherche: catalogue/recherche.md
-      - Operations en lot: catalogue/operations-lot.md
+      - Opérations en lot: catalogue/operations-lot.md
+      - Récolement: inventaire/recolement.md
+      - Cataloguer en scannant: inventaire/catalogage-scan.md
   - Usagers:
       - Inscrire un membre: usagers/inscription.md
       - Fiche membre: usagers/fiche.md
       - Carte de membre: usagers/carte.md
       - Renouvellement et expiration: usagers/renouvellement.md
-  - Prets et retours:
-      - Faire un pret: prets-retours/faire-pret.md
+  - Prêts:
+      - Faire un prêt: prets-retours/faire-pret.md
       - Enregistrer un retour: prets-retours/retour.md
-      - Prolonger un pret: prets-retours/prolongation.md
+      - Prolonger un prêt: prets-retours/prolongation.md
       - Consultation sur place: prets-retours/consultation.md
-  - Reservations:
-      - Creer une reservation: reservations/creer.md
+      - Créer une réservation: reservations/creer.md
       - Notifications et relances: reservations/notifications.md
       - Retrait et expiration: reservations/retrait.md
-  - OfeliaScan mobile:
-      - Activer OfeliaScan: ofeliascan/activer.md
-      - Pret et retour mobile: ofeliascan/pret-retour.md
-      - Recolement: ofeliascan/recolement.md
   - Impressions:
       - Cartes de membres: impressions/cartes.md
-      - Etiquettes de livres: impressions/etiquettes.md
+      - Étiquettes de livres: impressions/etiquettes.md
   - Rapports:
       - KPIs du dashboard: rapports/kpis.md
       - Exports CSV: rapports/exports.md
-  - Cas courants:
-      - Livre perdu ou abime: cas-courants/livre-perdu.md
-      - Carte perdue ou volee: cas-courants/carte-perdue.md
-      - Retard prolonge: cas-courants/retard.md
   - FAQ: faq.md
   - Glossaire: glossaire.md

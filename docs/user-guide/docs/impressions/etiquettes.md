@@ -57,9 +57,9 @@ La convention recommandée :
   moins visible
 
 Choisissez un emplacement constant pour tous vos livres : ça facilite
-le scan pendant le [récolement](../ofeliascan/recolement.md).
+le scan pendant le [récolement](../inventaire/recolement.md).
 
 ## Voir aussi
 
 - [Gérer les exemplaires](../catalogue/exemplaires.md)
-- [Récolement OfeliaScan](../ofeliascan/recolement.md)
+- [Récolement](../inventaire/recolement.md)

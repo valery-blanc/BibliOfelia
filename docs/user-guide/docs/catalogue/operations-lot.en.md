@@ -37,7 +37,7 @@ records and click **Delete selected records**.
 
     Read the confirmation message carefully before validating. Codes
     of deleted copies cannot be reused (see [Common cases: lost
-    book](../cas-courants/livre-perdu.md)).
+    book](../faq.md#livre-perdu)).
 
 ## Tip: select all on the page
 

@@ -6,6 +6,12 @@ l'ordinateur qui enregistre l'opération.
 
 Le principe : votre téléphone est une "douchette sans fil".
 
+!!! tip "Le plus simple : la caméra du site"
+    Pour un prêt ou un retour, le plus rapide est d'utiliser la **caméra du
+    navigateur** intégrée aux pages Prêt et Retour (voir [Scanner avec la
+    caméra](../premiers-pas/scanner-camera.md)). OfeliaScan décrit ci-dessous
+    reste une option pour ceux qui préfèrent une application dédiée.
+
 ## Workflow type pour un prêt
 
 1. Sur l'ordinateur, ouvrez la page **Prêt**

@@ -46,8 +46,8 @@ very old books.
 
 ### How to reorganize an aisle?
 
-Run an OfeliaScan inventory in the new location: all scanned books
-will be automatically relocated. See [Inventory](ofeliascan/recolement.md).
+Run an inventory in the new location: all scanned books
+will be automatically relocated. See [Inventory](inventaire/recolement.md).
 
 ## About reservations
 
@@ -96,7 +96,45 @@ see **Last backup** in the **System status** panel of the dashboard.
 
 If it's not from today or yesterday, warn the administrator.
 
+## Difficult cases
+
+### A book is lost or too damaged — how do I remove it? { #livre-perdu }
+
+For a book lost during a loan: open the [member
+profile](usagers/fiche.md), find the loan under **Active loans** and
+click **Lost**. The loan and the copy move to status *Lost*; the
+member keeps their history and can keep borrowing. For a book returned
+too damaged: register the return, then on the [copy
+page](catalogue/exemplaires.md) click **Discard**. BibliOfelia handles
+neither fines nor billing: replacement is up to your internal rules.
+
+### How do I permanently delete a record from the catalog? { #supprimer-notice }
+
+If a record no longer has any copy (all lost, given away, thrown out),
+open its page and click **Delete record**, or use a [bulk
+operation](catalogue/operations-lot.md). The Ofelia code of a deleted
+copy stays reserved for good: a label still in circulation can never
+designate another book by mistake.
+
+### A member lost their card — what do I do? { #carte-perdue }
+
+Open the [member profile](usagers/fiche.md) and click **Replace
+card**: BibliOfelia assigns a new number, retires the old one for good
+and keeps the whole history. The old card no longer works (any scan
+returns an error) — destroy it if it reappears. While waiting for the
+new card, the member can borrow by being looked up by name. Reprint
+the card from [Print cards](impressions/cartes.md).
+
+### How do I handle a long overdue? { #retard }
+
+Track overdues with the **Overdue loans** counter on the dashboard and
+**Reports → Overdue loans**. Depending on severity: (1) call the member
+(phone shown on their profile); (2) to block their borrowing,
+temporarily **deactivate** the member from their profile and reactivate
+when the books come back; (3) for an overdue of several months, mark
+the loan **Lost**. BibliOfelia generates no reminder letters: phone,
+SMS or a notice board remain the most effective in a small library.
+
 ## A question not listed?
 
-Check the [Common cases](cas-courants/livre-perdu.md) or contact your
-Box administrator.
+Contact your Box administrator.
