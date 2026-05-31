@@ -819,9 +819,9 @@ Objectif (demande Val 2026-05-30) : les 4 boutons « Scanner » du site (dashboa
 - [x] `templates/core/advanced.html` : Rapports → « Tous les rapports » seul ; Emplacements → icône étagère
 - [x] `static/icons/library.svg` (Lucide étagère) + bascule `map-pin`→`library` sur location_list/location_form/session_report
 - [x] Gate i18n `scripts/i18n_check.py` → 0 ; `manage.py check` 0 issue ; `pytest` 349 verts
-- [ ] Déploiement Pi + test Val
+- [x] Déploiement Pi (rebuild Docker → `144afaf`, healthy, migrate --check 0) + test Val OK 2026-05-31
 - [x] SPEC §6.6 + en-tête mises à jour
-- [ ] Commit (après confirmation Val)
+- [x] Commit `144afaf` + push origin/main (groupé avec FEAT-049)
 
 ### FEAT-049 — Enrichissement métadonnées ouvert aux bibliothécaires
 > Demandé Val 2026-05-31 (« avant de comiter »). Embarqué dans le commit FEAT-047
@@ -830,8 +830,8 @@ Objectif (demande Val 2026-05-30) : les 4 boutons « Scanner » du site (dashboa
 - [x] `templates/core/advanced.html` : retrait du garde `{% if user.is_superadmin %}` autour du lien (déjà dans la section `{% if user.is_librarian %}`)
 - [x] Vérif locale : librarian 200 + lien visible ; superadmin 200 ; READONLY 403 + lien masqué ; `manage.py check` 0 issue
 - [x] SPEC §6.11 + en-tête mises à jour
-- [ ] Déploiement Pi + test Val
-- [ ] Commit (groupé avec FEAT-047, après confirmation Val)
+- [x] Déploiement Pi (rebuild Docker → `144afaf`, healthy) + test Val OK 2026-05-31
+- [x] Commit `144afaf` + push origin/main (groupé avec FEAT-047)
 
 ### Task — Guide utilisateur : scan caméra (catalogage / récolement / prêt-retour)
 > Refléter dans `docs/user-guide/` (4 langues) que le scan passe désormais par
