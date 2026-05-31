@@ -775,8 +775,32 @@ Objectif (demande Val 2026-05-30) : les 4 boutons « Scanner » du site (dashboa
 - [x] Déploiement Pi + test Val (HTTPS) — **validé Val 2026-05-31** (itér. 1+2+3 déployées, scan continu + dé-dup + exemplaire N + rapport par notice + bande de décodage)
 - [x] Commit unique FEAT-045 + push origin/main
 
-### FEAT-046 — Catalogage en scan caméra continu (à venir)
-- [ ] À spécifier après validation FEAT-045
+### FEAT-046 — Catalogage en scan caméra continu
+> Spécifié 2026-05-31 (go Val). Miroir de FEAT-045 mais en **création** : scan
+> continu d'ISBN (978/979) → `ScanItem` éditables → `finalize_scan_session()`.
+> Décisions Val : notice existante = on n'ajoute que des exemplaires (notice
+> intouchée) ; chaque nouvel exemplaire rattaché à la **session de catalogage**
+> (`Item.catalog_session`) pour réimprimer uniquement ses étiquettes ; pendant le
+> scan titre+auteur sinon ISBN+langue ; « exemplaire X » en gros au 2ᵉ exemplaire
+> (>3 s) ; défauts catégorie+emplacement par lot, surchargeables par ligne.
+
+- [x] Doc `docs/specs/FEAT-046-catalogage-camera-continu.md` + SPEC §6.1 + en-tête
+- [x] Modèles (`apps/catalog/models.py`) + migration `0008_cataloging_session_fields` :
+  - [x] `Item.catalog_session` (FK ScanSession, SET_NULL) — rattachement pour impression ciblée
+  - [x] `ScanItem.category` (FK Category, SET_NULL) — catégorie par ligne
+  - [x] `ScanSession.default_location` + `default_category` (FK, SET_NULL) — défauts du lot
+- [x] `apps/api/services.py:finalize_scan_session` : pose `catalog_session` sur chaque exemplaire créé + `category` sur les **nouvelles** notices (notice matchée intouchée)
+- [x] `apps/catalog/forms.py:ScanCatalogSessionForm` (défauts emplacement/catégorie + label)
+- [x] `apps/catalog/views.py` : `scan_session_list`, `scan_session_create`, `scan_session` (hub), `scan_add` (JSON, règle <3 s ignoré / >3 s +1 exemplaire, rejet 290/291), `scan_item_delete`, `scan_session_commit`
+- [x] `apps/catalog/urls.py` : routes `/catalog/scan/...`
+- [x] Templates `catalog/scan_session_form.html`, `scan_session.html` (hub éditable), `scan_session_list.html`
+- [x] `static/js/scan-cataloging.js` (POST live, « exemplaire X » en gros, repli saisie manuelle) + CSS `ofelia.css`
+- [x] `apps/printing/views.py` + `labels_picker.html` : filtre `?catalog_session=` (n'imprimer que les étiquettes du lot, pré-cochées)
+- [x] Entrée UI « Cataloguer en scannant » (catalogue + Avancé)
+- [x] i18n : `scripts/translations_sprint19.py` (42 entrées × EN/ES/MG, overwrite + de-fuzzy) → `i18n_check.py` → 0 + `compilemessages`
+- [x] Tests `apps/catalog/tests/test_cataloging.py` (12 cas) ; `pytest` vert + `makemigrations --check` → No changes
+- [ ] Lancer dev / test Val (HTTPS ou localhost) → confirmation
+- [ ] Déploiement Pi + commit unique FEAT-046 + push origin/main
 
 ## Correctifs i18n post-FEAT-044 (BUG-018)
 

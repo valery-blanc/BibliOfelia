@@ -53,3 +53,62 @@ def lookup_isbn(raw_isbn: str) -> dict | None:
         ),
         "publication_year": year_match.group() if year_match else "",
     }
+
+
+# Sources interrogées au scan catalogage (FEAT-046), par ordre de préférence :
+# la 1re source qui renvoie un titre gagne. Google Books et la BnF couvrent
+# beaucoup mieux les livres FR que la seule OpenLibrary.
+_MULTI_SOURCE_ORDER = ["openlibrary", "google_books", "bnf", "bne"]
+
+
+def lookup_isbn_multi(raw_isbn: str) -> dict | None:
+    """Lookup ISBN multi-sources pour le scan catalogage.
+
+    Interroge OpenLibrary + Google Books + BnF + BNE **en parallèle** (latence
+    bornée par la source la plus lente, pas par leur somme) et renvoie le 1er
+    résultat non vide dans l'ordre de préférence. Bien meilleure couverture FR
+    que `lookup_isbn` (OpenLibrary seule). Jamais d'exception réseau.
+    """
+    isbn = normalize_isbn(raw_isbn)
+    if len(isbn) not in (10, 13):
+        return None
+
+    from concurrent.futures import ThreadPoolExecutor
+
+    from .sources import SOURCES  # {name: lookup(isbn) -> dict | None}
+
+    results: dict[str, dict | None] = {}
+    with ThreadPoolExecutor(max_workers=len(SOURCES)) as ex:
+        futures = {ex.submit(fn, isbn): name for name, fn in SOURCES.items()}
+        for fut, name in futures.items():
+            try:
+                results[name] = fut.result()
+            except Exception as exc:  # filet : une source qui casse ne bloque pas
+                logger.info("Source %s en échec pour ISBN %s : %s", name, isbn, exc)
+                results[name] = None
+
+    for name in _MULTI_SOURCE_ORDER:
+        data = results.get(name)
+        if data and data.get("title"):
+            return _clean_multi_result(data)
+    return None
+
+
+def _clean_multi_result(data: dict) -> dict:
+    """Normalise un résultat de source pour le scan catalogage.
+
+    - Titre des notices SRU (BnF/BNE) : la mention de responsabilité est collée
+      au titre par un ` / ` (« Le Bélier / Vincent Villeminot ; ill. … »). On
+      coupe au premier ` / ` pour ne garder que le titre propre (l'auteur a son
+      propre champ `authors_text`).
+    - Garantit les clés attendues par l'appelant (`authors_text`, etc.).
+    """
+    out = dict(data)
+    title = (out.get("title") or "").strip()
+    if " / " in title:
+        title = title.split(" / ", 1)[0].strip()
+    out["title"] = title
+    out.setdefault("authors_text", "")
+    out.setdefault("publisher", "")
+    out.setdefault("publication_year", None)
+    return out

@@ -202,6 +202,16 @@ class Item(models.Model):
     status = models.CharField(
         max_length=25, choices=ItemStatus.choices, default=ItemStatus.AVAILABLE
     )
+    # FEAT-046 : session de catalogage qui a créé cet exemplaire (caméra ou
+    # OfeliaScan). Permet de réimprimer uniquement les étiquettes d'un lot.
+    # SET_NULL : supprimer une session ne doit jamais supprimer les exemplaires.
+    catalog_session = models.ForeignKey(
+        "ScanSession",
+        null=True,
+        blank=True,
+        related_name="created_items",
+        on_delete=models.SET_NULL,
+    )
     created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now=True)
 
@@ -344,6 +354,22 @@ class ScanSession(models.Model):
     )
     # Résultat agrégé de la finalisation (items_processed, records_created, ...).
     processing_summary = models.JSONField(default=dict, blank=True)
+    # FEAT-046 : défauts appliqués aux items scannés en catalogage caméra
+    # (surchargeables par ligne sur le hub).
+    default_location = models.ForeignKey(
+        "Location",
+        null=True,
+        blank=True,
+        related_name="+",
+        on_delete=models.SET_NULL,
+    )
+    default_category = models.ForeignKey(
+        "Category",
+        null=True,
+        blank=True,
+        related_name="+",
+        on_delete=models.SET_NULL,
+    )
 
     class Meta:
         verbose_name = _("session de scan")
@@ -379,6 +405,15 @@ class ScanItem(models.Model):
     metadata_publisher = models.CharField(max_length=200, blank=True)
     metadata_year = models.IntegerField(null=True, blank=True)
     location_code = models.CharField(max_length=20, blank=True)
+    # FEAT-046 : catégorie de la notice (catalogage caméra ; OfeliaScan ne la
+    # renseigne pas → None, comportement inchangé).
+    category = models.ForeignKey(
+        "Category",
+        null=True,
+        blank=True,
+        related_name="+",
+        on_delete=models.SET_NULL,
+    )
     item_state = models.CharField(max_length=10, blank=True)
     copy_count = models.PositiveIntegerField(default=1)
     scanned_at = models.DateTimeField()

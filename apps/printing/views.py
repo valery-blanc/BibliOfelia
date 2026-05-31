@@ -25,14 +25,26 @@ def labels_picker(request):
     location = request.GET.get("location") or ""
     if location:
         qs = qs.filter(location__code=location)
+    # FEAT-046 : n'imprimer que les étiquettes d'un lot de catalogage donné.
+    catalog_session = request.GET.get("catalog_session") or ""
+    session_label = ""
+    if catalog_session.isdigit():
+        from apps.catalog.models import ScanSession
+        qs = qs.filter(catalog_session_id=int(catalog_session))
+        sess = ScanSession.objects.filter(pk=int(catalog_session)).first()
+        if sess:
+            session_label = sess.label or f"#{sess.pk}"
     pending = request.GET.get("pending") == "1"
     if pending:
         # exemplaires créés sans étiquette imprimée — non tracé en v1, fallback : derniers 100
         qs = qs[:100]
+    elif catalog_session.isdigit():
+        qs = qs[:1000]
     else:
         qs = qs[:500]
     return render(request, "printing/labels_picker.html", {
         "items": qs, "location": location, "pending": pending,
+        "catalog_session": catalog_session, "session_label": session_label,
     })
 
 

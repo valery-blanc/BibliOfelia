@@ -1,13 +1,17 @@
 """Vues du catalogue : notices, exemplaires, recherche filtrée. SPEC §6.1."""
 from __future__ import annotations
 
+import uuid
+
+from django.conf import settings
 from django.contrib import messages
 from django.core.paginator import Paginator
 from django.db import transaction
 from django.db.models import Count, Q
+from django.http import JsonResponse
 from django.shortcuts import get_object_or_404, redirect, render
 from django.urls import reverse
-from django.utils import timezone
+from django.utils import timezone, translation
 from django.utils.translation import gettext as _
 from django.views.decorators.http import require_POST
 
@@ -16,17 +20,28 @@ from apps.accounts.permissions import require_role
 from apps.core.search import classify_query, fts_search
 from apps.loans.models import LoanStatus, ReservationStatus
 
-from .forms import BibliographicRecordForm, ItemBulkCreateForm, ItemForm, LocationForm
+from .forms import (
+    BibliographicRecordForm,
+    ItemBulkCreateForm,
+    ItemForm,
+    LocationForm,
+    ScanCatalogSessionForm,
+)
 from .models import (
     BibliographicRecord,
     Category,
     DocumentType,
     Item,
+    ItemState,
     ItemStatus,
     Location,
     RetiredItemCode,
+    ScanItem,
+    ScanKind,
+    ScanSession,
+    ScanSessionState,
 )
-from .openlibrary import lookup_isbn
+from .openlibrary import lookup_isbn, lookup_isbn_multi, normalize_isbn
 
 READ_ROLES = (Role.LIBRARIAN, Role.SUPERADMIN, Role.READONLY)
 WRITE_ROLES = (Role.LIBRARIAN, Role.SUPERADMIN)
@@ -601,3 +616,251 @@ def location_delete(request, pk):
             "children_count": children_count,
         },
     )
+
+
+# ─── FEAT-046 : catalogage en scan caméra continu ──────────────────────────
+# Miroir du récolement (FEAT-045) mais en création : on scanne des ISBN, on
+# édite les notices détectées, puis `finalize_scan_session()` les matérialise.
+
+# Seuil temporel : même ISBN re-vu après ce délai = exemplaire supplémentaire ;
+# en deçà = double-lecture (livre tenu en vue) ignorée. Choisi > au refire du
+# moteur caméra (~0,8 s) pour qu'un livre simplement maintenu ne miscompte pas.
+CATALOGING_NEW_COPY_GAP_SECONDS = 3
+
+_VALID_ITEM_STATES = {choice for choice, _label in ItemState.choices}
+
+
+@require_role(*WRITE_ROLES)
+def scan_session_list(request):
+    """Liste des lots de catalogage (en cours + validés)."""
+    sessions = ScanSession.objects.annotate(n_items=Count("items")).order_by("-started_at")
+    open_sessions = [s for s in sessions if s.state == ScanSessionState.OPEN]
+    done_sessions = [s for s in sessions if s.state != ScanSessionState.OPEN]
+    return render(
+        request,
+        "catalog/scan_session_list.html",
+        {"open_sessions": open_sessions, "done_sessions": done_sessions},
+    )
+
+
+@require_role(*WRITE_ROLES)
+def scan_session_create(request):
+    """Démarre un lot : défauts catégorie/emplacement puis va au hub de scan."""
+    if request.method == "POST":
+        form = ScanCatalogSessionForm(request.POST)
+        if form.is_valid():
+            session = form.save(commit=False)
+            session.created_by = request.user
+            session.save()
+            messages.success(request, _("Lot de catalogage démarré."))
+            return redirect(reverse("catalog:scan_session", args=[session.pk]) + "?scan=1")
+    else:
+        form = ScanCatalogSessionForm()
+    return render(request, "catalog/scan_session_form.html", {"form": form})
+
+
+@require_role(*WRITE_ROLES)
+def scan_session(request, pk):
+    """Hub de scan + édition des items détectés avant envoi au catalogue."""
+    session = get_object_or_404(ScanSession, pk=pk)
+    items = list(session.items.select_related("category").order_by("id"))
+    # FEAT-046 : le hub édite l'emplacement par lot via un <select> de Location
+    # (pk) alors que ScanItem stocke un `location_code` (texte). On résout le pk
+    # courant pour pré-remplir le hidden input de chaque ligne.
+    loc_by_code = {loc.code: loc.pk for loc in Location.objects.all()}
+    for it in items:
+        it.location_pk = loc_by_code.get(it.location_code, "")
+    return render(
+        request,
+        "catalog/scan_session.html",
+        {
+            "session": session,
+            "items": items,
+            "categories": Category.objects.all().order_by("code"),
+            "locations": Location.objects.all().order_by("code"),
+            "languages": settings.LANGUAGES,
+            "states": ItemState.choices,
+            "finalized": session.state != ScanSessionState.OPEN,
+        },
+    )
+
+
+def _bump_existing(item: ScanItem, now) -> tuple[ScanItem, str]:
+    """Re-lecture d'un ISBN déjà présent dans le lot : > seuil = exemplaire
+    supplémentaire, sinon ignoré. `scanned_at` est rafraîchi à chaque vue, donc
+    un livre tenu en vue en continu n'incrémente jamais (seul un retrait puis une
+    re-présentation > seuil le fait)."""
+    delta = (now - item.scanned_at).total_seconds()
+    item.scanned_at = now
+    if delta > CATALOGING_NEW_COPY_GAP_SECONDS:
+        item.copy_count += 1
+        item.save(update_fields=["scanned_at", "copy_count"])
+        return item, "incremented"
+    item.save(update_fields=["scanned_at"])
+    return item, "ignored"
+
+
+def _scan_item_label(item: ScanItem) -> str:
+    """Libellé affiché dans le viseur : titre — auteur, sinon ISBN · langue."""
+    author = ", ".join(item.metadata_authors or [])
+    if item.metadata_title:
+        return item.metadata_title + (" — " + author if author else "")
+    return _("ISBN %(isbn)s · %(lang)s") % {
+        "isbn": item.scanned_value,
+        "lang": item.metadata_language or "fr",
+    }
+
+
+@transaction.non_atomic_requests
+@require_POST
+@require_role(*WRITE_ROLES)
+def scan_add(request, pk):
+    """Endpoint JSON appelé par `scan-cataloging.js` pour chaque code confirmé.
+
+    Règle des exemplaires multiples : 1er scan = ScanItem (copy_count=1) ;
+    même ISBN re-vu ≤ 3 s = ignoré ; > 3 s = copy_count+1 (« exemplaire X »).
+
+    `non_atomic_requests` (settings `ATOMIC_REQUESTS = True`) : sans ça, toute la
+    vue tourne dans une transaction qui ne committe qu'au retour de la réponse,
+    et le `lookup_isbn` (HTTP lent) la tient ouverte → la ligne créée est
+    invisible aux POST concurrents (caméra ré-émettant le même code ~0,6 s plus
+    tard) → doublons (BUG 2026-05-31). En autocommit, chaque `create()` est
+    visible immédiatement et la réconciliation/le bump fonctionnent.
+    """
+    session = get_object_or_404(ScanSession, pk=pk)
+    if session.state != ScanSessionState.OPEN:
+        return JsonResponse({"ok": False, "error": _("Ce lot est déjà validé.")}, status=409)
+
+    code = normalize_isbn(request.POST.get("ean", ""))
+    # Codes Ofelia : 290 = exemplaire déjà catalogué, 291 = carte membre.
+    if len(code) == 13 and code[:3] in ("290", "291"):
+        label = _("Déjà catalogué") if code[:3] == "290" else _("Carte membre — pas un livre")
+        return JsonResponse({"ok": True, "action": "rejected", "isbn": code, "label": str(label)})
+    if len(code) not in (10, 13):
+        return JsonResponse({"ok": False, "error": _("Code invalide.")}, status=400)
+
+    now = timezone.now()
+    existing = session.items.filter(scanned_value=code).order_by("id").first()
+    if existing:
+        item, action = _bump_existing(existing, now)
+    else:
+        # On crée la ligne AVANT le lookup ISBN (rapide, sans HTTP) puis on
+        # réconcilie. Sinon, le lookup (requête OpenLibrary, lente) s'intercale
+        # entre le SELECT et l'INSERT : la caméra ré-émet le même code ~0,6 s
+        # plus tard, son SELECT précède l'INSERT du 1er POST → doublon (BUG
+        # 2026-05-31). La réconciliation garde l'id minimal de façon
+        # déterministe → robuste même en concurrence, sans contrainte DB.
+        item = ScanItem.objects.create(
+            session=session,
+            local_id=f"cam-{uuid.uuid4().hex[:12]}",
+            scan_kind=ScanKind.ISBN if len(code) == 10 else ScanKind.EAN13,
+            scanned_value=code,
+            metadata_language=(translation.get_language() or "fr")[:10],
+            category=session.default_category,
+            location_code=session.default_location.code if session.default_location_id else "",
+            scanned_at=now,
+            copy_count=1,
+        )
+        first = session.items.filter(scanned_value=code).order_by("id").first()
+        if first.pk != item.pk:
+            # Un POST concurrent a déjà créé la ligne : on annule la nôtre et on
+            # traite ce scan comme une re-lecture du même livre.
+            item.delete()
+            item, action = _bump_existing(first, now)
+        else:
+            # Multi-sources (OpenLibrary + Google Books + BnF + BNE) : bien
+            # meilleure couverture FR que la seule OpenLibrary (FEAT-046).
+            data = lookup_isbn_multi(code) or {}
+            authors_text = data.get("authors_text", "") or ""
+            year = data.get("publication_year") or ""
+            item.metadata_title = data.get("title", "") or ""
+            item.metadata_authors = [a.strip() for a in authors_text.split(";") if a.strip()]
+            item.metadata_publisher = data.get("publisher", "") or ""
+            item.metadata_year = int(year) if str(year).isdigit() else None
+            item.save(
+                update_fields=[
+                    "metadata_title", "metadata_authors",
+                    "metadata_publisher", "metadata_year",
+                ]
+            )
+            action = "created"
+
+    if action == "incremented":
+        label = _("exemplaire %(n)s") % {"n": item.copy_count}
+    else:
+        label = _scan_item_label(item)
+    return JsonResponse(
+        {
+            "ok": True,
+            "action": action,
+            "isbn": code,
+            "scanitem_id": item.pk,
+            "copy_count": item.copy_count,
+            "title": item.metadata_title,
+            "author": ", ".join(item.metadata_authors or []),
+            "language": item.metadata_language,
+            "label": str(label),
+            "count": session.items.count(),
+        }
+    )
+
+
+@require_POST
+@require_role(*WRITE_ROLES)
+def scan_item_delete(request, pk, item_pk):
+    """Retire une ligne mal scannée (session ouverte uniquement)."""
+    session = get_object_or_404(ScanSession, pk=pk)
+    if session.state == ScanSessionState.OPEN:
+        session.items.filter(pk=item_pk).delete()
+        messages.success(request, _("Ligne retirée."))
+    return redirect("catalog:scan_session", pk=pk)
+
+
+@require_POST
+@require_role(*WRITE_ROLES)
+def scan_session_commit(request, pk):
+    """Enregistre les éditions du hub, puis finalise si `finalize` est présent."""
+    session = get_object_or_404(ScanSession, pk=pk)
+    if session.state != ScanSessionState.OPEN:
+        messages.error(request, _("Ce lot est déjà validé."))
+        return redirect("catalog:scan_session", pk=pk)
+
+    # FEAT-046 : titre/auteur/langue sont en lecture seule sur le hub (issus du
+    # lookup ISBN). Seuls catégorie / emplacement / état (modifiables par lot) et
+    # le nombre d'exemplaires sont persistés ici.
+    items = list(session.items.all())
+    for it in items:
+        sid = str(it.pk)
+        cat_raw = request.POST.get(f"category_{sid}", "")
+        it.category_id = int(cat_raw) if cat_raw.isdigit() else None
+        loc_raw = request.POST.get(f"location_{sid}", "")
+        loc = Location.objects.filter(pk=int(loc_raw)).first() if loc_raw.isdigit() else None
+        it.location_code = loc.code if loc else ""
+        state_raw = request.POST.get(f"state_{sid}", "")
+        it.item_state = state_raw if state_raw in _VALID_ITEM_STATES else ""
+        try:
+            it.copy_count = max(1, min(99, int(request.POST.get(f"copies_{sid}", "1"))))
+        except (TypeError, ValueError):
+            it.copy_count = 1
+        it.save(update_fields=["category", "location_code", "item_state", "copy_count"])
+
+    if request.POST.get("finalize"):
+        if not items:
+            messages.error(request, _("Aucun livre scanné à envoyer."))
+            return redirect("catalog:scan_session", pk=pk)
+        from apps.api.services import finalize_scan_session
+
+        summary = finalize_scan_session(session)
+        messages.success(
+            request,
+            _("%(rec)s notice(s) créée(s), %(match)s complétée(s), %(cop)s exemplaire(s) ajouté(s).")
+            % {
+                "rec": summary.get("records_created", 0),
+                "match": summary.get("records_matched", 0),
+                "cop": summary.get("copies_added", 0),
+            },
+        )
+        return redirect(reverse("printing:labels") + f"?catalog_session={session.pk}")
+
+    messages.success(request, _("Modifications enregistrées."))
+    return redirect("catalog:scan_session", pk=pk)

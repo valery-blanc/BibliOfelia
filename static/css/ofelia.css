@@ -1226,6 +1226,26 @@ body.scan-camera-open { overflow: hidden; }
 }
 .scan-camera-last:empty { display: none; }
 
+/* FEAT-046 : « exemplaire X » en gros lors d'un exemplaire supplémentaire. */
+.scan-camera-last--copy {
+  font-size: 1.6rem;
+  font-weight: 800;
+  color: var(--forest, #3a6b35);
+}
+
+/* FEAT-046 : tableau d'édition du lot de catalogage. */
+.cat-scan-table td { vertical-align: middle; }
+.cat-scan-table .form-control { padding: 4px 8px; font-size: 0.85rem; }
+.cat-scan-table code { font-size: 0.78rem; white-space: nowrap; color: var(--ink-soft); }
+/* Colonne Auteur / Titre : large, prioritaire. */
+.cat-scan-table .cat-scan-meta { min-width: 260px; }
+.cat-scan-author { font-weight: 600; color: var(--ink); }
+.cat-scan-title { color: var(--ink-soft); font-size: 0.9rem; }
+.cat-scan-isbn { margin-top: 2px; }
+/* Scroll horizontal garanti sur mobile (table plus large que l'écran). */
+.cat-scan-wrap { overflow-x: auto; -webkit-overflow-scrolling: touch; }
+.cat-scan-table { min-width: 720px; }
+
 @media (max-width: 480px) {
   .scan-camera-modal { padding: 0; }
   .scan-camera-card { max-width: 100%; max-height: 100vh; height: 100%; border-radius: 0; }

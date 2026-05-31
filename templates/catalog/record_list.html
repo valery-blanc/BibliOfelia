@@ -20,6 +20,10 @@
     </div>
     {% if user.is_librarian %}
     <div class="pagehead-action">
+        <a href="{% url 'catalog:scan_session_list' %}" class="btn btn--ghost">
+            {% icon "scan-barcode" size="16px" %}
+            <span class="hide-sm">{% trans "Cataloguer en scannant" %}</span>
+        </a>
         <a href="{% url 'catalog:record_create' %}" class="btn btn--primary">
             {% icon "plus" size="16px" %}
             <span class="hide-sm">{% trans "Nouvelle notice" %}</span>

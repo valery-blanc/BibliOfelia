@@ -68,6 +68,7 @@ def _create_record(item: ScanItem, isbn: str) -> BibliographicRecord:
         publisher=item.metadata_publisher or "",
         publication_year=item.metadata_year,
         language=item.metadata_language or "fr",
+        category=item.category,  # FEAT-046 : catégorie du lot (None si non renseignée)
         isbn_13=isbn if len(isbn) == 13 else None,
         isbn_10=isbn if len(isbn) == 10 else None,
         summary=f"[ScanSession:{item.session.session_id}]",
@@ -99,6 +100,7 @@ def _add_copies(
             record=record,
             location=location,
             state=state,
+            catalog_session=item.session,  # FEAT-046 : rattachement du lot (impression ciblée)
             notes=(item.notes or "") + ("\n" if item.notes else "") + notes_suffix,
         )
         created.append(it)

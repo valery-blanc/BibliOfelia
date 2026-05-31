@@ -1,0 +1,35 @@
+{% extends "base.html" %}
+{% load i18n biblio_icons %}
+
+{% block title %}{% trans "Cataloguer en scannant" %}{% endblock %}
+
+{% block tile_strip %}{% include "partials/_tile_strip.html" with active="catalog" %}{% endblock %}
+
+{% block content %}
+<header class="pagehead">
+    <div class="pagehead-icon" style="--ph-bg:var(--sky);--ph-fg:#fff">
+        {% icon "scan-barcode" size="28px" %}
+    </div>
+    <div class="pagehead-text">
+        <h1 class="pagehead-title">{% trans "Cataloguer en scannant" %}</h1>
+        <div class="pagehead-sub">{% trans "Choisissez les valeurs par défaut du lot, puis scannez les livres en rafale." %}</div>
+    </div>
+    <div class="pagehead-action">
+        <a href="{% url 'catalog:scan_session_list' %}" class="btn btn--ghost">
+            {% icon "clipboard-list" size="16px" %} <span class="hide-sm">{% trans "Lots précédents" %}</span>
+        </a>
+    </div>
+</header>
+
+<form method="post" class="card" style="max-width:560px">
+    {% csrf_token %}
+    {% for field in form %}
+        {% include "partials/_field.html" with field=field %}
+    {% endfor %}
+    <div class="form-actions">
+        <button type="submit" class="btn btn--primary">
+            {% icon "scan-barcode" size="16px" %} {% trans "Démarrer le catalogage" %}
+        </button>
+    </div>
+</form>
+{% endblock %}

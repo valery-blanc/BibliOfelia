@@ -51,4 +51,15 @@ urlpatterns = [
     path("locations/new/", views.location_create, name="location_create"),
     path("locations/<int:pk>/edit/", views.location_edit, name="location_edit"),
     path("locations/<int:pk>/delete/", views.location_delete, name="location_delete"),
+    # FEAT-046 : catalogage en scan caméra continu
+    path("scan/", views.scan_session_list, name="scan_session_list"),
+    path("scan/new/", views.scan_session_create, name="scan_session_create"),
+    path("scan/<int:pk>/", views.scan_session, name="scan_session"),
+    path("scan/<int:pk>/add/", views.scan_add, name="scan_add"),
+    path(
+        "scan/<int:pk>/items/<int:item_pk>/delete/",
+        views.scan_item_delete,
+        name="scan_item_delete",
+    ),
+    path("scan/<int:pk>/commit/", views.scan_session_commit, name="scan_session_commit"),
 ]

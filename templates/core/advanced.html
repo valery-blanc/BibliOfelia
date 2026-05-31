@@ -141,6 +141,16 @@
         </div>
         <div class="lrow-end">{% icon "chevron-right" size="18px" %}</div>
     </a>
+    <a href="{% url 'catalog:scan_session_list' %}" class="list-row">
+        <div class="lrow-icon" style="--lr-bg:var(--olive-light);--lr-fg:#6B5A0E">
+            {% icon "scan-barcode" size="18px" %}
+        </div>
+        <div class="lrow-body">
+            <div class="lrow-title" style="color:var(--burgundy)">{% trans "Catalogage par scan" %}</div>
+            <div class="lrow-sub">{% trans "Scanner les ISBN en rafale pour créer les notices et leurs exemplaires." %}</div>
+        </div>
+        <div class="lrow-end">{% icon "chevron-right" size="18px" %}</div>
+    </a>
     <a href="{% url 'catalog:location_list' %}" class="list-row">
         <div class="lrow-icon" style="--lr-bg:var(--olive-light);--lr-fg:#6B5A0E">
             {% icon "map-pin" size="18px" %}

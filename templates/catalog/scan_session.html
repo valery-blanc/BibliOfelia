@@ -1,0 +1,207 @@
+{% extends "base.html" %}
+{% load i18n biblio_icons static %}
+
+{% block title %}{% trans "Lot de catalogage" %}{% endblock %}
+
+{% block tile_strip %}{% include "partials/_tile_strip.html" with active="catalog" %}{% endblock %}
+
+{% block extra_head %}
+<script id="scan-cataloging-config" type="application/json">
+{"scanUrl": "{% url 'catalog:scan_add' session.pk %}",
+ "csrfToken": "{{ csrf_token }}",
+ "i18n": {
+   "rejected": "{% trans 'Code refusé' %}",
+   "isbn": "{% trans 'ISBN' %}",
+   "copy": "{% trans 'exemplaire' %}",
+   "cam_unavailable": "{% trans 'Caméra indisponible' %}",
+   "cam_manual_hint": "{% trans 'Saisissez l’ISBN à la main.' %}"
+ }}
+</script>
+<script defer src="{% static 'js/scan-cataloging.js' %}"></script>
+{% endblock %}
+
+{% block content %}
+<header class="pagehead">
+    <div class="pagehead-icon" style="--ph-bg:var(--sky);--ph-fg:#fff">
+        {% icon "scan-barcode" size="28px" %}
+    </div>
+    <div class="pagehead-text">
+        <h1 class="pagehead-title">{% trans "Lot de catalogage" %}</h1>
+        <div class="pagehead-sub">{{ session.label|default:session }} · {{ session.get_state_display }}</div>
+    </div>
+    <div class="pagehead-action">
+        <a href="{% url 'catalog:scan_session_list' %}" class="btn btn--ghost">
+            {% icon "clipboard-list" size="16px" %} <span class="hide-sm">{% trans "Lots" %}</span>
+        </a>
+    </div>
+</header>
+
+{% if finalized %}
+<div class="card msg-info" style="margin-bottom:18px">
+    {% trans "Ce lot a été envoyé au catalogue." %}
+    <a href="{% url 'printing:labels' %}?catalog_session={{ session.pk }}">{% trans "Imprimer les étiquettes de ce lot" %}</a>
+</div>
+{% else %}
+
+{% if user.is_librarian %}
+<div class="card scan-panel{% if request.GET.scan %} scan-panel--pulse{% endif %}" style="margin-bottom:18px">
+    <div class="scan-panel-head">
+        <button type="button" class="btn btn--primary js-scan-cataloging" data-busy-label="{% trans 'Ouverture…' %}">
+            {% icon "scan-barcode" size="18px" %} {% trans "Scanner des livres" %}
+        </button>
+        <div class="scan-panel-counts">
+            <strong id="cat-scan-count">{{ items|length }}</strong> {% trans "titre(s) scanné(s)" %}
+        </div>
+    </div>
+    <form id="cat-manual-form" class="scan-manual">
+        <input type="text" name="ean" inputmode="numeric" autocomplete="off" class="form-control"
+               placeholder="{% trans 'Saisir un ISBN à la main' %}">
+        <button type="submit" class="btn btn--ghost btn--sm">{% trans "Ajouter" %}</button>
+    </form>
+    <div id="cat-scan-live" class="inv-scan-live"></div>
+    <p class="help-hint" style="margin-top:8px">
+        {% trans "Astuce : représentez un même livre après quelques secondes pour ajouter un 2ᵉ exemplaire." %}
+    </p>
+</div>
+{% endif %}
+
+{# Formulaires de suppression de ligne (hors du formulaire d'édition : pas de form imbriqué) #}
+{% for it in items %}
+<form id="del-{{ it.pk }}" method="post" action="{% url 'catalog:scan_item_delete' session.pk it.pk %}">{% csrf_token %}</form>
+{% endfor %}
+
+<form method="post" action="{% url 'catalog:scan_session_commit' session.pk %}">
+    {% csrf_token %}
+
+    {% if items %}
+    <div class="batch-apply card" style="margin-bottom:12px">
+        <div style="font-weight:700;margin-bottom:8px">{% trans "Modifier les lignes cochées" %}</div>
+        <div style="display:flex;gap:12px;flex-wrap:wrap;align-items:flex-end">
+            <div class="field" style="margin:0">
+                <label>{% trans "Catégorie" %}</label>
+                <select id="batch-category" class="form-control">
+                    <option value="">{% trans "(ne pas changer)" %}</option>
+                    {% for c in categories %}<option value="{{ c.pk }}" data-code="{{ c.code }}">{{ c.code }} — {{ c.name }}</option>{% endfor %}
+                </select>
+            </div>
+            <div class="field" style="margin:0">
+                <label>{% trans "Emplacement" %}</label>
+                <select id="batch-location" class="form-control">
+                    <option value="">{% trans "(ne pas changer)" %}</option>
+                    {% for l in locations %}<option value="{{ l.pk }}" data-code="{{ l.code }}">{{ l.code }}</option>{% endfor %}
+                </select>
+            </div>
+            <div class="field" style="margin:0">
+                <label>{% trans "État" %}</label>
+                <select id="batch-state" class="form-control">
+                    <option value="">{% trans "(ne pas changer)" %}</option>
+                    {% for code, label in states %}<option value="{{ code }}">{{ label }}</option>{% endfor %}
+                </select>
+            </div>
+            <button type="button" id="batch-apply-btn" class="btn btn--ghost btn--sm">
+                {% icon "check" size="14px" %} {% trans "Appliquer aux lignes cochées" %}
+            </button>
+        </div>
+        <p class="help-hint" style="margin-top:8px">{% trans "Cochez des lignes, choisissez les valeurs, puis appliquez." %}</p>
+    </div>
+
+    <div class="table-wrap cat-scan-wrap">
+        <table class="table cat-scan-table">
+            <thead>
+                <tr>
+                    <th style="width:34px"><input type="checkbox" id="check-all"></th>
+                    <th>{% trans "Auteur / Titre" %}</th>
+                    <th>{% trans "Langue" %}</th>
+                    <th>{% trans "Catégorie" %}</th>
+                    <th>{% trans "Emplacement" %}</th>
+                    <th>{% trans "État" %}</th>
+                    <th>{% trans "Ex." %}</th>
+                    <th></th>
+                </tr>
+            </thead>
+            <tbody>
+            {% for it in items %}
+                <tr data-row="{{ it.pk }}">
+                    <td><input type="checkbox" class="js-row-check"></td>
+                    <td class="cat-scan-meta">
+                        <div class="cat-scan-author">{{ it.metadata_authors|join:'; '|default:"—" }}</div>
+                        <div class="cat-scan-title">{{ it.metadata_title|default:it.scanned_value }}</div>
+                        <div class="cat-scan-isbn"><code>{{ it.scanned_value }}</code></div>
+                    </td>
+                    <td>{{ it.metadata_language|default:"—" }}</td>
+                    <td>
+                        <span class="js-cat-label" data-row="{{ it.pk }}">{{ it.category.code|default:"—" }}</span>
+                        <input type="hidden" name="category_{{ it.pk }}" value="{{ it.category_id|default:'' }}" class="js-cat-input" data-row="{{ it.pk }}">
+                    </td>
+                    <td>
+                        <span class="js-loc-label" data-row="{{ it.pk }}">{{ it.location_code|default:"—" }}</span>
+                        <input type="hidden" name="location_{{ it.pk }}" value="{{ it.location_pk }}" class="js-loc-input" data-row="{{ it.pk }}">
+                    </td>
+                    <td>
+                        <span class="js-state-label" data-row="{{ it.pk }}">{% for code, label in states %}{% if code == it.item_state %}{{ label }}{% endif %}{% endfor %}{% if not it.item_state %}—{% endif %}</span>
+                        <input type="hidden" name="state_{{ it.pk }}" value="{{ it.item_state }}" class="js-state-input" data-row="{{ it.pk }}">
+                    </td>
+                    <td><input type="number" name="copies_{{ it.pk }}" value="{{ it.copy_count }}" min="1" max="99" class="form-control" style="width:64px"></td>
+                    <td>
+                        <button type="submit" form="del-{{ it.pk }}" class="btn btn--ghost btn--sm" title="{% trans 'Retirer' %}">
+                            {% icon "trash-2" size="14px" %}
+                        </button>
+                    </td>
+                </tr>
+            {% endfor %}
+            </tbody>
+        </table>
+    </div>
+
+    <div class="form-actions" style="margin-top:16px">
+        <button type="submit" class="btn btn--ghost">{% icon "pencil" size="16px" %} {% trans "Enregistrer" %}</button>
+        <button type="submit" name="finalize" value="1" class="btn btn--primary">
+            {% icon "check" size="16px" %} {% trans "Envoyer au catalogue" %}
+        </button>
+    </div>
+    {% else %}
+    <div class="card"><p class="muted">{% trans "Aucun livre scanné pour l’instant. Lancez le scan ci-dessus." %}</p></div>
+    {% endif %}
+</form>
+
+<script>
+(function () {
+    var checkAll = document.getElementById("check-all");
+    if (checkAll) {
+        checkAll.addEventListener("change", function () {
+            document.querySelectorAll(".js-row-check").forEach(function (cb) { cb.checked = checkAll.checked; });
+        });
+    }
+    var btn = document.getElementById("batch-apply-btn");
+    if (!btn) return;
+    btn.addEventListener("click", function () {
+        var checked = [];
+        document.querySelectorAll(".js-row-check").forEach(function (cb) {
+            if (cb.checked) {
+                var tr = cb.closest("tr");
+                if (tr) checked.push(tr.getAttribute("data-row"));
+            }
+        });
+        if (!checked.length) return;
+        var fields = [
+            { sel: "batch-category", inp: "js-cat-input", lbl: "js-cat-label", code: true },
+            { sel: "batch-location", inp: "js-loc-input", lbl: "js-loc-label", code: true },
+            { sel: "batch-state", inp: "js-state-input", lbl: "js-state-label", code: false }
+        ];
+        fields.forEach(function (f) {
+            var sel = document.getElementById(f.sel);
+            if (!sel || sel.value === "") return;
+            var opt = sel.options[sel.selectedIndex];
+            var label = f.code ? (opt.getAttribute("data-code") || opt.textContent.trim()) : opt.textContent.trim();
+            checked.forEach(function (rid) {
+                var inp = document.querySelector("." + f.inp + "[data-row='" + rid + "']");
+                var lab = document.querySelector("." + f.lbl + "[data-row='" + rid + "']");
+                if (inp) inp.value = sel.value;
+                if (lab) lab.textContent = label;
+            });
+        });
+    });
+})();
+</script>
+{% endif %}
+{% endblock %}

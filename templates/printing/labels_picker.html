@@ -16,7 +16,15 @@
     </div>
 </header>
 
+{% if session_label %}
+<div class="card msg-info" style="margin-bottom:14px">
+    {% blocktrans %}Étiquettes du lot de catalogage : <strong>{{ session_label }}</strong>. Les exemplaires du lot sont pré-cochés.{% endblocktrans %}
+    &nbsp;<a href="{% url 'printing:labels' %}">{% trans "Voir tous les exemplaires" %}</a>
+</div>
+{% endif %}
+
 <form method="get" class="filter-bar">
+    {% if catalog_session %}<input type="hidden" name="catalog_session" value="{{ catalog_session }}">{% endif %}
     <div class="field" style="margin:0;flex:0 0 auto">
         <label>{% trans "Emplacement" %}</label>
         <input type="text" name="location" value="{{ location }}" placeholder="A1" style="width:120px">
@@ -53,7 +61,7 @@
             <tbody>
             {% for item in items %}
                 <tr>
-                    <td><input type="checkbox" name="ids" value="{{ item.pk }}"></td>
+                    <td><input type="checkbox" name="ids" value="{{ item.pk }}"{% if catalog_session %} checked{% endif %}></td>
                     <td>{{ item.internal_id }}</td>
                     <td><span class="cell-title">{{ item.record.title|truncatechars:50 }}</span></td>
                     <td>{{ item.location.code|default:"—" }}</td>

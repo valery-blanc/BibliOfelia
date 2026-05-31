@@ -5,7 +5,7 @@ from django import forms
 from django.conf import settings
 from django.utils.translation import gettext_lazy as _
 
-from .models import Author, BibliographicRecord, Item, Location
+from .models import Author, BibliographicRecord, Category, Item, Location, ScanSession
 
 
 class BibliographicRecordForm(forms.ModelForm):
@@ -152,3 +152,28 @@ class LocationForm(forms.ModelForm):
         if parent and self.instance.pk and parent.pk == self.instance.pk:
             self.add_error("parent", _("Un emplacement ne peut pas être son propre parent."))
         return cleaned
+
+
+class ScanCatalogSessionForm(forms.ModelForm):
+    """FEAT-046 : démarrage d'un lot de catalogage caméra (défauts du lot)."""
+
+    class Meta:
+        model = ScanSession
+        fields = ["label", "default_category", "default_location"]
+        labels = {
+            "label": _("Nom du lot (optionnel)"),
+            "default_category": _("Catégorie par défaut"),
+            "default_location": _("Emplacement par défaut"),
+        }
+        help_texts = {
+            "default_category": _("Appliquée aux nouvelles notices ; modifiable ligne par ligne."),
+            "default_location": _("Appliqué aux nouveaux exemplaires ; modifiable ligne par ligne."),
+        }
+
+    def __init__(self, *args, **kwargs):
+        super().__init__(*args, **kwargs)
+        self.fields["label"].required = False
+        self.fields["default_category"].required = False
+        self.fields["default_location"].required = False
+        self.fields["default_category"].queryset = Category.objects.all().order_by("code")
+        self.fields["default_location"].queryset = Location.objects.all().order_by("code")
