@@ -24,17 +24,11 @@
             {% elif slug == 'languages' %}--lr-bg:var(--sky-light);--lr-fg:var(--sky-dark)
             {% elif slug == 'loans' %}--lr-bg:var(--orange-light);--lr-fg:var(--orange)
             {% elif slug == 'backup' %}--lr-bg:var(--forest-light);--lr-fg:var(--forest)
-            {% elif slug == 'printing_cards' %}--lr-bg:var(--blush-light);--lr-fg:var(--burgundy)
-            {% elif slug == 'printing_labels' %}--lr-bg:var(--amber-light);--lr-fg:#946906
-            {% elif slug == 'zerotier' %}--lr-bg:var(--olive-light);--lr-fg:var(--ink)
             {% endif %}">
             {% if slug == 'identity' %}{% icon "id-card" size="18px" %}
             {% elif slug == 'languages' %}{% icon "languages" size="18px" %}
             {% elif slug == 'loans' %}{% icon "calendar" size="18px" %}
             {% elif slug == 'backup' %}{% icon "database" size="18px" %}
-            {% elif slug == 'printing_cards' %}{% icon "id-card" size="18px" %}
-            {% elif slug == 'printing_labels' %}{% icon "printer" size="18px" %}
-            {% elif slug == 'zerotier' %}{% icon "globe" size="18px" %}
             {% else %}{% icon "settings" size="18px" %}{% endif %}
         </div>
         <div class="lrow-body">
@@ -44,26 +38,12 @@
                 {% elif slug == 'languages' %}{% trans "Langues actives et langue par défaut" %}
                 {% elif slug == 'loans' %}{% trans "Durée par défaut d'un prêt et délais de réservation" %}
                 {% elif slug == 'backup' %}{% trans "Fréquence locale et destination cloud (rclone)" %}
-                {% elif slug == 'printing_cards' %}{% trans "Cartes membres : nombre par A4, photo, logo OFELIA" %}
-                {% elif slug == 'printing_labels' %}{% trans "Étiquettes codes Ofelia : dimensions, titre, logo" %}
-                {% elif slug == 'zerotier' %}{% trans "Réseau privé pour accès à distance" %}
                 {% endif %}
             </div>
         </div>
         <div class="lrow-end">{% icon "chevron-right" size="18px" %}</div>
     </a>
     {% endfor %}
-
-    <a href="{% url 'accounts:user_list' %}" class="list-row">
-        <div class="lrow-icon" style="--lr-bg:var(--blush-light);--lr-fg:var(--burgundy)">
-            {% icon "users" size="18px" %}
-        </div>
-        <div class="lrow-body">
-            <div class="lrow-title">{% trans "Comptes utilisateurs" %}</div>
-            <div class="lrow-sub">{% trans "Bibliothécaires, contributeurs, administration" %}</div>
-        </div>
-        <div class="lrow-end">{% icon "chevron-right" size="18px" %}</div>
-    </a>
 
     <a href="{% url 'core:diagnostics' %}" class="list-row">
         <div class="lrow-icon" style="--lr-bg:var(--cream-dark);--lr-fg:var(--ink-soft)">

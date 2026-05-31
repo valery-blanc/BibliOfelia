@@ -823,6 +823,16 @@ Objectif (demande Val 2026-05-30) : les 4 boutons « Scanner » du site (dashboa
 - [x] SPEC §6.6 + en-tête mises à jour
 - [ ] Commit (après confirmation Val)
 
+### FEAT-049 — Enrichissement métadonnées ouvert aux bibliothécaires
+> Demandé Val 2026-05-31 (« avant de comiter »). Embarqué dans le commit FEAT-047
+> (touche les mêmes fichiers `admin_views.py` + `advanced.html`).
+- [x] `apps/core/admin_views.py` : 3 vues `enrichment_*` → `@require_role(Role.LIBRARIAN, Role.SUPERADMIN)`
+- [x] `templates/core/advanced.html` : retrait du garde `{% if user.is_superadmin %}` autour du lien (déjà dans la section `{% if user.is_librarian %}`)
+- [x] Vérif locale : librarian 200 + lien visible ; superadmin 200 ; READONLY 403 + lien masqué ; `manage.py check` 0 issue
+- [x] SPEC §6.11 + en-tête mises à jour
+- [ ] Déploiement Pi + test Val
+- [ ] Commit (groupé avec FEAT-047, après confirmation Val)
+
 ### Task — Guide utilisateur : scan caméra (catalogage / récolement / prêt-retour)
 > Refléter dans `docs/user-guide/` (4 langues) que le scan passe désormais par
 > la **caméra du navigateur** (FEAT-044 prêt/retour, FEAT-045 récolement,

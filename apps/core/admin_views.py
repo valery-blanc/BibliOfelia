@@ -21,13 +21,9 @@ from apps.accounts.permissions import require_role
 
 from .forms import (
     BackupConfigForm,
-    ItemLabelFormatForm,
     LanguagesForm,
     LibraryIdentityForm,
     LoanReservationDefaultsForm,
-    MemberCardFormatForm,
-    MetadataSourcesForm,
-    ZeroTierForm,
 )
 from .models import Setting
 
@@ -40,10 +36,6 @@ FORMS = {
     "languages": (gettext_lazy("Langues"), LanguagesForm),
     "loans": (gettext_lazy("Durées prêts & réservations"), LoanReservationDefaultsForm),
     "backup": (gettext_lazy("Sauvegardes"), BackupConfigForm),
-    "printing_cards": (gettext_lazy("Impressions — Cartes membres"), MemberCardFormatForm),
-    "printing_labels": (gettext_lazy("Impressions — Étiquettes codes Ofelia"), ItemLabelFormatForm),
-    "zerotier": (gettext_lazy("ZeroTier"), ZeroTierForm),
-    "sources": (gettext_lazy("Sources de métadonnées"), MetadataSourcesForm),
 }
 
 
@@ -235,7 +227,7 @@ def diagnostics(request):
 # ----------------------------------------------------------------------
 # FEAT-031 — Enrichissement métadonnées multi-sources
 # ----------------------------------------------------------------------
-@require_role(Role.SUPERADMIN)
+@require_role(Role.LIBRARIAN, Role.SUPERADMIN)
 def enrichment_index(request):
     """Liste des jobs d'enrichissement passés et formulaire de lancement."""
     from apps.catalog.models import EnrichmentJob
@@ -249,7 +241,7 @@ def enrichment_index(request):
 
 
 @require_POST
-@require_role(Role.SUPERADMIN)
+@require_role(Role.LIBRARIAN, Role.SUPERADMIN)
 def enrichment_start(request):
     """Crée un EnrichmentJob et le pousse dans la file django-q2."""
     from django_q.tasks import async_task
@@ -292,7 +284,7 @@ def enrichment_start(request):
     return redirect("core:enrichment_detail", pk=job.pk)
 
 
-@require_role(Role.SUPERADMIN)
+@require_role(Role.LIBRARIAN, Role.SUPERADMIN)
 def enrichment_detail(request, pk: int):
     from apps.catalog.models import EnrichmentJob
 

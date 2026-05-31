@@ -40,7 +40,7 @@
 {% if session.relocate_count and session.scope_type == 'location' and session.scope_location %}
 <div class="card" style="border-left:4px solid var(--olive);background:var(--olive-light);margin-bottom:18px">
     <div style="display:flex;align-items:center;gap:12px">
-        <div style="color:#6B5A0E">{% icon "map-pin" size="20px" %}</div>
+        <div style="color:#6B5A0E">{% icon "library" size="20px" %}</div>
         <div>
             <strong>{{ session.relocate_count }}</strong>
             {% blocktrans count counter=session.relocate_count with code=session.scope_location.code %}exemplaire a été déplacé automatiquement vers <strong>{{ code }}</strong> pendant cette session (sa location précédente a été corrigée).{% plural %}exemplaires ont été déplacés automatiquement vers <strong>{{ code }}</strong> pendant cette session (leur location précédente a été corrigée).{% endblocktrans %}

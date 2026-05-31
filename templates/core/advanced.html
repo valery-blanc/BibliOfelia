@@ -78,46 +78,6 @@
         </div>
         <div class="lrow-end">{% icon "chevron-right" size="18px" %}</div>
     </a>
-    <a href="{% url 'reports:overdue' %}" class="list-row">
-        <div class="lrow-icon" style="--lr-bg:var(--amber-light);--lr-fg:#946906">
-            {% icon "triangle-alert" size="18px" %}
-        </div>
-        <div class="lrow-body">
-            <div class="lrow-title" style="color:var(--burgundy)">{% trans "Retards à imprimer" %}</div>
-            <div class="lrow-sub">{% trans "Liste des prêts dépassant le seuil de retard (paramétrable, 7 jours par défaut), prête à imprimer." %}</div>
-        </div>
-        <div class="lrow-end">{% icon "chevron-right" size="18px" %}</div>
-    </a>
-    <a href="{% url 'reports:reservations_pickup' %}" class="list-row">
-        <div class="lrow-icon" style="--lr-bg:var(--amber-light);--lr-fg:#946906">
-            {% icon "bookmark-check" size="18px" %}
-        </div>
-        <div class="lrow-body">
-            <div class="lrow-title" style="color:var(--burgundy)">{% trans "Réservations à retirer" %}</div>
-            <div class="lrow-sub">{% trans "Liste des réservations satisfaites en attente de retrait — pour relance manuelle des usagers." %}</div>
-        </div>
-        <div class="lrow-end">{% icon "chevron-right" size="18px" %}</div>
-    </a>
-    <a href="{% url 'reports:inactive' %}" class="list-row">
-        <div class="lrow-icon" style="--lr-bg:var(--amber-light);--lr-fg:#946906">
-            {% icon "archive" size="18px" %}
-        </div>
-        <div class="lrow-body">
-            <div class="lrow-title" style="color:var(--burgundy)">{% trans "Inactifs" %}</div>
-            <div class="lrow-sub">{% trans "Usagers et exemplaires sans aucun prêt sur une période — utile pour l'inventaire et la gestion du fonds." %}</div>
-        </div>
-        <div class="lrow-end">{% icon "chevron-right" size="18px" %}</div>
-    </a>
-    <a href="{% url 'reports:index' %}#annual" class="list-row">
-        <div class="lrow-icon" style="--lr-bg:var(--amber-light);--lr-fg:#946906">
-            {% icon "chart-bar" size="18px" %}
-        </div>
-        <div class="lrow-body">
-            <div class="lrow-title" style="color:var(--burgundy)">{% trans "Rapport annuel d'activité (PDF)" %}</div>
-            <div class="lrow-sub">{% trans "Rapport PDF complet d'une année : prêts, usagers, top 10, croissance du fonds." %}</div>
-        </div>
-        <div class="lrow-end">{% icon "chevron-right" size="18px" %}</div>
-    </a>
 </div>
 
 {% if user.is_librarian %}
@@ -153,7 +113,7 @@
     </a>
     <a href="{% url 'catalog:location_list' %}" class="list-row">
         <div class="lrow-icon" style="--lr-bg:var(--olive-light);--lr-fg:#6B5A0E">
-            {% icon "map-pin" size="18px" %}
+            {% icon "library" size="18px" %}
         </div>
         <div class="lrow-body">
             <div class="lrow-title" style="color:var(--burgundy)">{% trans "Emplacements" %}</div>
@@ -161,7 +121,6 @@
         </div>
         <div class="lrow-end">{% icon "chevron-right" size="18px" %}</div>
     </a>
-    {% if user.is_superadmin %}
     <a href="{% url 'core:enrichment_index' %}" class="list-row">
         <div class="lrow-icon" style="--lr-bg:var(--olive-light);--lr-fg:#6B5A0E">
             {% icon "refresh-cw" size="18px" %}
@@ -172,7 +131,6 @@
         </div>
         <div class="lrow-end">{% icon "chevron-right" size="18px" %}</div>
     </a>
-    {% endif %}
 </div>
 {% endif %}
 
