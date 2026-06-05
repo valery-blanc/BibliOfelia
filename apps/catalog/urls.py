@@ -62,4 +62,22 @@ urlpatterns = [
         name="scan_item_delete",
     ),
     path("scan/<int:pk>/commit/", views.scan_session_commit, name="scan_session_commit"),
+    # FEAT-050 : catalogage Excel (vérification + import)
+    path("excel-catalog/", views.excel_catalog_index, name="excel_catalog_index"),
+    path(
+        "excel-catalog/verify/",
+        views.excel_catalog_verify_create,
+        name="excel_catalog_verify",
+    ),
+    path(
+        "excel-catalog/import/",
+        views.excel_catalog_import_create,
+        name="excel_catalog_import",
+    ),
+    path("excel-catalog/<int:pk>/", views.excel_catalog_detail, name="excel_catalog_detail"),
+    path(
+        "excel-catalog/<int:pk>/download/",
+        views.excel_catalog_download,
+        name="excel_catalog_download",
+    ),
 ]

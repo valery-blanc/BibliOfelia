@@ -489,3 +489,70 @@ class EnrichmentJob(models.Model):
 
     def __str__(self) -> str:
         return f"EnrichmentJob#{self.pk} {self.state}"
+
+
+# ─── Catalogage Excel (FEAT-050, Sprint 20) ────────────────────────────────
+
+
+class ExcelJobMode(models.TextChoices):
+    VERIFY = "verify", _("Vérification")
+    IMPORT = "import", _("Import")
+
+
+class ExcelJobState(models.TextChoices):
+    PENDING = "pending", _("En attente")
+    RUNNING = "running", _("En cours")
+    FINISHED = "finished", _("Terminé")
+    FAILED = "failed", _("Échec")
+
+
+class ExcelCatalogJob(models.Model):
+    """Travail de catalogage à partir d'un fichier Excel (FEAT-050).
+
+    Deux modes :
+    - VERIFY : annote l'Excel (titre/auteur trouvés par ISBN puis par
+      titre+auteur fuzzy) et produit un fichier téléchargeable. Aucun effet
+      de bord sur le catalogue.
+    - IMPORT : matérialise une liste d'ISBN en notices + exemplaires via une
+      ScanSession virtuelle (réutilise `finalize_scan_session`).
+    """
+
+    mode = models.CharField(max_length=10, choices=ExcelJobMode.choices)
+    state = models.CharField(
+        max_length=10, choices=ExcelJobState.choices, default=ExcelJobState.PENDING
+    )
+    uploaded_file = models.FileField(upload_to="excel_jobs/%Y/%m/")
+    result_file = models.FileField(upload_to="excel_jobs/%Y/%m/", null=True, blank=True)
+    # IMPORT uniquement : la session de scan virtuelle créée.
+    scan_session = models.ForeignKey(
+        ScanSession,
+        null=True,
+        blank=True,
+        related_name="excel_jobs",
+        on_delete=models.SET_NULL,
+    )
+    total = models.PositiveIntegerField(default=0)
+    processed = models.PositiveIntegerField(default=0)
+    matched_by_isbn = models.PositiveIntegerField(default=0)
+    matched_by_ta = models.PositiveIntegerField(default=0)
+    not_found = models.PositiveIntegerField(default=0)
+    errors = models.PositiveIntegerField(default=0)
+    # Avertissements par ligne (emplacement/catégorie inconnu, ISBN invalide…).
+    report = models.JSONField(default=list, blank=True)
+    created_at = models.DateTimeField(default=timezone.now)
+    finished_at = models.DateTimeField(null=True, blank=True)
+    created_by = models.ForeignKey(
+        settings.AUTH_USER_MODEL,
+        null=True,
+        blank=True,
+        related_name="excel_catalog_jobs",
+        on_delete=models.SET_NULL,
+    )
+
+    class Meta:
+        verbose_name = _("catalogage Excel")
+        verbose_name_plural = _("catalogages Excel")
+        ordering = ["-created_at"]
+
+    def __str__(self) -> str:
+        return f"ExcelCatalogJob#{self.pk} {self.mode} {self.state}"

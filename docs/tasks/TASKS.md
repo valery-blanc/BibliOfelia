@@ -883,3 +883,42 @@ Signalés par Val 2026-05-30 (navigation espagnole).
   - [x] Docs : `docs/bugs/BUG-018-*.md`, SPEC en-tête
   - [x] Test Val (UI espagnole, dev local) — OK 2026-05-30
   - [x] Déploiement Pi (rebuild Docker `edubox-bibliofelia` + worker, couvre aussi C) — 2026-05-30
+
+## Sprint 20 — FEAT-050 Catalogage Excel
+
+> Spec validée 2026-06-05 (cf. `docs/specs/FEAT-050-catalogage-excel.md`). Deux
+> fonctionnalités sous **Avancé → Inventaire → Catalogage Excel** :
+> (1) vérifier un fichier Excel (passe 1 ISBN + passe 2 titre+auteur fuzzy)
+> et produire un fichier annoté ; (2) importer un Excel d'ISBN dans
+> BibliOfelia via une ScanSession virtuelle (réutilise pipeline FEAT-021 /
+> FEAT-046, LOCATION/CATEGORY optionnelles appliquées par ligne).
+>
+> **NOTE DE REPRISE (2026-06-05, session ANQA → Tulear)** : Val a validé toute
+> la spec et explicitement demandé : « code tout et déploie sur Pi, je teste
+> à mon retour ou à distance sur le Pi ». Donc **aucun commit ni push** avant
+> sa confirmation explicite. Le déploiement Pi se fait via `deploy_pi.sh`
+> (ou tar+ssh fallback, cf. FEAT-048). Session interrompue ANQA car Tulear
+> est le poste habituel ; reprise prévue depuis Tulear avec accès complet
+> aux clés SSH Pi.
+
+- [ ] **FEAT-050** Catalogage Excel — vérification + import
+  - [x] Spec `docs/specs/FEAT-050-catalogage-excel.md` rédigée et validée Val 2026-06-05
+  - [x] Dépendances : `openpyxl==3.1.5` + `rapidfuzz==3.10.1` dans `requirements.txt`
+  - [x] Modèle `ExcelCatalogJob` (apps/catalog/models.py) + admin minimal
+  - [x] Migration `apps/catalog/migrations/0009_excel_catalog_job.py` (id BigAutoField)
+  - [x] Sources : `search(title, author, limit=5)` ajouté à `openlibrary.py`, `google_books.py`, `bnf.py`, `bne.py` + registre `SEARCHES`
+  - [x] Module `apps/catalog/sources/_fuzzy.py` (score WRatio + seuils `CONFIDENCE_FLOOR=60` / `HIGHLIGHT_BELOW=75` + `best_candidate`)
+  - [x] Service `apps/catalog/excel_catalog.py` : `validate_xlsx`, `run_verify_job`, `run_import_job`, `run_excel_catalog_job` (entrée django-q2)
+  - [x] Vues `apps/catalog/views.py` : `excel_catalog_index/_verify_create/_import_create/_detail/_download` (`@require_role(LIBRARIAN, SUPERADMIN)`)
+  - [x] Templates `templates/catalog/excel_catalog/` (index, _verify_form, _import_form, detail)
+  - [x] Icône Lucide `file-spreadsheet` dans `static/icons/`
+  - [x] Entrée menu `templates/core/advanced.html` section Inventaire
+  - [x] URLs `apps/catalog/urls.py` (5 routes sous `/excel-catalog/`)
+  - [x] Tests `apps/catalog/tests/test_excel_catalog.py` (16 cas, coverage `excel_catalog.py` 78 % / `_fuzzy.py` 90 %) ; suite complète **362 passed**
+  - [x] i18n : `scripts/translations_sprint20.py` (35 × EN/ES/MG) + `makemessages` + `compilemessages` + gate `scripts/i18n_check.py` → 0
+  - [x] Doc : `FEAT-050-catalogage-excel.md` → `DONE` ; SPEC §5.2 (`ExcelCatalogJob`) + §6.12 + Annexe B + en-tête mis à jour
+  - [x] `docker compose -f docker-compose.dev.yml up --build` OK + `manage.py check` 0 issue + `makemigrations --check` No changes
+  - [x] Déploiement Pi (2026-06-05)
+  - [x] **Itér. 2 (retours Val 2026-06-05)** : passe 2 (titre+auteur) lancée sur **toutes** les lignes, y compris celles avec ISBN (recoupement des ISBN saisis à la main ; mismatch ISBN→orange) ; **Google Books interrogé sans clé** (`lookup`+`search`) ; constat : `isbn:` Google Books n'indexe pas certains ISBN (ex. `9786074440966`) → c'est la passe 2 par titre qui les retrouve. Clé API Google Books `AIzaSyDSiDi…` (fournie Val) posée en `Setting metadata.google_books_api_key` (dev + Pi) ; `Setting` enregistré dans `/admin/` (`apps/core/admin.py`). 17 tests excel + enrichment verts. Redéployé Pi.
+  - [x] Test fonctionnel Val (navigateur, fichier réel) — **OK 2026-06-05** (vérification + import + passe 2 + clé Google Books)
+  - [x] Commit unique `FEAT-050: catalogage Excel — vérification + import` + push origin/main

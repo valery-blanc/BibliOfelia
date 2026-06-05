@@ -1,0 +1,15 @@
+{% load i18n biblio_icons %}
+<form method="post" action="{% url 'catalog:excel_catalog_verify' %}"
+      enctype="multipart/form-data" class="excel-form">
+    {% csrf_token %}
+    <p class="muted text-sm" style="margin-bottom:14px">
+        {% trans "Téléversez un fichier .xlsx avec les colonnes ID, TITLE, AUTHOR, ISBN. BibliOfelia interroge OpenLibrary, Google Books, la BNF et la BNE — d'abord par ISBN, puis par titre + auteur — et vous renvoie le même fichier annoté, avec un score de confiance pour les appariements incertains." %}
+    </p>
+    <input type="file" name="file" accept=".xlsx" required class="form-control" style="margin-bottom:14px">
+    <div class="form-actions" style="border:0;padding:0">
+        <button type="submit" class="btn btn--primary">
+            {% icon "search" size="16px" %} {% trans "Lancer la vérification" %}
+        </button>
+    </div>
+    <p class="excel-hint">{% trans "Compter environ 10 minutes pour 1000 lignes. Le traitement se fait en tâche de fond." %}</p>
+</form>

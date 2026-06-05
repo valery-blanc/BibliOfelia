@@ -2,7 +2,15 @@
 from django.contrib import admin
 from modeltranslation.admin import TranslationAdmin
 
-from .models import Author, BibliographicRecord, Category, Item, Location, Tag
+from .models import (
+    Author,
+    BibliographicRecord,
+    Category,
+    ExcelCatalogJob,
+    Item,
+    Location,
+    Tag,
+)
 
 
 @admin.register(Author)
@@ -38,6 +46,13 @@ class BibliographicRecordAdmin(admin.ModelAdmin):
     search_fields = ("title", "subtitle", "isbn_13", "isbn_10", "series_name")
     filter_horizontal = ("authors", "tags")
     autocomplete_fields = ("category",)
+
+
+@admin.register(ExcelCatalogJob)
+class ExcelCatalogJobAdmin(admin.ModelAdmin):
+    list_display = ("pk", "mode", "state", "total", "processed", "created_by", "created_at")
+    list_filter = ("mode", "state")
+    readonly_fields = ("created_at", "finished_at")
 
 
 @admin.register(Item)

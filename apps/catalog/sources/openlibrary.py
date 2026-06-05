@@ -85,3 +85,47 @@ def lookup(raw_isbn: str) -> dict | None:
         "subjects": subjects,
         "cover_url": cover_url,
     }
+
+
+def search(title: str, author: str = "", limit: int = 5) -> list[dict]:
+    """Recherche par titre + auteur (FEAT-050, passe 2).
+
+    Retourne jusqu'à ``limit`` candidats normalisés (mêmes clés que ``lookup``,
+    au minimum ``title``, ``authors_text``, ``isbn_13``/``isbn_10``). Liste vide
+    si rien ou erreur réseau (jamais d'exception).
+    """
+    title = (title or "").strip()
+    if not title:
+        return []
+    params = {"title": title, "limit": str(max(1, min(limit, 20))), "fields": "*"}
+    if (author or "").strip():
+        params["author"] = author.strip()
+    url = f"{settings.OPENLIBRARY_BASE_URL}/search.json"
+    try:
+        resp = httpx.get(url, params=params, timeout=settings.OPENLIBRARY_TIMEOUT)
+        resp.raise_for_status()
+        data = resp.json()
+    except (httpx.HTTPError, ValueError) as exc:
+        logger.info("OpenLibrary search KO « %s » : %s", title, exc)
+        return []
+    out: list[dict] = []
+    for doc in (data.get("docs") or [])[:limit]:
+        isbns = [_normalize_isbn(x) for x in (doc.get("isbn") or [])]
+        isbn_13 = next((x for x in isbns if len(x) == 13), "")
+        isbn_10 = next((x for x in isbns if len(x) == 10), "")
+        out.append(
+            {
+                "isbn_13": isbn_13,
+                "isbn_10": isbn_10,
+                "title": (doc.get("title") or "").strip(),
+                "subtitle": (doc.get("subtitle") or "").strip(),
+                "authors_text": "; ".join(doc.get("author_name") or []),
+                "publisher": "; ".join((doc.get("publisher") or [])[:1]),
+                "publication_year": doc.get("first_publish_year"),
+                "language": "",
+                "summary": "",
+                "subjects": [],
+                "cover_url": "",
+            }
+        )
+    return out

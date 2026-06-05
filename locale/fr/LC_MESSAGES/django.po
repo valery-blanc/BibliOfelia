@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2026-05-31 00:24+0000\n"
+"POT-Creation-Date: 2026-06-05 13:25+0000\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -77,13 +77,14 @@ msgstr ""
 msgid "Compte %(u)s supprimé."
 msgstr ""
 
-#: apps/api/models.py:23 apps/catalog/models.py:443 apps/core/forms.py:322
-#: apps/loans/models.py:20 templates/catalog/record_detail.html:189
+#: apps/api/models.py:23 apps/catalog/models.py:443 apps/catalog/models.py:503
+#: apps/core/forms.py:322 apps/loans/models.py:20
+#: templates/catalog/record_detail.html:189
 #: templates/loans/reservations.html:97
 msgid "En attente"
 msgstr ""
 
-#: apps/api/models.py:24 apps/catalog/models.py:445
+#: apps/api/models.py:24 apps/catalog/models.py:445 apps/catalog/models.py:505
 msgid "Terminé"
 msgstr ""
 
@@ -126,7 +127,8 @@ msgstr ""
 msgid "Emplacement"
 msgstr ""
 
-#: apps/catalog/forms.py:93 templates/catalog/record_detail.html:90
+#: apps/catalog/forms.py:93 templates/catalog/excel_catalog/index.html:51
+#: templates/catalog/record_detail.html:90
 #: templates/catalog/scan_session.html:95
 #: templates/catalog/scan_session.html:117
 #: templates/core/admin/enrichment_index.html:123
@@ -225,7 +227,7 @@ msgstr ""
 msgid "OfeliaScan"
 msgstr ""
 
-#: apps/catalog/models.py:35
+#: apps/catalog/models.py:35 apps/catalog/models.py:499
 msgid "Import"
 msgstr ""
 
@@ -399,12 +401,13 @@ msgstr ""
 msgid "items scannés"
 msgstr ""
 
-#: apps/catalog/models.py:444 apps/inventory/models.py:23
-#: apps/loans/models.py:12 templates/catalog/scan_session_list.html:24
+#: apps/catalog/models.py:444 apps/catalog/models.py:504
+#: apps/inventory/models.py:23 apps/loans/models.py:12
+#: templates/catalog/scan_session_list.html:24
 msgid "En cours"
 msgstr ""
 
-#: apps/catalog/models.py:446
+#: apps/catalog/models.py:446 apps/catalog/models.py:506
 msgid "Échec"
 msgstr ""
 
@@ -424,229 +427,237 @@ msgstr ""
 msgid "enrichissements métadonnées"
 msgstr ""
 
-#: apps/catalog/views.py:192
+#: apps/catalog/models.py:498
+msgid "Vérification"
+msgstr ""
+
+#: apps/catalog/models.py:553
+msgid "catalogage Excel"
+msgstr ""
+
+#: apps/catalog/models.py:554
+msgid "catalogages Excel"
+msgstr ""
+
+#: apps/catalog/views.py:194
 msgid "Notice créée."
 msgstr ""
 
-#: apps/catalog/views.py:197 apps/catalog/views.py:237
+#: apps/catalog/views.py:199 apps/catalog/views.py:239
 #: templates/catalog/record_list.html:29 templates/core/dashboard.html:185
 msgid "Nouvelle notice"
 msgstr ""
 
-#: apps/catalog/views.py:209
+#: apps/catalog/views.py:211
 msgid "Notice mise à jour."
 msgstr ""
 
-#: apps/catalog/views.py:214
+#: apps/catalog/views.py:216
 msgid "Modifier la notice"
 msgstr ""
 
-#: apps/catalog/views.py:225
+#: apps/catalog/views.py:227
 msgid "Notice trouvée sur OpenLibrary."
 msgstr ""
 
-#: apps/catalog/views.py:229
+#: apps/catalog/views.py:231
 msgid "Aucune réponse d'OpenLibrary — saisissez la notice à la main."
 msgstr ""
 
-#: apps/catalog/views.py:251
+#: apps/catalog/views.py:253
 msgid "Suppression impossible : des exemplaires actifs sont rattachés."
 msgstr ""
 
-#: apps/catalog/views.py:255
+#: apps/catalog/views.py:257
 msgid "Notice supprimée."
 msgstr ""
 
-#: apps/catalog/views.py:281
+#: apps/catalog/views.py:283
 #, python-format
 msgid "%(n)s exemplaire(s) ajouté(s)."
 msgstr ""
 
-#: apps/catalog/views.py:298
+#: apps/catalog/views.py:300
 msgid "Exemplaire mis à jour."
 msgstr ""
 
-#: apps/catalog/views.py:313
+#: apps/catalog/views.py:315
 msgid "Impossible : l'exemplaire est prêté ou réservé."
 msgstr ""
 
-#: apps/catalog/views.py:317
+#: apps/catalog/views.py:319
 msgid "Exemplaire retiré du fonds."
 msgstr ""
 
-#: apps/catalog/views.py:348
+#: apps/catalog/views.py:350
 msgid "Exemplaire supprimé."
 msgstr ""
 
-#: apps/catalog/views.py:430
+#: apps/catalog/views.py:432
 #, python-format
 msgid "%(n)s notice(s) affectée(s) à la catégorie %(c)s."
 msgstr ""
 
-#: apps/catalog/views.py:436
+#: apps/catalog/views.py:438
 #, python-format
 msgid "%(n)s notice(s) sans catégorie (catégorie vidée)."
 msgstr ""
 
-#: apps/catalog/views.py:479
+#: apps/catalog/views.py:481
 #, python-format
 msgid "%(n)s exemplaire(s) affecté(s) à l'emplacement %(l)s."
 msgstr ""
 
-#: apps/catalog/views.py:485
+#: apps/catalog/views.py:487
 #, python-format
 msgid "%(n)s exemplaire(s) sans emplacement (emplacement vidé)."
 msgstr ""
 
-#: apps/catalog/views.py:531
+#: apps/catalog/views.py:533
 #, python-format
 msgid "%(n)s notice(s) supprimée(s)."
 msgstr ""
 
-#: apps/catalog/views.py:559
+#: apps/catalog/views.py:561
 msgid "Emplacement créé."
 msgstr ""
 
-#: apps/catalog/views.py:569 templates/catalog/location_list.html:25
+#: apps/catalog/views.py:571 templates/catalog/location_list.html:25
 msgid "Nouvel emplacement"
 msgstr ""
 
-#: apps/catalog/views.py:581
+#: apps/catalog/views.py:583
 msgid "Emplacement mis à jour."
 msgstr ""
 
-#: apps/catalog/views.py:591
+#: apps/catalog/views.py:593
 msgid "Modifier l'emplacement"
 msgstr ""
 
-#: apps/catalog/views.py:608
+#: apps/catalog/views.py:610
 msgid "Emplacement supprimé."
 msgstr ""
 
-#: apps/catalog/views.py:655
+#: apps/catalog/views.py:657
 msgid "Lot de catalogage démarré."
 msgstr ""
 
-#: apps/catalog/views.py:693
+#: apps/catalog/views.py:710
 #, python-format
 msgid "ISBN %(isbn)s · %(lang)s"
 msgstr ""
 
-#: apps/catalog/views.py:709 apps/catalog/views.py:790
+#: apps/catalog/views.py:734 apps/catalog/views.py:827
 msgid "Ce lot est déjà validé."
 msgstr ""
 
-#: apps/catalog/views.py:714
+#: apps/catalog/views.py:739
 msgid "Déjà catalogué"
 msgstr ""
 
-#: apps/catalog/views.py:714
+#: apps/catalog/views.py:739
 msgid "Carte membre — pas un livre"
 msgstr ""
 
-#: apps/catalog/views.py:717
+#: apps/catalog/views.py:742
 msgid "Code invalide."
 msgstr ""
 
-#: apps/catalog/views.py:754
+#: apps/catalog/views.py:791
 #, python-format
 msgid "exemplaire %(n)s"
 msgstr ""
 
-#: apps/catalog/views.py:780
+#: apps/catalog/views.py:817
 msgid "Ligne retirée."
 msgstr ""
 
-#: apps/catalog/views.py:814
+#: apps/catalog/views.py:851
 msgid "Aucun livre scanné à envoyer."
 msgstr ""
 
-#: apps/catalog/views.py:821
+#: apps/catalog/views.py:858
 #, python-format
 msgid ""
 "%(rec)s notice(s) créée(s), %(match)s complétée(s), %(cop)s exemplaire(s) "
 "ajouté(s)."
 msgstr ""
 
-#: apps/catalog/views.py:830
+#: apps/catalog/views.py:867
 msgid "Modifications enregistrées."
 msgstr ""
 
-#: apps/core/admin_views.py:39
+#: apps/catalog/views.py:889
+msgid "Aucun fichier sélectionné."
+msgstr ""
+
+#: apps/catalog/views.py:912
+msgid "Vérification lancée. Suivez l'avancement ici."
+msgstr ""
+
+#: apps/catalog/views.py:922
+msgid "Import lancé. Suivez l'avancement ici."
+msgstr ""
+
+#: apps/core/admin_views.py:35
 msgid "Identité"
 msgstr ""
 
-#: apps/core/admin_views.py:40
+#: apps/core/admin_views.py:36
 msgid "Langues"
 msgstr ""
 
-#: apps/core/admin_views.py:41
+#: apps/core/admin_views.py:37
 msgid "Durées prêts & réservations"
 msgstr ""
 
-#: apps/core/admin_views.py:42 templates/core/admin/backup_restore.html:11
-#: templates/core/advanced.html:225
+#: apps/core/admin_views.py:38 templates/core/admin/backup_restore.html:11
+#: templates/core/advanced.html:193
 msgid "Sauvegardes"
 msgstr ""
 
-#: apps/core/admin_views.py:43
-msgid "Impressions — Cartes membres"
-msgstr ""
-
-#: apps/core/admin_views.py:44
-msgid "Impressions — Étiquettes codes Ofelia"
-msgstr ""
-
-#: apps/core/admin_views.py:45 apps/setup/views.py:35
-msgid "ZeroTier"
-msgstr ""
-
-#: apps/core/admin_views.py:46
-msgid "Sources de métadonnées"
-msgstr ""
-
-#: apps/core/admin_views.py:66
+#: apps/core/admin_views.py:58
 #, python-format
 msgid "Paramètres %(label)s enregistrés."
 msgstr ""
 
-#: apps/core/admin_views.py:83
+#: apps/core/admin_views.py:75
 #, python-format
 msgid "Sauvegarde effectuée : %(p)s"
 msgstr ""
 
-#: apps/core/admin_views.py:85
+#: apps/core/admin_views.py:77
 #, python-format
 msgid "Échec sauvegarde : %(e)s"
 msgstr ""
 
-#: apps/core/admin_views.py:98
+#: apps/core/admin_views.py:90
 msgid "Aucun fichier fourni."
 msgstr ""
 
-#: apps/core/admin_views.py:110
+#: apps/core/admin_views.py:102
 msgid "Restauration terminée. Redémarrez l'application avant tout autre usage."
 msgstr ""
 
-#: apps/core/admin_views.py:173
+#: apps/core/admin_views.py:165
 msgid "Identifiant requis."
 msgstr ""
 
-#: apps/core/admin_views.py:179
+#: apps/core/admin_views.py:171
 msgid "Cet identifiant est déjà utilisé par un autre compte."
 msgstr ""
 
-#: apps/core/admin_views.py:198
+#: apps/core/admin_views.py:190
 #, python-format
 msgid "Identifiant « %(u)s » autorisé."
 msgstr ""
 
-#: apps/core/admin_views.py:209
+#: apps/core/admin_views.py:201
 #, python-format
 msgid "Identifiant « %(u)s » révoqué."
 msgstr ""
 
-#: apps/core/admin_views.py:290
+#: apps/core/admin_views.py:282
 #, python-format
 msgid "Enrichissement #%(id)s lancé. Suivez l'avancement ici."
 msgstr ""
@@ -1410,6 +1421,10 @@ msgstr ""
 msgid "Sauvegarde"
 msgstr ""
 
+#: apps/setup/views.py:35
+msgid "ZeroTier"
+msgstr ""
+
 #: apps/setup/views.py:36
 msgid "Démo"
 msgstr ""
@@ -1549,7 +1564,7 @@ msgstr ""
 #: templates/core/admin/settings_index.html:14
 #: templates/core/admin/settings_section.html:4
 #: templates/core/admin/settings_section.html:10
-#: templates/core/advanced.html:195
+#: templates/core/advanced.html:163
 msgid "Paramètres"
 msgstr ""
 
@@ -1636,13 +1651,11 @@ msgstr ""
 msgid "Enregistrer"
 msgstr ""
 
-#: templates/accounts/user_list.html:19
-#: templates/core/admin/settings_index.html:62 templates/core/advanced.html:205
+#: templates/accounts/user_list.html:19 templates/core/advanced.html:173
 msgid "Comptes utilisateurs"
 msgstr ""
 
 #: templates/accounts/user_list.html:20
-#: templates/core/admin/settings_index.html:63
 msgid "Bibliothécaires, contributeurs, administration"
 msgstr ""
 
@@ -1745,6 +1758,183 @@ msgstr ""
 msgid "Options avancées"
 msgstr ""
 
+#: templates/catalog/excel_catalog/_import_form.html:6
+msgid ""
+"Téléversez un fichier .xlsx avec au moins une colonne ISBN. Chaque ISBN "
+"devient une notice et un exemplaire dans le catalogue (les ISBN déjà connus "
+"ajoutent simplement un exemplaire à la notice existante)."
+msgstr ""
+
+#: templates/catalog/excel_catalog/_import_form.html:9
+msgid "obligatoire"
+msgstr ""
+
+#: templates/catalog/excel_catalog/_import_form.html:10
+msgid ""
+"optionnel : code d'emplacement (sinon l'exemplaire est créé sans emplacement)"
+msgstr ""
+
+#: templates/catalog/excel_catalog/_import_form.html:11
+msgid "optionnel : nom de catégorie existante"
+msgstr ""
+
+#: templates/catalog/excel_catalog/_import_form.html:16
+msgid "Importer dans le catalogue"
+msgstr ""
+
+#: templates/catalog/excel_catalog/_import_form.html:19
+msgid ""
+"L'import crée un lot de catalogage visible dans « Catalogage par scan ». Les "
+"métadonnées (titre, auteur…) peuvent ensuite être complétées via "
+"l'enrichissement."
+msgstr ""
+
+#: templates/catalog/excel_catalog/_verify_form.html:6
+msgid ""
+"Téléversez un fichier .xlsx avec les colonnes ID, TITLE, AUTHOR, ISBN. "
+"BibliOfelia interroge OpenLibrary, Google Books, la BNF et la BNE — d'abord "
+"par ISBN, puis par titre + auteur — et vous renvoie le même fichier annoté, "
+"avec un score de confiance pour les appariements incertains."
+msgstr ""
+
+#: templates/catalog/excel_catalog/_verify_form.html:11
+msgid "Lancer la vérification"
+msgstr ""
+
+#: templates/catalog/excel_catalog/_verify_form.html:14
+msgid ""
+"Compter environ 10 minutes pour 1000 lignes. Le traitement se fait en tâche "
+"de fond."
+msgstr ""
+
+#: templates/catalog/excel_catalog/detail.html:4
+#, python-format
+msgid "Catalogage Excel #%(id)s"
+msgstr ""
+
+#: templates/catalog/excel_catalog/detail.html:16
+#: templates/catalog/excel_catalog/index.html:10
+#: templates/catalog/location_confirm_delete.html:10
+#: templates/catalog/location_form.html:10
+#: templates/catalog/location_list.html:10
+#: templates/core/admin/enrichment_detail.html:16
+#: templates/core/admin/enrichment_index.html:10
+#: templates/core/admin/ofeliascan.html:10 templates/core/advanced.html:4
+#: templates/core/advanced.html:18 templates/core/dashboard.html:90
+#: templates/partials/_tile_strip.html:58
+msgid "Avancé"
+msgstr ""
+
+#: templates/catalog/excel_catalog/detail.html:17
+#: templates/catalog/excel_catalog/index.html:4
+#: templates/catalog/excel_catalog/index.html:11
+#: templates/catalog/excel_catalog/index.html:19
+#: templates/core/advanced.html:119
+msgid "Catalogage Excel"
+msgstr ""
+
+#: templates/catalog/excel_catalog/detail.html:44
+msgid "Traitement en cours… cette page se rafraîchit automatiquement."
+msgstr ""
+
+#: templates/catalog/excel_catalog/detail.html:49
+#: templates/core/admin/enrichment_detail.html:46
+msgid "Total"
+msgstr ""
+
+#: templates/catalog/excel_catalog/detail.html:50
+#: templates/catalog/excel_catalog/index.html:52
+#: templates/core/admin/enrichment_detail.html:47
+#: templates/core/admin/enrichment_index.html:124
+msgid "Traitées"
+msgstr ""
+
+#: templates/catalog/excel_catalog/detail.html:52
+msgid "Trouvées par ISBN"
+msgstr ""
+
+#: templates/catalog/excel_catalog/detail.html:53
+msgid "Trouvées par titre+auteur"
+msgstr ""
+
+#: templates/catalog/excel_catalog/detail.html:54
+msgid "Non trouvées"
+msgstr ""
+
+#: templates/catalog/excel_catalog/detail.html:56
+msgid "Notices complétées"
+msgstr ""
+
+#: templates/catalog/excel_catalog/detail.html:57
+msgid "Notices créées"
+msgstr ""
+
+#: templates/catalog/excel_catalog/detail.html:59
+#: templates/core/admin/enrichment_detail.html:50
+#: templates/core/admin/enrichment_index.html:126
+msgid "Erreurs"
+msgstr ""
+
+#: templates/catalog/excel_catalog/detail.html:61
+#: templates/core/admin/enrichment_detail.html:52
+msgid "Terminé le"
+msgstr ""
+
+#: templates/catalog/excel_catalog/detail.html:69
+msgid "Télécharger le fichier annoté"
+msgstr ""
+
+#: templates/catalog/excel_catalog/detail.html:75
+msgid "Voir le lot importé"
+msgstr ""
+
+#: templates/catalog/excel_catalog/detail.html:83
+msgid "Avertissements"
+msgstr ""
+
+#: templates/catalog/excel_catalog/detail.html:88
+msgid "Ligne"
+msgstr ""
+
+#: templates/catalog/excel_catalog/detail.html:90
+msgid "Détail"
+msgstr ""
+
+#: templates/catalog/excel_catalog/index.html:20
+msgid "Vérifier ou importer un fichier Excel d'inventaire."
+msgstr ""
+
+#: templates/catalog/excel_catalog/index.html:28
+msgid "Vérifier un fichier"
+msgstr ""
+
+#: templates/catalog/excel_catalog/index.html:36
+msgid "Importer dans BibliOfelia"
+msgstr ""
+
+#: templates/catalog/excel_catalog/index.html:43
+msgid "Travaux récents"
+msgstr ""
+
+#: templates/catalog/excel_catalog/index.html:49
+#: templates/core/admin/enrichment_index.html:121
+msgid "Lancé le"
+msgstr ""
+
+#: templates/catalog/excel_catalog/index.html:50
+#: templates/catalog/record_detail.html:53
+msgid "Type"
+msgstr ""
+
+#: templates/catalog/excel_catalog/index.html:75
+#: templates/core/admin/enrichment_index.html:151
+msgid "Détails"
+msgstr ""
+
+#: templates/catalog/excel_catalog/index.html:84
+msgid "Aucun travail lancé pour l'instant."
+msgstr ""
+
 #: templates/catalog/item_form.html:4 templates/catalog/item_form.html:15
 msgid "Modifier l'exemplaire"
 msgstr ""
@@ -1762,22 +1952,11 @@ msgstr ""
 msgid "Supprimer l'emplacement"
 msgstr ""
 
-#: templates/catalog/location_confirm_delete.html:10
-#: templates/catalog/location_form.html:10
-#: templates/catalog/location_list.html:10
-#: templates/core/admin/enrichment_detail.html:16
-#: templates/core/admin/enrichment_index.html:10
-#: templates/core/admin/ofeliascan.html:10 templates/core/advanced.html:4
-#: templates/core/advanced.html:18 templates/core/dashboard.html:90
-#: templates/partials/_tile_strip.html:58
-msgid "Avancé"
-msgstr ""
-
 #: templates/catalog/location_confirm_delete.html:11
 #: templates/catalog/location_form.html:11
 #: templates/catalog/location_list.html:4
 #: templates/catalog/location_list.html:11
-#: templates/catalog/location_list.html:19 templates/core/advanced.html:159
+#: templates/catalog/location_list.html:19 templates/core/advanced.html:129
 msgid "Emplacements"
 msgstr ""
 
@@ -2002,10 +2181,6 @@ msgstr ""
 #: templates/members/member_detail.html:87
 #: templates/printing/cards_picker.html:32
 msgid "Catégorie"
-msgstr ""
-
-#: templates/catalog/record_detail.html:53
-msgid "Type"
 msgstr ""
 
 #: templates/catalog/record_detail.html:54
@@ -2336,12 +2511,12 @@ msgstr ""
 #: templates/core/admin/diagnostics.html:4
 #: templates/core/admin/diagnostics.html:11
 #: templates/core/admin/diagnostics.html:19
-#: templates/core/admin/settings_index.html:73 templates/core/advanced.html:235
+#: templates/core/admin/settings_index.html:53 templates/core/advanced.html:203
 msgid "Diagnostic"
 msgstr ""
 
 #: templates/core/admin/diagnostics.html:20
-#: templates/core/admin/settings_index.html:74
+#: templates/core/admin/settings_index.html:54
 msgid "État du système, sauvegardes, planificateur"
 msgstr ""
 
@@ -2425,15 +2600,6 @@ msgstr ""
 msgid "Sources"
 msgstr ""
 
-#: templates/core/admin/enrichment_detail.html:46
-msgid "Total"
-msgstr ""
-
-#: templates/core/admin/enrichment_detail.html:47
-#: templates/core/admin/enrichment_index.html:124
-msgid "Traitées"
-msgstr ""
-
 #: templates/core/admin/enrichment_detail.html:48
 #: templates/core/admin/enrichment_index.html:125
 msgid "Mises à jour"
@@ -2441,15 +2607,6 @@ msgstr ""
 
 #: templates/core/admin/enrichment_detail.html:49
 msgid "Inchangées"
-msgstr ""
-
-#: templates/core/admin/enrichment_detail.html:50
-#: templates/core/admin/enrichment_index.html:126
-msgid "Erreurs"
-msgstr ""
-
-#: templates/core/admin/enrichment_detail.html:52
-msgid "Terminé le"
 msgstr ""
 
 #: templates/core/admin/enrichment_detail.html:58
@@ -2467,7 +2624,7 @@ msgstr ""
 #: templates/core/admin/enrichment_index.html:4
 #: templates/core/admin/enrichment_index.html:11
 #: templates/core/admin/enrichment_index.html:19
-#: templates/core/advanced.html:170
+#: templates/core/advanced.html:139
 msgid "Enrichissement métadonnées"
 msgstr ""
 
@@ -2537,21 +2694,13 @@ msgstr ""
 msgid "Historique"
 msgstr ""
 
-#: templates/core/admin/enrichment_index.html:121
-msgid "Lancé le"
-msgstr ""
-
-#: templates/core/admin/enrichment_index.html:151
-msgid "Détails"
-msgstr ""
-
 #: templates/core/admin/enrichment_index.html:160
 msgid "Aucun enrichissement lancé."
 msgstr ""
 
 #: templates/core/admin/ofeliascan.html:4
 #: templates/core/admin/ofeliascan.html:11
-#: templates/core/admin/ofeliascan.html:19 templates/core/advanced.html:215
+#: templates/core/admin/ofeliascan.html:19 templates/core/advanced.html:183
 msgid "Connexion OfeliaScan"
 msgstr ""
 
@@ -2636,41 +2785,29 @@ msgid ""
 "Configuration de la bibliothèque, des sauvegardes et de la connectivité."
 msgstr ""
 
-#: templates/core/admin/settings_index.html:43
+#: templates/core/admin/settings_index.html:37
 msgid "Nom de la bibliothèque, contact, fuseau horaire"
 msgstr ""
 
-#: templates/core/admin/settings_index.html:44
+#: templates/core/admin/settings_index.html:38
 msgid "Langues actives et langue par défaut"
 msgstr ""
 
-#: templates/core/admin/settings_index.html:45
+#: templates/core/admin/settings_index.html:39
 msgid "Durée par défaut d'un prêt et délais de réservation"
 msgstr ""
 
-#: templates/core/admin/settings_index.html:46
+#: templates/core/admin/settings_index.html:40
 msgid "Fréquence locale et destination cloud (rclone)"
 msgstr ""
 
-#: templates/core/admin/settings_index.html:47
-msgid "Cartes membres : nombre par A4, photo, logo OFELIA"
-msgstr ""
-
-#: templates/core/admin/settings_index.html:48
-msgid "Étiquettes codes Ofelia : dimensions, titre, logo"
-msgstr ""
-
-#: templates/core/admin/settings_index.html:49
-msgid "Réseau privé pour accès à distance"
-msgstr ""
-
-#: templates/core/admin/settings_index.html:81
+#: templates/core/admin/settings_index.html:61
 msgid ""
 "Les catégories, tags et emplacements se gèrent depuis l'administration "
 "Django pour l'instant."
 msgstr ""
 
-#: templates/core/admin/settings_index.html:82
+#: templates/core/admin/settings_index.html:62
 msgid "Ouvrir l'admin"
 msgstr ""
 
@@ -2736,123 +2873,86 @@ msgid ""
 "PDF."
 msgstr ""
 
-#: templates/core/advanced.html:86
-msgid "Retards à imprimer"
-msgstr ""
-
-#: templates/core/advanced.html:87
-msgid ""
-"Liste des prêts dépassant le seuil de retard (paramétrable, 7 jours par "
-"défaut), prête à imprimer."
-msgstr ""
-
-#: templates/core/advanced.html:96 templates/reports/index.html:36
-#: templates/reports/reservations_pickup.html:4
-#: templates/reports/reservations_pickup.html:14
-msgid "Réservations à retirer"
-msgstr ""
-
-#: templates/core/advanced.html:97
-msgid ""
-"Liste des réservations satisfaites en attente de retrait — pour relance "
-"manuelle des usagers."
-msgstr ""
-
-#: templates/core/advanced.html:106 templates/reports/inactive_list.html:4
-#: templates/reports/inactive_list.html:14 templates/reports/index.html:46
-msgid "Inactifs"
-msgstr ""
-
-#: templates/core/advanced.html:107
-msgid ""
-"Usagers et exemplaires sans aucun prêt sur une période — utile pour "
-"l'inventaire et la gestion du fonds."
-msgstr ""
-
-#: templates/core/advanced.html:116 templates/reports/index.html:96
-msgid "Rapport annuel d'activité (PDF)"
-msgstr ""
-
-#: templates/core/advanced.html:117
-msgid ""
-"Rapport PDF complet d'une année : prêts, usagers, top 10, croissance du "
-"fonds."
-msgstr ""
-
-#: templates/core/advanced.html:130 templates/inventory/session_list.html:4
+#: templates/core/advanced.html:90 templates/inventory/session_list.html:4
 #: templates/inventory/session_list.html:14
 msgid "Inventaire"
 msgstr ""
 
-#: templates/core/advanced.html:139
+#: templates/core/advanced.html:99
 msgid "Sessions d'inventaire"
 msgstr ""
 
-#: templates/core/advanced.html:140
+#: templates/core/advanced.html:100
 msgid ""
 "Vérification du fonds : créer une session, pointer les exemplaires scannés, "
 "repérer les écarts."
 msgstr ""
 
-#: templates/core/advanced.html:149
+#: templates/core/advanced.html:109
 msgid "Catalogage par scan"
 msgstr ""
 
-#: templates/core/advanced.html:150
+#: templates/core/advanced.html:110
 msgid "Scanner les ISBN en rafale pour créer les notices et leurs exemplaires."
 msgstr ""
 
-#: templates/core/advanced.html:160
+#: templates/core/advanced.html:120
+msgid ""
+"Vérifier ou importer un fichier Excel d'inventaire (ISBN, titre, auteur, "
+"emplacement, catégorie)."
+msgstr ""
+
+#: templates/core/advanced.html:130
 msgid ""
 "Définir les zones de rangement (Salle adulte, Réserve, A1…). Utilisé au "
 "catalogage et au récolement."
 msgstr ""
 
-#: templates/core/advanced.html:171
+#: templates/core/advanced.html:140
 msgid ""
 "Compléter ou écraser les métadonnées du catalogue depuis OpenLibrary, Google "
 "Books, BNF et BNE — en tâche de fond."
 msgstr ""
 
-#: templates/core/advanced.html:186
+#: templates/core/advanced.html:154
 msgid "Administration"
 msgstr ""
 
-#: templates/core/advanced.html:196
+#: templates/core/advanced.html:164
 msgid ""
 "Identité de la bibliothèque, langues activées, format des étiquettes/cartes, "
 "sauvegardes, ZeroTier."
 msgstr ""
 
-#: templates/core/advanced.html:206
+#: templates/core/advanced.html:174
 msgid ""
 "Création, édition, réinitialisation de mot de passe des comptes "
 "bibliothécaires et administrateurs."
 msgstr ""
 
-#: templates/core/advanced.html:216
+#: templates/core/advanced.html:184
 msgid ""
 "Identifiants autorisés pour l'application mobile OfeliaScan et adresse de la "
 "box."
 msgstr ""
 
-#: templates/core/advanced.html:226
+#: templates/core/advanced.html:194
 msgid ""
 "Déclencher une sauvegarde manuelle, configurer la fréquence et le cloud, "
 "restaurer depuis un fichier."
 msgstr ""
 
-#: templates/core/advanced.html:236
+#: templates/core/advanced.html:204
 msgid ""
 "État système : version, espace disque, file django-q2, derniers paramètres "
 "modifiés."
 msgstr ""
 
-#: templates/core/advanced.html:245
+#: templates/core/advanced.html:213
 msgid "Administration Django"
 msgstr ""
 
-#: templates/core/advanced.html:246
+#: templates/core/advanced.html:214
 msgid ""
 "Gestion fine : catégories, tags, emplacements, catégories d'usagers (réservé "
 "au support technique)."
@@ -3674,6 +3774,11 @@ msgstr ""
 msgid "Aucun exemplaire."
 msgstr ""
 
+#: templates/reports/inactive_list.html:4
+#: templates/reports/inactive_list.html:14 templates/reports/index.html:46
+msgid "Inactifs"
+msgstr ""
+
 #: templates/reports/inactive_list.html:15
 msgid "Usagers et exemplaires sans activité récente"
 msgstr ""
@@ -3731,6 +3836,11 @@ msgstr ""
 msgid "Retards de plus de 7 jours par défaut"
 msgstr ""
 
+#: templates/reports/index.html:36 templates/reports/reservations_pickup.html:4
+#: templates/reports/reservations_pickup.html:14
+msgid "Réservations à retirer"
+msgstr ""
+
 #: templates/reports/index.html:37
 msgid "Liste de relance pour les usagers"
 msgstr ""
@@ -3767,6 +3877,10 @@ msgstr ""
 
 #: templates/reports/index.html:91
 msgid "Télécharger CSV"
+msgstr ""
+
+#: templates/reports/index.html:96
+msgid "Rapport annuel d'activité (PDF)"
 msgstr ""
 
 #: templates/reports/index.html:104

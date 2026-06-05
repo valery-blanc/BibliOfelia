@@ -31,6 +31,8 @@ from .models import (
     BibliographicRecord,
     Category,
     DocumentType,
+    ExcelCatalogJob,
+    ExcelJobMode,
     Item,
     ItemState,
     ItemStatus,
@@ -864,3 +866,80 @@ def scan_session_commit(request, pk):
 
     messages.success(request, _("Modifications enregistrées."))
     return redirect("catalog:scan_session", pk=pk)
+
+
+# ─── Catalogage Excel (FEAT-050) ───────────────────────────────────────────
+
+
+@require_role(*WRITE_ROLES)
+def excel_catalog_index(request):
+    """Page de garde : 2 outils (Vérifier / Importer) + jobs récents."""
+    jobs = ExcelCatalogJob.objects.filter(created_by=request.user)[:10]
+    return render(request, "catalog/excel_catalog/index.html", {"jobs": jobs})
+
+
+def _start_excel_job(request, mode):
+    """Valide l'upload, crée le job et le pousse dans la file django-q2."""
+    from django_q.tasks import async_task
+
+    from .excel_catalog import validate_xlsx
+
+    uploaded = request.FILES.get("file")
+    if not uploaded:
+        messages.error(request, _("Aucun fichier sélectionné."))
+        return None
+    errors = validate_xlsx(uploaded, mode)
+    if errors:
+        for err in errors:
+            messages.error(request, err)
+        return None
+    job = ExcelCatalogJob.objects.create(
+        mode=mode, uploaded_file=uploaded, created_by=request.user
+    )
+    async_task(
+        "apps.catalog.excel_catalog.run_excel_catalog_job", job.pk,
+        q_options={"timeout": 7200, "retry": 9000, "ack_failure": True},
+    )
+    return job
+
+
+@require_POST
+@require_role(*WRITE_ROLES)
+def excel_catalog_verify_create(request):
+    job = _start_excel_job(request, ExcelJobMode.VERIFY)
+    if job is None:
+        return redirect("catalog:excel_catalog_index")
+    messages.success(request, _("Vérification lancée. Suivez l'avancement ici."))
+    return redirect("catalog:excel_catalog_detail", pk=job.pk)
+
+
+@require_POST
+@require_role(*WRITE_ROLES)
+def excel_catalog_import_create(request):
+    job = _start_excel_job(request, ExcelJobMode.IMPORT)
+    if job is None:
+        return redirect("catalog:excel_catalog_index")
+    messages.success(request, _("Import lancé. Suivez l'avancement ici."))
+    return redirect("catalog:excel_catalog_detail", pk=job.pk)
+
+
+@require_role(*WRITE_ROLES)
+def excel_catalog_detail(request, pk):
+    job = ExcelCatalogJob.objects.filter(pk=pk, created_by=request.user).first()
+    if not job:
+        return redirect("catalog:excel_catalog_index")
+    return render(request, "catalog/excel_catalog/detail.html", {"job": job})
+
+
+@require_role(*WRITE_ROLES)
+def excel_catalog_download(request, pk):
+    from django.http import FileResponse, Http404
+
+    job = ExcelCatalogJob.objects.filter(pk=pk, created_by=request.user).first()
+    if not job or not job.result_file:
+        raise Http404
+    return FileResponse(
+        job.result_file.open("rb"),
+        as_attachment=True,
+        filename=f"verification-{job.pk}.xlsx",
+    )

@@ -35,6 +35,86 @@ def _texts(record_data, tag):
     ]
 
 
+_BNE_SRU_SEARCH = (
+    "https://catalogo.bne.es/view/sru/34BNE_INST"
+    "?version=1.2&operation=searchRetrieve"
+    "&recordSchema=dc&maximumRecords={limit}"
+    '&query=alma.title="{title}"{author_clause}'
+)
+
+_ISBN_RE = re.compile(r"[0-9Xx]{10,17}")
+
+
+def _quote(value: str) -> str:
+    return (value or "").replace('"', " ").strip()
+
+
+def _isbns_from_identifiers(record_data) -> tuple[str, str]:
+    isbn_13 = isbn_10 = ""
+    for ident in _texts(record_data, "identifier"):
+        m = _ISBN_RE.search(re.sub(r"[ \-]", "", ident))
+        if not m:
+            continue
+        val = m.group().upper()
+        if len(val) == 13 and not isbn_13:
+            isbn_13 = val
+        elif len(val) == 10 and not isbn_10:
+            isbn_10 = val
+    return isbn_13, isbn_10
+
+
+def _record_to_candidate(record_data) -> dict:
+    titles = _texts(record_data, "title")
+    creators = _texts(record_data, "creator") + _texts(record_data, "contributor")
+    publishers = _texts(record_data, "publisher")
+    dates = _texts(record_data, "date")
+    languages = _texts(record_data, "language")
+    year = None
+    for d in dates:
+        m = _YEAR_RE.search(d)
+        if m:
+            year = int(m.group())
+            break
+    isbn_13, isbn_10 = _isbns_from_identifiers(record_data)
+    return {
+        "isbn_13": isbn_13,
+        "isbn_10": isbn_10,
+        "title": titles[0] if titles else "",
+        "subtitle": "",
+        "authors_text": "; ".join(creators),
+        "publisher": publishers[-1] if publishers else "",
+        "publication_year": year,
+        "language": (languages[0][:10] if languages else ""),
+        "summary": "",
+        "subjects": [],
+        "cover_url": "",
+    }
+
+
+def search(title: str, author: str = "", limit: int = 5) -> list[dict]:
+    """Recherche par titre + auteur (FEAT-050, passe 2). SRU Alma Dublin Core."""
+    title = _quote(title)
+    if not title:
+        return []
+    author_clause = ""
+    if _quote(author):
+        author_clause = f'+and+alma.author="{_quote(author)}"'
+    url = _BNE_SRU_SEARCH.format(
+        title=title, author_clause=author_clause, limit=max(1, min(limit, 20))
+    )
+    try:
+        resp = httpx.get(url, timeout=10)
+        resp.raise_for_status()
+        root = ET.fromstring(resp.content)
+    except (httpx.HTTPError, ET.ParseError) as exc:
+        logger.info("BNE search KO « %s » : %s", title, exc)
+        return []
+    out: list[dict] = []
+    for record_data in root.findall(".//srw:recordData", _NS)[:limit]:
+        out.append(_record_to_candidate(record_data))
+    return out
+
+
 def lookup(raw_isbn: str) -> dict | None:
     isbn = re.sub(r"[^0-9Xx]", "", raw_isbn or "").upper()
     if len(isbn) not in (10, 13):

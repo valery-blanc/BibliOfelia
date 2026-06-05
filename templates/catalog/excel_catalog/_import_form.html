@@ -1,0 +1,20 @@
+{% load i18n biblio_icons %}
+<form method="post" action="{% url 'catalog:excel_catalog_import' %}"
+      enctype="multipart/form-data" class="excel-form">
+    {% csrf_token %}
+    <p class="muted text-sm" style="margin-bottom:14px">
+        {% trans "Téléversez un fichier .xlsx avec au moins une colonne ISBN. Chaque ISBN devient une notice et un exemplaire dans le catalogue (les ISBN déjà connus ajoutent simplement un exemplaire à la notice existante)." %}
+    </p>
+    <ul class="excel-cols">
+        <li><strong>ISBN</strong> — {% trans "obligatoire" %}</li>
+        <li><strong>LOCATION</strong> — {% trans "optionnel : code d'emplacement (sinon l'exemplaire est créé sans emplacement)" %}</li>
+        <li><strong>CATEGORY</strong> — {% trans "optionnel : nom de catégorie existante" %}</li>
+    </ul>
+    <input type="file" name="file" accept=".xlsx" required class="form-control" style="margin:14px 0">
+    <div class="form-actions" style="border:0;padding:0">
+        <button type="submit" class="btn btn--primary">
+            {% icon "book-up" size="16px" %} {% trans "Importer dans le catalogue" %}
+        </button>
+    </div>
+    <p class="excel-hint">{% trans "L'import crée un lot de catalogage visible dans « Catalogage par scan ». Les métadonnées (titre, auteur…) peuvent ensuite être complétées via l'enrichissement." %}</p>
+</form>

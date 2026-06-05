@@ -34,6 +34,10 @@ Pillow==11.0.0
 # HTTP client
 httpx==0.28.1
 
+# Catalogage Excel (FEAT-050) : lecture/écriture .xlsx + matching fuzzy local
+openpyxl==3.1.5
+rapidfuzz==3.10.1
+
 # Settings env
 django-environ==0.11.2
 

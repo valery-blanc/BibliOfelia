@@ -16,6 +16,16 @@ SOURCES = {
     "bne": bne.lookup,
 }
 
+# FEAT-050 : recherche par titre + auteur (passe 2 du catalogage Excel).
+# Chaque ``search(title, author, limit)`` renvoie une liste de candidats
+# normalisés (même schéma que ``lookup``). Jamais d'exception réseau.
+SEARCHES = {
+    "openlibrary": openlibrary.search,
+    "google_books": google_books.search,
+    "bnf": bnf.search,
+    "bne": bne.search,
+}
+
 SOURCE_LABELS = {
     "openlibrary": "OpenLibrary",
     "google_books": "Google Books",
