@@ -141,27 +141,38 @@ def validate_xlsx(uploaded_file, mode: str) -> list[str]:
     return errors
 
 
-def _search_all(title: str, author: str) -> list[dict]:
-    """Interroge les 4 sources `search` en parallèle, agrège les candidats."""
+def _search_all(title: str, author: str) -> tuple[list[dict], bool]:
+    """Interroge les 4 sources `search` en parallèle, agrège les candidats.
+
+    Renvoie ``(candidats, rate_limited)`` — ``rate_limited`` vrai si une source
+    a atteint son quota (429) pendant la recherche (BUG-019)."""
+    from .sources import SourceRateLimited
+
     candidates: list[dict] = []
+    rate_limited = False
 
     def _one(name):
         try:
-            return SEARCHES[name](title, author, limit=5) or []
+            return SEARCHES[name](title, author, limit=5) or [], False
+        except SourceRateLimited:
+            logger.info("Source %s search : quota atteint (429) « %s »", name, title)
+            return [], True
         except Exception as exc:  # filet : une source qui casse ne bloque pas
             logger.info("Source %s search KO « %s » : %s", name, title, exc)
-            return []
+            return [], False
 
     with ThreadPoolExecutor(max_workers=len(SEARCHES)) as ex:
-        for result in ex.map(_one, _SOURCE_ORDER):
+        for result, was_limited in ex.map(_one, _SOURCE_ORDER):
             candidates.extend(result)
-    return candidates
+            rate_limited = rate_limited or was_limited
+    return candidates, rate_limited
 
 
-def _pass1_by_isbn(isbn: str) -> dict | None:
-    """Passe 1 : interroge les sources par ISBN, renvoie la 1re réponse non
-    vide (titre présent) avec sa source, ou None."""
-    responses = _try_sources(isbn, _SOURCE_ORDER)
+def _pass1_by_isbn(isbn: str) -> tuple[dict | None, bool]:
+    """Passe 1 : interroge les sources par ISBN, renvoie ``(hit, rate_limited)``
+    où ``hit`` est la 1re réponse non vide (titre présent) avec sa source, ou
+    None. ``rate_limited`` vrai si une source a atteint son quota (429)."""
+    responses, rate_limited = _try_sources(isbn, _SOURCE_ORDER, with_rate_limit=True)
     for name in _SOURCE_ORDER:
         data = responses.get(name)
         if data and (data.get("title") or "").strip():
@@ -169,8 +180,8 @@ def _pass1_by_isbn(isbn: str) -> dict | None:
                 "title": (data.get("title") or "").strip(),
                 "authors_text": (data.get("authors_text") or "").strip(),
                 "source": name,
-            }
-    return None
+            }, rate_limited
+    return None, rate_limited
 
 
 def run_verify_job(job: ExcelCatalogJob) -> None:
@@ -212,12 +223,14 @@ def run_verify_job(job: ExcelCatalogJob) -> None:
 
         typed_isbn = normalize_isbn(raw_isbn) if raw_isbn else ""
         found_by_isbn = False
+        row_rate_limited = False
         if raw_isbn:
             isbn = typed_isbn
             if len(isbn) not in (10, 13):
                 ws.cell(row=row, column=out["SOURCE_BY_ISBN"], value="ISBN_INVALID")
             else:
-                hit = _pass1_by_isbn(isbn)
+                hit, rl = _pass1_by_isbn(isbn)
+                row_rate_limited = row_rate_limited or rl
                 if hit:
                     ws.cell(row=row, column=out["TITLE_FOUND_BY_ISBN"], value=hit["title"])
                     ws.cell(row=row, column=out["AUTHOR_FOUND_BY_ISBN"], value=hit["authors_text"])
@@ -232,7 +245,8 @@ def run_verify_job(job: ExcelCatalogJob) -> None:
         # l'ISBN trouvé par titre+auteur à celui du fichier (FEAT-050 itér. 2).
         found_by_ta = False
         if title:
-            candidates = _search_all(title, author)
+            candidates, rl = _search_all(title, author)
+            row_rate_limited = row_rate_limited or rl
             best, sc = best_candidate(title, author, candidates)
             if best and sc >= CONFIDENCE_FLOOR:
                 isbn_found = best.get("isbn_13") or best.get("isbn_10") or ""
@@ -252,10 +266,18 @@ def run_verify_job(job: ExcelCatalogJob) -> None:
 
         if not found_by_isbn and not found_by_ta:
             job.not_found += 1
+        if row_rate_limited:
+            job.rate_limited += 1
+            # Ne pas écraser une source trouvée : ne marquer que si rien par ISBN.
+            if not found_by_isbn:
+                ws.cell(row=row, column=out["SOURCE_BY_ISBN"], value="RATE_LIMITED")
 
         job.processed += 1
         if job.processed % 10 == 0:
-            job.save(update_fields=["processed", "matched_by_isbn", "matched_by_ta", "not_found"])
+            job.save(update_fields=[
+                "processed", "matched_by_isbn", "matched_by_ta",
+                "not_found", "rate_limited",
+            ])
 
     buffer = io.BytesIO()
     wb.save(buffer)

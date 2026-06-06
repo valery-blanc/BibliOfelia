@@ -39,6 +39,13 @@
     </div>
 </header>
 
+{% if job.rate_limited %}
+<div class="card" style="background:var(--amber-light);border:1px solid var(--amber);margin-bottom:16px">
+    <strong>{% icon "alert-triangle" size="16px" %} {% trans "Quota Google Books atteint" %}</strong>
+    <p style="margin:6px 0 0">{% blocktrans with n=job.rate_limited %}{{ n }} notice(s) n'ont pas pu être complétées car le quota d'une source en ligne (Google Books) a été atteint. Relancez cet enrichissement demain — le quota se réinitialise chaque jour — pour compléter le reste.{% endblocktrans %}</p>
+</div>
+{% endif %}
+
 <div class="card">
     <dl class="record-meta">
         <div><dt>{% trans "Sources" %}</dt><dd>{% for s in job.sources %}{{ s }}{% if not forloop.last %}, {% endif %}{% endfor %}</dd></div>
@@ -47,6 +54,7 @@
         <div><dt>{% trans "Traitées" %}</dt><dd>{{ job.processed }}</dd></div>
         <div><dt>{% trans "Mises à jour" %}</dt><dd>{{ job.updated }}</dd></div>
         <div><dt>{% trans "Inchangées" %}</dt><dd>{{ job.skipped }}</dd></div>
+        {% if job.rate_limited %}<div><dt>{% trans "Quota atteint" %}</dt><dd>{{ job.rate_limited }}</dd></div>{% endif %}
         <div><dt>{% trans "Erreurs" %}</dt><dd>{{ job.errors }}</dd></div>
         {% if job.finished_at %}
         <div><dt>{% trans "Terminé le" %}</dt><dd>{{ job.finished_at }}</dd></div>
@@ -79,6 +87,8 @@
                         <span style="color:#B83232">{{ entry.error }}</span>
                     {% elif entry.global_error %}
                         <span style="color:#B83232">{{ entry.global_error }}</span>
+                    {% elif entry.rate_limited %}
+                        <span class="badge badge--late">{% trans "quota atteint — à relancer" %}</span>
                     {% else %}
                         {% for field, source in entry.changes.items %}
                             <span class="badge badge--mut">{{ field }} ← {{ source|default:"—" }}</span>

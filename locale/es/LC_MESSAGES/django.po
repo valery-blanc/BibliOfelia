@@ -6,7 +6,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: BibliOfelia 1.0\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2026-06-05 13:25+0000\n"
+"POT-Creation-Date: 2026-06-05 22:50+0000\n"
 "PO-Revision-Date: 2026-05-22 00:00+0000\n"
 "Last-Translator: Claude Code\n"
 "Language-Team: Español\n"
@@ -75,14 +75,14 @@ msgstr "Imposible: debe permanecer al menos un superadmin activo."
 msgid "Compte %(u)s supprimé."
 msgstr "Cuenta %(u)s eliminada."
 
-#: apps/api/models.py:23 apps/catalog/models.py:443 apps/catalog/models.py:503
+#: apps/api/models.py:23 apps/catalog/models.py:443 apps/catalog/models.py:506
 #: apps/core/forms.py:322 apps/loans/models.py:20
 #: templates/catalog/record_detail.html:189
 #: templates/loans/reservations.html:97
 msgid "En attente"
 msgstr "En espera"
 
-#: apps/api/models.py:24 apps/catalog/models.py:445 apps/catalog/models.py:505
+#: apps/api/models.py:24 apps/catalog/models.py:445 apps/catalog/models.py:508
 msgid "Terminé"
 msgstr "Finalizado"
 
@@ -103,8 +103,8 @@ msgid "Carte membre"
 msgstr "Tarjeta de miembro"
 
 #: apps/catalog/forms.py:17 templates/catalog/record_detail.html:51
-#: templates/catalog/record_list.html:124
-#: templates/catalog/record_list.html:201
+#: templates/catalog/record_list.html:130
+#: templates/catalog/record_list.html:207
 msgid "Auteur(s)"
 msgstr "Autor(es)"
 
@@ -225,7 +225,7 @@ msgstr "OpenLibrary"
 msgid "OfeliaScan"
 msgstr "OfeliaScan"
 
-#: apps/catalog/models.py:35 apps/catalog/models.py:499
+#: apps/catalog/models.py:35 apps/catalog/models.py:502
 msgid "Import"
 msgstr "Importación"
 
@@ -399,13 +399,13 @@ msgstr "ítem escaneado"
 msgid "items scannés"
 msgstr "ítems escaneados"
 
-#: apps/catalog/models.py:444 apps/catalog/models.py:504
+#: apps/catalog/models.py:444 apps/catalog/models.py:507
 #: apps/inventory/models.py:23 apps/loans/models.py:12
 #: templates/catalog/scan_session_list.html:24
 msgid "En cours"
 msgstr "En curso"
 
-#: apps/catalog/models.py:446 apps/catalog/models.py:506
+#: apps/catalog/models.py:446 apps/catalog/models.py:509
 msgid "Échec"
 msgstr "Fallido"
 
@@ -417,164 +417,164 @@ msgstr "Completar solo los campos vacíos"
 msgid "Écraser avec les données externes"
 msgstr "Sobrescribir con datos externos"
 
-#: apps/catalog/models.py:486
+#: apps/catalog/models.py:489
 msgid "enrichissement métadonnées"
 msgstr "enriquecimiento de metadatos"
 
-#: apps/catalog/models.py:487
+#: apps/catalog/models.py:490
 msgid "enrichissements métadonnées"
 msgstr "enriquecimientos de metadatos"
 
-#: apps/catalog/models.py:498
+#: apps/catalog/models.py:501
 msgid "Vérification"
 msgstr "Verificación"
 
-#: apps/catalog/models.py:553
+#: apps/catalog/models.py:559
 msgid "catalogage Excel"
 msgstr "catalogación Excel"
 
-#: apps/catalog/models.py:554
+#: apps/catalog/models.py:560
 msgid "catalogages Excel"
 msgstr "catalogaciones Excel"
 
-#: apps/catalog/views.py:194
+#: apps/catalog/views.py:206
 msgid "Notice créée."
 msgstr "Registro creado."
 
-#: apps/catalog/views.py:199 apps/catalog/views.py:239
+#: apps/catalog/views.py:211 apps/catalog/views.py:251
 #: templates/catalog/record_list.html:29 templates/core/dashboard.html:185
 msgid "Nouvelle notice"
 msgstr "Nueva ficha"
 
-#: apps/catalog/views.py:211
+#: apps/catalog/views.py:223
 msgid "Notice mise à jour."
 msgstr "Registro actualizado."
 
-#: apps/catalog/views.py:216
+#: apps/catalog/views.py:228
 msgid "Modifier la notice"
 msgstr "Editar registro"
 
-#: apps/catalog/views.py:227
+#: apps/catalog/views.py:239
 msgid "Notice trouvée sur OpenLibrary."
 msgstr "Registro encontrado en OpenLibrary."
 
-#: apps/catalog/views.py:231
+#: apps/catalog/views.py:243
 msgid "Aucune réponse d'OpenLibrary — saisissez la notice à la main."
 msgstr "Sin respuesta de OpenLibrary — introduzca el registro manualmente."
 
-#: apps/catalog/views.py:253
+#: apps/catalog/views.py:265
 msgid "Suppression impossible : des exemplaires actifs sont rattachés."
 msgstr "No se puede eliminar: hay ejemplares activos asociados."
 
-#: apps/catalog/views.py:257
+#: apps/catalog/views.py:269
 msgid "Notice supprimée."
 msgstr "Registro eliminado."
 
-#: apps/catalog/views.py:283
+#: apps/catalog/views.py:295
 #, python-format
 msgid "%(n)s exemplaire(s) ajouté(s)."
 msgstr "%(n)s ejemplar(es) añadido(s)."
 
-#: apps/catalog/views.py:300
+#: apps/catalog/views.py:312
 msgid "Exemplaire mis à jour."
 msgstr "Ejemplar actualizado."
 
-#: apps/catalog/views.py:315
+#: apps/catalog/views.py:327
 msgid "Impossible : l'exemplaire est prêté ou réservé."
 msgstr "No es posible: el ejemplar está prestado o reservado."
 
-#: apps/catalog/views.py:319
+#: apps/catalog/views.py:331
 msgid "Exemplaire retiré du fonds."
 msgstr "Ejemplar retirado del fondo."
 
-#: apps/catalog/views.py:350
+#: apps/catalog/views.py:362
 msgid "Exemplaire supprimé."
 msgstr "Ejemplar eliminado."
 
-#: apps/catalog/views.py:432
+#: apps/catalog/views.py:444
 #, python-format
 msgid "%(n)s notice(s) affectée(s) à la catégorie %(c)s."
 msgstr "%(n)s registro(s) asignado(s) a la categoría %(c)s."
 
-#: apps/catalog/views.py:438
+#: apps/catalog/views.py:450
 #, python-format
 msgid "%(n)s notice(s) sans catégorie (catégorie vidée)."
 msgstr "%(n)s registro(s) sin categoría (categoría vaciada)."
 
-#: apps/catalog/views.py:481
+#: apps/catalog/views.py:493
 #, python-format
 msgid "%(n)s exemplaire(s) affecté(s) à l'emplacement %(l)s."
 msgstr "%(n)s ejemplar(es) asignado(s) a la ubicación %(l)s."
 
-#: apps/catalog/views.py:487
+#: apps/catalog/views.py:499
 #, python-format
 msgid "%(n)s exemplaire(s) sans emplacement (emplacement vidé)."
 msgstr "%(n)s ejemplar(es) sin ubicación (ubicación vaciada)."
 
-#: apps/catalog/views.py:533
+#: apps/catalog/views.py:545
 #, python-format
 msgid "%(n)s notice(s) supprimée(s)."
 msgstr "%(n)s ficha(s) eliminada(s)."
 
-#: apps/catalog/views.py:561
+#: apps/catalog/views.py:573
 msgid "Emplacement créé."
 msgstr "Ubicación creada."
 
-#: apps/catalog/views.py:571 templates/catalog/location_list.html:25
+#: apps/catalog/views.py:583 templates/catalog/location_list.html:25
 msgid "Nouvel emplacement"
 msgstr "Nueva ubicación"
 
-#: apps/catalog/views.py:583
+#: apps/catalog/views.py:595
 msgid "Emplacement mis à jour."
 msgstr "Ubicación actualizada."
 
-#: apps/catalog/views.py:593
+#: apps/catalog/views.py:605
 msgid "Modifier l'emplacement"
 msgstr "Editar ubicación"
 
-#: apps/catalog/views.py:610
+#: apps/catalog/views.py:622
 msgid "Emplacement supprimé."
 msgstr "Ubicación eliminada."
 
-#: apps/catalog/views.py:657
+#: apps/catalog/views.py:669
 msgid "Lot de catalogage démarré."
 msgstr "Lote de catalogación iniciado."
 
-#: apps/catalog/views.py:710
+#: apps/catalog/views.py:722
 #, python-format
 msgid "ISBN %(isbn)s · %(lang)s"
 msgstr "ISBN %(isbn)s · %(lang)s"
 
-#: apps/catalog/views.py:734 apps/catalog/views.py:827
+#: apps/catalog/views.py:746 apps/catalog/views.py:839
 msgid "Ce lot est déjà validé."
 msgstr "Este lote ya está validado."
 
-#: apps/catalog/views.py:739
+#: apps/catalog/views.py:751
 msgid "Déjà catalogué"
 msgstr "Ya catalogado"
 
-#: apps/catalog/views.py:739
+#: apps/catalog/views.py:751
 msgid "Carte membre — pas un livre"
 msgstr "Tarjeta de socio — no es un libro"
 
-#: apps/catalog/views.py:742
+#: apps/catalog/views.py:754
 msgid "Code invalide."
 msgstr "Código no válido."
 
-#: apps/catalog/views.py:791
+#: apps/catalog/views.py:803
 #, python-format
 msgid "exemplaire %(n)s"
 msgstr "ejemplar %(n)s"
 
-#: apps/catalog/views.py:817
+#: apps/catalog/views.py:829
 msgid "Ligne retirée."
 msgstr "Fila eliminada."
 
-#: apps/catalog/views.py:851
+#: apps/catalog/views.py:863
 msgid "Aucun livre scanné à envoyer."
 msgstr "Ningún libro escaneado para enviar."
 
-#: apps/catalog/views.py:858
+#: apps/catalog/views.py:870
 #, python-format
 msgid ""
 "%(rec)s notice(s) créée(s), %(match)s complétée(s), %(cop)s exemplaire(s) "
@@ -583,19 +583,19 @@ msgstr ""
 "%(rec)s ficha(s) creada(s), %(match)s completada(s), %(cop)s ejemplar(es) "
 "añadido(s)."
 
-#: apps/catalog/views.py:867
+#: apps/catalog/views.py:879
 msgid "Modifications enregistrées."
 msgstr "Cambios guardados."
 
-#: apps/catalog/views.py:889
+#: apps/catalog/views.py:901
 msgid "Aucun fichier sélectionné."
 msgstr "Ningún archivo seleccionado."
 
-#: apps/catalog/views.py:912
+#: apps/catalog/views.py:924
 msgid "Vérification lancée. Suivez l'avancement ici."
 msgstr "Verificación iniciada. Siga el avance aquí."
 
-#: apps/catalog/views.py:922
+#: apps/catalog/views.py:934
 msgid "Import lancé. Suivez l'avancement ici."
 msgstr "Importación iniciada. Siga el avance aquí."
 
@@ -852,7 +852,7 @@ msgstr "Desactivado"
 msgid "Connecté"
 msgstr "Conectado"
 
-#: apps/inventory/forms.py:25 templates/core/admin/enrichment_detail.html:45
+#: apps/inventory/forms.py:25 templates/core/admin/enrichment_detail.html:52
 #: templates/core/admin/enrichment_index.html:58
 #: templates/inventory/session_list.html:54
 msgid "Périmètre"
@@ -1316,8 +1316,8 @@ msgstr "Top 10 obras prestadas"
 #: apps/reports/pdf.py:74 templates/catalog/record_bulk_assign_category.html:36
 #: templates/catalog/record_bulk_assign_location.html:37
 #: templates/catalog/record_bulk_delete.html:44
-#: templates/catalog/record_list.html:123
-#: templates/catalog/record_list.html:200 templates/core/dashboard.html:314
+#: templates/catalog/record_list.html:129
+#: templates/catalog/record_list.html:206 templates/core/dashboard.html:314
 #: templates/inventory/session_report.html:107 templates/loans/return.html:127
 #: templates/members/member_detail.html:129
 #: templates/members/member_history.html:30
@@ -1850,65 +1850,83 @@ msgid "Traitement en cours… cette page se rafraîchit automatiquement."
 msgstr "Procesando… esta página se actualiza automáticamente."
 
 #: templates/catalog/excel_catalog/detail.html:49
-#: templates/core/admin/enrichment_detail.html:46
+#: templates/core/admin/enrichment_detail.html:44
+msgid "Quota Google Books atteint"
+msgstr "Cuota de Google Books alcanzada"
+
+#: templates/catalog/excel_catalog/detail.html:50
+#, python-format
+msgid ""
+"%(n)s ligne(s) ont pu rester incomplètes car le quota d'une source en ligne "
+"(Google Books) a été atteint (colonne SOURCE_BY_ISBN = RATE_LIMITED). "
+"Relancez la vérification demain — le quota se réinitialise chaque jour."
+msgstr "%(n)s fila(s) pueden haber quedado incompletas porque se alcanzó la cuota de una fuente en línea (Google Books) (columna SOURCE_BY_ISBN = RATE_LIMITED). Vuelva a lanzar la verificación mañana — la cuota se reinicia cada día."
+
+#: templates/catalog/excel_catalog/detail.html:56
+#: templates/core/admin/enrichment_detail.html:53
 msgid "Total"
 msgstr "Total"
 
-#: templates/catalog/excel_catalog/detail.html:50
+#: templates/catalog/excel_catalog/detail.html:57
 #: templates/catalog/excel_catalog/index.html:52
-#: templates/core/admin/enrichment_detail.html:47
+#: templates/core/admin/enrichment_detail.html:54
 #: templates/core/admin/enrichment_index.html:124
 msgid "Traitées"
 msgstr "Procesadas"
 
-#: templates/catalog/excel_catalog/detail.html:52
+#: templates/catalog/excel_catalog/detail.html:58
+#: templates/core/admin/enrichment_detail.html:57
+msgid "Quota atteint"
+msgstr "Cuota alcanzada"
+
+#: templates/catalog/excel_catalog/detail.html:60
 msgid "Trouvées par ISBN"
 msgstr "Encontradas por ISBN"
 
-#: templates/catalog/excel_catalog/detail.html:53
+#: templates/catalog/excel_catalog/detail.html:61
 msgid "Trouvées par titre+auteur"
 msgstr "Encontradas por título+autor"
 
-#: templates/catalog/excel_catalog/detail.html:54
+#: templates/catalog/excel_catalog/detail.html:62
 msgid "Non trouvées"
 msgstr "No encontradas"
 
-#: templates/catalog/excel_catalog/detail.html:56
+#: templates/catalog/excel_catalog/detail.html:64
 msgid "Notices complétées"
 msgstr "Fichas completadas"
 
-#: templates/catalog/excel_catalog/detail.html:57
+#: templates/catalog/excel_catalog/detail.html:65
 msgid "Notices créées"
 msgstr "Fichas creadas"
 
-#: templates/catalog/excel_catalog/detail.html:59
-#: templates/core/admin/enrichment_detail.html:50
+#: templates/catalog/excel_catalog/detail.html:67
+#: templates/core/admin/enrichment_detail.html:58
 #: templates/core/admin/enrichment_index.html:126
 msgid "Erreurs"
 msgstr "Errores"
 
-#: templates/catalog/excel_catalog/detail.html:61
-#: templates/core/admin/enrichment_detail.html:52
+#: templates/catalog/excel_catalog/detail.html:69
+#: templates/core/admin/enrichment_detail.html:60
 msgid "Terminé le"
 msgstr "Finalizado el"
 
-#: templates/catalog/excel_catalog/detail.html:69
+#: templates/catalog/excel_catalog/detail.html:77
 msgid "Télécharger le fichier annoté"
 msgstr "Descargar el archivo anotado"
 
-#: templates/catalog/excel_catalog/detail.html:75
+#: templates/catalog/excel_catalog/detail.html:83
 msgid "Voir le lot importé"
 msgstr "Ver el lote importado"
 
-#: templates/catalog/excel_catalog/detail.html:83
+#: templates/catalog/excel_catalog/detail.html:91
 msgid "Avertissements"
 msgstr "Advertencias"
 
-#: templates/catalog/excel_catalog/detail.html:88
+#: templates/catalog/excel_catalog/detail.html:96
 msgid "Ligne"
 msgstr "Fila"
 
-#: templates/catalog/excel_catalog/detail.html:90
+#: templates/catalog/excel_catalog/detail.html:98
 msgid "Détail"
 msgstr "Detalle"
 
@@ -2035,7 +2053,7 @@ msgstr ""
 "Ninguna ubicación definida. Haga clic en «Nueva ubicación» para comenzar."
 
 #: templates/catalog/record_bulk_assign_category.html:4
-#: templates/catalog/record_list.html:98
+#: templates/catalog/record_list.html:104
 msgid "Affecter une catégorie"
 msgstr "Asignar una categoría"
 
@@ -2089,7 +2107,7 @@ msgid "Appliquer"
 msgstr "Aplicar"
 
 #: templates/catalog/record_bulk_assign_location.html:4
-#: templates/catalog/record_list.html:102
+#: templates/catalog/record_list.html:108
 msgid "Affecter un emplacement"
 msgstr "Asignar una ubicación"
 
@@ -2195,8 +2213,8 @@ msgid "Sous-titre"
 msgstr "Subtítulo"
 
 #: templates/catalog/record_detail.html:52
-#: templates/catalog/record_list.html:125
-#: templates/catalog/record_list.html:202
+#: templates/catalog/record_list.html:131
+#: templates/catalog/record_list.html:208
 #: templates/catalog/scan_session.html:81
 #: templates/catalog/scan_session.html:115
 #: templates/members/member_detail.html:87
@@ -2307,59 +2325,63 @@ msgstr "Todos los tipos"
 msgid "Toutes langues"
 msgstr "Todos los idiomas"
 
-#: templates/catalog/record_list.html:72
+#: templates/catalog/record_list.html:70
+msgid "Tous emplacements"
+msgstr "Todas las ubicaciones"
+
+#: templates/catalog/record_list.html:78
 msgid "Tag…"
 msgstr "Etiqueta…"
 
-#: templates/catalog/record_list.html:76 templates/members/member_list.html:78
+#: templates/catalog/record_list.html:82 templates/members/member_list.html:78
 #: templates/printing/labels_picker.html:37
 #: templates/reports/inactive_list.html:25
 #: templates/reports/overdue_list.html:25
 msgid "Filtrer"
 msgstr "Filtrar"
 
-#: templates/catalog/record_list.html:81
+#: templates/catalog/record_list.html:87
 #, python-format
 msgid "%(counter)s notice"
 msgid_plural "%(counter)s notices"
 msgstr[0] "%(counter)s registro"
 msgstr[1] "%(counter)s registros"
 
-#: templates/catalog/record_list.html:94
+#: templates/catalog/record_list.html:100
 msgid "notice(s) sélectionnée(s)"
 msgstr "ficha(s) seleccionada(s)"
 
-#: templates/catalog/record_list.html:107
+#: templates/catalog/record_list.html:113
 msgid "Supprimer les notices sélectionnées"
 msgstr "Eliminar los registros seleccionados"
 
-#: templates/catalog/record_list.html:121
-#: templates/catalog/record_list.html:154
+#: templates/catalog/record_list.html:127
+#: templates/catalog/record_list.html:160
 msgid "Tout cocher"
 msgstr "Seleccionar todo"
 
-#: templates/catalog/record_list.html:126
-#: templates/catalog/record_list.html:203
+#: templates/catalog/record_list.html:132
+#: templates/catalog/record_list.html:209
 #: templates/catalog/scan_session.html:118
 msgid "Ex."
 msgstr "Ejem."
 
-#: templates/catalog/record_list.html:176
-#: templates/catalog/record_list.html:235
+#: templates/catalog/record_list.html:182
+#: templates/catalog/record_list.html:241
 msgid "ex."
 msgstr "ej."
 
-#: templates/catalog/record_list.html:245
+#: templates/catalog/record_list.html:251
 #: templates/members/member_list.html:118 templates/setup/step.html:31
 msgid "Précédent"
 msgstr "Anterior"
 
-#: templates/catalog/record_list.html:249
+#: templates/catalog/record_list.html:255
 #: templates/members/member_list.html:122
 msgid "Suivant"
 msgstr "Siguiente"
 
-#: templates/catalog/record_list.html:256
+#: templates/catalog/record_list.html:262
 msgid "Aucune notice ne correspond."
 msgstr "Ningún registro coincide."
 
@@ -2625,30 +2647,42 @@ msgstr "Enriquecimiento #%(id)s"
 msgid "Enrichissement"
 msgstr "Enriquecimiento"
 
-#: templates/core/admin/enrichment_detail.html:44
+#: templates/core/admin/enrichment_detail.html:45
+#, python-format
+msgid ""
+"%(n)s notice(s) n'ont pas pu être complétées car le quota d'une source en "
+"ligne (Google Books) a été atteint. Relancez cet enrichissement demain — le "
+"quota se réinitialise chaque jour — pour compléter le reste."
+msgstr "%(n)s ficha(s) no pudieron completarse porque se alcanzó la cuota de una fuente en línea (Google Books). Vuelva a lanzar este enriquecimiento mañana — la cuota se reinicia cada día — para completar el resto."
+
+#: templates/core/admin/enrichment_detail.html:51
 msgid "Sources"
 msgstr "Fuentes"
 
-#: templates/core/admin/enrichment_detail.html:48
+#: templates/core/admin/enrichment_detail.html:55
 #: templates/core/admin/enrichment_index.html:125
 msgid "Mises à jour"
 msgstr "Actualizadas"
 
-#: templates/core/admin/enrichment_detail.html:49
+#: templates/core/admin/enrichment_detail.html:56
 msgid "Inchangées"
 msgstr "Sin cambios"
 
-#: templates/core/admin/enrichment_detail.html:58
+#: templates/core/admin/enrichment_detail.html:66
 msgid "Rapport"
 msgstr "Informe"
 
-#: templates/core/admin/enrichment_detail.html:63
+#: templates/core/admin/enrichment_detail.html:71
 msgid "Notice"
 msgstr "Ficha"
 
-#: templates/core/admin/enrichment_detail.html:65
+#: templates/core/admin/enrichment_detail.html:73
 msgid "Champs modifiés (← source)"
 msgstr "Campos modificados (← fuente)"
+
+#: templates/core/admin/enrichment_detail.html:91
+msgid "quota atteint — à relancer"
+msgstr "cuota alcanzada — reintentar más tarde"
 
 #: templates/core/admin/enrichment_index.html:4
 #: templates/core/admin/enrichment_index.html:11

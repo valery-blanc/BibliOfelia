@@ -66,6 +66,12 @@
         <option value="{{ code }}" {% if selected.language == code %}selected{% endif %}>{{ name }}</option>
         {% endfor %}
     </select>
+    <select name="location" class="filter-select" style="width:auto;min-width:150px">
+        <option value="">{% trans "Tous emplacements" %}</option>
+        {% for loc in locations %}
+        <option value="{{ loc.pk }}" {% if selected.location == loc.pk|stringformat:'s' %}selected{% endif %}>{{ loc.code }}</option>
+        {% endfor %}
+    </select>
     <div class="search" style="width:auto;min-width:160px;margin:0">
         <span class="search-icon">{% icon "search" size="18px" %}</span>
         <input type="search" name="q_tag" value="{{ q_tag }}"
@@ -242,11 +248,11 @@
 {% if page_obj.paginator.num_pages > 1 %}
 <nav class="pager">
     {% if page_obj.has_previous %}
-    <a href="?q={{ q }}&q_tag={{ q_tag }}&page={{ page_obj.previous_page_number }}" class="btn btn--ghost btn--sm">{% trans "Précédent" %}</a>
+    <a href="?{{ base_qs }}{% if base_qs %}&{% endif %}page={{ page_obj.previous_page_number }}" class="btn btn--ghost btn--sm">{% trans "Précédent" %}</a>
     {% endif %}
     <span class="pager-info">{{ page_obj.number }} / {{ page_obj.paginator.num_pages }}</span>
     {% if page_obj.has_next %}
-    <a href="?q={{ q }}&q_tag={{ q_tag }}&page={{ page_obj.next_page_number }}" class="btn btn--ghost btn--sm">{% trans "Suivant" %}</a>
+    <a href="?{{ base_qs }}{% if base_qs %}&{% endif %}page={{ page_obj.next_page_number }}" class="btn btn--ghost btn--sm">{% trans "Suivant" %}</a>
     {% endif %}
 </nav>
 {% endif %}

@@ -256,6 +256,164 @@ def test_try_sources_returns_none_for_failed_source():
     assert responses["google_books"]["title"] == "FROM-GB"
 
 
+# ----------------------- 429 / quota (BUG-019) --------------------------
+
+def test_try_sources_with_rate_limit_flag():
+    """Une source qui lève SourceRateLimited apparaît comme None mais lève le
+    drapeau rate_limited (et le sentinel n'échappe jamais)."""
+    from apps.catalog.enrichment import _try_sources
+    from apps.catalog.sources import SourceRateLimited
+
+    def limited(isbn):
+        raise SourceRateLimited("google_books")
+
+    sources_mock = {"openlibrary": lambda i: None, "google_books": limited}
+    with patch("apps.catalog.enrichment.SOURCES", sources_mock):
+        responses, rate_limited = _try_sources(
+            "9782070612758", ["openlibrary", "google_books"], with_rate_limit=True
+        )
+    assert rate_limited is True
+    assert responses["google_books"] is None
+
+
+def test_run_enrichment_job_counts_rate_limited():
+    """Quota 429 sans donnée → compté dans rate_limited, placeholder conservé,
+    entrée dédiée dans le rapport (re-run ultérieur possible)."""
+    from apps.catalog.sources import SourceRateLimited
+
+    rec = _record(title="ISBN:9782070612758 - 24.05.2026 14.30")
+    job = EnrichmentJob.objects.create(
+        sources=["google_books"],
+        scope_filter={"kind": "all"},
+        mode=EnrichmentMode.FILL_MISSING,
+    )
+
+    def limited(isbn):
+        raise SourceRateLimited("google_books")
+
+    with patch("apps.catalog.enrichment.SOURCES", {"google_books": limited}):
+        run_enrichment_job(job.pk)
+    job.refresh_from_db()
+    rec.refresh_from_db()
+    assert job.rate_limited == 1
+    assert job.updated == 0
+    assert job.skipped == 0
+    assert rec.title.startswith("ISBN:")  # placeholder conservé
+    assert any(e.get("rate_limited") for e in job.report)
+
+
+def test_run_enrichment_job_skips_complete_records_in_fill_missing():
+    """FILL_MISSING : une notice déjà titrée + auteurée n'interroge pas les
+    sources (économie quota / vitesse, BUG-019)."""
+    rec = _record(title="Un vrai titre")
+    rec.authors.add(Author.objects.create(full_name="Une autrice"))
+    job = EnrichmentJob.objects.create(
+        sources=["openlibrary"], scope_filter={"kind": "all"},
+        mode=EnrichmentMode.FILL_MISSING,
+    )
+    called = {"n": 0}
+
+    def src(isbn):
+        called["n"] += 1
+        return {"title": "X", "authors_text": "Y"}
+
+    with patch("apps.catalog.enrichment.SOURCES", {"openlibrary": src}):
+        run_enrichment_job(job.pk)
+    job.refresh_from_db()
+    assert called["n"] == 0  # source jamais appelée
+    assert job.skipped == 1
+    assert job.updated == 0
+
+
+def test_run_enrichment_job_overwrite_does_not_skip_complete():
+    """OVERWRITE : on réinterroge même une notice déjà complète."""
+    rec = _record(title="Un vrai titre")
+    rec.authors.add(Author.objects.create(full_name="Une autrice"))
+    job = EnrichmentJob.objects.create(
+        sources=["openlibrary"], scope_filter={"kind": "all"},
+        mode=EnrichmentMode.OVERWRITE,
+    )
+    called = {"n": 0}
+
+    def src(isbn):
+        called["n"] += 1
+        return {"title": "Nouveau", "authors_text": "Z"}
+
+    with patch("apps.catalog.enrichment.SOURCES", {"openlibrary": src}):
+        run_enrichment_job(job.pk)
+    assert called["n"] == 1
+
+
+def test_run_enrichment_job_does_not_skip_placeholder_title():
+    """Une notice au placeholder (sans auteur) reste interrogée en FILL_MISSING."""
+    _record(title="ISBN:9782070612758 - 24.05.2026 14.30")
+    job = EnrichmentJob.objects.create(
+        sources=["openlibrary"], scope_filter={"kind": "all"},
+        mode=EnrichmentMode.FILL_MISSING,
+    )
+    called = {"n": 0}
+
+    def src(isbn):
+        called["n"] += 1
+        return {"title": "Le vrai titre", "authors_text": "A"}
+
+    with patch("apps.catalog.enrichment.SOURCES", {"openlibrary": src}):
+        run_enrichment_job(job.pk)
+    job.refresh_from_db()
+    assert called["n"] == 1
+    assert job.updated == 1
+
+
+def test_google_books_throttle_is_adaptive(monkeypatch):
+    """Pas de bridage en régime normal ; bridage après un 429 (mode lent)."""
+    from apps.catalog.sources import google_books
+
+    slept: list[float] = []
+    monkeypatch.setattr(google_books.time, "sleep", lambda s: slept.append(s))
+    monkeypatch.setattr(google_books, "_last_request_at", 0.0)
+    monkeypatch.setattr(google_books, "_slowed_until", 0.0)
+
+    # Régime normal : deux requêtes rapprochées → aucun sleep.
+    google_books._throttle()
+    google_books._throttle()
+    assert slept == []
+
+    # Après un 429 → mode lent : la 2e requête immédiate doit attendre.
+    google_books._note_rate_limited()
+    google_books._throttle()
+    google_books._throttle()
+    assert any(s > 0 for s in slept)
+
+
+def test_google_books_backoff_then_raises_rate_limited(monkeypatch):
+    """google_books lève SourceRateLimited quand le 429 persiste après réessais."""
+    from apps.catalog.sources import SourceRateLimited, google_books
+
+    class _Resp429:
+        status_code = 429
+        headers: dict = {}
+
+        def raise_for_status(self):  # pragma: no cover (jamais atteint sur 429)
+            raise AssertionError
+
+        def json(self):  # pragma: no cover
+            return {}
+
+    calls = {"n": 0}
+
+    def fake_get(*args, **kwargs):
+        calls["n"] += 1
+        return _Resp429()
+
+    monkeypatch.setattr(google_books, "_MIN_INTERVAL_SLOW", 0)
+    monkeypatch.setattr(google_books.time, "sleep", lambda s: None)
+    monkeypatch.setattr(google_books.httpx, "get", fake_get)
+    with pytest.raises(SourceRateLimited):
+        google_books.lookup("9782070612758")
+    # 1 essai initial + _MAX_RETRIES_429 réessais
+    assert calls["n"] == google_books._MAX_RETRIES_429 + 1
+
+
 def test_try_sources_handles_exception_in_one_source():
     from apps.catalog.enrichment import _try_sources
 

@@ -111,9 +111,9 @@ def test_verify_job_pass1_only(user, monkeypatch):
     monkeypatch.setattr(
         excel_catalog,
         "_pass1_by_isbn",
-        lambda isbn: {"title": "Vrai Titre", "authors_text": "Vrai Auteur", "source": "bnf"},
+        lambda isbn: ({"title": "Vrai Titre", "authors_text": "Vrai Auteur", "source": "bnf"}, False),
     )
-    monkeypatch.setattr(excel_catalog, "_search_all", lambda title, author: [])
+    monkeypatch.setattr(excel_catalog, "_search_all", lambda title, author: ([], False))
     job = _make_verify_job(user, ["ID", "TITLE", "AUTHOR", "ISBN"],
                            [["1", "Saisi", "Saisi", VALID_ISBN]])
     run_verify_job(job)
@@ -131,15 +131,15 @@ def test_verify_job_pass2_runs_even_with_isbn(user, monkeypatch):
     monkeypatch.setattr(
         excel_catalog,
         "_pass1_by_isbn",
-        lambda isbn: {"title": "Le Petit Prince", "authors_text": "Saint-Exupéry", "source": "bnf"},
+        lambda isbn: ({"title": "Le Petit Prince", "authors_text": "Saint-Exupéry", "source": "bnf"}, False),
     )
     monkeypatch.setattr(
         excel_catalog,
         "_search_all",
-        lambda title, author: [
+        lambda title, author: ([
             {"title": "Le Petit Prince", "authors_text": "Antoine de Saint-Exupéry",
              "isbn_13": "9782070408504", "isbn_10": ""},
-        ],
+        ], False),
     )
     # ISBN saisi (VALID_ISBN) ≠ ISBN trouvé par titre+auteur → recoupement.
     job = _make_verify_job(user, ["ID", "TITLE", "AUTHOR", "ISBN"],
@@ -153,14 +153,14 @@ def test_verify_job_pass2_runs_even_with_isbn(user, monkeypatch):
 
 
 def test_verify_job_pass2_fuzzy_match(user, monkeypatch):
-    monkeypatch.setattr(excel_catalog, "_pass1_by_isbn", lambda isbn: None)
+    monkeypatch.setattr(excel_catalog, "_pass1_by_isbn", lambda isbn: (None, False))
     monkeypatch.setattr(
         excel_catalog,
         "_search_all",
-        lambda title, author: [
+        lambda title, author: ([
             {"title": "Le Petit Prince", "authors_text": "Antoine de Saint-Exupéry",
              "isbn_13": VALID_ISBN, "isbn_10": ""},
-        ],
+        ], False),
     )
     # Ligne sans ISBN, titre avec faute de frappe → doit matcher (score > 60).
     job = _make_verify_job(user, ["ID", "TITLE", "AUTHOR", "ISBN"],
@@ -174,14 +174,14 @@ def test_verify_job_pass2_fuzzy_match(user, monkeypatch):
 
 
 def test_verify_job_pass2_low_score_skipped(user, monkeypatch):
-    monkeypatch.setattr(excel_catalog, "_pass1_by_isbn", lambda isbn: None)
+    monkeypatch.setattr(excel_catalog, "_pass1_by_isbn", lambda isbn: (None, False))
     monkeypatch.setattr(
         excel_catalog,
         "_search_all",
-        lambda title, author: [
+        lambda title, author: ([
             {"title": "Un livre totalement différent zzz", "authors_text": "Quelqu'un d'autre",
              "isbn_13": "9780000000000", "isbn_10": ""},
-        ],
+        ], False),
     )
     job = _make_verify_job(user, ["ID", "TITLE", "AUTHOR", "ISBN"],
                            [["1", "Mon titre unique abc", "Moi", ""]])

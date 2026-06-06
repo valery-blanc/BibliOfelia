@@ -93,6 +93,10 @@ def record_list(request):
     doc_type = request.GET.get("document_type") or ""
     if doc_type:
         records = records.filter(document_type=doc_type)
+    location = request.GET.get("location") or ""
+    if location:
+        # Notices ayant au moins un exemplaire dans cet emplacement.
+        records = records.filter(items__location_id=location).distinct()
     q_tag = (request.GET.get("q_tag") or "").strip()
     if q_tag:
         records = records.filter(tags__name__icontains=q_tag).distinct()
@@ -105,17 +109,25 @@ def record_list(request):
 
     paginator = Paginator(records, 25)
     page = paginator.get_page(request.GET.get("page"))
+    # Querystring sans `page` : permet aux liens de pagination de conserver
+    # tous les filtres actifs (q, category, document_type, language, location, q_tag).
+    base_params = request.GET.copy()
+    base_params.pop("page", None)
+    base_qs = base_params.urlencode()
     context = {
         "page_obj": page,
         "q": q,
         "q_tag": q_tag,
+        "base_qs": base_qs,
         "total": len(records),
         "categories": Category.objects.all(),
+        "locations": Location.objects.all(),
         "document_types": DocumentType.choices,
         "selected": {
             "category": category,
             "language": language,
             "document_type": doc_type,
+            "location": location,
         },
     }
     return render(request, "catalog/record_list.html", context)

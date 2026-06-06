@@ -27,8 +27,37 @@ _IMPORT_NOTE = (
 )
 _LOC_OPT = "optionnel : code d'emplacement (sinon l'exemplaire est créé sans emplacement)"
 
+# BUG-019 : bandeaux quota Google Books (429). msgid = chaîne concaténée.
+_RL_EXCEL = (
+    "%(n)s ligne(s) ont pu rester incomplètes car le quota d'une source en ligne "
+    "(Google Books) a été atteint (colonne SOURCE_BY_ISBN = RATE_LIMITED). "
+    "Relancez la vérification demain — le quota se réinitialise chaque jour."
+)
+_RL_ENRICH = (
+    "%(n)s notice(s) n'ont pas pu être complétées car le quota d'une source en "
+    "ligne (Google Books) a été atteint. Relancez cet enrichissement demain — le "
+    "quota se réinitialise chaque jour — pour compléter le reste."
+)
+
 TRANSLATIONS = {
     "en": {
+        # FEAT-051 : filtre emplacement dans le catalogue
+        "Tous emplacements": "All locations",
+        # BUG-019 : quota Google Books (429)
+        "Quota Google Books atteint": "Google Books quota reached",
+        "Quota atteint": "Quota reached",
+        "quota atteint — à relancer": "quota reached — re-run later",
+        _RL_EXCEL: (
+            "%(n)s row(s) may have stayed incomplete because an online source's "
+            "quota (Google Books) was reached (column SOURCE_BY_ISBN = "
+            "RATE_LIMITED). Re-run the verification tomorrow — the quota resets "
+            "every day."
+        ),
+        _RL_ENRICH: (
+            "%(n)s record(s) could not be completed because an online source's "
+            "quota (Google Books) was reached. Re-run this enrichment tomorrow — "
+            "the quota resets every day — to complete the rest."
+        ),
         "catalogage Excel": "Excel cataloging",
         "catalogages Excel": "Excel catalogings",
         "Vérification": "Verification",
@@ -83,6 +112,24 @@ TRANSLATIONS = {
         "Détail": "Detail",
     },
     "es": {
+        # FEAT-051 : filtre emplacement dans le catalogue
+        "Tous emplacements": "Todas las ubicaciones",
+        # BUG-019 : quota Google Books (429)
+        "Quota Google Books atteint": "Cuota de Google Books alcanzada",
+        "Quota atteint": "Cuota alcanzada",
+        "quota atteint — à relancer": "cuota alcanzada — reintentar más tarde",
+        _RL_EXCEL: (
+            "%(n)s fila(s) pueden haber quedado incompletas porque se alcanzó la "
+            "cuota de una fuente en línea (Google Books) (columna SOURCE_BY_ISBN = "
+            "RATE_LIMITED). Vuelva a lanzar la verificación mañana — la cuota se "
+            "reinicia cada día."
+        ),
+        _RL_ENRICH: (
+            "%(n)s ficha(s) no pudieron completarse porque se alcanzó la cuota de "
+            "una fuente en línea (Google Books). Vuelva a lanzar este "
+            "enriquecimiento mañana — la cuota se reinicia cada día — para "
+            "completar el resto."
+        ),
         "catalogage Excel": "catalogación Excel",
         "catalogages Excel": "catalogaciones Excel",
         "Vérification": "Verificación",
@@ -137,6 +184,24 @@ TRANSLATIONS = {
         "Détail": "Detalle",
     },
     "mg": {
+        # FEAT-051 : filtre emplacement dans le catalogue
+        "Tous emplacements": "Toerana rehetra",
+        # BUG-019 : quota Google Books (429)
+        "Quota Google Books atteint": "Tratra ny fetran'ny Google Books",
+        "Quota atteint": "Tratra ny fetra",
+        "quota atteint — à relancer": "tratra ny fetra — averina atao",
+        _RL_EXCEL: (
+            "%(n)s andalana mety tsy feno satria tratra ny fetran'ny loharano "
+            "an-tserasera (Google Books) (tsanganana SOURCE_BY_ISBN = "
+            "RATE_LIMITED). Avereno atao rahampitso ny fanamarinana — miverina "
+            "isan'andro ny fetra."
+        ),
+        _RL_ENRICH: (
+            "%(n)s notice no tsy afaka nofenoina satria tratra ny fetran'ny "
+            "loharano an-tserasera (Google Books). Avereno atao rahampitso ity "
+            "fampitomboana ity — miverina isan'andro ny fetra — mba hamenoana ny "
+            "ambiny."
+        ),
         "catalogage Excel": "katalaogy Excel",
         "catalogages Excel": "katalaogy Excel",
         "Vérification": "Fanamarinana",

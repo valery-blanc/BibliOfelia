@@ -85,6 +85,18 @@ def _is_empty(val, field: str | None = None) -> bool:
     return False
 
 
+def _record_is_complete(record: BibliographicRecord) -> bool:
+    """True si la notice a déjà un vrai titre (≠ placeholder) ET au moins un
+    auteur. En mode FILL_MISSING, on saute alors l'interrogation des sources :
+    économise le quota et accélère les re-runs (BUG-019). Compromis assumé : on
+    ne re-complète pas couverture/résumé/éditeur d'une notice déjà titrée+auteurée.
+    """
+    title = (record.title or "").strip()
+    if not title or title.startswith(_PLACEHOLDER_TITLE_PREFIXES):
+        return False
+    return record.authors.exists()
+
+
 def _pick(
     responses: dict, source_order: list[str], field: str
 ) -> tuple[object, str | None]:
@@ -232,28 +244,51 @@ def merge_record(
     return changes
 
 
-def _safe_call(name: str, fn, isbn: str) -> tuple[str, dict | None]:
+# Sentinel renvoyé par `_safe_call` quand une source a répondu 429 (quota
+# atteint) : distingue « réessayer plus tard » de « rien trouvé » (None).
+_RATE_LIMITED = object()
+
+
+def _safe_call(name: str, fn, isbn: str):
+    from .sources import SourceRateLimited
+
     try:
         return name, fn(isbn)
+    except SourceRateLimited:
+        logger.info("Source %s : quota atteint (429) pour ISBN %s", name, isbn)
+        return name, _RATE_LIMITED
     except Exception as exc:
         logger.warning("Source %s a levé %s pour ISBN %s", name, exc, isbn)
         return name, None
 
 
-def _try_sources(isbn: str, source_names: Iterable[str]) -> dict[str, dict | None]:
+def _try_sources(
+    isbn: str, source_names: Iterable[str], *, with_rate_limit: bool = False
+):
     """Interroge toutes les sources en parallèle. Renvoie un dict
-    {source_name: data | None} préservant l'ordre de ``source_names``."""
+    {source_name: data | None} préservant l'ordre de ``source_names``.
+
+    Si ``with_rate_limit`` est vrai, renvoie ``(dict, rate_limited: bool)`` où
+    ``rate_limited`` indique qu'au moins une source a été bloquée par un 429
+    (quota). Le sentinel interne n'échappe jamais : les sources rate-limitées
+    apparaissent comme ``None`` dans le dict (compat. appelants existants).
+    """
     names = [n for n in source_names if n in SOURCES]
     if not names:
-        return {}
+        return ({}, False) if with_rate_limit else {}
     results: dict[str, dict | None] = {}
+    rate_limited = False
     with ThreadPoolExecutor(max_workers=len(names)) as executor:
         futures = [executor.submit(_safe_call, n, SOURCES[n], isbn) for n in names]
         for future in futures:
             name, data = future.result()
+            if data is _RATE_LIMITED:
+                rate_limited = True
+                data = None
             results[name] = data
     # Conserver l'ordre demandé par l'utilisateur
-    return {n: results.get(n) for n in names}
+    ordered = {n: results.get(n) for n in names}
+    return (ordered, rate_limited) if with_rate_limit else ordered
 
 
 def build_queryset(scope_filter: dict):
@@ -299,8 +334,16 @@ def run_enrichment_job(job_id: int) -> None:
                 job.skipped += 1
                 job.processed += 1
                 continue
+            # FILL_MISSING : notice déjà complète (titre réel + auteurs) → on ne
+            # réinterroge pas les sources (économie quota + vitesse, BUG-019).
+            if job.mode == EnrichmentMode.FILL_MISSING and _record_is_complete(record):
+                job.skipped += 1
+                job.processed += 1
+                continue
             try:
-                responses = _try_sources(isbn, job.sources)
+                responses, rate_limited = _try_sources(
+                    isbn, job.sources, with_rate_limit=True
+                )
                 if any(responses.values()):
                     source_order = list(responses.keys())
                     changes = merge_record(record, responses, source_order, job.mode)
@@ -313,6 +356,15 @@ def run_enrichment_job(job_id: int) -> None:
                         })
                     else:
                         job.skipped += 1
+                elif rate_limited:
+                    # Aucune donnée ET au moins une source bloquée par le quota :
+                    # la notice pourra être complétée par un re-run ultérieur.
+                    job.rate_limited += 1
+                    job.report.append({
+                        "record_id": record.pk,
+                        "isbn": isbn,
+                        "rate_limited": True,
+                    })
                 else:
                     job.skipped += 1
             except Exception as exc:
@@ -326,7 +378,8 @@ def run_enrichment_job(job_id: int) -> None:
                 job.processed += 1
                 if job.processed % 5 == 0:
                     job.save(update_fields=[
-                        "processed", "updated", "skipped", "errors", "report",
+                        "processed", "updated", "skipped", "errors",
+                        "rate_limited", "report",
                     ])
 
         job.state = EnrichmentJobState.FINISHED

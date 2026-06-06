@@ -44,10 +44,18 @@
     {% trans "Traitement en cours… cette page se rafraîchit automatiquement." %}</div>
 {% endif %}
 
+{% if job.rate_limited %}
+<div class="card" style="background:var(--amber-light);border:1px solid var(--amber);margin-bottom:16px">
+    <strong>{% icon "alert-triangle" size="16px" %} {% trans "Quota Google Books atteint" %}</strong>
+    <p style="margin:6px 0 0">{% blocktrans with n=job.rate_limited %}{{ n }} ligne(s) ont pu rester incomplètes car le quota d'une source en ligne (Google Books) a été atteint (colonne SOURCE_BY_ISBN = RATE_LIMITED). Relancez la vérification demain — le quota se réinitialise chaque jour.{% endblocktrans %}</p>
+</div>
+{% endif %}
+
 <div class="card">
     <dl class="record-meta">
         <div><dt>{% trans "Total" %}</dt><dd>{{ job.total }}</dd></div>
         <div><dt>{% trans "Traitées" %}</dt><dd>{{ job.processed }}</dd></div>
+        {% if job.rate_limited %}<div><dt>{% trans "Quota atteint" %}</dt><dd>{{ job.rate_limited }}</dd></div>{% endif %}
         {% if job.mode == "verify" %}
         <div><dt>{% trans "Trouvées par ISBN" %}</dt><dd>{{ job.matched_by_isbn }}</dd></div>
         <div><dt>{% trans "Trouvées par titre+auteur" %}</dt><dd>{{ job.matched_by_ta }}</dd></div>

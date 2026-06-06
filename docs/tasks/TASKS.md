@@ -922,3 +922,38 @@ Signalés par Val 2026-05-30 (navigation espagnole).
   - [x] **Itér. 2 (retours Val 2026-06-05)** : passe 2 (titre+auteur) lancée sur **toutes** les lignes, y compris celles avec ISBN (recoupement des ISBN saisis à la main ; mismatch ISBN→orange) ; **Google Books interrogé sans clé** (`lookup`+`search`) ; constat : `isbn:` Google Books n'indexe pas certains ISBN (ex. `9786074440966`) → c'est la passe 2 par titre qui les retrouve. Clé API Google Books `AIzaSyDSiDi…` (fournie Val) posée en `Setting metadata.google_books_api_key` (dev + Pi) ; `Setting` enregistré dans `/admin/` (`apps/core/admin.py`). 17 tests excel + enrichment verts. Redéployé Pi.
   - [x] Test fonctionnel Val (navigateur, fichier réel) — **OK 2026-06-05** (vérification + import + passe 2 + clé Google Books)
   - [x] Commit unique `FEAT-050: catalogage Excel — vérification + import` + push origin/main
+
+## FEAT-051 — Filtre emplacement dans le catalogue
+
+> Demande Val 2026-06-05 : ajouter un filtre sur l'emplacement dans la page catalogue.
+
+- [ ] **FEAT-051** Filtre emplacement (`catalog:record_list`)
+  - [x] Vue : param GET `location` → `records.filter(items__location_id=location).distinct()` ; contexte `locations` + `selected.location`
+  - [x] Template : `<select name="location">` « Tous emplacements / <code> » après le filtre langue
+  - [x] **Pagination** : `base_qs` (querystring sans `page`) → liens Précédent/Suivant conservent tous les filtres (retour Val : filtre perdu au changement de page)
+  - [x] i18n : « Tous emplacements » EN/ES/MG (`translations_sprint20.py`) ; gate `i18n_check.py` → 0 ; `.mo` compilés
+  - [x] Doc : SPEC §6.1 (filtres + pagination) + en-tête ; `docs/specs/FEAT-051-filtre-emplacement-catalogue.md`
+  - [x] `manage.py check` 0 issue
+  - [x] Test fonctionnel Val (navigateur) — **OK 2026-06-06** (filtre A2 + pagination conservée)
+  - [x] Commit groupé FEAT-051 + BUG-019 + push origin/main
+
+## BUG-019 — Enrichissement : titres manquants (quota Google Books 429)
+
+> Retour Val 2026-06-05 : après import Excel + enrichissement, beaucoup de
+> notices restent au placeholder `ISBN:…`. Cause = Google Books 429 (quota)
+> attrapé silencieusement. Cf. `docs/bugs/BUG-019-google-books-quota-429.md`.
+
+- [ ] **BUG-019** Robustesse quota Google Books
+  - [x] Diagnostic terrain Box (job #9 : 96 skipped ; `GB.lookup` → 429)
+  - [x] `google_books.py` : throttle + back-off 429 (`_get_json`) → `SourceRateLimited`
+  - [x] **Itér. 2 (retour Val « lent »)** : throttle rendu **adaptatif** (pleine vitesse normale, lent 100 s après un 429) + saut des notices déjà complètes en FILL_MISSING (`_record_is_complete`)
+  - [x] `sources/__init__.py` : exception `SourceRateLimited`
+  - [x] `enrichment.py` : `_try_sources(with_rate_limit=True)` + compteur `EnrichmentJob.rate_limited` + rapport
+  - [x] `excel_catalog.py` : drapeau propagé + `ExcelCatalogJob.rate_limited` + colonne `RATE_LIMITED`
+  - [x] Migration `catalog/0010` (2 champs `rate_limited`)
+  - [x] UI : bandeaux « Quota Google Books atteint — relancez demain » (enrichment + excel detail)
+  - [x] Tests (3 nouveaux) ; suite complète 369 passed
+  - [x] i18n EN/ES/MG (`translations_sprint20.py`) ; gate → 0
+  - [x] Doc : `BUG-019-*.md`, SPEC §6.11/§6.12/§5.2/en-tête
+  - [x] Test fonctionnel Val — **OK 2026-06-06** (bandeau quota + vitesse restaurée après throttle adaptatif)
+  - [x] Commit groupé FEAT-051 + BUG-019 + push origin/main

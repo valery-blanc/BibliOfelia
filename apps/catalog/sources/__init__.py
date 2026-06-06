@@ -7,7 +7,14 @@ contient les champs normalisés : ``title``, ``subtitle``, ``authors_text``,
 """
 from __future__ import annotations
 
-from . import bne, bnf, google_books, openlibrary
+
+class SourceRateLimited(Exception):
+    """Levée par une source quand le fournisseur répond 429 (quota atteint)
+    et que le back-off n'a pas suffi. Permet à l'appelant de distinguer
+    « quota épuisé, réessayer plus tard » de « rien trouvé »."""
+
+
+from . import bne, bnf, google_books, openlibrary  # noqa: E402
 
 SOURCES = {
     "openlibrary": openlibrary.lookup,

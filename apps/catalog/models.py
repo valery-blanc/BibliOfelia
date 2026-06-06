@@ -473,6 +473,9 @@ class EnrichmentJob(models.Model):
     updated = models.PositiveIntegerField(default=0)
     skipped = models.PositiveIntegerField(default=0)
     errors = models.PositiveIntegerField(default=0)
+    # BUG-019 : notices non complétées car une source a atteint son quota (429).
+    # Un re-run ultérieur (quota disponible) pourra les compléter.
+    rate_limited = models.PositiveIntegerField(default=0)
     report = models.JSONField(default=list)
     created_by = models.ForeignKey(
         settings.AUTH_USER_MODEL,
@@ -537,6 +540,9 @@ class ExcelCatalogJob(models.Model):
     matched_by_ta = models.PositiveIntegerField(default=0)
     not_found = models.PositiveIntegerField(default=0)
     errors = models.PositiveIntegerField(default=0)
+    # BUG-019 : lignes où une source a atteint son quota (429) pendant la
+    # vérification → résultat potentiellement incomplet, à relancer plus tard.
+    rate_limited = models.PositiveIntegerField(default=0)
     # Avertissements par ligne (emplacement/catégorie inconnu, ISBN invalide…).
     report = models.JSONField(default=list, blank=True)
     created_at = models.DateTimeField(default=timezone.now)
