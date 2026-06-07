@@ -922,6 +922,8 @@ Signalés par Val 2026-05-30 (navigation espagnole).
   - [x] **Itér. 2 (retours Val 2026-06-05)** : passe 2 (titre+auteur) lancée sur **toutes** les lignes, y compris celles avec ISBN (recoupement des ISBN saisis à la main ; mismatch ISBN→orange) ; **Google Books interrogé sans clé** (`lookup`+`search`) ; constat : `isbn:` Google Books n'indexe pas certains ISBN (ex. `9786074440966`) → c'est la passe 2 par titre qui les retrouve. Clé API Google Books `AIzaSyDSiDi…` (fournie Val) posée en `Setting metadata.google_books_api_key` (dev + Pi) ; `Setting` enregistré dans `/admin/` (`apps/core/admin.py`). 17 tests excel + enrichment verts. Redéployé Pi.
   - [x] Test fonctionnel Val (navigateur, fichier réel) — **OK 2026-06-05** (vérification + import + passe 2 + clé Google Books)
   - [x] Commit unique `FEAT-050: catalogage Excel — vérification + import` + push origin/main
+  - [x] **Guide utilisateur (2026-06-07)** : nouvelle page `inventaire/catalogage-excel.md` (×4 langues FR/EN/ES/MG), nav sous **Catalogue** + `nav_translations`. Nouveauté : **liens cliquables vers l'app** (`/bibliofelia/<lang>/advanced/`, `/catalog/excel-catalog/`, `/catalog/scan/`) sur chaque mention de page/bouton, **un lien par langue** (le doc EN pointe vers `/en/…`, etc.), `target="_blank"`. Build `mkdocs build --strict` OK (4 langues).
+  - [x] Test Val (relecture guide sur la Box) — **OK 2026-06-08** (après corrections : ISBN complet 10/13 chiffres + encadré ISBN_INVALID ; durée « 300 lignes ») + commit
 
 ## FEAT-051 — Filtre emplacement dans le catalogue
 

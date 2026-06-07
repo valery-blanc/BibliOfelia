@@ -67,6 +67,7 @@ plugins:
             Opérations en lot: Bulk operations
             Récolement: Inventory check
             Cataloguer en scannant: Catalogue by scanning
+            Cataloguer depuis Excel: Catalogue from Excel
             Inscrire un membre: Enroll a member
             Fiche membre: Member profile
             Carte de membre: Member card
@@ -107,6 +108,7 @@ plugins:
             Opérations en lot: Operaciones en lote
             Récolement: Inventario
             Cataloguer en scannant: Catalogar escaneando
+            Cataloguer depuis Excel: Catalogar desde Excel
             Inscrire un membre: Inscribir un miembro
             Fiche membre: Ficha del miembro
             Carte de membre: Tarjeta de miembro
@@ -147,6 +149,7 @@ plugins:
             Opérations en lot: Asa marobe
             Récolement: Récolement
             Cataloguer en scannant: Catalogue amin'ny scan
+            Cataloguer depuis Excel: Catalogue avy amin'ny Excel
             Inscrire un membre: Fisoratana mpianatra
             Fiche membre: Takelaka mpianatra
             Carte de membre: Karatra mpianatra
@@ -195,6 +198,7 @@ nav:
       - Opérations en lot: catalogue/operations-lot.md
       - Récolement: inventaire/recolement.md
       - Cataloguer en scannant: inventaire/catalogage-scan.md
+      - Cataloguer depuis Excel: inventaire/catalogage-excel.md
   - Usagers:
       - Inscrire un membre: usagers/inscription.md
       - Fiche membre: usagers/fiche.md
