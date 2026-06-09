@@ -6,7 +6,9 @@ hafa.
 
 ## Jereo ireo toerana misy
 
-Avy ao amin'ny **Boky**, click amin'ny **Toerana** ao amin'ny menu.
+Avy ao amin'ny [**Boky**](/bibliofelia/mg/catalog/){ target="_blank" }, click
+amin'ny [**Toerana**](/bibliofelia/mg/catalog/locations/){ target="_blank" } ao
+amin'ny menu.
 
 ![Lisitry ny toerana](../assets/screenshots/mg/catalogue/location-list.png)
 
@@ -20,7 +22,7 @@ Ny toerana tsirairay dia manana:
 
 ## Mamorona toerana
 
-Click amin'ny **+ Toerana vaovao**:
+Click amin'ny [**+ Toerana vaovao**](/bibliofelia/mg/catalog/locations/new/){ target="_blank" }:
 
 ![Formulaire famoronana toerana](../assets/screenshots/mg/catalogue/location-create.png)
 

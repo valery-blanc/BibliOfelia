@@ -9,8 +9,9 @@ consultas, subestima la asistencia real de su biblioteca.
 
 ## Abrir la página
 
-Desde la página **Préstamo**, o desde **Avanzado → Consulta in
-situ**.
+Desde la página [**Préstamo**](/bibliofelia/es/loans/lend/){ target="_blank" },
+o desde **Avanzado →
+[Consulta in situ](/bibliofelia/es/loans/consultation/){ target="_blank" }**.
 
 ![Página de consulta in situ](../assets/screenshots/es/prets-retours/consultation.png)
 

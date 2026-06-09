@@ -15,7 +15,8 @@ mandeha sy tara, fa tsy ireo vita.
 ### Fampindramana tara
 
 Sokajy an'ny fampindramana mihazo izay efa lasan'ny daty famerenana.
-Click amin'ny izany mba hahitana ny lisitra antsipirihany sy
+Click amin'ny izany mba hahitana ny
+[lisitra antsipirihany](/bibliofelia/mg/reports/overdue/){ target="_blank" } sy
 hiantsoana ny mpianatra.
 
 ### Famandrihana vonona

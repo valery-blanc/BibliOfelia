@@ -6,7 +6,7 @@ BibliOfelia propose des exports au format **CSV**.
 
 ## Où trouver les exports
 
-**Avancé → Rapports**.
+**Avancé → [Rapports](/bibliofelia/fr/reports/){ target="_blank" }**.
 
 ![Page des rapports](../assets/screenshots/fr/rapports/reports-index.png)
 

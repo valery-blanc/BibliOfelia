@@ -11,8 +11,9 @@ Ity pejy ity dia manazava ny dingana 1. Ho an'ny kopia, jereo
 
 ## Sokafy ny formulaire
 
-Avy ao amin'ny **Boky**, click amin'ny **+ Notice vaovao** any
-ambony havanana.
+Avy ao amin'ny [**Boky**](/bibliofelia/mg/catalog/){ target="_blank" }, click
+amin'ny [**+ Notice vaovao**](/bibliofelia/mg/catalog/new/){ target="_blank" }
+any ambony havanana.
 
 ![Formulaire famoronana notice](../assets/screenshots/mg/catalogue/record-create.png)
 

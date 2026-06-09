@@ -7,11 +7,12 @@ de ses prêts.
 
 ## Y accéder
 
-- Depuis **Membres**, cliquez sur le nom dans la liste
+- Depuis [**Membres**](/bibliofelia/fr/members/){ target="_blank" }, cliquez
+  sur le nom dans la liste
 - Depuis n'importe quelle page, tapez le nom dans la recherche globale
   (en haut), ou scannez sa carte
-- Depuis la page **Prêt**, le membre identifié devient un lien vers sa
-  fiche
+- Depuis la page [**Prêt**](/bibliofelia/fr/loans/lend/){ target="_blank" }, le
+  membre identifié devient un lien vers sa fiche
 
 ## Ce que vous voyez
 

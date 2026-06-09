@@ -34,7 +34,8 @@ From that moment, the **pickup** countdown begins (see
 If you notified a member a few days ago and they still have not come
 to pick up their book, you can:
 
-- See the reservation history in the **Reservations** page
+- See the reservation history in the
+  [**Reservations**](/bibliofelia/en/loans/reservations/){ target="_blank" } page
 - Filter by status **Ready for pickup** + date to see reservations
   lingering
 - Call again to follow up

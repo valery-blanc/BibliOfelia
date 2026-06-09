@@ -5,7 +5,8 @@ BibliOfelia. Azonao atontana iray na maro miaraka.
 
 ## Sokafy ny pejy fanontana
 
-**Mandroso → Fanontana → Karatra**.
+**Mandroso → Fanontana →
+[Karatra](/bibliofelia/mg/printing/cards/){ target="_blank" }**.
 
 ![Pejy fisafidianana karatra hatontana](../assets/screenshots/mg/impressions/cards-picker.png)
 

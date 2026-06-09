@@ -13,7 +13,8 @@ farany ny fanamarinana.
 !!! tip "Alohan'ny hanombohana"
     Mba hanokafana haingana ity pejy ity avy amin'ny toerana rehetra
     ao amin'ny tranonkala, click amin'ny karatra volom-boasary
-    **Fampindramana** eo amin'ny tsipika fitetezana.
+    [**Fampindramana**](/bibliofelia/mg/loans/lend/){ target="_blank" } eo
+    amin'ny tsipika fitetezana.
 
 ## Dingana 1 — Mahafantatra ny mpianatra
 

@@ -5,7 +5,8 @@ d'identifier le membre, le livre suffit.
 
 ## Ouvrir la page Retour
 
-Depuis la barre de navigation en haut, cliquez sur la tuile **Retour**.
+Depuis la barre de navigation en haut, cliquez sur la tuile
+[**Retour**](/bibliofelia/fr/loans/return/){ target="_blank" }.
 
 ![Page Retour](../assets/screenshots/fr/prets-retours/return.png)
 

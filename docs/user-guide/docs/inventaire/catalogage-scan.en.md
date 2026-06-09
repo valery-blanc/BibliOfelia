@@ -10,8 +10,11 @@ books.
 
 ## Start a cataloguing batch
 
-From the **Catalogue** (or **Advanced → Inventory**), click **Catalogue by
-scanning**, then **New batch**.
+From the [**Catalogue**](/bibliofelia/en/catalog/){ target="_blank" } (or
+[**Advanced**](/bibliofelia/en/advanced/){ target="_blank" } → Inventory),
+click
+[**Catalogue by scanning**](/bibliofelia/en/catalog/scan/){ target="_blank" },
+then [**New batch**](/bibliofelia/en/catalog/scan/new/){ target="_blank" }.
 
 Before scanning, you can set **default values** for the whole batch:
 

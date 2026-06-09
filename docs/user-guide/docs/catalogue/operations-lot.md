@@ -6,8 +6,8 @@ de masse") depuis la liste du catalogue.
 
 ## Sélectionner plusieurs notices
 
-Depuis la page **Catalogue**, chaque ligne de notice a une case à cocher
-à gauche. Cochez les notices que vous voulez traiter.
+Depuis la page [**Catalogue**](/bibliofelia/fr/catalog/){ target="_blank" },
+chaque ligne de notice a une case à cocher à gauche. Cochez les notices que vous voulez traiter.
 
 Une barre d'actions apparaît en haut, avec un compteur ("3 notices
 sélectionnées") et les opérations disponibles.

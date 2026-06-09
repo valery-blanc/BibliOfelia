@@ -6,7 +6,7 @@ mahafantatra ny mpianatra, ny boky no ampy.
 ## Sokafy ny pejy Famerenana
 
 Avy amin'ny tsipika fitetezana ambony, click amin'ny karatra
-**Famerenana**.
+[**Famerenana**](/bibliofelia/mg/loans/return/){ target="_blank" }.
 
 ![Pejy Famerenana](../assets/screenshots/mg/prets-retours/return.png)
 

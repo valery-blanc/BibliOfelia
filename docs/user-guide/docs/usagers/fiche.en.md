@@ -6,11 +6,12 @@ A member's profile gathers all their information and loan history.
 
 ## Reaching it
 
-- From **Members**, click the name in the list
+- From [**Members**](/bibliofelia/en/members/){ target="_blank" }, click the
+  name in the list
 - From any page, type the name in the global search (at the top), or
   scan their card
-- From the **Lend** page, the identified member becomes a link to
-  their profile
+- From the [**Lend**](/bibliofelia/en/loans/lend/){ target="_blank" } page, the
+  identified member becomes a link to their profile
 
 ## What you see
 

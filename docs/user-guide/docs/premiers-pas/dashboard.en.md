@@ -9,13 +9,17 @@ everything you need day to day.
 
 The three large colored tiles are the main sections:
 
-- **Catalog** (orange) — all books and their copies
-- **Members** (blue) — enrolled readers, their cards, their history
-- **Advanced** (green) — printing, reports, settings
+- [**Catalog**](/bibliofelia/en/catalog/){ target="_blank" } (orange) — all
+  books and their copies
+- [**Members**](/bibliofelia/en/members/){ target="_blank" } (blue) — enrolled
+  readers, their cards, their history
+- [**Advanced**](/bibliofelia/en/advanced/){ target="_blank" } (green) —
+  printing, reports, settings
 
-The **Lend** and **Return** tiles are also reachable from the top
-navigation bar on every page: they are the most frequent actions,
-always one click away.
+The [**Lend**](/bibliofelia/en/loans/lend/){ target="_blank" } and
+[**Return**](/bibliofelia/en/loans/return/){ target="_blank" } tiles are also
+reachable from the top navigation bar on every page: they are the most
+frequent actions, always one click away.
 
 ## The counters
 

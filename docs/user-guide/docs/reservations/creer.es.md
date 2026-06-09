@@ -17,7 +17,8 @@ libro.
 
 ## Ver todas las reservas
 
-Desde la barra de navegación, haga clic en **Reservas**.
+Desde la barra de navegación, haga clic en
+[**Reservas**](/bibliofelia/es/loans/reservations/){ target="_blank" }.
 
 ![Lista de reservas](../assets/screenshots/es/reservations/reservation-list.png)
 

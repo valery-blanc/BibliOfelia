@@ -6,8 +6,8 @@ masivas") desde la lista del catálogo.
 
 ## Seleccionar varios registros
 
-Desde la página **Catálogo**, cada línea de registro tiene una casilla
-de verificación a la izquierda. Marque los registros que quiere
+Desde la página [**Catálogo**](/bibliofelia/es/catalog/){ target="_blank" },
+cada línea de registro tiene una casilla de verificación a la izquierda. Marque los registros que quiere
 procesar.
 
 Aparece una barra de acciones arriba, con un contador ("3 registros

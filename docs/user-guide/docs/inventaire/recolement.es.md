@@ -15,7 +15,9 @@ Antes de empezar:
 
 1. Elija la **estantería** a inventariar (una cada vez para no perderse).
 2. Lleve un dispositivo con cámara (teléfono, tableta).
-3. Abra la página **Avanzado → Inventario** en ese dispositivo.
+3. Abra la página **Avanzado →
+   [Inventario](/bibliofelia/es/inventory/){ target="_blank" }** en ese
+   dispositivo.
 
 !!! warning "Se requiere conexión segura para la cámara"
     La cámara solo funciona con una conexión **segura (https://)**. Consulte
@@ -24,7 +26,7 @@ Antes de empezar:
 
 ## Iniciar una sesión de inventario
 
-1. Pulse **Nueva sesión de inventario**.
+1. Pulse [**Nueva sesión de inventario**](/bibliofelia/es/inventory/new/){ target="_blank" }.
 2. Elija el **alcance**: una **ubicación** concreta (p. ej. «Estantería A1»)
    o **todo el fondo**. Si elige una ubicación, seleccionarla pasa a ser
    obligatorio.

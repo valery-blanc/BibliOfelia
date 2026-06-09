@@ -35,7 +35,8 @@ manomboka (jereo [Fakana sy fahataperana](retrait.md)).
 Raha nampandre mpianatra andro vitsivitsy lasa ianao ary mbola tsy
 tonga naka ny bokiny izy, azonao:
 
-- Jereo ny tantaran'ny famandrihana ao amin'ny pejy **Famandrihana**
+- Jereo ny tantaran'ny famandrihana ao amin'ny pejy
+  [**Famandrihana**](/bibliofelia/mg/loans/reservations/){ target="_blank" }
 - Fitana araka ny toetra **Vonona ho an'ny fakana** + daty mba
   hijerena ireo famandrihana mihalava
 - Antsoy indray mba hanao fanaraha-maso

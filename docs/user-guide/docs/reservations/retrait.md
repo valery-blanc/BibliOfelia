@@ -18,7 +18,7 @@ dédiée derrière le bureau d'accueil, par exemple), pas en rayon.
 
 Le membre arrive avec sa carte. Faites un prêt normal :
 
-1. Ouvrez la page **Prêt**
+1. Ouvrez la page [**Prêt**](/bibliofelia/fr/loans/lend/){ target="_blank" }
 2. Scannez la carte
 3. Scannez le livre
 

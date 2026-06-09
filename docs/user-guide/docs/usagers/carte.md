@@ -12,7 +12,8 @@ Depuis la [fiche du membre](fiche.md), cliquez sur **Imprimer la carte**
 
 Pour les nouvelles inscriptions, il est plus efficace de regrouper :
 
-1. Ouvrez **Avancé → Impressions → Cartes**
+1. Ouvrez **Avancé → Impressions →
+   [Cartes](/bibliofelia/fr/printing/cards/){ target="_blank" }**
 2. Filtrez les membres à imprimer (par exemple, "inscrits ce mois-ci")
 3. Cochez les cartes voulues
 4. Cliquez sur **Générer le PDF**

@@ -28,8 +28,8 @@ marina.
 
 ## Ny fanitana ny boky
 
-Avy ao amin'ny pejy **Boky**, ny lisitry ny notice dia azo
-fantenanina araka:
+Avy ao amin'ny pejy [**Boky**](/bibliofelia/mg/catalog/){ target="_blank" },
+ny lisitry ny notice dia azo fantenanina araka:
 
 - **Soratra malalaka** (lohateny, mpanoratra, editora)
 - **Sokajy** (Olon-dehibe, Tanora, Filazana…)

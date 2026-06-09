@@ -12,7 +12,8 @@ tarjeta** (o vaya a **Avanzado → Impresión → Tarjetas**).
 
 Para las nuevas inscripciones, es más eficiente agrupar:
 
-1. Abra **Avanzado → Impresión → Tarjetas**
+1. Abra **Avanzado → Impresión →
+   [Tarjetas](/bibliofelia/es/printing/cards/){ target="_blank" }**
 2. Filtre los miembros a imprimir (por ejemplo, "inscritos este
    mes")
 3. Marque las tarjetas deseadas

@@ -17,7 +17,9 @@ Avant de commencer :
 1. Choisissez le **rayon** à récoler (un seul à la fois pour ne pas se
    perdre).
 2. Munissez-vous d'un appareil avec caméra (téléphone, tablette).
-3. Ouvrez la page **Avancé → Inventaire** sur cet appareil.
+3. Ouvrez la page **Avancé →
+   [Inventaire](/bibliofelia/fr/inventory/){ target="_blank" }** sur cet
+   appareil.
 
 !!! warning "Connexion sécurisée requise pour la caméra"
     La caméra ne fonctionne que sur une connexion **sécurisée (https://)**.
@@ -26,7 +28,7 @@ Avant de commencer :
 
 ## Démarrer une session de récolement
 
-1. Cliquez sur **Nouvelle session de récolement**.
+1. Cliquez sur [**Nouvelle session de récolement**](/bibliofelia/fr/inventory/new/){ target="_blank" }.
 2. Choisissez la **portée** : un **emplacement** précis (ex. « Rayon A1 »)
    ou **tout le fonds**. Si vous choisissez un emplacement, il devient
    obligatoire de le sélectionner.

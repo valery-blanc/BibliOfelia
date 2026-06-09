@@ -10,8 +10,11 @@ dos libros.
 
 ## Iniciar un lote de catalogación
 
-Desde el **Catálogo** (o **Avanzado → Inventario**), pulse **Catalogar
-escaneando** y luego **Nuevo lote**.
+Desde el [**Catálogo**](/bibliofelia/es/catalog/){ target="_blank" } (o
+[**Avanzado**](/bibliofelia/es/advanced/){ target="_blank" } → Inventario),
+pulse
+[**Catalogar escaneando**](/bibliofelia/es/catalog/scan/){ target="_blank" }
+y luego [**Nuevo lote**](/bibliofelia/es/catalog/scan/new/){ target="_blank" }.
 
 Antes de escanear, puede fijar **valores por defecto** para todo el lote:
 

@@ -19,7 +19,7 @@ estante.
 
 El miembro llega con su tarjeta. Haga un préstamo normal:
 
-1. Abra la página **Préstamo**
+1. Abra la página [**Préstamo**](/bibliofelia/es/loans/lend/){ target="_blank" }
 2. Escanee la tarjeta
 3. Escanee el libro
 

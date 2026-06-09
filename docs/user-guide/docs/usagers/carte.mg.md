@@ -13,7 +13,8 @@ Fanontana → Karatra**).
 
 Ho an'ireo fisoratana vaovao, mahay kokoa ny manangona:
 
-1. Sokafy **Mandroso → Fanontana → Karatra**
+1. Sokafy **Mandroso → Fanontana →
+   [Karatra](/bibliofelia/mg/printing/cards/){ target="_blank" }**
 2. Mifitana ireo mpianatra hatontana (ohatra, "voasoratra ity volana
    ity")
 3. Marino ireo karatra tianao

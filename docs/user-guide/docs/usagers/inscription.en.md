@@ -7,8 +7,10 @@ name and category.
 
 Two paths to open the enrollment form:
 
-- From the **dashboard**, click **Enrollment** (shortcut)
-- From **Members**, click **+ New member**
+- From the [**dashboard**](/bibliofelia/en/){ target="_blank" }, click
+  [**Enrollment**](/bibliofelia/en/members/new/){ target="_blank" } (shortcut)
+- From [**Members**](/bibliofelia/en/members/){ target="_blank" }, click
+  [**+ New member**](/bibliofelia/en/members/new/){ target="_blank" }
 
 ![Enrollment form](../assets/screenshots/en/usagers/member-create.png)
 

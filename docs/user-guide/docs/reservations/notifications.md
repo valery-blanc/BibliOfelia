@@ -35,7 +35,8 @@ Après avoir appelé le membre :
 Si vous avez prévenu un membre il y a quelques jours et qu'il n'est
 toujours pas venu chercher son livre, vous pouvez :
 
-- Voir l'historique des réservations dans la page **Réservations**
+- Voir l'historique des réservations dans la page
+  [**Réservations**](/bibliofelia/fr/loans/reservations/){ target="_blank" }
 - Filtrer par statut **Prête à retirer** + date pour voir les
   réservations qui traînent
 - Appeler à nouveau pour relancer

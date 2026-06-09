@@ -6,8 +6,8 @@ catalog list.
 
 ## Selecting several records
 
-From the **Catalog** page, each record row has a checkbox on the
-left. Tick the records you want to process.
+From the [**Catalog**](/bibliofelia/en/catalog/){ target="_blank" } page,
+each record row has a checkbox on the left. Tick the records you want to process.
 
 An action bar appears at the top, with a counter ("3 records
 selected") and the available operations.

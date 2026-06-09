@@ -6,7 +6,8 @@ etikety hatontana amin'ny taratasy miankina.
 
 ## Sokafy ny pejy fanontana
 
-**Mandroso → Fanontana → Etikety**.
+**Mandroso → Fanontana →
+[Etikety](/bibliofelia/mg/printing/labels/){ target="_blank" }**.
 
 ![Pejy fisafidianana etikety](../assets/screenshots/mg/impressions/labels-picker.png)
 

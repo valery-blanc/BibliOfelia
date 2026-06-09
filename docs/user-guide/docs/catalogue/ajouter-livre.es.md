@@ -11,8 +11,9 @@ Esta página explica el paso 1. Para los ejemplares, vea
 
 ## Abrir el formulario
 
-Desde el **Catálogo**, haga clic en **+ Nuevo registro** arriba a la
-derecha.
+Desde el [**Catálogo**](/bibliofelia/es/catalog/){ target="_blank" }, haga
+clic en [**+ Nuevo registro**](/bibliofelia/es/catalog/new/){ target="_blank" }
+arriba a la derecha.
 
 ![Formulario de creación de registro](../assets/screenshots/es/catalogue/record-create.png)
 

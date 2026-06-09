@@ -26,7 +26,8 @@ takes you directly to the right page.
 
 ## Catalog filter
 
-From the **Catalog** page, the record list can be filtered by:
+From the [**Catalog**](/bibliofelia/en/catalog/){ target="_blank" } page, the
+record list can be filtered by:
 
 - **Free text** (title, author, publisher)
 - **Category** (Adults, Youth, Documentary…)

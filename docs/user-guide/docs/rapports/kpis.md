@@ -15,7 +15,9 @@ en retard, mais pas les prêts terminés.
 ### Prêts en retard
 
 Sous-ensemble des prêts en cours dont la date de retour est dépassée.
-Cliquez dessus pour voir la liste détaillée et appeler les membres.
+Cliquez dessus pour voir la
+[liste détaillée](/bibliofelia/fr/reports/overdue/){ target="_blank" } et
+appeler les membres.
 
 ### Réservations prêtes
 

@@ -6,7 +6,9 @@ parmi les autres.
 
 ## Voir les localisations existantes
 
-Depuis le **Catalogue**, cliquez sur **Localisations** dans le menu.
+Depuis le [**Catalogue**](/bibliofelia/fr/catalog/){ target="_blank" },
+cliquez sur [**Localisations**](/bibliofelia/fr/catalog/locations/){ target="_blank" }
+dans le menu.
 
 ![Liste des localisations](../assets/screenshots/fr/catalogue/location-list.png)
 
@@ -19,7 +21,7 @@ Chaque localisation a :
 
 ## Créer une localisation
 
-Cliquez sur **+ Nouvelle localisation** :
+Cliquez sur [**+ Nouvelle localisation**](/bibliofelia/fr/catalog/locations/new/){ target="_blank" } :
 
 ![Formulaire de création d'une localisation](../assets/screenshots/fr/catalogue/location-create.png)
 

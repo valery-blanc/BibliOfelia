@@ -12,7 +12,8 @@ From the [member profile](fiche.md), click **Print card** (or go to
 
 For new enrollments, it is more efficient to batch:
 
-1. Open **Advanced → Printing → Cards**
+1. Open **Advanced → Printing →
+   [Cards](/bibliofelia/en/printing/cards/){ target="_blank" }**
 2. Filter the members to print (for example, "enrolled this month")
 3. Tick the wanted cards
 4. Click **Generate PDF**

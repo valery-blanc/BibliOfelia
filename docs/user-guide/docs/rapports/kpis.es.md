@@ -15,8 +15,9 @@ curso y vencidos, pero no los terminados.
 ### Préstamos vencidos
 
 Subconjunto de los préstamos activos cuya fecha de devolución ha
-pasado. Haga clic para ver la lista detallada y llamar a los
-miembros.
+pasado. Haga clic para ver la
+[lista detallada](/bibliofelia/es/reports/overdue/){ target="_blank" } y llamar
+a los miembros.
 
 ### Reservas listas
 

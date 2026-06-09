@@ -9,13 +9,17 @@ tout ce dont vous avez besoin au quotidien.
 
 Les trois grandes tuiles colorées sont les sections principales :
 
-- **Catalogue** (orange) — tous les livres et leurs exemplaires
-- **Membres** (bleu) — les lecteurs inscrits, leurs cartes, leur historique
-- **Avancé** (vert) — impressions, rapports, paramètres
+- [**Catalogue**](/bibliofelia/fr/catalog/){ target="_blank" } (orange) — tous
+  les livres et leurs exemplaires
+- [**Membres**](/bibliofelia/fr/members/){ target="_blank" } (bleu) — les
+  lecteurs inscrits, leurs cartes, leur historique
+- [**Avancé**](/bibliofelia/fr/advanced/){ target="_blank" } (vert) —
+  impressions, rapports, paramètres
 
-Les tuiles **Prêt** et **Retour** sont également accessibles depuis la
-barre de navigation tout en haut de chaque page : ce sont les gestes les
-plus fréquents, toujours à portée de clic.
+Les tuiles [**Prêt**](/bibliofelia/fr/loans/lend/){ target="_blank" } et
+[**Retour**](/bibliofelia/fr/loans/return/){ target="_blank" } sont également
+accessibles depuis la barre de navigation tout en haut de chaque page : ce
+sont les gestes les plus fréquents, toujours à portée de clic.
 
 ## Les compteurs
 

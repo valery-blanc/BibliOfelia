@@ -11,7 +11,9 @@ réelle de votre bibliothèque.
 
 ## Ouvrir la page Consultation
 
-Depuis la page **Prêt**, ou depuis **Avancé → Consultation sur place**.
+Depuis la page [**Prêt**](/bibliofelia/fr/loans/lend/){ target="_blank" }, ou
+depuis **Avancé →
+[Consultation sur place](/bibliofelia/fr/loans/consultation/){ target="_blank" }**.
 
 ![Page de consultation sur place](../assets/screenshots/fr/prets-retours/consultation.png)
 

@@ -6,7 +6,8 @@ etiquetas a imprimir en planchas autoadhesivas.
 
 ## Abrir la página de impresión
 
-**Avanzado → Impresión → Etiquetas**.
+**Avanzado → Impresión →
+[Etiquetas](/bibliofelia/es/printing/labels/){ target="_blank" }**.
 
 ![Página de selección de etiquetas](../assets/screenshots/es/impressions/labels-picker.png)
 

@@ -35,7 +35,8 @@ A partir de ese momento, comienza la cuenta atrás de la **recogida**
 Si avisó a un miembro hace unos días y aún no ha venido a buscar su
 libro, puede:
 
-- Ver el historial de reservas en la página **Reservas**
+- Ver el historial de reservas en la página
+  [**Reservas**](/bibliofelia/es/loans/reservations/){ target="_blank" }
 - Filtrar por estado **Lista para recoger** + fecha para ver las
   reservas que se prolongan
 - Llamar de nuevo para hacer seguimiento

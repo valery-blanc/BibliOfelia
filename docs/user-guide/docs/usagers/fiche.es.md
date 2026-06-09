@@ -7,11 +7,12 @@ sus préstamos.
 
 ## Cómo acceder a ella
 
-- Desde **Miembros**, haga clic en el nombre en la lista
+- Desde [**Miembros**](/bibliofelia/es/members/){ target="_blank" }, haga clic
+  en el nombre en la lista
 - Desde cualquier página, escriba el nombre en la búsqueda global
   (arriba), o escanee su tarjeta
-- Desde la página **Préstamo**, el miembro identificado se convierte
-  en un enlace a su ficha
+- Desde la página [**Préstamo**](/bibliofelia/es/loans/lend/){ target="_blank" },
+  el miembro identificado se convierte en un enlace a su ficha
 
 ## Lo que ve
 

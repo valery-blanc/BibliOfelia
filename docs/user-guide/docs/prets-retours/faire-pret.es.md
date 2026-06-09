@@ -11,7 +11,8 @@ confirmación.
 
 !!! tip "Antes de empezar"
     Para abrir esta página rápidamente desde cualquier sitio del
-    sitio, haga clic en la tarjeta naranja **Préstamo** en la barra
+    sitio, haga clic en la tarjeta naranja
+    [**Préstamo**](/bibliofelia/es/loans/lend/){ target="_blank" } en la barra
     de navegación de arriba.
 
 ## Paso 1 — Identificar al miembro

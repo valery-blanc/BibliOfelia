@@ -5,7 +5,8 @@ imprimir una sola o varias a la vez.
 
 ## Abrir la página de impresión
 
-**Avanzado → Impresión → Tarjetas**.
+**Avanzado → Impresión →
+[Tarjetas](/bibliofelia/es/printing/cards/){ target="_blank" }**.
 
 ![Página de selección de tarjetas a imprimir](../assets/screenshots/es/impressions/cards-picker.png)
 

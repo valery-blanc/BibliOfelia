@@ -7,7 +7,7 @@ endrika **CSV**.
 
 ## Aiza no ahitana ny fanondranana
 
-**Mandroso → Tatitra**.
+**Mandroso → [Tatitra](/bibliofelia/mg/reports/){ target="_blank" }**.
 
 ![Pejy tatitra](../assets/screenshots/mg/rapports/reports-index.png)
 

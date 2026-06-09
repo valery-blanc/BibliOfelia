@@ -5,7 +5,8 @@ pouvez en imprimer une seule ou plusieurs d'un coup.
 
 ## Ouvrir la page d'impression
 
-**Avancé → Impressions → Cartes**.
+**Avancé → Impressions →
+[Cartes](/bibliofelia/fr/printing/cards/){ target="_blank" }**.
 
 ![Page de sélection des cartes à imprimer](../assets/screenshots/fr/impressions/cards-picker.png)
 

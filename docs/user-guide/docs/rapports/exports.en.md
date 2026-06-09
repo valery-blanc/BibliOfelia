@@ -6,7 +6,7 @@ offers exports in **CSV** format.
 
 ## Where to find exports
 
-**Advanced → Reports**.
+**Advanced → [Reports](/bibliofelia/en/reports/){ target="_blank" }**.
 
 ![Reports page](../assets/screenshots/en/rapports/reports-index.png)
 

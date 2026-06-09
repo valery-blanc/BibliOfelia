@@ -15,7 +15,8 @@ loans, but not finished ones.
 ### Overdue loans
 
 Subset of active loans whose return date has passed. Click it to see
-the detailed list and call the members.
+the [detailed list](/bibliofelia/en/reports/overdue/){ target="_blank" } and
+call the members.
 
 ### Ready reservations
 

@@ -11,7 +11,8 @@ confirmation.
 
 !!! tip "Before you start"
     To open this page quickly from anywhere in the site, click the
-    orange **Lend** tile in the top navigation bar.
+    orange [**Lend**](/bibliofelia/en/loans/lend/){ target="_blank" } tile in
+    the top navigation bar.
 
 ## Step 1 — Identify the member
 

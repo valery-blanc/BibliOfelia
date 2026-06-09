@@ -10,7 +10,9 @@ d'abord le membre, ensuite le ou les livres, et enfin la confirmation.
 
 !!! tip "Avant de commencer"
     Pour ouvrir cette page rapidement depuis n'importe où dans le site,
-    cliquez sur la tuile orange **Prêt** dans la barre de navigation en haut.
+    cliquez sur la tuile orange
+    [**Prêt**](/bibliofelia/fr/loans/lend/){ target="_blank" } dans la barre de
+    navigation en haut.
 
 ## Étape 1 — Identifier le membre
 

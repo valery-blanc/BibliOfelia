@@ -25,8 +25,8 @@ exemplaire) et vous emmène directement sur la bonne page.
 
 ## Le filtre du catalogue
 
-Depuis la page **Catalogue**, la liste des notices peut être filtrée
-par :
+Depuis la page [**Catalogue**](/bibliofelia/fr/catalog/){ target="_blank" },
+la liste des notices peut être filtrée par :
 
 - **Texte libre** (titre, auteur, éditeur)
 - **Catégorie** (Adultes, Jeunesse, Documentaire…)

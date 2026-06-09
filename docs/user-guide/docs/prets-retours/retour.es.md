@@ -6,7 +6,7 @@ identificar al miembro, basta con el libro.
 ## Abrir la página Devolución
 
 Desde la barra de navegación de arriba, haga clic en la tarjeta
-**Devolución**.
+[**Devolución**](/bibliofelia/es/loans/return/){ target="_blank" }.
 
 ![Página Devolución](../assets/screenshots/es/prets-retours/return.png)
 

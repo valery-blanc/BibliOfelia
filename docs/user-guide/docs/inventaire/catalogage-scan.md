@@ -11,8 +11,11 @@ deux livres.
 
 ## Démarrer un lot de catalogage
 
-Depuis le **Catalogue** (ou **Avancé → Inventaire**), cliquez sur
-**Cataloguer en scannant**, puis sur **Nouveau lot**.
+Depuis le [**Catalogue**](/bibliofelia/fr/catalog/){ target="_blank" } (ou
+[**Avancé**](/bibliofelia/fr/advanced/){ target="_blank" } → Inventaire),
+cliquez sur
+[**Cataloguer en scannant**](/bibliofelia/fr/catalog/scan/){ target="_blank" },
+puis sur [**Nouveau lot**](/bibliofelia/fr/catalog/scan/new/){ target="_blank" }.
 
 Avant de scanner, vous pouvez fixer des **valeurs par défaut** pour tout
 le lot :

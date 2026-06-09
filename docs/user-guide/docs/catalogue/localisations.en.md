@@ -5,7 +5,9 @@ store books. They help find a copy among others.
 
 ## View existing locations
 
-From the **Catalog**, click **Locations** in the menu.
+From the [**Catalog**](/bibliofelia/en/catalog/){ target="_blank" }, click
+[**Locations**](/bibliofelia/en/catalog/locations/){ target="_blank" } in the
+menu.
 
 ![Location list](../assets/screenshots/en/catalogue/location-list.png)
 
@@ -17,7 +19,7 @@ Each location has:
 
 ## Creating a location
 
-Click **+ New location**:
+Click [**+ New location**](/bibliofelia/en/catalog/locations/new/){ target="_blank" }:
 
 ![Location creation form](../assets/screenshots/en/catalogue/location-create.png)
 

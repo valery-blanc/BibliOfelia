@@ -5,7 +5,8 @@ one or several at a time.
 
 ## Open the printing page
 
-**Advanced → Printing → Cards**.
+**Advanced → Printing →
+[Cards](/bibliofelia/en/printing/cards/){ target="_blank" }**.
 
 ![Card selection page](../assets/screenshots/en/impressions/cards-picker.png)
 

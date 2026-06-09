@@ -6,8 +6,8 @@ lisitry ny boky.
 
 ## Misafidy notice maro
 
-Avy ao amin'ny pejy **Boky**, ny filaharan'ny notice tsirairay dia
-manana case à cocher havia. Marino ireo notice tianao hokarakaraina.
+Avy ao amin'ny pejy [**Boky**](/bibliofelia/mg/catalog/){ target="_blank" },
+ny filaharan'ny notice tsirairay dia manana case à cocher havia. Marino ireo notice tianao hokarakaraina.
 
 Tsipika asa iray dia miseho any ambony, miaraka amin'ny kaonty
 ("notice 3 voafidy") sy ny asa azo atao.

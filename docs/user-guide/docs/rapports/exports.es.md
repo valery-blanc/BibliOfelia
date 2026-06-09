@@ -6,7 +6,7 @@ financiador), BibliOfelia ofrece exportaciones en formato **CSV**.
 
 ## Dónde encontrar las exportaciones
 
-**Avanzado → Informes**.
+**Avanzado → [Informes](/bibliofelia/es/reports/){ target="_blank" }**.
 
 ![Página de informes](../assets/screenshots/es/rapports/reports-index.png)
 

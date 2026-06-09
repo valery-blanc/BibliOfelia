@@ -15,7 +15,9 @@ Before starting:
 
 1. Pick the **shelf** to inventory (one at a time so you don't get lost).
 2. Bring a device with a camera (phone, tablet).
-3. Open the **Advanced → Inventory** page on that device.
+3. Open the **Advanced →
+   [Inventory](/bibliofelia/en/inventory/){ target="_blank" }** page on that
+   device.
 
 !!! warning "Secure connection required for the camera"
     The camera only works over a **secure (https://)** connection. See
@@ -24,7 +26,7 @@ Before starting:
 
 ## Start an inventory session
 
-1. Click **New inventory session**.
+1. Click [**New inventory session**](/bibliofelia/en/inventory/new/){ target="_blank" }.
 2. Choose the **scope**: a specific **location** (e.g. "Shelf A1") or **the
    whole collection**. If you choose a location, selecting it becomes
    mandatory.

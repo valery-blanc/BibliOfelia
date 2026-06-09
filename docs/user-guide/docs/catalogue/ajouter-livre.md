@@ -10,7 +10,9 @@ Cette page explique l'étape 1. Pour les exemplaires, voir
 
 ## Ouvrir le formulaire
 
-Depuis le **Catalogue**, cliquez sur **Nouvelle notice** en haut à droite.
+Depuis le [**Catalogue**](/bibliofelia/fr/catalog/){ target="_blank" },
+cliquez sur [**Nouvelle notice**](/bibliofelia/fr/catalog/new/){ target="_blank" }
+en haut à droite.
 
 ![Formulaire de création de notice](../assets/screenshots/fr/catalogue/record-create.png)
 

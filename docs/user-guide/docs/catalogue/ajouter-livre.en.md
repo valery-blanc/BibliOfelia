@@ -10,7 +10,9 @@ This page covers step 1. For copies, see
 
 ## Opening the form
 
-From the **Catalog**, click **+ New record** at the top right.
+From the [**Catalog**](/bibliofelia/en/catalog/){ target="_blank" }, click
+[**+ New record**](/bibliofelia/en/catalog/new/){ target="_blank" } at the
+top right.
 
 ![Record creation form](../assets/screenshots/en/catalogue/record-create.png)
 

@@ -18,7 +18,7 @@ behind the welcome desk, for example), not on the open stacks.
 
 The member arrives with their card. Do a normal loan:
 
-1. Open the **Lend** page
+1. Open the [**Lend**](/bibliofelia/en/loans/lend/){ target="_blank" } page
 2. Scan the card
 3. Scan the book
 

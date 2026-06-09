@@ -9,14 +9,17 @@ necesita a diario.
 
 Las tres tarjetas grandes coloreadas son las secciones principales:
 
-- **Catálogo** (naranja) — todos los libros y sus ejemplares
-- **Miembros** (azul) — los lectores inscritos, sus tarjetas, su
-  historial
-- **Avanzado** (verde) — impresión, informes, configuración
+- [**Catálogo**](/bibliofelia/es/catalog/){ target="_blank" } (naranja) — todos
+  los libros y sus ejemplares
+- [**Miembros**](/bibliofelia/es/members/){ target="_blank" } (azul) — los
+  lectores inscritos, sus tarjetas, su historial
+- [**Avanzado**](/bibliofelia/es/advanced/){ target="_blank" } (verde) —
+  impresión, informes, configuración
 
-Las tarjetas **Préstamo** y **Devolución** también están accesibles
-desde la barra de navegación en cada página: son las acciones más
-frecuentes, siempre a un clic de distancia.
+Las tarjetas [**Préstamo**](/bibliofelia/es/loans/lend/){ target="_blank" } y
+[**Devolución**](/bibliofelia/es/loans/return/){ target="_blank" } también
+están accesibles desde la barra de navegación en cada página: son las
+acciones más frecuentes, siempre a un clic de distancia.
 
 ## Los contadores
 

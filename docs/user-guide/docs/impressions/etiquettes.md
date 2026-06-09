@@ -6,7 +6,8 @@ sur planches autocollantes.
 
 ## Ouvrir la page d'impression
 
-**Avancé → Impressions → Étiquettes**.
+**Avancé → Impressions →
+[Étiquettes](/bibliofelia/fr/printing/labels/){ target="_blank" }**.
 
 ![Page de sélection des étiquettes](../assets/screenshots/fr/impressions/labels-picker.png)
 

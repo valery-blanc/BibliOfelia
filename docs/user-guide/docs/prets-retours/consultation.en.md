@@ -9,7 +9,9 @@ readings, you underestimate the actual library attendance.
 
 ## Open the page
 
-From the **Lend** page, or from **Advanced → In-library reading**.
+From the [**Lend**](/bibliofelia/en/loans/lend/){ target="_blank" } page, or
+from **Advanced →
+[In-library reading](/bibliofelia/en/loans/consultation/){ target="_blank" }**.
 
 ![In-library reading page](../assets/screenshots/en/prets-retours/consultation.png)
 

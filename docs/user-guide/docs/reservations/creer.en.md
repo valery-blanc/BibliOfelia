@@ -17,7 +17,8 @@ book's page.
 
 ## See all reservations
 
-From the top navigation bar, click **Reservations**.
+From the top navigation bar, click
+[**Reservations**](/bibliofelia/en/loans/reservations/){ target="_blank" }.
 
 ![Reservation list](../assets/screenshots/en/reservations/reservation-list.png)
 

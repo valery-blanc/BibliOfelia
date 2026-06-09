@@ -7,12 +7,12 @@ tantaran'ny fampindramany.
 
 ## Hahafahana mahatratra azy
 
-- Avy ao amin'ny **Mpianatra**, click amin'ny anarana ao amin'ny
-  lisitra
+- Avy ao amin'ny [**Mpianatra**](/bibliofelia/mg/members/){ target="_blank" },
+  click amin'ny anarana ao amin'ny lisitra
 - Avy amin'ny pejy rehetra, soraty ny anarana ao amin'ny fikarohana
   ankapobeny (any ambony), na jereo ny karatrany
-- Avy ao amin'ny pejy **Fampindramana**, ny mpianatra voafantatra
-  dia lasa lien mankany amin'ny takelakany
+- Avy ao amin'ny pejy [**Fampindramana**](/bibliofelia/mg/loans/lend/){ target="_blank" },
+  ny mpianatra voafantatra dia lasa lien mankany amin'ny takelakany
 
 ## Izay hitanao
 

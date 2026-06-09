@@ -20,7 +20,7 @@ tsy ao amin'ny rakitra.
 Tonga miaraka amin'ny karatrany ny mpianatra. Manaova fampindramana
 mahazatra:
 
-1. Sokafy ny pejy **Fampindramana**
+1. Sokafy ny pejy [**Fampindramana**](/bibliofelia/mg/loans/lend/){ target="_blank" }
 2. Jereo ny karatra
 3. Jereo ny boky
 

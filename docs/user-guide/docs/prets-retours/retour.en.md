@@ -5,7 +5,8 @@ member, the book is enough.
 
 ## Open the Return page
 
-From the top navigation bar, click the **Return** tile.
+From the top navigation bar, click the
+[**Return**](/bibliofelia/en/loans/return/){ target="_blank" } tile.
 
 ![Return page](../assets/screenshots/en/prets-retours/return.png)
 

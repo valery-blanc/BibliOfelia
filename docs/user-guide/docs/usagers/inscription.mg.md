@@ -7,8 +7,10 @@ Tsy mila afa-tsy ny anarany sy ny sokajiny ianao.
 
 Lalana roa hanokarana ny formulaire fisoratana:
 
-- Avy ao amin'ny **tabilao**, click amin'ny **Fisoratana** (lavitra)
-- Avy ao amin'ny **Mpianatra**, click amin'ny **+ Mpianatra vaovao**
+- Avy ao amin'ny [**tabilao**](/bibliofelia/mg/){ target="_blank" }, click
+  amin'ny [**Fisoratana**](/bibliofelia/mg/members/new/){ target="_blank" } (lavitra)
+- Avy ao amin'ny [**Mpianatra**](/bibliofelia/mg/members/){ target="_blank" },
+  click amin'ny [**+ Mpianatra vaovao**](/bibliofelia/mg/members/new/){ target="_blank" }
 
 ![Formulaire fisoratana](../assets/screenshots/mg/usagers/member-create.png)
 

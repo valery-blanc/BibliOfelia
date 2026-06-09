@@ -7,8 +7,10 @@ n'avez besoin que de son nom et de sa catégorie.
 
 Deux chemins pour ouvrir le formulaire d'inscription :
 
-- Depuis le **dashboard**, cliquez sur **Inscription** (raccourci)
-- Depuis **Membres**, cliquez sur **+ Nouveau membre**
+- Depuis le [**dashboard**](/bibliofelia/fr/){ target="_blank" }, cliquez sur
+  [**Inscription**](/bibliofelia/fr/members/new/){ target="_blank" } (raccourci)
+- Depuis [**Membres**](/bibliofelia/fr/members/){ target="_blank" }, cliquez sur
+  [**+ Nouveau membre**](/bibliofelia/fr/members/new/){ target="_blank" }
 
 ![Formulaire d'inscription](../assets/screenshots/fr/usagers/member-create.png)
 

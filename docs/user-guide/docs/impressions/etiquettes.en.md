@@ -5,7 +5,8 @@ generates the PDF of labels to print on sticky sheets.
 
 ## Open the printing page
 
-**Advanced → Printing → Labels**.
+**Advanced → Printing →
+[Labels](/bibliofelia/en/printing/labels/){ target="_blank" }**.
 
 ![Label selection page](../assets/screenshots/en/impressions/labels-picker.png)
 

@@ -9,14 +9,17 @@ rehetra ilainao isan'andro.
 
 Ireo karatra telo lehibe miloko no ireo fizarana lehibe:
 
-- **Boky** (volom-boasary) — ny boky rehetra sy ny kopia
-- **Mpianatra** (manga) — ny mpamaky voasoratra, ny karatra, ny
-  tantara
-- **Mandroso** (maitso) — fanontana, tatitra, parametra
+- [**Boky**](/bibliofelia/mg/catalog/){ target="_blank" } (volom-boasary) — ny
+  boky rehetra sy ny kopia
+- [**Mpianatra**](/bibliofelia/mg/members/){ target="_blank" } (manga) — ny
+  mpamaky voasoratra, ny karatra, ny tantara
+- [**Mandroso**](/bibliofelia/mg/advanced/){ target="_blank" } (maitso) —
+  fanontana, tatitra, parametra
 
-Ireo karatra **Fampindramana** sy **Famerenana** koa dia azo idirana
-amin'ny tsipika fitetezana eo amboniny pejy tsirairay: izy ireo no
-asa matetika indrindra, mety amin'ny click iray ihany.
+Ireo karatra [**Fampindramana**](/bibliofelia/mg/loans/lend/){ target="_blank" }
+sy [**Famerenana**](/bibliofelia/mg/loans/return/){ target="_blank" } koa dia
+azo idirana amin'ny tsipika fitetezana eo amboniny pejy tsirairay: izy ireo
+no asa matetika indrindra, mety amin'ny click iray ihany.
 
 ## Ireo kaonty
 

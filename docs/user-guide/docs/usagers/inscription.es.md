@@ -7,8 +7,10 @@ nombre y categoría.
 
 Dos rutas para abrir el formulario de inscripción:
 
-- Desde el **panel**, haga clic en **Inscripción** (atajo)
-- Desde **Miembros**, haga clic en **+ Nuevo miembro**
+- Desde el [**panel**](/bibliofelia/es/){ target="_blank" }, haga clic en
+  [**Inscripción**](/bibliofelia/es/members/new/){ target="_blank" } (atajo)
+- Desde [**Miembros**](/bibliofelia/es/members/){ target="_blank" }, haga clic en
+  [**+ Nuevo miembro**](/bibliofelia/es/members/new/){ target="_blank" }
 
 ![Formulario de inscripción](../assets/screenshots/es/usagers/member-create.png)
 

@@ -10,8 +10,9 @@ tranombokinao.
 
 ## Sokafy ny pejy
 
-Avy amin'ny pejy **Fampindramana**, na avy ao amin'ny **Mandroso →
-Famakiana eo an-toerana**.
+Avy amin'ny pejy [**Fampindramana**](/bibliofelia/mg/loans/lend/){ target="_blank" },
+na avy ao amin'ny **Mandroso →
+[Famakiana eo an-toerana](/bibliofelia/mg/loans/consultation/){ target="_blank" }**.
 
 ![Pejy famakiana eo an-toerana](../assets/screenshots/mg/prets-retours/consultation.png)
 

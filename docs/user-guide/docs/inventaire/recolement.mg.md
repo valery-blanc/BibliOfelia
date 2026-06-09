@@ -17,7 +17,8 @@ Alohan'ny hanombohana:
 1. Safidio ny **rakitra** hojerena (iray isaky ny indray mandeha mba tsy ho
    very).
 2. Itondrao fitaovana misy fakantsary (finday, tablette).
-3. Sokafy amin'io fitaovana io ny pejy **Mandroso → Inventaire**.
+3. Sokafy amin'io fitaovana io ny pejy **Mandroso →
+   [Inventaire](/bibliofelia/mg/inventory/){ target="_blank" }**.
 
 !!! warning "Mila fifandraisana voaaro ny fakantsary"
     Tsy miasa ny fakantsary raha tsy amin'ny fifandraisana **voaaro
@@ -26,7 +27,7 @@ Alohan'ny hanombohana:
 
 ## Manomboka session récolement
 
-1. Tsindrio ny **Session récolement vaovao**.
+1. Tsindrio ny [**Session récolement vaovao**](/bibliofelia/mg/inventory/new/){ target="_blank" }.
 2. Safidio ny **fetra**: **toerana** voafaritra (ohatra "Rakitra A1") na **ny
    boky rehetra**. Raha misafidy toerana ianao, dia tsy maintsy fenoina ny
    fisafidianana azy.

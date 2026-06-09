@@ -19,7 +19,8 @@ mavitrika** amin'ny takelaky ny boky.
 
 ## Jereo ny famandrihana rehetra
 
-Avy amin'ny tsipika fitetezana, click amin'ny **Famandrihana**.
+Avy amin'ny tsipika fitetezana, click amin'ny
+[**Famandrihana**](/bibliofelia/mg/loans/reservations/){ target="_blank" }.
 
 ![Lisitry ny famandrihana](../assets/screenshots/mg/reservations/reservation-list.png)
 

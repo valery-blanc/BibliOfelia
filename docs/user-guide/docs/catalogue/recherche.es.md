@@ -27,8 +27,8 @@ ejemplar) y le lleva directamente a la página correcta.
 
 ## El filtro del catálogo
 
-Desde la página **Catálogo**, la lista de registros puede filtrarse
-por:
+Desde la página [**Catálogo**](/bibliofelia/es/catalog/){ target="_blank" },
+la lista de registros puede filtrarse por:
 
 - **Texto libre** (título, autor, editor)
 - **Categoría** (Adultos, Juvenil, Documental…)

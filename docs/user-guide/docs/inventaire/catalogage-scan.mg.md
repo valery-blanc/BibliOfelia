@@ -11,8 +11,11 @@ boky roa.
 
 ## Manomboka lot catalogage
 
-Avy amin'ny **Catalogue** (na **Mandroso → Inventaire**), tsindrio
-**Catalogage amin'ny scan**, dia **Lot vaovao**.
+Avy amin'ny [**Catalogue**](/bibliofelia/mg/catalog/){ target="_blank" } (na
+[**Mandroso**](/bibliofelia/mg/advanced/){ target="_blank" } → Inventaire),
+tsindrio
+[**Catalogage amin'ny scan**](/bibliofelia/mg/catalog/scan/){ target="_blank" },
+dia [**Lot vaovao**](/bibliofelia/mg/catalog/scan/new/){ target="_blank" }.
 
 Alohan'ny hi-scan, dia afaka mametraka **sanda default** ho an'ny lot
 manontolo ianao:
