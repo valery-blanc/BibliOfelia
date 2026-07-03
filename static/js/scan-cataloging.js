@@ -136,6 +136,7 @@
         if (!S || !S.openCamera) return;
         S.openCamera(btn, {
             continuous: true,
+            allowIssn: true,  // FEAT-052 : périodiques (préfixe 977) en catalogage
             onCode: handleCode,
             onClose: function () { window.location.reload(); },
             onUnavailable: function () {

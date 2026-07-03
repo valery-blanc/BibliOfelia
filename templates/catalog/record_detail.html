@@ -55,6 +55,9 @@
         <div><dt>{% trans "Année" %}</dt><dd>{{ record.publication_year|default:"—" }}</dd></div>
         <div><dt>{% trans "Langue" %}</dt><dd>{{ record.language|default:"—" }}</dd></div>
         <div><dt>ISBN-13</dt><dd>{{ record.isbn_13|default:"—" }}</dd></div>
+        {% if record.issn %}
+        <div><dt>ISSN</dt><dd>{{ record.issn_display }}</dd></div>
+        {% endif %}
         {% if record.tags.all %}
         <div style="grid-column:1/-1">
             <dt>{% trans "Tags" %}</dt>

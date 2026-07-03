@@ -61,6 +61,42 @@ def test_record_form_reuses_existing_author():
     assert Author.objects.filter(full_name="Frank Herbert").count() == 1
 
 
+def test_record_form_normalizes_valid_issn():
+    """FEAT-052 : ISSN valide (avec tiret) stocké normalisé sans tiret."""
+    form = BibliographicRecordForm(
+        data={
+            "title": "Le Monde diplomatique",
+            "language": "fr",
+            "document_type": "magazine_issue",
+            "issn": "1828-552X",
+        }
+    )
+    assert form.is_valid(), form.errors
+    record = form.save()
+    assert record.issn == "1828552X"
+
+
+def test_record_form_rejects_invalid_issn():
+    form = BibliographicRecordForm(
+        data={
+            "title": "Revue bidon",
+            "language": "fr",
+            "document_type": "magazine_issue",
+            "issn": "1828-5521",  # mauvaise clé
+        }
+    )
+    assert not form.is_valid()
+    assert "issn" in form.errors
+
+
+def test_record_form_empty_issn_stored_as_null():
+    form = BibliographicRecordForm(
+        data={"title": "Sans ISSN", "language": "fr", "document_type": "book"}
+    )
+    assert form.is_valid(), form.errors
+    assert form.save().issn is None
+
+
 def test_bulk_create_form_limits_copies():
     form = ItemBulkCreateForm(
         data={

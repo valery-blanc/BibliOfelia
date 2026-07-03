@@ -185,6 +185,12 @@
         }
 
         window.BibliOfelia.scan.openCamera(btn, {
+            // FEAT-052 : on n'accepte le préfixe 977 (périodique ISSN) que sur les
+            // boutons de RECHERCHE générale (`data-scan-kind="auto"` : dashboard +
+            // barre du catalogue), qui routent le code via classify_query → notice.
+            // Les boutons prêt/retour (`book`/`card`) et le champ ISBN (`book`)
+            // n'acceptent pas le 977 (un magazine s'y scanne via son code Ofelia 290).
+            allowIssn: btn.dataset.scanKind === "auto",
             onUnavailable: function (reason, detail) {
                 showCameraError(btn, reason, detail);
             }

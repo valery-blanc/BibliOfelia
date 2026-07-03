@@ -960,3 +960,26 @@ Signalés par Val 2026-05-30 (navigation espagnole).
   - [x] Doc : `BUG-019-*.md`, SPEC §6.11/§6.12/§5.2/en-tête
   - [x] Test fonctionnel Val — **OK 2026-06-06** (bandeau quota + vitesse restaurée après throttle adaptatif)
   - [x] Commit groupé FEAT-051 + BUG-019 + push origin/main
+
+## Sprint 21 — FEAT-052 Support des périodiques ISSN (code-barres 977)
+
+> Demande Val 2026-07-03 : la bibliothèque va accueillir des revues/magazines
+> (EAN-13 préfixe 977 = ISSN). Les cataloguer comme les livres.
+> Cf. `docs/specs/FEAT-052-issn-periodiques.md`.
+
+- [ ] **FEAT-052** Support ISSN transverse
+  - [x] Helper `apps/core/issn.py` (check digit mod 11, `validate_issn`, `normalize_issn`, `issn_from_ean13`, `format_issn`)
+  - [x] Modèle : champ `BibliographicRecord.issn` + contrainte unique si non-null ; `ScanKind.ISSN` ; propriété `issn_display` ; migration `catalog/0011_issn_periodical`
+  - [x] Sources : `lookup_issn()` BnF (`bib.issn`) + BNE (`alma.issn`) ; registre `ISSN_SOURCES` ; `lookup_issn_multi()`
+  - [x] Vue `scan_add` : branche 977 → `scan_kind=issn` + `lookup_issn_multi`
+  - [x] Finalisation `finalize_scan_session` : matching/creation par ISSN, `document_type=magazine_issue` ; `_create_record` paramétré
+  - [x] Formulaire notice : champ `issn` + `clean_issn` ; templates `_record_form` (édition) + `record_detail` (affichage)
+  - [x] Scanner JS : `isAcceptableCode(v, allowIssn)` ; `scan-cataloging.js` passe `allowIssn:true` (977 en catalogage seulement)
+  - [x] **Recherche ISSN** (retour Val : revue introuvable au catalogue) : `classify_query` `kind="issn"` (EAN13 977 ou ISSN saisi) ; `record_list` filtre `issn` ; `global_search` redirige ; correctif `clean_issn` max_length 9
+  - [x] Tests : `test_issn.py`, `test_search.py`, cas 977 dans `test_cataloging.py` + `test_forms.py`
+  - [x] Doc : `FEAT-052-*.md`, SPEC (en-tête + §5.2/§5.3/§6.1 + filtre scanner)
+  - [x] i18n : `makemessages` + `translations_sprint21.py` + `i18n_check.py` → **0** + `.mo` compilés (sur la Box)
+  - [x] `migrate` (0011 appliquée au boot) + suite pytest **387 passed** (sur la Box, `FORCE_SCRIPT_NAME=` neutralisé)
+  - [x] Déploiement Box (branche `feat/issn-052`, rebuild bibliofelia + worker, healthy)
+  - [x] Test fonctionnel Val — **OK 2026-07-03** (scan revue 977 en catalogage ; recherche par scan 977 + ISSN saisi ; 977 refusé en prêt)
+  - [x] Commit unique squash `FEAT-052` → `main` + push origin/main

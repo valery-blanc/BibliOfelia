@@ -94,6 +94,46 @@ def lookup_isbn_multi(raw_isbn: str) -> dict | None:
     return None
 
 
+# FEAT-052 : sources ISSN interrogées au scan d'un périodique (préfixe 977),
+# par ordre de préférence. La BnF couvre les revues FR ; la BNE en complément.
+_ISSN_SOURCE_ORDER = ["bnf", "bne"]
+
+
+def lookup_issn_multi(raw_issn: str) -> dict | None:
+    """Lookup ISSN multi-sources pour le scan d'un périodique (FEAT-052).
+
+    Miroir de `lookup_isbn_multi` mais sur `ISSN_SOURCES` (bibliothèques
+    nationales SRU). Interroge en parallèle, renvoie le 1er résultat avec un
+    titre. None si aucune source ne répond → titre saisi à la main. Jamais
+    d'exception réseau.
+    """
+    from apps.core.issn import normalize_issn
+
+    issn = normalize_issn(raw_issn)
+    if len(issn) != 8:
+        return None
+
+    from concurrent.futures import ThreadPoolExecutor
+
+    from .sources import ISSN_SOURCES  # {name: lookup_issn(issn) -> dict | None}
+
+    results: dict[str, dict | None] = {}
+    with ThreadPoolExecutor(max_workers=len(ISSN_SOURCES)) as ex:
+        futures = {ex.submit(fn, issn): name for name, fn in ISSN_SOURCES.items()}
+        for fut, name in futures.items():
+            try:
+                results[name] = fut.result()
+            except Exception as exc:  # filet : une source qui casse ne bloque pas
+                logger.info("Source %s en échec pour ISSN %s : %s", name, issn, exc)
+                results[name] = None
+
+    for name in _ISSN_SOURCE_ORDER:
+        data = results.get(name)
+        if data and data.get("title"):
+            return _clean_multi_result(data)
+    return None
+
+
 def _clean_multi_result(data: dict) -> dict:
     """Normalise un résultat de source pour le scan catalogage.
 

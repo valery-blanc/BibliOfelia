@@ -5,6 +5,8 @@ from django import forms
 from django.conf import settings
 from django.utils.translation import gettext_lazy as _
 
+from apps.core.issn import normalize_issn, validate_issn
+
 from .models import Author, BibliographicRecord, Category, Item, Location, ScanSession
 
 
@@ -18,12 +20,21 @@ class BibliographicRecordForm(forms.ModelForm):
         required=False,
         help_text=_("Séparez plusieurs auteurs par un point-virgule."),
     )
+    # FEAT-052 : champ explicite (max_length 9) pour accepter l'ISSN saisi avec
+    # tiret (« 1234-5679 ») ; `clean_issn` le normalise ensuite en 8 caractères.
+    # Sans ça, la validation `max_length=8` héritée du modèle rejette le tiret.
+    issn = forms.CharField(
+        label=_("ISSN"),
+        required=False,
+        max_length=9,
+        help_text=_("Pour les revues/magazines (code-barres 977). Ex. 1234-5679."),
+    )
 
     class Meta:
         model = BibliographicRecord
         fields = [
             "title", "subtitle", "publisher", "publication_year", "language",
-            "isbn_13", "isbn_10", "summary", "cover_image", "category", "tags",
+            "isbn_13", "isbn_10", "issn", "summary", "cover_image", "category", "tags",
             "series_name", "series_volume", "document_type",
         ]
         widgets = {
@@ -55,6 +66,17 @@ class BibliographicRecordForm(forms.ModelForm):
 
     def clean_isbn_10(self):
         return self._clean_isbn("isbn_10", 10)
+
+    def clean_issn(self):
+        """FEAT-052 : ISSN normalisé (8 car., clé validée). Vide → NULL."""
+        raw = normalize_issn(self.cleaned_data.get("issn") or "")
+        if not raw:
+            return None  # NULL en base : évite la collision sur la chaîne vide
+        if not validate_issn(raw):
+            raise forms.ValidationError(
+                _("ISSN invalide (8 caractères, ex. 1234-5679).")
+            )
+        return raw
 
     def save(self, commit=True):
         # commit=True : ModelForm.save sauve déjà l'instance + les M2M déclarés

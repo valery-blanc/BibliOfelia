@@ -140,6 +140,10 @@ class BibliographicRecord(models.Model):
     language = models.CharField(max_length=10, blank=True, default="fr")
     isbn_13 = models.CharField(max_length=13, blank=True, null=True, db_index=True)
     isbn_10 = models.CharField(max_length=10, blank=True, null=True, db_index=True)
+    # FEAT-052 : périodiques (revues/magazines). ISSN normalisé 8 caractères
+    # (7 chiffres + clé 0-9/X), stocké sans tiret. L'ISSN identifie le titre
+    # de la revue, pas le numéro : contrainte unique → « 1 notice par ISSN ».
+    issn = models.CharField(max_length=8, blank=True, null=True, db_index=True)
     summary = models.TextField(blank=True)
     cover_image = models.FileField(upload_to="covers/", blank=True, null=True)
     category = models.ForeignKey(
@@ -177,10 +181,22 @@ class BibliographicRecord(models.Model):
                 condition=models.Q(isbn_13__isnull=False),
                 name="record_isbn13_unique_not_null",
             ),
+            models.UniqueConstraint(
+                fields=["issn"],
+                condition=models.Q(issn__isnull=False),
+                name="record_issn_unique_not_null",
+            ),
         ]
 
     def __str__(self) -> str:
         return self.title
+
+    @property
+    def issn_display(self) -> str:
+        """FEAT-052 : ISSN au format lisible ``1234-5679`` (vide si absent)."""
+        from apps.core.issn import format_issn
+
+        return format_issn(self.issn) if self.issn else ""
 
 
 class Item(models.Model):
@@ -327,6 +343,7 @@ class RetiredItemCode(models.Model):
 class ScanKind(models.TextChoices):
     EAN13 = "ean13", _("EAN13")
     ISBN = "isbn", _("ISBN")
+    ISSN = "issn", _("ISSN")  # FEAT-052 : périodique (EAN-13 préfixe 977)
     MANUAL = "manual", _("Saisie manuelle")
 
 

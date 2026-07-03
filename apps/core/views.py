@@ -115,6 +115,10 @@ def global_search(request):
         )
         if record:
             return redirect("catalog:record_detail", pk=record.pk)
+    elif kind == "issn":
+        record = BibliographicRecord.objects.filter(issn=value).first()
+        if record:
+            return redirect("catalog:record_detail", pk=record.pk)
     # texte libre, ou code non trouvé → liste catalogue (FTS + filtres)
     return redirect(f"{reverse('catalog:record_list')}?{urlencode({'q': raw})}")
 

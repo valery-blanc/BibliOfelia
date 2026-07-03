@@ -17,6 +17,7 @@ from django.views.decorators.http import require_POST
 
 from apps.accounts.models import Role
 from apps.accounts.permissions import require_role
+from apps.core.issn import ISSN_EAN13_PREFIX, issn_from_ean13
 from apps.core.search import classify_query, fts_search
 from apps.loans.models import LoanStatus, ReservationStatus
 
@@ -43,7 +44,7 @@ from .models import (
     ScanSession,
     ScanSessionState,
 )
-from .openlibrary import lookup_isbn, lookup_isbn_multi, normalize_isbn
+from .openlibrary import lookup_isbn, lookup_isbn_multi, lookup_issn_multi, normalize_isbn
 
 READ_ROLES = (Role.LIBRARIAN, Role.SUPERADMIN, Role.READONLY)
 WRITE_ROLES = (Role.LIBRARIAN, Role.SUPERADMIN)
@@ -63,6 +64,7 @@ def record_list(request):
     `q` peut être :
     - un EAN13 d'exemplaire (290…) → filtre via `items__ean13`
     - un ISBN 10/13 → filtre direct sur `isbn_13`/`isbn_10`
+    - un ISSN (préfixe EAN13 977 ou saisi « 1828-552X ») → filtre sur `issn` (FEAT-052)
     - du texte libre → FTS5 sur titre/sous-titre/auteurs/résumé
     """
     q = (request.GET.get("q") or "").strip()
@@ -74,6 +76,8 @@ def record_list(request):
         kind, value = classify_query(q)
         if kind == "isbn":
             records = records.filter(Q(isbn_13=value) | Q(isbn_10=value))
+        elif kind == "issn":
+            records = records.filter(issn=value)
         elif kind == "item":
             records = records.filter(items__ean13=value).distinct()
         elif kind == "member":
@@ -753,6 +757,13 @@ def scan_add(request, pk):
     if len(code) not in (10, 13):
         return JsonResponse({"ok": False, "error": _("Code invalide.")}, status=400)
 
+    # FEAT-052 : périodique (EAN-13 préfixe 977). On extrait l'ISSN embarqué et
+    # on interroge les sources ISSN au lieu des sources ISBN.
+    is_issn = len(code) == 13 and code.startswith(ISSN_EAN13_PREFIX)
+    issn = issn_from_ean13(code) if is_issn else None
+    if is_issn and not issn:
+        return JsonResponse({"ok": False, "error": _("Code invalide.")}, status=400)
+
     now = timezone.now()
     existing = session.items.filter(scanned_value=code).order_by("id").first()
     if existing:
@@ -767,7 +778,11 @@ def scan_add(request, pk):
         item = ScanItem.objects.create(
             session=session,
             local_id=f"cam-{uuid.uuid4().hex[:12]}",
-            scan_kind=ScanKind.ISBN if len(code) == 10 else ScanKind.EAN13,
+            scan_kind=(
+                ScanKind.ISSN if is_issn
+                else ScanKind.ISBN if len(code) == 10
+                else ScanKind.EAN13
+            ),
             scanned_value=code,
             metadata_language=(translation.get_language() or "fr")[:10],
             category=session.default_category,
@@ -784,7 +799,8 @@ def scan_add(request, pk):
         else:
             # Multi-sources (OpenLibrary + Google Books + BnF + BNE) : bien
             # meilleure couverture FR que la seule OpenLibrary (FEAT-046).
-            data = lookup_isbn_multi(code) or {}
+            # FEAT-052 : pour un périodique, sources ISSN (BnF/BNE) via l'ISSN.
+            data = (lookup_issn_multi(issn) if is_issn else lookup_isbn_multi(code)) or {}
             authors_text = data.get("authors_text", "") or ""
             year = data.get("publication_year") or ""
             item.metadata_title = data.get("title", "") or ""

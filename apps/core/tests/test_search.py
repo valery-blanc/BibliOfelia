@@ -27,6 +27,21 @@ class TestClassifyQuery:
     def test_isbn10_ending_with_x(self):
         assert classify_query("123456789X")[0] == "isbn"
 
+    def test_issn_ean13_prefix_977(self):
+        # FEAT-052 : un EAN13 977 → kind issn, value = ISSN extrait.
+        kind, value = classify_query("9771828552248")
+        assert kind == "issn"
+        assert value == "1828552X"
+
+    def test_issn_typed_with_hyphen(self):
+        kind, value = classify_query("1828-552X")
+        assert kind == "issn"
+        assert value == "1828552X"
+
+    def test_invalid_issn_is_text(self):
+        # 8 caractères mais clé fausse → pas un ISSN → texte libre.
+        assert classify_query("18285521")[0] == "text"
+
     def test_free_text(self):
         kind, value = classify_query("harry potter")
         assert kind == "text"

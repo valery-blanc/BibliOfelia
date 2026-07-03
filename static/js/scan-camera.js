@@ -55,8 +55,12 @@
     // Un code n'est accepté QUE si c'est un EAN-13 à clé valide ET préfixe
     // plausible : 290/291 = codes Ofelia (exemplaire / carte membre),
     // 978/979 = ISBN. Tout le reste (autre format/préfixe, clé KO) est rejeté.
-    function isAcceptableCode(v) {
-        return /^\d{13}$/.test(v) && isValidEan13(v) && /^(290|291|978|979)/.test(v);
+    // FEAT-052 : `allowIssn` (catalogage uniquement) ajoute le préfixe 977
+    // (périodiques). Les flux prêt/retour/adhésion gardent le filtre par défaut.
+    function isAcceptableCode(v, allowIssn) {
+        if (!/^\d{13}$/.test(v) || !isValidEan13(v)) return false;
+        var prefixes = allowIssn ? /^(290|291|977|978|979)/ : /^(290|291|978|979)/;
+        return prefixes.test(v);
     }
 
     function getI18n() {
@@ -208,7 +212,7 @@
         if (state.consumed) return false;
         if (state.continuous && Date.now() < (state.cooldownUntil || 0)) return false;
         v = (v || "").trim();
-        if (!isAcceptableCode(v)) return false;
+        if (!isAcceptableCode(v, state.allowIssn)) return false;
         if (state.lastRead === v) {
             state.readStreak = (state.readStreak || 1) + 1;
         } else {
@@ -399,6 +403,9 @@
             consumed: false,
             closed: false,
             continuous: continuous,
+            // FEAT-052 : n'accepter le préfixe 977 (ISSN) que si le contrôleur de
+            // page l'a explicitement demandé (catalogage). Défaut : refusé.
+            allowIssn: opts.allowIssn === true,
             onCode: typeof opts.onCode === "function" ? opts.onCode : null,
             count: 0,
             cooldownUntil: 0,

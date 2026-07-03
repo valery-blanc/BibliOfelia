@@ -9,6 +9,8 @@ from __future__ import annotations
 
 from django.db import connection
 
+from apps.core.issn import ISSN_EAN13_PREFIX, issn_from_ean13, validate_issn
+
 _CODE_TRANSLATE = {ord(c): None for c in " -."}
 
 
@@ -24,9 +26,11 @@ def looks_like_isbn10(code: str) -> bool:
 def classify_query(raw: str) -> tuple[str, str]:
     """Retourne (kind, value).
 
-    kind ∈ {"item", "member", "isbn", "text"} :
+    kind ∈ {"item", "member", "isbn", "issn", "text"} :
     - "item"   : EAN13 commençant par 290 (exemplaire Ofelia)
     - "member" : EAN13 commençant par 291 (carte membre Ofelia)
+    - "issn"   : périodique — EAN13 préfixe 977 (value = ISSN extrait) ou ISSN
+                 saisi directement (« 1828-552X »). Value = ISSN normalisé 8 car.
     - "isbn"   : ISBN-13 ou ISBN-10 plausible
     - "text"   : recherche plein-texte
     """
@@ -36,9 +40,15 @@ def classify_query(raw: str) -> tuple[str, str]:
             return "item", code
         if code.startswith("291"):
             return "member", code
+        if code.startswith(ISSN_EAN13_PREFIX):
+            issn = issn_from_ean13(code)
+            if issn:
+                return "issn", issn
         return "isbn", code
     if looks_like_isbn10(code):
         return "isbn", code
+    if validate_issn(code):  # ISSN saisi à la main (8 car., clé valide)
+        return "issn", code
     return "text", (raw or "").strip()
 
 

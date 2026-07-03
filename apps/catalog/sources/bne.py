@@ -21,6 +21,14 @@ _BNE_SRU = (
     '&query=alma.isbn="{isbn}"'
 )
 
+# FEAT-052 : recherche d'un périodique par ISSN.
+_BNE_SRU_ISSN = (
+    "https://catalogo.bne.es/view/sru/34BNE_INST"
+    "?version=1.2&operation=searchRetrieve"
+    "&recordSchema=dc&maximumRecords=1"
+    '&query=alma.issn="{issn}"'
+)
+
 _NS = {
     "dc": "http://purl.org/dc/elements/1.1/",
     "srw": "http://www.loc.gov/zing/srw/",
@@ -159,3 +167,26 @@ def lookup(raw_isbn: str) -> dict | None:
         "subjects": subjects,
         "cover_url": "",
     }
+
+
+def lookup_issn(raw_issn: str) -> dict | None:
+    """Recherche un périodique par ISSN via SRU Alma (FEAT-052). None sinon."""
+    issn = re.sub(r"[^0-9Xx]", "", raw_issn or "").upper()
+    if len(issn) != 8:
+        return None
+    hyphenated = f"{issn[:4]}-{issn[4:]}"
+    url = _BNE_SRU_ISSN.format(issn=hyphenated)
+    try:
+        resp = httpx.get(url, timeout=10)
+        resp.raise_for_status()
+        root = ET.fromstring(resp.content)
+    except (httpx.HTTPError, ET.ParseError) as exc:
+        logger.info("BNE KO ISSN %s : %s", issn, exc)
+        return None
+    num_records = root.find("srw:numberOfRecords", _NS)
+    if num_records is None or (num_records.text or "0").strip() == "0":
+        return None
+    record_data = root.find(".//srw:recordData", _NS)
+    if record_data is None:
+        return None
+    return _record_to_candidate(record_data)

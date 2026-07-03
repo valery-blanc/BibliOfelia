@@ -6,7 +6,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: BibliOfelia 1.0\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2026-06-05 22:50+0000\n"
+"POT-Creation-Date: 2026-07-03 10:00+0000\n"
 "PO-Revision-Date: 2026-05-22 00:00+0000\n"
 "Last-Translator: Claude Code\n"
 "Language-Team: Español\n"
@@ -75,14 +75,14 @@ msgstr "Imposible: debe permanecer al menos un superadmin activo."
 msgid "Compte %(u)s supprimé."
 msgstr "Cuenta %(u)s eliminada."
 
-#: apps/api/models.py:23 apps/catalog/models.py:443 apps/catalog/models.py:506
+#: apps/api/models.py:23 apps/catalog/models.py:460 apps/catalog/models.py:523
 #: apps/core/forms.py:322 apps/loans/models.py:20
-#: templates/catalog/record_detail.html:189
+#: templates/catalog/record_detail.html:192
 #: templates/loans/reservations.html:97
 msgid "En attente"
 msgstr "En espera"
 
-#: apps/api/models.py:24 apps/catalog/models.py:445 apps/catalog/models.py:508
+#: apps/api/models.py:24 apps/catalog/models.py:462 apps/catalog/models.py:525
 msgid "Terminé"
 msgstr "Finalizado"
 
@@ -102,22 +102,34 @@ msgstr "Libro"
 msgid "Carte membre"
 msgstr "Tarjeta de miembro"
 
-#: apps/catalog/forms.py:17 templates/catalog/record_detail.html:51
+#: apps/catalog/forms.py:19 templates/catalog/record_detail.html:51
 #: templates/catalog/record_list.html:130
 #: templates/catalog/record_list.html:207
 msgid "Auteur(s)"
 msgstr "Autor(es)"
 
-#: apps/catalog/forms.py:19
+#: apps/catalog/forms.py:21
 msgid "Séparez plusieurs auteurs par un point-virgule."
 msgstr "Separe varios autores con un punto y coma."
 
-#: apps/catalog/forms.py:49
+#: apps/catalog/forms.py:27 apps/catalog/models.py:346
+msgid "ISSN"
+msgstr "ISSN"
+
+#: apps/catalog/forms.py:30
+msgid "Pour les revues/magazines (code-barres 977). Ex. 1234-5679."
+msgstr "Para revistas/periódicos (código de barras 977). Ej. 1234-5679."
+
+#: apps/catalog/forms.py:60
 #, python-format
 msgid "L'ISBN doit comporter %(n)s caractères."
 msgstr "El ISBN debe tener %(n)s caracteres."
 
-#: apps/catalog/forms.py:92 templates/catalog/record_detail.html:89
+#: apps/catalog/forms.py:77
+msgid "ISSN invalide (8 caractères, ex. 1234-5679)."
+msgstr "ISSN no válido (8 caracteres, ej. 1234-5679)."
+
+#: apps/catalog/forms.py:114 templates/catalog/record_detail.html:92
 #: templates/catalog/scan_session.html:88
 #: templates/catalog/scan_session.html:116
 #: templates/printing/labels_picker.html:29
@@ -125,71 +137,71 @@ msgstr "El ISBN debe tener %(n)s caracteres."
 msgid "Emplacement"
 msgstr "Ubicación"
 
-#: apps/catalog/forms.py:93 templates/catalog/excel_catalog/index.html:51
-#: templates/catalog/record_detail.html:90
+#: apps/catalog/forms.py:115 templates/catalog/excel_catalog/index.html:51
+#: templates/catalog/record_detail.html:93
 #: templates/catalog/scan_session.html:95
 #: templates/catalog/scan_session.html:117
 #: templates/core/admin/enrichment_index.html:123
 msgid "État"
 msgstr "Condición"
 
-#: apps/catalog/forms.py:94
+#: apps/catalog/forms.py:116
 msgid "Date d'acquisition"
 msgstr "Fecha de adquisición"
 
-#: apps/catalog/forms.py:95
+#: apps/catalog/forms.py:117
 msgid "Source d'acquisition"
 msgstr "Origen de adquisición"
 
-#: apps/catalog/forms.py:96
+#: apps/catalog/forms.py:118
 msgid "Donateur"
 msgstr "Donante"
 
-#: apps/catalog/forms.py:97
+#: apps/catalog/forms.py:119
 msgid "Notes"
 msgstr "Notas"
 
-#: apps/catalog/forms.py:105
+#: apps/catalog/forms.py:127
 msgid "Nombre d'exemplaires"
 msgstr "Número de ejemplares"
 
-#: apps/catalog/forms.py:109
+#: apps/catalog/forms.py:131
 msgid "Jusqu'à 20 exemplaires identiques d'un coup."
 msgstr "Hasta 20 ejemplares idénticos a la vez."
 
-#: apps/catalog/forms.py:125
+#: apps/catalog/forms.py:147
 msgid "Court, sans espace : A1, JEU-BD, RES…"
 msgstr "Corto, sin espacio: A1, JUE-CM, RES…"
 
-#: apps/catalog/forms.py:126
+#: apps/catalog/forms.py:148
 msgid "Sous-emplacement de… (optionnel)."
 msgstr "Sub-ubicación de… (opcional)."
 
-#: apps/catalog/forms.py:150
+#: apps/catalog/forms.py:172
 msgid "Un emplacement avec ce code existe déjà pour ce parent."
 msgstr "Ya existe una ubicación con este código para este padre."
 
-#: apps/catalog/forms.py:153
+#: apps/catalog/forms.py:175
 msgid "Un emplacement ne peut pas être son propre parent."
 msgstr "Una ubicación no puede ser su propio padre."
 
-#: apps/catalog/forms.py:164
+#: apps/catalog/forms.py:186
 msgid "Nom du lot (optionnel)"
 msgstr "Nombre del lote (opcional)"
 
-#: apps/catalog/forms.py:165
+#: apps/catalog/forms.py:187
 msgid "Catégorie par défaut"
 msgstr "Categoría por defecto"
 
-#: apps/catalog/forms.py:166
+#: apps/catalog/forms.py:188
 msgid "Emplacement par défaut"
 msgstr "Ubicación por defecto"
 
-#: apps/catalog/forms.py:169
+#: apps/catalog/forms.py:191
 msgid "Appliquée aux nouvelles notices ; modifiable ligne par ligne."
 msgstr "Se aplica a las fichas nuevas; modificable fila por fila."
 
-#: apps/catalog/forms.py:170
+#: apps/catalog/forms.py:192
 msgid "Appliqué aux nouveaux exemplaires ; modifiable ligne par ligne."
 msgstr "Se aplica a los ejemplares nuevos; modificable fila por fila."
 
@@ -213,7 +225,7 @@ msgstr "CD de audio"
 msgid "Autre"
 msgstr "Otro"
 
-#: apps/catalog/models.py:32 apps/catalog/models.py:330
+#: apps/catalog/models.py:32 apps/catalog/models.py:347
 msgid "Saisie manuelle"
 msgstr "Entrada manual"
 
@@ -225,7 +237,7 @@ msgstr "OpenLibrary"
 msgid "OfeliaScan"
 msgstr "OfeliaScan"
 
-#: apps/catalog/models.py:35 apps/catalog/models.py:502
+#: apps/catalog/models.py:35 apps/catalog/models.py:519
 msgid "Import"
 msgstr "Importación"
 
@@ -334,247 +346,247 @@ msgstr "ubicación"
 msgid "emplacements"
 msgstr "ubicaciones"
 
-#: apps/catalog/models.py:171
+#: apps/catalog/models.py:175
 msgid "notice bibliographique"
 msgstr "registro bibliográfico"
 
-#: apps/catalog/models.py:172
+#: apps/catalog/models.py:176
 msgid "notices bibliographiques"
 msgstr "registros bibliográficos"
 
-#: apps/catalog/models.py:219 templates/catalog/scan_session.html:15
+#: apps/catalog/models.py:235 templates/catalog/scan_session.html:15
 #: templates/inventory/session_report.html:15
 msgid "exemplaire"
 msgstr "ejemplar"
 
-#: apps/catalog/models.py:220
+#: apps/catalog/models.py:236
 msgid "exemplaires"
 msgstr "ejemplares"
 
-#: apps/catalog/models.py:292 templates/catalog/record_bulk_delete.html:19
+#: apps/catalog/models.py:308 templates/catalog/record_bulk_delete.html:19
 msgid "Suppression en masse de notices"
 msgstr "Eliminación masiva de registros"
 
-#: apps/catalog/models.py:293
+#: apps/catalog/models.py:309
 msgid "Suppression d'exemplaire"
 msgstr "Eliminación de ejemplar"
 
-#: apps/catalog/models.py:310
+#: apps/catalog/models.py:326
 msgid "code Ofelia retiré"
 msgstr "código Ofelia retirado"
 
-#: apps/catalog/models.py:311
+#: apps/catalog/models.py:327
 msgid "codes Ofelia retirés"
 msgstr "códigos Ofelia retirados"
 
-#: apps/catalog/models.py:328
+#: apps/catalog/models.py:344
 msgid "EAN13"
 msgstr "EAN13"
 
-#: apps/catalog/models.py:329 templates/catalog/scan_session.html:14
+#: apps/catalog/models.py:345 templates/catalog/scan_session.html:14
 msgid "ISBN"
 msgstr "ISBN"
 
-#: apps/catalog/models.py:334
+#: apps/catalog/models.py:351
 msgid "Ouverte"
 msgstr "Abierta"
 
-#: apps/catalog/models.py:335 apps/inventory/models.py:25
+#: apps/catalog/models.py:352 apps/inventory/models.py:25
 msgid "Validée"
 msgstr "Validada"
 
-#: apps/catalog/models.py:375
+#: apps/catalog/models.py:392
 msgid "session de scan"
 msgstr "sesión de escaneo"
 
-#: apps/catalog/models.py:376
+#: apps/catalog/models.py:393
 msgid "sessions de scan"
 msgstr "sesiones de escaneo"
 
-#: apps/catalog/models.py:425
+#: apps/catalog/models.py:442
 msgid "item scanné"
 msgstr "ítem escaneado"
 
-#: apps/catalog/models.py:426
+#: apps/catalog/models.py:443
 msgid "items scannés"
 msgstr "ítems escaneados"
 
-#: apps/catalog/models.py:444 apps/catalog/models.py:507
+#: apps/catalog/models.py:461 apps/catalog/models.py:524
 #: apps/inventory/models.py:23 apps/loans/models.py:12
 #: templates/catalog/scan_session_list.html:24
 msgid "En cours"
 msgstr "En curso"
 
-#: apps/catalog/models.py:446 apps/catalog/models.py:509
+#: apps/catalog/models.py:463 apps/catalog/models.py:526
 msgid "Échec"
 msgstr "Fallido"
 
-#: apps/catalog/models.py:450
+#: apps/catalog/models.py:467
 msgid "Compléter les champs vides uniquement"
 msgstr "Completar solo los campos vacíos"
 
-#: apps/catalog/models.py:451
+#: apps/catalog/models.py:468
 msgid "Écraser avec les données externes"
 msgstr "Sobrescribir con datos externos"
 
-#: apps/catalog/models.py:489
+#: apps/catalog/models.py:506
 msgid "enrichissement métadonnées"
 msgstr "enriquecimiento de metadatos"
 
-#: apps/catalog/models.py:490
+#: apps/catalog/models.py:507
 msgid "enrichissements métadonnées"
 msgstr "enriquecimientos de metadatos"
 
-#: apps/catalog/models.py:501
+#: apps/catalog/models.py:518
 msgid "Vérification"
 msgstr "Verificación"
 
-#: apps/catalog/models.py:559
+#: apps/catalog/models.py:576
 msgid "catalogage Excel"
 msgstr "catalogación Excel"
 
-#: apps/catalog/models.py:560
+#: apps/catalog/models.py:577
 msgid "catalogages Excel"
 msgstr "catalogaciones Excel"
 
-#: apps/catalog/views.py:206
+#: apps/catalog/views.py:210
 msgid "Notice créée."
 msgstr "Registro creado."
 
-#: apps/catalog/views.py:211 apps/catalog/views.py:251
+#: apps/catalog/views.py:215 apps/catalog/views.py:255
 #: templates/catalog/record_list.html:29 templates/core/dashboard.html:185
 msgid "Nouvelle notice"
 msgstr "Nueva ficha"
 
-#: apps/catalog/views.py:223
+#: apps/catalog/views.py:227
 msgid "Notice mise à jour."
 msgstr "Registro actualizado."
 
-#: apps/catalog/views.py:228
+#: apps/catalog/views.py:232
 msgid "Modifier la notice"
 msgstr "Editar registro"
 
-#: apps/catalog/views.py:239
+#: apps/catalog/views.py:243
 msgid "Notice trouvée sur OpenLibrary."
 msgstr "Registro encontrado en OpenLibrary."
 
-#: apps/catalog/views.py:243
+#: apps/catalog/views.py:247
 msgid "Aucune réponse d'OpenLibrary — saisissez la notice à la main."
 msgstr "Sin respuesta de OpenLibrary — introduzca el registro manualmente."
 
-#: apps/catalog/views.py:265
+#: apps/catalog/views.py:269
 msgid "Suppression impossible : des exemplaires actifs sont rattachés."
 msgstr "No se puede eliminar: hay ejemplares activos asociados."
 
-#: apps/catalog/views.py:269
+#: apps/catalog/views.py:273
 msgid "Notice supprimée."
 msgstr "Registro eliminado."
 
-#: apps/catalog/views.py:295
+#: apps/catalog/views.py:299
 #, python-format
 msgid "%(n)s exemplaire(s) ajouté(s)."
 msgstr "%(n)s ejemplar(es) añadido(s)."
 
-#: apps/catalog/views.py:312
+#: apps/catalog/views.py:316
 msgid "Exemplaire mis à jour."
 msgstr "Ejemplar actualizado."
 
-#: apps/catalog/views.py:327
+#: apps/catalog/views.py:331
 msgid "Impossible : l'exemplaire est prêté ou réservé."
 msgstr "No es posible: el ejemplar está prestado o reservado."
 
-#: apps/catalog/views.py:331
+#: apps/catalog/views.py:335
 msgid "Exemplaire retiré du fonds."
 msgstr "Ejemplar retirado del fondo."
 
-#: apps/catalog/views.py:362
+#: apps/catalog/views.py:366
 msgid "Exemplaire supprimé."
 msgstr "Ejemplar eliminado."
 
-#: apps/catalog/views.py:444
+#: apps/catalog/views.py:448
 #, python-format
 msgid "%(n)s notice(s) affectée(s) à la catégorie %(c)s."
 msgstr "%(n)s registro(s) asignado(s) a la categoría %(c)s."
 
-#: apps/catalog/views.py:450
+#: apps/catalog/views.py:454
 #, python-format
 msgid "%(n)s notice(s) sans catégorie (catégorie vidée)."
 msgstr "%(n)s registro(s) sin categoría (categoría vaciada)."
 
-#: apps/catalog/views.py:493
+#: apps/catalog/views.py:497
 #, python-format
 msgid "%(n)s exemplaire(s) affecté(s) à l'emplacement %(l)s."
 msgstr "%(n)s ejemplar(es) asignado(s) a la ubicación %(l)s."
 
-#: apps/catalog/views.py:499
+#: apps/catalog/views.py:503
 #, python-format
 msgid "%(n)s exemplaire(s) sans emplacement (emplacement vidé)."
 msgstr "%(n)s ejemplar(es) sin ubicación (ubicación vaciada)."
 
-#: apps/catalog/views.py:545
+#: apps/catalog/views.py:549
 #, python-format
 msgid "%(n)s notice(s) supprimée(s)."
 msgstr "%(n)s ficha(s) eliminada(s)."
 
-#: apps/catalog/views.py:573
+#: apps/catalog/views.py:577
 msgid "Emplacement créé."
 msgstr "Ubicación creada."
 
-#: apps/catalog/views.py:583 templates/catalog/location_list.html:25
+#: apps/catalog/views.py:587 templates/catalog/location_list.html:25
 msgid "Nouvel emplacement"
 msgstr "Nueva ubicación"
 
-#: apps/catalog/views.py:595
+#: apps/catalog/views.py:599
 msgid "Emplacement mis à jour."
 msgstr "Ubicación actualizada."
 
-#: apps/catalog/views.py:605
+#: apps/catalog/views.py:609
 msgid "Modifier l'emplacement"
 msgstr "Editar ubicación"
 
-#: apps/catalog/views.py:622
+#: apps/catalog/views.py:626
 msgid "Emplacement supprimé."
 msgstr "Ubicación eliminada."
 
-#: apps/catalog/views.py:669
+#: apps/catalog/views.py:673
 msgid "Lot de catalogage démarré."
 msgstr "Lote de catalogación iniciado."
 
-#: apps/catalog/views.py:722
+#: apps/catalog/views.py:726
 #, python-format
 msgid "ISBN %(isbn)s · %(lang)s"
 msgstr "ISBN %(isbn)s · %(lang)s"
 
-#: apps/catalog/views.py:746 apps/catalog/views.py:839
+#: apps/catalog/views.py:750 apps/catalog/views.py:855
 msgid "Ce lot est déjà validé."
 msgstr "Este lote ya está validado."
 
-#: apps/catalog/views.py:751
+#: apps/catalog/views.py:755
 msgid "Déjà catalogué"
 msgstr "Ya catalogado"
 
-#: apps/catalog/views.py:751
+#: apps/catalog/views.py:755
 msgid "Carte membre — pas un livre"
 msgstr "Tarjeta de socio — no es un libro"
 
-#: apps/catalog/views.py:754
+#: apps/catalog/views.py:758 apps/catalog/views.py:765
 msgid "Code invalide."
 msgstr "Código no válido."
 
-#: apps/catalog/views.py:803
+#: apps/catalog/views.py:819
 #, python-format
 msgid "exemplaire %(n)s"
 msgstr "ejemplar %(n)s"
 
-#: apps/catalog/views.py:829
+#: apps/catalog/views.py:845
 msgid "Ligne retirée."
 msgstr "Fila eliminada."
 
-#: apps/catalog/views.py:863
+#: apps/catalog/views.py:879
 msgid "Aucun livre scanné à envoyer."
 msgstr "Ningún libro escaneado para enviar."
 
-#: apps/catalog/views.py:870
+#: apps/catalog/views.py:886
 #, python-format
 msgid ""
 "%(rec)s notice(s) créée(s), %(match)s complétée(s), %(cop)s exemplaire(s) "
@@ -583,19 +595,19 @@ msgstr ""
 "%(rec)s ficha(s) creada(s), %(match)s completada(s), %(cop)s ejemplar(es) "
 "añadido(s)."
 
-#: apps/catalog/views.py:879
+#: apps/catalog/views.py:895
 msgid "Modifications enregistrées."
 msgstr "Cambios guardados."
 
-#: apps/catalog/views.py:901
+#: apps/catalog/views.py:917
 msgid "Aucun fichier sélectionné."
 msgstr "Ningún archivo seleccionado."
 
-#: apps/catalog/views.py:924
+#: apps/catalog/views.py:940
 msgid "Vérification lancée. Suivez l'avancement ici."
 msgstr "Verificación iniciada. Siga el avance aquí."
 
-#: apps/catalog/views.py:934
+#: apps/catalog/views.py:950
 msgid "Import lancé. Suivez l'avancement ici."
 msgstr "Importación iniciada. Siga el avance aquí."
 
@@ -837,8 +849,8 @@ msgstr ""
 msgid "Identifiant réseau ZeroTier"
 msgstr "ID de red ZeroTier"
 
-#: apps/core/forms.py:321 templates/catalog/record_detail.html:91
-#: templates/catalog/record_detail.html:171
+#: apps/core/forms.py:321 templates/catalog/record_detail.html:94
+#: templates/catalog/record_detail.html:174
 #: templates/inventory/session_list.html:55
 #: templates/members/member_history.html:65
 msgid "Statut"
@@ -1585,7 +1597,7 @@ msgstr "Ajustes"
 #: templates/catalog/location_confirm_delete.html:12
 #: templates/catalog/location_list.html:54
 #: templates/catalog/record_detail.html:35
-#: templates/catalog/record_detail.html:141
+#: templates/catalog/record_detail.html:144
 #: templates/members/member_detail.html:78
 msgid "Supprimer"
 msgstr "Eliminar"
@@ -1620,14 +1632,14 @@ msgstr "Eliminar definitivamente"
 
 #: templates/accounts/user_confirm_delete.html:41
 #: templates/accounts/user_form.html:45 templates/base.html:17
-#: templates/catalog/_record_form.html:65 templates/catalog/item_form.html:35
+#: templates/catalog/_record_form.html:66 templates/catalog/item_form.html:35
 #: templates/catalog/location_confirm_delete.html:49
 #: templates/catalog/location_form.html:42
 #: templates/catalog/record_bulk_assign_category.html:69
 #: templates/catalog/record_bulk_assign_location.html:70
 #: templates/catalog/record_bulk_delete.html:80
 #: templates/catalog/record_confirm_delete.html:34
-#: templates/catalog/record_detail.html:197
+#: templates/catalog/record_detail.html:200
 #: templates/core/admin/settings_section.html:40
 #: templates/inventory/session_form.html:29 templates/loans/mark_lost.html:30
 #: templates/loans/reservation_form.html:27
@@ -1655,7 +1667,7 @@ msgstr "Nuevo"
 msgid "Mon compte"
 msgstr "Mi cuenta"
 
-#: templates/accounts/user_form.html:43 templates/catalog/_record_form.html:63
+#: templates/accounts/user_form.html:43 templates/catalog/_record_form.html:64
 #: templates/catalog/item_form.html:33 templates/catalog/location_form.html:40
 #: templates/catalog/scan_session.html:157
 #: templates/core/admin/settings_section.html:38
@@ -1766,7 +1778,7 @@ msgstr "Escanear el código de barras"
 msgid "Récupérer"
 msgstr "Obtener"
 
-#: templates/catalog/_record_form.html:49 templates/members/member_form.html:28
+#: templates/catalog/_record_form.html:50 templates/members/member_form.html:28
 msgid "Options avancées"
 msgstr "Opciones avanzadas"
 
@@ -1775,7 +1787,10 @@ msgid ""
 "Téléversez un fichier .xlsx avec au moins une colonne ISBN. Chaque ISBN "
 "devient une notice et un exemplaire dans le catalogue (les ISBN déjà connus "
 "ajoutent simplement un exemplaire à la notice existante)."
-msgstr "Suba un archivo .xlsx con al menos una columna ISBN. Cada ISBN se convierte en una ficha y un ejemplar en el catálogo (los ISBN ya conocidos simplemente añaden un ejemplar a la ficha existente)."
+msgstr ""
+"Suba un archivo .xlsx con al menos una columna ISBN. Cada ISBN se convierte "
+"en una ficha y un ejemplar en el catálogo (los ISBN ya conocidos simplemente "
+"añaden un ejemplar a la ficha existente)."
 
 #: templates/catalog/excel_catalog/_import_form.html:9
 msgid "obligatoire"
@@ -1784,7 +1799,9 @@ msgstr "obligatorio"
 #: templates/catalog/excel_catalog/_import_form.html:10
 msgid ""
 "optionnel : code d'emplacement (sinon l'exemplaire est créé sans emplacement)"
-msgstr "opcional: código de ubicación (de lo contrario el ejemplar se crea sin ubicación)"
+msgstr ""
+"opcional: código de ubicación (de lo contrario el ejemplar se crea sin "
+"ubicación)"
 
 #: templates/catalog/excel_catalog/_import_form.html:11
 msgid "optionnel : nom de catégorie existante"
@@ -1799,7 +1816,10 @@ msgid ""
 "L'import crée un lot de catalogage visible dans « Catalogage par scan ». Les "
 "métadonnées (titre, auteur…) peuvent ensuite être complétées via "
 "l'enrichissement."
-msgstr "La importación crea un lote de catalogación visible en «Catalogación por escaneo». Los metadatos (título, autor…) pueden completarse después mediante el enriquecimiento."
+msgstr ""
+"La importación crea un lote de catalogación visible en «Catalogación por "
+"escaneo». Los metadatos (título, autor…) pueden completarse después mediante "
+"el enriquecimiento."
 
 #: templates/catalog/excel_catalog/_verify_form.html:6
 msgid ""
@@ -1807,7 +1827,11 @@ msgid ""
 "BibliOfelia interroge OpenLibrary, Google Books, la BNF et la BNE — d'abord "
 "par ISBN, puis par titre + auteur — et vous renvoie le même fichier annoté, "
 "avec un score de confiance pour les appariements incertains."
-msgstr "Suba un archivo .xlsx con las columnas ID, TITLE, AUTHOR, ISBN. BibliOfelia consulta OpenLibrary, Google Books, la BNF y la BNE — primero por ISBN, luego por título + autor — y le devuelve el mismo archivo anotado, con una puntuación de confianza para las coincidencias inciertas."
+msgstr ""
+"Suba un archivo .xlsx con las columnas ID, TITLE, AUTHOR, ISBN. BibliOfelia "
+"consulta OpenLibrary, Google Books, la BNF y la BNE — primero por ISBN, "
+"luego por título + autor — y le devuelve el mismo archivo anotado, con una "
+"puntuación de confianza para las coincidencias inciertas."
 
 #: templates/catalog/excel_catalog/_verify_form.html:11
 msgid "Lancer la vérification"
@@ -1817,7 +1841,9 @@ msgstr "Iniciar la verificación"
 msgid ""
 "Compter environ 10 minutes pour 1000 lignes. Le traitement se fait en tâche "
 "de fond."
-msgstr "Cuente unos 10 minutos por cada 1000 filas. El procesamiento se realiza en segundo plano."
+msgstr ""
+"Cuente unos 10 minutos por cada 1000 filas. El procesamiento se realiza en "
+"segundo plano."
 
 #: templates/catalog/excel_catalog/detail.html:4
 #, python-format
@@ -1860,7 +1886,10 @@ msgid ""
 "%(n)s ligne(s) ont pu rester incomplètes car le quota d'une source en ligne "
 "(Google Books) a été atteint (colonne SOURCE_BY_ISBN = RATE_LIMITED). "
 "Relancez la vérification demain — le quota se réinitialise chaque jour."
-msgstr "%(n)s fila(s) pueden haber quedado incompletas porque se alcanzó la cuota de una fuente en línea (Google Books) (columna SOURCE_BY_ISBN = RATE_LIMITED). Vuelva a lanzar la verificación mañana — la cuota se reinicia cada día."
+msgstr ""
+"%(n)s fila(s) pueden haber quedado incompletas porque se alcanzó la cuota de "
+"una fuente en línea (Google Books) (columna SOURCE_BY_ISBN = RATE_LIMITED). "
+"Vuelva a lanzar la verificación mañana — la cuota se reinicia cada día."
 
 #: templates/catalog/excel_catalog/detail.html:56
 #: templates/core/admin/enrichment_detail.html:53
@@ -2042,7 +2071,7 @@ msgstr "Padre"
 #: templates/catalog/location_list.html:37
 #: templates/catalog/record_bulk_assign_location.html:38
 #: templates/catalog/record_bulk_delete.html:45
-#: templates/catalog/record_detail.html:74 templates/core/dashboard.html:159
+#: templates/catalog/record_detail.html:77 templates/core/dashboard.html:159
 msgid "Exemplaires"
 msgstr "Ejemplares"
 
@@ -2194,7 +2223,7 @@ msgid "Notice catalogue"
 msgstr "Ficha de catálogo"
 
 #: templates/catalog/record_detail.html:23
-#: templates/catalog/record_detail.html:126
+#: templates/catalog/record_detail.html:129
 #: templates/members/member_detail.html:46
 msgid "Modifier"
 msgstr "Modificar"
@@ -2226,71 +2255,71 @@ msgstr "Categoría"
 msgid "Éditeur"
 msgstr "Editorial"
 
-#: templates/catalog/record_detail.html:60
+#: templates/catalog/record_detail.html:63
 msgid "Tags"
 msgstr "Etiquetas"
 
-#: templates/catalog/record_detail.html:77
+#: templates/catalog/record_detail.html:80
 msgid "Ajouter un exemplaire"
 msgstr "Añadir un ejemplar"
 
-#: templates/catalog/record_detail.html:87
+#: templates/catalog/record_detail.html:90
 msgid "Code interne"
 msgstr "Código interno"
 
-#: templates/catalog/record_detail.html:88
+#: templates/catalog/record_detail.html:91
 #: templates/printing/labels_picker.html:58
 #: templates/reports/inactive_list.html:70
 msgid "Code Ofelia"
 msgstr "Código Ofelia"
 
-#: templates/catalog/record_detail.html:111
+#: templates/catalog/record_detail.html:114
 #, python-format
 msgid "Mis de côté pour %(member)s (%(card)s)"
 msgstr "Reservado para %(member)s (%(card)s)"
 
-#: templates/catalog/record_detail.html:113
+#: templates/catalog/record_detail.html:116
 #, python-format
 msgid "à retirer avant le %(d)s"
 msgstr "a retirar antes del %(d)s"
 
-#: templates/catalog/record_detail.html:131
+#: templates/catalog/record_detail.html:134
 msgid ""
 "Pilonner cet exemplaire ? Il restera en base avec le statut « Pilonné »."
 msgstr "¿Pilonar este ejemplar? Permanecerá en la base con estado «Pilonado»."
 
-#: templates/catalog/record_detail.html:133
+#: templates/catalog/record_detail.html:136
 msgid "Pilonner"
 msgstr "Pilonar"
 
-#: templates/catalog/record_detail.html:139
+#: templates/catalog/record_detail.html:142
 msgid ""
 "Supprimer définitivement cet exemplaire ? Cette action est irréversible."
 msgstr "¿Eliminar definitivamente este ejemplar? Esta acción es irreversible."
 
-#: templates/catalog/record_detail.html:155
+#: templates/catalog/record_detail.html:158
 msgid "Aucun exemplaire pour cette notice."
 msgstr "Ningún ejemplar para este registro."
 
-#: templates/catalog/record_detail.html:162
+#: templates/catalog/record_detail.html:165
 msgid "Liste d'attente"
 msgstr "Lista de espera"
 
-#: templates/catalog/record_detail.html:169 templates/core/dashboard.html:315
+#: templates/catalog/record_detail.html:172 templates/core/dashboard.html:315
 #: templates/loans/return.html:128
 msgid "Membre"
 msgstr "Miembro"
 
-#: templates/catalog/record_detail.html:170
+#: templates/catalog/record_detail.html:173
 #: templates/loans/reservations.html:52
 msgid "Réservé le"
 msgstr "Reservado el"
 
-#: templates/catalog/record_detail.html:186
+#: templates/catalog/record_detail.html:189
 msgid "À retirer"
 msgstr "A retirar"
 
-#: templates/catalog/record_detail.html:195
+#: templates/catalog/record_detail.html:198
 msgid "Annuler cette réservation ?"
 msgstr "¿Cancelar esta reserva?"
 
@@ -2653,7 +2682,10 @@ msgid ""
 "%(n)s notice(s) n'ont pas pu être complétées car le quota d'une source en "
 "ligne (Google Books) a été atteint. Relancez cet enrichissement demain — le "
 "quota se réinitialise chaque jour — pour compléter le reste."
-msgstr "%(n)s ficha(s) no pudieron completarse porque se alcanzó la cuota de una fuente en línea (Google Books). Vuelva a lanzar este enriquecimiento mañana — la cuota se reinicia cada día — para completar el resto."
+msgstr ""
+"%(n)s ficha(s) no pudieron completarse porque se alcanzó la cuota de una "
+"fuente en línea (Google Books). Vuelva a lanzar este enriquecimiento mañana "
+"— la cuota se reinicia cada día — para completar el resto."
 
 #: templates/core/admin/enrichment_detail.html:51
 msgid "Sources"
@@ -2985,7 +3017,9 @@ msgstr "Escanear ISBN en ráfaga para crear las fichas y sus ejemplares."
 msgid ""
 "Vérifier ou importer un fichier Excel d'inventaire (ISBN, titre, auteur, "
 "emplacement, catégorie)."
-msgstr "Verificar o importar un archivo Excel de inventario (ISBN, título, autor, ubicación, categoría)."
+msgstr ""
+"Verificar o importar un archivo Excel de inventario (ISBN, título, autor, "
+"ubicación, categoría)."
 
 #: templates/core/advanced.html:130
 msgid ""

@@ -43,6 +43,7 @@
 
         {% include "partials/_field.html" with field=form.category %}
         {% include "partials/_field.html" with field=form.document_type %}
+        {% include "partials/_field.html" with field=form.issn %}
         {% include "partials/_field.html" with field=form.language %}
 
         <details class="advanced-section" {% if user.always_show_advanced %}open{% endif %}>
