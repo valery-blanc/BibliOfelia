@@ -13,13 +13,18 @@ from apps.catalog.excel_catalog import (
     validate_xlsx,
 )
 from apps.catalog.models import (
+    Author,
+    BibliographicRecord,
     Category,
+    DocumentType,
     ExcelCatalogJob,
     ExcelJobMode,
     Item,
+    ItemState,
     Location,
     ScanItem,
     ScanSession,
+    Tag,
 )
 
 pytestmark = pytest.mark.django_db
@@ -269,6 +274,118 @@ def test_detail_other_user_redirects(client):
 
     resp = client.get(reverse("catalog:excel_catalog_detail", args=[job.pk]))
     assert resp.status_code == 302  # pas le propriétaire → renvoyé à l'index
+
+
+# ── FEAT-053 : colonnes métadonnées fiche / exemplaire ──────────────────────
+
+
+def test_import_overrides_new_record_all_fields(user):
+    cat = Category.objects.create(code="ROM", name="Roman")
+    headers = ["ISBN", "TITLE", "AUTHOR", "CATEGORY", "TYPE", "EDITOR", "YEAR", "LANGUAGE", "TAGS", "CONDITION"]
+    rows = [[VALID_ISBN, "Les Misérables", "Victor Hugo; Alexandre Dumas", "Roman", "BD / manga",
+             "Gallimard", "1998", "en", "aventure, classique", "Usé"]]
+    job = _make_import_job(user, headers, rows)
+    run_import_job(job)
+    rec = BibliographicRecord.objects.get(isbn_13=VALID_ISBN)
+    assert rec.title == "Les Misérables"  # pas de placeholder ISBN:…
+    assert rec.category_id == cat.pk
+    assert rec.document_type == DocumentType.COMIC
+    assert rec.publisher == "Gallimard"
+    assert rec.publication_year == 1998
+    assert rec.language == "en"
+    assert set(rec.authors.values_list("full_name", flat=True)) == {"Victor Hugo", "Alexandre Dumas"}
+    assert set(rec.tags.values_list("name", flat=True)) == {"aventure", "classique"}
+    item = Item.objects.get(record=rec)
+    assert item.state == ItemState.WORN
+
+
+def test_import_overrides_existing_record(user):
+    """Colonne présente + non vide → écrase la fiche existante (même ISBN)."""
+    old_author = Author.objects.create(full_name="Ancien Auteur")
+    old_tag = Tag.objects.create(name="ancien")
+    rec = BibliographicRecord.objects.create(
+        title="Titre existant", isbn_13=VALID_ISBN, publisher="Vieil éditeur",
+        publication_year=1900, language="es",
+    )
+    rec.authors.add(old_author)
+    rec.tags.add(old_tag)
+    headers = ["ISBN", "AUTHOR", "EDITOR", "YEAR", "TAGS"]
+    rows = [[VALID_ISBN, "Nouvel Auteur", "Nouvel éditeur", "2020", "neuf, frais"]]
+    job = _make_import_job(user, headers, rows)
+    run_import_job(job)
+    rec.refresh_from_db()
+    assert rec.publisher == "Nouvel éditeur"
+    assert rec.publication_year == 2020
+    # Titre non touché (pas de colonne TITLE) — l'existant reste.
+    assert rec.title == "Titre existant"
+    # AUTHOR / TAGS remplacés, pas fusionnés.
+    assert set(rec.authors.values_list("full_name", flat=True)) == {"Nouvel Auteur"}
+    assert set(rec.tags.values_list("name", flat=True)) == {"neuf", "frais"}
+
+
+def test_import_title_overwrites_existing(user):
+    """Colonne TITLE remplie → écrase le titre de la fiche existante."""
+    rec = BibliographicRecord.objects.create(title="Ancien titre", isbn_13=VALID_ISBN)
+    job = _make_import_job(user, ["ISBN", "TITLE"], [[VALID_ISBN, "Titre corrigé"]])
+    run_import_job(job)
+    rec.refresh_from_db()
+    assert rec.title == "Titre corrigé"
+
+
+def test_import_no_title_column_uses_placeholder(user):
+    """Sans colonne TITLE, une notice neuve garde le placeholder ISBN:… (FEAT-050)."""
+    job = _make_import_job(user, ["ISBN"], [[VALID_ISBN]])
+    run_import_job(job)
+    rec = BibliographicRecord.objects.get(isbn_13=VALID_ISBN)
+    assert rec.title.startswith("ISBN:")
+
+
+def test_import_empty_cell_keeps_existing(user):
+    """Colonne présente mais cellule vide → l'info existante est conservée."""
+    rec = BibliographicRecord.objects.create(
+        title="T", isbn_13=VALID_ISBN, publisher="Éditeur d'origine", language="mg",
+    )
+    headers = ["ISBN", "EDITOR", "LANGUAGE"]
+    rows = [[VALID_ISBN, "", ""]]  # cellules vides
+    job = _make_import_job(user, headers, rows)
+    run_import_job(job)
+    rec.refresh_from_db()
+    assert rec.publisher == "Éditeur d'origine"
+    assert rec.language == "mg"
+
+
+def test_import_unknown_type_and_condition_warn(user):
+    headers = ["ISBN", "TYPE", "CONDITION"]
+    rows = [[VALID_ISBN, "hologramme", "parfait"]]
+    job = _make_import_job(user, headers, rows)
+    run_import_job(job)
+    job.refresh_from_db()
+    warns = " ".join(e.get("warning", "") for e in job.report)
+    assert "TYPE_UNKNOWN" in warns
+    assert "CONDITION_UNKNOWN" in warns
+    rec = BibliographicRecord.objects.get(isbn_13=VALID_ISBN)
+    assert rec.document_type == DocumentType.BOOK  # défaut inchangé
+    assert Item.objects.get(record=rec).state == ItemState.GOOD  # défaut inchangé
+
+
+def test_import_invalid_year_warns(user):
+    headers = ["ISBN", "YEAR"]
+    rows = [[VALID_ISBN, "mille-neuf-cent"]]
+    job = _make_import_job(user, headers, rows)
+    run_import_job(job)
+    job.refresh_from_db()
+    assert any("YEAR_INVALID" in e.get("warning", "") for e in job.report)
+    rec = BibliographicRecord.objects.get(isbn_13=VALID_ISBN)
+    assert rec.publication_year is None
+
+
+def test_import_type_by_code(user):
+    headers = ["ISBN", "TYPE"]
+    rows = [[VALID_ISBN, "audio_cd"]]
+    job = _make_import_job(user, headers, rows)
+    run_import_job(job)
+    rec = BibliographicRecord.objects.get(isbn_13=VALID_ISBN)
+    assert rec.document_type == DocumentType.AUDIO_CD
 
 
 def test_import_job_idempotent_on_local_id(user):

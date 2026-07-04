@@ -78,14 +78,23 @@ autant de fois que nécessaire.
 À utiliser pour **créer** réellement les notices et les exemplaires à
 partir d'une liste d'ISBN.
 
-Votre fichier `.xlsx` doit contenir au moins une colonne **`ISBN`**. Deux
-colonnes sont reconnues en plus, si vous les ajoutez :
+Votre fichier `.xlsx` doit contenir au moins une colonne **`ISBN`**.
+Toutes les autres colonnes sont **facultatives** : ajoutez seulement
+celles dont vous disposez, dans n'importe quel ordre.
 
 | Colonne | Contenu |
 |---|---|
 | `ISBN` | **obligatoire** |
-| `LOCATION` | facultatif : le code d'emplacement (sinon l'exemplaire est créé sans emplacement) |
-| `CATEGORY` | facultatif : le nom d'une catégorie existante |
+| `LOCATION` | le code d'emplacement (sinon l'exemplaire est créé sans emplacement) |
+| `CATEGORY` | le nom d'une catégorie existante |
+| `TITLE` | le titre de la fiche |
+| `AUTHOR` | le ou les auteurs, séparés par des **points-virgules** |
+| `TYPE` | le type de document (Livre, BD / manga, Revue, Journal, CD audio, Autre) |
+| `EDITOR` | l'éditeur |
+| `YEAR` | l'année de publication |
+| `LANGUAGE` | le code langue (fr, en, es…) |
+| `TAGS` | des mots-clés séparés par des **virgules** |
+| `CONDITION` | l'état de l'exemplaire (Neuf, Bon, Usé, Abîmé) |
 
 Dans l'encadré
 [**Importer dans BibliOfelia**](/bibliofelia/fr/catalog/excel-catalog/){ target="_blank" },
@@ -95,15 +104,27 @@ Chaque ISBN devient une notice et un exemplaire. Si un ISBN est **déjà
 présent** dans le catalogue, BibliOfelia ne recrée pas la notice : il
 ajoute simplement un exemplaire à la notice existante.
 
+!!! info "Une colonne remplie remplace l'information de la fiche"
+    Si vous ajoutez une des colonnes ci-dessus (titre, auteur, éditeur…)
+    et que la **cellule est remplie**, sa valeur **écrase** le champ
+    correspondant de la fiche — **même si la notice existe déjà**. Une
+    **cellule vide ne touche à rien** : l'information déjà en place est
+    conservée. Pour l'auteur et les tags, la liste du fichier **remplace**
+    l'existante (elle ne s'y ajoute pas). Une valeur non reconnue pour
+    `TYPE` ou `CONDITION`, ou une année qui n'est pas un nombre, est
+    **ignorée** et signalée dans les avertissements du lot.
+
 L'import crée un **lot de catalogage** : une fois le travail terminé,
 cliquez sur **Voir le lot importé** pour l'ouvrir, ou retrouvez-le dans
 [**Catalogage par scan**](/bibliofelia/fr/catalog/scan/){ target="_blank" },
 exactement comme un lot scanné à la caméra.
 
-!!! tip "Compléter les titres et auteurs"
-    L'import enregistre les ISBN, mais pas encore les titres et auteurs.
-    Lancez ensuite un **enrichissement** sur le lot pour aller chercher les
-    métadonnées en ligne.
+!!! tip "Compléter ce qui manque en ligne"
+    Vous n'avez que les ISBN, sans titre ni auteur ? Lancez ensuite un
+    **enrichissement** sur le lot pour aller chercher les métadonnées en
+    ligne (OpenLibrary, Google Books, BnF…). Les colonnes du fichier
+    restent prioritaires : l'enrichissement ne complète que ce qui est
+    encore vide.
 
 ## Suivre vos travaux
 

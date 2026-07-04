@@ -66,6 +66,17 @@ l'ISBN-10. Vous pouvez le rencontrer sur les livres anciens.
 BibliOfelia accepte les deux : si vous tapez un ISBN-10, il est
 automatiquement converti en ISBN-13.
 
+### ISSN (revues et magazines)
+
+L'**ISSN** est l'équivalent de l'ISBN pour les **revues et magazines**.
+Sur le code-barres au dos d'un magazine, il commence par **977**.
+
+À la différence de l'ISBN, l'ISSN identifie **le titre de la revue**, pas
+un numéro précis : tous les numéros d'un même magazine partagent le même
+ISSN. BibliOfelia crée donc **une seule notice** par revue, à laquelle
+chaque numéro ajoute un exemplaire. On catalogue une revue comme un livre,
+en scannant simplement son code-barres 977.
+
 ### Numéro de carte / numéro de membre
 
 C'est le code Ofelia d'une carte de membre (préfixe 291). On

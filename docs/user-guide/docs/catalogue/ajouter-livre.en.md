@@ -41,6 +41,13 @@ If no ISBN or no network, fill in the fields by hand:
   administrator)
 - **Summary** (optional) — short blurb to help readers
 
+!!! tip "A magazine or journal?"
+    For a periodical, fill in the **ISSN** field (instead of the ISBN): it
+    is the 8-character code that identifies the magazine. Every issue of the
+    same magazine shares this ISSN, so a single record is enough. The
+    quickest way, though, is to **scan the 977 barcode** in
+    [cataloguing by scan](../inventaire/catalogage-scan.md).
+
 ## Save
 
 Click **Save**. The record is created and BibliOfelia immediately

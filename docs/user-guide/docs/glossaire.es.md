@@ -66,6 +66,17 @@ es el ISBN-10. Puede encontrarlo en libros antiguos. BibliOfelia
 acepta los dos: si escribe un ISBN-10, se convierte automáticamente
 en ISBN-13.
 
+### ISSN (revistas y periódicos)
+
+El **ISSN** es el equivalente del ISBN para las **revistas y periódicos**.
+En el código de barras del reverso de una revista, empieza por **977**.
+
+A diferencia del ISBN, el ISSN identifica **el título de la revista**, no un
+número concreto: todos los números de una misma revista comparten el mismo
+ISSN. Por lo tanto, BibliOfelia crea **una sola ficha** por revista, a la
+que cada número añade un ejemplar. Una revista se cataloga como un libro,
+simplemente escaneando su código de barras 977.
+
 ### Número de tarjeta / número de miembro
 
 Es el código Ofelia de una tarjeta de miembro (prefijo 291).

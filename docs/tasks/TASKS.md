@@ -983,3 +983,25 @@ Signalés par Val 2026-05-30 (navigation espagnole).
   - [x] Déploiement Box (branche `feat/issn-052`, rebuild bibliofelia + worker, healthy)
   - [x] Test fonctionnel Val — **OK 2026-07-03** (scan revue 977 en catalogage ; recherche par scan 977 + ISSN saisi ; 977 refusé en prêt)
   - [x] Commit unique squash `FEAT-052` → `main` + push origin/main
+
+## Sprint 22 — FEAT-053 Import Excel : métadonnées de la fiche
+
+> Demande Val 2026-07-03 : dans l'import Excel, pouvoir affecter toutes les
+> infos de la fiche catalogue via colonnes optionnelles (AUTHOR, CATEGORY, TYPE,
+> EDITOR, YEAR, LANGUAGE, TAGS + CONDITION pour l'exemplaire). Colonne présente
+> et remplie → écrase l'existant ; cellule vide → conserve.
+> Cf. `docs/specs/FEAT-053-import-excel-metadonnees.md`.
+
+- [ ] **FEAT-053** Import Excel — affectation des métadonnées
+  - [x] Décisions Val : cellule vide = garder l'existant ; AUTHOR/TAGS = remplacer
+  - [x] Code : `IMPORT_OVERRIDE_COLUMNS` (TITLE + 8 colonnes), résolveurs `_resolve_document_type`/`_resolve_item_state`, `_split_multi`, `_parse_row_overrides` (TITLE → `metadata_title` aussi), `_apply_import_overrides` (passe post-finalize, flux caméra/OfeliaScan inchangé)
+  - [x] TITLE ajouté (oubli spec Val) : notice neuve titrée directement, sinon placeholder `ISBN:…`
+  - [x] UI : `_import_form.html` documente les 9 colonnes + règle d'écrasement
+  - [x] Tests : 8 cas ajoutés (`test_excel_catalog.py`)
+  - [x] Doc : `FEAT-053-*.md`, SPEC §6.12 + en-tête
+  - [x] **Guide utilisateur** (MkDocs ×4 langues) : `catalogage-excel` (nouvelles colonnes + règle d'écrasement) ; **rattrapage FEAT-052/ISSN** : `catalogage-scan` (section revues 977), `glossaire` (entrée ISSN), `ajouter-livre` (tip ISSN). Build `mkdocs --strict` → 0 warning
+  - [ ] i18n : `makemessages` + `translations_sprint22.py` + `i18n_check.py` → **0** + `.mo` compilés (sur la Box)
+  - [ ] pytest (sur la Box, `FORCE_SCRIPT_NAME=` neutralisé)
+  - [ ] Déploiement Box (branche `feat/import-excel-053`, rebuild bibliofelia + worker, healthy)
+  - [ ] Test fonctionnel Val
+  - [ ] Commit unique squash `FEAT-053` → `main` + push origin/main

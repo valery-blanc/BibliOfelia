@@ -75,14 +75,22 @@ as you need.
 Use this to actually **create** the records and copies from a list of
 ISBNs.
 
-Your `.xlsx` file must contain at least one **`ISBN`** column. Two extra
-columns are recognised, if you add them:
+Your `.xlsx` file must contain at least one **`ISBN`** column. Every other
+column is **optional**: add only the ones you have, in any order.
 
 | Column | Content |
 |---|---|
 | `ISBN` | **required** |
-| `LOCATION` | optional: the location code (otherwise the copy is created without a location) |
-| `CATEGORY` | optional: the name of an existing category |
+| `LOCATION` | the location code (otherwise the copy is created without a location) |
+| `CATEGORY` | the name of an existing category |
+| `TITLE` | the record title |
+| `AUTHOR` | the author(s), separated by **semicolons** |
+| `TYPE` | the document type (Book, Comic / manga, Magazine, Newspaper, Audio CD, Other) |
+| `EDITOR` | the publisher |
+| `YEAR` | the publication year |
+| `LANGUAGE` | the language code (fr, en, es…) |
+| `TAGS` | keywords separated by **commas** |
+| `CONDITION` | the copy condition (New, Good, Worn, Damaged) |
 
 In the
 [**Import into BibliOfelia**](/bibliofelia/en/catalog/excel-catalog/){ target="_blank" }
@@ -92,14 +100,26 @@ Each ISBN becomes a record and a copy. If an ISBN is **already present** in
 the catalog, BibliOfelia does not recreate the record: it simply adds a
 copy to the existing one.
 
+!!! info "A filled-in column replaces the record's information"
+    If you add one of the columns above (title, author, publisher…) and the
+    **cell is filled in**, its value **overwrites** the matching field of
+    the record — **even if the record already exists**. An **empty cell
+    changes nothing**: the information already in place is kept. For author
+    and tags, the file's list **replaces** the existing one (it is not added
+    to it). A value that is not recognised for `TYPE` or `CONDITION`, or a
+    year that is not a number, is **ignored** and reported in the batch
+    warnings.
+
 The import creates a **cataloging batch**: once the job is finished, click
 **View the imported batch** to open it, or find it again under
 [**Cataloging by scan**](/bibliofelia/en/catalog/scan/){ target="_blank" },
 exactly like a batch scanned with the camera.
 
-!!! tip "Filling in titles and authors"
-    The import records the ISBNs, but not yet the titles and authors. Then
-    run an **enrichment** on the batch to fetch the metadata online.
+!!! tip "Filling in what's missing online"
+    Do you only have ISBNs, with no title or author? Then run an
+    **enrichment** on the batch to fetch the metadata online (OpenLibrary,
+    Google Books, BnF…). The file's columns stay authoritative: enrichment
+    only fills in what is still empty.
 
 ## Track your jobs
 

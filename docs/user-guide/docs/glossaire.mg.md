@@ -68,6 +68,18 @@ ISBN-10. Mety hahita izany ianao amin'ny boky taloha. Ny BibliOfelia
 dia mandray ny roa: raha manoratra ISBN-10 ianao, dia voadika
 automatika ho ISBN-13.
 
+### ISSN (gazetiboky sy gazety)
+
+Ny **ISSN** dia mitovy amin'ny ISBN ho an'ny **gazetiboky sy gazety**. Eo
+amin'ny barcode ao ambadiky ny gazetiboky, dia manomboka amin'ny **977** izy.
+
+Tsy toy ny ISBN, ny ISSN dia mamantatra ny **lohatenin'ny gazetiboky**, fa
+tsy laharana manokana: ny laharana rehetra amin'ny gazetiboky iray dia
+mizara ISSN mitovy. Noho izany, ny BibliOfelia dia mamorona **notice
+tokana** isaky ny gazetiboky, ka ny laharana tsirairay dia manampy
+exemplaire aminy. Manoratra gazetiboky toy ny boky ianao, amin'ny fandrafetana
+ny barcode 977-ny fotsiny.
+
 ### Laharan-karatra / laharana mpianatra
 
 Io no code Ofelia an'ny karatra mpianatra (préfixe 291). Antsoina

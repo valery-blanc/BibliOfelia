@@ -44,9 +44,26 @@ línea por línea** después.
     para evitar lecturas dobles.
 
 !!! warning "Códigos Ofelia rechazados"
-    La catalogación solo acepta **ISBN** (978/979). Si escanea por error una
-    etiqueta de código Ofelia (290/291) ya pegada en un libro, se rechaza:
-    aquí se registran libros nuevos, no ejemplares ya catalogados.
+    La catalogación acepta los **ISBN** de libros (978/979) y los **ISSN**
+    de revistas (977, ver más abajo). Si escanea por error una etiqueta de
+    código Ofelia (290/291) ya pegada en un documento, se rechaza: aquí se
+    registran documentos nuevos, no ejemplares ya catalogados.
+
+## Catalogar una revista o un periódico
+
+Las revistas y los periódicos no tienen ISBN, sino un **ISSN**: un código de
+barras que empieza por **977**. No hace falta una herramienta aparte —
+escanee ese código de barras 977 **en el mismo lote** que sus libros.
+
+- BibliOfelia reconoce el ISSN y busca el **título de la revista** (BnF, BNE).
+- Todos los números de una misma revista comparten el **mismo ISSN**: por lo
+  tanto recaen en una **única ficha «revista»**, a la que cada número
+  escaneado añade un ejemplar.
+
+!!! info "Un ISSN = una sola ficha de revista"
+    Si escanea dos números diferentes de la misma revista, BibliOfelia no
+    crea dos fichas: añade un ejemplar a la ficha de la revista. Para
+    distinguir los números (fecha, n.º), anótelos en las notas del ejemplar.
 
 ## Comprobar y ajustar el lote
 

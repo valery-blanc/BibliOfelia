@@ -64,6 +64,17 @@ Before 2007, books had a 10-digit publisher code: this is the
 ISBN-10. You can find it on old books. BibliOfelia accepts both: if
 you type an ISBN-10, it is automatically converted to ISBN-13.
 
+### ISSN (magazines and journals)
+
+The **ISSN** is the equivalent of the ISBN for **magazines and journals**.
+On the barcode on the back of a magazine, it starts with **977**.
+
+Unlike the ISBN, the ISSN identifies **the magazine's title**, not a
+specific issue: every issue of the same magazine shares the same ISSN.
+BibliOfelia therefore creates **a single record** per magazine, to which
+each issue adds a copy. You catalog a magazine like a book, simply by
+scanning its 977 barcode.
+
 ### Card number / member number
 
 This is the Ofelia code of a member card (prefix 291). Also called

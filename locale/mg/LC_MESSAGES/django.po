@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: BibliOfelia 1.0\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2026-07-03 10:00+0000\n"
+"POT-Creation-Date: 2026-07-03 16:48+0000\n"
 "PO-Revision-Date: 2026-05-22 00:00+0000\n"
 "Last-Translator: Claude Code\n"
 "Language-Team: Malagasy\n"
@@ -1817,11 +1817,52 @@ msgstr ""
 msgid "optionnel : nom de catégorie existante"
 msgstr "tsy voatery: anaran'ny sokajy efa misy"
 
+#: templates/catalog/excel_catalog/_import_form.html:12
+msgid "optionnel : titre de la fiche"
+msgstr "tsy voatery: lohatenin'ny rakitra"
+
+#: templates/catalog/excel_catalog/_import_form.html:13
+msgid "optionnel : auteur(s), séparés par des points-virgules"
+msgstr "tsy voatery: mpanoratra, sarahina amin'ny teboka sy faingo (;)"
+
+#: templates/catalog/excel_catalog/_import_form.html:14
+msgid ""
+"optionnel : type de document (Livre, BD / manga, Revue, Journal, CD audio, "
+"Autre)"
+msgstr "tsy voatery: karazana boky (Boky, BD / manga, Gazetiboky, Gazety, CD audio, Hafa)"
+
+#: templates/catalog/excel_catalog/_import_form.html:15
+msgid "optionnel : éditeur"
+msgstr "tsy voatery: mpamoaka"
+
 #: templates/catalog/excel_catalog/_import_form.html:16
+msgid "optionnel : année de publication"
+msgstr "tsy voatery: taona namoahana"
+
+#: templates/catalog/excel_catalog/_import_form.html:17
+msgid "optionnel : code langue (ex. fr, en, es)"
+msgstr "tsy voatery: kaody fiteny (oh. fr, en, es)"
+
+#: templates/catalog/excel_catalog/_import_form.html:18
+msgid "optionnel : liste de tags séparés par des virgules"
+msgstr "tsy voatery: lisitry ny tag sarahina amin'ny faingo"
+
+#: templates/catalog/excel_catalog/_import_form.html:19
+msgid "optionnel : état de l'exemplaire (Neuf, Bon, Usé, Abîmé)"
+msgstr "tsy voatery: toetran'ny santiona (Vaovao, Tsara, Simba kely, Simba)"
+
+#: templates/catalog/excel_catalog/_import_form.html:22
+msgid ""
+"Chaque colonne ci-dessus est facultative. Si elle est présente et remplie, "
+"elle écrase l'information correspondante de la fiche (même déjà existante) ; "
+"une cellule vide laisse l'information en place."
+msgstr "Tsy voatery ny tsanganana rehetra etsy ambony. Raha misy sy feno izy, dia manoloana ny saha mifanaraka amin'ny rakitra (na efa misy aza); ny sela banga dia mamela ny mombamomba misy."
+
+#: templates/catalog/excel_catalog/_import_form.html:27
 msgid "Importer dans le catalogue"
 msgstr "Afaro ao amin'ny katalaogy"
 
-#: templates/catalog/excel_catalog/_import_form.html:19
+#: templates/catalog/excel_catalog/_import_form.html:30
 msgid ""
 "L'import crée un lot de catalogage visible dans « Catalogage par scan ». Les "
 "métadonnées (titre, auteur…) peuvent ensuite être complétées via "

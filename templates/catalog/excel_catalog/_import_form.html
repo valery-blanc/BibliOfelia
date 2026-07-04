@@ -9,7 +9,18 @@
         <li><strong>ISBN</strong> — {% trans "obligatoire" %}</li>
         <li><strong>LOCATION</strong> — {% trans "optionnel : code d'emplacement (sinon l'exemplaire est créé sans emplacement)" %}</li>
         <li><strong>CATEGORY</strong> — {% trans "optionnel : nom de catégorie existante" %}</li>
+        <li><strong>TITLE</strong> — {% trans "optionnel : titre de la fiche" %}</li>
+        <li><strong>AUTHOR</strong> — {% trans "optionnel : auteur(s), séparés par des points-virgules" %}</li>
+        <li><strong>TYPE</strong> — {% trans "optionnel : type de document (Livre, BD / manga, Revue, Journal, CD audio, Autre)" %}</li>
+        <li><strong>EDITOR</strong> — {% trans "optionnel : éditeur" %}</li>
+        <li><strong>YEAR</strong> — {% trans "optionnel : année de publication" %}</li>
+        <li><strong>LANGUAGE</strong> — {% trans "optionnel : code langue (ex. fr, en, es)" %}</li>
+        <li><strong>TAGS</strong> — {% trans "optionnel : liste de tags séparés par des virgules" %}</li>
+        <li><strong>CONDITION</strong> — {% trans "optionnel : état de l'exemplaire (Neuf, Bon, Usé, Abîmé)" %}</li>
     </ul>
+    <p class="muted text-sm" style="margin-bottom:14px">
+        {% trans "Chaque colonne ci-dessus est facultative. Si elle est présente et remplie, elle écrase l'information correspondante de la fiche (même déjà existante) ; une cellule vide laisse l'information en place." %}
+    </p>
     <input type="file" name="file" accept=".xlsx" required class="form-control" style="margin:14px 0">
     <div class="form-actions" style="border:0;padding:0">
         <button type="submit" class="btn btn--primary">

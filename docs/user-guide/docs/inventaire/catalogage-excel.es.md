@@ -78,14 +78,23 @@ veces como necesite.
 Úselo para **crear** realmente las fichas y los ejemplares a partir de una
 lista de ISBN.
 
-Su archivo `.xlsx` debe contener al menos una columna **`ISBN`**. Se
-reconocen dos columnas adicionales, si las añade:
+Su archivo `.xlsx` debe contener al menos una columna **`ISBN`**. Todas las
+demás columnas son **opcionales**: añada solo las que tenga, en cualquier
+orden.
 
 | Columna | Contenido |
 |---|---|
 | `ISBN` | **obligatorio** |
-| `LOCATION` | opcional: el código de ubicación (de lo contrario el ejemplar se crea sin ubicación) |
-| `CATEGORY` | opcional: el nombre de una categoría existente |
+| `LOCATION` | el código de ubicación (de lo contrario el ejemplar se crea sin ubicación) |
+| `CATEGORY` | el nombre de una categoría existente |
+| `TITLE` | el título de la ficha |
+| `AUTHOR` | el o los autores, separados por **puntos y comas** |
+| `TYPE` | el tipo de documento (Libro, Cómic / manga, Revista, Periódico, CD de audio, Otro) |
+| `EDITOR` | la editorial |
+| `YEAR` | el año de publicación |
+| `LANGUAGE` | el código de idioma (fr, en, es…) |
+| `TAGS` | palabras clave separadas por **comas** |
+| `CONDITION` | el estado del ejemplar (Nuevo, Bueno, Desgastado, Dañado) |
 
 En el recuadro
 [**Importar en BibliOfelia**](/bibliofelia/es/catalog/excel-catalog/){ target="_blank" },
@@ -95,16 +104,28 @@ Cada ISBN se convierte en una ficha y un ejemplar. Si un ISBN **ya existe**
 en el catálogo, BibliOfelia no recrea la ficha: simplemente añade un
 ejemplar a la ficha existente.
 
+!!! info "Una columna rellenada reemplaza la información de la ficha"
+    Si añade una de las columnas anteriores (título, autor, editorial…) y la
+    **celda está rellenada**, su valor **sobrescribe** el campo
+    correspondiente de la ficha — **incluso si la ficha ya existe**. Una
+    **celda vacía no cambia nada**: se conserva la información ya presente.
+    Para el autor y las etiquetas, la lista del archivo **reemplaza** la
+    existente (no se añade a ella). Un valor no reconocido para `TYPE` o
+    `CONDITION`, o un año que no es un número, se **ignora** y se señala en
+    las advertencias del lote.
+
 La importación crea un **lote de catalogación**: una vez terminado el
 trabajo, haga clic en **Ver el lote importado** para abrirlo, o vuelva a
 encontrarlo en
 [**Catalogación por escaneo**](/bibliofelia/es/catalog/scan/){ target="_blank" },
 exactamente como un lote escaneado con la cámara.
 
-!!! tip "Completar títulos y autores"
-    La importación registra los ISBN, pero todavía no los títulos y autores.
-    Lance después un **enriquecimiento** sobre el lote para buscar los
-    metadatos en línea.
+!!! tip "Completar lo que falta en línea"
+    ¿Solo tiene los ISBN, sin título ni autor? Lance después un
+    **enriquecimiento** sobre el lote para buscar los metadatos en línea
+    (OpenLibrary, Google Books, BnF…). Las columnas del archivo siguen
+    teniendo prioridad: el enriquecimiento solo completa lo que aún está
+    vacío.
 
 ## Seguir sus trabajos
 

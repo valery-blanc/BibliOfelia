@@ -44,6 +44,13 @@ Si no hay ISBN o no hay red, complete los campos a mano:
 - **Resumen** (opcional) — breve descripción para ayudar a los
   lectores
 
+!!! tip "¿Una revista o un periódico?"
+    Para un periódico, rellene el campo **ISSN** (en lugar del ISBN): es el
+    código de 8 caracteres que identifica la revista. Todos los números de
+    una misma revista comparten este ISSN, así que basta con una sola ficha.
+    Lo más rápido, sin embargo, es **escanear el código de barras 977** en
+    [catalogación por escaneo](../inventaire/catalogage-scan.md).
+
 ## Guardar
 
 Haga clic en **Guardar**. El registro se crea y BibliOfelia

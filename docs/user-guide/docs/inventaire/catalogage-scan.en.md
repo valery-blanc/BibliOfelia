@@ -44,9 +44,27 @@ line by line** afterwards.
     double reads.
 
 !!! warning "Ofelia codes rejected"
-    Cataloguing only accepts **ISBNs** (978/979). If you mistakenly scan an
-    Ofelia code label (290/291) already on a book, it is rejected: here you
-    record new books, not copies that are already catalogued.
+    Cataloguing accepts book **ISBNs** (978/979) and magazine **ISSNs**
+    (977, see below). If you mistakenly scan an Ofelia code label (290/291)
+    already on a document, it is rejected: here you record new documents,
+    not copies that are already catalogued.
+
+## Cataloguing a magazine or journal
+
+Magazines and journals have no ISBN, but an **ISSN**: a barcode that starts
+with **977**. No separate tool needed — scan that 977 barcode **in the same
+batch** as your books.
+
+- BibliOfelia recognises the ISSN and looks up the **magazine's title**
+  (BnF, BNE).
+- All issues of the same magazine share the **same ISSN**: they therefore
+  land on a **single "magazine" record**, to which each scanned issue adds a
+  copy.
+
+!!! info "One ISSN = a single magazine record"
+    If you scan two different issues of the same magazine, BibliOfelia does
+    not create two records: it adds a copy to the magazine's record. To tell
+    the issues apart (date, number), note them in the copy's notes.
 
 ## Check and adjust the batch
 

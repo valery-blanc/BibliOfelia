@@ -6,7 +6,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: BibliOfelia 1.0\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2026-07-03 10:00+0000\n"
+"POT-Creation-Date: 2026-07-03 16:48+0000\n"
 "PO-Revision-Date: 2026-05-22 00:00+0000\n"
 "Last-Translator: Claude Code\n"
 "Language-Team: English\n"
@@ -1803,11 +1803,52 @@ msgstr ""
 msgid "optionnel : nom de catégorie existante"
 msgstr "optional: name of an existing category"
 
+#: templates/catalog/excel_catalog/_import_form.html:12
+msgid "optionnel : titre de la fiche"
+msgstr "optional: record title"
+
+#: templates/catalog/excel_catalog/_import_form.html:13
+msgid "optionnel : auteur(s), séparés par des points-virgules"
+msgstr "optional: author(s), separated by semicolons"
+
+#: templates/catalog/excel_catalog/_import_form.html:14
+msgid ""
+"optionnel : type de document (Livre, BD / manga, Revue, Journal, CD audio, "
+"Autre)"
+msgstr "optional: document type (Book, Comic / manga, Magazine, Newspaper, Audio CD, Other)"
+
+#: templates/catalog/excel_catalog/_import_form.html:15
+msgid "optionnel : éditeur"
+msgstr "optional: publisher"
+
 #: templates/catalog/excel_catalog/_import_form.html:16
+msgid "optionnel : année de publication"
+msgstr "optional: publication year"
+
+#: templates/catalog/excel_catalog/_import_form.html:17
+msgid "optionnel : code langue (ex. fr, en, es)"
+msgstr "optional: language code (e.g. fr, en, es)"
+
+#: templates/catalog/excel_catalog/_import_form.html:18
+msgid "optionnel : liste de tags séparés par des virgules"
+msgstr "optional: list of tags separated by commas"
+
+#: templates/catalog/excel_catalog/_import_form.html:19
+msgid "optionnel : état de l'exemplaire (Neuf, Bon, Usé, Abîmé)"
+msgstr "optional: copy condition (New, Good, Worn, Damaged)"
+
+#: templates/catalog/excel_catalog/_import_form.html:22
+msgid ""
+"Chaque colonne ci-dessus est facultative. Si elle est présente et remplie, "
+"elle écrase l'information correspondante de la fiche (même déjà existante) ; "
+"une cellule vide laisse l'information en place."
+msgstr "Each column above is optional. If it is present and filled in, it overwrites the matching field of the record (even an existing one); an empty cell leaves the information in place."
+
+#: templates/catalog/excel_catalog/_import_form.html:27
 msgid "Importer dans le catalogue"
 msgstr "Import into the catalog"
 
-#: templates/catalog/excel_catalog/_import_form.html:19
+#: templates/catalog/excel_catalog/_import_form.html:30
 msgid ""
 "L'import crée un lot de catalogage visible dans « Catalogage par scan ». Les "
 "métadonnées (titre, auteur…) peuvent ensuite être complétées via "

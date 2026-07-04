@@ -46,10 +46,29 @@ Ces valeurs s'appliquent à chaque livre du lot, mais vous pourrez les
     3 secondes) est ignoré, pour éviter les lectures en double.
 
 !!! warning "Codes Ofelia refusés"
-    Le catalogage n'accepte que les **ISBN** (978/979). Si vous scannez par
-    erreur une étiquette code Ofelia (290/291) déjà posée sur un livre,
-    elle est refusée : ici on enregistre des livres neufs, pas des
-    exemplaires déjà catalogués.
+    Le catalogage accepte les **ISBN** de livres (978/979) et les **ISSN**
+    de revues (977, voir ci-dessous). Si vous scannez par erreur une
+    étiquette code Ofelia (290/291) déjà posée sur un document, elle est
+    refusée : ici on enregistre des documents neufs, pas des exemplaires
+    déjà catalogués.
+
+## Cataloguer une revue ou un magazine
+
+Les revues et les magazines n'ont pas d'ISBN, mais un **ISSN** : un
+code-barres qui commence par **977**. Pas besoin d'un outil à part —
+scannez ce code-barres 977 **dans le même lot** que vos livres.
+
+- BibliOfelia reconnaît l'ISSN et va chercher le **titre de la revue**
+  (BnF, BNE).
+- Tous les numéros d'une même revue partagent le **même ISSN** : ils
+  retombent donc sur **une seule notice** « revue », à laquelle chaque
+  numéro scanné ajoute un exemplaire.
+
+!!! info "Un ISSN = une seule notice de revue"
+    Si vous scannez deux numéros différents du même magazine, BibliOfelia ne
+    crée pas deux fiches : il ajoute un exemplaire à la notice de la revue.
+    Pour distinguer les numéros (date, n°), notez-les dans les notes de
+    l'exemplaire.
 
 ## Vérifier et ajuster le lot
 

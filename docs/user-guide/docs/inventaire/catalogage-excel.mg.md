@@ -83,13 +83,22 @@ Ampiasao mba **hamorona** marina ny notice sy ny kopia avy amin'ny lisitra
 ISBN.
 
 Ny rakitra `.xlsx`-nao dia tsy maintsy misy farafahakeliny tsanganana
-**`ISBN`** iray. Ekena ihany koa ny tsanganana roa fanampiny, raha ampianao :
+**`ISBN`** iray. **Tsy voatery** ny tsanganana hafa rehetra : ampio ihany
+izay anananao, na inona na inona filaharana.
 
 | Tsanganana | Votoatiny |
 |---|---|
 | `ISBN` | **tsy maintsy** |
-| `LOCATION` | tsy voatery : kaody toerana (raha tsy izany dia noforonina tsy misy toerana ny kopia) |
-| `CATEGORY` | tsy voatery : anaran'ny sokajy efa misy |
+| `LOCATION` | kaody toerana (raha tsy izany dia noforonina tsy misy toerana ny kopia) |
+| `CATEGORY` | anaran'ny sokajy efa misy |
+| `TITLE` | lohatenin'ny rakitra |
+| `AUTHOR` | mpanoratra, sarahina amin'ny **teboka sy faingo (;)** |
+| `TYPE` | karazana boky (Boky, BD / manga, Gazetiboky, Gazety, CD audio, Hafa) |
+| `EDITOR` | mpamoaka |
+| `YEAR` | taona namoahana |
+| `LANGUAGE` | kaody fiteny (fr, en, es…) |
+| `TAGS` | teny fanalahidy sarahina amin'ny **faingo** |
+| `CONDITION` | toetran'ny kopia (Vaovao, Tsara, Simba kely, Simba) |
 
 Ao amin'ny boaty
 [**Afaro ao amin'ny BibliOfelia**](/bibliofelia/mg/catalog/excel-catalog/){ target="_blank" },
@@ -99,16 +108,27 @@ Lasa notice sy kopia ny ISBN tsirairay. Raha **efa misy** ao amin'ny
 katalaogy ny ISBN iray, dia tsy averin'ny BibliOfelia foronina ny notice :
 manampy kopia fotsiny amin'ny notice efa misy izy.
 
+!!! info "Ny tsanganana feno dia manolo ny mombamomba ao amin'ny rakitra"
+    Raha manampy iray amin'ireo tsanganana etsy ambony ianao (lohateny,
+    mpanoratra, mpamoaka…) ka **feno ny sela**, dia **manolo** ny saha
+    mifanaraka ao amin'ny rakitra ny sandany — **na dia efa misy aza ny
+    notice**. Ny **sela banga dia tsy manova na inona na inona** : voatahiry
+    ny mombamomba efa misy. Ho an'ny mpanoratra sy ny tags, dia **manolo** ny
+    lisitra efa misy ny an'ny rakitra (fa tsy manampy aminy). Ny sanda tsy
+    fantatra ho an'ny `TYPE` na `CONDITION`, na taona tsy isa, dia
+    **tsy raharahaina** ka voamarika ao amin'ny fampilazana momba ny andiana.
+
 Ny fanafarana dia mamorona **andian-katalaogy** : rehefa vita ny asa,
 tsindrio **Hijery ny andiana nafarana** mba hanokatra azy, na tadiavo ao
 amin'ny
 [**Katalaogy amin'ny scan**](/bibliofelia/mg/catalog/scan/){ target="_blank" },
 toy ny andiana voa-scan tamin'ny caméra.
 
-!!! tip "Hameno ny lohateny sy ny mpanoratra"
-    Ny fanafarana dia mandraikitra ny ISBN, fa tsy mbola ny lohateny sy ny
-    mpanoratra. Atombohy avy eo ny **fampitomboana** amin'ilay andiana mba
-    haka ny metadata an-tserasera.
+!!! tip "Hameno izay tsy ampy an-tserasera"
+    ISBN ihany no anananao, tsy misy lohateny na mpanoratra? Atombohy avy eo
+    ny **fampitomboana** amin'ilay andiana mba haka ny metadata an-tserasera
+    (OpenLibrary, Google Books, BnF…). Mitana ny laharam-pahamehana ny
+    tsanganan'ny rakitra : ny fampitomboana dia mameno ihany izay mbola banga.
 
 ## Araho ny asanao
 

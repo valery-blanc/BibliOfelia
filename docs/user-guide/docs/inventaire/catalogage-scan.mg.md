@@ -47,9 +47,29 @@ Mihatra amin'ny boky tsirairay ao amin'ny lot ireo sanda ireo, fa azonao
     ny 3 segondra) dia tsy raharahaina, mba hisorohana ny famakiana indroa.
 
 !!! warning "Lavina ny code Ofelia"
-    Ny catalogage dia tsy manaiky afa-tsy **ISBN** (978/979). Raha mi-scan
-    diso etiquette code Ofelia (290/291) efa mipetaka amin'ny boky ianao, dia
-    lavina: eto dia mandrakitra boky vaovao, fa tsy exemplaire efa voasoratra.
+    Ny catalogage dia manaiky ny **ISBN**-n'ny boky (978/979) sy ny
+    **ISSN**-n'ny gazetiboky (977, jereo etsy ambany). Raha mi-scan diso
+    etiquette code Ofelia (290/291) efa mipetaka amin'ny antontan-taratasy
+    ianao, dia lavina: eto dia mandrakitra antontan-taratasy vaovao, fa tsy
+    exemplaire efa voasoratra.
+
+## Manoratra gazetiboky na gazety
+
+Ny gazetiboky sy ny gazety dia tsy manana ISBN, fa **ISSN**: barcode iray
+manomboka amin'ny **977**. Tsy mila fitaovana hafa — scano io barcode 977 io
+**ao anatin'ny lot iray ihany** amin'ny bokinao.
+
+- Fantatry ny BibliOfelia ny ISSN ary mitady ny **lohatenin'ny gazetiboky**
+  (BnF, BNE).
+- Ny laharana rehetra amin'ny gazetiboky iray dia mizara **ISSN mitovy**:
+  koa dia mifototra amin'ny **notice « gazetiboky » tokana** izy ireo, ka ny
+  laharana voa-scan tsirairay dia manampy exemplaire iray aminy.
+
+!!! info "ISSN iray = notice gazetiboky tokana"
+    Raha mi-scan laharana roa samihafa amin'ny gazetiboky iray ianao, dia tsy
+    mamorona notice roa ny BibliOfelia: manampy exemplaire amin'ny notice-n'ny
+    gazetiboky izy. Mba hanavahana ny laharana (daty, n°), soraty ao amin'ny
+    naotin'ny exemplaire izy ireo.
 
 ## Hamarino sy ahitsio ny lot
 

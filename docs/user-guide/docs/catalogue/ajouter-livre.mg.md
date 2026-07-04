@@ -44,6 +44,13 @@ tanana:
   mpitantana)
 - **Fintinana** (tsy voatery) — fanazavana fohy hanampiana ny mpamaky
 
+!!! tip "Gazetiboky na gazety?"
+    Ho an'ny periodika, fenoy ny saha **ISSN** (fa tsy ny ISBN): io no kaody
+    misy litera 8 mamantatra ny gazetiboky. Ny laharana rehetra amin'ny
+    gazetiboky iray dia mizara io ISSN io, koa dia ampy ny notice tokana. Ny
+    haingana indrindra anefa dia ny **fandrafetana ny barcode 977** amin'ny
+    [catalogage amin'ny scan](../inventaire/catalogage-scan.md).
+
 ## Tehirizo
 
 Click amin'ny **Tehirizo**. Voaforona ny notice ary ny BibliOfelia

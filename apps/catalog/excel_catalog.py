@@ -26,13 +26,16 @@ from django.utils import timezone
 from .enrichment import _try_sources
 from .models import (
     Category,
+    DocumentType,
     ExcelCatalogJob,
     ExcelJobMode,
     ExcelJobState,
+    ItemState,
     ScanItem,
     ScanKind,
     ScanSession,
     ScanSessionState,
+    Tag,
 )
 from .openlibrary import normalize_isbn
 from .sources import SEARCHES, SOURCE_LABELS
@@ -60,11 +63,92 @@ VERIFY_OUTPUT_COLUMNS = [
 ]
 
 
+# FEAT-053 : colonnes optionnelles d'affectation de la fiche catalogue en mode
+# IMPORT. Une colonne présente avec une cellule non vide écrase le champ de la
+# notice (même existante) ; une cellule vide laisse l'existant intact. AUTHOR et
+# TAGS remplacent (pas de fusion). Toutes optionnelles.
+IMPORT_OVERRIDE_COLUMNS = [
+    "title",
+    "author",
+    "category",
+    "type",
+    "editor",
+    "year",
+    "language",
+    "tags",
+    "condition",  # → état de l'exemplaire (Item.state)
+]
+
+# Garde-fous tags (alignés sur enrichment.py).
+_MAX_TAGS_PER_RECORD = 10
+_MAX_TAG_LENGTH = 40
+
+# Résolution TYPE (colonne Excel) → DocumentType. Clés normalisées via _norm
+# (minuscules, sans accents) : accepte le code interne ou un libellé FR courant.
+_DOCUMENT_TYPE_ALIASES = {
+    "book": DocumentType.BOOK,
+    "livre": DocumentType.BOOK,
+    "magazine_issue": DocumentType.MAGAZINE_ISSUE,
+    "magazine": DocumentType.MAGAZINE_ISSUE,
+    "numero de magazine": DocumentType.MAGAZINE_ISSUE,
+    "revue": DocumentType.MAGAZINE_ISSUE,
+    "periodique": DocumentType.MAGAZINE_ISSUE,
+    "newspaper": DocumentType.NEWSPAPER,
+    "journal": DocumentType.NEWSPAPER,
+    "comic": DocumentType.COMIC,
+    "bd": DocumentType.COMIC,
+    "manga": DocumentType.COMIC,
+    "bd / manga": DocumentType.COMIC,
+    "bd/manga": DocumentType.COMIC,
+    "bande dessinee": DocumentType.COMIC,
+    "audio_cd": DocumentType.AUDIO_CD,
+    "cd": DocumentType.AUDIO_CD,
+    "cd audio": DocumentType.AUDIO_CD,
+    "audio": DocumentType.AUDIO_CD,
+    "other": DocumentType.OTHER,
+    "autre": DocumentType.OTHER,
+}
+
+# Résolution CONDITION (colonne Excel) → ItemState (état exemplaire).
+_ITEM_STATE_ALIASES = {
+    "new": ItemState.NEW,
+    "neuf": ItemState.NEW,
+    "good": ItemState.GOOD,
+    "bon": ItemState.GOOD,
+    "worn": ItemState.WORN,
+    "use": ItemState.WORN,  # « usé » normalisé
+    "damaged": ItemState.DAMAGED,
+    "abime": ItemState.DAMAGED,  # « abîmé » normalisé
+}
+
+
 def _norm(value: str) -> str:
     """Normalise un nom de colonne : minuscules, sans accents, sans espaces."""
     s = unicodedata.normalize("NFKD", str(value or ""))
     s = "".join(c for c in s if not unicodedata.combining(c))
     return s.strip().lower()
+
+
+def _resolve_document_type(value: str) -> str | None:
+    """FEAT-053 : mappe une valeur TYPE (code ou libellé FR) → DocumentType.
+    None si non reconnue."""
+    return _DOCUMENT_TYPE_ALIASES.get(_norm(value))
+
+
+def _resolve_item_state(value: str) -> str | None:
+    """FEAT-053 : mappe une valeur CONDITION (code ou libellé FR) → ItemState.
+    None si non reconnue."""
+    return _ITEM_STATE_ALIASES.get(_norm(value))
+
+
+def _split_multi(value: str, sep: str) -> list[str]:
+    """Découpe une cellule multi-valeurs (auteurs, tags), sans doublon ni vide."""
+    seen: list[str] = []
+    for part in value.split(sep):
+        clean = part.strip()
+        if clean and clean not in seen:
+            seen.append(clean)
+    return seen
 
 
 def _cell_str(value) -> str:
@@ -285,6 +369,138 @@ def run_verify_job(job: ExcelCatalogJob) -> None:
     job.result_file.save(f"verify-{job.pk}.xlsx", ContentFile(buffer.getvalue()), save=False)
 
 
+def _parse_row_overrides(row, override_cols: dict, resolved_category) -> tuple[dict, list[str]]:
+    """FEAT-053 : extrait les overrides fiche/exemplaire d'une ligne Excel.
+
+    Ne retient que les colonnes présentes ET non vides (cellule vide → l'info
+    existante est conservée). Renvoie ``(overrides, warnings)``. AUTHOR et TAGS
+    sont des listes (remplacement, pas fusion). ``resolved_category`` est la
+    Category déjà résolue depuis la colonne CATEGORY (None si absente/inconnue).
+    """
+    def _cell(field: str) -> str:
+        idx = override_cols.get(field)
+        if idx and idx <= len(row):
+            return _cell_str(row[idx - 1])
+        return ""
+
+    overrides: dict = {}
+    warnings: list[str] = []
+
+    title = _cell("title")
+    if title:
+        overrides["title"] = title[:300]
+
+    # CATEGORY : déjà résolue en amont (partage la colonne avec l'import de base).
+    if override_cols.get("category") and resolved_category is not None:
+        overrides["category"] = resolved_category
+
+    author = _cell("author")
+    if author:
+        overrides["authors"] = _split_multi(author, ";")
+
+    editor = _cell("editor")
+    if editor:
+        overrides["publisher"] = editor[:200]
+
+    language = _cell("language")
+    if language:
+        overrides["language"] = language[:10]
+
+    year = _cell("year")
+    if year:
+        try:
+            overrides["publication_year"] = int(float(year))
+        except (ValueError, TypeError):
+            warnings.append("YEAR_INVALID")
+
+    doc_type = _cell("type")
+    if doc_type:
+        resolved = _resolve_document_type(doc_type)
+        if resolved:
+            overrides["document_type"] = resolved
+        else:
+            warnings.append("TYPE_UNKNOWN")
+
+    tags = _cell("tags")
+    if tags:
+        parsed = [t[:_MAX_TAG_LENGTH] for t in _split_multi(tags, ",")][:_MAX_TAGS_PER_RECORD]
+        if parsed:
+            overrides["tags"] = parsed
+
+    condition = _cell("condition")
+    if condition:
+        resolved = _resolve_item_state(condition)
+        if resolved:
+            overrides["state"] = resolved
+        else:
+            warnings.append("CONDITION_UNKNOWN")
+
+    return overrides, warnings
+
+
+def _apply_import_overrides(job, session, overrides_by_local: dict[str, dict]) -> None:
+    """FEAT-053 : applique les overrides aux notices/exemplaires produits.
+
+    Après ``finalize_scan_session``, chaque ScanItem porte dans son
+    ``processing_result`` l'``record_id`` et la liste ``copies_created``. On
+    écrase les champs de la notice (même préexistante) avec les valeurs Excel ;
+    AUTHOR / TAGS sont remplacés. ``state`` s'applique aux exemplaires du lot.
+    """
+    from django.db import transaction
+
+    from .models import Author, BibliographicRecord, Item
+
+    if not overrides_by_local:
+        return
+
+    _RECORD_SCALARS = (
+        "title", "publisher", "publication_year", "language", "document_type", "category",
+    )
+    items = {
+        si.local_id: si
+        for si in ScanItem.objects.filter(
+            session=session, local_id__in=list(overrides_by_local.keys())
+        )
+    }
+
+    with transaction.atomic():
+        for local_id, overrides in overrides_by_local.items():
+            scan_item = items.get(local_id)
+            if scan_item is None:
+                continue
+            result = scan_item.processing_result or {}
+            record_id = result.get("record_id")
+            copy_ids = result.get("copies_created") or []
+
+            if record_id:
+                record = BibliographicRecord.objects.filter(pk=record_id).first()
+                if record:
+                    changed = []
+                    for field in _RECORD_SCALARS:
+                        if field == "category":
+                            if "category" in overrides:
+                                record.category = overrides["category"]
+                                changed.append("category")
+                        elif field in overrides:
+                            setattr(record, field, overrides[field])
+                            changed.append(field)
+                    if changed:
+                        record.save(update_fields=changed)
+                    if "authors" in overrides:
+                        record.authors.clear()
+                        for name in overrides["authors"]:
+                            author, _ = Author.objects.get_or_create(full_name=name)
+                            record.authors.add(author)
+                    if "tags" in overrides:
+                        record.tags.clear()
+                        for name in overrides["tags"]:
+                            tag, _ = Tag.objects.get_or_create(name=name)
+                            record.tags.add(tag)
+
+            if "state" in overrides and copy_ids:
+                Item.objects.filter(pk__in=copy_ids).update(state=overrides["state"])
+
+
 def run_import_job(job: ExcelCatalogJob) -> None:
     """Mode IMPORT : crée une ScanSession virtuelle + ses ScanItem, finalise."""
     import openpyxl
@@ -298,6 +514,10 @@ def run_import_job(job: ExcelCatalogJob) -> None:
     col_isbn = headers.get("isbn")
     col_loc = headers.get("location")
     col_cat = headers.get("category")
+    # FEAT-053 : colonnes optionnelles d'affectation fiche/exemplaire.
+    override_cols = {name: headers.get(name) for name in IMPORT_OVERRIDE_COLUMNS}
+    # local_id → dict d'overrides (uniquement les colonnes présentes ET non vides).
+    overrides_by_local: dict[str, dict] = {}
 
     # Ré-exécution (admin) après un échec à mi-parcours : on réutilise la
     # session déjà créée → `update_or_create` sur (session, local_id) garantit
@@ -338,13 +558,22 @@ def run_import_job(job: ExcelCatalogJob) -> None:
             if category is None:
                 warnings.append("CATEGORY_UNKNOWN")
 
+        # FEAT-053 : overrides fiche/exemplaire (colonnes présentes + non vides).
+        local_id = f"excel-{job.pk}-{row_idx}"
+        overrides, ov_warnings = _parse_row_overrides(row, override_cols, category)
+        warnings.extend(ov_warnings)
+        if overrides:
+            overrides_by_local[local_id] = overrides
+
         ScanItem.objects.update_or_create(
             session=session,
-            local_id=f"excel-{job.pk}-{row_idx}",
+            local_id=local_id,
             defaults={
                 "scan_kind": ScanKind.ISBN if len(isbn) == 10 else ScanKind.EAN13,
                 "scanned_value": isbn,
-                "metadata_title": "",
+                # FEAT-053 : titre du fichier (sinon placeholder posé par
+                # _create_record, remplaçable ensuite par l'enrichissement).
+                "metadata_title": overrides.get("title", ""),
                 "category": category,
                 "location_code": loc_code,
                 "copy_count": 1,
@@ -360,6 +589,9 @@ def run_import_job(job: ExcelCatalogJob) -> None:
     job.save(update_fields=["total", "processed", "errors", "report"])
 
     summary = finalize_scan_session(session)
+    # FEAT-053 : après matérialisation, appliquer les overrides aux notices/
+    # exemplaires produits (écrase l'existant le cas échéant).
+    _apply_import_overrides(job, session, overrides_by_local)
     job.matched_by_isbn = summary.get("records_matched", 0)
     job.not_found = summary.get("records_created", 0)
     job.save(update_fields=["matched_by_isbn", "not_found"])

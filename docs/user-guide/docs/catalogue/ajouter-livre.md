@@ -42,6 +42,13 @@ Si pas d'ISBN ou pas de réseau, remplissez les champs à la main :
   l'administrateur)
 - **Résumé** (facultatif) — court descriptif pour aider les lecteurs
 
+!!! tip "Revue ou magazine ?"
+    Pour un périodique, renseignez le champ **ISSN** (à la place de l'ISBN) :
+    c'est le code à 8 caractères qui identifie la revue. Tous les numéros
+    d'une même revue partagent cet ISSN, donc une seule notice suffit. Le
+    plus rapide reste toutefois de **scanner le code-barres 977** en
+    [catalogage par scan](../inventaire/catalogage-scan.md).
+
 ## Enregistrer
 
 Cliquez sur **Enregistrer**. La notice est créée et BibliOfelia vous
