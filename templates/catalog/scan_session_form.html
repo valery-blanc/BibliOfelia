@@ -1,7 +1,7 @@
 {% extends "base.html" %}
 {% load i18n biblio_icons %}
 
-{% block title %}{% trans "Cataloguer en scannant" %}{% endblock %}
+{% block title %}{% if input_mode == "douchette" %}{% trans "Cataloguer à la douchette" %}{% else %}{% trans "Cataloguer en scannant" %}{% endif %}{% endblock %}
 
 {% block tile_strip %}{% include "partials/_tile_strip.html" with active="catalog" %}{% endblock %}
 
@@ -11,8 +11,13 @@
         {% icon "scan-barcode" size="28px" %}
     </div>
     <div class="pagehead-text">
+        {% if input_mode == "douchette" %}
+        <h1 class="pagehead-title">{% trans "Cataloguer à la douchette" %}</h1>
+        <div class="pagehead-sub">{% trans "Choisissez les valeurs par défaut du lot, puis scannez les livres avec la douchette USB branchée sur ce poste." %}</div>
+        {% else %}
         <h1 class="pagehead-title">{% trans "Cataloguer en scannant" %}</h1>
         <div class="pagehead-sub">{% trans "Choisissez les valeurs par défaut du lot, puis scannez les livres en rafale." %}</div>
+        {% endif %}
     </div>
     <div class="pagehead-action">
         <a href="{% url 'catalog:scan_session_list' %}" class="btn btn--ghost">

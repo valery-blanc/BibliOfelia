@@ -992,7 +992,7 @@ Signalés par Val 2026-05-30 (navigation espagnole).
 > et remplie → écrase l'existant ; cellule vide → conserve.
 > Cf. `docs/specs/FEAT-053-import-excel-metadonnees.md`.
 
-- [ ] **FEAT-053** Import Excel — affectation des métadonnées
+- [x] **FEAT-053** Import Excel — affectation des métadonnées — **CLOS** (commit `39a4c51` déjà poussé origin/main, gate i18n vert)
   - [x] Décisions Val : cellule vide = garder l'existant ; AUTHOR/TAGS = remplacer
   - [x] Code : `IMPORT_OVERRIDE_COLUMNS` (TITLE + 8 colonnes), résolveurs `_resolve_document_type`/`_resolve_item_state`, `_split_multi`, `_parse_row_overrides` (TITLE → `metadata_title` aussi), `_apply_import_overrides` (passe post-finalize, flux caméra/OfeliaScan inchangé)
   - [x] TITLE ajouté (oubli spec Val) : notice neuve titrée directement, sinon placeholder `ISBN:…`
@@ -1000,8 +1000,45 @@ Signalés par Val 2026-05-30 (navigation espagnole).
   - [x] Tests : 8 cas ajoutés (`test_excel_catalog.py`)
   - [x] Doc : `FEAT-053-*.md`, SPEC §6.12 + en-tête
   - [x] **Guide utilisateur** (MkDocs ×4 langues) : `catalogage-excel` (nouvelles colonnes + règle d'écrasement) ; **rattrapage FEAT-052/ISSN** : `catalogage-scan` (section revues 977), `glossaire` (entrée ISSN), `ajouter-livre` (tip ISSN). Build `mkdocs --strict` → 0 warning
-  - [ ] i18n : `makemessages` + `translations_sprint22.py` + `i18n_check.py` → **0** + `.mo` compilés (sur la Box)
-  - [ ] pytest (sur la Box, `FORCE_SCRIPT_NAME=` neutralisé)
-  - [ ] Déploiement Box (branche `feat/import-excel-053`, rebuild bibliofelia + worker, healthy)
-  - [ ] Test fonctionnel Val
-  - [ ] Commit unique squash `FEAT-053` → `main` + push origin/main
+  - [x] i18n : `makemessages` + `translations_sprint22.py` + `i18n_check.py` → **0** + `.mo` compilés (sur la Box)
+  - [x] pytest (sur la Box, `FORCE_SCRIPT_NAME=` neutralisé)
+  - [x] Déploiement Box (branche `feat/import-excel-053`, rebuild bibliofelia + worker, healthy)
+  - [x] Test fonctionnel Val
+  - [x] Commit unique squash `FEAT-053` → `main` + push origin/main (commit `39a4c51`, vérifié présent sur origin/main 2026-07-08)
+
+## Sprint 23 — Support douchette USB (keyboard-wedge) + catalogage douchette
+
+> Ouvert le 2026-07-08 (temp.txt). Contexte : Val teste depuis **Bruxelles** (les
+> autres machines ne sont pas accessibles physiquement) avec une **douchette USB**
+> (lecteur code-barres en mode clavier HID) branchée sur le PC qui affiche le
+> site. Le repo est sur Tulear, monté en `Z:\` (`\\tulear\C\WORK\BibliOfelia`) ;
+> déploiement sur la Box (192.168.0.147), Val teste depuis le navigateur Bruxelles.
+> Décisions Val (2026-07-08) : catalogage douchette = **nouvelle page dédiée** ;
+> wedge global **alimente aussi prêt/retour/consultation** (pas seulement la
+> navigation).
+
+### BUG-020 — Scan douchette ouvre la page de téléchargement du navigateur
+- [x] Read and validate spec
+- [x] Doc `docs/bugs/BUG-020-douchette-download-page.md`
+- [x] Fix = wedge global (FEAT-054) : `preventDefault`+`stopImmediatePropagation` sur toute la rafale + fenêtre de garde 300 ms testée en premier → aucune touche ne fuit vers un raccourci navigateur (Ctrl+J downloads / Ctrl+Tab)
+- [x] SPEC §6.1 (comportement scan douchette)
+- [x] Test Val **OK 2026-07-08** (scan recherche → fiche seule, plus de page download ni changement d'onglet)
+
+### FEAT-054 — Support douchette USB (keyboard-wedge global) + catalogage douchette
+- [x] Read and validate spec
+- [x] Doc `docs/specs/FEAT-054-douchette-keyboard-wedge.md`
+- [x] `static/js/scan-wedge.js` : détection rafale HID (timing), buffer, capture-phase `preventDefault`, routage
+- [x] Routage contextuel : input scan focalisé/`data-wedge-primary` → remplir + submit ; sinon → `core:search?q=` (fiche notice / fiche membre 291)
+- [x] `templates/base.html` : chargement `scan-wedge.js` + config JSON (URL search, seuils)
+- [x] lend/return : `data-wedge-primary` sur le champ scan autofocus (carte + livre, alimentation sans clic). Consultation = pas de champ scan (compteur) → scan y route vers recherche
+- [x] Modèle : `ScanSession.input_mode` (mobile/camera/douchette) + migration `catalog/0012` ; API OfeliaScan crée en `mobile`
+- [x] Nouvelle page « Catalogage par douchette » : tuile Avancé→Inventaire + route `catalog:scan_douchette_create` + hub réutilisant `ScanSession` + `scan_add` (mode douchette : champ `data-wedge-primary`, bouton caméra masqué)
+- [x] Tests : 3 cas `test_cataloging.py` (input_mode camera/douchette + hub marque le champ primaire)
+- [x] i18n dict `scripts/translations_sprint23.py` (9 chaînes × EN/ES/MG)
+- [x] i18n : `makemessages` + `translations_sprint23.py` (9×EN/ES/MG) + `compilemessages` + gate `i18n_check.py` → **0** (exécuté dans le conteneur Box ; `.po` resynchronisés dans Z:)
+- [x] `pytest` : catalog+api scan sessions **29 passed** + loans+core **89 passed**, 0 régression (conteneur jetable sur la Box, `--ds=config.settings.test`)
+- [x] SPEC §6.1 + en-tête
+- [x] Déploiement Box 2026-07-08 (rebuild bibliofelia + worker healthy, migration `0012` appliquée, `scan-wedge.js` baké + collectstatic, nginx 302) — **déployé depuis Bruxelles via clé Pi copiée de Tulear**
+- [x] Test fonctionnel Val **OK 2026-07-08** (depuis Bruxelles, douchette USB → Box : recherche, catalogage douchette, prêt/retour)
+- [x] **Itér. 2 (retours Val 2026-07-08)** : cause racine BUG-020 identifiée = terminateur douchette **CR+LF** → `CR`=Ctrl+M (Entrée) et **`LF`=Ctrl+J = raccourci « page téléchargements »** (+ Tab possible = changement d'onglet). Le wedge v1 avait un bug d'ordre fatal : `if (ev.ctrlKey) return` s'exécutait **avant** la fenêtre de garde → le LF=Ctrl+J fuyait à chaque scan, même focus dans un `<input>` (un champ texte ne consomme pas Ctrl+J). Wedge réécrit : garde vérifiée **en premier**, suppression agressive de toute la salve en rafale (chiffres + Ctrl-combos), MAX_INTERKEY 50 ms, garde 300 ms, flush de secours. **Catalogage douchette** : la page ne se rechargeant jamais (pas de « fermeture caméra »), le tableau éditable + « Envoyer au catalogue » (gated `{% if items %}`) n'apparaissaient pas → « 2 scannés / Aucun livre » simultanés ; ajout d'un bouton « Terminer et voir le lot » (reload) + empty-state mode-aware. 3 chaînes i18n de plus (gate → 0). Redéployé Box (wedge hash `86a394489fcb`, healthy).
+- [ ] Commit (après confirmation Val)

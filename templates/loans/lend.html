@@ -33,6 +33,7 @@
                 <div class="search" style="flex:1">
                     <span class="search-icon">{% icon "scan-barcode" size="18px" %}</span>
                     <input type="text" name="card" autofocus autocomplete="off"
+                           data-wedge-primary
                            placeholder="{% trans 'Scanner ou saisir le n° de carte' %}">
                 </div>
                 <button type="submit" class="btn btn--primary btn--sm" style="flex-shrink:0">
@@ -105,7 +106,7 @@
             <div class="search" style="flex:1">
                 <span class="search-icon">{% icon "scan-barcode" size="18px" %}</span>
                 <input type="text" name="ean"
-                       {% if member %}autofocus{% endif %}
+                       {% if member %}autofocus data-wedge-primary{% endif %}
                        autocomplete="off"
                        placeholder="{% trans 'Scanner le code-barres du livre' %}">
             </div>

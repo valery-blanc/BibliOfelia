@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: BibliOfelia 1.0\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2026-07-03 16:48+0000\n"
+"POT-Creation-Date: 2026-07-08 23:21+0000\n"
 "PO-Revision-Date: 2026-05-22 00:00+0000\n"
 "Last-Translator: Claude Code\n"
 "Language-Team: Malagasy\n"
@@ -78,14 +78,14 @@ msgstr ""
 msgid "Compte %(u)s supprimé."
 msgstr "Voafafa ny kaonty %(u)s."
 
-#: apps/api/models.py:23 apps/catalog/models.py:460 apps/catalog/models.py:523
+#: apps/api/models.py:23 apps/catalog/models.py:478 apps/catalog/models.py:541
 #: apps/core/forms.py:322 apps/loans/models.py:20
 #: templates/catalog/record_detail.html:192
 #: templates/loans/reservations.html:97
 msgid "En attente"
 msgstr "Miandry"
 
-#: apps/api/models.py:24 apps/catalog/models.py:462 apps/catalog/models.py:525
+#: apps/api/models.py:24 apps/catalog/models.py:480 apps/catalog/models.py:543
 msgid "Terminé"
 msgstr "Vita"
 
@@ -133,8 +133,8 @@ msgid "ISSN invalide (8 caractères, ex. 1234-5679)."
 msgstr "ISSN diso (litera 8, oh. 1234-5679)."
 
 #: apps/catalog/forms.py:114 templates/catalog/record_detail.html:92
-#: templates/catalog/scan_session.html:88
-#: templates/catalog/scan_session.html:116
+#: templates/catalog/scan_session.html:109
+#: templates/catalog/scan_session.html:137
 #: templates/printing/labels_picker.html:29
 #: templates/printing/labels_picker.html:57
 msgid "Emplacement"
@@ -142,8 +142,8 @@ msgstr "Toerana"
 
 #: apps/catalog/forms.py:115 templates/catalog/excel_catalog/index.html:51
 #: templates/catalog/record_detail.html:93
-#: templates/catalog/scan_session.html:95
-#: templates/catalog/scan_session.html:117
+#: templates/catalog/scan_session.html:116
+#: templates/catalog/scan_session.html:138
 #: templates/core/admin/enrichment_index.html:123
 msgid "État"
 msgstr "Toetra"
@@ -236,11 +236,11 @@ msgstr "Fanoratana an-tanana"
 msgid "OpenLibrary"
 msgstr "OpenLibrary"
 
-#: apps/catalog/models.py:34
+#: apps/catalog/models.py:34 apps/catalog/models.py:364
 msgid "OfeliaScan"
 msgstr "OfeliaScan"
 
-#: apps/catalog/models.py:35 apps/catalog/models.py:519
+#: apps/catalog/models.py:35 apps/catalog/models.py:537
 msgid "Import"
 msgstr "Fampidirana"
 
@@ -398,198 +398,206 @@ msgstr "Misokatra"
 msgid "Validée"
 msgstr "Nankatoavina"
 
-#: apps/catalog/models.py:392
+#: apps/catalog/models.py:365
+msgid "Caméra"
+msgstr "Kamera"
+
+#: apps/catalog/models.py:366
+msgid "Douchette"
+msgstr "Mpamaky barcode"
+
+#: apps/catalog/models.py:410
 msgid "session de scan"
 msgstr "session-na scan"
 
-#: apps/catalog/models.py:393
+#: apps/catalog/models.py:411
 msgid "sessions de scan"
 msgstr "session-na scan"
 
-#: apps/catalog/models.py:442
+#: apps/catalog/models.py:460
 msgid "item scanné"
 msgstr "akora voakaroka"
 
-#: apps/catalog/models.py:443
+#: apps/catalog/models.py:461
 msgid "items scannés"
 msgstr "akora voakaroka"
 
-#: apps/catalog/models.py:461 apps/catalog/models.py:524
+#: apps/catalog/models.py:479 apps/catalog/models.py:542
 #: apps/inventory/models.py:23 apps/loans/models.py:12
 #: templates/catalog/scan_session_list.html:24
 msgid "En cours"
 msgstr "An-dalana"
 
-#: apps/catalog/models.py:463 apps/catalog/models.py:526
+#: apps/catalog/models.py:481 apps/catalog/models.py:544
 msgid "Échec"
 msgstr "Tsy nahomby"
 
-#: apps/catalog/models.py:467
+#: apps/catalog/models.py:485
 msgid "Compléter les champs vides uniquement"
 msgstr "Fenoy ireo saha banga ihany"
 
-#: apps/catalog/models.py:468
+#: apps/catalog/models.py:486
 msgid "Écraser avec les données externes"
 msgstr "Soloy amin'ny angona ivelany"
 
-#: apps/catalog/models.py:506
+#: apps/catalog/models.py:524
 msgid "enrichissement métadonnées"
 msgstr "fanatsarana metadata"
 
-#: apps/catalog/models.py:507
+#: apps/catalog/models.py:525
 msgid "enrichissements métadonnées"
 msgstr "fanatsarana metadata"
 
-#: apps/catalog/models.py:518
+#: apps/catalog/models.py:536
 msgid "Vérification"
 msgstr "Fanamarinana"
 
-#: apps/catalog/models.py:576
+#: apps/catalog/models.py:594
 msgid "catalogage Excel"
 msgstr "katalaogy Excel"
 
-#: apps/catalog/models.py:577
+#: apps/catalog/models.py:595
 msgid "catalogages Excel"
 msgstr "katalaogy Excel"
 
-#: apps/catalog/views.py:210
+#: apps/catalog/views.py:211
 msgid "Notice créée."
 msgstr "Voaforona ny rakitra."
 
-#: apps/catalog/views.py:215 apps/catalog/views.py:255
+#: apps/catalog/views.py:216 apps/catalog/views.py:256
 #: templates/catalog/record_list.html:29 templates/core/dashboard.html:185
 msgid "Nouvelle notice"
 msgstr "Rakitra vaovao"
 
-#: apps/catalog/views.py:227
+#: apps/catalog/views.py:228
 msgid "Notice mise à jour."
 msgstr "Nohavaozina ny rakitra."
 
-#: apps/catalog/views.py:232
+#: apps/catalog/views.py:233
 msgid "Modifier la notice"
 msgstr "Ovay ny rakitra"
 
-#: apps/catalog/views.py:243
+#: apps/catalog/views.py:244
 msgid "Notice trouvée sur OpenLibrary."
 msgstr "Hita tao amin'ny OpenLibrary ny rakitra."
 
-#: apps/catalog/views.py:247
+#: apps/catalog/views.py:248
 msgid "Aucune réponse d'OpenLibrary — saisissez la notice à la main."
 msgstr "Tsy namaly ny OpenLibrary — soraty an-tanana ny rakitra."
 
-#: apps/catalog/views.py:269
+#: apps/catalog/views.py:270
 msgid "Suppression impossible : des exemplaires actifs sont rattachés."
 msgstr "Tsy azo fafana: misy kopia mavitrika mifandray aminy."
 
-#: apps/catalog/views.py:273
+#: apps/catalog/views.py:274
 msgid "Notice supprimée."
 msgstr "Voafafa ny rakitra."
 
-#: apps/catalog/views.py:299
+#: apps/catalog/views.py:300
 #, python-format
 msgid "%(n)s exemplaire(s) ajouté(s)."
 msgstr "Kopia %(n)s no nampidirina."
 
-#: apps/catalog/views.py:316
+#: apps/catalog/views.py:317
 msgid "Exemplaire mis à jour."
 msgstr "Nohavaozina ny kopia."
 
-#: apps/catalog/views.py:331
+#: apps/catalog/views.py:332
 msgid "Impossible : l'exemplaire est prêté ou réservé."
 msgstr "Tsy azo atao: nindramina na voatokana ny kopia."
 
-#: apps/catalog/views.py:335
+#: apps/catalog/views.py:336
 msgid "Exemplaire retiré du fonds."
 msgstr "Nesorina tamin'ny tahiry ny kopia."
 
-#: apps/catalog/views.py:366
+#: apps/catalog/views.py:367
 msgid "Exemplaire supprimé."
 msgstr "Voafafa ny kopia."
 
-#: apps/catalog/views.py:448
+#: apps/catalog/views.py:449
 #, python-format
 msgid "%(n)s notice(s) affectée(s) à la catégorie %(c)s."
 msgstr "%(n)s rakitra natendry ho amin'ny sokajy %(c)s."
 
-#: apps/catalog/views.py:454
+#: apps/catalog/views.py:455
 #, python-format
 msgid "%(n)s notice(s) sans catégorie (catégorie vidée)."
 msgstr "%(n)s rakitra tsy misy sokajy (sokajy nofafàna)."
 
-#: apps/catalog/views.py:497
+#: apps/catalog/views.py:498
 #, python-format
 msgid "%(n)s exemplaire(s) affecté(s) à l'emplacement %(l)s."
 msgstr "%(n)s kopia natendry ho amin'ny toerana %(l)s."
 
-#: apps/catalog/views.py:503
+#: apps/catalog/views.py:504
 #, python-format
 msgid "%(n)s exemplaire(s) sans emplacement (emplacement vidé)."
 msgstr "%(n)s kopia tsy misy toerana (toerana nofafàna)."
 
-#: apps/catalog/views.py:549
+#: apps/catalog/views.py:550
 #, python-format
 msgid "%(n)s notice(s) supprimée(s)."
 msgstr "%(n)s rakitra voafafa."
 
-#: apps/catalog/views.py:577
+#: apps/catalog/views.py:578
 msgid "Emplacement créé."
 msgstr "Toerana noforonina."
 
-#: apps/catalog/views.py:587 templates/catalog/location_list.html:25
+#: apps/catalog/views.py:588 templates/catalog/location_list.html:25
 msgid "Nouvel emplacement"
 msgstr "Toerana vaovao"
 
-#: apps/catalog/views.py:599
+#: apps/catalog/views.py:600
 msgid "Emplacement mis à jour."
 msgstr "Toerana nohavaozina."
 
-#: apps/catalog/views.py:609
+#: apps/catalog/views.py:610
 msgid "Modifier l'emplacement"
 msgstr "Hanova ny toerana"
 
-#: apps/catalog/views.py:626
+#: apps/catalog/views.py:627
 msgid "Emplacement supprimé."
 msgstr "Toerana voafafa."
 
-#: apps/catalog/views.py:673
+#: apps/catalog/views.py:679
 msgid "Lot de catalogage démarré."
 msgstr "Nanomboka ny andian-katalaogy."
 
-#: apps/catalog/views.py:726
+#: apps/catalog/views.py:749
 #, python-format
 msgid "ISBN %(isbn)s · %(lang)s"
 msgstr "ISBN %(isbn)s · %(lang)s"
 
-#: apps/catalog/views.py:750 apps/catalog/views.py:855
+#: apps/catalog/views.py:773 apps/catalog/views.py:878
 msgid "Ce lot est déjà validé."
 msgstr "Efa voamarina ity andiana ity."
 
-#: apps/catalog/views.py:755
+#: apps/catalog/views.py:778
 msgid "Déjà catalogué"
 msgstr "Efa voakatalaogy"
 
-#: apps/catalog/views.py:755
+#: apps/catalog/views.py:778
 msgid "Carte membre — pas un livre"
 msgstr "Karatra mpikambana — tsy boky"
 
-#: apps/catalog/views.py:758 apps/catalog/views.py:765
+#: apps/catalog/views.py:781 apps/catalog/views.py:788
 msgid "Code invalide."
 msgstr "Kaody tsy mety."
 
-#: apps/catalog/views.py:819
+#: apps/catalog/views.py:842
 #, python-format
 msgid "exemplaire %(n)s"
 msgstr "kopia %(n)s"
 
-#: apps/catalog/views.py:845
+#: apps/catalog/views.py:868
 msgid "Ligne retirée."
 msgstr "Voaesotra ny andalana."
 
-#: apps/catalog/views.py:879
+#: apps/catalog/views.py:902
 msgid "Aucun livre scanné à envoyer."
 msgstr "Tsy misy boky voa-scan halefa."
 
-#: apps/catalog/views.py:886
+#: apps/catalog/views.py:909
 #, python-format
 msgid ""
 "%(rec)s notice(s) créée(s), %(match)s complétée(s), %(cop)s exemplaire(s) "
@@ -597,19 +605,19 @@ msgid ""
 msgstr ""
 "%(rec)s notice noforonina, %(match)s nofenoina, %(cop)s kopia nampiana."
 
-#: apps/catalog/views.py:895
+#: apps/catalog/views.py:918
 msgid "Modifications enregistrées."
 msgstr "Voatahiry ny fanovana."
 
-#: apps/catalog/views.py:917
+#: apps/catalog/views.py:940
 msgid "Aucun fichier sélectionné."
 msgstr "Tsy misy rakitra voafidy."
 
-#: apps/catalog/views.py:940
+#: apps/catalog/views.py:963
 msgid "Vérification lancée. Suivez l'avancement ici."
 msgstr "Nanomboka ny fanamarinana. Araho eto ny fandrosoana."
 
-#: apps/catalog/views.py:950
+#: apps/catalog/views.py:973
 msgid "Import lancé. Suivez l'avancement ici."
 msgstr "Nanomboka ny fanafarana. Araho eto ny fandrosoana."
 
@@ -626,7 +634,7 @@ msgid "Durées prêts & réservations"
 msgstr "Faharetan'ny fampindramana sy famandrihana"
 
 #: apps/core/admin_views.py:38 templates/core/admin/backup_restore.html:11
-#: templates/core/advanced.html:193
+#: templates/core/advanced.html:203
 msgid "Sauvegardes"
 msgstr "Tahiry"
 
@@ -947,7 +955,7 @@ msgstr "Manokana ho an'ny"
 msgid "Retourné"
 msgstr "Naverina"
 
-#: apps/loans/models.py:14 templates/loans/return.html:76
+#: apps/loans/models.py:14 templates/loans/return.html:77
 #: templates/members/member_list.html:40
 msgid "En retard"
 msgstr "Tara"
@@ -1303,7 +1311,7 @@ msgid "Prêts retournés"
 msgstr "Fampindramana naverina"
 
 #: apps/reports/pdf.py:52 templates/core/dashboard.html:143
-#: templates/loans/return.html:122
+#: templates/loans/return.html:123
 msgid "Prêts en retard"
 msgstr "Fampindramana tara"
 
@@ -1336,7 +1344,7 @@ msgstr "Top 10 boky nindramina"
 #: templates/catalog/record_bulk_delete.html:44
 #: templates/catalog/record_list.html:129
 #: templates/catalog/record_list.html:206 templates/core/dashboard.html:314
-#: templates/inventory/session_report.html:107 templates/loans/return.html:127
+#: templates/inventory/session_report.html:107 templates/loans/return.html:128
 #: templates/members/member_detail.html:129
 #: templates/members/member_history.html:30
 #: templates/members/member_history.html:62
@@ -1364,9 +1372,9 @@ msgstr "Tsy misy hetsika"
 
 #: apps/setup/forms.py:20 apps/setup/views.py:29
 #: templates/accounts/login.html:27 templates/accounts/login.html:29
-#: templates/base.html:61 templates/base.html:63
+#: templates/base.html:65 templates/base.html:67
 #: templates/catalog/record_detail.html:56
-#: templates/catalog/scan_session.html:114
+#: templates/catalog/scan_session.html:135
 msgid "Langue"
 msgstr "Fiteny"
 
@@ -1524,7 +1532,7 @@ msgstr ""
 msgid "Connexion"
 msgstr "Hiditra"
 
-#: templates/accounts/login.html:19 templates/base.html:47
+#: templates/accounts/login.html:19 templates/base.html:51
 msgid "Bibliothèque communautaire"
 msgstr "Tranomboky iombonana"
 
@@ -1550,7 +1558,7 @@ msgstr "Anaran'ny mpampiasa"
 msgid "Se connecter"
 msgstr "Hiditra"
 
-#: templates/accounts/login.html:128 templates/base.html:108
+#: templates/accounts/login.html:128 templates/base.html:112
 msgid "Ofelia Box"
 msgstr "Ofelia Box"
 
@@ -1598,7 +1606,7 @@ msgstr "Fafao ny kaonty"
 #: templates/core/admin/settings_index.html:14
 #: templates/core/admin/settings_section.html:4
 #: templates/core/admin/settings_section.html:10
-#: templates/core/advanced.html:163
+#: templates/core/advanced.html:173
 msgid "Paramètres"
 msgstr "Safidy"
 
@@ -1673,19 +1681,19 @@ msgid "Nouveau"
 msgstr "Vaovao"
 
 #: templates/accounts/user_form.html:11 templates/accounts/user_form.html:22
-#: templates/base.html:80
+#: templates/base.html:84
 msgid "Mon compte"
 msgstr "Ny kaontiko"
 
 #: templates/accounts/user_form.html:43 templates/catalog/_record_form.html:64
 #: templates/catalog/item_form.html:33 templates/catalog/location_form.html:40
-#: templates/catalog/scan_session.html:157
+#: templates/catalog/scan_session.html:178
 #: templates/core/admin/settings_section.html:38
 #: templates/loans/consultation.html:27 templates/members/member_form.html:48
 msgid "Enregistrer"
 msgstr "Tehirizo"
 
-#: templates/accounts/user_list.html:19 templates/core/advanced.html:173
+#: templates/accounts/user_list.html:19 templates/core/advanced.html:183
 msgid "Comptes utilisateurs"
 msgstr "Kaontin'ny mpampiasa"
 
@@ -1766,21 +1774,21 @@ msgstr "Tsy afaka nampidirina ny scanner."
 msgid "Impossible de démarrer la caméra."
 msgstr "Tsy afaka nanomboka ny fakantsary."
 
-#: templates/base.html:70
+#: templates/base.html:74
 msgid "Guide utilisateur"
 msgstr "Torolàlana ho an'ny mpampiasa"
 
-#: templates/base.html:74
+#: templates/base.html:78
 msgid "Menu utilisateur"
 msgstr "Karazana mpampiasa"
 
-#: templates/base.html:85
+#: templates/base.html:89
 msgid "Déconnexion"
 msgstr "Hivoaka"
 
 #: templates/catalog/_record_form.html:27
 #: templates/catalog/_record_form.html:28 templates/catalog/record_list.html:47
-#: templates/catalog/record_list.html:48 templates/loans/return.html:44
+#: templates/catalog/record_list.html:48 templates/loans/return.html:45
 msgid "Scanner le code-barres"
 msgstr "Hi-scan ny code-barres"
 
@@ -1829,7 +1837,9 @@ msgstr "tsy voatery: mpanoratra, sarahina amin'ny teboka sy faingo (;)"
 msgid ""
 "optionnel : type de document (Livre, BD / manga, Revue, Journal, CD audio, "
 "Autre)"
-msgstr "tsy voatery: karazana boky (Boky, BD / manga, Gazetiboky, Gazety, CD audio, Hafa)"
+msgstr ""
+"tsy voatery: karazana boky (Boky, BD / manga, Gazetiboky, Gazety, CD audio, "
+"Hafa)"
 
 #: templates/catalog/excel_catalog/_import_form.html:15
 msgid "optionnel : éditeur"
@@ -1856,7 +1866,10 @@ msgid ""
 "Chaque colonne ci-dessus est facultative. Si elle est présente et remplie, "
 "elle écrase l'information correspondante de la fiche (même déjà existante) ; "
 "une cellule vide laisse l'information en place."
-msgstr "Tsy voatery ny tsanganana rehetra etsy ambony. Raha misy sy feno izy, dia manoloana ny saha mifanaraka amin'ny rakitra (na efa misy aza); ny sela banga dia mamela ny mombamomba misy."
+msgstr ""
+"Tsy voatery ny tsanganana rehetra etsy ambony. Raha misy sy feno izy, dia "
+"manoloana ny saha mifanaraka amin'ny rakitra (na efa misy aza); ny sela "
+"banga dia mamela ny mombamomba misy."
 
 #: templates/catalog/excel_catalog/_import_form.html:27
 msgid "Importer dans le catalogue"
@@ -1919,7 +1932,7 @@ msgstr "Mandroso"
 #: templates/catalog/excel_catalog/index.html:4
 #: templates/catalog/excel_catalog/index.html:11
 #: templates/catalog/excel_catalog/index.html:19
-#: templates/core/advanced.html:119
+#: templates/core/advanced.html:129
 msgid "Catalogage Excel"
 msgstr "Katalaogy Excel"
 
@@ -2067,7 +2080,7 @@ msgstr "Hamafa ny toerana"
 #: templates/catalog/location_form.html:11
 #: templates/catalog/location_list.html:4
 #: templates/catalog/location_list.html:11
-#: templates/catalog/location_list.html:19 templates/core/advanced.html:129
+#: templates/catalog/location_list.html:19 templates/core/advanced.html:139
 msgid "Emplacements"
 msgstr "Toerana"
 
@@ -2231,7 +2244,7 @@ msgid "Notices à supprimer"
 msgstr "Rakitra hofafana"
 
 #: templates/catalog/record_bulk_delete.html:46
-#: templates/core/dashboard.html:139 templates/loans/lend.html:83
+#: templates/core/dashboard.html:139 templates/loans/lend.html:84
 #: templates/members/member_detail.html:121
 #: templates/members/member_history.html:24
 msgid "Prêts en cours"
@@ -2298,8 +2311,8 @@ msgstr "Lohateny faharoa"
 #: templates/catalog/record_detail.html:52
 #: templates/catalog/record_list.html:131
 #: templates/catalog/record_list.html:208
-#: templates/catalog/scan_session.html:81
-#: templates/catalog/scan_session.html:115
+#: templates/catalog/scan_session.html:102
+#: templates/catalog/scan_session.html:136
 #: templates/members/member_detail.html:87
 #: templates/printing/cards_picker.html:32
 msgid "Catégorie"
@@ -2362,7 +2375,7 @@ msgid "Liste d'attente"
 msgstr "Lisitry ny fiandrasana"
 
 #: templates/catalog/record_detail.html:172 templates/core/dashboard.html:315
-#: templates/loans/return.html:128
+#: templates/loans/return.html:129
 msgid "Membre"
 msgstr "Mpikambana"
 
@@ -2390,7 +2403,7 @@ msgstr "Ny boky rehetra sy ny kopiany"
 
 #: templates/catalog/record_list.html:25
 #: templates/catalog/scan_session_form.html:4
-#: templates/catalog/scan_session_form.html:14
+#: templates/catalog/scan_session_form.html:18
 msgid "Cataloguer en scannant"
 msgstr "Mikatalaogy amin'ny scan"
 
@@ -2447,7 +2460,7 @@ msgstr "Marihina avokoa"
 
 #: templates/catalog/record_list.html:132
 #: templates/catalog/record_list.html:209
-#: templates/catalog/scan_session.html:118
+#: templates/catalog/scan_session.html:139
 msgid "Ex."
 msgstr "Kopia"
 
@@ -2494,28 +2507,38 @@ msgstr "Nalefa tany amin'ny katalaogy ity andiana ity."
 msgid "Imprimer les étiquettes de ce lot"
 msgstr "Atontay ny etikety amin'ity andiana ity"
 
-#: templates/catalog/scan_session.html:49
+#: templates/catalog/scan_session.html:51
+msgid "Scannez les livres avec la douchette"
+msgstr "Scannerao ny boky amin'ny mpamaky barcode"
+
+#: templates/catalog/scan_session.html:54
 #: templates/inventory/session_report.html:55
 msgid "Ouverture…"
 msgstr "Misokatra…"
 
-#: templates/catalog/scan_session.html:50
+#: templates/catalog/scan_session.html:55
 msgid "Scanner des livres"
 msgstr "Mi-scan boky"
 
-#: templates/catalog/scan_session.html:53
+#: templates/catalog/scan_session.html:59
 msgid "titre(s) scanné(s)"
 msgstr "lohateny voa-scan"
 
-#: templates/catalog/scan_session.html:58
+#: templates/catalog/scan_session.html:65
 msgid "Saisir un ISBN à la main"
 msgstr "Soraty an-tanana ny ISBN"
 
-#: templates/catalog/scan_session.html:59
+#: templates/catalog/scan_session.html:66
 msgid "Ajouter"
 msgstr "Hanampy"
 
-#: templates/catalog/scan_session.html:63
+#: templates/catalog/scan_session.html:71
+msgid ""
+"Scannez sans cliquer nulle part. Représentez un même livre après quelques "
+"secondes pour ajouter un 2ᵉ exemplaire."
+msgstr "Scannerao fa tsy mila mikitika na aiza na aiza. Asehoy indray ilay boky rehefa afaka segondra vitsivitsy mba hanampiana kopia faha-2."
+
+#: templates/catalog/scan_session.html:73
 msgid ""
 "Astuce : représentez un même livre après quelques secondes pour ajouter un "
 "2ᵉ exemplaire."
@@ -2523,50 +2546,78 @@ msgstr ""
 "Torohevitra: asehoy indray ilay boky aorian'ny segondra vitsivitsy mba "
 "hanampy kopia faha-2."
 
-#: templates/catalog/scan_session.html:78
+#: templates/catalog/scan_session.html:79
+msgid "Terminer et voir le lot"
+msgstr "Vitao ary jereo ny andiany"
+
+#: templates/catalog/scan_session.html:83
+msgid ""
+"Quand vous avez fini de scanner, cliquez ici pour vérifier la liste et "
+"l’envoyer au catalogue."
+msgstr "Rehefa vita ny fanaovana scan, tsindrio eto mba hijerena ny lisitra sy handefasana azy any amin'ny katalaogy."
+
+#: templates/catalog/scan_session.html:99
 msgid "Modifier les lignes cochées"
 msgstr "Hanova ny andalana voamarika"
 
-#: templates/catalog/scan_session.html:83
-#: templates/catalog/scan_session.html:90
-#: templates/catalog/scan_session.html:97
+#: templates/catalog/scan_session.html:104
+#: templates/catalog/scan_session.html:111
+#: templates/catalog/scan_session.html:118
 msgid "(ne pas changer)"
 msgstr "(aza ovaina)"
 
-#: templates/catalog/scan_session.html:102
+#: templates/catalog/scan_session.html:123
 msgid "Appliquer aux lignes cochées"
 msgstr "Ampiharo amin'ny andalana voamarika"
 
-#: templates/catalog/scan_session.html:105
+#: templates/catalog/scan_session.html:126
 msgid "Cochez des lignes, choisissez les valeurs, puis appliquez."
 msgstr "Mariho ny andalana, safidio ny sanda, dia ampiharo."
 
-#: templates/catalog/scan_session.html:113
+#: templates/catalog/scan_session.html:134
 msgid "Auteur / Titre"
 msgstr "Mpanoratra / Lohateny"
 
-#: templates/catalog/scan_session.html:146
+#: templates/catalog/scan_session.html:167
 msgid "Retirer"
 msgstr "Esory"
 
-#: templates/catalog/scan_session.html:159
+#: templates/catalog/scan_session.html:180
 msgid "Envoyer au catalogue"
 msgstr "Alefa any amin'ny katalaogy"
 
-#: templates/catalog/scan_session.html:163
+#: templates/catalog/scan_session.html:186
+msgid ""
+"Scannez vos livres avec la douchette ci-dessus. La liste se remplit au fur "
+"et à mesure ; cliquez sur « Terminer et voir le lot » pour l’éditer et "
+"l’envoyer au catalogue."
+msgstr "Scannerao ny bokinao amin'ny mpamaky barcode eo ambony. Mihafeno tsikelikely ny lisitra ; tsindrio « Vitao ary jereo ny andiany » mba hanova azy sy handefa azy any amin'ny katalaogy."
+
+#: templates/catalog/scan_session.html:188
 msgid "Aucun livre scanné pour l’instant. Lancez le scan ci-dessus."
 msgstr "Tsy misy boky voa-scan aloha. Atombohy ny scan eo ambony."
 
+#: templates/catalog/scan_session_form.html:4
 #: templates/catalog/scan_session_form.html:15
+msgid "Cataloguer à la douchette"
+msgstr "Manao katalaogy amin'ny mpamaky barcode"
+
+#: templates/catalog/scan_session_form.html:16
+msgid ""
+"Choisissez les valeurs par défaut du lot, puis scannez les livres avec la "
+"douchette USB branchée sur ce poste."
+msgstr "Fidio ny sanda mialoha ho an'ny andiany, avy eo scannerao ny boky amin'ny mpamaky barcode USB mifandray amin'ity solosaina ity."
+
+#: templates/catalog/scan_session_form.html:19
 msgid ""
 "Choisissez les valeurs par défaut du lot, puis scannez les livres en rafale."
 msgstr "Safidio ny sanda lasitra an'ny andiana, dia scannevo haingana ny boky."
 
-#: templates/catalog/scan_session_form.html:19
+#: templates/catalog/scan_session_form.html:24
 msgid "Lots précédents"
 msgstr "Andiana teo aloha"
 
-#: templates/catalog/scan_session_form.html:31
+#: templates/catalog/scan_session_form.html:36
 msgid "Démarrer le catalogage"
 msgstr "Atombohy ny katalaogy"
 
@@ -2648,7 +2699,7 @@ msgstr "Avereno"
 #: templates/core/admin/diagnostics.html:4
 #: templates/core/admin/diagnostics.html:11
 #: templates/core/admin/diagnostics.html:19
-#: templates/core/admin/settings_index.html:53 templates/core/advanced.html:203
+#: templates/core/admin/settings_index.html:53 templates/core/advanced.html:213
 msgid "Diagnostic"
 msgstr "Fitsapana"
 
@@ -2776,7 +2827,7 @@ msgstr "tratra ny fetra — averina atao"
 #: templates/core/admin/enrichment_index.html:4
 #: templates/core/admin/enrichment_index.html:11
 #: templates/core/admin/enrichment_index.html:19
-#: templates/core/advanced.html:139
+#: templates/core/advanced.html:149
 msgid "Enrichissement métadonnées"
 msgstr "Fanatsarana metadata"
 
@@ -2854,7 +2905,7 @@ msgstr "Tsy nisy fanatsarana natomboka."
 
 #: templates/core/admin/ofeliascan.html:4
 #: templates/core/admin/ofeliascan.html:11
-#: templates/core/admin/ofeliascan.html:19 templates/core/advanced.html:183
+#: templates/core/admin/ofeliascan.html:19 templates/core/advanced.html:193
 msgid "Connexion OfeliaScan"
 msgstr "Fifandraisana OfeliaScan"
 
@@ -3071,7 +3122,16 @@ msgstr "Katalaogy amin'ny scan"
 msgid "Scanner les ISBN en rafale pour créer les notices et leurs exemplaires."
 msgstr "Scannevo haingana ny ISBN mba hamorona ireo notice sy ny kopiany."
 
+#: templates/core/advanced.html:119
+msgid "Catalogage par douchette"
+msgstr "Katalaogy amin'ny mpamaky barcode"
+
 #: templates/core/advanced.html:120
+msgid ""
+"Scanner les ISBN avec la douchette USB branchée sur ce poste, sans caméra."
+msgstr "Scannerao ny ISBN amin'ny mpamaky barcode USB mifandray amin'ity solosaina ity, tsy misy kamera."
+
+#: templates/core/advanced.html:130
 msgid ""
 "Vérifier ou importer un fichier Excel d'inventaire (ISBN, titre, auteur, "
 "emplacement, catégorie)."
@@ -3079,7 +3139,7 @@ msgstr ""
 "Hamarino na afaro rakitra Excel an'ny fanisana (ISBN, lohateny, mpanoratra, "
 "toerana, sokajy)."
 
-#: templates/core/advanced.html:130
+#: templates/core/advanced.html:140
 msgid ""
 "Définir les zones de rangement (Salle adulte, Réserve, A1…). Utilisé au "
 "catalogage et au récolement."
@@ -3087,7 +3147,7 @@ msgstr ""
 "Famaritana ny toerana fitehirizana (Efitra olon-dehibe, Tahirim-bola, A1…). "
 "Ampiasaina amin'ny fanaovana katalaogy sy ny fandanjana."
 
-#: templates/core/advanced.html:140
+#: templates/core/advanced.html:150
 msgid ""
 "Compléter ou écraser les métadonnées du catalogue depuis OpenLibrary, Google "
 "Books, BNF et BNE — en tâche de fond."
@@ -3095,11 +3155,11 @@ msgstr ""
 "Manatsara na manolo ny metadata-n'ny katalaogy avy amin'ny OpenLibrary, "
 "Google Books, BNF sy BNE — amin'ny asa aoriana."
 
-#: templates/core/advanced.html:154
+#: templates/core/advanced.html:164
 msgid "Administration"
 msgstr "Fitantanana"
 
-#: templates/core/advanced.html:164
+#: templates/core/advanced.html:174
 msgid ""
 "Identité de la bibliothèque, langues activées, format des étiquettes/cartes, "
 "sauvegardes, ZeroTier."
@@ -3107,7 +3167,7 @@ msgstr ""
 "Mombamomba ny tranomboky, fiteny mavitrika, endriky ny marika/karatra, "
 "tahiry, ZeroTier."
 
-#: templates/core/advanced.html:174
+#: templates/core/advanced.html:184
 msgid ""
 "Création, édition, réinitialisation de mot de passe des comptes "
 "bibliothécaires et administrateurs."
@@ -3115,7 +3175,7 @@ msgstr ""
 "Famoronana, fanovana, famerenana ny teny miafin'ny kaontin'ny mpikirakira "
 "tranomboky sy mpitantana."
 
-#: templates/core/advanced.html:184
+#: templates/core/advanced.html:194
 msgid ""
 "Identifiants autorisés pour l'application mobile OfeliaScan et adresse de la "
 "box."
@@ -3123,7 +3183,7 @@ msgstr ""
 "Mari-pamantarana nekena ho an'ny rindrambaiko finday OfeliaScan sy ny "
 "adiresin'ny vata."
 
-#: templates/core/advanced.html:194
+#: templates/core/advanced.html:204
 msgid ""
 "Déclencher une sauvegarde manuelle, configurer la fréquence et le cloud, "
 "restaurer depuis un fichier."
@@ -3131,7 +3191,7 @@ msgstr ""
 "Manomboka tahiry an-tanana, mametraka ny fahafaharetana sy ny tranonkala, "
 "mamerina avy amin'ny rakitra."
 
-#: templates/core/advanced.html:204
+#: templates/core/advanced.html:214
 msgid ""
 "État système : version, espace disque, file django-q2, derniers paramètres "
 "modifiés."
@@ -3139,11 +3199,11 @@ msgstr ""
 "Toetry ny rafitra: andiany, toeran-tsoratra, filaharan'ny django-q2, safidy "
 "nasiam-panovana farany."
 
-#: templates/core/advanced.html:213
+#: templates/core/advanced.html:223
 msgid "Administration Django"
 msgstr "Fitantanana Django"
 
-#: templates/core/advanced.html:214
+#: templates/core/advanced.html:224
 msgid ""
 "Gestion fine : catégories, tags, emplacements, catégories d'usagers (réservé "
 "au support technique)."
@@ -3350,7 +3410,7 @@ msgstr "Tambajotra"
 msgid "Relances à faire"
 msgstr "Fampahatsiarovana hatao"
 
-#: templates/core/dashboard.html:316 templates/loans/return.html:129
+#: templates/core/dashboard.html:316 templates/loans/return.html:130
 #: templates/members/member_detail.html:130
 #: templates/members/member_history.html:32
 #: templates/reports/overdue_list.html:36
@@ -3513,8 +3573,8 @@ msgstr "andrasana"
 msgid "Saisir un code Ofelia à la main"
 msgstr "Soraty an-tanana ny kaody Ofelia"
 
-#: templates/inventory/session_report.html:67 templates/loans/lend.html:39
-#: templates/loans/lend.html:113 templates/loans/return.html:36
+#: templates/inventory/session_report.html:67 templates/loans/lend.html:40
+#: templates/loans/lend.html:114 templates/loans/return.html:37
 msgid "Valider"
 msgstr "Hankato"
 
@@ -3594,52 +3654,52 @@ msgstr "Manisa ny antontan-taratasy novakiana tsy nivoaka ny tranomboky."
 msgid "1 · Membre"
 msgstr "1 · Mpikambana"
 
-#: templates/loans/lend.html:36
+#: templates/loans/lend.html:37
 msgid "Scanner ou saisir le n° de carte"
 msgstr "Skano na soraty ny laharan'ny karatra"
 
-#: templates/loans/lend.html:47 templates/members/member_list.html:61
+#: templates/loans/lend.html:48 templates/members/member_list.html:61
 #: templates/members/member_list.html:62
 msgid "Scanner la carte"
 msgstr "Manaova scan amin'ny karatra"
 
-#: templates/loans/lend.html:89
+#: templates/loans/lend.html:90
 msgid "échéance"
 msgstr "fe-potoana"
 
-#: templates/loans/lend.html:99
+#: templates/loans/lend.html:100
 msgid "2 · Livres"
 msgstr "2 · Boky"
 
-#: templates/loans/lend.html:110
+#: templates/loans/lend.html:111
 msgid "Scanner le code-barres du livre"
 msgstr "Skano ny kaody tsipiky ny boky"
 
-#: templates/loans/lend.html:121
+#: templates/loans/lend.html:122
 msgid "Scanner un livre"
 msgstr "Manaova scan amin'ny boky"
 
-#: templates/loans/lend.html:128
+#: templates/loans/lend.html:129
 msgid "Panier"
 msgstr "Vata"
 
-#: templates/loans/lend.html:153
+#: templates/loans/lend.html:154
 msgid "Aucun livre scanné pour l'instant."
 msgstr "Tsy misy boky voaskana aloha."
 
-#: templates/loans/lend.html:159
+#: templates/loans/lend.html:160
 msgid "3 · Confirmer"
 msgstr "3 · Hamafiso"
 
-#: templates/loans/lend.html:165
+#: templates/loans/lend.html:166
 msgid "Note (facultatif)"
 msgstr "Naoty (tsy voatery)"
 
-#: templates/loans/lend.html:166
+#: templates/loans/lend.html:167
 msgid "Ex. : override réservation"
 msgstr "Oh.: manova famandrihana"
 
-#: templates/loans/lend.html:171
+#: templates/loans/lend.html:172
 #, python-format
 msgid "Prêter %(n)s livre"
 msgid_plural "Prêter %(n)s livres"
@@ -3713,35 +3773,35 @@ msgstr "Tsy misy famandrihana miandry."
 msgid "Scanner un livre à rendre"
 msgstr "Manaova scan amin'ny boky averina"
 
-#: templates/loans/return.html:33
+#: templates/loans/return.html:34
 msgid "Scanner le code-barres du livre rendu"
 msgstr "Skano ny kaody tsipiky ny boky naverina"
 
-#: templates/loans/return.html:52
+#: templates/loans/return.html:53
 msgid "Retours de la séance"
 msgstr "Famerenana tamin'ity fotoana ity"
 
-#: templates/loans/return.html:56
+#: templates/loans/return.html:57
 msgid "Vider"
 msgstr "Foano"
 
-#: templates/loans/return.html:70
+#: templates/loans/return.html:71
 msgid "perdu réintégré"
 msgstr "very naverina"
 
-#: templates/loans/return.html:71
+#: templates/loans/return.html:72
 msgid "aucun prêt actif"
 msgstr "tsy misy fampindramana mavitrika"
 
-#: templates/loans/return.html:80
+#: templates/loans/return.html:81
 msgid "À temps"
 msgstr "Ara-potoana"
 
-#: templates/loans/return.html:90
+#: templates/loans/return.html:91
 msgid "Réservations à relancer"
 msgstr "Famandrihana arenina"
 
-#: templates/loans/return.html:107
+#: templates/loans/return.html:108
 #, fuzzy, python-format
 #| msgid "%(n)s prêt(s) en retard."
 msgid "%(n)s jour de retard"
@@ -3749,16 +3809,16 @@ msgid_plural "%(n)s jours de retard"
 msgstr[0] "Fampindramana %(n)s no tara."
 msgstr[1] "Fampindramana %(n)s no tara."
 
-#: templates/loans/return.html:109
+#: templates/loans/return.html:110
 msgid "Expire aujourd'hui"
 msgstr "Tapitra androany"
 
-#: templates/loans/return.html:111
+#: templates/loans/return.html:112
 #, python-format
 msgid "Encore %(n)s jours"
 msgstr "Mbola %(n)s andro"
 
-#: templates/loans/return.html:117
+#: templates/loans/return.html:118
 msgid ""
 "Contacter ces membres pour qu'ils viennent retirer leur livre avant qu'il ne "
 "reparte au suivant."

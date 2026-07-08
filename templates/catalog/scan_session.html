@@ -46,22 +46,43 @@
 {% if user.is_librarian %}
 <div class="card scan-panel{% if request.GET.scan %} scan-panel--pulse{% endif %}" style="margin-bottom:18px">
     <div class="scan-panel-head">
+        {% if input_mode == "douchette" %}
+        <div style="font-weight:700">
+            {% icon "scan-barcode" size="18px" %} {% trans "Scannez les livres avec la douchette" %}
+        </div>
+        {% else %}
         <button type="button" class="btn btn--primary js-scan-cataloging" data-busy-label="{% trans 'Ouverture…' %}">
             {% icon "scan-barcode" size="18px" %} {% trans "Scanner des livres" %}
         </button>
+        {% endif %}
         <div class="scan-panel-counts">
             <strong id="cat-scan-count">{{ items|length }}</strong> {% trans "titre(s) scanné(s)" %}
         </div>
     </div>
     <form id="cat-manual-form" class="scan-manual">
         <input type="text" name="ean" inputmode="numeric" autocomplete="off" class="form-control"
+               {% if input_mode == "douchette" %}data-wedge-primary autofocus{% endif %}
                placeholder="{% trans 'Saisir un ISBN à la main' %}">
         <button type="submit" class="btn btn--ghost btn--sm">{% trans "Ajouter" %}</button>
     </form>
     <div id="cat-scan-live" class="inv-scan-live"></div>
     <p class="help-hint" style="margin-top:8px">
+        {% if input_mode == "douchette" %}
+        {% trans "Scannez sans cliquer nulle part. Représentez un même livre après quelques secondes pour ajouter un 2ᵉ exemplaire." %}
+        {% else %}
         {% trans "Astuce : représentez un même livre après quelques secondes pour ajouter un 2ᵉ exemplaire." %}
+        {% endif %}
     </p>
+    {% if input_mode == "douchette" %}
+    <div class="form-actions" style="margin-top:12px">
+        <a href="{% url 'catalog:scan_session' session.pk %}" class="btn btn--primary">
+            {% icon "check" size="16px" %} {% trans "Terminer et voir le lot" %}
+        </a>
+    </div>
+    <p class="help-hint" style="margin-top:6px">
+        {% trans "Quand vous avez fini de scanner, cliquez ici pour vérifier la liste et l’envoyer au catalogue." %}
+    </p>
+    {% endif %}
 </div>
 {% endif %}
 
@@ -160,7 +181,13 @@
         </button>
     </div>
     {% else %}
-    <div class="card"><p class="muted">{% trans "Aucun livre scanné pour l’instant. Lancez le scan ci-dessus." %}</p></div>
+    <div class="card"><p class="muted">
+        {% if input_mode == "douchette" %}
+        {% trans "Scannez vos livres avec la douchette ci-dessus. La liste se remplit au fur et à mesure ; cliquez sur « Terminer et voir le lot » pour l’éditer et l’envoyer au catalogue." %}
+        {% else %}
+        {% trans "Aucun livre scanné pour l’instant. Lancez le scan ci-dessus." %}
+        {% endif %}
+    </p></div>
     {% endif %}
 </form>
 

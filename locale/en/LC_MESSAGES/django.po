@@ -6,7 +6,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: BibliOfelia 1.0\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2026-07-03 16:48+0000\n"
+"POT-Creation-Date: 2026-07-08 23:21+0000\n"
 "PO-Revision-Date: 2026-05-22 00:00+0000\n"
 "Last-Translator: Claude Code\n"
 "Language-Team: English\n"
@@ -75,14 +75,14 @@ msgstr "Impossible: at least one active superadmin must remain."
 msgid "Compte %(u)s supprimé."
 msgstr "Account %(u)s deleted."
 
-#: apps/api/models.py:23 apps/catalog/models.py:460 apps/catalog/models.py:523
+#: apps/api/models.py:23 apps/catalog/models.py:478 apps/catalog/models.py:541
 #: apps/core/forms.py:322 apps/loans/models.py:20
 #: templates/catalog/record_detail.html:192
 #: templates/loans/reservations.html:97
 msgid "En attente"
 msgstr "Pending"
 
-#: apps/api/models.py:24 apps/catalog/models.py:462 apps/catalog/models.py:525
+#: apps/api/models.py:24 apps/catalog/models.py:480 apps/catalog/models.py:543
 msgid "Terminé"
 msgstr "Finished"
 
@@ -130,8 +130,8 @@ msgid "ISSN invalide (8 caractères, ex. 1234-5679)."
 msgstr "Invalid ISSN (8 characters, e.g. 1234-5679)."
 
 #: apps/catalog/forms.py:114 templates/catalog/record_detail.html:92
-#: templates/catalog/scan_session.html:88
-#: templates/catalog/scan_session.html:116
+#: templates/catalog/scan_session.html:109
+#: templates/catalog/scan_session.html:137
 #: templates/printing/labels_picker.html:29
 #: templates/printing/labels_picker.html:57
 msgid "Emplacement"
@@ -139,8 +139,8 @@ msgstr "Location"
 
 #: apps/catalog/forms.py:115 templates/catalog/excel_catalog/index.html:51
 #: templates/catalog/record_detail.html:93
-#: templates/catalog/scan_session.html:95
-#: templates/catalog/scan_session.html:117
+#: templates/catalog/scan_session.html:116
+#: templates/catalog/scan_session.html:138
 #: templates/core/admin/enrichment_index.html:123
 msgid "État"
 msgstr "Condition"
@@ -233,11 +233,11 @@ msgstr "Manual entry"
 msgid "OpenLibrary"
 msgstr "OpenLibrary"
 
-#: apps/catalog/models.py:34
+#: apps/catalog/models.py:34 apps/catalog/models.py:364
 msgid "OfeliaScan"
 msgstr "OfeliaScan"
 
-#: apps/catalog/models.py:35 apps/catalog/models.py:519
+#: apps/catalog/models.py:35 apps/catalog/models.py:537
 msgid "Import"
 msgstr "Import"
 
@@ -395,198 +395,206 @@ msgstr "Open"
 msgid "Validée"
 msgstr "Finalized"
 
-#: apps/catalog/models.py:392
+#: apps/catalog/models.py:365
+msgid "Caméra"
+msgstr "Camera"
+
+#: apps/catalog/models.py:366
+msgid "Douchette"
+msgstr "Barcode scanner"
+
+#: apps/catalog/models.py:410
 msgid "session de scan"
 msgstr "scan session"
 
-#: apps/catalog/models.py:393
+#: apps/catalog/models.py:411
 msgid "sessions de scan"
 msgstr "scan sessions"
 
-#: apps/catalog/models.py:442
+#: apps/catalog/models.py:460
 msgid "item scanné"
 msgstr "scanned item"
 
-#: apps/catalog/models.py:443
+#: apps/catalog/models.py:461
 msgid "items scannés"
 msgstr "scanned items"
 
-#: apps/catalog/models.py:461 apps/catalog/models.py:524
+#: apps/catalog/models.py:479 apps/catalog/models.py:542
 #: apps/inventory/models.py:23 apps/loans/models.py:12
 #: templates/catalog/scan_session_list.html:24
 msgid "En cours"
 msgstr "In progress"
 
-#: apps/catalog/models.py:463 apps/catalog/models.py:526
+#: apps/catalog/models.py:481 apps/catalog/models.py:544
 msgid "Échec"
 msgstr "Failed"
 
-#: apps/catalog/models.py:467
+#: apps/catalog/models.py:485
 msgid "Compléter les champs vides uniquement"
 msgstr "Fill empty fields only"
 
-#: apps/catalog/models.py:468
+#: apps/catalog/models.py:486
 msgid "Écraser avec les données externes"
 msgstr "Overwrite with external data"
 
-#: apps/catalog/models.py:506
+#: apps/catalog/models.py:524
 msgid "enrichissement métadonnées"
 msgstr "metadata enrichment"
 
-#: apps/catalog/models.py:507
+#: apps/catalog/models.py:525
 msgid "enrichissements métadonnées"
 msgstr "metadata enrichments"
 
-#: apps/catalog/models.py:518
+#: apps/catalog/models.py:536
 msgid "Vérification"
 msgstr "Verification"
 
-#: apps/catalog/models.py:576
+#: apps/catalog/models.py:594
 msgid "catalogage Excel"
 msgstr "Excel cataloging"
 
-#: apps/catalog/models.py:577
+#: apps/catalog/models.py:595
 msgid "catalogages Excel"
 msgstr "Excel catalogings"
 
-#: apps/catalog/views.py:210
+#: apps/catalog/views.py:211
 msgid "Notice créée."
 msgstr "Record created."
 
-#: apps/catalog/views.py:215 apps/catalog/views.py:255
+#: apps/catalog/views.py:216 apps/catalog/views.py:256
 #: templates/catalog/record_list.html:29 templates/core/dashboard.html:185
 msgid "Nouvelle notice"
 msgstr "New record"
 
-#: apps/catalog/views.py:227
+#: apps/catalog/views.py:228
 msgid "Notice mise à jour."
 msgstr "Record updated."
 
-#: apps/catalog/views.py:232
+#: apps/catalog/views.py:233
 msgid "Modifier la notice"
 msgstr "Edit record"
 
-#: apps/catalog/views.py:243
+#: apps/catalog/views.py:244
 msgid "Notice trouvée sur OpenLibrary."
 msgstr "Record found on OpenLibrary."
 
-#: apps/catalog/views.py:247
+#: apps/catalog/views.py:248
 msgid "Aucune réponse d'OpenLibrary — saisissez la notice à la main."
 msgstr "No response from OpenLibrary — enter the record manually."
 
-#: apps/catalog/views.py:269
+#: apps/catalog/views.py:270
 msgid "Suppression impossible : des exemplaires actifs sont rattachés."
 msgstr "Cannot delete: active copies are attached."
 
-#: apps/catalog/views.py:273
+#: apps/catalog/views.py:274
 msgid "Notice supprimée."
 msgstr "Record deleted."
 
-#: apps/catalog/views.py:299
+#: apps/catalog/views.py:300
 #, python-format
 msgid "%(n)s exemplaire(s) ajouté(s)."
 msgstr "%(n)s copy/copies added."
 
-#: apps/catalog/views.py:316
+#: apps/catalog/views.py:317
 msgid "Exemplaire mis à jour."
 msgstr "Copy updated."
 
-#: apps/catalog/views.py:331
+#: apps/catalog/views.py:332
 msgid "Impossible : l'exemplaire est prêté ou réservé."
 msgstr "Not possible: the copy is on loan or reserved."
 
-#: apps/catalog/views.py:335
+#: apps/catalog/views.py:336
 msgid "Exemplaire retiré du fonds."
 msgstr "Copy removed from the collection."
 
-#: apps/catalog/views.py:366
+#: apps/catalog/views.py:367
 msgid "Exemplaire supprimé."
 msgstr "Copy deleted."
 
-#: apps/catalog/views.py:448
+#: apps/catalog/views.py:449
 #, python-format
 msgid "%(n)s notice(s) affectée(s) à la catégorie %(c)s."
 msgstr "%(n)s record(s) assigned to category %(c)s."
 
-#: apps/catalog/views.py:454
+#: apps/catalog/views.py:455
 #, python-format
 msgid "%(n)s notice(s) sans catégorie (catégorie vidée)."
 msgstr "%(n)s record(s) without category (category cleared)."
 
-#: apps/catalog/views.py:497
+#: apps/catalog/views.py:498
 #, python-format
 msgid "%(n)s exemplaire(s) affecté(s) à l'emplacement %(l)s."
 msgstr "%(n)s copy(ies) assigned to location %(l)s."
 
-#: apps/catalog/views.py:503
+#: apps/catalog/views.py:504
 #, python-format
 msgid "%(n)s exemplaire(s) sans emplacement (emplacement vidé)."
 msgstr "%(n)s copy(ies) without location (location cleared)."
 
-#: apps/catalog/views.py:549
+#: apps/catalog/views.py:550
 #, python-format
 msgid "%(n)s notice(s) supprimée(s)."
 msgstr "%(n)s record(s) deleted."
 
-#: apps/catalog/views.py:577
+#: apps/catalog/views.py:578
 msgid "Emplacement créé."
 msgstr "Location created."
 
-#: apps/catalog/views.py:587 templates/catalog/location_list.html:25
+#: apps/catalog/views.py:588 templates/catalog/location_list.html:25
 msgid "Nouvel emplacement"
 msgstr "New location"
 
-#: apps/catalog/views.py:599
+#: apps/catalog/views.py:600
 msgid "Emplacement mis à jour."
 msgstr "Location updated."
 
-#: apps/catalog/views.py:609
+#: apps/catalog/views.py:610
 msgid "Modifier l'emplacement"
 msgstr "Edit location"
 
-#: apps/catalog/views.py:626
+#: apps/catalog/views.py:627
 msgid "Emplacement supprimé."
 msgstr "Location deleted."
 
-#: apps/catalog/views.py:673
+#: apps/catalog/views.py:679
 msgid "Lot de catalogage démarré."
 msgstr "Cataloging batch started."
 
-#: apps/catalog/views.py:726
+#: apps/catalog/views.py:749
 #, python-format
 msgid "ISBN %(isbn)s · %(lang)s"
 msgstr "ISBN %(isbn)s · %(lang)s"
 
-#: apps/catalog/views.py:750 apps/catalog/views.py:855
+#: apps/catalog/views.py:773 apps/catalog/views.py:878
 msgid "Ce lot est déjà validé."
 msgstr "This batch is already validated."
 
-#: apps/catalog/views.py:755
+#: apps/catalog/views.py:778
 msgid "Déjà catalogué"
 msgstr "Already cataloged"
 
-#: apps/catalog/views.py:755
+#: apps/catalog/views.py:778
 msgid "Carte membre — pas un livre"
 msgstr "Member card — not a book"
 
-#: apps/catalog/views.py:758 apps/catalog/views.py:765
+#: apps/catalog/views.py:781 apps/catalog/views.py:788
 msgid "Code invalide."
 msgstr "Invalid code."
 
-#: apps/catalog/views.py:819
+#: apps/catalog/views.py:842
 #, python-format
 msgid "exemplaire %(n)s"
 msgstr "copy %(n)s"
 
-#: apps/catalog/views.py:845
+#: apps/catalog/views.py:868
 msgid "Ligne retirée."
 msgstr "Row removed."
 
-#: apps/catalog/views.py:879
+#: apps/catalog/views.py:902
 msgid "Aucun livre scanné à envoyer."
 msgstr "No scanned book to send."
 
-#: apps/catalog/views.py:886
+#: apps/catalog/views.py:909
 #, python-format
 msgid ""
 "%(rec)s notice(s) créée(s), %(match)s complétée(s), %(cop)s exemplaire(s) "
@@ -594,19 +602,19 @@ msgid ""
 msgstr ""
 "%(rec)s record(s) created, %(match)s completed, %(cop)s copy(ies) added."
 
-#: apps/catalog/views.py:895
+#: apps/catalog/views.py:918
 msgid "Modifications enregistrées."
 msgstr "Changes saved."
 
-#: apps/catalog/views.py:917
+#: apps/catalog/views.py:940
 msgid "Aucun fichier sélectionné."
 msgstr "No file selected."
 
-#: apps/catalog/views.py:940
+#: apps/catalog/views.py:963
 msgid "Vérification lancée. Suivez l'avancement ici."
 msgstr "Verification started. Track progress here."
 
-#: apps/catalog/views.py:950
+#: apps/catalog/views.py:973
 msgid "Import lancé. Suivez l'avancement ici."
 msgstr "Import started. Track progress here."
 
@@ -623,7 +631,7 @@ msgid "Durées prêts & réservations"
 msgstr "Loan & reservation durations"
 
 #: apps/core/admin_views.py:38 templates/core/admin/backup_restore.html:11
-#: templates/core/advanced.html:193
+#: templates/core/advanced.html:203
 msgid "Sauvegardes"
 msgstr "Backups"
 
@@ -940,7 +948,7 @@ msgstr "Reserve for"
 msgid "Retourné"
 msgstr "Returned"
 
-#: apps/loans/models.py:14 templates/loans/return.html:76
+#: apps/loans/models.py:14 templates/loans/return.html:77
 #: templates/members/member_list.html:40
 msgid "En retard"
 msgstr "Overdue"
@@ -1295,7 +1303,7 @@ msgid "Prêts retournés"
 msgstr "Returned loans"
 
 #: apps/reports/pdf.py:52 templates/core/dashboard.html:143
-#: templates/loans/return.html:122
+#: templates/loans/return.html:123
 msgid "Prêts en retard"
 msgstr "Overdue loans"
 
@@ -1328,7 +1336,7 @@ msgstr "Top 10 borrowed works"
 #: templates/catalog/record_bulk_delete.html:44
 #: templates/catalog/record_list.html:129
 #: templates/catalog/record_list.html:206 templates/core/dashboard.html:314
-#: templates/inventory/session_report.html:107 templates/loans/return.html:127
+#: templates/inventory/session_report.html:107 templates/loans/return.html:128
 #: templates/members/member_detail.html:129
 #: templates/members/member_history.html:30
 #: templates/members/member_history.html:62
@@ -1356,9 +1364,9 @@ msgstr "No activity"
 
 #: apps/setup/forms.py:20 apps/setup/views.py:29
 #: templates/accounts/login.html:27 templates/accounts/login.html:29
-#: templates/base.html:61 templates/base.html:63
+#: templates/base.html:65 templates/base.html:67
 #: templates/catalog/record_detail.html:56
-#: templates/catalog/scan_session.html:114
+#: templates/catalog/scan_session.html:135
 msgid "Langue"
 msgstr "Language"
 
@@ -1511,7 +1519,7 @@ msgstr "You can go back to the previous page or return to the home page."
 msgid "Connexion"
 msgstr "Sign in"
 
-#: templates/accounts/login.html:19 templates/base.html:47
+#: templates/accounts/login.html:19 templates/base.html:51
 msgid "Bibliothèque communautaire"
 msgstr "Community library"
 
@@ -1537,7 +1545,7 @@ msgstr "Username"
 msgid "Se connecter"
 msgstr "Sign in"
 
-#: templates/accounts/login.html:128 templates/base.html:108
+#: templates/accounts/login.html:128 templates/base.html:112
 msgid "Ofelia Box"
 msgstr "Ofelia Box"
 
@@ -1585,7 +1593,7 @@ msgstr "Delete account"
 #: templates/core/admin/settings_index.html:14
 #: templates/core/admin/settings_section.html:4
 #: templates/core/admin/settings_section.html:10
-#: templates/core/advanced.html:163
+#: templates/core/advanced.html:173
 msgid "Paramètres"
 msgstr "Settings"
 
@@ -1660,19 +1668,19 @@ msgid "Nouveau"
 msgstr "New"
 
 #: templates/accounts/user_form.html:11 templates/accounts/user_form.html:22
-#: templates/base.html:80
+#: templates/base.html:84
 msgid "Mon compte"
 msgstr "My account"
 
 #: templates/accounts/user_form.html:43 templates/catalog/_record_form.html:64
 #: templates/catalog/item_form.html:33 templates/catalog/location_form.html:40
-#: templates/catalog/scan_session.html:157
+#: templates/catalog/scan_session.html:178
 #: templates/core/admin/settings_section.html:38
 #: templates/loans/consultation.html:27 templates/members/member_form.html:48
 msgid "Enregistrer"
 msgstr "Save"
 
-#: templates/accounts/user_list.html:19 templates/core/advanced.html:173
+#: templates/accounts/user_list.html:19 templates/core/advanced.html:183
 msgid "Comptes utilisateurs"
 msgstr "User accounts"
 
@@ -1753,21 +1761,21 @@ msgstr "The scanner could not be loaded."
 msgid "Impossible de démarrer la caméra."
 msgstr "Unable to start the camera."
 
-#: templates/base.html:70
+#: templates/base.html:74
 msgid "Guide utilisateur"
 msgstr "User guide"
 
-#: templates/base.html:74
+#: templates/base.html:78
 msgid "Menu utilisateur"
 msgstr "User menu"
 
-#: templates/base.html:85
+#: templates/base.html:89
 msgid "Déconnexion"
 msgstr "Log out"
 
 #: templates/catalog/_record_form.html:27
 #: templates/catalog/_record_form.html:28 templates/catalog/record_list.html:47
-#: templates/catalog/record_list.html:48 templates/loans/return.html:44
+#: templates/catalog/record_list.html:48 templates/loans/return.html:45
 msgid "Scanner le code-barres"
 msgstr "Scan the barcode"
 
@@ -1815,7 +1823,9 @@ msgstr "optional: author(s), separated by semicolons"
 msgid ""
 "optionnel : type de document (Livre, BD / manga, Revue, Journal, CD audio, "
 "Autre)"
-msgstr "optional: document type (Book, Comic / manga, Magazine, Newspaper, Audio CD, Other)"
+msgstr ""
+"optional: document type (Book, Comic / manga, Magazine, Newspaper, Audio CD, "
+"Other)"
 
 #: templates/catalog/excel_catalog/_import_form.html:15
 msgid "optionnel : éditeur"
@@ -1842,7 +1852,10 @@ msgid ""
 "Chaque colonne ci-dessus est facultative. Si elle est présente et remplie, "
 "elle écrase l'information correspondante de la fiche (même déjà existante) ; "
 "une cellule vide laisse l'information en place."
-msgstr "Each column above is optional. If it is present and filled in, it overwrites the matching field of the record (even an existing one); an empty cell leaves the information in place."
+msgstr ""
+"Each column above is optional. If it is present and filled in, it overwrites "
+"the matching field of the record (even an existing one); an empty cell "
+"leaves the information in place."
 
 #: templates/catalog/excel_catalog/_import_form.html:27
 msgid "Importer dans le catalogue"
@@ -1902,7 +1915,7 @@ msgstr "Advanced"
 #: templates/catalog/excel_catalog/index.html:4
 #: templates/catalog/excel_catalog/index.html:11
 #: templates/catalog/excel_catalog/index.html:19
-#: templates/core/advanced.html:119
+#: templates/core/advanced.html:129
 msgid "Catalogage Excel"
 msgstr "Excel cataloging"
 
@@ -2050,7 +2063,7 @@ msgstr "Delete location"
 #: templates/catalog/location_form.html:11
 #: templates/catalog/location_list.html:4
 #: templates/catalog/location_list.html:11
-#: templates/catalog/location_list.html:19 templates/core/advanced.html:129
+#: templates/catalog/location_list.html:19 templates/core/advanced.html:139
 msgid "Emplacements"
 msgstr "Locations"
 
@@ -2211,7 +2224,7 @@ msgid "Notices à supprimer"
 msgstr "Records to delete"
 
 #: templates/catalog/record_bulk_delete.html:46
-#: templates/core/dashboard.html:139 templates/loans/lend.html:83
+#: templates/core/dashboard.html:139 templates/loans/lend.html:84
 #: templates/members/member_detail.html:121
 #: templates/members/member_history.html:24
 msgid "Prêts en cours"
@@ -2276,8 +2289,8 @@ msgstr "Subtitle"
 #: templates/catalog/record_detail.html:52
 #: templates/catalog/record_list.html:131
 #: templates/catalog/record_list.html:208
-#: templates/catalog/scan_session.html:81
-#: templates/catalog/scan_session.html:115
+#: templates/catalog/scan_session.html:102
+#: templates/catalog/scan_session.html:136
 #: templates/members/member_detail.html:87
 #: templates/printing/cards_picker.html:32
 msgid "Catégorie"
@@ -2339,7 +2352,7 @@ msgid "Liste d'attente"
 msgstr "Waiting list"
 
 #: templates/catalog/record_detail.html:172 templates/core/dashboard.html:315
-#: templates/loans/return.html:128
+#: templates/loans/return.html:129
 msgid "Membre"
 msgstr "Member"
 
@@ -2367,7 +2380,7 @@ msgstr "All books and their copies"
 
 #: templates/catalog/record_list.html:25
 #: templates/catalog/scan_session_form.html:4
-#: templates/catalog/scan_session_form.html:14
+#: templates/catalog/scan_session_form.html:18
 msgid "Cataloguer en scannant"
 msgstr "Catalog by scanning"
 
@@ -2424,7 +2437,7 @@ msgstr "Select all"
 
 #: templates/catalog/record_list.html:132
 #: templates/catalog/record_list.html:209
-#: templates/catalog/scan_session.html:118
+#: templates/catalog/scan_session.html:139
 msgid "Ex."
 msgstr "Copies"
 
@@ -2471,77 +2484,115 @@ msgstr "This batch has been sent to the catalog."
 msgid "Imprimer les étiquettes de ce lot"
 msgstr "Print this batch’s labels"
 
-#: templates/catalog/scan_session.html:49
+#: templates/catalog/scan_session.html:51
+msgid "Scannez les livres avec la douchette"
+msgstr "Scan the books with the barcode scanner"
+
+#: templates/catalog/scan_session.html:54
 #: templates/inventory/session_report.html:55
 msgid "Ouverture…"
 msgstr "Opening…"
 
-#: templates/catalog/scan_session.html:50
+#: templates/catalog/scan_session.html:55
 msgid "Scanner des livres"
 msgstr "Scan books"
 
-#: templates/catalog/scan_session.html:53
+#: templates/catalog/scan_session.html:59
 msgid "titre(s) scanné(s)"
 msgstr "title(s) scanned"
 
-#: templates/catalog/scan_session.html:58
+#: templates/catalog/scan_session.html:65
 msgid "Saisir un ISBN à la main"
 msgstr "Enter an ISBN manually"
 
-#: templates/catalog/scan_session.html:59
+#: templates/catalog/scan_session.html:66
 msgid "Ajouter"
 msgstr "Add"
 
-#: templates/catalog/scan_session.html:63
+#: templates/catalog/scan_session.html:71
+msgid ""
+"Scannez sans cliquer nulle part. Représentez un même livre après quelques "
+"secondes pour ajouter un 2ᵉ exemplaire."
+msgstr "Scan without clicking anywhere. Present the same book again after a few seconds to add a 2nd copy."
+
+#: templates/catalog/scan_session.html:73
 msgid ""
 "Astuce : représentez un même livre après quelques secondes pour ajouter un "
 "2ᵉ exemplaire."
 msgstr "Tip: show the same book again after a few seconds to add a 2nd copy."
 
-#: templates/catalog/scan_session.html:78
+#: templates/catalog/scan_session.html:79
+msgid "Terminer et voir le lot"
+msgstr "Finish and review the batch"
+
+#: templates/catalog/scan_session.html:83
+msgid ""
+"Quand vous avez fini de scanner, cliquez ici pour vérifier la liste et "
+"l’envoyer au catalogue."
+msgstr "When you have finished scanning, click here to review the list and send it to the catalogue."
+
+#: templates/catalog/scan_session.html:99
 msgid "Modifier les lignes cochées"
 msgstr "Edit checked rows"
 
-#: templates/catalog/scan_session.html:83
-#: templates/catalog/scan_session.html:90
-#: templates/catalog/scan_session.html:97
+#: templates/catalog/scan_session.html:104
+#: templates/catalog/scan_session.html:111
+#: templates/catalog/scan_session.html:118
 msgid "(ne pas changer)"
 msgstr "(leave unchanged)"
 
-#: templates/catalog/scan_session.html:102
+#: templates/catalog/scan_session.html:123
 msgid "Appliquer aux lignes cochées"
 msgstr "Apply to checked rows"
 
-#: templates/catalog/scan_session.html:105
+#: templates/catalog/scan_session.html:126
 msgid "Cochez des lignes, choisissez les valeurs, puis appliquez."
 msgstr "Check rows, pick values, then apply."
 
-#: templates/catalog/scan_session.html:113
+#: templates/catalog/scan_session.html:134
 msgid "Auteur / Titre"
 msgstr "Author / Title"
 
-#: templates/catalog/scan_session.html:146
+#: templates/catalog/scan_session.html:167
 msgid "Retirer"
 msgstr "Remove"
 
-#: templates/catalog/scan_session.html:159
+#: templates/catalog/scan_session.html:180
 msgid "Envoyer au catalogue"
 msgstr "Send to catalog"
 
-#: templates/catalog/scan_session.html:163
+#: templates/catalog/scan_session.html:186
+msgid ""
+"Scannez vos livres avec la douchette ci-dessus. La liste se remplit au fur "
+"et à mesure ; cliquez sur « Terminer et voir le lot » pour l’éditer et "
+"l’envoyer au catalogue."
+msgstr "Scan your books with the barcode scanner above. The list fills up as you go; click “Finish and review the batch” to edit it and send it to the catalogue."
+
+#: templates/catalog/scan_session.html:188
 msgid "Aucun livre scanné pour l’instant. Lancez le scan ci-dessus."
 msgstr "No book scanned yet. Start scanning above."
 
+#: templates/catalog/scan_session_form.html:4
 #: templates/catalog/scan_session_form.html:15
+msgid "Cataloguer à la douchette"
+msgstr "Catalogue with a barcode scanner"
+
+#: templates/catalog/scan_session_form.html:16
+msgid ""
+"Choisissez les valeurs par défaut du lot, puis scannez les livres avec la "
+"douchette USB branchée sur ce poste."
+msgstr "Choose the batch defaults, then scan the books with the USB barcode scanner plugged into this computer."
+
+#: templates/catalog/scan_session_form.html:19
 msgid ""
 "Choisissez les valeurs par défaut du lot, puis scannez les livres en rafale."
 msgstr "Pick the batch defaults, then scan books rapidly."
 
-#: templates/catalog/scan_session_form.html:19
+#: templates/catalog/scan_session_form.html:24
 msgid "Lots précédents"
 msgstr "Previous batches"
 
-#: templates/catalog/scan_session_form.html:31
+#: templates/catalog/scan_session_form.html:36
 msgid "Démarrer le catalogage"
 msgstr "Start cataloging"
 
@@ -2622,7 +2673,7 @@ msgstr "Restore"
 #: templates/core/admin/diagnostics.html:4
 #: templates/core/admin/diagnostics.html:11
 #: templates/core/admin/diagnostics.html:19
-#: templates/core/admin/settings_index.html:53 templates/core/advanced.html:203
+#: templates/core/admin/settings_index.html:53 templates/core/advanced.html:213
 msgid "Diagnostic"
 msgstr "Diagnostics"
 
@@ -2750,7 +2801,7 @@ msgstr "quota reached — re-run later"
 #: templates/core/admin/enrichment_index.html:4
 #: templates/core/admin/enrichment_index.html:11
 #: templates/core/admin/enrichment_index.html:19
-#: templates/core/advanced.html:139
+#: templates/core/advanced.html:149
 msgid "Enrichissement métadonnées"
 msgstr "Metadata enrichment"
 
@@ -2826,7 +2877,7 @@ msgstr "No enrichment launched."
 
 #: templates/core/admin/ofeliascan.html:4
 #: templates/core/admin/ofeliascan.html:11
-#: templates/core/admin/ofeliascan.html:19 templates/core/advanced.html:183
+#: templates/core/admin/ofeliascan.html:19 templates/core/advanced.html:193
 msgid "Connexion OfeliaScan"
 msgstr "OfeliaScan connection"
 
@@ -3036,7 +3087,16 @@ msgstr "Cataloging by scan"
 msgid "Scanner les ISBN en rafale pour créer les notices et leurs exemplaires."
 msgstr "Rapidly scan ISBNs to create records and their copies."
 
+#: templates/core/advanced.html:119
+msgid "Catalogage par douchette"
+msgstr "Cataloguing with a barcode scanner"
+
 #: templates/core/advanced.html:120
+msgid ""
+"Scanner les ISBN avec la douchette USB branchée sur ce poste, sans caméra."
+msgstr "Scan ISBNs with the USB barcode scanner plugged into this computer, without a camera."
+
+#: templates/core/advanced.html:130
 msgid ""
 "Vérifier ou importer un fichier Excel d'inventaire (ISBN, titre, auteur, "
 "emplacement, catégorie)."
@@ -3044,7 +3104,7 @@ msgstr ""
 "Check or import an Excel inventory file (ISBN, title, author, location, "
 "category)."
 
-#: templates/core/advanced.html:130
+#: templates/core/advanced.html:140
 msgid ""
 "Définir les zones de rangement (Salle adulte, Réserve, A1…). Utilisé au "
 "catalogage et au récolement."
@@ -3052,7 +3112,7 @@ msgstr ""
 "Define storage zones (Adult room, Reserve, A1…). Used in cataloging and "
 "inventory."
 
-#: templates/core/advanced.html:140
+#: templates/core/advanced.html:150
 msgid ""
 "Compléter ou écraser les métadonnées du catalogue depuis OpenLibrary, Google "
 "Books, BNF et BNE — en tâche de fond."
@@ -3060,38 +3120,38 @@ msgstr ""
 "Complete or overwrite catalog metadata from OpenLibrary, Google Books, BNF "
 "and BNE — as a background job."
 
-#: templates/core/advanced.html:154
+#: templates/core/advanced.html:164
 msgid "Administration"
 msgstr "Administration"
 
-#: templates/core/advanced.html:164
+#: templates/core/advanced.html:174
 msgid ""
 "Identité de la bibliothèque, langues activées, format des étiquettes/cartes, "
 "sauvegardes, ZeroTier."
 msgstr ""
 "Library identity, enabled languages, label/card format, backups, ZeroTier."
 
-#: templates/core/advanced.html:174
+#: templates/core/advanced.html:184
 msgid ""
 "Création, édition, réinitialisation de mot de passe des comptes "
 "bibliothécaires et administrateurs."
 msgstr ""
 "Creation, editing, password reset of librarian and administrator accounts."
 
-#: templates/core/advanced.html:184
+#: templates/core/advanced.html:194
 msgid ""
 "Identifiants autorisés pour l'application mobile OfeliaScan et adresse de la "
 "box."
 msgstr "Authorized credentials for the OfeliaScan mobile app and box address."
 
-#: templates/core/advanced.html:194
+#: templates/core/advanced.html:204
 msgid ""
 "Déclencher une sauvegarde manuelle, configurer la fréquence et le cloud, "
 "restaurer depuis un fichier."
 msgstr ""
 "Trigger a manual backup, configure frequency and cloud, restore from a file."
 
-#: templates/core/advanced.html:204
+#: templates/core/advanced.html:214
 msgid ""
 "État système : version, espace disque, file django-q2, derniers paramètres "
 "modifiés."
@@ -3099,11 +3159,11 @@ msgstr ""
 "System status: version, disk space, django-q2 queue, recently modified "
 "settings."
 
-#: templates/core/advanced.html:213
+#: templates/core/advanced.html:223
 msgid "Administration Django"
 msgstr "Django administration"
 
-#: templates/core/advanced.html:214
+#: templates/core/advanced.html:224
 msgid ""
 "Gestion fine : catégories, tags, emplacements, catégories d'usagers (réservé "
 "au support technique)."
@@ -3309,7 +3369,7 @@ msgstr "Network"
 msgid "Relances à faire"
 msgstr "Reminders to send"
 
-#: templates/core/dashboard.html:316 templates/loans/return.html:129
+#: templates/core/dashboard.html:316 templates/loans/return.html:130
 #: templates/members/member_detail.html:130
 #: templates/members/member_history.html:32
 #: templates/reports/overdue_list.html:36
@@ -3468,8 +3528,8 @@ msgstr "expected"
 msgid "Saisir un code Ofelia à la main"
 msgstr "Enter an Ofelia code by hand"
 
-#: templates/inventory/session_report.html:67 templates/loans/lend.html:39
-#: templates/loans/lend.html:113 templates/loans/return.html:36
+#: templates/inventory/session_report.html:67 templates/loans/lend.html:40
+#: templates/loans/lend.html:114 templates/loans/return.html:37
 msgid "Valider"
 msgstr "Submit"
 
@@ -3549,52 +3609,52 @@ msgstr "Counts documents consulted without leaving the library."
 msgid "1 · Membre"
 msgstr "1 · Member"
 
-#: templates/loans/lend.html:36
+#: templates/loans/lend.html:37
 msgid "Scanner ou saisir le n° de carte"
 msgstr "Scan or enter the card number"
 
-#: templates/loans/lend.html:47 templates/members/member_list.html:61
+#: templates/loans/lend.html:48 templates/members/member_list.html:61
 #: templates/members/member_list.html:62
 msgid "Scanner la carte"
 msgstr "Scan the card"
 
-#: templates/loans/lend.html:89
+#: templates/loans/lend.html:90
 msgid "échéance"
 msgstr "due"
 
-#: templates/loans/lend.html:99
+#: templates/loans/lend.html:100
 msgid "2 · Livres"
 msgstr "2 · Books"
 
-#: templates/loans/lend.html:110
+#: templates/loans/lend.html:111
 msgid "Scanner le code-barres du livre"
 msgstr "Scan the book's barcode"
 
-#: templates/loans/lend.html:121
+#: templates/loans/lend.html:122
 msgid "Scanner un livre"
 msgstr "Scan a book"
 
-#: templates/loans/lend.html:128
+#: templates/loans/lend.html:129
 msgid "Panier"
 msgstr "Cart"
 
-#: templates/loans/lend.html:153
+#: templates/loans/lend.html:154
 msgid "Aucun livre scanné pour l'instant."
 msgstr "No book scanned yet."
 
-#: templates/loans/lend.html:159
+#: templates/loans/lend.html:160
 msgid "3 · Confirmer"
 msgstr "3 · Confirm"
 
-#: templates/loans/lend.html:165
+#: templates/loans/lend.html:166
 msgid "Note (facultatif)"
 msgstr "Note (optional)"
 
-#: templates/loans/lend.html:166
+#: templates/loans/lend.html:167
 msgid "Ex. : override réservation"
 msgstr "E.g.: reservation override"
 
-#: templates/loans/lend.html:171
+#: templates/loans/lend.html:172
 #, python-format
 msgid "Prêter %(n)s livre"
 msgid_plural "Prêter %(n)s livres"
@@ -3668,35 +3728,35 @@ msgstr "No pending reservation."
 msgid "Scanner un livre à rendre"
 msgstr "Scan a book to return"
 
-#: templates/loans/return.html:33
+#: templates/loans/return.html:34
 msgid "Scanner le code-barres du livre rendu"
 msgstr "Scan the returned book's barcode"
 
-#: templates/loans/return.html:52
+#: templates/loans/return.html:53
 msgid "Retours de la séance"
 msgstr "Returns this session"
 
-#: templates/loans/return.html:56
+#: templates/loans/return.html:57
 msgid "Vider"
 msgstr "Clear"
 
-#: templates/loans/return.html:70
+#: templates/loans/return.html:71
 msgid "perdu réintégré"
 msgstr "lost item returned"
 
-#: templates/loans/return.html:71
+#: templates/loans/return.html:72
 msgid "aucun prêt actif"
 msgstr "no active loan"
 
-#: templates/loans/return.html:80
+#: templates/loans/return.html:81
 msgid "À temps"
 msgstr "On time"
 
-#: templates/loans/return.html:90
+#: templates/loans/return.html:91
 msgid "Réservations à relancer"
 msgstr "Reservations to follow up"
 
-#: templates/loans/return.html:107
+#: templates/loans/return.html:108
 #, fuzzy, python-format
 #| msgid "%(n)s prêt(s) en retard."
 msgid "%(n)s jour de retard"
@@ -3704,16 +3764,16 @@ msgid_plural "%(n)s jours de retard"
 msgstr[0] "%(n)s overdue loan(s)."
 msgstr[1] "%(n)s overdue loan(s)."
 
-#: templates/loans/return.html:109
+#: templates/loans/return.html:110
 msgid "Expire aujourd'hui"
 msgstr "Expires today"
 
-#: templates/loans/return.html:111
+#: templates/loans/return.html:112
 #, python-format
 msgid "Encore %(n)s jours"
 msgstr "%(n)s days left"
 
-#: templates/loans/return.html:117
+#: templates/loans/return.html:118
 msgid ""
 "Contacter ces membres pour qu'ils viennent retirer leur livre avant qu'il ne "
 "reparte au suivant."

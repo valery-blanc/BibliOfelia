@@ -111,6 +111,16 @@
         </div>
         <div class="lrow-end">{% icon "chevron-right" size="18px" %}</div>
     </a>
+    <a href="{% url 'catalog:scan_douchette_create' %}" class="list-row">
+        <div class="lrow-icon" style="--lr-bg:var(--olive-light);--lr-fg:#6B5A0E">
+            {% icon "scan-barcode" size="18px" %}
+        </div>
+        <div class="lrow-body">
+            <div class="lrow-title" style="color:var(--burgundy)">{% trans "Catalogage par douchette" %}</div>
+            <div class="lrow-sub">{% trans "Scanner les ISBN avec la douchette USB branchée sur ce poste, sans caméra." %}</div>
+        </div>
+        <div class="lrow-end">{% icon "chevron-right" size="18px" %}</div>
+    </a>
     <a href="{% url 'catalog:excel_catalog_index' %}" class="list-row">
         <div class="lrow-icon" style="--lr-bg:var(--olive-light);--lr-fg:#6B5A0E">
             {% icon "file-spreadsheet" size="18px" %}

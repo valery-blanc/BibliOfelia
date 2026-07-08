@@ -56,6 +56,33 @@ def test_create_session_redirects_to_hub(client, librarian):
     assert s.created_by_id == librarian.pk
 
 
+def test_camera_session_input_mode(client, librarian):
+    """FEAT-054 : un lot créé via le catalogage caméra est en mode 'camera'."""
+    client.post(reverse("catalog:scan_session_create"), {"label": "Cam"})
+    assert ScanSession.objects.get(label="Cam").input_mode == "camera"
+
+
+def test_douchette_session_input_mode(client, librarian):
+    """FEAT-054 : un lot créé via le catalogage douchette est en mode 'douchette'."""
+    resp = client.post(reverse("catalog:scan_douchette_create"), {"label": "Douch"})
+    assert resp.status_code == 302
+    assert ScanSession.objects.get(label="Douch").input_mode == "douchette"
+
+
+def test_douchette_hub_marks_primary_input(client, librarian):
+    """FEAT-054 : le hub d'un lot douchette rend le champ ISBN pilotable par le
+    keyboard-wedge (data-wedge-primary), le hub caméra non."""
+    d = ScanSession.objects.create(label="D", created_by=librarian, input_mode="douchette")
+    c = ScanSession.objects.create(label="C", created_by=librarian, input_mode="camera")
+    d_html = client.get(reverse("catalog:scan_session", args=[d.pk])).content.decode()
+    c_html = client.get(reverse("catalog:scan_session", args=[c.pk])).content.decode()
+    assert "data-wedge-primary" in d_html
+    assert "data-wedge-primary" not in c_html
+    # Le hub caméra garde le bouton caméra ; le hub douchette ne l'affiche pas.
+    assert "js-scan-cataloging" in c_html
+    assert "js-scan-cataloging" not in d_html
+
+
 def test_scan_add_creates_scanitem(client, librarian, session):
     resp = client.post(reverse("catalog:scan_add", args=[session.pk]), {"ean": VALID_ISBN})
     assert resp.status_code == 200

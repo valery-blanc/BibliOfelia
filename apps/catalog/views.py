@@ -39,6 +39,7 @@ from .models import (
     ItemStatus,
     Location,
     RetiredItemCode,
+    ScanInputMode,
     ScanItem,
     ScanKind,
     ScanSession,
@@ -661,20 +662,41 @@ def scan_session_list(request):
     )
 
 
-@require_role(*WRITE_ROLES)
-def scan_session_create(request):
-    """Démarre un lot : défauts catégorie/emplacement puis va au hub de scan."""
+def _scan_session_create(request, input_mode):
+    """Démarre un lot : défauts catégorie/emplacement puis va au hub de scan.
+
+    `input_mode` (FEAT-054) distingue le catalogage caméra du catalogage à la
+    douchette USB ; il est stocké sur la session pour que le hub sache quel outil
+    de saisie présenter (bouton caméra vs champ piloté par le keyboard-wedge).
+    """
     if request.method == "POST":
         form = ScanCatalogSessionForm(request.POST)
         if form.is_valid():
             session = form.save(commit=False)
             session.created_by = request.user
+            session.input_mode = input_mode
             session.save()
             messages.success(request, _("Lot de catalogage démarré."))
             return redirect(reverse("catalog:scan_session", args=[session.pk]) + "?scan=1")
     else:
         form = ScanCatalogSessionForm()
-    return render(request, "catalog/scan_session_form.html", {"form": form})
+    return render(
+        request,
+        "catalog/scan_session_form.html",
+        {"form": form, "input_mode": input_mode},
+    )
+
+
+@require_role(*WRITE_ROLES)
+def scan_session_create(request):
+    """Catalogage caméra (FEAT-046)."""
+    return _scan_session_create(request, ScanInputMode.CAMERA)
+
+
+@require_role(*WRITE_ROLES)
+def scan_douchette_create(request):
+    """Catalogage à la douchette USB (FEAT-054)."""
+    return _scan_session_create(request, ScanInputMode.DOUCHETTE)
 
 
 @require_role(*WRITE_ROLES)
@@ -699,6 +721,7 @@ def scan_session(request, pk):
             "languages": settings.LANGUAGES,
             "states": ItemState.choices,
             "finalized": session.state != ScanSessionState.OPEN,
+            "input_mode": session.input_mode,
         },
     )
 

@@ -54,6 +54,8 @@ urlpatterns = [
     # FEAT-046 : catalogage en scan caméra continu
     path("scan/", views.scan_session_list, name="scan_session_list"),
     path("scan/new/", views.scan_session_create, name="scan_session_create"),
+    # FEAT-054 : catalogage à la douchette USB (keyboard-wedge)
+    path("scan/new-douchette/", views.scan_douchette_create, name="scan_douchette_create"),
     path("scan/<int:pk>/", views.scan_session, name="scan_session"),
     path("scan/<int:pk>/add/", views.scan_add, name="scan_add"),
     path(

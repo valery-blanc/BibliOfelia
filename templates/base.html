@@ -30,8 +30,12 @@
  "reason_lib": "{% trans 'Le scanner n’a pas pu être chargé.' %}",
  "reason_unknown": "{% trans 'Impossible de démarrer la caméra.' %}"}
     </script>
+    <script id="scan-wedge-config" type="application/json">
+{"searchUrl": "{% url 'core:search' %}", "maxInterKeyMs": 35, "minLen": 3, "guardMs": 250}
+    </script>
     <script defer src="{% static 'js/scan-handoff.js' %}"></script>
     <script defer src="{% static 'js/scan-camera.js' %}"></script>
+    <script defer src="{% static 'js/scan-wedge.js' %}"></script>
     {% endif %}
     {% block extra_head %}{% endblock %}
 </head>

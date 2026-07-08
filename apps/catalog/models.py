@@ -352,11 +352,29 @@ class ScanSessionState(models.TextChoices):
     FINALIZED = "finalized", _("Validée")
 
 
+class ScanInputMode(models.TextChoices):
+    """FEAT-054 : méthode de saisie d'un lot de catalogage.
+
+    `mobile`   — envoyé par OfeliaScan (API). `camera` — scan caméra navigateur
+    (FEAT-046). `douchette` — lecteur code-barres USB (clavier HID) branché sur
+    le poste qui affiche BibliOfelia : le lot est piloté par le keyboard-wedge
+    (scan-wedge.js), sans caméra.
+    """
+
+    MOBILE = "mobile", _("OfeliaScan")
+    CAMERA = "camera", _("Caméra")
+    DOUCHETTE = "douchette", _("Douchette")
+
+
 class ScanSession(models.Model):
     """Une campagne de catalogage envoyée depuis OfeliaScan. SPEC §6.10."""
 
     session_id = models.UUIDField(default=uuid.uuid4, unique=True, editable=False)
     label = models.CharField(max_length=120, blank=True)
+    # FEAT-054 : méthode de saisie (mobile OfeliaScan / caméra / douchette USB).
+    input_mode = models.CharField(
+        max_length=10, choices=ScanInputMode.choices, default=ScanInputMode.CAMERA
+    )
     state = models.CharField(
         max_length=10, choices=ScanSessionState.choices, default=ScanSessionState.OPEN
     )

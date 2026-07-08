@@ -27,6 +27,7 @@ from apps.accounts.models import Role
 from apps.catalog.models import (
     BibliographicRecord,
     Location,
+    ScanInputMode,
     ScanItem,
     ScanSession,
     ScanSessionState,
@@ -239,7 +240,9 @@ class ScanSessionCreateView(APIView):
         label = ser.validated_data.get("label") or (
             f"OfeliaScan — {request.user.username}"
         )
-        session = ScanSession.objects.create(label=label, created_by=request.user)
+        session = ScanSession.objects.create(
+            label=label, created_by=request.user, input_mode=ScanInputMode.MOBILE
+        )
         return Response(
             {
                 "session_id": str(session.session_id),
