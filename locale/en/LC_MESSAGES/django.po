@@ -6,7 +6,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: BibliOfelia 1.0\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2026-07-08 23:21+0000\n"
+"POT-Creation-Date: 2026-07-09 12:59+0000\n"
 "PO-Revision-Date: 2026-05-22 00:00+0000\n"
 "Last-Translator: Claude Code\n"
 "Language-Team: English\n"
@@ -618,65 +618,73 @@ msgstr "Verification started. Track progress here."
 msgid "Import lancé. Suivez l'avancement ici."
 msgstr "Import started. Track progress here."
 
-#: apps/core/admin_views.py:35
+#: apps/core/admin_views.py:37
 msgid "Identité"
 msgstr "Identity"
 
-#: apps/core/admin_views.py:36
+#: apps/core/admin_views.py:38
 msgid "Langues"
 msgstr "Languages"
 
-#: apps/core/admin_views.py:37
+#: apps/core/admin_views.py:39
 msgid "Durées prêts & réservations"
 msgstr "Loan & reservation durations"
 
-#: apps/core/admin_views.py:38 templates/core/admin/backup_restore.html:11
+#: apps/core/admin_views.py:42
+msgid "Impressions — Cartes membres"
+msgstr "Printing — Member cards"
+
+#: apps/core/admin_views.py:43
+msgid "Impressions — Étiquettes codes Ofelia"
+msgstr "Printing — Ofelia code labels"
+
+#: apps/core/admin_views.py:44 templates/core/admin/backup_restore.html:11
 #: templates/core/advanced.html:203
 msgid "Sauvegardes"
 msgstr "Backups"
 
-#: apps/core/admin_views.py:58
+#: apps/core/admin_views.py:64
 #, python-format
 msgid "Paramètres %(label)s enregistrés."
 msgstr "%(label)s settings saved."
 
-#: apps/core/admin_views.py:75
+#: apps/core/admin_views.py:81
 #, python-format
 msgid "Sauvegarde effectuée : %(p)s"
 msgstr "Backup done: %(p)s"
 
-#: apps/core/admin_views.py:77
+#: apps/core/admin_views.py:83
 #, python-format
 msgid "Échec sauvegarde : %(e)s"
 msgstr "Backup failed: %(e)s"
 
-#: apps/core/admin_views.py:90
+#: apps/core/admin_views.py:96
 msgid "Aucun fichier fourni."
 msgstr "No file provided."
 
-#: apps/core/admin_views.py:102
+#: apps/core/admin_views.py:108
 msgid "Restauration terminée. Redémarrez l'application avant tout autre usage."
 msgstr "Restore complete. Restart the application before any other use."
 
-#: apps/core/admin_views.py:165
+#: apps/core/admin_views.py:171
 msgid "Identifiant requis."
 msgstr "Username required."
 
-#: apps/core/admin_views.py:171
+#: apps/core/admin_views.py:177
 msgid "Cet identifiant est déjà utilisé par un autre compte."
 msgstr "This username is already used by another account."
 
-#: apps/core/admin_views.py:190
+#: apps/core/admin_views.py:196
 #, python-format
 msgid "Identifiant « %(u)s » autorisé."
 msgstr "Username “%(u)s” authorized."
 
-#: apps/core/admin_views.py:201
+#: apps/core/admin_views.py:207
 #, python-format
 msgid "Identifiant « %(u)s » révoqué."
 msgstr "Username “%(u)s” revoked."
 
-#: apps/core/admin_views.py:282
+#: apps/core/admin_views.py:288
 #, python-format
 msgid "Enrichissement #%(id)s lancé. Suivez l'avancement ici."
 msgstr "Enrichment #%(id)s launched. Follow progress here."
@@ -1336,7 +1344,7 @@ msgstr "Top 10 borrowed works"
 #: templates/catalog/record_bulk_delete.html:44
 #: templates/catalog/record_list.html:129
 #: templates/catalog/record_list.html:206 templates/core/dashboard.html:314
-#: templates/inventory/session_report.html:107 templates/loans/return.html:128
+#: templates/inventory/session_report.html:111 templates/loans/return.html:128
 #: templates/members/member_detail.html:129
 #: templates/members/member_history.html:30
 #: templates/members/member_history.html:62
@@ -2513,7 +2521,9 @@ msgstr "Add"
 msgid ""
 "Scannez sans cliquer nulle part. Représentez un même livre après quelques "
 "secondes pour ajouter un 2ᵉ exemplaire."
-msgstr "Scan without clicking anywhere. Present the same book again after a few seconds to add a 2nd copy."
+msgstr ""
+"Scan without clicking anywhere. Present the same book again after a few "
+"seconds to add a 2nd copy."
 
 #: templates/catalog/scan_session.html:73
 msgid ""
@@ -2529,7 +2539,9 @@ msgstr "Finish and review the batch"
 msgid ""
 "Quand vous avez fini de scanner, cliquez ici pour vérifier la liste et "
 "l’envoyer au catalogue."
-msgstr "When you have finished scanning, click here to review the list and send it to the catalogue."
+msgstr ""
+"When you have finished scanning, click here to review the list and send it "
+"to the catalogue."
 
 #: templates/catalog/scan_session.html:99
 msgid "Modifier les lignes cochées"
@@ -2566,7 +2578,9 @@ msgid ""
 "Scannez vos livres avec la douchette ci-dessus. La liste se remplit au fur "
 "et à mesure ; cliquez sur « Terminer et voir le lot » pour l’éditer et "
 "l’envoyer au catalogue."
-msgstr "Scan your books with the barcode scanner above. The list fills up as you go; click “Finish and review the batch” to edit it and send it to the catalogue."
+msgstr ""
+"Scan your books with the barcode scanner above. The list fills up as you go; "
+"click “Finish and review the batch” to edit it and send it to the catalogue."
 
 #: templates/catalog/scan_session.html:188
 msgid "Aucun livre scanné pour l’instant. Lancez le scan ci-dessus."
@@ -2581,7 +2595,9 @@ msgstr "Catalogue with a barcode scanner"
 msgid ""
 "Choisissez les valeurs par défaut du lot, puis scannez les livres avec la "
 "douchette USB branchée sur ce poste."
-msgstr "Choose the batch defaults, then scan the books with the USB barcode scanner plugged into this computer."
+msgstr ""
+"Choose the batch defaults, then scan the books with the USB barcode scanner "
+"plugged into this computer."
 
 #: templates/catalog/scan_session_form.html:19
 msgid ""
@@ -2673,12 +2689,12 @@ msgstr "Restore"
 #: templates/core/admin/diagnostics.html:4
 #: templates/core/admin/diagnostics.html:11
 #: templates/core/admin/diagnostics.html:19
-#: templates/core/admin/settings_index.html:53 templates/core/advanced.html:213
+#: templates/core/admin/settings_index.html:59 templates/core/advanced.html:213
 msgid "Diagnostic"
 msgstr "Diagnostics"
 
 #: templates/core/admin/diagnostics.html:20
-#: templates/core/admin/settings_index.html:54
+#: templates/core/admin/settings_index.html:60
 msgid "État du système, sauvegardes, planificateur"
 msgstr "System status, backups, scheduler"
 
@@ -2719,8 +2735,8 @@ msgid "Maj"
 msgstr "Update"
 
 #: templates/core/admin/diagnostics.html:59
-#: templates/inventory/session_report.html:149
-#: templates/inventory/session_report.html:160
+#: templates/inventory/session_report.html:153
+#: templates/inventory/session_report.html:164
 #: templates/members/member_history.html:53
 #: templates/members/member_history.html:89
 msgid "Aucun."
@@ -2969,29 +2985,37 @@ msgid ""
 "Configuration de la bibliothèque, des sauvegardes et de la connectivité."
 msgstr "Configure the library, backups, and connectivity."
 
-#: templates/core/admin/settings_index.html:37
+#: templates/core/admin/settings_index.html:41
 msgid "Nom de la bibliothèque, contact, fuseau horaire"
 msgstr "Library name, contact, time zone"
 
-#: templates/core/admin/settings_index.html:38
+#: templates/core/admin/settings_index.html:42
 msgid "Langues actives et langue par défaut"
 msgstr "Active languages and default language"
 
-#: templates/core/admin/settings_index.html:39
+#: templates/core/admin/settings_index.html:43
 msgid "Durée par défaut d'un prêt et délais de réservation"
 msgstr "Default loan duration and reservation periods"
 
-#: templates/core/admin/settings_index.html:40
+#: templates/core/admin/settings_index.html:44
+msgid "Cartes membres : nombre par A4, photo, logo OFELIA"
+msgstr "Member cards: number per A4, photo, OFELIA logo"
+
+#: templates/core/admin/settings_index.html:45
+msgid "Étiquettes codes Ofelia : dimensions, titre, logo"
+msgstr "Ofelia code labels: dimensions, title, logo"
+
+#: templates/core/admin/settings_index.html:46
 msgid "Fréquence locale et destination cloud (rclone)"
 msgstr "Local frequency and cloud destination (rclone)"
 
-#: templates/core/admin/settings_index.html:61
+#: templates/core/admin/settings_index.html:67
 msgid ""
 "Les catégories, tags et emplacements se gèrent depuis l'administration "
 "Django pour l'instant."
 msgstr "Categories, tags, and locations are managed via Django admin for now."
 
-#: templates/core/admin/settings_index.html:62
+#: templates/core/admin/settings_index.html:68
 msgid "Ouvrir l'admin"
 msgstr "Open admin"
 
@@ -3094,7 +3118,9 @@ msgstr "Cataloguing with a barcode scanner"
 #: templates/core/advanced.html:120
 msgid ""
 "Scanner les ISBN avec la douchette USB branchée sur ce poste, sans caméra."
-msgstr "Scan ISBNs with the USB barcode scanner plugged into this computer, without a camera."
+msgstr ""
+"Scan ISBNs with the USB barcode scanner plugged into this computer, without "
+"a camera."
 
 #: templates/core/advanced.html:130
 msgid ""
@@ -3524,76 +3550,76 @@ msgstr "checked"
 msgid "attendus"
 msgstr "expected"
 
-#: templates/inventory/session_report.html:66
+#: templates/inventory/session_report.html:70
 msgid "Saisir un code Ofelia à la main"
 msgstr "Enter an Ofelia code by hand"
 
-#: templates/inventory/session_report.html:67 templates/loans/lend.html:40
+#: templates/inventory/session_report.html:71 templates/loans/lend.html:40
 #: templates/loans/lend.html:114 templates/loans/return.html:37
 msgid "Valider"
 msgstr "Submit"
 
-#: templates/inventory/session_report.html:76
+#: templates/inventory/session_report.html:80
 msgid "Attendus"
 msgstr "Expected"
 
-#: templates/inventory/session_report.html:80
+#: templates/inventory/session_report.html:84
 msgid "Présents"
 msgstr "Present"
 
-#: templates/inventory/session_report.html:84
+#: templates/inventory/session_report.html:88
 msgid "Manquants"
 msgstr "Missing"
 
-#: templates/inventory/session_report.html:88
+#: templates/inventory/session_report.html:92
 msgid "Hors périmètre"
 msgstr "Out of scope"
 
-#: templates/inventory/session_report.html:92
+#: templates/inventory/session_report.html:96
 msgid "Inconnus"
 msgstr "Unknown"
 
-#: templates/inventory/session_report.html:96
+#: templates/inventory/session_report.html:100
 msgid "Exemplaires par notice"
 msgstr "Copies by record"
 
-#: templates/inventory/session_report.html:98
+#: templates/inventory/session_report.html:102
 msgid "Trouvé"
 msgstr "Found"
 
-#: templates/inventory/session_report.html:99
+#: templates/inventory/session_report.html:103
 msgid "Manquant"
 msgstr "Missing"
 
-#: templates/inventory/session_report.html:106
+#: templates/inventory/session_report.html:110
 msgid "Auteur"
 msgstr "Author"
 
-#: templates/inventory/session_report.html:108
+#: templates/inventory/session_report.html:112
 msgid "Codes Ofelia"
 msgstr "Ofelia codes"
 
-#: templates/inventory/session_report.html:129
+#: templates/inventory/session_report.html:133
 msgid "Aucun exemplaire attendu dans ce périmètre."
 msgstr "No copies expected in this scope."
 
-#: templates/inventory/session_report.html:132
+#: templates/inventory/session_report.html:136
 msgid "Pointés hors périmètre (mauvaise location)"
 msgstr "Scanned out of scope (wrong location)"
 
-#: templates/inventory/session_report.html:152
+#: templates/inventory/session_report.html:156
 msgid "Codes inconnus du système"
 msgstr "Codes unknown to the system"
 
-#: templates/inventory/session_report.html:168
+#: templates/inventory/session_report.html:172
 msgid "Clôturer"
 msgstr "Close"
 
-#: templates/inventory/session_report.html:174
+#: templates/inventory/session_report.html:178
 msgid "Rouvrir"
 msgstr "Reopen"
 
-#: templates/inventory/session_report.html:180
+#: templates/inventory/session_report.html:184
 msgid "Valider définitivement"
 msgstr "Finalize"
 

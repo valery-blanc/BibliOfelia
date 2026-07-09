@@ -56,6 +56,27 @@ ayudarle a encontrarlos todos.
 
 Cuando haya recorrido la estantería, pulse **Terminar**.
 
+## Con un lector de código de barras USB
+
+Si el puesto que muestra BibliOfelia tiene un **lector de código de barras USB**
+(lector con cable), puede hacer el inventario **sin cámara** — es incluso la única
+opción si la pantalla está en una red local sin `https://`.
+
+1. Abra la página de informe (sirve también como pantalla de registro).
+2. **Escanee directamente** el código Ofelia (290) de cada ejemplar con el lector
+   — **sin necesidad de hacer clic**, aunque no haya pulsado en ningún campo.
+3. Cada escaneo se registra solo, el **contador** sube y la línea aparece en la
+   lista, igual que con la cámara. La página **no se mueve**.
+
+El mismo ejemplar escaneado dos veces se cuenta una sola vez. Puede combinar los
+modos: empezar con el lector y luego abrir la cámara («Iniciar el inventario») —
+mientras la cámara está abierta, el lector se retira para evitar duplicados.
+
+!!! tip "¿Lector o cámara?"
+    El **lector USB** es ideal en un puesto fijo (mostrador de préstamo) y
+    funciona incluso sin conexión segura. La **cámara** es ideal en movimiento,
+    con la tableta en la mano frente a las estanterías.
+
 ## Leer el informe
 
 El informe se muestra **por ficha**, ordenado por autor y título. Todos los

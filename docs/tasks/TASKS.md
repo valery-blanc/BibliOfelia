@@ -1042,3 +1042,33 @@ Signalés par Val 2026-05-30 (navigation espagnole).
 - [x] Test fonctionnel Val **OK 2026-07-08** (depuis Bruxelles, douchette USB → Box : recherche, catalogage douchette, prêt/retour)
 - [x] **Itér. 2 (retours Val 2026-07-08)** : cause racine BUG-020 identifiée = terminateur douchette **CR+LF** → `CR`=Ctrl+M (Entrée) et **`LF`=Ctrl+J = raccourci « page téléchargements »** (+ Tab possible = changement d'onglet). Le wedge v1 avait un bug d'ordre fatal : `if (ev.ctrlKey) return` s'exécutait **avant** la fenêtre de garde → le LF=Ctrl+J fuyait à chaque scan, même focus dans un `<input>` (un champ texte ne consomme pas Ctrl+J). Wedge réécrit : garde vérifiée **en premier**, suppression agressive de toute la salve en rafale (chiffres + Ctrl-combos), MAX_INTERKEY 50 ms, garde 300 ms, flush de secours. **Catalogage douchette** : la page ne se rechargeant jamais (pas de « fermeture caméra »), le tableau éditable + « Envoyer au catalogue » (gated `{% if items %}`) n'apparaissaient pas → « 2 scannés / Aucun livre » simultanés ; ajout d'un bouton « Terminer et voir le lot » (reload) + empty-state mode-aware. 3 chaînes i18n de plus (gate → 0). Redéployé Box (wedge hash `86a394489fcb`, healthy).
 - [ ] Commit (après confirmation Val)
+
+## Sprint 24 — Récolement à la douchette USB + guide catalogage douchette
+
+> Ouvert le 2026-07-09 (questions Val). Suite de FEAT-054 : (1) le récolement
+> n'était pas câblé à la douchette — pire, un scan douchette sur la page rapport
+> tombait dans le fallback du wedge (`core:search`) et **quittait** la page sans
+> jamais pointer ; (2) le catalogage douchette (FEAT-054) n'était pas documenté
+> dans le guide utilisateur.
+
+### FEAT-055 — Récolement à la douchette USB + guide catalogage douchette
+- [x] Doc `docs/specs/FEAT-055-recolement-douchette.md`
+- [x] Code : `data-wedge-primary autofocus` sur `#inv-manual-form input[name=ean]` (`templates/inventory/session_report.html`) → la douchette remplit + submit → handler AJAX `scan-inventory.js` poste à `inventory:add_scan` sans quitter la page. Aucune nouvelle chaîne d'app, aucune migration.
+- [x] SPEC §6.5 (pointage douchette) + en-tête (version 2026-07-09)
+- [x] Guide : section « Avec une douchette USB » ajoutée à `inventaire/recolement.{,en,es,mg}.md`
+- [x] Guide : nouvelle page `inventaire/catalogage-douchette.{,en,es,mg}.md` (documente FEAT-054) + nav MkDocs + `nav_translations` ×3
+- [x] Gate i18n `python scripts/i18n_check.py` → 0 (aucune nouvelle chaîne d'app pour FEAT-055 ; 4 chaînes BUG-021 retraduites — voir ci-dessous)
+- [x] Déploiement Box (rebuild bibliofelia+worker healthy ; guide MkDocs `--strict` build OK + déployé 4 langues, page catalogage-douchette HTTP 200 ×4)
+- [ ] Test fonctionnel Val (scan douchette sur page rapport récolement → exemplaire pointé, page ne bouge pas, compteur monte ; guide catalogage douchette visible en 4 langues)
+- [ ] Commit unique `FEAT-055` (après confirmation Val)
+
+### BUG-021 — Catégorie « Impressions » disparue de /admin/settings/ (régression FEAT-047)
+- [x] Doc `docs/bugs/BUG-021-settings-impressions-disparues.md`
+- [x] Cause : FEAT-047 a retiré `printing_cards`/`printing_labels` de `FORMS` (`admin_views.py`) — seul accès UI au format des étiquettes
+- [x] Fix : restauration des 2 sections dans `FORMS` + `settings_index.html` (icônes/sous-titres). ZeroTier/Sources non restaurées (hors périmètre). Aucune migration.
+- [x] i18n : `scripts/translations_sprint24.py` (4 chaînes × EN/ES/MG, reprises de l'historique git)
+- [x] SPEC §6.6 + en-tête
+- [x] Gate i18n `makemessages` + `translations_sprint24.py` + `i18n_check.py` → **0** (dans le conteneur Box ; 4 chaînes × EN/ES/MG ; `.po` resync dans Z:)
+- [x] Déploiement Box (rebuild bibliofelia+worker, healthy)
+- [ ] Test fonctionnel Val (sections Impressions réapparaissent, réglage taille étiquettes OK)
+- [ ] Commit (groupé avec FEAT-055 après confirmation Val)

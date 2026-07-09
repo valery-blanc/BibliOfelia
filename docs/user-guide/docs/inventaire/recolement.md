@@ -59,6 +59,29 @@ pour vous aider à tous les retrouver.
 
 Quand le rayon est parcouru, appuyez sur **Terminer**.
 
+## Avec une douchette USB
+
+Si le poste qui affiche BibliOfelia est équipé d'une **douchette USB** (lecteur
+de code-barres filaire), vous pouvez récoler **sans caméra** : c'est même le seul
+moyen si l'écran est branché en réseau local sans `https://`.
+
+1. Ouvrez la page de rapport (elle sert d'écran de pointage).
+2. **Scannez directement** le code Ofelia (290) de chaque exemplaire avec la
+   douchette — **aucun clic nécessaire**, même si vous n'avez cliqué dans aucun
+   champ.
+3. Chaque scan s'inscrit tout seul, le **compteur** monte et la ligne apparaît
+   dans la liste, exactement comme avec la caméra. La page **ne bouge pas**.
+
+Le même exemplaire scanné deux fois n'est compté qu'une fois. Vous pouvez mélanger
+les modes : commencer à la douchette, puis ouvrir la caméra (« Lancer
+l'inventaire ») — pendant que la caméra est ouverte, la douchette se met en
+retrait pour éviter les doublons.
+
+!!! tip "Douchette ou caméra ?"
+    La **douchette** est idéale à un poste fixe (bureau de prêt) et fonctionne
+    même sans connexion sécurisée. La **caméra** est idéale en mobilité, tablette
+    en main devant les rayons.
+
 ## Lire le rapport
 
 Le rapport s'affiche **par notice**, classé par auteur et titre. Tous les

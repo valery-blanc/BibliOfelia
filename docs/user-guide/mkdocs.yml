@@ -67,6 +67,7 @@ plugins:
             Opérations en lot: Bulk operations
             Récolement: Inventory check
             Cataloguer en scannant: Catalogue by scanning
+            Cataloguer avec la douchette: Catalogue with the USB scanner
             Cataloguer depuis Excel: Catalogue from Excel
             Inscrire un membre: Enroll a member
             Fiche membre: Member profile
@@ -108,6 +109,7 @@ plugins:
             Opérations en lot: Operaciones en lote
             Récolement: Inventario
             Cataloguer en scannant: Catalogar escaneando
+            Cataloguer avec la douchette: Catalogar con el lector USB
             Cataloguer depuis Excel: Catalogar desde Excel
             Inscrire un membre: Inscribir un miembro
             Fiche membre: Ficha del miembro
@@ -149,6 +151,7 @@ plugins:
             Opérations en lot: Asa marobe
             Récolement: Récolement
             Cataloguer en scannant: Catalogue amin'ny scan
+            Cataloguer avec la douchette: Catalogue amin'ny douchette
             Cataloguer depuis Excel: Catalogue avy amin'ny Excel
             Inscrire un membre: Fisoratana mpianatra
             Fiche membre: Takelaka mpianatra
@@ -198,6 +201,7 @@ nav:
       - Opérations en lot: catalogue/operations-lot.md
       - Récolement: inventaire/recolement.md
       - Cataloguer en scannant: inventaire/catalogage-scan.md
+      - Cataloguer avec la douchette: inventaire/catalogage-douchette.md
       - Cataloguer depuis Excel: inventaire/catalogage-excel.md
   - Usagers:
       - Inscrire un membre: usagers/inscription.md

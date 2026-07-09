@@ -58,6 +58,31 @@ exemplaire maromaro ny notice iray, dia asehon'ny écran "exemplaire 2",
 
 Rehefa voarakitra ny rakitra, tsindrio **Vita**.
 
+## Amin'ny douchette USB
+
+Raha misy **douchette USB** (mpamaky code-barres misy tariby) ny toerana
+mampiseho ny BibliOfelia, dia afaka manao récolement **tsy misy fakantsary**
+ianao — io mihitsy aza no hany fomba raha tafiditra amin'ny tambajotra an-toerana
+tsy misy `https://` ny écran.
+
+1. Sokafy ny pejy tatitra (izy koa no écran fandraketana).
+2. **Scano mivantana** ny code Ofelia (290) an'ny exemplaire tsirairay amin'ny
+   douchette — **tsy mila tsindry**, na dia tsy nanindry tao anaty saha aza ianao.
+3. Voarakitra ho azy ny scan tsirairay, miakatra ny **kaontera** ary miseho eo
+   amin'ny lisitra ny andalana, mitovy amin'ny amin'ny fakantsary. **Tsy
+   mihetsika** ny pejy.
+
+Ny exemplaire iray scan-ina indroa dia isaina indray mandeha ihany. Azonao
+akambana ny mode: manomboka amin'ny douchette, avy eo manokatra ny fakantsary
+("Manomboka inventaire") — raha mbola misokatra ny fakantsary dia mihemotra ny
+douchette mba tsy hisy doublon.
+
+!!! tip "Douchette sa fakantsary?"
+    Ny **douchette USB** dia tsara indrindra amin'ny toerana raikitra (birao
+    fampindramana) ary miasa na dia tsy misy fifandraisana voaaro aza. Ny
+    **fakantsary** dia tsara indrindra amin'ny fivezivezena, tablette an-tanana eo
+    anoloan'ny rakitra.
+
 ## Vakio ny tatitra
 
 Aseho **isaky ny notice** ny tatitra, alahatra araka ny mpanoratra sy ny

@@ -21,9 +21,11 @@ from apps.accounts.permissions import require_role
 
 from .forms import (
     BackupConfigForm,
+    ItemLabelFormatForm,
     LanguagesForm,
     LibraryIdentityForm,
     LoanReservationDefaultsForm,
+    MemberCardFormatForm,
 )
 from .models import Setting
 
@@ -35,6 +37,10 @@ FORMS = {
     "identity": (gettext_lazy("Identité"), LibraryIdentityForm),
     "languages": (gettext_lazy("Langues"), LanguagesForm),
     "loans": (gettext_lazy("Durées prêts & réservations"), LoanReservationDefaultsForm),
+    # BUG-021 : sections d'impression restaurées (FEAT-047 les avait retirées à
+    # tort — c'était le seul endroit pour régler la taille des étiquettes).
+    "printing_cards": (gettext_lazy("Impressions — Cartes membres"), MemberCardFormatForm),
+    "printing_labels": (gettext_lazy("Impressions — Étiquettes codes Ofelia"), ItemLabelFormatForm),
     "backup": (gettext_lazy("Sauvegardes"), BackupConfigForm),
 }
 

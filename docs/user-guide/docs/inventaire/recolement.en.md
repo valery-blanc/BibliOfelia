@@ -55,6 +55,27 @@ copies, the screen shows "copy 2", "copy 3"… to help you find them all.
 
 When the shelf is covered, press **Finish**.
 
+## With a USB barcode scanner
+
+If the workstation showing BibliOfelia has a **USB barcode scanner** (wired
+scanner), you can run the inventory **without a camera** — this is even the only
+option if the screen is on a local network without `https://`.
+
+1. Open the report page (it doubles as the scanning screen).
+2. **Scan directly** each copy's Ofelia code (290) with the scanner — **no click
+   needed**, even if you haven't clicked into any field.
+3. Each scan records itself, the **counter** climbs and the line appears in the
+   list, exactly like with the camera. The page **does not move**.
+
+The same copy scanned twice is counted only once. You can mix modes: start with
+the scanner, then open the camera ("Start inventory") — while the camera is open,
+the scanner steps back to avoid duplicates.
+
+!!! tip "Scanner or camera?"
+    The **USB scanner** is ideal at a fixed station (loans desk) and works even
+    without a secure connection. The **camera** is ideal on the move, tablet in
+    hand in front of the shelves.
+
 ## Read the report
 
 The report is shown **by record**, sorted by author and title. All Ofelia

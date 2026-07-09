@@ -23,11 +23,15 @@
             {% if slug == 'identity' %}--lr-bg:var(--burgundy-light);--lr-fg:var(--burgundy)
             {% elif slug == 'languages' %}--lr-bg:var(--sky-light);--lr-fg:var(--sky-dark)
             {% elif slug == 'loans' %}--lr-bg:var(--orange-light);--lr-fg:var(--orange)
+            {% elif slug == 'printing_cards' %}--lr-bg:var(--blush-light);--lr-fg:var(--burgundy)
+            {% elif slug == 'printing_labels' %}--lr-bg:var(--amber-light);--lr-fg:#946906
             {% elif slug == 'backup' %}--lr-bg:var(--forest-light);--lr-fg:var(--forest)
             {% endif %}">
             {% if slug == 'identity' %}{% icon "id-card" size="18px" %}
             {% elif slug == 'languages' %}{% icon "languages" size="18px" %}
             {% elif slug == 'loans' %}{% icon "calendar" size="18px" %}
+            {% elif slug == 'printing_cards' %}{% icon "id-card" size="18px" %}
+            {% elif slug == 'printing_labels' %}{% icon "printer" size="18px" %}
             {% elif slug == 'backup' %}{% icon "database" size="18px" %}
             {% else %}{% icon "settings" size="18px" %}{% endif %}
         </div>
@@ -37,6 +41,8 @@
                 {% if slug == 'identity' %}{% trans "Nom de la bibliothèque, contact, fuseau horaire" %}
                 {% elif slug == 'languages' %}{% trans "Langues actives et langue par défaut" %}
                 {% elif slug == 'loans' %}{% trans "Durée par défaut d'un prêt et délais de réservation" %}
+                {% elif slug == 'printing_cards' %}{% trans "Cartes membres : nombre par A4, photo, logo OFELIA" %}
+                {% elif slug == 'printing_labels' %}{% trans "Étiquettes codes Ofelia : dimensions, titre, logo" %}
                 {% elif slug == 'backup' %}{% trans "Fréquence locale et destination cloud (rclone)" %}
                 {% endif %}
             </div>
