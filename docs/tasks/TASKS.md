@@ -1059,8 +1059,8 @@ Signalés par Val 2026-05-30 (navigation espagnole).
 - [x] Guide : nouvelle page `inventaire/catalogage-douchette.{,en,es,mg}.md` (documente FEAT-054) + nav MkDocs + `nav_translations` ×3
 - [x] Gate i18n `python scripts/i18n_check.py` → 0 (aucune nouvelle chaîne d'app pour FEAT-055 ; 4 chaînes BUG-021 retraduites — voir ci-dessous)
 - [x] Déploiement Box (rebuild bibliofelia+worker healthy ; guide MkDocs `--strict` build OK + déployé 4 langues, page catalogage-douchette HTTP 200 ×4)
-- [ ] Test fonctionnel Val (scan douchette sur page rapport récolement → exemplaire pointé, page ne bouge pas, compteur monte ; guide catalogage douchette visible en 4 langues)
-- [ ] Commit unique `FEAT-055` (après confirmation Val)
+- [x] Test fonctionnel Val **OK 2026-07-09**
+- [x] Commit unique groupé FEAT-055 + BUG-021 → `main` + push origin/main (commit `98aadd9`)
 
 ### BUG-021 — Catégorie « Impressions » disparue de /admin/settings/ (régression FEAT-047)
 - [x] Doc `docs/bugs/BUG-021-settings-impressions-disparues.md`
@@ -1070,5 +1070,5 @@ Signalés par Val 2026-05-30 (navigation espagnole).
 - [x] SPEC §6.6 + en-tête
 - [x] Gate i18n `makemessages` + `translations_sprint24.py` + `i18n_check.py` → **0** (dans le conteneur Box ; 4 chaînes × EN/ES/MG ; `.po` resync dans Z:)
 - [x] Déploiement Box (rebuild bibliofelia+worker, healthy)
-- [ ] Test fonctionnel Val (sections Impressions réapparaissent, réglage taille étiquettes OK)
-- [ ] Commit (groupé avec FEAT-055 après confirmation Val)
+- [x] Test fonctionnel Val **OK 2026-07-09** (sections Impressions réapparaissent, réglage taille étiquettes OK)
+- [x] Commit (groupé avec FEAT-055, commit `98aadd9`)
