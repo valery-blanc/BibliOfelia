@@ -1,0 +1,19 @@
+; Domain: bibliofelia.org
+; Exported (y-m-d hh:mm:ss): 2026-07-18 15:18:14
+; Actual version
+
+$TTL 3600
+@                   IN SOA   ns11.infomaniak.ch. hostmaster.infomaniak.ch. (2026071806 10800 3600 605800 3600)
+               3600 IN A     31.164.198.65
+               3600 IN MX 10 mail.bibliofelia.org.
+               3600 IN NS    ns11.infomaniak.ch.
+               3600 IN NS    ns12.infomaniak.ch.
+               3600 IN TXT   "v=spf1 -all"
+               3600 IN TXT   "v=spf1 mx -all"
+canaima        3600 IN A     31.164.198.65
+docs           3600 IN A     31.164.198.65
+grand-saconnex 3600 IN A     31.164.198.65
+mail           3600 IN A     31.164.198.65
+sanjuan        3600 IN A     31.164.198.65
+www            3600 IN A     31.164.198.65
+_dmarc         3600 IN TXT   "v=DMARC1; p=reject; rua=mailto:admin@bibliofelia.org"

@@ -1072,3 +1072,21 @@ Signalés par Val 2026-05-30 (navigation espagnole).
 - [x] Déploiement Box (rebuild bibliofelia+worker, healthy)
 - [x] Test fonctionnel Val **OK 2026-07-09** (sections Impressions réapparaissent, réglage taille étiquettes OK)
 - [x] Commit (groupé avec FEAT-055, commit `98aadd9`)
+
+## Sprint 25 — Hébergement multi-instances + domaine bibliofelia.org
+
+> Ouvert le 2026-07-18. Infra : domaine bibliofelia.org (Infomaniak), 2 nouvelles
+> instances sur Avignon, migration Pi ofelia.zitoon.com → canaima.bibliofelia.org,
+> SMTP, redirect apex. Travail additif, ne rien casser sur Avignon.
+
+### FEAT-056 — Hébergement multi-instances + domaine bibliofelia.org
+- [x] DNS : zone `dns_bibliofelia.org.txt` livrée + collée chez Infomaniak (Val)
+- [x] Doc `docs/specs/FEAT-056-hebergement-multi-instances.md`
+- [x] Phase 1 — canaima.bibliofelia.org : fichier Traefik + CSRF Pi + restart + vérif TLS (HTTP 200, cert OK, ofelia.zitoon.com conservé)
+- [x] Phase 2 — redirect 301 apex/www → ofeliainternational.org/what-we-do/ (301 OK apex+www, certs OK)
+- [x] Phase 3 — docs.bibliofelia.org (MkDocs statique + nginx + Traefik) — HTTP 200, cert OK, doc LOCALE Box intacte (additif)
+- [x] Phase 4 — instances sanjuan + grand-saconnex (image BibliOfelia + 2 stacks web+worker+nginx + Traefik) — HTTP 200 setup wizard, static/cert OK, healthy
+- [x] Phase 5 — SMTP docker-mailserver (Rspamd, 3 boîtes, DKIM généré, TLS acme.json, test interne OK). EN ATTENTE Val : DNS DKIM + port-forward 25/993 + rDNS
+- [x] SPEC_BIBLIOFELIA.md §11.7 hébergement multi-instances + en-tête
+- [x] Test fonctionnel Val **OK 2026-07-18** (web 1/2/3 OK ; mail SPF/DKIM/DMARC/réception validés bout-en-bout par Claude)
+- [ ] Commit
