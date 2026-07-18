@@ -1089,4 +1089,4 @@ Signalés par Val 2026-05-30 (navigation espagnole).
 - [x] Phase 5 — SMTP docker-mailserver (Rspamd, 3 boîtes, DKIM généré, TLS acme.json, test interne OK). EN ATTENTE Val : DNS DKIM + port-forward 25/993 + rDNS
 - [x] SPEC_BIBLIOFELIA.md §11.7 hébergement multi-instances + en-tête
 - [x] Test fonctionnel Val **OK 2026-07-18** (web 1/2/3 OK ; mail SPF/DKIM/DMARC/réception validés bout-en-bout par Claude)
-- [ ] Commit
+- [x] Commit unique `ac62620` + push origin/main (2026-07-18)
