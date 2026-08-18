@@ -50,6 +50,10 @@
             <div class="lrow-sub">{{ s.finalized_at|date:"d/m/Y H:i"|default:"—" }} · {{ s.n_items }} {% trans "titre(s)" %}</div>
         </div>
         <div class="lrow-end">
+            {# FEAT-058 : rouvrir un lot validé pour voir les livres qu'il contient. #}
+            <a href="{% url 'catalog:scan_session' s.pk %}" class="btn btn--ghost btn--sm">
+                {% icon "clipboard-list" size="14px" %} {% trans "Voir le lot" %}
+            </a>
             <a href="{% url 'printing:labels' %}?catalog_session={{ s.pk }}" class="btn btn--ghost btn--sm">
                 {% icon "printer" size="14px" %} {% trans "Étiquettes" %}
             </a>

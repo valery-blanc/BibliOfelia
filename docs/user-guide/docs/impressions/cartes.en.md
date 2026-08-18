@@ -50,6 +50,25 @@ Each page contains several cards at business card size (85 × 54 mm).
     in lot in the evening: less paper waste (cards are arranged 6 per
     A4 page).
 
+## Printing on a tape printer (Brother QL-810W)
+
+With a **Brother QL-810W** plugged in over USB and a 62 mm continuous
+tape, the **62 mm tape (Brother QL)** button prints one card at a time,
+at the **exact bank-card size** (85.6 × 54 mm).
+
+1. Tick the members, then click **62 mm tape (Brother QL)**.
+2. The PDF opens in a new tab: start printing, then pick the **Brother
+   QL-810W** printer, **62 mm** paper, **100 %** scale.
+3. The card comes out **sideways across the tape** — that is expected, it
+   is the right size once peeled off.
+
+Since the tape is adhesive, stick the card onto card stock and laminate
+it: sturdier than a plain paper print.
+
+!!! tip "Black and red tape"
+    With a two-colour tape (DK-22251), the "Member card" line prints in
+    red. The barcode stays black so the scanner can still read it.
+
 ## See also
 
 - [Enroll a member](../usagers/inscription.md)

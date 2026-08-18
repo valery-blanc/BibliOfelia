@@ -3,8 +3,10 @@
 
 {% block tile_strip %}{% endblock %}
 
-{# Les pages d'erreur sont servies hors-contexte de la route métier — on
-   évite que le sélecteur de langue retombe sur la même URL erronée. #}
+{% comment %}
+Les pages d'erreur sont servies hors-contexte de la route métier — on
+évite que le sélecteur de langue retombe sur la même URL erronée.
+{% endcomment %}
 {% block lang_next %}/{{ LANGUAGE_CODE }}/{% endblock %}
 
 {% block content %}

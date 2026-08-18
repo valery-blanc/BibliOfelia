@@ -23,42 +23,58 @@ class MetadataSourcesForm(forms.Form):
     KEY = "metadata.sources"
     KEY_API_KEY = "metadata.google_books_api_key"
 
+    # FEAT-059/060 : ordre = ordre de préférence de `lookup_isbn_multi`. Toutes
+    # les sources sont actives par défaut — aucune n'exige de clé (la clé Google
+    # Books ne fait que relever le quota) et une source muette ne coûte qu'un
+    # appel HTTP parallèle.
+    SOURCE_ORDER = ["openlibrary", "google_books", "bnf", "bne", "swisscovery", "k10plus"]
+
     google_books_api_key = forms.CharField(
         label=_("Clé API Google Books"),
         required=False,
-        help_text=_("Obligatoire pour activer Google Books. Gratuite via Google Cloud Console."),
+        help_text=_(
+            "Facultative mais recommandée : sans clé, Google Books partage un "
+            "quota par adresse IP et répond « quota atteint ». Gratuite via "
+            "Google Cloud Console."
+        ),
     )
     openlibrary_enabled = forms.BooleanField(label=_("OpenLibrary"), required=False, initial=True)
-    google_books_enabled = forms.BooleanField(label=_("Google Books"), required=False, initial=False)
-    bnf_enabled = forms.BooleanField(label=_("BNF (livres FR)"), required=False, initial=True)
+    google_books_enabled = forms.BooleanField(label=_("Google Books"), required=False, initial=True)
+    bnf_enabled = forms.BooleanField(label=_("BnF (livres FR)"), required=False, initial=True)
     bne_enabled = forms.BooleanField(label=_("BNE (livres ES)"), required=False, initial=True)
+    swisscovery_enabled = forms.BooleanField(
+        label=_("Swisscovery (livres CH)"), required=False, initial=True
+    )
+    k10plus_enabled = forms.BooleanField(
+        label=_("K10plus (livres DE)"), required=False, initial=True
+    )
 
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)
         if not self.is_bound:
             data = _initial_dict(self.KEY, {})
             self.fields["google_books_api_key"].initial = Setting.get(self.KEY_API_KEY, "")
-            self.fields["openlibrary_enabled"].initial = data.get("openlibrary", True)
-            self.fields["google_books_enabled"].initial = data.get("google_books", False)
-            self.fields["bnf_enabled"].initial = data.get("bnf", True)
-            self.fields["bne_enabled"].initial = data.get("bne", True)
+            for source in self.SOURCE_ORDER:
+                self.fields[f"{source}_enabled"].initial = data.get(source, True)
 
     def save(self) -> None:
         data = self.cleaned_data
         Setting.set(self.KEY_API_KEY, data.get("google_books_api_key", "").strip())
-        Setting.set(self.KEY, {
-            "openlibrary": bool(data["openlibrary_enabled"]),
-            "google_books": bool(data["google_books_enabled"]),
-            "bnf": bool(data["bnf_enabled"]),
-            "bne": bool(data["bne_enabled"]),
-        })
+        Setting.set(
+            self.KEY,
+            {s: bool(data[f"{s}_enabled"]) for s in self.SOURCE_ORDER},
+        )
 
     @staticmethod
     def active_sources() -> list[str]:
-        """Retourne la liste des sources activées dans Settings."""
+        """Sources activées dans Settings (toutes par défaut, cf. SOURCE_ORDER).
+
+        FEAT-059 : Google Books était exclu par défaut (héritage de l'époque où
+        on croyait la clé d'API obligatoire) — il n'apparaissait donc pas dans
+        les cases à cocher de l'enrichissement sur une instance neuve.
+        """
         data = Setting.get(MetadataSourcesForm.KEY, {}) or {}
-        order = ["openlibrary", "google_books", "bnf", "bne"]
-        return [s for s in order if data.get(s, s in ("openlibrary", "bnf", "bne"))]
+        return [s for s in MetadataSourcesForm.SOURCE_ORDER if data.get(s, True)]
 
 
 class LibraryIdentityForm(forms.Form):
@@ -263,6 +279,63 @@ class ItemLabelFormatForm(forms.Form):
             "author_lines": self.cleaned_data["author_lines"],
             "show_logo": bool(self.cleaned_data["show_logo"]),
         }, "Format étiquettes codes Ofelia")
+
+
+class RollPrinterFormatForm(forms.Form):
+    """FEAT-062 : paramètres de l'imprimante à ruban continu (Brother QL-810W)."""
+
+    KEY = "roll_printer_format"
+
+    enabled = forms.BooleanField(
+        label=_("Imprimante à ruban disponible"),
+        required=False, initial=True,
+        help_text=_("Affiche le bouton « Ruban » sur les écrans d'impression."),
+    )
+    tape_width_mm = forms.ChoiceField(
+        label=_("Largeur du ruban (mm)"),
+        choices=[("29", "29"), ("38", "38"), ("50", "50"), ("62", "62")],
+        initial="62",
+    )
+    label_length_mm = forms.IntegerField(
+        label=_("Longueur d'une étiquette (mm)"),
+        min_value=15, max_value=200, initial=35,
+        help_text=_("Doit correspondre à la longueur de coupe réglée dans le pilote Brother."),
+    )
+    card_length_mm = forms.IntegerField(
+        label=_("Longueur d'une carte membre (mm)"),
+        min_value=40, max_value=200, initial=89,
+        help_text=_("89 mm : juste sous le format continu natif du pilote Brother (62 × 89,9 mm)."),
+    )
+    two_color = forms.BooleanField(
+        label=_("Ruban bicolore noir/rouge"),
+        required=False, initial=True,
+        help_text=_("Rouge sur les cartes membres. Les étiquettes restent monochromes."),
+    )
+    show_logo = forms.BooleanField(
+        label=_("Logo Ofelia sur les étiquettes"),
+        required=False, initial=True,
+    )
+
+    def __init__(self, *args, **kwargs):
+        super().__init__(*args, **kwargs)
+        if not self.is_bound:
+            data = _initial_dict(self.KEY)
+            self.fields["enabled"].initial = bool(data.get("enabled", True))
+            self.fields["tape_width_mm"].initial = str(data.get("tape_width_mm", 62))
+            self.fields["label_length_mm"].initial = data.get("label_length_mm", 35)
+            self.fields["card_length_mm"].initial = data.get("card_length_mm", 89)
+            self.fields["two_color"].initial = bool(data.get("two_color", True))
+            self.fields["show_logo"].initial = bool(data.get("show_logo", True))
+
+    def save(self) -> None:
+        Setting.set(self.KEY, {
+            "enabled": bool(self.cleaned_data["enabled"]),
+            "tape_width_mm": int(self.cleaned_data["tape_width_mm"]),
+            "label_length_mm": self.cleaned_data["label_length_mm"],
+            "card_length_mm": self.cleaned_data["card_length_mm"],
+            "two_color": bool(self.cleaned_data["two_color"]),
+            "show_logo": bool(self.cleaned_data["show_logo"]),
+        }, "Imprimante à ruban continu (FEAT-062)")
 
 
 class LoanReservationDefaultsForm(forms.Form):

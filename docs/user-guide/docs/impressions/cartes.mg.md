@@ -56,6 +56,25 @@ karatra maromaro amin'ny endrika karatra fitsidihana (85 × 54 mm).
     misy fandanian-taratasy (ny karatra dia mifanondro amin'ny 6
     isaky ny pejy A4).
 
+## Manonta amin'ny mpanonta riban (Brother QL-810W)
+
+Miaraka amin'ny **Brother QL-810W** mifandray USB sy riban mitohy 62 mm,
+ny bokotra **Riban 62 mm (Brother QL)** dia manonta karatra tsirairay,
+amin'ny **refy mitovy amin'ny karatra banky** (85,6 × 54 mm).
+
+1. Mariho ireo mpikambana, dia tsindrio **Riban 62 mm (Brother QL)**.
+2. Misokatra anaty takelaka vaovao ny PDF: atombohy ny fanontana, dia fidio
+   ny mpanonta **Brother QL-810W**, taratasy **62 mm**, refy **100 %**.
+3. Mivoaka **mitsivalana amin'ny riban** ny karatra: ara-dalàna izany,
+   marina ny refiny rehefa endahana.
+
+Satria mifikitra ny riban, apetaho amin'ny karatona ny karatra dia
+plastikao: mateza kokoa noho ny fanontana taratasy fotsiny.
+
+!!! tip "Riban mainty sy mena"
+    Amin'ny riban loko roa (DK-22251), mivoaka mena ny hoe «Karatra
+    mpikambana». Mainty foana ny kaody tsipika mba ho vakin'ny douchette.
+
 ## Jereo koa
 
 - [Manoratra mpianatra](../usagers/inscription.md)

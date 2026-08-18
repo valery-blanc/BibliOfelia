@@ -9,6 +9,27 @@ C'est l'équivalent, pour la création, du [récolement](recolement.md)
 pour la vérification : un **scan en continu**, sans rien recliquer entre
 deux livres.
 
+## À quoi sert une session de catalogage
+
+Une **session** de catalogage (on dit aussi un **lot**) sert à ajouter
+**beaucoup de livres d'un coup** au catalogue. Le principe se déroule en trois
+temps :
+
+1. **Vous ouvrez un lot et vous scannez** tous les livres de la caisse à la
+   suite. Rien n'entre encore au catalogue : le lot n'est qu'une liste de
+   travail, que vous pouvez corriger ou vider.
+2. **Vous vérifiez la liste** — et surtout, vous appliquez des **modifications
+   par lot** : cochez plusieurs lignes (ou toutes) et affectez-leur en un seul
+   clic la même **catégorie**, le même **emplacement** dans la bibliothèque ou
+   le même **état**. C'est tout l'intérêt de cataloguer ensemble des livres qui
+   vont ensemble.
+3. **Vous envoyez le lot au catalogue** : les notices et les exemplaires sont
+   créés pour de bon, et vous pouvez imprimer d'un coup les étiquettes **de ce
+   lot seulement**.
+
+Un lot validé reste consultable : depuis la liste des lots, **Voir le lot**
+rappelle quels livres il contenait, avec un lien vers chaque notice.
+
 ## Démarrer un lot de catalogage
 
 Depuis le [**Catalogue**](/bibliofelia/fr/catalog/){ target="_blank" } (ou

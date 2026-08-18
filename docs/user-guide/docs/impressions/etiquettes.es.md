@@ -60,6 +60,31 @@ La convención recomendada:
 Elija una ubicación constante para todos sus libros: facilita el
 escaneo durante el [inventario](../inventaire/recolement.md).
 
+## Imprimir en una impresora de cinta (Brother QL-810W)
+
+Si su equipo tiene una **Brother QL-810W** conectada por USB con una
+cinta continua de 62 mm, aparece un segundo botón: **Cinta de 62 mm
+(Brother QL)**. Imprime una etiqueta a la vez, sin lámina A4 ni
+desperdicio de papel.
+
+1. Marque los ejemplares y haga clic en **Cinta de 62 mm (Brother QL)**.
+2. El PDF se abre en una pestaña nueva. Inicie la impresión (**Ctrl+P** o el
+   botón de impresión del visor).
+3. En el diálogo: impresora **Brother QL-810W**, papel **62 mm**, orientación
+   **vertical**, escala **100 %** (nunca «ajustar a la página»).
+
+Cada etiqueta se imprime en su propia página: la impresora corta entre cada
+una.
+
+Cada etiqueta mide **62 × 35 mm**: logotipo y nombre de la biblioteca arriba,
+título en dos líneas, autor en cursiva, código de barras y, abajo, el código
+Ofelia y el código de estantería.
+
+!!! tip "La etiqueta sale solo en negro"
+    El rojo de la cinta bicolor (DK-22251) se reserva para las tarjetas de
+    socio. En una etiqueta el código de barras debe seguir en negro: una barra
+    roja ya no la lee el lector.
+
 ## Ver también
 
 - [Gestionar los ejemplares](../catalogue/exemplaires.md)

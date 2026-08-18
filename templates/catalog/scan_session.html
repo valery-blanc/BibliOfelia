@@ -41,6 +41,48 @@
     {% trans "Ce lot a été envoyé au catalogue." %}
     <a href="{% url 'printing:labels' %}?catalog_session={{ session.pk }}">{% trans "Imprimer les étiquettes de ce lot" %}</a>
 </div>
+
+{# FEAT-058 : consultation d'un lot validé — lecture seule, avec accès aux notices. #}
+{% if items %}
+<div class="table-wrap cat-scan-wrap">
+    <table class="table cat-scan-table">
+        <thead>
+            <tr>
+                <th>{% trans "Auteur / Titre" %}</th>
+                <th>{% trans "Langue" %}</th>
+                <th>{% trans "Catégorie" %}</th>
+                <th>{% trans "Emplacement" %}</th>
+                <th>{% trans "Ex." %}</th>
+                <th></th>
+            </tr>
+        </thead>
+        <tbody>
+        {% for it in items %}
+            <tr>
+                <td class="cat-scan-meta">
+                    <div class="cat-scan-author">{{ it.metadata_authors|join:'; '|default:"—" }}</div>
+                    <div class="cat-scan-title">{{ it.metadata_title|default:it.scanned_value }}</div>
+                    <div class="cat-scan-isbn"><code>{{ it.scanned_value }}</code></div>
+                </td>
+                <td>{{ it.metadata_language|default:"—" }}</td>
+                <td>{{ it.category.code|default:"—" }}</td>
+                <td>{{ it.location_code|default:"—" }}</td>
+                <td>{{ it.copy_count }}</td>
+                <td style="text-align:right">
+                    {% if it.record_pk %}
+                    <a href="{% url 'catalog:record_detail' it.record_pk %}" class="btn btn--ghost btn--sm">
+                        {% trans "Voir la notice" %}
+                    </a>
+                    {% endif %}
+                </td>
+            </tr>
+        {% endfor %}
+        </tbody>
+    </table>
+</div>
+{% else %}
+<div class="card"><p class="muted">{% trans "Ce lot ne contient aucun livre." %}</p></div>
+{% endif %}
 {% else %}
 
 {% if user.is_librarian %}
@@ -74,14 +116,22 @@
         {% endif %}
     </p>
     {% if input_mode == "douchette" %}
-    <div class="form-actions" style="margin-top:12px">
-        <a href="{% url 'catalog:scan_session' session.pk %}" class="btn btn--primary">
-            {% icon "check" size="16px" %} {% trans "Terminer et voir le lot" %}
-        </a>
+    {% comment %}
+    BUG-024 : la liste ci-dessous est rendue par le serveur, les scans arrivent
+    en AJAX. Ce bouton ne sert donc qu'à recharger une liste périmée : masqué
+    quand la liste est déjà à jour, ré-affiché par le JS au premier scan.
+    (`{# … #}` est mono-ligne en Django : en multi-ligne il s'affiche à l'écran.)
+    {% endcomment %}
+    <div id="cat-refresh-wrap"{% if items %} hidden{% endif %}>
+        <div class="form-actions" style="margin-top:12px">
+            <a href="{% url 'catalog:scan_session' session.pk %}" class="btn btn--primary">
+                {% icon "check" size="16px" %} {% trans "Terminer et voir le lot" %}
+            </a>
+        </div>
+        <p class="help-hint" style="margin-top:6px">
+            {% trans "Quand vous avez fini de scanner, cliquez ici pour vérifier la liste et l’envoyer au catalogue." %}
+        </p>
     </div>
-    <p class="help-hint" style="margin-top:6px">
-        {% trans "Quand vous avez fini de scanner, cliquez ici pour vérifier la liste et l’envoyer au catalogue." %}
-    </p>
     {% endif %}
 </div>
 {% endif %}

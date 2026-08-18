@@ -163,11 +163,40 @@ Pour les détails complets (clés SSH, API tierces, services locaux), lancer le 
 |---|---|---|---|
 | **Ofelia Box** (Pi 5) | `192.168.0.147` | Cible de déploiement BibliOfelia + EduBox/keebee | `ssh -i ~/.ssh/id_ed25519_pi ofelia@192.168.0.147` |
 | **ANQA** | `192.168.0.133` | Windows — build, GPU (RTX 5070 Ti) | `ssh -i ~/.ssh/id_ed25519_claude Val@192.168.0.133` |
-| **Avignon** | `192.168.0.222` | Debian 24/7 — Docker, sites web | `ssh avignon` |
+| **Fez** | `192.168.0.221` | Debian 24/7 — **nœud actif** : Traefik + instances BibliOfelia (`bo-sanjuan-*`, `bo-grand-saconnex-*`, `bibliofelia-docs`) | `ssh fez` |
+| **Avignon** | `192.168.0.222` | Debian 24/7 — **nœud de secours** du couple failover (aucun conteneur BibliOfelia en marche) | `ssh avignon` |
 | **Tulear** | `192.168.0.200` | Windows — CRM SwissKap, Supabase locale | `ssh -i ~/.ssh/id_ed25519 val@192.168.0.200` |
 | **GitHub** | `github.com` | Compte `valery-blanc` | `ssh -i ~/.ssh/id_ed25519_github git@github.com` |
 
 Repo BibliOfelia : `https://github.com/valery-blanc/BibliOfelia` (remote `origin`).
+
+### ⚠️ Failover Fez ⇄ Avignon (depuis le 2026-08-08)
+
+Les instances hébergées **ne tournent plus sur Avignon**. Le couple Fez/Avignon
+est en failover automatique (projet GQQFM, FEAT-113/114) : **le nœud actif porte
+les conteneurs**, l'autre est en attente. Au 2026-08-18, l'actif est **Fez**.
+
+- Rôle du nœud : `cat /home/val/gqqfm-cluster-role` (`active` / `standby`).
+- Source de vérité infra : `~/.claude/skills/infra.md` — **à lire avant toute
+  opération de déploiement**, la répartition peut avoir basculé.
+- Sur chaque nœud : `~/BibliOfelia` (copie de fichiers, **pas un clone git**) et
+  `~/docker/bibliofelia-instances/{sanjuan,grand-saconnex}/`.
+
+**Déployer une instance** (procédure vérifiée FEAT-062) :
+
+```bash
+tar -czf /tmp/x.tgz <fichiers> && scp /tmp/x.tgz fez:/tmp/
+ssh fez 'cd ~/BibliOfelia && tar -xzf /tmp/x.tgz'
+ssh fez 'cd ~/BibliOfelia && docker build --target prod -t ofelia/bibliofelia:avignon .'
+ssh fez 'cd ~/docker/bibliofelia-instances/<instance> && docker compose up -d web worker'
+# guide en ligne : cd ~/docker/bibliofelia-docs && docker compose build docs && docker compose up -d docs
+```
+
+Puis **refaire le sync + le build sur le nœud de secours** : un secours qui a du
+code périmé annulerait le déploiement à la première bascule. Le tag d'image
+`ofelia/bibliofelia:avignon` (nom historique, conservé) est **partagé par les
+deux instances** : rebuilder sans recréer une instance la laisse sur l'ancienne
+image jusqu'à son prochain `compose up`.
 
 ## Commandes utiles
 

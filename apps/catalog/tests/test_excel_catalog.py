@@ -396,3 +396,48 @@ def test_import_job_idempotent_on_local_id(user):
     # Ré-exécution sur la même session (même job) → pas de doublon.
     run_import_job(job)
     assert ScanItem.objects.filter(session=job.scan_session).count() == count_after_first
+
+
+# ── BUG-025 : ligne sans ISBN ──────────────────────────────────────────────
+
+
+def test_import_job_reports_row_without_isbn(user):
+    """Une ligne remplie mais sans ISBN doit être **signalée**, pas escamotée.
+
+    Cas réel : 105 lignes dans le fichier, 104 notices créées, 0 erreur — la
+    ligne sans ISBN disparaissait sans laisser de trace ni dans les compteurs
+    ni dans le rapport.
+    """
+    job = _make_import_job(
+        user,
+        ["ISBN", "AUTHOR", "TITLE"],
+        [
+            [VALID_ISBN, "Auteur A", "Titre A"],
+            ["", "Ruiz, Miguel", "L'art de vivre et de mourir"],
+            ["9782266283434", "Auteur B", "Titre B"],
+        ],
+    )
+    run_import_job(job)
+    job.refresh_from_db()
+
+    assert job.total == 3           # la ligne sans ISBN est comptée
+    assert job.processed == 3
+    assert job.errors == 1
+    entries = [e for e in job.report if e.get("warning") == "ISBN_MISSING"]
+    assert len(entries) == 1
+    assert entries[0]["row"] == 3
+    # Le rapport doit permettre d'identifier le livre à cataloguer à la main.
+    assert "Ruiz, Miguel" in entries[0]["label"]
+    # Les autres lignes sont importées normalement.
+    assert ScanItem.objects.filter(session=job.scan_session).count() == 2
+
+
+def test_import_job_ignores_fully_empty_rows(user):
+    """Les lignes entièrement vides (openpyxl en compte après les données)
+    restent ignorées sans bruit."""
+    job = _make_import_job(user, ["ISBN", "AUTHOR"], [[VALID_ISBN, "A"], ["", ""]])
+    run_import_job(job)
+    job.refresh_from_db()
+    assert job.total == 1
+    assert job.errors == 0
+    assert job.report == []

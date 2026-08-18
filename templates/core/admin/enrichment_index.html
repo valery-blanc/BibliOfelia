@@ -17,7 +17,7 @@
     </div>
     <div class="pagehead-text">
         <h1 class="pagehead-title">{% trans "Enrichissement métadonnées" %}</h1>
-        <div class="pagehead-sub">{% trans "Complète le catalogue depuis OpenLibrary, Google Books, BNF et BNE." %}</div>
+        <div class="pagehead-sub">{% trans "Complète le catalogue depuis OpenLibrary, Google Books et les bibliothèques nationales." %}</div>
     </div>
 </header>
 
@@ -46,12 +46,15 @@
 
         <div class="enrich-section">
             <div class="enrich-section-title">{% trans "Sources à interroger" %}</div>
-            {% for src in active_sources %}
+            {% for src, label in active_sources %}
             <label class="enrich-option">
                 <input type="checkbox" name="sources" value="{{ src }}" checked>
-                <span>{{ src }}</span>
+                <span>{{ label }}</span>
             </label>
             {% endfor %}
+            <p class="enrich-hint">
+                <a href="{% url 'core:settings_section' section='sources' %}">{% trans "Activer ou désactiver des sources" %}</a>
+            </p>
         </div>
 
         <div class="enrich-section">

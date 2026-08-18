@@ -33,9 +33,17 @@ _NS = {
 
 
 def _texts(record_data, tag):
+    """Textes non vides des `dc:<tag>` **descendants** de `record_data`.
+
+    BUG-022 : la BnF sert les champs Dublin Core imbriqués dans un wrapper
+    `<oai_dc:dc>` à l'intérieur de `<srw:recordData>`. Un `findall("dc:title")`
+    ne cherche qu'en enfant direct → toutes les notices remontaient vides
+    (titre, auteur, éditeur…), donc silencieusement ignorées par
+    `lookup_isbn_multi` et par l'enrichissement. Il faut chercher en descendant.
+    """
     return [
         (el.text or "").strip()
-        for el in record_data.findall(f"dc:{tag}", _NS)
+        for el in record_data.findall(f".//dc:{tag}", _NS)
         if (el.text or "").strip()
     ]
 

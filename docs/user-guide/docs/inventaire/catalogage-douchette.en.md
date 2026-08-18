@@ -13,6 +13,24 @@ copies), but driven by the fixed workstation's scanner.
     without a secure connection (`https://`). The **camera** is ideal on the
     move, tablet in hand. Both fill the same catalogue.
 
+## What a cataloguing session is for
+
+A cataloguing **session** (also called a **batch**) is how you add **many books
+at once** to the catalogue. It works in three steps:
+
+1. **You open a batch and scan** every book in the crate, one after another.
+   Nothing enters the catalogue yet: the batch is only a working list, which you
+   can correct or empty.
+2. **You check the list** — and above all, you apply **batch changes**: tick
+   several rows (or all of them) and assign them, in a single click, the same
+   **category**, the same **location** in the library or the same **condition**.
+   That is the whole point of cataloguing together books that belong together.
+3. **You send the batch to the catalogue**: records and copies are created for
+   real, and you can print the labels **for that batch only** in one go.
+
+A validated batch stays available: from the list of batches, **View batch**
+shows which books it contained, with a link to each record.
+
 ## Start a batch with the scanner
 
 From [**Advanced**](/bibliofelia/en/advanced/){ target="_blank" } → Inventory,

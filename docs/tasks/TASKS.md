@@ -642,7 +642,7 @@ Mise à jour : 2026-05-26 (Sprint 12 **CLOS** — FEAT-038 (cartes membres : fon
 - [x] 3 captures générées : `docs/user-guide/docs/assets/screenshots/fr/{login,dashboard,lend-form}.png`
 - [x] `mkdocs build` OK (1.86 s)
 - [x] `.gitignore` mis à jour (`.venv-doc/`, `docs/user-guide/site/`, `docs/user-guide/preview/`)
-- [ ] Test Val : valider le rendu des 3 captures + le scaffolding avant Task #2
+- [x] Test Val : valider le rendu des 3 captures + le scaffolding avant Task #2 — *superseded : guide complet validé Val 2026-05-31 (FEAT-048)*
 
 ### Task #2 — Jeu de données démo stable
 - [x] `install_demo()` rendu idempotent : garde sur `BibliographicRecord.summary=DEMO_MARKER` ; re-run = no-op + retour des compteurs actuels (`skipped=True`)
@@ -721,7 +721,7 @@ Mise à jour : 2026-05-26 (Sprint 12 **CLOS** — FEAT-038 (cartes membres : fon
 - [x] **Rebuild image BibliOfelia** : push code (Tasks 4b + 5) via tar/scp/extract dans `/opt/edubox/bibliofelia/` (git stash des dirty changes avant), `docker compose up -d --build bibliofelia` — image recréée, bouton `?` et `help_page → /docs/` actifs
 - [x] Smoke test Playwright sur Pi : 6 captures (4 home + faire-pret FR + glossaire EN) — rendu nominal OK
 - [x] `scripts/deploy_pi.sh` : script de redéploiement futur (build strict + tar + scp + extract + nginx reload)
-- [ ] **Validation finale Val** : ouvrir `http://192.168.0.147/bibliofelia/docs/` dans le navigateur, vérifier le bouton ? de la topbar BibliOfelia, naviguer dans les 4 langues
+- [x] **Validation finale Val** : ouvrir `http://192.168.0.147/bibliofelia/docs/` dans le navigateur, vérifier le bouton ? de la topbar BibliOfelia, naviguer dans les 4 langues — OK (bouton `?` validé sur la Box ; **KO sur les instances Avignon** → Sprint 26 / FEAT-057)
 
 ## Sprint 16 — Scanner caméra navigateur en mode unique (FEAT-044)
 
@@ -901,7 +901,7 @@ Signalés par Val 2026-05-30 (navigation espagnole).
 > est le poste habituel ; reprise prévue depuis Tulear avec accès complet
 > aux clés SSH Pi.
 
-- [ ] **FEAT-050** Catalogage Excel — vérification + import
+- [x] **FEAT-050** Catalogage Excel — vérification + import — **CLOS** (test Val OK 2026-06-05, commit + push)
   - [x] Spec `docs/specs/FEAT-050-catalogage-excel.md` rédigée et validée Val 2026-06-05
   - [x] Dépendances : `openpyxl==3.1.5` + `rapidfuzz==3.10.1` dans `requirements.txt`
   - [x] Modèle `ExcelCatalogJob` (apps/catalog/models.py) + admin minimal
@@ -930,7 +930,7 @@ Signalés par Val 2026-05-30 (navigation espagnole).
 
 > Demande Val 2026-06-05 : ajouter un filtre sur l'emplacement dans la page catalogue.
 
-- [ ] **FEAT-051** Filtre emplacement (`catalog:record_list`)
+- [x] **FEAT-051** Filtre emplacement (`catalog:record_list`) — **CLOS** (test Val OK 2026-06-06, commit + push)
   - [x] Vue : param GET `location` → `records.filter(items__location_id=location).distinct()` ; contexte `locations` + `selected.location`
   - [x] Template : `<select name="location">` « Tous emplacements / <code> » après le filtre langue
   - [x] **Pagination** : `base_qs` (querystring sans `page`) → liens Précédent/Suivant conservent tous les filtres (retour Val : filtre perdu au changement de page)
@@ -946,7 +946,7 @@ Signalés par Val 2026-05-30 (navigation espagnole).
 > notices restent au placeholder `ISBN:…`. Cause = Google Books 429 (quota)
 > attrapé silencieusement. Cf. `docs/bugs/BUG-019-google-books-quota-429.md`.
 
-- [ ] **BUG-019** Robustesse quota Google Books
+- [x] **BUG-019** Robustesse quota Google Books — **CLOS** (test Val OK 2026-06-06, commit + push)
   - [x] Diagnostic terrain Box (job #9 : 96 skipped ; `GB.lookup` → 429)
   - [x] `google_books.py` : throttle + back-off 429 (`_get_json`) → `SourceRateLimited`
   - [x] **Itér. 2 (retour Val « lent »)** : throttle rendu **adaptatif** (pleine vitesse normale, lent 100 s après un 429) + saut des notices déjà complètes en FILL_MISSING (`_record_is_complete`)
@@ -967,7 +967,7 @@ Signalés par Val 2026-05-30 (navigation espagnole).
 > (EAN-13 préfixe 977 = ISSN). Les cataloguer comme les livres.
 > Cf. `docs/specs/FEAT-052-issn-periodiques.md`.
 
-- [ ] **FEAT-052** Support ISSN transverse
+- [x] **FEAT-052** Support ISSN transverse — **CLOS** (test Val OK 2026-07-03, commit squash + push)
   - [x] Helper `apps/core/issn.py` (check digit mod 11, `validate_issn`, `normalize_issn`, `issn_from_ean13`, `format_issn`)
   - [x] Modèle : champ `BibliographicRecord.issn` + contrainte unique si non-null ; `ScanKind.ISSN` ; propriété `issn_display` ; migration `catalog/0011_issn_periodical`
   - [x] Sources : `lookup_issn()` BnF (`bib.issn`) + BNE (`alma.issn`) ; registre `ISSN_SOURCES` ; `lookup_issn_multi()`
@@ -1041,7 +1041,7 @@ Signalés par Val 2026-05-30 (navigation espagnole).
 - [x] Déploiement Box 2026-07-08 (rebuild bibliofelia + worker healthy, migration `0012` appliquée, `scan-wedge.js` baké + collectstatic, nginx 302) — **déployé depuis Bruxelles via clé Pi copiée de Tulear**
 - [x] Test fonctionnel Val **OK 2026-07-08** (depuis Bruxelles, douchette USB → Box : recherche, catalogage douchette, prêt/retour)
 - [x] **Itér. 2 (retours Val 2026-07-08)** : cause racine BUG-020 identifiée = terminateur douchette **CR+LF** → `CR`=Ctrl+M (Entrée) et **`LF`=Ctrl+J = raccourci « page téléchargements »** (+ Tab possible = changement d'onglet). Le wedge v1 avait un bug d'ordre fatal : `if (ev.ctrlKey) return` s'exécutait **avant** la fenêtre de garde → le LF=Ctrl+J fuyait à chaque scan, même focus dans un `<input>` (un champ texte ne consomme pas Ctrl+J). Wedge réécrit : garde vérifiée **en premier**, suppression agressive de toute la salve en rafale (chiffres + Ctrl-combos), MAX_INTERKEY 50 ms, garde 300 ms, flush de secours. **Catalogage douchette** : la page ne se rechargeant jamais (pas de « fermeture caméra »), le tableau éditable + « Envoyer au catalogue » (gated `{% if items %}`) n'apparaissaient pas → « 2 scannés / Aucun livre » simultanés ; ajout d'un bouton « Terminer et voir le lot » (reload) + empty-state mode-aware. 3 chaînes i18n de plus (gate → 0). Redéployé Box (wedge hash `86a394489fcb`, healthy).
-- [ ] Commit (après confirmation Val)
+- [x] Commit (après confirmation Val) — commit `8d2a927` `FEAT-054 + FIX BUG-020` poussé origin/main
 
 ## Sprint 24 — Récolement à la douchette USB + guide catalogage douchette
 
@@ -1090,3 +1090,213 @@ Signalés par Val 2026-05-30 (navigation espagnole).
 - [x] SPEC_BIBLIOFELIA.md §11.7 hébergement multi-instances + en-tête
 - [x] Test fonctionnel Val **OK 2026-07-18** (web 1/2/3 OK ; mail SPF/DKIM/DMARC/réception validés bout-en-bout par Claude)
 - [x] Commit unique `ac62620` + push origin/main (2026-07-18)
+
+## Sprint 26 — Doc accessible sur les instances + sources de métadonnées + hub de catalogage
+
+> Ouvert le 2026-08-03 (temp.txt, retours Val depuis `grand-saconnex.bibliofelia.org`).
+> Découvertes d'investigation majeures : (a) les parsers SRU **BnF et BNE renvoyaient
+> des notices vides** (les champs `dc:*` sont imbriqués sous `oai_dc:dc`/`srw_dc:dc`,
+> notre `findall("dc:title")` ne cherchait qu'en enfant direct) → les 2 bibliothèques
+> nationales ne remontaient **rien** depuis un moment ; (b) les instances Avignon
+> n'avaient **pas** la clé API Google Books → quota anonyme épuisé (HTTP 429 systématique).
+> Résultat cumulé : tout livre catalogué par scan sur ces instances arrivait avec un
+> titre placeholder `ISBN:… - date`.
+>
+> **Question Val « 3 sessions validées, 6 livres, catalogue vide »** : répondu — les
+> 6 notices ont bien été créées (`processing_summary` propres) puis **supprimées
+> depuis l'app par `admin`** (audit log : 4 notices à 18:33:30, 2 à 19:24:23).
+> Aucun bug de finalisation ; les titres placeholder (causes a+b) expliquent
+> vraisemblablement la suppression.
+>
+> Décisions Val : sources → **Swisscovery + K10plus** ; lot validé →
+> **consultation en lecture seule** (pas de réouverture) ; liens `/bibliofelia/…`
+> en dur du guide → **laissés en l'état** pour l'instant.
+
+### BUG-022 — Sources BnF & BNE : notices vides (parsing SRU)
+- [x] Doc `docs/bugs/BUG-022-sru-namespace-dc.md`
+- [x] Fix `_texts()` : `findall("dc:X")` → `findall(".//dc:X")` (`bnf.py` ; `bne.py` via le nouveau socle)
+- [x] `sources/_alma_sru.py` : parsing SRU Alma factorisé (BNE + Swisscovery) + nettoyage du bruit MARC (`880-01`, `(IDREF)…`, rôle `aut`)
+- [x] Les 3 chemins couverts : `lookup` (ISBN), `lookup_issn` (FEAT-052), `search` (FEAT-050 passe 2)
+- [x] Tests `apps/catalog/tests/test_sources_sru.py` (11 cas, fixtures = captures réelles)
+- [x] SPEC §6.11 + en-tête
+- [x] Vérif terrain sur grand-saconnex : 3 des 6 ISBN du 2026-08-03 désormais retrouvés (0 avant) ; les 3 restants absents de toutes les sources
+- [x] Test fonctionnel Val — inclus dans le OK global 2026-08-03 (points 1-6)
+
+### BUG-023 — Google Books en 429 sur les instances hébergées (clé API absente)
+- [x] Doc `docs/bugs/BUG-023-google-books-key-instances.md`
+- [x] `metadata.google_books_api_key` + `metadata.sources` posés sur **sanjuan** et **grand-saconnex**
+- [x] Aide du champ corrigée (la clé relève le quota, elle n'active pas la source)
+- [x] Vérif : `google_books.lookup("9782882415417")` → « Muses » (429 → 200)
+- [x] SPEC §6.11 + §11.7 (réglages à poser sur une instance neuve)
+- [x] Test fonctionnel Val **OK 2026-08-03** (points 1 à 6)
+
+### BUG-024 — Bouton « Terminer et voir le lot » persistant après rechargement
+- [x] Doc `docs/bugs/BUG-024-douchette-terminer-bouton.md`
+- [x] `scan_session.html` : bloc dans `#cat-refresh-wrap`, `hidden` si la liste est à jour
+- [x] `scan-cataloging.js` : `revealRefresh()` réaffiche au premier scan `created`/`incremented`
+- [x] Test `test_douchette_hub_hides_refresh_button_when_list_is_fresh`
+- [x] SPEC §6.1
+- [x] Test fonctionnel Val **OK 2026-08-03** (points 1 à 6)
+
+### FEAT-057 — Guide utilisateur accessible depuis les instances hébergées
+- [x] Doc `docs/specs/FEAT-057-docs-sur-instances.md`
+- [x] `deploy/avignon/instance-nginx.conf` (versionné) : `location /docs/` → conteneur `bibliofelia-docs` + 301 `/docs` → `/docs/`
+- [x] **Robustesse** : `resolver 127.0.0.11` + variable d'upstream sur les 2 `proxy_pass` — un 502 est survenu pendant le déploiement (nginx rechargé avant la recréation de `web`, IP en cache)
+- [x] Déployé + rechargé sur les 2 instances ; `/docs/` = 200 sur grand-saconnex et sanjuan (4 langues), assets 200
+- [x] canaima (Box) vérifiée : `/bibliofelia/docs/` déjà 200, rien à changer
+- [x] Liens `/bibliofelia/<lang>/…` en dur du guide : **fermé en l'état** (décision Val 2026-08-03 : « on laisse tomber »), limite documentée dans FEAT-057
+- [x] SPEC §11.7
+- [x] Test fonctionnel Val **OK 2026-08-03** (bouton « ? » sur les 3 sites)
+
+### FEAT-058 — Consulter un lot de catalogage validé
+- [x] Doc `docs/specs/FEAT-058-consulter-lot-valide.md`
+- [x] `scan_session_list.html` : bouton « Voir le lot » sur les lots validés
+- [x] `scan_session.html` : tableau en lecture seule + « Voir la notice » par ligne
+- [x] `views.py:scan_session` : `it.record_pk` depuis `processing_result["record_id"]`
+- [x] Tests `test_finalized_hub_lists_items_read_only`, `test_session_list_links_to_finalized_batch`
+- [x] SPEC §6.1
+- [x] Test fonctionnel Val **OK 2026-08-03** (points 1 à 6)
+
+### FEAT-059 — Google Books dans les sources d'enrichissement
+- [x] Doc `docs/specs/FEAT-059-enrichment-sources-ui.md`
+- [x] `MetadataSourcesForm` : `SOURCE_ORDER` unique, champs générés en boucle, toutes les sources actives par défaut
+- [x] `enrichment_index` passe `(slug, libellé)` ; `enrichment_start` valide contre `SOURCE_ORDER`
+- [x] `enrichment_index.html` : libellés lisibles + lien « Activer ou désactiver des sources »
+- [x] Tests `apps/core/tests/test_metadata_sources_form.py` (5 cas dont smoke de la page)
+- [x] SPEC §6.11
+- [x] Test fonctionnel Val **OK 2026-08-03** (points 1 à 6)
+
+### FEAT-060 — Sources européennes additionnelles (Swisscovery, K10plus)
+- [x] Doc `docs/specs/FEAT-060-sources-europeennes.md`
+- [x] Endpoints testés en direct : Swisscovery ✅, K10plus ✅ ; DNB (clé requise), SBN Italie (pas de SRU public), PORBASE Portugal (404) écartées — **fermé en l'état** (décision Val 2026-08-03) : IT/PT couverts par Google Books
+- [x] `sources/swisscovery.py` (Alma) + `sources/k10plus.py` (contributeurs routés par rôle `(Verlag)`)
+- [x] Registres `SOURCES` / `SEARCHES` / `ISSN_SOURCES` (Swisscovery seul) / `SOURCE_LABELS` + ordres de préférence
+- [x] Tests dans `test_sources_sru.py`
+- [x] SPEC §6.11
+- [x] Test fonctionnel Val **OK 2026-08-03** (points 1 à 6)
+
+### Guide utilisateur — expliquer le process de catalogage par lot
+- [x] Section « À quoi sert une session de catalogage » (3 temps : scanner → modifier par lot → envoyer au catalogue) ajoutée à `inventaire/catalogage-scan` **et** `catalogage-douchette`, ×4 langues
+- [x] Build `mkdocs build --strict` OK ; déployé sur les 2 instances + `docs.bibliofelia.org` + **guide local de la Box** (`/var/lib/bibliofelia-docs`)
+- [x] Smoke test : section présente en FR/EN/ES/MG sur instance et sur la Box
+- [x] Test fonctionnel Val **OK 2026-08-03** (points 1 à 6)
+
+### Fin de sprint
+- [x] `pytest` complet : **420 passed** (419 → 420, +16 nouveaux depuis 404 avant sprint, 0 régression)
+- [x] `manage.py check` : 0 issue
+- [x] Gate i18n : `makemessages` + `scripts/translations_sprint26.py` (9 × EN/ES/MG) + `i18n_check.py` → **0**
+- [x] Déploiement **instances Avignon** (image `ofelia/bibliofelia:avignon` rebuildée, web+worker recréés, healthy) + **Box** (rebuild `edubox-bibliofelia` + worker, healthy)
+- [x] Test fonctionnel Val **OK 2026-08-03** (points 1 à 6)
+- [ ] Commit unique groupé + push origin/main (après confirmation Val)
+
+### Retours de test Val (2026-08-03) — 2e itération
+
+> « points 1 à 6 ok » sur la 1re vague. 3 retours supplémentaires, plus la
+> demande explicite : « il faut rajouter une erreur pour les ISBN manquants ou
+> invalides ». Les 2 points laissés ouverts sont **fermés en l'état**.
+
+#### BUG-025 — Import Excel : ligne sans ISBN escamotée sans erreur
+- [x] Diagnostic terrain : job #1 sur grand-saconnex, `Collection_L483731.xlsx`, 105 lignes de données, `job.total = 104` → la perte est **à la lecture**, pas à l'import ; ligne 85 (« Ruiz, Miguel — L'art de vivre et de mourir ») a une cellule ISBN vide
+- [x] Doc `docs/bugs/BUG-025-excel-ligne-sans-isbn.md`
+- [x] Fix `run_import_job` : ligne remplie sans ISBN → comptée (`total`/`processed`), `errors++`, rapport `ISBN_MISSING` + `label` « Auteur — Titre » (`_row_label`) ; lignes entièrement vides toujours ignorées en silence
+- [x] `ISBN_INVALID` reçoit le même `label`
+- [x] **Bandeau rouge « N lignes non importées »** sur la page du job dès `errors > 0` (demande Val) + phrase explicative par code dans le tableau
+- [x] Tests `test_import_job_reports_row_without_isbn`, `test_import_job_ignores_fully_empty_rows`
+- [x] SPEC §6.12 + en-tête
+- [ ] Test fonctionnel Val (relancer l'import : 105 lignes → 104 notices **+ 1 erreur visible**)
+
+#### BUG-026 — Commentaires `{# … #}` multi-lignes affichés à l'écran
+- [x] Doc `docs/bugs/BUG-026-commentaires-django-multiligne.md`
+- [x] Cause : le lexer Django compile `({%.*?%}|{{.*?}}|{#.*?#})` **sans `re.DOTALL`** → un commentaire multi-ligne n'est pas un token et traverse jusqu'au HTML
+- [x] 5 occurrences converties en `{% comment %}` : `scan_session.html` (celle vue par Val), `session_report.html`, `record_bulk_delete.html`, `errors/_error_page.html`, `500.html` — les 4 dernières étaient des régressions latentes jamais signalées
+- [x] **Garde-fou** `apps/core/tests/test_template_comments.py` : scanne tous les templates, échoue si un `{#` n'a pas son `#}` sur la même ligne
+- [ ] Test fonctionnel Val
+
+#### FEAT-061 — Accès au guide sur smartphone
+- [x] Doc `docs/specs/FEAT-061-guide-accessible-mobile.md`
+- [x] Cause : le bouton « ? » porte `.hide-sm` (masqué < 600 px) → guide inatteignable en portrait
+- [x] Entrée « Guide utilisateur » ajoutée en tête du menu utilisateur, `.only-sm` → pas de doublon avec l'icône sur grand écran ; aucune chaîne i18n nouvelle, aucun CSS nouveau
+- [ ] Test fonctionnel Val (smartphone portrait)
+
+#### 2e vague — vérifications
+- [x] `pytest` : **423 passed** (420 → 423, 0 régression)
+- [x] `manage.py check` : 0 issue
+- [x] Gate i18n : `makemessages` + `translations_sprint26.py` (12 × EN/ES/MG) + `i18n_check.py` → **0**
+- [x] Redéploiement : image Avignon rebuildée + web/worker recréés (grand-saconnex, sanjuan) ; Box rebuildée + recréée ; smoke tests 200
+- [ ] Test fonctionnel Val
+- [ ] Commit unique groupé + push origin/main (après confirmation Val)
+
+## Sprint 27 — Imprimante à ruban Brother QL-810W
+
+> Ouvert le 2026-08-18 (demande Val) : « j'ai une imprimante brother QL-810Wc
+> avec un ruban rouge noir de 62mm de large (sur 5m en continu). l'imprimante
+> est connectée au pc bruxelles. il faut ajouter le support de cette imprimante
+> pour l'impression des étiquettes et des cartes membres ».
+
+### FEAT-062 — Support imprimante Brother QL-810W (ruban continu 62 mm noir/rouge)
+- [x] Constat matériel : `Get-Printer` sur Bruxelles → `Brother QL-810W` sur **USB001**, non partagée ; scan LAN 9100 depuis la Box → seul `192.168.0.201` répond = **DCP-L3550CDW** (laser). La QL **n'est pas joignable en réseau** → ni CUPS ni raster `brother_ql` possibles depuis la Box ou Avignon
+- [x] Décision Val : PDF à la géométrie du ruban + dialogue d'impression du navigateur (marche aussi sur les instances Avignon) ; carte membre au **format carte bancaire couché** (85,6 × 54 mm tourné à 90°)
+- [x] Doc `docs/specs/FEAT-062-imprimante-ql810w.md`
+- [x] `services.py` : `_roll_settings`, `_accent`, `render_item_labels_roll_pdf`, `render_member_cards_roll_pdf`, `_draw_roll_item_label`, `_draw_roll_member_card` ; retraits `ROLL_INSET_MM=2` (largeur) et `ROLL_FEED_INSET_MM=3` (avance papier)
+- [x] Défauts 62 × 36 mm (étiquette) et 62 × 92 mm (carte) — calés sur les marges du pilote après vérification du rendu à 300 dpi
+- [x] Accents en **rouge pur** (nom bibliothèque, code Location, « Carte de membre ») ; **code-barres toujours noir**
+- [x] `RollPrinterFormatForm` + section `printing_roll` + seed `roll_printer_format`
+- [x] Vues `labels_roll_pdf`, `cards_roll_pdf`, `roll_print` + factorisation `_pdf_response` / `_selected_items` / `_selected_members`
+- [x] `templates/printing/roll_print.html` (iframe + `print()` auto, bouton de secours) + boutons « Ruban 62 mm » sur les 2 écrans de sélection
+- [x] Tests `apps/printing/tests/test_roll_printing.py` (15 cas : géométrie, 1 page par sortie, réglages, ruban étroit, vues, bouton masqué)
+- [x] Vérification visuelle du rendu (PDF → PNG 300 dpi depuis le conteneur)
+- [x] SPEC §6.7 + en-tête
+- [ ] Test fonctionnel Val (imprimer depuis Bruxelles sur la QL-810W)
+
+### Fin de sprint
+- [x] `pytest` complet : **438 passed** (423 → 438, +15 nouveaux, 0 régression)
+- [x] Gate i18n : `makemessages` + `scripts/translations_sprint27.py` (22 × EN/ES/MG) + `i18n_check.py` → **0**
+- [x] Guide utilisateur `impressions/etiquettes` + `impressions/cartes` ×4 langues (section « Imprimer sur une étiqueteuse à ruban ») ; `mkdocs build --strict` OK, déployé sur la Box, smoke test 200 + section présente en FR/EN/ES/MG
+- [x] Déploiement Box 2026-08-18 (rebuild `edubox-bibliofelia` + worker, healthy, 0 migration en attente, `.mo` recompilés, seed `roll_printer_format` OK)
+- [x] Smoke tests sur la Box : pickers, page ruban et PDF en 200 (FR/EN/MG), section de réglages `printing_roll` en 4 langues
+- [x] Déploiement **instance grand-saconnex** 2026-08-18 — ⚠️ **les instances ne sont plus sur Avignon** : depuis le failover du 2026-08-08, le nœud **actif est Fez** (`192.168.0.221`) et porte `bo-grand-saconnex-*`, `bo-sanjuan-*`, `bibliofelia-docs`, traefik. Sync `~/BibliOfelia` + `docker build --target prod -t ofelia/bibliofelia:avignon` + `compose up -d web worker` → web *healthy*, 0 migration en attente, seed `roll_printer_format` OK
+- [x] Smoke tests grand-saconnex : pickers, page ruban, PDF étiquettes en 200 ; réglages `printing_roll` en 200 ; `https://grand-saconnex.bibliofelia.org/` en 302 → `/fr/` (le PDF cartes rend 302 « aucune sélection » : l'instance a 0 usager et 104 exemplaires)
+- [x] Guide en ligne rebuildé (`bibliofelia-docs`) : section ruban en 200 sur `docs.bibliofelia.org` (FR/EN/ES/MG) et sur `grand-saconnex.bibliofelia.org/docs/`
+- [x] Nœud de **secours Avignon** remis au même niveau (sync + rebuild image) — sinon une bascule annulerait le déploiement
+- [ ] Instance **sanjuan** : conteneurs encore sur l'ancienne image (le tag partagé pointe déjà sur la neuve) — à recréer quand Val le décide
+
+### Retours de test Val (2026-08-18) — 2e itération étiquettes
+
+> « le titre occupe toute la place […] supprime le code interne […] tous les
+> textes et le code barre en monochrome, logo en niveaux de gris, même taille
+> et même police, auteur en italique […] supprime la page intermédiaire ».
+
+- [x] Titre pleine largeur : wrap sur la **largeur mesurée** (`_wrap_to_width` + `pdfmetrics`) au lieu d'un quota de 38 caractères ; `_fit_to_width` pour les textes d'une ligne
+- [x] `internal_id` retiré du pied ; le code Ofelia passe à gauche, l'emplacement reste à droite
+- [x] Étiquette **entièrement monochrome** (le code Location était rouge) ; `_accent()` ne sert plus qu'aux cartes membres
+- [x] Logo Ofelia converti en **niveaux de gris** avec alpha conservé (`_static_logo_grayscale`, Pillow)
+- [x] Tous les textes en `Helvetica-Bold` 7,5 pt ; auteurs en `Helvetica-BoldOblique` (vérifié : les 2 polices sont bien dans le PDF)
+- [x] Bloc titre + auteurs **centré verticalement** : un titre d'une ligne ne creuse plus de trou
+- [x] Taille d'étiquette inchangée (62 × 36 mm)
+- [x] **Page intermédiaire supprimée** : bouton → PDF direct (`formtarget="_blank"`), vue `roll_print` + route + template retirés
+- [x] Vérification visuelle 300 dpi : titre court et titre de 66 caractères (2 lignes pleines, sans troncature)
+- [x] Tests : 33 dans `apps/printing/` (wrap mesuré, troncature, logo gris sans composante colorée, page intermédiaire en 404, bouton `_blank`)
+- [x] Gate i18n rejoué : 1 chaîne modifiée, 10 chaînes de la page supprimée retirées de `translations_sprint27.py` → `i18n_check.py` = **0**
+- [x] SPEC §6.7 + en-tête + `FEAT-062-*.md` mis à jour
+- [~] **Groupage portrait essayé puis retiré** — 1re version : 2 étiquettes sur une page de 62 × 72 mm pour que Chrome ouvre en portrait. **Test Val KO** : sa QL coupe tous les 35 mm et ne peut pas honorer une page plus longue (elle a tenté de faire tenir les 2 étiquettes dans une coupe) ; par ailleurs « portrait » était déjà sélectionné dans son dialogue
+- [x] Retour à **1 étiquette par page, 62 × 35 mm** : `_labels_per_page()` et le réglage `portrait_pages` supprimés
+- [x] Défaut `label_length_mm` 36 → **35** (code + seed + formulaire) ; aide reformulée en « longueur de coupe réglée dans le pilote »
+- [x] `Setting.roll_printer_format` corrigé en base sur la Box **et** sur grand-saconnex (36 → 35, `portrait_pages` retiré) — le seed ne touche pas les valeurs existantes
+- [x] Rendu 300 dpi revérifié en 62 × 35 : titre de 66 caractères sur 2 lignes pleines, 1 page par étiquette
+
+#### Retour Val : « je dois passer par use system dialog + more settings à chaque fois »
+- [x] Contenu des étiquettes **et** des cartes validé par Val
+- [x] Inventaire des formats du pilote relevé sur Bruxelles (`System.Drawing.Printing.PrinterSettings`) : le format continu « 62mm » vaut **62 × 89,9 mm**
+- [x] Carte membre alignée dessus : `card_length_mm` 92 → **89** (juste en dessous, pas de rognage), marge d'avance des cartes ramenée à 1,7 mm (`ROLL_CARD_FEED_INSET_MM`) pour garder 85,6 × 54 exact → **plus de hauteur à saisir pour les cartes**
+- [x] `Setting.roll_printer_format` corrigé en base sur la Box et grand-saconnex (92 → 89)
+- [x] Constat documenté : longueur de coupe et orientation sont des propriétés du **pilote Windows**, pas du PDF — le serveur ne peut que proposer une géométrie
+- [x] **Test fonctionnel Val OK 2026-08-18** : « c'est ok pour les étiquettes livres et les cartes membres », puis « ok c'est bien comme ça » après l'alignement de la carte sur 89 mm
+- [~] **Piste non retenue pour l'instant** : créer 2 objets imprimante Windows (même pilote, même port USB001) « QL-810W — Étiquettes » 35 mm et « QL-810W — Cartes » 89 mm, chacun avec ses *Printing Defaults* — Chrome mémorise ses réglages par destination, donc plus qu'un choix d'imprimante par impression. `Add-Printer` est scriptable ; les *Printing Defaults* se règlent une fois dans l'interface du pilote. **Touche le poste de Val, à faire sur sa demande.**
+
+#### Infra + clôture Sprint 27
+- [x] **Failover Fez ⇄ Avignon documenté dans le repo** : table des serveurs de `CLAUDE.md` corrigée (Fez = nœud actif, Avignon = secours) + section « ⚠️ Failover Fez ⇄ Avignon » avec la procédure de déploiement d'instance ; encart équivalent dans SPEC §11.7. Mémoire `project_bibliofelia_org_infra` corrigée (elle disait encore « instances sur Avignon »)
+- [x] Déploiement **toutes cibles** 2026-08-18 : Box (`edubox-bibliofelia` + worker), **grand-saconnex**, **sanjuan** (recréée sur la nouvelle image), guide en ligne `bibliofelia-docs`, + nœud de secours Avignon (sync + build)
+- [x] `Setting.roll_printer_format` aligné sur les 3 bases (Box, grand-saconnex, sanjuan) : `label_length_mm` 35, `card_length_mm` 89, `portrait_pages` retiré
+- [x] Smoke tests : `sanjuan.bibliofelia.org` et `grand-saconnex.bibliofelia.org` en 302 → `/fr/`, `docs.bibliofelia.org` en 200, pickers et réglages `printing_roll` en 200 sur les 2 instances
+- [x] `pytest` : **444 passed** (438 → 444) ; `manage.py check` : 0 issue ; gate i18n : **0**
+- [x] Commit groupé + push origin/main

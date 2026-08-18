@@ -54,6 +54,26 @@ carte de visite (85 × 54 mm).
     accumulez-les puis imprimez en lot le soir : moins de gaspillage
     de papier (les cartes se rangent par 6 sur une page A4).
 
+## Imprimer sur une étiqueteuse à ruban (Brother QL-810W)
+
+Avec une **Brother QL-810W** branchée en USB et un ruban continu de
+62 mm, le bouton **Ruban 62 mm (Brother QL)** imprime une carte à la
+fois, au **format carte bancaire exact** (85,6 × 54 mm).
+
+1. Cochez les membres, puis cliquez sur **Ruban 62 mm (Brother QL)**.
+2. Le PDF s'ouvre dans un nouvel onglet : lancez l'impression, puis choisissez
+   l'imprimante **Brother QL-810W**, papier **62 mm**, échelle **100 %**.
+3. La carte sort **couchée en travers du ruban** : c'est normal, elle est
+   à la bonne taille une fois détachée.
+
+Comme le ruban est adhésif, collez la carte sur un carton puis
+plastifiez-la : c'est plus solide qu'une impression papier.
+
+!!! tip "Ruban noir et rouge"
+    Avec un ruban bicolore (DK-22251), la mention « Carte de membre »
+    sort en rouge. Le code-barres reste noir pour rester lisible à la
+    douchette.
+
 ## Voir aussi
 
 - [Inscrire un membre](../usagers/inscription.md)

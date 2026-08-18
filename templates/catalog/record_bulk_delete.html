@@ -5,9 +5,11 @@
 
 {% block tile_strip %}{% include "partials/_tile_strip.html" with active="catalogue" %}{% endblock %}
 
-{# La vue est @require_POST → un GET vers cette URL renvoie 405. Le sélecteur de langue
-   doit donc rediriger vers la page parente GET-able. On donne un path_info (sans préfixe
-   FORCE_SCRIPT_NAME) pour que `translate_url` côté set_language sache résoudre la route. #}
+{% comment %}
+La vue est @require_POST → un GET vers cette URL renvoie 405. Le sélecteur de langue
+doit donc rediriger vers la page parente GET-able. On donne un path_info (sans préfixe
+FORCE_SCRIPT_NAME) pour que `translate_url` côté set_language sache résoudre la route.
+{% endcomment %}
 {% block lang_next %}/{{ LANGUAGE_CODE }}/catalog/{% endblock %}
 
 {% block content %}

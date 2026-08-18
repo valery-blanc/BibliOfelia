@@ -43,6 +43,11 @@
         <button type="submit" class="btn btn--primary">
             {% icon "file-text" size="16px" %} {% trans "Générer PDF" %}
         </button>
+        {% if roll.enabled %}
+        <button type="submit" formaction="{% url 'printing:labels_roll_pdf' %}" formtarget="_blank" class="btn btn--primary">
+            {% icon "printer" size="16px" %} {% blocktrans with w=roll.tape_width_mm %}Ruban {{ w }} mm (Brother QL){% endblocktrans %}
+        </button>
+        {% endif %}
         <button type="submit" formaction="{% url 'printing:labels_send' %}" formmethod="post" formenctype="application/x-www-form-urlencoded" class="btn btn--ghost">
             {% icon "printer" size="16px" %} {% trans "Imprimer (CUPS)" %}
         </button>

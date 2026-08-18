@@ -710,6 +710,9 @@ def scan_session(request, pk):
     loc_by_code = {loc.code: loc.pk for loc in Location.objects.all()}
     for it in items:
         it.location_pk = loc_by_code.get(it.location_code, "")
+        # FEAT-058 : lot validé consulté en lecture seule → lien vers la notice
+        # effectivement créée/complétée par `finalize_scan_session`.
+        it.record_pk = (it.processing_result or {}).get("record_id")
     return render(
         request,
         "catalog/scan_session.html",

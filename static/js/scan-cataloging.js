@@ -97,6 +97,15 @@
     // précédente est en vol (la caméra ré-émet le code ~0,6 s en continu). Le
     // serveur reste de toute façon idempotent (réconciliation), c'est une
     // optimisation pour éviter les requêtes redondantes.
+    // BUG-024 : en mode douchette la page ne se recharge jamais, donc le tableau
+    // rendu par le serveur devient périmé dès qu'un scan aboutit. Le bouton
+    // « Terminer et voir le lot » n'est utile qu'à ce moment-là.
+    function revealRefresh(d) {
+        if (d.action !== "created" && d.action !== "incremented") return;
+        var wrap = document.getElementById("cat-refresh-wrap");
+        if (wrap) wrap.removeAttribute("hidden");
+    }
+
     var inFlight = Object.create(null);
 
     function handleCode(ean) {
@@ -110,6 +119,7 @@
             renderRow(d);
             feedback(d);
             setCount(d.count);
+            revealRefresh(d);
             return res;
         }).catch(function () { /* réseau : on ignore, le scan reprend */ })
           .finally(function () { delete inFlight[ean]; });

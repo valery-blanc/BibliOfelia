@@ -79,6 +79,15 @@
                     <span class="hide-sm">{{ user.get_username }}</span>
                 </summary>
                 <div class="user-menu-drop">
+                    {% comment %}
+                    Le bouton « ? » de la barre est masqué sous 600 px (.hide-sm) : sur
+                    smartphone en portrait le guide n'était plus atteignable nulle part.
+                    On le remet ici, uniquement sur petit écran (.only-sm) pour ne pas
+                    doublonner avec l'icône sur grand écran.
+                    {% endcomment %}
+                    <a href="{{ docs_url }}" target="_blank" rel="noopener" class="only-sm">
+                        {% icon "circle-help" size="16px" %} {% trans "Guide utilisateur" %}
+                    </a>
                     <a href="{% url 'accounts:user_edit' pk=user.pk %}">
                         {% icon "user" size="16px" %} {% trans "Mon compte" %}
                     </a>

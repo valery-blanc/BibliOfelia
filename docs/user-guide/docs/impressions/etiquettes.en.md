@@ -54,6 +54,29 @@ Recommended convention:
 Choose a constant placement for all your books: it speeds up scanning
 during [inventory](../inventaire/recolement.md).
 
+## Printing on a tape printer (Brother QL-810W)
+
+If your computer has a **Brother QL-810W** plugged in over USB with a
+62 mm continuous tape, a second button appears: **62 mm tape (Brother
+QL)**. It prints one label at a time — no A4 sheet, no wasted paper.
+
+1. Tick the copies, then click **62 mm tape (Brother QL)**.
+2. The PDF opens in a new tab. Start printing (**Ctrl+P**, or the viewer's
+   print button).
+3. In the dialog: **Brother QL-810W** printer, **62 mm** paper, **portrait**
+   orientation, **100 %** scale (never "fit to page").
+
+Each label prints on its own page: the printer cuts between them.
+
+Each label is **62 × 35 mm**: logo and library name on top, a two-line title,
+the author in italics, the barcode, then the Ofelia code and shelf code at the
+bottom.
+
+!!! tip "Labels print in black only"
+    The red of the two-colour tape (DK-22251) is kept for member cards. On a
+    label the barcode must stay black: a red bar can no longer be read by the
+    scanner.
+
 ## See also
 
 - [Manage copies](../catalogue/exemplaires.md)

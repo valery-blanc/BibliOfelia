@@ -26,6 +26,7 @@ from .forms import (
     LibraryIdentityForm,
     LoanReservationDefaultsForm,
     MemberCardFormatForm,
+    RollPrinterFormatForm,
 )
 from .models import Setting
 
@@ -41,6 +42,8 @@ FORMS = {
     # tort — c'était le seul endroit pour régler la taille des étiquettes).
     "printing_cards": (gettext_lazy("Impressions — Cartes membres"), MemberCardFormatForm),
     "printing_labels": (gettext_lazy("Impressions — Étiquettes codes Ofelia"), ItemLabelFormatForm),
+    # FEAT-062 : géométrie du ruban continu Brother QL-810W.
+    "printing_roll": (gettext_lazy("Impressions — Ruban continu (Brother QL)"), RollPrinterFormatForm),
     "backup": (gettext_lazy("Sauvegardes"), BackupConfigForm),
 }
 
@@ -239,10 +242,14 @@ def enrichment_index(request):
     from apps.catalog.models import EnrichmentJob
     from .forms import MetadataSourcesForm
 
+    from apps.catalog.sources import SOURCE_LABELS
+
     jobs = EnrichmentJob.objects.all()[:30]
+    active = MetadataSourcesForm.active_sources()
     return render(request, "core/admin/enrichment_index.html", {
         "jobs": jobs,
-        "active_sources": MetadataSourcesForm.active_sources(),
+        # FEAT-059 : (slug, libellé) — la case affichait le slug brut (« bnf »).
+        "active_sources": [(s, SOURCE_LABELS.get(s, s)) for s in active],
     })
 
 
@@ -260,7 +267,7 @@ def enrichment_start(request):
         mode = EnrichmentMode.FILL_MISSING
 
     sources = request.POST.getlist("sources") or MetadataSourcesForm.active_sources()
-    sources = [s for s in sources if s in ("openlibrary", "google_books", "bnf", "bne")]
+    sources = [s for s in sources if s in MetadataSourcesForm.SOURCE_ORDER]
 
     scope_kind = request.POST.get("scope", "all")
     scope_filter = {"kind": scope_kind}

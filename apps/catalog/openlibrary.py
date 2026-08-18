@@ -58,7 +58,9 @@ def lookup_isbn(raw_isbn: str) -> dict | None:
 # Sources interrogées au scan catalogage (FEAT-046), par ordre de préférence :
 # la 1re source qui renvoie un titre gagne. Google Books et la BnF couvrent
 # beaucoup mieux les livres FR que la seule OpenLibrary.
-_MULTI_SOURCE_ORDER = ["openlibrary", "google_books", "bnf", "bne"]
+_MULTI_SOURCE_ORDER = [
+    "openlibrary", "google_books", "bnf", "bne", "swisscovery", "k10plus",
+]
 
 
 def lookup_isbn_multi(raw_isbn: str) -> dict | None:
@@ -96,7 +98,7 @@ def lookup_isbn_multi(raw_isbn: str) -> dict | None:
 
 # FEAT-052 : sources ISSN interrogées au scan d'un périodique (préfixe 977),
 # par ordre de préférence. La BnF couvre les revues FR ; la BNE en complément.
-_ISSN_SOURCE_ORDER = ["bnf", "bne"]
+_ISSN_SOURCE_ORDER = ["bnf", "bne", "swisscovery"]
 
 
 def lookup_issn_multi(raw_issn: str) -> dict | None:

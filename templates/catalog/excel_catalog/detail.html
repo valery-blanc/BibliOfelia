@@ -44,6 +44,20 @@
     {% trans "Traitement en cours… cette page se rafraîchit automatiquement." %}</div>
 {% endif %}
 
+{% comment %}
+BUG-025 : une ligne sans ISBN (ou avec un ISBN invalide) n'est pas importable —
+l'import est indexé par ISBN. Elle doit être signalée haut et fort, sinon le
+fichier « perd » des livres sans que rien ne l'indique (105 lignes → 104 notices,
+0 erreur affichée).
+{% endcomment %}
+{% if job.mode == "import" and job.errors %}
+<div class="card" style="background:#FBECEC;border:1px solid #B83232;margin-bottom:16px">
+    <strong style="color:#B83232">{% icon "alert-triangle" size="16px" %}
+        {% blocktrans count n=job.errors %}{{ n }} ligne non importée{% plural %}{{ n }} lignes non importées{% endblocktrans %}</strong>
+    <p style="margin:6px 0 0">{% trans "Ces lignes ont un ISBN manquant ou invalide : l'import se fait par ISBN, elles n'ont donc pas été ajoutées au catalogue. Le détail est listé plus bas — cataloguez ces livres à la main." %}</p>
+</div>
+{% endif %}
+
 {% if job.rate_limited %}
 <div class="card" style="background:var(--amber-light);border:1px solid var(--amber);margin-bottom:16px">
     <strong>{% icon "alert-triangle" size="16px" %} {% trans "Quota Google Books atteint" %}</strong>
@@ -108,6 +122,16 @@
                         <span style="color:#B83232">{{ entry.global_error }}</span>
                     {% else %}
                         <span class="badge badge--mut">{{ entry.warning }}</span>
+                        {% if entry.warning == "ISBN_MISSING" %}
+                        <div class="help-hint" style="margin-top:4px">
+                            {% trans "Ligne sans ISBN : non importée, à cataloguer à la main." %}
+                        </div>
+                        {% elif entry.warning == "ISBN_INVALID" %}
+                        <div class="help-hint" style="margin-top:4px">
+                            {% trans "ISBN invalide (ni 10 ni 13 chiffres) : ligne non importée." %}
+                        </div>
+                        {% endif %}
+                        {% if entry.label %}<div class="help-hint">{{ entry.label }}</div>{% endif %}
                     {% endif %}
                 </td>
             </tr>

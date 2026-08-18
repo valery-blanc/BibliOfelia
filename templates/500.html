@@ -8,10 +8,12 @@
     <link rel="stylesheet" href="{% static 'css/ofelia.css' %}">
 </head>
 <body>
-{# Page 500 standalone : `handler500` n'exécute PAS les context processors
-   (pas de `request`, `user`, `LANGUAGE_CODE`, `library_name`). On ne peut
-   donc pas étendre base.html ni utiliser {% trans %}. Textes en 4 langues
-   en dur (FR / EN / ES / MG). #}
+{% comment %}
+Page 500 standalone : `handler500` n'exécute PAS les context processors
+(pas de `request`, `user`, `LANGUAGE_CODE`, `library_name`). On ne peut
+donc pas étendre base.html ni traduire. Textes en 4 langues en dur
+(FR / EN / ES / MG).
+{% endcomment %}
 <header class="topbar">
     <div class="topbar-inner">
         <div class="topbar-brand">

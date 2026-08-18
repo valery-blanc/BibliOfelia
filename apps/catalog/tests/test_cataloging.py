@@ -275,3 +275,46 @@ def test_readonly_cannot_access_cataloging(client):
     )
     assert resp.status_code == 403
     assert not ScanSession.objects.filter(label="x").exists()
+
+
+# ── FEAT-058 / BUG-024 : consultation d'un lot validé + bouton de rechargement ──
+
+
+def test_finalized_hub_lists_items_read_only(client, librarian, session):
+    """FEAT-058 : un lot validé se consulte — livres listés, lien vers la notice,
+    aucun formulaire d'édition ni bouton d'envoi au catalogue."""
+    client.post(reverse("catalog:scan_add", args=[session.pk]), {"ean": VALID_ISBN})
+    client.post(
+        reverse("catalog:scan_session_commit", args=[session.pk]), {"finalize": "1"}
+    )
+    session.refresh_from_db()
+    assert session.state == ScanSessionState.FINALIZED
+
+    html = client.get(reverse("catalog:scan_session", args=[session.pk])).content.decode()
+    record = BibliographicRecord.objects.get()
+    assert VALID_ISBN in html
+    assert reverse("catalog:record_detail", args=[record.pk]) in html
+    assert "Envoyer au catalogue" not in html
+    assert 'name="finalize"' not in html
+
+
+def test_session_list_links_to_finalized_batch(client, librarian, session):
+    """FEAT-058 : la liste propose « Voir le lot » sur les lots validés."""
+    client.post(reverse("catalog:scan_add", args=[session.pk]), {"ean": VALID_ISBN})
+    client.post(
+        reverse("catalog:scan_session_commit", args=[session.pk]), {"finalize": "1"}
+    )
+    html = client.get(reverse("catalog:scan_session_list")).content.decode()
+    assert reverse("catalog:scan_session", args=[session.pk]) in html
+
+
+def test_douchette_hub_hides_refresh_button_when_list_is_fresh(client, librarian):
+    """BUG-024 : le bouton « Terminer et voir le lot » ne sert qu'à recharger une
+    liste périmée → masqué tant qu'aucun scan n'a été ajouté depuis le rendu."""
+    s = ScanSession.objects.create(label="D", created_by=librarian, input_mode="douchette")
+    empty = client.get(reverse("catalog:scan_session", args=[s.pk])).content.decode()
+    assert '<div id="cat-refresh-wrap">' in empty
+
+    client.post(reverse("catalog:scan_add", args=[s.pk]), {"ean": VALID_ISBN})
+    with_items = client.get(reverse("catalog:scan_session", args=[s.pk])).content.decode()
+    assert '<div id="cat-refresh-wrap" hidden>' in with_items

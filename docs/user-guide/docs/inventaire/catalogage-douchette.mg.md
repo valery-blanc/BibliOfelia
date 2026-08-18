@@ -15,6 +15,27 @@ BibliOfelia), fa tarihin'ny douchette an'ny toerana raikitra.
     **fakantsary** dia tsara indrindra amin'ny fivezivezena, tablette an-tanana.
     Samy mameno ny catalogue iray ihany izy roa.
 
+## Inona no ilaina amin'ny session catalogage
+
+Ny **session** catalogage (antsoina koa hoe **lot**) dia ampiasaina hanampiana
+**boky be dia be indray miaraka** ao amin'ny katalôgy. Dingana telo izany:
+
+1. **Manokatra lot ianao ary mi-scan** ny boky rehetra ao amin'ny caisse,
+   mifandimby. Mbola tsy misy miditra ao amin'ny katalôgy: lisitra fiasana
+   fotsiny ny lot, azonao ahitsy na foanana.
+2. **Jerenao ny lisitra** — ary indrindra, ampiharinao ny **fanovana faobe**:
+   mariho ny andalana maromaro (na ny rehetra) ary omeo azy ireo, amin'ny tsindry
+   iray, ny **sokajy** mitovy, ny **toerana** mitovy ao amin'ny tranomboky na ny
+   **toe-javatra** mitovy. Izay no tena tombontsoan'ny fandraketana miaraka ny
+   boky mifanaraka.
+3. **Alefanao ny lot any amin'ny katalôgy**: voaforona tokoa ny notice sy ny
+   exemplaire, ary azonao atao ny manonta indray mandeha ny marika **an'io lot io
+   ihany**.
+
+Ny lot voamarina dia mbola azo jerena: avy amin'ny lisitry ny lot, **Hijery ny
+andiany** dia mampahatsiahy izay boky nisy tao, misy rohy mankany amin'ny notice
+tsirairay.
+
 ## Manomboka lot amin'ny douchette
 
 Avy amin'ny [**Mandroso**](/bibliofelia/mg/advanced/){ target="_blank" } →

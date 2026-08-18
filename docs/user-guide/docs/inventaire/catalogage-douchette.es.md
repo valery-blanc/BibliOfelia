@@ -14,6 +14,24 @@ ejemplares), pero controlado por el lector del puesto fijo.
     incluso sin conexión segura (`https://`). La **cámara** es ideal en
     movimiento, con la tableta en la mano. Ambos rellenan el mismo catálogo.
 
+## Para qué sirve una sesión de catalogación
+
+Una **sesión** de catalogación (también llamada **lote**) sirve para añadir
+**muchos libros a la vez** al catálogo. Funciona en tres tiempos:
+
+1. **Abre un lote y escanea** todos los libros de la caja, uno tras otro. Nada
+   entra todavía en el catálogo: el lote solo es una lista de trabajo, que puede
+   corregir o vaciar.
+2. **Comprueba la lista** — y sobre todo, aplica **modificaciones por lote**:
+   marque varias líneas (o todas) y asígneles, con un solo clic, la misma
+   **categoría**, la misma **ubicación** en la biblioteca o el mismo **estado**.
+   Ahí está todo el interés de catalogar juntos los libros que van juntos.
+3. **Envía el lote al catálogo**: las fichas y los ejemplares se crean de verdad,
+   y puede imprimir de una vez las etiquetas **solo de ese lote**.
+
+Un lote validado sigue consultable: desde la lista de lotes, **Ver el lote**
+recuerda qué libros contenía, con un enlace a cada ficha.
+
 ## Iniciar un lote con el lector
 
 Desde [**Avanzado**](/bibliofelia/es/advanced/){ target="_blank" } → Inventario,

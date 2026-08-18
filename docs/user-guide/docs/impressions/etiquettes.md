@@ -60,6 +60,32 @@ La convention recommandée :
 Choisissez un emplacement constant pour tous vos livres : ça facilite
 le scan pendant le [récolement](../inventaire/recolement.md).
 
+## Imprimer sur une étiqueteuse à ruban (Brother QL-810W)
+
+Si votre poste a une **Brother QL-810W** branchée en USB avec un ruban
+continu de 62 mm, un second bouton apparaît : **Ruban 62 mm (Brother
+QL)**. Il imprime une étiquette par étiquette, sans planche A4 et sans
+chutes de papier.
+
+1. Cochez les exemplaires, puis cliquez sur **Ruban 62 mm (Brother QL)**.
+2. Le PDF s'ouvre dans un nouvel onglet. Lancez l'impression (**Ctrl+P**, ou
+   le bouton d'impression du visualiseur).
+3. Dans le dialogue : imprimante **Brother QL-810W**, papier **62 mm**,
+   orientation **portrait**, échelle **100 %** (surtout pas « ajuster à la
+   page »).
+
+Chaque étiquette est imprimée sur sa propre page : l'imprimante coupe entre
+chacune.
+
+Chaque étiquette fait **62 × 35 mm** : logo et nom de la bibliothèque en haut,
+titre sur deux lignes, auteur en italique, code-barres, puis code Ofelia et
+code de rayon en bas.
+
+!!! tip "L'étiquette sort entièrement en noir"
+    Le rouge du ruban bicolore (DK-22251) est réservé aux cartes de membres.
+    Sur une étiquette, le code-barres doit rester noir : une barre rouge n'est
+    plus lue par la douchette.
+
 ## Voir aussi
 
 - [Gérer les exemplaires](../catalogue/exemplaires.md)

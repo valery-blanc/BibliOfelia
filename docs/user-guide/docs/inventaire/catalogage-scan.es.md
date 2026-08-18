@@ -8,6 +8,24 @@ Es, para la creación, el equivalente del [inventario](recolement.md)
 para la verificación: un **escaneo continuo**, sin nada que pulsar entre
 dos libros.
 
+## Para qué sirve una sesión de catalogación
+
+Una **sesión** de catalogación (también llamada **lote**) sirve para añadir
+**muchos libros a la vez** al catálogo. Funciona en tres tiempos:
+
+1. **Abre un lote y escanea** todos los libros de la caja, uno tras otro. Nada
+   entra todavía en el catálogo: el lote solo es una lista de trabajo, que puede
+   corregir o vaciar.
+2. **Comprueba la lista** — y sobre todo, aplica **modificaciones por lote**:
+   marque varias líneas (o todas) y asígneles, con un solo clic, la misma
+   **categoría**, la misma **ubicación** en la biblioteca o el mismo **estado**.
+   Ahí está todo el interés de catalogar juntos los libros que van juntos.
+3. **Envía el lote al catálogo**: las fichas y los ejemplares se crean de verdad,
+   y puede imprimir de una vez las etiquetas **solo de ese lote**.
+
+Un lote validado sigue consultable: desde la lista de lotes, **Ver el lote**
+recuerda qué libros contenía, con un enlace a cada ficha.
+
 ## Iniciar un lote de catalogación
 
 Desde el [**Catálogo**](/bibliofelia/es/catalog/){ target="_blank" } (o

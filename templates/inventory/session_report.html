@@ -62,9 +62,11 @@
         </div>
     </div>
     <form id="inv-manual-form" class="scan-manual">
-        {# FEAT-055 : data-wedge-primary → une douchette USB remplit ce champ et
-           soumet le formulaire (POST inventory:add_scan) sans quitter la page.
-           Le wedge se retire quand le modal caméra est ouvert (pas de conflit). #}
+        {% comment %}
+        FEAT-055 : data-wedge-primary → une douchette USB remplit ce champ et
+        soumet le formulaire (POST inventory:add_scan) sans quitter la page.
+        Le wedge se retire quand le modal caméra est ouvert (pas de conflit).
+        {% endcomment %}
         <input type="text" name="ean" inputmode="numeric" autocomplete="off" class="form-control"
                data-wedge-primary autofocus
                placeholder="{% trans 'Saisir un code Ofelia à la main' %}">

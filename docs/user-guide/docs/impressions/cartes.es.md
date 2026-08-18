@@ -54,6 +54,26 @@ formato tarjeta de visita (85 × 54 mm).
     en lote por la noche: menos desperdicio de papel (las tarjetas
     se ordenan de 6 por página A4).
 
+## Imprimir en una impresora de cinta (Brother QL-810W)
+
+Con una **Brother QL-810W** conectada por USB y una cinta continua de
+62 mm, el botón **Cinta de 62 mm (Brother QL)** imprime una tarjeta a la
+vez, con el **tamaño exacto de una tarjeta bancaria** (85,6 × 54 mm).
+
+1. Marque los socios y haga clic en **Cinta de 62 mm (Brother QL)**.
+2. El PDF se abre en una pestaña nueva: inicie la impresión y elija la
+   impresora **Brother QL-810W**, papel **62 mm**, escala **100 %**.
+3. La tarjeta sale **atravesada en la cinta**: es normal, tiene el tamaño
+   correcto una vez despegada.
+
+Como la cinta es adhesiva, pegue la tarjeta sobre una cartulina y
+plastifíquela: aguanta mucho más que una impresión en papel.
+
+!!! tip "Cinta negra y roja"
+    Con una cinta bicolor (DK-22251), la mención «Tarjeta de socio» sale
+    en rojo. El código de barras se queda en negro para que el lector
+    pueda leerlo.
+
 ## Ver también
 
 - [Inscribir un miembro](../usagers/inscription.md)

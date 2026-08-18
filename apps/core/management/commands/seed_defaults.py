@@ -92,6 +92,11 @@ class Command(BaseCommand):
              "title_lines": 2, "author_lines": 2, "show_logo": True},
             "Format étiquettes codes Ofelia (FEAT-039)",
         ),
+        "roll_printer_format": (
+            {"enabled": True, "tape_width_mm": 62, "label_length_mm": 35,
+             "card_length_mm": 89, "two_color": True, "show_logo": True},
+            "Imprimante à ruban continu Brother QL-810W (FEAT-062)",
+        ),
         "setup_completed": (False, "Wizard d'installation terminé"),
     }
 

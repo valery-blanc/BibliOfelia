@@ -171,6 +171,22 @@ def _header_map(ws) -> dict[str, int]:
     return mapping
 
 
+def _row_label(row, headers: dict[str, int]) -> str:
+    """« Auteur — Titre » d'une ligne, pour identifier une ligne signalée.
+
+    Sert au rapport d'import (BUG-025) : une ligne sans ISBN n'a pas d'autre
+    identifiant lisible que son auteur et son titre.
+    """
+    parts = []
+    for name in ("author", "title"):
+        col = headers.get(name)
+        if col and col <= len(row):
+            value = _cell_str(row[col - 1])
+            if value:
+                parts.append(value)
+    return " — ".join(parts)
+
+
 def required_columns(mode: str) -> list[str]:
     if mode == ExcelJobMode.IMPORT:
         return ["isbn"]
@@ -539,12 +555,34 @@ def run_import_job(job: ExcelCatalogJob) -> None:
         loc_code = _cell_str(row[col_loc - 1]) if col_loc and col_loc <= len(row) else ""
         cat_name = _cell_str(row[col_cat - 1]) if col_cat and col_cat <= len(row) else ""
         if not raw_isbn:
+            # BUG-025 : une ligne **remplie mais sans ISBN** était sautée en
+            # silence — absente des compteurs comme du rapport, donc « disparue »
+            # (105 lignes dans le fichier → 104 notices, sans une seule erreur).
+            # L'import est indexé par ISBN, on ne peut pas la créer ici : on la
+            # signale pour qu'elle soit cataloguée à la main. Les lignes
+            # entièrement vides (openpyxl en compte souvent après les données)
+            # restent ignorées sans bruit.
+            if any(_cell_str(cell) for cell in row):
+                total += 1
+                job.processed += 1
+                job.errors += 1
+                job.report.append({
+                    "row": row_idx,
+                    "isbn": "",
+                    "warning": "ISBN_MISSING",
+                    "label": _row_label(row, headers),
+                })
             continue
         total += 1
         isbn = normalize_isbn(raw_isbn)
         if len(isbn) not in (10, 13):
             job.errors += 1
-            job.report.append({"row": row_idx, "isbn": raw_isbn, "warning": "ISBN_INVALID"})
+            job.report.append({
+                "row": row_idx,
+                "isbn": raw_isbn,
+                "warning": "ISBN_INVALID",
+                "label": _row_label(row, headers),
+            })
             job.processed += 1
             continue
 

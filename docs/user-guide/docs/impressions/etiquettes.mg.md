@@ -61,6 +61,32 @@ Ny convention atolotra:
 Safidio toerana mitovy ho an'ny boky rehetra: mampihaingana ny scan
 mandritra ny [récolement](../inventaire/recolement.md).
 
+## Manonta amin'ny mpanonta riban (Brother QL-810W)
+
+Raha misy **Brother QL-810W** mifandray USB amin'ny solosainao, misy
+riban mitohy 62 mm, dia miseho bokotra faharoa: **Riban 62 mm (Brother
+QL)**. Manonta marika tsirairay izy, tsy mila takelaka A4 ary tsy misy
+taratasy very.
+
+1. Mariho ireo boky, dia tsindrio **Riban 62 mm (Brother QL)**.
+2. Misokatra anaty takelaka vaovao ny PDF. Atombohy ny fanontana (**Ctrl+P**,
+   na ny bokotra fanontana eo amin'ny mpijery).
+3. Ao amin'ny takelaka: mpanonta **Brother QL-810W**, taratasy **62 mm**,
+   fitodika **mitsangana**, refy **100 %** (aza «ampifanaraho amin'ny pejy»
+   mihitsy).
+
+Manana ny pejiny manokana ny marika tsirairay: manapaka eo anelanelany ny
+mpanonta.
+
+Ny marika tsirairay dia **62 × 35 mm**: logo sy anaran'ny tranomboky eo ambony,
+lohateny anaty andalana roa, mpanoratra amin'ny sora-mandry, kaody tsipika, dia
+kaody Ofelia sy kaody talantalana eo ambany.
+
+!!! tip "Mainty ihany ny marika"
+    Ny mena amin'ny riban loko roa (DK-22251) dia natokana ho an'ny karatra
+    mpikambana. Eo amin'ny marika dia tsy maintsy mainty ny kaody tsipika:
+    tsy vakin'ny douchette intsony ny tsipika mena.
+
 ## Jereo koa
 
 - [Fitantanana kopia](../catalogue/exemplaires.md)
