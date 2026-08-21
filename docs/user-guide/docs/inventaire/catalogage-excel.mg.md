@@ -98,6 +98,9 @@ izay anananao, na inona na inona filaharana.
 | `YEAR` | taona namoahana |
 | `LANGUAGE` | kaody fiteny (fr, en, es…) |
 | `TAGS` | teny fanalahidy sarahina amin'ny **faingo** |
+| `EXTERNAL_CODE` | ny kaodin'ny tranomboky hafa efa eo amin'ny boky |
+| `PROVENANCE` | ny kaody na ny anaran'ny fiaviana efa misy |
+| `CATEGORY_ABBR` | ny fanafohezan'ny sokajy (kaody talantalana) |
 | `CONDITION` | toetran'ny kopia (Vaovao, Tsara, Simba kely, Simba) |
 
 Ao amin'ny boaty

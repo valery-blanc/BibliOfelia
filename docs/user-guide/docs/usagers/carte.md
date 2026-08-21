@@ -57,6 +57,18 @@ perdue](../faq.md#carte-perdue)).
 
 Imprimez ensuite la nouvelle carte normalement.
 
+## La famille sur la carte
+
+Si l'usager a des personnes rattachées à sa carte (voir
+[Inscrire un membre](inscription.md)), leurs prénoms s'impriment dans une
+**colonne « Famille »** à droite de la carte.
+
+C'est ce qui permet, au comptoir, de savoir d'un coup d'œil qui peut emprunter
+avec cette carte — sans ouvrir la fiche.
+
+S'il y a plus de prénoms que la carte ne peut en afficher, la liste se termine
+par « … ». La fiche de l'usager, elle, les montre tous.
+
 ## Voir aussi
 
 - [Cartes perdues ou volées](../faq.md#carte-perdue)

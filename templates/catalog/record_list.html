@@ -62,7 +62,7 @@
     </select>
     <select name="language" class="filter-select" style="width:auto;min-width:130px">
         <option value="">{% trans "Toutes langues" %}</option>
-        {% for code, name in enabled_languages %}
+        {% for code, name in languages %}
         <option value="{{ code }}" {% if selected.language == code %}selected{% endif %}>{{ name }}</option>
         {% endfor %}
     </select>
@@ -72,40 +72,88 @@
         <option value="{{ loc.pk }}" {% if selected.location == loc.pk|stringformat:'s' %}selected{% endif %}>{{ loc.code }}</option>
         {% endfor %}
     </select>
+    <select name="provenance" class="filter-select" style="width:auto;min-width:150px">
+        <option value="">{% trans "Toutes provenances" %}</option>
+        {% for prov in provenances %}
+        <option value="{{ prov.pk }}" {% if selected.provenance == prov.pk|stringformat:'s' %}selected{% endif %}>{{ prov }}</option>
+        {% endfor %}
+    </select>
     <div class="search" style="width:auto;min-width:160px;margin:0">
         <span class="search-icon">{% icon "search" size="18px" %}</span>
         <input type="search" name="q_tag" value="{{ q_tag }}"
                placeholder="{% trans 'Tag…' %}"
                style="width:100%">
     </div>
-    <button type="submit" class="btn btn--primary">
-        {% icon "search" size="16px" %} {% trans "Filtrer" %}
-    </button>
+    {% comment %}
+    FEAT-073 : deux boutons plutôt qu'une case — chacun dit ce qu'on obtient.
+    Groupés dans `.search-modes` pour qu'ils restent côte à côte quand la barre
+    de filtres passe à la ligne. Deux couleurs pleines de la charte (bordeaux /
+    olive) : le mode courant est le bordeaux, l'autre reste lisible au lieu de
+    se fondre dans le fond de page.
+    {% endcomment %}
+    <div class="search-modes">
+        <button type="submit" name="mode" value="records"
+                class="btn {% if items_mode %}btn--olive{% else %}btn--primary{% endif %}">
+            {% icon "search" size="16px" %} {% trans "Rechercher des notices" %}
+        </button>
+        <button type="submit" name="mode" value="items"
+                class="btn {% if items_mode %}btn--primary{% else %}btn--olive{% endif %}">
+            {% icon "search" size="16px" %} {% trans "Rechercher des exemplaires" %}
+        </button>
+    </div>
 </form>
 
 <div class="muted text-sm" style="margin:4px 4px 12px">
+    {% if items_mode %}
+    {% blocktrans count counter=total %}{{ counter }} exemplaire{% plural %}{{ counter }} exemplaires{% endblocktrans %}
+    {% else %}
     {% blocktrans count counter=total %}{{ counter }} notice{% plural %}{{ counter }} notices{% endblocktrans %}
+    {% endif %}
 </div>
 
 {% if page_obj %}
 
+{% if items_mode %}
+{% include "catalog/_item_results.html" %}
+{% else %}
+
 {# Vues desktop (table) + mobile (cards) dans le même form pour bulk-select #}
 {% if user.is_librarian or user.is_superadmin %}
-<form method="post"
-      x-data="{count:0}"
-      x-init="$watch('count', v => v)">
+<form method="post" x-data="{count:0, visibleAll:false, allResults:false}">
     {% csrf_token %}
-    <div x-show="count > 0"
+    <div x-show="count > 0 || allResults"
          style="display:flex;flex-direction:column;align-items:stretch;gap:10px;padding:14px;background:var(--amber-light);border:1px solid var(--amber);border-radius:8px;margin-bottom:10px">
-        <span style="font-size:14px"><strong x-text="count"></strong> {% trans "notice(s) sélectionnée(s)" %}</span>
-        <div style="display:flex;flex-wrap:wrap;row-gap:14px;column-gap:10px">
+        <span style="font-size:14px">
+            <template x-if="!allResults"><span><strong x-text="count"></strong> {% trans "notice(s) sélectionnée(s)" %}</span></template>
+            <template x-if="allResults"><span><strong>{{ total }}</strong> {% blocktrans %}résultats de la recherche{% endblocktrans %}</span></template>
+        </span>
+        <input type="hidden" name="select_all" :value="allResults ? '1' : ''">
+        {# FEAT-069 : affectation directe, sans page intermédiaire. #}
+        <input type="hidden" name="back_qs" value="{{ base_qs }}">
+        <div class="bulk-assign">
+            <div class="field">
+                <label>{% trans "Catégorie" %}</label>
+                <select name="category" class="filter-select">
+                    <option value="keep">{% trans "Ne pas modifier" %}</option>
+                    <option value="">{% trans "— (vider)" %}</option>
+                    {% for cat in categories %}
+                    <option value="{{ cat.pk }}">{{ cat.name }}</option>
+                    {% endfor %}
+                </select>
+            </div>
+            <div class="field">
+                <label>{% trans "Emplacement" %}</label>
+                <select name="location" class="filter-select">
+                    <option value="keep">{% trans "Ne pas modifier" %}</option>
+                    <option value="">{% trans "— (vider)" %}</option>
+                    {% for loc in locations %}
+                    <option value="{{ loc.pk }}">{{ loc.code }}</option>
+                    {% endfor %}
+                </select>
+            </div>
             <button type="submit" class="btn btn--primary"
-                    formaction="{% url 'catalog:record_bulk_assign_category_confirm' %}">
-                {% icon "bookmark" size="14px" %} {% trans "Affecter une catégorie" %}
-            </button>
-            <button type="submit" class="btn btn--primary"
-                    formaction="{% url 'catalog:record_bulk_assign_location_confirm' %}">
-                {% icon "archive" size="14px" %} {% trans "Affecter un emplacement" %}
+                    formaction="{% url 'catalog:record_bulk_assign' %}">
+                {% icon "check" size="14px" %} {% trans "Affecter" %}
             </button>
             {% if user.is_superadmin %}
             <button type="submit" class="btn btn--primary" style="background:#B83232;border-color:#B83232"
@@ -116,16 +164,14 @@
         </div>
     </div>
 
+    {% include "catalog/_select_all.html" %}
+
     {# Table desktop — checkboxes name=ids_desktop #}
     <div class="table-wrap hide-sm">
         <table class="table">
             <thead>
                 <tr>
-                    <th style="width:30px">
-                        <input type="checkbox"
-                               @change="document.querySelectorAll('input[name=ids_desktop]').forEach(c => c.checked = $event.target.checked); count = document.querySelectorAll('input[name=ids_desktop]:checked').length"
-                               title="{% trans 'Tout cocher' %}">
-                    </th>
+                    <th style="width:30px"></th>
                     <th>{% trans "Titre" %}</th>
                     <th>{% trans "Auteur(s)" %}</th>
                     <th>{% trans "Catégorie" %}</th>
@@ -152,14 +198,6 @@
 
     {# Liste mobile avec checkboxes name=ids_mobile (BUG-016) #}
     <div class="list only-sm">
-        <label class="list-row" style="cursor:pointer;background:var(--cream)">
-            <input type="checkbox"
-                   @change="document.querySelectorAll('input[name=ids_mobile]').forEach(c => c.checked = $event.target.checked); count = document.querySelectorAll('input[name=ids_mobile]:checked').length"
-                   style="width:18px;height:18px;flex-shrink:0">
-            <div class="lrow-body">
-                <div class="lrow-title">{% trans "Tout cocher" %}</div>
-            </div>
-        </label>
         {% for record in page_obj %}
         <div class="list-row" style="gap:10px">
             <input type="checkbox" name="ids_mobile" value="{{ record.pk }}"
@@ -243,6 +281,7 @@
     </a>
     {% endfor %}
 </div>
+{% endif %}
 {% endif %}
 
 {% if page_obj.paginator.num_pages > 1 %}

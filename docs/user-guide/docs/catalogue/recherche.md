@@ -13,6 +13,9 @@ En haut de chaque page, un grand champ de recherche accepte :
 - **Un ISBN-13** — 9782070612758 (code de l'éditeur, au dos du livre)
 - **Un code Ofelia d'exemplaire** — 2900000000017 (code-barres de
   l'étiquette BibliOfelia)
+- **Un code Ofelia externe** — BCF13298781X (code posé par une autre
+  bibliothèque ou par un donateur, si vous l'avez enregistré sur
+  l'exemplaire)
 - **Un nom de membre** — "rakoto", "dubois"
 - **Un numéro de carte** — 2910000000444 (code-barres de la carte)
 
@@ -38,6 +41,40 @@ la liste des notices peut être filtrée par :
 Les filtres se combinent : par exemple "Adultes" + "français" +
 "Gallimard" pour ne voir que les romans Gallimard en français pour
 adultes.
+
+## Chercher les exemplaires plutôt que les notices
+
+Par défaut, le catalogue affiche **une ligne par livre** (par notice) : si
+vous avez trois exemplaires du *Petit Prince*, vous voyez une seule ligne
+avec « 3 » dans la colonne **Ex.**
+
+La barre de filtres se termine par deux boutons, qui lancent la même recherche
+mais présentent le résultat autrement :
+
+- **Rechercher des notices** — une ligne par livre (l'affichage habituel) ;
+- **Rechercher des exemplaires** — **une ligne par exemplaire**. Les trois
+  exemplaires du *Petit Prince* apparaissent alors sur trois lignes.
+
+Le bouton du mode en cours est mis en avant : vous voyez d'un coup d'œil ce que
+vous regardez. En mode exemplaire, la colonne « Ex. » laisse la place à trois
+colonnes utiles :
+
+- **Code Ofelia** — le code-barres de l'étiquette
+- **Code Ofelia externe** — le code d'une autre bibliothèque, s'il existe
+- **Provenance** — d'où vient cet exemplaire
+
+C'est le seul écran qui montre qu'un même livre a un exemplaire **acheté par
+la bibliothèque** et un autre **prêté par une bibliothèque partenaire**.
+Combinez-le avec le filtre **Provenance** pour retrouver un fonds entier —
+par exemple le jour où il faut le rendre.
+
+!!! tip "Rendre un fonds prêté"
+    Cochez **Chercher les exemplaires**, filtrez sur la provenance, cochez
+    **Tout cocher**, puis **Supprimer les exemplaires sélectionnés**. Les
+    livres sortent du catalogue, mais les notices restent : si la
+    bibliothèque partenaire vous reprête les mêmes titres l'an prochain, il
+    n'y a plus qu'à recréer des exemplaires. Voir
+    [Provenances](provenances.md).
 
 ## Une recherche tolérante
 

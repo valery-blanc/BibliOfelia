@@ -53,6 +53,33 @@ Raha simba loatra ny kopia tsy ahafahana nampindramana (fa tsy very),
 azonao **foanana**: mijanona ao amin'ny base izy fa lasa tsy azo
 ampindramina. Ampiasao ny bokotra **Foanana** avy amin'ny takelakany.
 
+## Ny kaody Ofelia ivelany
+
+Misy boky tonga miaraka amin'ny etikety tsy anao : fanangonana nampindramin'ny
+tranomboky hafa, fanomezana efa voasokajy, na lisitra taloha talohan'ny
+BibliOfelia. Aleo tsy manindry etikety vaovao eo amboniny, fa soraty ao amin'ny
+saha **Kaody Ofelia ivelany** an'ilay kopia io kaody io (20 litera na isa
+farafahabetsany, ohatra `BCF13298781X`).
+
+Manomboka eo dia miasa **tahaka ny kaody Ofelia** io kaody io : amin'ny
+fampindramana, ny famerenana, ny fanisana ary ny fikarohana. Azonao soratana na
+skanana izy, na misy tsipika na tsia, na sora-baventy na sora-madinika.
+
+!!! warning "Kaody iray, kopia iray"
+    Tsy afaka mizara kaody ivelany iray ny kopia roa : tsy ho fantatry ny
+    BibliOfelia hoe iza no skananao. Raha efa voatokana ilay kaody dia
+    lazain'ny formulaire hoe amin'ny kopia inona izy.
+
+## Ny fiaviana
+
+Ny saha **Fiaviana** dia milaza ny niavian'io kopia io : novidin'ny tranomboky,
+natolotra, nampindramin'ny tranomboky mpiara-miasa… Fidina avy amin'ny lisitra
+tantananao ihany izy (jereo ny [Fiaviana](provenances.md)).
+
+Ny fiaviana no ahafahana mahita ny boky **rehetra** ao anaty fametrahana iray
+amin'ny andro tsy maintsy hamerenana azy — na dia misy kopia anao aza amin'ilay
+lohateny iray ihany.
+
 ## Atonta ny etikety
 
 Mba hanontana ireo code-barre an'ny kopia amin'ny etikety

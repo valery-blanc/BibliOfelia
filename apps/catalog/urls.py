@@ -25,32 +25,40 @@ urlpatterns = [
         views.record_bulk_delete,
         name="record_bulk_delete",
     ),
-    # FEAT-041 : affectation en masse catégorie / emplacement
-    path(
-        "bulk-assign-category/",
-        views.record_bulk_assign_category_confirm,
-        name="record_bulk_assign_category_confirm",
-    ),
-    path(
-        "bulk-assign-category/apply/",
-        views.record_bulk_assign_category,
-        name="record_bulk_assign_category",
-    ),
-    path(
-        "bulk-assign-location/",
-        views.record_bulk_assign_location_confirm,
-        name="record_bulk_assign_location_confirm",
-    ),
-    path(
-        "bulk-assign-location/apply/",
-        views.record_bulk_assign_location,
-        name="record_bulk_assign_location",
-    ),
+    # FEAT-069 : affectation en masse depuis la page catalogue (sans page intermédiaire)
+    path("bulk-assign/", views.record_bulk_assign, name="record_bulk_assign"),
     # FEAT-032 : gestion des emplacements
     path("locations/", views.location_list, name="location_list"),
     path("locations/new/", views.location_create, name="location_create"),
     path("locations/<int:pk>/edit/", views.location_edit, name="location_edit"),
     path("locations/<int:pk>/delete/", views.location_delete, name="location_delete"),
+    # FEAT-070 : gestion des langues
+    path("languages/", views.language_list, name="language_list"),
+    path("languages/new/", views.language_create, name="language_create"),
+    path("languages/<int:pk>/edit/", views.language_edit, name="language_edit"),
+    path("languages/<int:pk>/delete/", views.language_delete, name="language_delete"),
+    # FEAT-067 : gestion des catégories
+    path("categories/", views.category_list, name="category_list"),
+    path("categories/new/", views.category_create, name="category_create"),
+    path("categories/<int:pk>/edit/", views.category_edit, name="category_edit"),
+    path("categories/<int:pk>/delete/", views.category_delete, name="category_delete"),
+    # FEAT-064 : gestion des provenances
+    path("provenances/", views.provenance_list, name="provenance_list"),
+    path("provenances/new/", views.provenance_create, name="provenance_create"),
+    path("provenances/<int:pk>/edit/", views.provenance_edit, name="provenance_edit"),
+    path("provenances/<int:pk>/delete/", views.provenance_delete, name="provenance_delete"),
+    # FEAT-064 / FEAT-069 : actions de masse sur les exemplaires
+    path("items/bulk-assign/", views.item_bulk_assign, name="item_bulk_assign"),
+    path(
+        "items/bulk-delete/",
+        views.item_bulk_delete_confirm,
+        name="item_bulk_delete_confirm",
+    ),
+    path(
+        "items/bulk-delete/apply/",
+        views.item_bulk_delete,
+        name="item_bulk_delete",
+    ),
     # FEAT-046 : catalogage en scan caméra continu
     path("scan/", views.scan_session_list, name="scan_session_list"),
     path("scan/new/", views.scan_session_create, name="scan_session_create"),

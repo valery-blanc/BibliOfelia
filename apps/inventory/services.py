@@ -8,6 +8,7 @@ from collections import defaultdict
 from django.db import models
 from django.utils import timezone
 
+from apps.catalog.lookup import find_item
 from apps.catalog.models import BibliographicRecord, Item, ItemStatus
 from apps.core.search import normalize_code
 
@@ -34,9 +35,18 @@ def scope_items(session: InventorySession):
 
 
 def record_scan(session: InventorySession, raw_ean: str, device: str = ""):
-    """Enregistre un pointage. Retourne (scan, created)."""
+    """Enregistre un pointage. Retourne (scan, created).
+
+    FEAT-063 : le code peut être un code Ofelia ou un code Ofelia externe. Le
+    pointage est toujours stocké sous le code Ofelia de l'exemplaire retrouvé,
+    pour que scanner le même livre par l'une ou l'autre étiquette compte une
+    seule fois. Un code qui ne désigne aucun exemplaire est conservé tel quel :
+    c'est lui qu'on veut lire dans le rapport des inconnus.
+    """
     ean = normalize_code(raw_ean)
-    item = Item.objects.filter(ean13=ean).first()
+    item = find_item(ean)
+    if item is not None:
+        ean = item.ean13
     scan, created = InventoryScan.objects.get_or_create(
         session=session,
         ean13=ean,

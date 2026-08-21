@@ -6,6 +6,25 @@ masivas") desde la lista del catálogo.
 
 ## Seleccionar varios registros
 
+Dos casillas, encima de la lista, marcan todo de una vez:
+
+- **Seleccionar los N resultados visibles** — las líneas de la página mostrada.
+- **Seleccionar los N resultados de la búsqueda** — **todas las páginas**. Esta
+  casilla solo aparece si hay más de una página.
+
+El número indicado es el real: así siempre sabe cuántos libros va a modificar o
+eliminar.
+
+!!! warning "No confunda las dos"
+    Marcar «resultados visibles» solo toma la página actual: 25 líneas. En un
+    fondo de varios cientos de libros, la casilla que necesita es la segunda.
+    Marcar una desmarca la otra, y marcar una línea a mano cancela la selección
+    ampliada.
+
+Antes de una eliminación, la pantalla de confirmación recuerda el total. A
+partir de 100 líneas solo muestra las 100 primeras e indica cuántas más
+seguirán, pero **todas** se eliminarán.
+
 Desde la página [**Catálogo**](/bibliofelia/es/catalog/){ target="_blank" },
 cada línea de registro tiene una casilla de verificación a la izquierda. Marque los registros que quiere
 procesar.
@@ -15,17 +34,30 @@ seleccionados") y las operaciones disponibles.
 
 ## Operaciones disponibles
 
-### Cambiar de categoría en lote
+### Asignar en masa desde el catálogo
 
-Para reclasificar varios libros en una nueva categoría (por ejemplo,
-mover libros "Juvenil" a "Adolescente"), márquelos y elija **Cambiar
-categoría**.
+En cuanto marca una línea, aparece una barra encima de la lista con menús
+desplegables y un botón **Aplicar**.
 
-### Cambiar de ubicación en lote
+**En modo registros** (la vista por defecto), dos menús:
 
-Si traslada una sección completa a otra ubicación, seleccione los
-registros afectados y use **Cambiar ubicación**. Esta operación se
-aplica a todos los ejemplares de los registros elegidos.
+- **Categoría** — se aplica a los registros marcados
+- **Ubicación** — se aplica a **todos los ejemplares** de esos registros
+
+**En modo ejemplares** (con "Buscar los ejemplares" marcado), un menú:
+
+- **Procedencia** — se aplica a los ejemplares marcados
+
+Cada información se ajusta donde vive: la categoría pertenece al libro, la
+procedencia al ejemplar.
+
+!!! tip "«No modificar» es el valor de partida"
+    Un menú que se queda en **No modificar** no toca nada. Así puede cambiar la
+    categoría sin vaciar la ubicación por descuido. Para quitar una asignación,
+    elija **— (vaciar)**.
+
+Después de aplicar, vuelve al catálogo **con sus filtros todavía activos**:
+práctico para encadenar varios lotes.
 
 ### Eliminar los registros seleccionados
 

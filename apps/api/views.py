@@ -424,17 +424,19 @@ class InventorySessionItemsView(APIView):
         accepted = 0
         duplicates = 0
         rejected = []
+        from apps.catalog.lookup import find_item
         from apps.catalog.models import Item
 
         for entry in items:
             raw = normalize_code(entry["scanned_value"])
-            # Résolution de l'exemplaire : code interne Ofelia 290… en priorité,
-            # puis ISBN-13 / ISBN-10 commercial.  Pour les ISBN multi-exemplaires,
-            # on exclut les EAN déjà présents dans existing pour pointer le
-            # prochain exemplaire non encore pointé (BUG-008).
-            item = Item.objects.filter(ean13=raw).first()
+            # Résolution de l'exemplaire : code Ofelia 290… en priorité, puis
+            # code Ofelia externe (FEAT-063), puis ISBN-13 / ISBN-10 commercial.
+            # Pour les ISBN multi-exemplaires, on exclut les EAN déjà présents
+            # dans existing pour pointer le prochain exemplaire non encore
+            # pointé (BUG-008).
+            item = find_item(raw)
             if item:
-                storage_ean = raw
+                storage_ean = item.ean13
             else:
                 item = (
                     Item.objects.filter(record__isbn_13=raw)

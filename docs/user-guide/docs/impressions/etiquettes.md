@@ -86,6 +86,32 @@ code de rayon en bas.
     Sur une étiquette, le code-barres doit rester noir : une barre rouge n'est
     plus lue par la douchette.
 
+## Les étiquettes de tranche
+
+Une étiquette de tranche ne porte qu'une chose : l'**abréviation de la
+catégorie** du livre, en très gros. Collée sur la tranche, elle se lit à un
+mètre du rayon et permet de ranger un livre sans le sortir de l'étagère.
+
+Sur la page **Étiquettes**, sélectionnez vos exemplaires puis cliquez sur
+**Étiquettes de tranche**. Même ruban, même format que les étiquettes de
+livres (62 × 35 mm, une étiquette par page).
+
+Le texte est centré et sa taille s'adapte toute seule : `PER` remplit
+l'étiquette, `RO FI ADO` se répartit sur deux lignes.
+
+```
+|--------------------------|
+|          RO FI           |
+|           ADO            |
+|--------------------------|
+```
+
+!!! warning "Il faut d'abord renseigner l'abréviation"
+    L'abréviation se saisit sur la **catégorie**, pas sur le livre (voir
+    [Catégories](../catalogue/categories.md)). Un exemplaire dont la
+    catégorie n'a pas d'abréviation est ignoré à l'impression ; si aucun
+    n'en a, BibliOfelia vous le dit au lieu de sortir un PDF vide.
+
 ## Voir aussi
 
 - [Gérer les exemplaires](../catalogue/exemplaires.md)

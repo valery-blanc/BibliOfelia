@@ -53,6 +53,34 @@ Si un exemplaire est trop abîmé pour être prêté (mais pas perdu), vous
 pouvez le **mettre au rebut** : il reste dans la base mais devient
 non-prêtable. Utilisez le bouton **Mettre au rebut** depuis sa fiche.
 
+## Le code Ofelia externe
+
+Certains livres arrivent avec une étiquette qui n'est pas la vôtre : un
+fonds prêté par une autre bibliothèque, un don déjà catalogué, un
+inventaire d'avant BibliOfelia. Plutôt que de recoller une étiquette
+par-dessus, saisissez ce code dans le champ **Code Ofelia externe** de
+l'exemplaire (jusqu'à 20 lettres ou chiffres, par exemple `BCF13298781X`).
+
+Ensuite, ce code marche **exactement comme un code Ofelia** : au prêt, au
+retour, au récolement, dans la recherche. Vous pouvez le taper ou le
+scanner, avec ou sans tirets, en majuscules ou en minuscules.
+
+!!! warning "Un code, un exemplaire"
+    Deux exemplaires ne peuvent pas porter le même code externe : sinon,
+    BibliOfelia ne saurait pas lequel vous scannez. Si le code est déjà
+    pris, le formulaire vous dit sur quel exemplaire il se trouve.
+
+## La provenance
+
+Le champ **Provenance** dit d'où vient cet exemplaire : acheté par la
+bibliothèque, donné, prêté par une bibliothèque partenaire… Elle se
+choisit dans une liste que vous gérez vous-même (voir
+[Provenances](provenances.md)).
+
+C'est la provenance qui permet, le jour venu, de retrouver **tous** les
+livres d'un dépôt pour les rendre — même quand un même titre a aussi un
+exemplaire qui vous appartient.
+
 ## Imprimer les étiquettes
 
 Pour imprimer les codes-barres des exemplaires sur étiquettes physiques,

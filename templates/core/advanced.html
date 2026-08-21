@@ -141,6 +141,36 @@
         </div>
         <div class="lrow-end">{% icon "chevron-right" size="18px" %}</div>
     </a>
+    <a href="{% url 'catalog:language_list' %}" class="list-row">
+        <div class="lrow-icon" style="--lr-bg:var(--olive-light);--lr-fg:#6B5A0E">
+            {% icon "globe" size="18px" %}
+        </div>
+        <div class="lrow-body">
+            <div class="lrow-title" style="color:var(--burgundy)">{% trans "Langues" %}</div>
+            <div class="lrow-sub">{% trans "Langues proposées pour les livres et pour les langues parlées des usagers. Complétez la liste si un fonds l'exige." %}</div>
+        </div>
+        <div class="lrow-end">{% icon "chevron-right" size="18px" %}</div>
+    </a>
+    <a href="{% url 'catalog:category_list' %}" class="list-row">
+        <div class="lrow-icon" style="--lr-bg:var(--olive-light);--lr-fg:#6B5A0E">
+            {% icon "bookmark" size="18px" %}
+        </div>
+        <div class="lrow-body">
+            <div class="lrow-title" style="color:var(--burgundy)">{% trans "Catégories" %}</div>
+            <div class="lrow-sub">{% trans "Classement des notices et abréviation imprimée sur la tranche des livres (« RO FI ADO »)." %}</div>
+        </div>
+        <div class="lrow-end">{% icon "chevron-right" size="18px" %}</div>
+    </a>
+    <a href="{% url 'catalog:provenance_list' %}" class="list-row">
+        <div class="lrow-icon" style="--lr-bg:var(--olive-light);--lr-fg:#6B5A0E">
+            {% icon "archive" size="18px" %}
+        </div>
+        <div class="lrow-body">
+            <div class="lrow-title" style="color:var(--burgundy)">{% trans "Provenances" %}</div>
+            <div class="lrow-sub">{% trans "D'où viennent les exemplaires (achat, don, prêt d'une autre bibliothèque). Permet de retrouver et de rendre un fonds entier." %}</div>
+        </div>
+        <div class="lrow-end">{% icon "chevron-right" size="18px" %}</div>
+    </a>
     <a href="{% url 'core:enrichment_index' %}" class="list-row">
         <div class="lrow-icon" style="--lr-bg:var(--olive-light);--lr-fg:#6B5A0E">
             {% icon "refresh-cw" size="18px" %}

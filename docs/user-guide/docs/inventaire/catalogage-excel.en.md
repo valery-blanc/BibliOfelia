@@ -90,6 +90,9 @@ column is **optional**: add only the ones you have, in any order.
 | `YEAR` | the publication year |
 | `LANGUAGE` | the language code (fr, en, es…) |
 | `TAGS` | keywords separated by **commas** |
+| `EXTERNAL_CODE` | another library's code already on the book |
+| `PROVENANCE` | the code or the name of an existing source |
+| `CATEGORY_ABBR` | the category abbreviation (shelf mark) |
 | `CONDITION` | the copy condition (New, Good, Worn, Damaged) |
 
 In the

@@ -238,3 +238,65 @@ def test_pickers_hide_the_roll_button_when_disabled(client, librarian, items):
 def _picker_body(client, librarian) -> str:
     client.force_login(librarian)
     return client.get("/fr/printing/labels/").content.decode()
+
+
+# ── FEAT-072 : colonne « Famille » sur la carte de membre ──────────────────
+
+
+@pytest.fixture
+def family_member(member):
+    from apps.members.models import MemberFamilyMember
+
+    for name in ("Tiana", "Mamy"):
+        MemberFamilyMember.objects.create(member=member, first_name=name, birth_year=2018)
+    return member
+
+
+def test_family_first_names_reach_the_card(family_member):
+    assert family_member.family_first_names == ["Mamy", "Tiana"]
+
+
+def test_every_name_fits_when_there_is_room():
+    from apps.printing.services import family_column_lines
+
+    shown, truncated = family_column_lines(["Mamy", "Soa", "Tiana"], 60, 7)
+    assert shown == ["Mamy", "Soa", "Tiana"]
+    assert truncated is False
+
+
+def test_a_long_family_is_truncated_not_overflowing():
+    """Mieux vaut une ellipse qu'un prénom par-dessus le code-barres."""
+    from apps.printing.services import family_column_lines
+
+    names = [f"Prenom{i}" for i in range(20)]
+    shown, truncated = family_column_lines(names, 40, 7)
+    assert truncated is True
+    assert len(shown) < len(names)
+    assert shown[0] == "Prenom0"
+
+
+def test_no_room_at_all_shows_nothing():
+    from apps.printing.services import family_column_lines
+
+    shown, truncated = family_column_lines(["Mamy"], 0, 7)
+    assert shown == []
+    assert truncated is True
+
+
+def test_roll_card_still_renders_with_a_family(family_member):
+    pdf = render_member_cards_roll_pdf([family_member])
+    assert pdf.startswith(b"%PDF")
+    assert _page_count(pdf) == 1
+
+
+def test_a4_card_still_renders_with_a_family(family_member):
+    from apps.printing.services import render_member_cards_pdf
+
+    pdf = render_member_cards_pdf([family_member])
+    assert pdf.startswith(b"%PDF")
+
+
+def test_card_geometry_is_unchanged_by_the_family(member, family_member):
+    """Une carte sans famille garde exactement la géométrie du Sprint 27."""
+    assert _page_size_mm(render_member_cards_roll_pdf([member])) == (62.0, 89.0)
+    assert _page_size_mm(render_member_cards_roll_pdf([family_member])) == (62.0, 89.0)

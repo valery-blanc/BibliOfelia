@@ -4,9 +4,9 @@ Spécification détaillée du logiciel de gestion de bibliothèque BibliOfelia, 
 
 Version : 1.0 (cible v1)
 Statut : draft pour Spec-Driven Development
-Dernière modif spec : 2026-08-18 — **Sprint 27 (en test)** : **FEAT-062** — support de l'imprimante **Brother QL-810W** (ruban continu 62 mm noir/rouge). La QL est branchée en USB sur un poste client et n'est joignable ni par la Box ni par les instances Avignon (scan LAN : seul le laser DCP-L3550CDW répond en 9100) → on produit un PDF à la géométrie exacte du ruban (une étiquette 62 × 35 mm ou une carte 62 × 89 mm par page, dessin couché au format carte bancaire) et c'est le **navigateur du poste** qui parle au pilote Brother. Étiquettes **entièrement monochromes** et à typographie unique (titre pleine largeur mesurée, auteurs en italique, logo en niveaux de gris, identifiant interne retiré) ; le rouge pur ne sert plus qu'à la mention « Carte de membre » des cartes ; code-barres toujours noir. Une étiquette **62 × 35 mm par page**, alignée sur la coupe réglée dans le pilote (le groupage de 2 étiquettes essayé pour forcer l'orientation portrait a été abandonné au test). Cf. §6.7.
+Dernière modif spec : 2026-08-21 — **Sprint 28, 3e vague (en test)** : **BUG-028** — libellés de formulaire en anglais dans une interface française (« Title », « Language »… sur la fiche notice, et tout le formulaire usager) : Django fabriquait le libellé depuis le nom du champ, hors de portée de `gettext` et donc du gate i18n. 41 `verbose_name=_()` posés + garde-fou `test_form_labels.py`. — **FEAT-073** — catalogue : la case « Chercher les exemplaires » devient deux boutons **« Rechercher des notices »** / **« Rechercher des exemplaires »** ; **deux cases de sélection** (résultats visibles / tous les résultats de la recherche, pages suivantes comprises) remplacent le « Tout cocher » qui ne prenait que la page courante ; la **provenance s'affiche en toutes lettres**. Cf. §6.1, §6.9.
 
-Modif précédente : 2026-08-03 — **Sprint 26 (en test)** : **BUG-022** — parsing SRU cassé : la BnF et la BNE servent le Dublin Core imbriqué (`oai_dc:dc` / `srw_dc:dc`) dans `srw:recordData`, or le helper cherchait en enfant direct → **toutes** les notices remontaient vides, sur les 3 chemins (`lookup` ISBN, `lookup_issn` FEAT-052, `search` FEAT-050) ; les 2 bibliothèques nationales étaient donc inertes et tout livre scanné arrivait avec le titre placeholder `ISBN:… - date`. Fix : recherche en descendant + parsing Alma factorisé dans `sources/_alma_sru.py` + nettoyage du bruit MARC des zones auteur. — **BUG-023** — Google Books en 429 permanent sur les instances Avignon (clé API absente → quota anonyme par IP, mutualisée) : clé posée sur sanjuan + grand-saconnex, aide du formulaire corrigée (la clé relève le quota, elle n'active pas la source). — **BUG-024** — bouton « Terminer et voir le lot » du catalogage douchette affiché même sur une liste à jour → masqué sauf quand il sert. — **FEAT-057** — bouton « ? » : les instances Avignon servent le guide sous `/docs/` via proxy nginx vers le conteneur `bibliofelia-docs` (la Box, sous `/bibliofelia/docs/`, était déjà correcte). — **FEAT-058** — « Voir le lot » : consultation en lecture seule d'un lot de catalogage validé (livres + lien notice), sans réouverture. — **FEAT-059** — sources d'enrichissement : toutes actives par défaut (Google Books était exclu → invisible sur une instance neuve) et libellés lisibles au lieu des slugs. — **FEAT-060** — 2 sources européennes : **Swisscovery/SLSP** (livres suisses, seule source pour les éditeurs romands) et **K10plus** (livres germanophones) ; DNB/SBN/PORBASE écartées après test des endpoints. Cf. §6.1, §6.11, §11.7. — — **BUG-025** — import Excel : une ligne remplie mais **sans ISBN** sortait par un `continue` muet avant l'incrément de `total` → absente des compteurs comme du rapport, le fichier perdait un livre sans afficher la moindre erreur (105 lignes → 104 notices, `errors = 0`). Désormais comptée + tracée (`ISBN_MISSING`, avec libellé « Auteur — Titre »), comme `ISBN_INVALID` ; **bandeau rouge « N lignes non importées »** sur la page du job. Les lignes entièrement vides restent ignorées en silence. Cf. §6.12. — **BUG-026** — les commentaires `{# … #}` **multi-lignes** s'affichent à l'écran (le lexer Django compile son motif sans `re.DOTALL`) : 5 occurrences converties en `{% comment %}`, plus un test qui scanne tous les templates pour que la règle ne repose plus sur la mémoire. — **FEAT-061** — le bouton « ? » étant masqué sous 600 px (`.hide-sm`), le guide était inatteignable sur smartphone en portrait : entrée « Guide utilisateur » ajoutée au menu utilisateur en `.only-sm`. — 2026-07-18 — **FEAT-056 (déployé)** : hébergement multi-instances sous **bibliofelia.org** (Avignon/Traefik/TLS) — instances `sanjuan`/`grand-saconnex`, migration Box → `canaima.bibliofelia.org`, `docs.bibliofelia.org`, redirect 301 apex/www, serveur mail (SPF/DKIM/DMARC OK). Cf. §11.7 et `FEAT-056-hebergement-multi-instances.md`. — **FEAT-055 (en test)** : **Récolement (inventaire) à la douchette USB** — le champ de saisie manuelle de la page rapport (`templates/inventory/session_report.html`, `inv-manual-form`) porte désormais `data-wedge-primary autofocus` : le wedge global (FEAT-054, `scan-wedge.js`) reconnaît une rafale HID de douchette, **remplit ce champ et soumet le formulaire** ; le handler AJAX de `scan-inventory.js` intercepte le submit et poste au même endpoint `inventory:add_scan` — pointage **sans quitter la page**, sans caméra, sans clic. Réutilise intégralement le backend, la dé-duplication, le compteur et la liste live existants. Le wedge se retire quand le modal caméra est ouvert (`scan-camera-open`) → pas de double pointage. **Corrige** le comportement pré-FEAT-055 où un scan douchette sur la page rapport (aucun champ primaire) tombait dans le fallback du wedge → `core:search?q=<code>` et **quittait** la page de récolement sans jamais pointer l'exemplaire. Aucune migration, aucune nouvelle chaîne d'app (attribut HTML seul). Guide utilisateur : section « Avec une douchette USB » ajoutée à `inventaire/recolement.md` + nouvelle page `inventaire/catalogage-douchette.md` (×4 langues). Cf. §6.5, FEAT-055. — **BUG-021 (en test)** : **Sections « Impressions » disparues de `/admin/settings/`** — FEAT-047 avait retiré `printing_cards`/`printing_labels` du registre `FORMS` (`apps/core/admin_views.py`) en les croyant redondantes, supprimant le **seul** accès UI au réglage du **format des étiquettes** (largeur/hauteur mm, lignes titre/auteur, logo) et des cartes membres. Formulaires (`MemberCardFormatForm`/`ItemLabelFormatForm`), `Setting` (`card_format`/`item_label_format`) et valeurs seed intacts → **restauration** des deux sections (registre + `settings_index.html` icônes/sous-titres). ZeroTier/Sources non restaurées (hors périmètre). 4 chaînes UI retraduites (`translations_sprint24.py`, reprises de l'historique git). Cf. §6.6, BUG-021. — **FEAT-054 + BUG-020 (en test)** : **Support douchette USB (keyboard-wedge) + catalogage douchette**. Une **douchette USB** (lecteur de code-barres en mode clavier HID) branchée sur le poste qui affiche BibliOfelia émettait ses frappes vers le champ focalisé, mais une touche de la salve (suffixe/CR) fuyait vers un raccourci navigateur → ouverture parasite de la page des téléchargements (`Ctrl+J`) — **BUG-020**. Nouveau module `static/js/scan-wedge.js` (chargé partout pour les utilisateurs connectés via `base.html`, config `#scan-wedge-config`) : écouteur clavier **global en phase de capture** qui reconnaît la signature d'un scan (rafale de frappes espacées de ≤ 35 ms, ≥ 3 caractères, terminée par `Entrée`), bufferise le code, **neutralise toute la salve** (`preventDefault`+`stopImmediatePropagation`) + fenêtre de garde 300 ms **testée en premier** dans le handler → plus aucune fuite vers les raccourcis navigateur (corrige BUG-020). Cause racine : le terminateur douchette **CR+LF** = `Ctrl+M`(Entrée) + **`Ctrl+J`(page téléchargements)** — un `<input>` texte ne consomme pas ces raccourcis, d'où la fuite même focus dans le champ. La frappe humaine (lente, irrégulière) n'est jamais captée. **Aucun clic requis** : l'écoute étant globale, le scan est capté quel que soit l'élément focalisé (2ᵉ demande Val). **Routage contextuel** du code capté : si un champ de scan primaire est présent (`input[data-wedge-primary]`, ou champ désigné par un bouton `.js-scan-handoff[data-scan-target]`) → on le remplit + submit (**prêt** carte/livre, **retour**, **catalogage douchette**) ; sinon → navigation `core:search?q=<code>` → fiche notice (290/ISBN/977) ou fiche membre (291). Le wedge se met en retrait quand le modal caméra est ouvert (`body.scan-camera-open`) et ignore textarea/contenteditable/password et les combinaisons `Ctrl/Alt/Meta`. **Catalogage douchette** : nouvelle entrée **Avancé → Inventaire → « Catalogage par douchette »** parallèle au catalogage caméra (FEAT-046), réutilisant `ScanSession`+`scan_add` — nouveau champ `ScanSession.input_mode` (`mobile`/`camera`/`douchette`, migration `catalog/0012`, défaut `camera` ; l'API OfeliaScan crée en `mobile`), route `catalog:scan_douchette_create`, hub `scan_session.html` en mode douchette (bouton caméra masqué, champ ISBN `data-wedge-primary autofocus`). Tests : 3 cas dans `test_cataloging.py`. i18n `translations_sprint23.py`. Cf. §6.1 (Recherche + « Catalogage à la douchette USB »), FEAT-054, BUG-020. — **FEAT-053 (en test)** : **Import Excel — affectation des métadonnées de la fiche** — le mode IMPORT (§6.12) reconnaît 9 colonnes optionnelles supplémentaires : `TITLE` (titre ; sur une notice neuve, évite le placeholder `ISBN:…`), `AUTHOR` (auteurs `;`-séparés, remplacement), `CATEGORY`, `TYPE` (code ou libellé FR → `DocumentType`), `EDITOR` (→ `publisher`), `YEAR` (→ `publication_year`), `LANGUAGE`, `TAGS` (`,`-séparés, remplacement, cap 10×40) et `CONDITION` (→ `Item.state`). **Sémantique** : colonne présente + cellule remplie → écrase le champ de la notice **même déjà existante** (matchée par ISBN) ; cellule vide → l'existant est conservé ; `AUTHOR`/`TAGS` remplacent sans fusionner (décision Val). Extension volontaire du périmètre FEAT-050 (qui excluait la mise à jour de notices existantes). Implémentation `apps/catalog/excel_catalog.py` : résolveurs `_resolve_document_type`/`_resolve_item_state` (alias FR normalisés via `_norm`), `_parse_row_overrides` (ne retient que les cellules non vides ; warnings `TYPE_UNKNOWN`/`CONDITION_UNKNOWN`/`YEAR_INVALID`) et **passe d'override post-finalize** `_apply_import_overrides` (transaction dédiée, via `ScanItem.processing_result` → `record_id`/`copies_created`) — `finalize_scan_session` et le flux caméra/OfeliaScan **inchangés**. Formulaire `_import_form.html` documente les colonnes ; 6 tests ajoutés (`test_excel_catalog.py`) ; i18n `translations_sprint22.py`. Cf. §6.12, FEAT-053. — **FEAT-052 (en test)** : **Support des périodiques ISSN (code-barres 977)** — les revues/magazines se cataloguent comme les livres. Nouveau helper `apps/core/issn.py` (`validate_issn`, `normalize_issn`, `issn_from_ean13` : un EAN-13 `977` + 7 chiffres + variante + clé → ISSN normalisé 8 car., ex. `9771828552248` → `1828552X`). `BibliographicRecord.issn` (nullable, **unique si non-null** → « 1 notice par ISSN » : deux numéros d'une même revue retombent sur la même notice) + propriété `issn_display` (`1828-552X`) ; `ScanKind.ISSN` ; migration `catalog/0011_issn_periodical`. Lookup ISSN multi-sources SRU **BnF** (`bib.issn`) + **BNE** (`alma.issn`) via `ISSN_SOURCES` + `lookup_issn_multi()` (OpenLibrary/Google Books n'indexent pas l'ISSN) — si rien trouvé, titre saisi à la main. `scan_add` branche le préfixe 977 → `scan_kind=issn` + `lookup_issn_multi` ; `finalize_scan_session` matche/crée par ISSN avec `document_type=MAGAZINE_ISSUE`. Formulaire notice : champ `issn` + `clean_issn` (clé validée, `NULL` si vide) ; affiché sur `record_detail`. Scanner JS : `isAcceptableCode(v, allowIssn)` — le **977 n'est accepté qu'en catalogage** (`scan-cataloging.js` passe `allowIssn:true`) ; prêt/retour/adhésion/récolement inchangés (un magazine s'y prête via son code Ofelia 290). API : `ScanKind.choices` inclut `issn` (additif ; OfeliaScan n'émet pas encore d'ISSN, contrat inchangé). **Recherche** : `classify_query` gagne un `kind="issn"` (EAN13 977 → ISSN extrait, ou ISSN saisi `1828-552X`) ; `record_list` filtre sur `issn`, `global_search` redirige vers la fiche — sinon une revue cataloguée restait introuvable. Tests : `test_issn.py` + `test_search.py` + cas 977 dans `test_cataloging.py`/`test_forms.py`. i18n `translations_sprint21.py`. Cf. §5.2, §5.3, §6.1, FEAT-052. — **BUG-019 (en test)** : **Enrichissement — titres manquants à cause du quota Google Books (429)**. L'API Google Books gratuite est plafonnée (~100 req/100 s, ~1000/jour) ; en batch l'enrichissement recevait des 429 attrapés silencieusement (`None` = « rien trouvé ») → notices laissées avec leur placeholder `ISBN:…`. Fix robustesse dans `apps/catalog/sources/google_books.py` : **throttle adaptatif** thread-safe (pleine vitesse en régime normal ; ≥ 1,2 s entre requêtes pendant ~100 s seulement après un 429, partagé verify+enrichissement) + **back-off** sur 429 (`_get_json`, 3 réessais, respecte `Retry-After`) → lève `SourceRateLimited` (nouvelle exception `apps/catalog/sources/__init__.py`) si le 429 persiste. En FILL_MISSING, `run_enrichment_job` **saute** les notices déjà complètes (titre réel + auteur, `_record_is_complete`) → re-runs rapides, quota préservé. `enrichment.py` : `_try_sources(..., with_rate_limit=True)` ; une notice sans donnée ET rate-limitée est comptée dans `EnrichmentJob.rate_limited` (au lieu de `skipped`) + entrée rapport dédiée → rejouable. `excel_catalog.py` : `_pass1_by_isbn`/`_search_all` propagent le drapeau, `run_verify_job` compte `ExcelCatalogJob.rate_limited` et marque `SOURCE_BY_ISBN=RATE_LIMITED`. Migration `catalog/0010`. UI : bandeau ambre « Quota Google Books atteint — relancez demain » sur `enrichment_detail.html` + `excel_catalog/detail.html`. Limite : quota journalier épuisé → relancer le lendemain. Cf. §6.11, §6.12, BUG-019. — **FEAT-051 (en test)** : **Filtre emplacement dans le catalogue** — la barre de filtre de `catalog:record_list` gagne un sélecteur « Tous emplacements / <code> » alimenté par `Location.objects.all()` ; sélectionner un emplacement restreint la liste aux notices ayant au moins un exemplaire dans cet emplacement (`records.filter(items__location_id=location).distinct()`). Param GET `location`, repris dans `selected.location`. **Pagination corrigée** : les liens Précédent/Suivant conservent désormais **tous** les filtres actifs (q, category, document_type, language, location, q_tag) via `base_qs` (querystring sans `page`) — auparavant seuls `q`/`q_tag` étaient préservés. Aucune migration ; 1 chaîne i18n (« Tous emplacements » → EN/ES/MG via `translations_sprint20.py`). Cf. §6.1. — **Sprint 20 / FEAT-050 (déployé Pi, en test Val)** : **Catalogage Excel** — deux outils sous **Avancé → Inventaire → Catalogage Excel** (`catalog:excel_catalog_index`, librarian + superadmin). (1) **VERIFY** : annote un `.xlsx` (colonnes `ID`/`TITLE`/`AUTHOR`/`ISBN`) avec ce que les 4 sources connaissent — passe 1 par ISBN (`_try_sources`), passe 2 par titre+auteur (`search()` ajouté à chaque source + ré-ordonnancement `rapidfuzz` `apps/catalog/sources/_fuzzy.py`, seuil 60, `CONFIDENCE` 0-100, cellules <75 en orange) — et produit un fichier annoté téléchargeable, sans effet de bord BD. (2) **IMPORT** : matérialise une colonne `ISBN` (+ `LOCATION`/`CATEGORY` optionnelles par ligne) en notices + exemplaires via une **`ScanSession` virtuelle** + `finalize_scan_session()` (pipeline FEAT-021/046). Nouveau modèle `ExcelCatalogJob` + migration `catalog/0009_excel_catalog_job` ; service `apps/catalog/excel_catalog.py` (tâche django-q2 `run_excel_catalog_job`, validation `.xlsx`/5 Mo/10 000 lignes) ; 5 vues + 5 routes `/catalog/excel-catalog/...` ; templates `templates/catalog/excel_catalog/` ; icône `file-spreadsheet.svg` ; deps `openpyxl==3.1.5` + `rapidfuzz==3.10.1`. Tests : 16 cas (`test_excel_catalog.py`), suite 362 passed ; gate i18n (`translations_sprint20.py`, 35 entrées × EN/ES/MG) → 0. Cf. §5.2 (`ExcelCatalogJob`), §6.12, Annexe B. — **Sprint 18 / FEAT-049** : **Enrichissement métadonnées ouvert aux bibliothécaires** — les vues `core:enrichment_index`/`enrichment_start`/`enrichment_detail` passent de `@require_role(SUPERADMIN)` à `@require_role(LIBRARIAN, SUPERADMIN)` et le lien « Enrichissement métadonnées » de `advanced.html` perd son garde `{% if user.is_superadmin %}` (il vit déjà dans la section `{% if user.is_librarian %}`). READONLY reste exclu (403, lien masqué). Aucune migration, aucune nouvelle chaîne i18n — cf. §6.11. Embarqué dans le commit FEAT-047 (mêmes fichiers `admin_views.py`/`advanced.html`). — **FEAT-048 (guide, en test)** : réorganisation des menus du **guide utilisateur** (`docs/user-guide/`, MkDocs Material 4 langues) — menu ramené à **8 rubriques** (Premiers pas ⊃ Accueil, Catalogue ⊃ Inventaire, Usagers, Prêts ⊃ Réservations, Impressions, Rapports, FAQ, Glossaire) ; **OfeliaScan** retiré du nav mais pages conservées (`not_in_nav: /ofeliascan/`) ; **Cas courants** réécrits en 4 Q/R « Cas difficiles » dans `faq.md` (×4 langues, ancres `attr_list` stables `#livre-perdu`/`#supprimer-notice`/`#carte-perdue`/`#retard`), 12 fichiers `cas-courants/*` supprimés, ~28 liens repointés `→ faq.md#…` ; suppression de `navigation.tabs` (top menu instable → menu latéral unique stable) ; police du menu latéral réduite (0.68rem) ; `deploy_pi.sh` gagne un fallback `tar|ssh` quand `rsync` absent (Git Bash Windows). Aucune chaîne d'app, aucune migration ; build `--strict` 0 warning, 32 pages × 4 langues, gate `i18n_check.py` → 0. — **FEAT-047 (en test)** : nettoyage UI — `/admin/settings/` allégé (retrait des sections Impressions cartes/étiquettes, ZeroTier, Sources de métadonnées + lien Comptes utilisateurs, tous redondants ou gérés ailleurs ; défauts seed conservés — cf. §6.6) ; page `/advanced/` catégorie Rapports réduite au seul lien « Tous les rapports » (les autres listes sont accessibles depuis cette page) ; icône « Emplacements » corrigée (le template appelait `map-pin` absent → nouvelle icône étagère `library.svg`, appliquée aussi à `location_list`/`location_form`/`session_report`). Aucune migration, aucune nouvelle chaîne i18n. — **Sprint 17 / FEAT-046 (en test)** : catalogage en **scan caméra continu** (lot `/catalog/scan/`, réutilise `ScanSession`/`ScanItem` + `finalize_scan_session`, `Item.catalog_session` pour l'impression ciblée des étiquettes, règle « >3 s = exemplaire supplémentaire », migration `catalog/0008` — cf. §6.1). — **FEAT-045 (en test)** : récolement en **scan caméra continu** (remplacement d'OfeliaScan pour le récolement courant ; OfeliaScan conservé pour le récolement de masse via API). `/inventory/new/` : scope réduit à *Tout le fonds* / *Un emplacement* (scope Catégorie retiré de l'UI, énum/champ conservés en base), emplacement obligatoire si LOCATION, redirige vers `/inventory/<pk>/report/?scan=1`. La page rapport devient le seul écran de pointage : bouton « Lancer/Continuer l'inventaire » (`.js-scan-inventory`) → caméra en **mode continu** (`scan-camera.js` `opts.continuous`/`onCode` : viseur permanent, bip + compteur live + cooldown 1,8 s + bouton « Terminer ») ; chaque code confirmé est posté à `POST /inventory/<pk>/scan/` (JSON `{ok, created, known, ean, item, counts}`, 409 si clôturée) ; `scan-inventory.js` met à jour compteur + liste live et recharge la page à la fermeture ; champ de saisie manuelle en repli. **Dé-dup client** (codes par exemplaire, set pré-rempli des scans en base) + **bip/vibration** sur nouvelle trouvaille + affichage « Titre — Auteur · exemplaire N » (`copy_index`) dans le viseur. **Rapport** refait : liste **par notice** triée auteur/titre, tous les codes Ofelia en pastilles vert (trouvé)/rouge (manquant) ; colonne Statut et action « Marquer perdu » retirées (endpoint `resolve_missing` supprimé). Ancienne page détail `/inventory/<pk>/` + `session_detail.html` **supprimés** (route `detail` retirée, redirections `create`/`reopen` → `report`, liste → `report`). Aucune migration. Caméra = HTTPS requis (§6.5). Traductions via `scripts/translations_sprint18.py`, gate `i18n_check.py` → 0. — **Correctifs i18n (BUG-018)** : (A) traduction plurielle EN/ES/MG de l'alerte de relance du dashboard (`blocktrans count` « N membre(s) à appeler… » dont les `msgstr[N]` étaient vides — saisie directe dans les `.po`, `apply_translations.py`/`i18n_check.py` ne couvrant pas les pluriels) ; (B) libellés du formulaire « Ajouter des exemplaires » (`ItemForm.Meta.labels` traduits via `_()` : Emplacement/État/Date d'acquisition/Source d'acquisition/Donateur/Notes — restaient en anglais faute de `verbose_name` sur `Item` ; +`format="%Y-%m-%d"` sur le `DateInput` de `acquisition_date`, même classe que BUG-015) ; (C) faux positif « En attente d'OfeliaScan… » = build périmée de la Box (handoff retiré par FEAT-044, bouton « Annuler » de la modale caméra déjà traduit Cancel/Cancelar/Foano) → rebuild ; (D) libellé Avancé→Administration Django « (réservé Claude / support distant) » → « (réservé au support technique) ». Traductions via `scripts/translations_sprint17.py`, gate `i18n_check.py` → 0. — **Sprint 16 (en test)** : FEAT-044 — scanner caméra navigateur en **mode unique** sur les 4 boutons « Scanner » du site (dashboard, prêt-carte, prêt-livre, retour). Retrait du handoff OfeliaScan de ce flux (OfeliaScan conservé pour catalogage + récolement en masse). `static/js/scan-handoff.js` réécrit (caméra = unique chemin ; échec → message d'erreur explicite + saisie manuelle, plus de redirection silencieuse) ; `templates/base.html` perd `#scan-handoff-config`, gagne 9 chaînes d'erreur dans `#scan-mode-i18n`. Routage notice/membre déjà assuré par `global_search`/`classify_query` (aucune modif serveur). Contrainte : caméra exige HTTPS (`getUserMedia`) — OK via domaine externe, KO en LAN HTTP (HTTPS local box = chantier keebee séparé). — **Sprint 15 (clos)** : guide utilisateur bibliothécaires sous forme de site statique MkDocs Material, 22 pages × 4 langues (FR/EN/ES/MG), thème OFELIA réutilisant `static/css/ofelia.css` + polices `Bricolage Grotesque`/`DM Sans` + logos `static/img/`. Captures pilotées par Playwright (24 écrans/langue, helper `capture_annotated.py` avec encadrés/pastilles pixel-perfect via `boxes_from_selectors`). Données démo enrichies (`apps/setup/demo.py::install_demo` rendu idempotent + nouvelle `install_doc_extras()` : 2 réservations PENDING + 3 prêts forcés en retard + 1 carte expirée). Commande `apps/setup/management/commands/seed_demo.py` (avec `--reset`, compte `demo_librarian` automatique). Bouton `?` de la topbar BibliOfelia branché sur `docs_url = FORCE_SCRIPT_NAME + '/docs/'` via context processor `apps/core/context_processors.py`, `templates/base.html` met `target="_blank"`, ancien `/help/` redirige 302 vers `docs_url`. Site déployé via nginx à `/bibliofelia/docs/` (volume `/var/lib/bibliofelia-docs` mounté en read-only sur le container `nginx-proxy` de keebee, location nginx déclarée AVANT `/bibliofelia/` pour ne pas être attrapée par le proxy Django). Traductions MG livrées avec bandeau d'avertissement « relecture par locuteur natif nécessaire » sur `index.mg.md`. Glossaire refondu pour distinguer ISBN-13, ISBN-10, code Ofelia (290/291), code interne (`OFL-YYYYMMDD-NNNN`), n° de membre. Termes techniques évités (FTS5/Tombstone/UTF-8 remplacés par formulations en langage simple) à la demande de Val (lecteurs cibles : bibliothécaires peu familiers du jargon informatique). — **Sprint 14 (clos)** : FEAT-043 (tombstones des codes Ofelia : nouveau modèle `RetiredItemCode` + signal `pre_delete` sur `Item` + `_assign_codes()` calcule le `MAX` en union `Item ∪ RetiredItemCode` ; un `internal_id` retiré n'est plus jamais réattribué — protège les étiquettes imprimées ; migration `catalog/0007_retired_item_codes` — §5.2 Item) ; libellé bouton catalogue « Supprimer la sélection » → « Supprimer les notices sélectionnées » et warning bulk-delete enrichi (suppressions définitives explicites — §6.1) ; sélecteur de langue : block `lang_next` overridable dans `base.html` (default `request.path_info`), override `/<lang>/catalog/` sur les pages confirm bulk POST-only → plus de 405 sur changement de langue ; pages d'erreur Ofelia génériques (400/403/404/405/500) — `templates/errors/_error_page.html` layout partagé, `templates/{400,403,404,405}.html` étendent ce layout (topbar + tile_strip vides + bouton « Page précédente » via Referer + bouton « Accueil »), `templates/500.html` standalone car `handler500` n'exécute pas les context processors ; `apps/core/middleware.py:MethodNotAllowedPrettyMiddleware` substitue toute 405 par notre template (Django ne fournit pas de `handler405`). — **Sprint 13 (clos)** : BUG-016 (sélection multiple `/catalog/` désormais disponible en version mobile — refonte `record_list.html` : un seul `<form>` enveloppe la vue desktop ET la vue mobile, cards mobiles dotées d'une checkbox leading + ligne « Tout cocher » — §6.1) ; BUG-017 (`.table-wrap` `overflow: hidden` → `overflow-x: auto / overflow-y: hidden` + `min-width: 560px` sur la table en ≤ 599 px : les tables de fiche notice/exemplaires sont désormais scrollables horizontalement en mobile — §10.1) ; FEAT-040 (exports CSV `/reports/` : catalogue complet 1 ligne/exemplaire toutes métadonnées notice sauf image, prêts+réservations en cours 2 sections `kind=loan/reservation`, inactifs usagers+exemplaires avec colonne « Dernière activité » ou « Aucune activité » sur `/reports/inactive/` — §6.6 nouveau paragraphe « Exports CSV ») ; FEAT-041 (sélection multiple `/catalog/` ouverte aux librarians ; 2 nouveaux boutons d'action de masse : « Affecter une catégorie » et « Affecter un emplacement » ; suppression reste superadmin — §6.1 paragraphe « Actions en masse ») ; FEAT-042 (`seed_defaults` fournit les 4 langues sur 16 Categories + 5 MemberCategories ; backfill idempotent : ne remplit `name_<lang>` que si vide, préserve toute traduction manuelle via /admin/ — §5.2). — **Sprint 12 (clos)** : FEAT-038 (refonte cartes membres : fond crème `rgb(248,238,229)`, logo OFELIA `static/img/ofelia-grandes-lettres.png` centré en filigrane, photo membre haut-gauche, bloc info à droite, langue bas-gauche — §6.7) ; FEAT-039 (refonte étiquettes livres : **70×42 mm par défaut** (planche A4 3×7 = 21 étiquettes), titre wrap 2 lignes 50 caractères, **auteurs wrap 2 lignes** 35 caractères/ligne, logo `static/img/ofelia-logo.png` en haut-gauche — §6.7) ; **paramétrage scindé** en 2 sections distinctes regroupées en catégorie « Impressions » : `printing_cards` (Setting `card_format`) + `printing_labels` (Setting `item_label_format`), remplaçant l'ancien formulaire `labels` unique — §6.6. Migration douce depuis ancien `label_format`. BUG-013 v2 (régression du sélecteur de langue à chaque déploiement quand l'URL courante ne se résout pas — page renommée, 404, intermédiaire) : wrapper `apps/core/i18n_views.py:set_language` qui force `FORCE_SCRIPT_NAME` sur l'en-tête `Location` ET échange le code de langue par substitution si `translate_url` n'a pas résolu — §6.9. **Gate i18n pérenne** : `scripts/i18n_check.py` exit != 0 si une chaîne EN/ES/MG manque ; intégré au workflow obligatoire (CLAUDE.md) — aucun commit sans gate vert ; 207 chaînes EN/ES/MG appliquées via `scripts/translations_sprint12.py` couvrant Sprints 10-12 + libellés `FORMS` `admin_views` enrobés `gettext_lazy` (trap : `makemessages` ignore les alias non standard). — **Sprint 11 (clos)** : BUG-015 (dates remises à 0 sur `/members/<pk>/edit/` : `forms.DateInput` rendu au format locale `25 mai 2026` incompatible avec `<input type="date">` → ajout `format="%Y-%m-%d"` aux 3 widgets dates du `MemberForm` — §6.2) ; FEAT-037 (UI fiche & édition membre : photo affichée dans le `pagehead` de `members:detail` et en miniature sur `member_form.html` ; JS recalcul `expiration_date = registration_date + 1 an` au change de `registration_date` — §6.2 nouveau paragraphe « UI fiche & édition ») ; FEAT-036 (flag `Reservation.notified_at` + endpoint `POST /loans/reservations/<pk>/notify/` ; page Réservations enrichie — code Ofelia, date+heure de réservation et de mise de côté, date limite de retrait, police 16-17 px ; cadre « Notifications à faire » sur le dashboard entre tuiles et bannière scan avec bouton Notifier direct ; migration `loans/0002_reservation_notified_at` — §6.4 nouveau paragraphe « Flag notifié », §6.6 dashboard) ; itération 2 BUG-014 (bouton hidden submit peu fiable selon navigateur → remplacé par un bouton visible **« Valider »** à côté de chaque input, plus robuste — §6.3) ; FEAT-034 (liste d'attente PENDING au niveau notice ajoutée à la fiche `catalog:record_detail` — §6.4) ; BUG-014 (saisie clavier sur `/loans/lend/` + `/loans/return/` interceptée par le scan-handoff : bouton scan repassé en `type="button"` + ajout d'un submit caché par formulaire pour permettre l'implicit submission HTML — §6.3 workflow prêt) ; FEAT-034 (UI réservations : sur fiche notice, n° de carte + nom du membre qui retient l'exemplaire + date avant retrait ; sur page Retour, section « Réservations à relancer » pour les mises de côté ≤ J+2 ; paramètres `default_loan_days`/`reservation_expiry_days`/`pickup_hold_days` exposés dans `/settings/loans/` — §6.4 nouveau paragraphe « UI et paramètres ») ; FEAT-035 (durée prêt paramétrable globalement via `Setting.default_loan_days` défaut 21 — fallback final avant la constante Python ; nouvelle section « Relances à faire » en bas du dashboard, 10 prêts les plus en retard — §6.3 ordre de priorité durée prêt, §6.6 dashboard). — **Sprint 10** : FEAT-032 (gestion des emplacements UI librarian + endpoint `GET /api/locations` lecture seule — §6.1 nouveau paragraphe « Gestion des emplacements », §6.10 nouvelle sous-section « Catalogue des emplacements ») ; pas de migration (modèle `Location` inchangé depuis Sprint 1) ; comportement OfeliaScan inchangé côté catalogage (`location_code` inconnu → silencieux), bloquant côté récolement (`scope_location_code` inconnu → 400 `unknown_location`, existant depuis FEAT-021) ; FEAT-033 (réassignation automatique des exemplaires au récolement : si `scope_type=location`, chaque scan force `item.location = session.scope_location` — UI web ET API OfeliaScan — §6.5 nouveau paragraphe « Réassignation automatique au récolement », +champ `InventorySession.relocate_count` migration `inventory/0003`) ; comportement contrat API OfeliaScan inchangé (effet de bord serveur transparent). — **Sprint 9 (suite & finalisation)** : hotfixes FEAT-031 (placeholder OfeliaScan `ISBN:<isbn> - <dd.mm.aaaa hh.mn>` language-neutral à la place de `"Sans titre — session …"` — détecté + écrasé par l'enrichissement ; sources étendues : cover image (Google Books `imageLinks`, OpenLibrary `cover.large`), summary (OL `description`/`notes`/`excerpts`, GB, BNF, BNE `dc:description`), subjects → tags (OL `subjects[].name`, GB `categories` split, BNF/BNE `dc:subject`) — cap 10 tags max, longueur 40 max, dedup ; **fusion field-by-field** entre les réponses parallèles : pour chaque champ on prend la 1re source non vide dans l'ordre préféré → summary GB en fallback si OL vide ; vue détail enrichie : `field ← source` ; affichage cover sur fiche notice ; affichage subtitle dans la carte meta ; sources en parallèle via ThreadPoolExecutor (~×4 plus rapide) ; idempotence `run_enrichment_job` + `q_options={timeout:3600, retry:7200}` pour éviter le multi-run django-q2 — §6.11) ; BUG `Item.internal_id` collision quand séquence à trous (suppression / sessions échouées) : remplacement `count()+1` → `MAX(internal_id)+1` (§5.2 Item) ; recherche ISBN/EAN13 dans `/catalog/` via `classify_query` (FTS5 ne couvre pas les ISBN) — §6.1 ; nouveau filtre **tag (icontains)** dans la barre de filtre catalogue — §6.1 ; BUG i18n sélecteur de langue : `{{ request.path }}` → `{{ request.path_info }}` (sans `FORCE_SCRIPT_NAME`) pour que `translate_url` fonctionne en prod nginx (§6.9) ; **traductions complètes EN/ES/MG** (197 chaînes appliquées, 48 fuzzy nettoyés via `scripts/apply_translations.py`) couvrant dashboard, tile_strip, lend/return/reservations/advanced, settings, enrichment, suppressions Sprint 9 — §6.9. — **Sprint 9** : FEAT-026 (suppression en masse de notices : checkboxes sur `record_list`, page de confirmation, CASCADE manuel prêts→LOST + résa→CANCELLED, superadmin uniquement — §6.1) ; FEAT-027 (suppression définitive d'exemplaire à côté de Pilonner ; prêts actifs → LOST, résa actives → CANCELLED, CASCADE prêts passés ; cas du vol et de l'erreur de saisie — §6.1) ; FEAT-028 (toggle ACTIVE ↔ SUSPENDED sur fiche membre ; check `MemberStatus.ACTIVE` ajouté dans `loans.services.check_item_loanable` ; réactivation depuis EXPIRED recalcule `expiration_date` — §6.2) ; FEAT-029 (suppression d'un membre superadmin : annule réservations, force-retourne prêts actifs, CASCADE manuel des prêts/résa/consultations, détache dépendants ; pas de migration — §6.2) ; FEAT-030 (suppression d'un user superadmin avec garde-fous : self interdit, dernier SUPERADMIN actif interdit ; auditlog préservé via FK SET_NULL existantes — §9.2) ; FEAT-031 (enrichissement multi-sources async : modules `apps/catalog/sources/{openlibrary,google_books,bnf,bne}` ; modèle `EnrichmentJob` + tâche django-q2 `run_enrichment_job` ; UI Avancé → Enrichissement avec choix mode/sources/scope ; rapport par notice — nouvelle sous-section §6.11) — FEAT-025 (refonte design global Sprint 8 : 23 templates métiers harmonisés sur le design system OFELIA — pagehead inline, tilestrip de navigation contextuelle, `.table-wrap`/`.table` stylées, boutons `.btn` arrondis 44 px, `.card`/`.list-row` partout ; ajout helpers form `.advanced-section`/`.isbn-row`/`.form-control`/`.help-hint`/`.field-error`/`.req`/`.form-actions` à ofelia.css ; `_field.html` migré de `.form-row` vers `.field` — §10.1/§10.2) ; FEAT-024 (scanner caméra navigateur : mode alternatif au handoff OfeliaScan, lib `html5-qrcode` locale, toggle utilisateur device-scoped en localStorage, contrainte HTTPS — §6.10 nouvelle sous-section « Scanner caméra navigateur ») ; FEAT-023 (handoff single-scan OfeliaScan : nouveaux endpoints `/scan-handoff` + `/scan-handoff/{token}` ; modèle `ScanHandoff` ; deep-link `ofeliascan://scan-one` ; boutons « Scanner » des pages prêt/retour/dashboard câblés ; CSRF + polling 700 ms ; TTL 5 min — §6.10 nouvelle sous-section « Handoff single-scan ») ; Refonte UI design OFELIA (§3.2 Frontend, §10.2 Navigation/Écrans : tuiles, tile strip, page head, polices Bricolage Grotesque/DM Sans, ofelia.css, logo OFELIA) ; FEAT-021 (API scan-sessions + inventory-sessions : contrat aligné sur le client OfeliaScan — corps `{"items":[...]}`, champs `scanned_value`/`metadata_*`/`item_state`, idempotency `local_id`, finalize sync = create-or-add-copies, ownership contributor_api — §6.10) ; FEAT-020 (intégration keebee : déploiement sur la Ofelia Box via le wizard keebee, clone + build sur la Pi, routage nginx `/bibliofelia/`, réglage `SECURE_COOKIES`, statique servi par nginx — §4, §11) ; FEAT-018 (terminologie UI : l'EAN13 interne d'un exemplaire est nommé « code Ofelia » dans toute l'interface ; rapport d'inventaire enrichi du code Ofelia et de l'ISBN — §5.2/§6.5/§6.7) ; Sprint 4 : FEAT-011 (dashboard enrichi §6.6 + rapports + paramètres + gestion comptes), FEAT-012 (impression étiquettes + cartes §6.7), FEAT-013 (notifications offline §6.8), FEAT-014 (sauvegardes §8 + planification django-q2), FEAT-015 (wizard premier démarrage §11.3 + données démo §11.4), FEAT-017 (onglet « Avancé » + page Connexion OfeliaScan + « Mon compte » §6.6/§6.10/§10.2), BUG-006 (i18n : `accounts/` déplacé sous `i18n_patterns` + chaînes EN/ES/MG complétées) ; Sprint 3 : FEAT-016 — API OfeliaScan (§6.10 : auth JWT, /pairing/info, /isbn/{isbn}, /health) ; FEAT-019 — publication mDNS via service Avahi sur l'hôte (§6.10) ; SPEC-CORR-002 — /pairing/info renvoie `base_url` (URL absolue) ; Sprint 2 : FEAT-005 à FEAT-010 (§6.1 à §6.5, §10) ; i18n 4 langues (§6.9) ; BUG-002 à BUG-005 ; §6.10 réécrit comme contrat d'API (SPEC-CORR-001)
+Modif précédente : 2026-08-20 — **Sprint 28, 2e vague** : **BUG-027** — provenance absente de la fiche notice, du picker d'impression et de la liste des colonnes d'import Excel (le champ du formulaire d'exemplaire, lui, était bien là : c'est la liste vide qui trompait l'œil). — **FEAT-069** — **affectation en masse directement dans le catalogue** : menus déroulants « Ne pas modifier » + bouton « Affecter » dans la barre d'action (catégorie et emplacement côté notices, provenance côté exemplaires), les 3 pages de confirmation d'affectation disparaissent. — **FEAT-070** — **liste de langues gérée** (`catalog.Language`), partagée par la langue des documents et les langues parlées ; codes internationaux principaux sans variante régionale, menus triés par libellé traduit, écran Avancé → Langues, et normalisation des codes hérités de la BnF (`fre-fre` → `fr`). — **FEAT-071** — **catégories officielles Ofelia** (5 tranches d'âge × 4 types, code = cote) + commande `migrate_categories` qui retire le préfixe de langue des catégories existantes et remappe les anciennes. — **FEAT-072** — **gestion des familles** en remplacement des enfants : adultes comme enfants, année de naissance plutôt qu'âge, et colonne « Famille » sur la carte de membre. Cf. §5.2, §6.1, §6.2, §6.7, §6.12.
 
 ---
 
@@ -255,14 +255,27 @@ Reservation ── FK ──► BibliographicRecord
 - `id` (PK)
 - `code` (string, ex. "ENF-ROM", "DOC-SCI")
 - `name` (traduit via modeltranslation : fr, en, es, mg)
-- `parent` (FK self, nullable, pour hiérarchie simple)
+- `abbreviation` (string 20 car., **non traduite**) — cote imprimée sur la tranche du livre (FEAT-067). Depuis FEAT-071, **le code et la cote sont identiques** dans le seed : `AD FIC`, `EN ALB`…
+- `parent` (FK self, nullable) — plus utilisé par le seed depuis FEAT-071 : une tranche d'âge n'est pas un rayon
 - `default_loan_duration_days` (entier, nullable, override des règles)
 
-Catégories de seed à l'install :
-- Enfance : Albums, Premières lectures, Romans jeunesse
-- Adultes : Romans, Nouvelles, Poésie, Théâtre
-- Documentaires : Sciences, Histoire, Géographie, Pratique, Religions
-- Périodiques
+**Catégories officielles Ofelia (FEAT-071)** — 5 tranches d'âge × 4 types de
+document, soit 20 catégories sans hiérarchie :
+
+| | Fiction | Documentaire | Album | Bande dessinée |
+|---|---|---|---|---|
+| Adultes | `AD FIC` | `AD DOC` | `AD ALB` | `AD BD` |
+| Jeunesse | `JE FIC` | `JE DOC` | `JE ALB` | `JE BD` |
+| Adolescents | `ADO FIC` | `ADO DOC` | `ADO ALB` | `ADO BD` |
+| Enfants | `EN FIC` | `EN DOC` | `EN ALB` | `EN BD` |
+| Petite enfance | `PE FIC` | `PE DOC` | `PE ALB` | `PE BD` |
+
+Reprise des bases existantes : `python manage.py migrate_categories`
+(`--dry-run` disponible) retire le préfixe de langue des catégories
+grand-saconnex (`FR AD FIC` → `AD FIC`, fusion si la cible existe), remappe les
+anciennes catégories du seed (`ADU-ROM` → `AD FIC`, `DOC-*` → `AD DOC`…) puis
+les supprime. Toute catégorie qu'elle ne sait pas reclasser est **laissée
+intacte** et signalée.
 
 > **FEAT-042 (Sprint 13)** — `seed_defaults` fournit les 4 langues (FR/EN/ES/MG) pour les 16 Categories du seed et les 5 MemberCategory (cf. table dans `docs/specs/FEAT-042-default-category-translations.md`). À la création, les 4 colonnes `name_<lang>` sont remplies. Sur les installations existantes, la commande est idempotente : elle backfille uniquement les colonnes vides — toute traduction manuelle saisie via `/admin/` est préservée.
 
@@ -276,6 +289,39 @@ Catégories de seed à l'install :
 - `code` (string court, ex. "A3", "JEU")
 - `description` (texte)
 - `parent` (FK self, nullable, pour ex. "Salle principale > Rayon A > Étagère 3")
+
+#### Language (FEAT-070)
+- `id` (PK)
+- `code` (string court unique : `fr`, `en`, `pt`…)
+- `name` (traduit via modeltranslation : fr, en, es, mg)
+
+Liste **unique** pour la langue d'un document et les langues parlées d'un
+usager : deux listes de langues dans la même application, c'est une de trop.
+**Codes internationaux principaux, sans variante régionale** — `fr` couvre le
+français de France, du Canada et de Suisse ; `pt` le portugais et le brésilien.
+Extensible depuis Avancé → Langues et depuis `/admin/` : figer la liste dans le
+code rendrait certains livres incatalogables.
+
+`BibliographicRecord.language` reste un `CharField` libre : les sources en ligne
+renvoient des codes de toutes sortes, et un code hors liste doit rester
+stockable — il s'affiche alors brut. Les menus sont triés par **libellé traduit**,
+donc l'ordre change avec la langue de l'interface.
+
+#### Provenance (FEAT-064)
+- `id` (PK)
+- `code` (string court unique, ex. "OFELIA", "BM-GE", "DON-DUPONT")
+- `label` (texte, nom lisible affiché dans les listes)
+- `notes` (texte : contact, date de restitution prévue, conditions du dépôt)
+
+D'où vient un exemplaire. Liste gérée plutôt que texte libre : « Bibl. Genève »
+et « Bibliothèque Genève » saisis à la main donneraient deux provenances
+distinctes, et un filtre qui ment le jour d'un rendu de fonds coûte cher.
+`Item.provenance` est en **PROTECT** : une provenance encore portée par des
+exemplaires ne peut pas être supprimée.
+
+Affichage (FEAT-073) : `__str__` renvoie le **nom complet seul** (`label or
+code`). Le code reste la clé de saisie — colonne `PROVENANCE` de l'import Excel
+— et le repli quand aucun nom n'a été renseigné.
 
 #### BibliographicRecord
 - `id` (PK)
@@ -305,8 +351,10 @@ Une notice peut exister sans ISBN (livre ancien, scolaire local, auto-édité).
 - `id` (PK)
 - `internal_id` (string, généré, unique, format `OFL-YYYYMMDD-NNNN`)
 - `ean13` (string, 13 chiffres, généré à partir de internal_id avec checksum, distinct de l'ISBN)
+- `external_code` (string 20 car. alphanumériques, **unique si non vide**) — code Ofelia externe (FEAT-063)
 - `record` (FK BibliographicRecord, CASCADE)
 - `location` (FK Location, nullable)
+- `provenance` (FK Provenance, nullable, PROTECT) — FEAT-064
 - `state` (enum : new, good, worn, damaged)
 - `acquisition_date` (date, default now)
 - `acquisition_source` (enum : purchase, donation, exchange, unknown)
@@ -325,6 +373,24 @@ Format EAN13 :
 **Terminologie UI (FEAT-018)** : ce code EAN13 interne (champ `Item.ean13`) est désigné « **code Ofelia** » dans toute l'interface utilisateur. Le terme technique « EAN13 » n'apparaît plus comme libellé visible ; il reste le nom du champ modèle et de la norme du code-barres. À ne pas confondre avec le « code interne » (`Item.internal_id`, format `OFL-AAAAMMJJ-NNNN`), qui est un identifiant lisible distinct.
 
 **Non-réutilisation des codes Ofelia (FEAT-043)** : un `internal_id` (et l'EAN13 dérivé) imprimé sur une étiquette physique ne doit jamais être réattribué à un nouvel exemplaire. À chaque suppression d'`Item` (unitaire, bulk-delete, CASCADE depuis `BibliographicRecord`, admin), une ligne est insérée dans `RetiredItemCode` (tombstone : `internal_id` PK, `ean13`, `record_title_snapshot`, `retired_at`, `retired_by`, `reason ∈ {item_delete, bulk_delete}`) via un signal `pre_delete`. `Item._assign_codes()` calcule le `MAX(internal_id)` du jour en **union `Item ∪ RetiredItemCode`** ; un code retiré n'est donc jamais réattribué, même si tous les items du jour sont supprimés. Migration `catalog/0007_retired_item_codes`.
+
+**Code Ofelia externe (FEAT-063)** : certains livres arrivent avec un code déjà
+attribué hors de BibliOfelia (autre bibliothèque, donateur, catalogage
+antérieur). `external_code` permet de l'enregistrer et de le **scanner ou le
+saisir indifféremment du code Ofelia**, partout : recherche globale, recherche
+du catalogue, prêt, retour, récolement, API. Saisie tolérante — espaces, tirets
+et points retirés, minuscules passées en majuscules, de sorte que
+`bcf-1329 8781x` et `BCF13298781X` soient le même code. Unicité partielle
+(`item_external_code_unique_not_blank`) : le code désigne un exemplaire et un
+seul, mais reste facultatif.
+
+Ordre de résolution d'un code saisi (`apps/catalog/lookup.py:find_item`) :
+code Ofelia (290…) d'abord, puis code externe. Le code maison garde donc la
+priorité — un code externe qui aurait la forme d'un EAN13 Ofelia ne peut pas
+détourner le scan d'une étiquette de la bibliothèque. Au récolement, le pointage
+est stocké sous le **code Ofelia** de l'exemplaire retrouvé, quelle que soit
+l'étiquette lue : scanner les deux étiquettes du même livre ne compte qu'une
+fois.
 
 #### MemberCategory
 - `id` (PK)
@@ -354,10 +420,42 @@ Seed :
 - `expiration_date` (date, calculée à l'inscription, ajustable)
 - `status` (enum : active, suspended, expired, closed)
 - `notes` (texte)
-- `preferred_language` (string ISO 639-1, default = langue de la box)
+- `preferred_language` (string ISO 639-1, default = langue de la box) — dans quelle langue **écrire** à l'usager
+- `spoken_languages` (JSON, liste de codes) — langues que l'usager **parle** (FEAT-065)
+- `spoken_languages_other` (string 200 car.) — langues hors liste, séparées par des virgules, non vérifiées
 - `replaces_card_number` (string, nullable, pour traçabilité remplacement)
-- `parent_account` (FK self, nullable, pour membres rattachés à un compte collectif)
 - `photo` (FileField, nullable, optionnel)
+
+> **FEAT-066** — `parent_account` (compte collectif parent) a été **supprimé** :
+> les enfants d'un usager inscrit ne sont pas eux-mêmes des usagers, ils
+> n'empruntent pas et n'ont pas de carte. Ils sont désormais décrits par
+> `MemberChild`.
+
+#### MemberFamilyMember (FEAT-072, ex-`MemberChild` FEAT-066)
+- `id` (PK)
+- `member` (FK Member, **CASCADE**)
+- `first_name` (string 80)
+- `gender` (enum : f = Fille, m = Garçon, x = Autre ; facultatif)
+- `is_adult` (booléen)
+- `birth_year` (entier, nullable) — pour un enfant ; l'âge est calculé
+- `languages` (JSON, mêmes codes que `Member.spoken_languages`)
+- `languages_other` (string 200)
+
+Une carte sert souvent à toute une maisonnée : conjoint, grands-parents,
+enfants. D'où **`MemberFamilyMember`** et non plus « enfant ». Ces personnes ne
+sont pas des usagers — pas de carte, pas d'emprunt à leur nom — et supprimer
+l'usager supprime sa famille.
+
+**Année de naissance plutôt qu'âge** : un âge saisi une fois devient faux
+l'année suivante. L'âge affiché (`année courante − birth_year`) est une
+approximation assumée : la bibliothèque a besoin de « environ 7 ans », pas de la
+date d'anniversaire.
+
+**Langues parlées (FEAT-065)** : depuis FEAT-070, elles viennent de la table
+`catalog.Language` — même liste que la langue des documents, extensible. Un code
+inconnu (import, ancienne saisie, langue retirée) est restitué tel quel plutôt
+qu'escamoté. « Persan » et « Farsi » sont deux entrées distinctes parce que la
+liste demandée les distingue.
 
 #### Loan
 - `id` (PK)
@@ -557,6 +655,12 @@ par `scan-cataloging.js` au premier scan `created`/`incremented` suivant (un sca
 - Full-text via FTS5 sur titre, sous-titre, résumé, auteurs
 - Recherche exacte sur ISBN (13 ou 10) si la requête ressemble à un ISBN
 - Recherche exacte sur EAN13 d'exemplaire ou n° de carte membre
+- **Code Ofelia externe (FEAT-063)** : un code externe se saisit ou se scanne
+  exactement comme un code Ofelia, ici comme partout ailleurs. Il n'a aucune
+  forme reconnaissable, `classify_query` le classe donc en « texte » et c'est
+  `find_item()` qui tranche, avant le repli plein texte. Un code d'exemplaire ou
+  une carte qui ne correspond à rien ne retombe **pas** en plein texte : la
+  liste est vide, plutôt que bruitée.
 - **Scan douchette USB (FEAT-054)** : le module `static/js/scan-wedge.js` (chargé
   partout pour les utilisateurs connectés) écoute le clavier au niveau du document
   en **phase de capture** ; il reconnaît la signature d'une douchette (rafale de
@@ -571,6 +675,25 @@ par `scan-cataloging.js` au premier scan `created`/`incremented` suivant (un sca
   (la frappe humaine, lente, n'est jamais captée).
 - Filtres dans la page catalogue (`catalog:record_list`) : catégorie, type de document, langue, **emplacement** (FEAT-051 — sélecteur `Location` ; une notice est retenue si **au moins un** de ses exemplaires est dans l'emplacement choisi : `records.filter(items__location_id=location).distinct()`), **tag** (recherche substring case-insensitive sur le nom — `science` matche « Science Fiction » et « science populaire »), recherche texte/ISBN/EAN13/**ISSN** dans la barre principale (route via `classify_query` : `isbn` → `Q(isbn_13=v) | Q(isbn_10=v)`, `item` → `items__ean13=v`, `issn` (EAN13 977 ou ISSN saisi `1828-552X`, FEAT-052) → `issn=v`, sinon FTS5).
 - Tri : pertinence, titre, auteur, date d'ajout
+- **Filtre provenance (FEAT-064)** : en mode notice, retient les notices ayant
+  **au moins un** exemplaire de cette provenance ; en mode exemplaire, filtre
+  directement les lignes affichées.
+- **Recherche par exemplaire (FEAT-064, FEAT-073)** — deux boutons ferment la
+  barre de filtres : **« Rechercher des notices »** et **« Rechercher des
+  exemplaires »** (`?mode=items`). Ils postent les mêmes filtres, seul le mode de
+  résultat change. Groupés dans `.search-modes` pour rester côte à côte quand la
+  barre passe à la ligne, et colorés en bordeaux (mode courant) / olive. Sans clic, la page
+  affiche les notices, sans filtre. En mode exemplaire : une ligne **par
+  exemplaire** au lieu d'une ligne par notice.
+  3 exemplaires d'une même notice = 3 lignes. La colonne « Ex. » (nombre
+  d'exemplaires), qui n'a plus de sens ligne à ligne, cède la place à **Code
+  Ofelia**, **Code Ofelia externe** et **Provenance**. Les autres filtres et la
+  recherche plein texte continuent de s'appliquer (le FTS reste indexé sur les
+  notices : on filtre ensuite `record_id__in`). Sans la case, le catalogue se
+  comporte exactement comme avant.
+  C'est le seul écran qui montre qu'un même titre a un exemplaire acheté par la
+  bibliothèque **et** un exemplaire prêté par une autre — et donc le chemin
+  prévu pour ne rendre que les seconds.
 - Pagination (25/page) : les liens Précédent/Suivant conservent **tous** les filtres actifs (FEAT-051). La vue expose `base_qs` = querystring courante privée de `page` (`request.GET.copy()` → `pop('page')` → `urlencode()`) ; le template construit `?{{ base_qs }}&page=N`. Avant FEAT-051, seuls `q` et `q_tag` étaient repris (les sélecteurs catégorie/type/langue/emplacement étaient perdus au changement de page).
 
 #### Modification et suppression
@@ -579,10 +702,55 @@ par `scan-cataloging.js` au premier scan `created`/`incremented` suivant (un sca
 - **Supprimer définitivement un exemplaire** (FEAT-027 — `item_delete`) : DELETE hard. Cas d'usage : doublon, EAN13 mal saisi, vol. Aucun blocage : si l'exemplaire est prêté, le prêt actif passe à `LoanStatus.LOST` (`return_date=now`) ; si réservé, la réservation correspondante passe à `CANCELLED` ; les prêts passés sont supprimés en cascade (CASCADE manuel car `Loan.item=PROTECT`). Bouton à côté de "Pilonner" sur la fiche notice. Rôle librarian + superadmin.
 - **Supprimer une notice** (`record_delete`) : interdite si exemplaires actifs (AVAILABLE / ON_LOAN / RESERVED / IN_REPAIR), sinon DELETE en cascade.
 - **Suppression en masse** (FEAT-026 — `record_bulk_delete`) : checkboxes sur `record_list.html` (visibles librarian + superadmin depuis FEAT-041) + barre d'action sticky. Bouton « Supprimer » réservé au superadmin → page de confirmation listant pour chaque notice le nombre d'exemplaires, de prêts actifs et de réservations actives impactés. Aucun blocage : prêts actifs → `LOST`, résa actives → `CANCELLED`, puis suppression en transaction unique (Item.record=CASCADE).
-- **Actions en masse — catégorie / emplacement** (FEAT-041, Sprint 13) : la même barre d'action expose 2 boutons supplémentaires accessibles aux librarians :
+- **Actions en masse — affectation directe (FEAT-069, remplace FEAT-041)** : la
+  barre d'action porte désormais des **menus déroulants** et un bouton
+  **Affecter**, sans page intermédiaire. Chaque menu vaut « Ne pas modifier »
+  par défaut, et propose « — (vider) » pour retirer une affectation.
+  - Fenêtre **« X notices sélectionnées »** : menus **Catégorie** et
+    **Emplacement**. La catégorie s'applique aux notices, l'emplacement à tous
+    leurs exemplaires.
+  - Fenêtre **« X exemplaires sélectionnés »** : menu **Provenance**.
+
+- **Sélection étendue (FEAT-073)** — deux cases distinctes au-dessus de la
+  liste :
+  - **« Sélectionner les N résultats visibles »** — la page courante ;
+  - **« Sélectionner les N résultats de la recherche »** — toutes les pages.
+    N'apparaît qu'à partir de 2 pages.
+
+  Cocher l'une décoche l'autre, et cocher une ligne annule la sélection étendue :
+  ce sont des intentions distinctes. L'ancien « Tout cocher » ne prenait que les
+  25 lignes visibles sans le dire — croire qu'on a tout sélectionné avant une
+  suppression est un piège.
+
+  Quand « tous les résultats » est actif, l'action porte sur **la recherche** :
+  le formulaire transmet les filtres (`back_qs`) et le serveur reconstruit le
+  même queryset (`_selected_pks`). Les pages de confirmation réinjectent les
+  identifiants en clair — ce qui est confirmé est exactement ce qui sera
+  supprimé — mais **plafonnent l'affichage** à 100 lignes, avec un « … et N
+  autres non affichés ici ».
+
+  Chaque information se pilote au niveau où elle appartient (décision Val
+  2026-08-20). Sentinelle `keep` en interne : sans elle, « ne pas modifier » et
+  « vider » seraient indiscernables. Le retour se fait sur le catalogue **avec
+  les filtres actifs** (`back_qs`). Les **suppressions** en masse gardent leur
+  page de confirmation : une suppression mérite qu'on relise la liste.
+
+  <details><summary>Comportement FEAT-041 remplacé (Sprint 13)</summary>
+
+- ~~**Actions en masse — catégorie / emplacement** (FEAT-041, Sprint 13) : la même barre d'action expose 2 boutons supplémentaires accessibles aux librarians :
   - « Affecter une catégorie » → page de confirmation avec sélecteur de `Category` (option vide = retirer la catégorie) → `BibliographicRecord.objects.filter(pk__in=ids).update(category_id=...)`.
   - « Affecter un emplacement » → page de confirmation avec sélecteur de `Location` (option vide = retirer l'emplacement) → `Item.objects.filter(record_id__in=ids).update(location_id=...)` : tous les exemplaires des notices sélectionnées sont déplacés en un seul UPDATE.
-  Les exemplaires DISCARDED/LOST ne sont pas exclus (réorganisation libre).
+  Les exemplaires DISCARDED/LOST ne sont pas exclus (réorganisation libre).~~
+
+  </details>
+- **Suppression en masse d'exemplaires (FEAT-064)** : en mode « Chercher les
+  exemplaires », les cases cochent des `Item` et la barre d'action expose :
+  - « Supprimer les exemplaires sélectionnés » (**superadmin**) → page de
+    confirmation annonçant les prêts en cours et les mises de côté touchés.
+    Même traitement que la suppression unitaire (FEAT-027) : prêts en cours
+    clos en `LOST`, réservations servies annulées, historique de prêts et de
+    consultations effacé, **tombstone** du code Ofelia (FEAT-043,
+    `reason=bulk_delete`). Les notices, elles, restent au catalogue.
 - Historique conservé via django-auditlog
 
 #### Gestion des emplacements (FEAT-032)
@@ -597,6 +765,53 @@ Les emplacements (`catalog.Location` : `code`, `description`, `parent` FK self) 
 - **Comportement OfeliaScan inchangé** : `_resolve_location` (`apps/api/services.py:44`) reste un `filter(code=…).first()` silencieux — si OfeliaScan envoie un `location_code` inconnu, l'exemplaire est créé sans emplacement, pas de 400 ni de log. OfeliaScan est responsable de n'envoyer que des codes valides via le picker (`GET /api/locations`, cf. §6.10).
 
 Pas de migration : modèle `Location` inchangé depuis FEAT-002 (Sprint 1).
+
+#### Gestion des catégories (FEAT-067)
+
+Jusqu'ici les catégories n'existaient que dans le seed et dans `/admin/`, hors
+de portée des bibliothécaires : la cote de rayon n'aurait été saisissable par
+personne sur le terrain.
+
+- **Route** : `/catalog/categories/` (liste), `/new/`, `/<pk>/edit/`, `/<pk>/delete/`.
+- **Accès** : carte « Catégories » dans `templates/core/advanced.html`.
+- **Liste** : code / nom / abréviation / parent / nombre de notices (lien vers le
+  catalogue filtré) / Éditer + Supprimer.
+- **Formulaire** : `CategoryForm` (`code` requis, `name` requis, `abbreviation`,
+  `parent` — jamais soi-même —, `default_loan_duration_days`).
+- **Suppression** : aucune notice n'est supprimée. Les notices concernées perdent
+  leur catégorie (`SET_NULL`, comportement déjà en place) ; l'écran de
+  confirmation annonce combien.
+- **Seed** : les 16 catégories reçoivent une abréviation par défaut
+  (`ENF-ALB` → `ENF ALB`…), posée à la création et backfillée si vide. Une cote
+  ajustée à la main n'est **jamais** écrasée par un redémarrage.
+
+#### Gestion des langues (FEAT-070)
+
+- **Route** : `/catalog/languages/` (liste), `/new/`, `/<pk>/edit/`, `/<pk>/delete/`.
+- **Accès** : carte « Langues » dans `templates/core/advanced.html`, et
+  `LanguageAdmin` dans `/admin/`.
+- **Liste** : nom / code / nombre de notices (lien vers le catalogue filtré),
+  triée par libellé traduit.
+- **Suppression** : aucune notice n'est touchée. Les notices gardent leur code,
+  qui s'affiche brut au lieu du libellé traduit ; l'écran l'annonce.
+- **Seed** : 22 langues, traduites en 4 langues, backfillées si vides.
+- **Reprise** : la migration `catalog/0017` normalise les codes hérités des
+  sources en ligne (`fre-fre` → `fr`) — 94 notices concernées sur la Box, qui
+  n'apparaissaient dans aucun filtre.
+
+#### Gestion des provenances (FEAT-064)
+
+- **Route** : `/catalog/provenances/` (liste), `/new/`, `/<pk>/edit/`, `/<pk>/delete/`.
+- **Accès** : carte « Provenances » dans `templates/core/advanced.html`.
+- **Liste** : code / nom complet / notes / nombre d'exemplaires (lien vers la
+  recherche par exemplaire filtrée sur cette provenance) / Éditer + Supprimer.
+- **Suppression gardée** : refusée tant qu'un exemplaire porte la provenance
+  (`Item.provenance` en PROTECT). L'écran indique combien d'exemplaires sont
+  concernés et propose de les voir. C'est le garde-fou qui évite d'effacer par
+  erreur la seule trace de « à qui appartient ce livre ».
+- **Affectation en masse** : provenance par défaut d'un lot de catalogage
+  (`ScanSession.default_provenance`, appliquée à tous les exemplaires du lot),
+  colonne Excel `PROVENANCE`, ou action de masse depuis le catalogue.
 
 ### 6.2 Gestion des usagers
 
@@ -618,9 +833,50 @@ Pas de migration : modèle `Location` inchangé depuis FEAT-002 (Sprint 1).
 - Statistiques personnelles (nombre de prêts par catégorie)
 
 #### Compte collectif
-- Création d'un Member type "collectif" (école, famille)
-- Possibilité d'attacher des membres "enfants" via `parent_account`
+- Création d'un Member type "collectif" (école, famille) via `MemberCategory`
 - Règles de prêt appliquées au compte collectif
+
+> **FEAT-066** — le rattachement d'usagers entre eux (`parent_account`) a été
+> retiré : il n'a jamais servi. Un compte collectif reste une catégorie
+> d'usager ; les enfants d'un usager sont décrits sur sa fiche (ci-dessous).
+
+#### Langues parlées (FEAT-065)
+
+Champ **« Langues parlées »** sur la fiche usager, à ne pas confondre avec
+`preferred_language`, qui ne dit que dans quelle langue lui écrire. Plusieurs
+langues par personne, cochées dans un encadré alimenté par la **liste gérée des
+langues** (22 au départ, extensible — cf. §6.1 *Gestion des langues*, FEAT-070),
+plus un champ libre **« Autres langues »** (séparées par des virgules, aucune
+vérification). Les cases sont triées par libellé dans la langue de l'interface.
+
+Des cases à cocher plutôt qu'un `<select multiple>` : sur un téléphone ce
+dernier se manipule mal, et il ne faut pas savoir qu'on maintient Ctrl pour
+cocher deux langues. La fiche affiche les langues cochées (traduites) suivies
+du champ libre.
+
+#### Famille rattachée (FEAT-072, ex-« Enfants » FEAT-066)
+
+Section **« Famille »** du formulaire usager : autant de lignes que de personnes
+partageant la carte — conjoint, grands-parents, enfants. Chacune avec
+**prénom**, **sexe** (facultatif), **Adulte ou enfant**, une **année de
+naissance** pour les enfants (l'âge est calculé et affiché), et les mêmes
+**langues** que l'usager (cases + champ libre).
+
+Choisir « Adulte » efface l'année de naissance : garder une donnée qui ne sera
+jamais affichée ne rend service à personne.
+
+- Ajout et retrait de lignes sans quitter le formulaire (JS, sans dépendance).
+- Une ligne dont le prénom est vide est **ignorée** à l'enregistrement : le
+  formulaire propose toujours une ligne libre, la laisser vide ne doit pas
+  produire d'erreur. Le bouton « Retirer » vide la ligne — ce qui, pour une
+  ligne déjà enregistrée, vaut suppression.
+- Supprimer un usager supprime sa famille (CASCADE) : ce ne sont que des
+  données descriptives de sa fiche.
+- **Carte de membre** : les prénoms apparaissent dans une **colonne « Famille »
+  à droite** de la carte (planche A4 et ruban), un par ligne, tronquée par « … »
+  si la place manque. Sur la planche A4, le bloc texte se décale à gauche
+  **uniquement** quand il y a une famille — sinon la colonne tronquait le nom du
+  titulaire ; une carte sans famille garde exactement le rendu du Sprint 27.
 
 #### Remplacement de carte
 - Bouton "Remplacer la carte" sur la fiche
@@ -1065,7 +1321,47 @@ options du pilote Brother, **échelle 100 %** et marges **aucune** dans le
 dialogue du navigateur.
 
 **Routes** : `printing:labels_roll_pdf`, `printing:cards_roll_pdf`,
-`printing:roll_print` (rôle LIBRARIAN/SUPERADMIN).
+`printing:spine_labels_roll_pdf` (rôle LIBRARIAN/SUPERADMIN). La page
+intermédiaire `printing:roll_print` a été retirée en fin de Sprint 27 : les
+boutons ouvrent le PDF directement (`formtarget="_blank"`).
+
+#### Colonne « Famille » sur la carte de membre (FEAT-072)
+
+Les prénoms des personnes rattachées à la carte (§6.2) s'impriment dans une
+colonne à droite, un par ligne, sur la planche A4 comme sur le ruban. La liste
+est tronquée par « … » quand la place manque — mieux vaut une ellipse qu'un
+prénom écrit par-dessus le code-barres. `family_column_lines()` porte cette
+logique, extraite du dessin parce qu'un flux PDF ReportLab ne se relit pas de
+façon fiable en test.
+
+#### Étiquettes de tranche (FEAT-068)
+
+Troisième bouton de l'écran **Impressions → Étiquettes** : « Étiquettes de
+tranche ». Même ruban et même géométrie que les étiquettes de livres — **62 × 35
+mm, une étiquette par page** — mais un seul contenu : l'**abréviation de la
+catégorie** de la notice (FEAT-067), centrée horizontalement et verticalement,
+découpée en lignes sur les espaces. Pour « Romans fiction pour adolescents »
+(cote `RO FI ADO`) :
+
+```
+|--------------------------|
+|          RO FI           |
+|           ADO            |
+|--------------------------|
+```
+
+- `spine_layout(text, inner_w, inner_h)` cherche la plus grande taille de police
+  (96 pt → 10 pt, pas de 0,5) qui tienne en largeur **et** en hauteur utiles.
+  Une cote courte comme `PER` remplit donc l'étiquette — c'est tout l'intérêt
+  d'une cote de rayon, se lire à un mètre sans sortir le livre. Un mot unique
+  trop large est rétréci, jamais coupé.
+- Monochrome, comme les étiquettes de livres.
+- Un exemplaire dont la notice n'a pas de catégorie, ou dont la catégorie n'a
+  pas d'abréviation, n'a rien à imprimer : il est ignoré. Si **aucun**
+  exemplaire sélectionné n'a de cote, l'écran le dit au lieu de sortir un PDF
+  vide.
+- Le bouton suit le réglage `roll_printer_format.enabled`, comme les autres
+  sorties ruban.
 
 ### 6.8 Notifications offline
 
@@ -1086,6 +1382,18 @@ Le système n'envoie ni email ni SMS. Les notifications sont des éléments d'in
 
 ### 6.9 Multilingue (i18n)
 
+
+**Libellés de formulaire (BUG-028)** — un `ModelForm` sans `labels` ni
+`verbose_name` laisse Django **fabriquer** le libellé depuis le nom du champ
+Python (`publication_year` → « Publication year »). Cette chaîne n'existe pas
+dans le code : `makemessages` ne la voit pas, `i18n_check.py` non plus, et la
+page sort en anglais sans que rien ne proteste. Tout champ affiché porte donc un
+`verbose_name=_()` sur le modèle.
+
+`apps/core/tests/test_form_labels.py` verrouille la règle : il parcourt tous les
+`ModelForm` du projet et échoue si un libellé n'est pas un objet de traduction
+*lazy*. C'est le pendant du gate `.po` — celui-ci vérifie que les chaînes sont
+**traduites**, celui-là qu'elles sont bien **extraites**.
 #### Langues v1
 - Français (default)
 - Anglais
@@ -1566,6 +1874,24 @@ des colonnes **optionnelles** d'affectation de la fiche/exemplaire :
 - **`LANGUAGE`** (FEAT-053) → `language` (code, ex. `fr`).
 - **`TAGS`** (FEAT-053) → tags, séparés par `,` (remplacement ; cap 10 tags ×
   40 car., aligné sur l'enrichissement).
+- **`EXTERNAL_CODE`** (FEAT-063) → code Ofelia externe de l'exemplaire. Alias
+  d'en-tête acceptés : `CODE_EXTERNE`, `CODE EXTERNE`, `CODE_OFELIA_EXTERNE`,
+  `OFELIA_EXT`, `EXTERNALCODE`. Normalisé comme à la saisie. Avertissements :
+  `EXTERNAL_CODE_INVALID` (non alphanumérique ou > 20 car.),
+  `EXTERNAL_CODE_DUPLICATE` (code déjà porté par un exemplaire du catalogue, ou
+  répété dans le fichier). Dans les deux cas le code est ignoré et **le reste de
+  la ligne est importé**. Si la ligne crée plusieurs exemplaires, le code va sur
+  le premier — il en désigne un seul.
+- **`PROVENANCE`** (FEAT-064) → provenance de l'exemplaire, résolue par **code
+  ou libellé** (alias d'en-tête `ORIGINE`). Inconnue → `PROVENANCE_UNKNOWN`,
+  l'import continue sans elle.
+- **`CATEGORY_ABBR`** (FEAT-067) → abréviation (cote) de la catégorie résolue par
+  la colonne `CATEGORY`. Depuis FEAT-071, les catégories du seed ont déjà une
+  cote égale à leur code : cette colonne ne sert qu'aux catégories créées à la
+  main. Alias : `ABBREVIATION`, `ABREVIATION`,
+  `CATEGORIE_ABREGEE`, `CATEGORY_ABBREVIATION`, `CAT_ABBR`. Sans catégorie
+  résolue, la cote n'a pas de cible → `CATEGORY_ABBR_ORPHAN` (la ligne s'importe
+  quand même).
 - **`CONDITION`** (FEAT-053) → **état de l'exemplaire** (`Item.state`) : code
   (`new`/`good`/`worn`/`damaged`) ou libellé FR (`Neuf`/`Bon`/`Usé`/`Abîmé`) —
   warning `CONDITION_UNKNOWN` si non reconnu.

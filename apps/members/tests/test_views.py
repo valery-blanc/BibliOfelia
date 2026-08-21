@@ -66,6 +66,15 @@ def test_member_edit_pre_fills_dates_in_iso_format(client, librarian, member):
     assert 'value="2027-01-15"' in body
 
 
+# FEAT-072 : le formulaire usager embarque le formset de la famille — un POST
+# navigateur envoie toujours ces compteurs, les tests aussi.
+CHILDREN_MGMT = {
+    "family-TOTAL_FORMS": "0",
+    "family-INITIAL_FORMS": "0",
+    "family-MIN_NUM_FORMS": "0",
+    "family-MAX_NUM_FORMS": "1000",
+}
+
 def test_member_edit_preserves_dates_on_blank_resubmit(client, librarian, member, category):
     """BUG-015 régression : éditer sans toucher aux dates ne doit pas les effacer."""
     member.birth_date = date(1980, 5, 12)
@@ -82,6 +91,7 @@ def test_member_edit_preserves_dates_on_blank_resubmit(client, librarian, member
             "birth_date": "1980-05-12",
             "registration_date": "2026-01-15",
             "expiration_date": "2027-01-15",
+            **CHILDREN_MGMT,
         },
     )
     assert resp.status_code == 302
@@ -100,6 +110,7 @@ def test_member_create_generates_card(client, librarian, category):
             "last_name": "Lovelace",
             "category": category.pk,
             "registration_date": date.today().isoformat(),
+            **CHILDREN_MGMT,
         },
     )
     assert resp.status_code == 302

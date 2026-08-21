@@ -39,6 +39,7 @@ logger = logging.getLogger(__name__)
 
 
 CARD_BG_RGB = (248 / 255, 238 / 255, 229 / 255)
+FAMILY_LINE_RATIO = 1.45  # interligne de la colonne « Famille » (FEAT-072)
 
 
 # ----------------------------------------------------------------------
@@ -292,6 +293,47 @@ def render_member_cards_pdf(members: Sequence) -> bytes:
     return buf.getvalue()
 
 
+def family_column_lines(names: Sequence[str], available_h: float,
+                        name_pt: float) -> tuple[list[str], bool]:
+    """Prénoms qui tiennent dans la hauteur disponible, et s'il y a eu coupe.
+
+    Extraite du dessin pour être vérifiable directement : le contenu d'un flux
+    PDF ReportLab ne se relit pas de façon fiable.
+    """
+    line_h = name_pt * FAMILY_LINE_RATIO
+    if line_h <= 0 or available_h <= 0:
+        return [], bool(names)
+    room = int(available_h // line_h)
+    if room >= len(names):
+        return list(names), False
+    # Une ligne est réservée à l'ellipse, qui dit qu'il en reste.
+    return list(names[: max(0, room - 1)]), True
+
+
+def _draw_family_column(pdf, left: float, top: float, bottom: float, width: float,
+                        names: Sequence[str], title_pt: float, name_pt: float) -> None:
+    """FEAT-072 : colonne « Famille » à droite de la carte, un prénom par ligne.
+
+    Choix Val (2026-08-20) : une colonne plutôt qu'une ligne sous le nom — une
+    famille nombreuse reste lisible. Quand la place manque, on tronque par « … »
+    plutôt que d'écrire par-dessus le code-barres.
+    """
+    if not names:
+        return
+    pdf.setFont("Helvetica-Bold", title_pt)
+    pdf.drawString(left, top, _fit_to_width(str(_("Famille")), "Helvetica-Bold",
+                                            title_pt, width))
+    line_h = name_pt * FAMILY_LINE_RATIO
+    shown, truncated = family_column_lines(names, top - line_h - bottom, name_pt)
+    y = top - line_h
+    pdf.setFont("Helvetica", name_pt)
+    for name in shown:
+        pdf.drawString(left, y, _fit_to_width(name, "Helvetica", name_pt, width))
+        y -= line_h
+    if truncated:
+        pdf.drawString(left, y, "…")
+
+
 def _draw_member_card(pdf, x, y, w, h, member, library_name: str,
                       logo: ImageReader | None, show_photo: bool) -> None:
     # Fond crème
@@ -337,22 +379,39 @@ def _draw_member_card(pdf, x, y, w, h, member, library_name: str,
             logger.warning("Member %s : photo KO : %s", member.pk, exc)
             photo_w = 0
 
-    # Bloc texte côté droit : nom, catégorie, validité
+    # FEAT-072 : colonne « Famille » à droite ; le bloc texte se rétrécit d'autant.
+    family = list(getattr(member, "family_first_names", []) or [])
+    fam_w = w * 0.22 if family else 0
+    fam_x = x + w - 4 * mm - fam_w
+    _draw_family_column(pdf, fam_x, y + h - 10 * mm, y + 26 * mm, fam_w,
+                        family, title_pt=8, name_pt=7.5)
+
+    # Bloc texte : nom, catégorie, validité. Sans famille, il reste où il était
+    # (rendu validé au Sprint 27) ; avec, il récupère la place laissée libre à
+    # gauche — sinon le nom serait tronqué pour loger les prénoms.
     right_x = x + w * 0.45
+    if family:
+        right_x = x + 5 * mm + (photo_w + 4 * mm if photo_w else 0)
+    text_w = (fam_x - 3 * mm if family else x + w - 5 * mm) - right_x
+    pdf.setFillColor(colors.black)
     pdf.setFont("Helvetica-Bold", 12)
-    pdf.drawString(right_x, y + h - 10 * mm, library_name[:28])
+    pdf.drawString(right_x, y + h - 10 * mm,
+                   _fit_to_width(library_name, "Helvetica-Bold", 12, text_w))
     pdf.setFont("Helvetica", 8)
     pdf.drawString(right_x, y + h - 15 * mm, _("Carte de membre"))
     pdf.setFont("Helvetica-Bold", 13)
     full_name = f"{member.last_name} {member.first_name}".strip()
-    pdf.drawString(right_x, y + h - 24 * mm, _truncate(full_name, 28))
+    pdf.drawString(right_x, y + h - 24 * mm,
+                   _fit_to_width(full_name, "Helvetica-Bold", 13, text_w))
     pdf.setFont("Helvetica", 8)
     if member.category_id:
-        pdf.drawString(right_x, y + h - 29 * mm,
-                       _("Catégorie : %(c)s") % {"c": member.category.name})
+        pdf.drawString(right_x, y + h - 29 * mm, _fit_to_width(
+            str(_("Catégorie : %(c)s") % {"c": member.category.name}),
+            "Helvetica", 8, text_w))
     if member.expiration_date:
-        pdf.drawString(right_x, y + h - 34 * mm,
-                       _("Valide jusqu'au %(d)s") % {"d": member.expiration_date.isoformat()})
+        pdf.drawString(right_x, y + h - 34 * mm, _fit_to_width(
+            str(_("Valide jusqu'au %(d)s") % {"d": member.expiration_date.isoformat()}),
+            "Helvetica", 8, text_w))
 
     # Code-barres bas-droite
     try:
@@ -723,24 +782,37 @@ def _draw_roll_member_card(pdf, w, h, member, library_name: str,
         except Exception as exc:
             logger.warning("Member %s : photo ruban KO : %s", member.pk, exc)
 
+    # FEAT-072 : colonne « Famille » à droite, avant le bloc texte.
+    family = list(getattr(member, "family_first_names", []) or [])
+    fam_w = 21 * mm if family else 0
+    fam_x = w - 3.5 * mm - fam_w
+    _draw_family_column(pdf, fam_x, h - 8 * mm, 21 * mm, fam_w,
+                        family, title_pt=6.5, name_pt=6.5)
+
     # Bloc texte à droite de la photo
     tx = 28 * mm
+    text_w = (fam_x - 2 * mm if family else w - 3.5 * mm) - tx
+    pdf.setFillColor(colors.black)
     pdf.setFont("Helvetica-Bold", 9.5)
-    pdf.drawString(tx, h - 8 * mm, _truncate(library_name, 26))
+    pdf.drawString(tx, h - 8 * mm,
+                   _fit_to_width(library_name, "Helvetica-Bold", 9.5, text_w))
     pdf.setFont("Helvetica", 7)
     pdf.setFillColor(accent)
     pdf.drawString(tx, h - 12 * mm, _("Carte de membre"))
     pdf.setFillColor(colors.black)
     pdf.setFont("Helvetica-Bold", 11)
     full_name = f"{member.last_name} {member.first_name}".strip()
-    pdf.drawString(tx, h - 18.5 * mm, _truncate(full_name, 24))
+    pdf.drawString(tx, h - 18.5 * mm,
+                   _fit_to_width(full_name, "Helvetica-Bold", 11, text_w))
     pdf.setFont("Helvetica", 7)
     if member.category_id:
-        pdf.drawString(tx, h - 23.5 * mm,
-                       _("Catégorie : %(c)s") % {"c": member.category.name})
+        pdf.drawString(tx, h - 23.5 * mm, _fit_to_width(
+            str(_("Catégorie : %(c)s") % {"c": member.category.name}),
+            "Helvetica", 7, text_w))
     if member.expiration_date:
-        pdf.drawString(tx, h - 28 * mm,
-                       _("Valide jusqu'au %(d)s") % {"d": member.expiration_date.isoformat()})
+        pdf.drawString(tx, h - 28 * mm, _fit_to_width(
+            str(_("Valide jusqu'au %(d)s") % {"d": member.expiration_date.isoformat()}),
+            "Helvetica", 7, text_w))
 
     # Code-barres bas-droite — toujours noir
     try:
@@ -756,3 +828,114 @@ def _draw_roll_member_card(pdf, w, h, member, library_name: str,
     if member.preferred_language:
         pdf.setFont("Helvetica-Bold", 8)
         pdf.drawString(4 * mm, 4 * mm, member.preferred_language.upper())
+
+
+# ── FEAT-068 : étiquettes de tranche (cote de catégorie) ───────────────────
+# Même ruban et même géométrie que les étiquettes de livres, mais un seul
+# contenu : l'abréviation de la catégorie, en très gros, pour se lire à un
+# mètre du rayon sans sortir le livre.
+
+SPINE_MIN_PT = 10.0
+# Plafond large à dessein : sur une étiquette de 62 × 35 mm, une cote courte
+# comme « PER » doit remplir la place disponible, c'est tout l'intérêt d'une
+# cote de rayon. C'est la largeur (ou la hauteur) utile qui arrête la
+# recherche, pas ce plafond.
+SPINE_MAX_PT = 96.0
+SPINE_LINE_RATIO = 1.12  # interligne, en multiples de la taille de police
+SPINE_CAP_RATIO = 0.72   # hauteur des capitales, pour le centrage vertical
+
+
+def spine_label_text(item) -> str:
+    """Cote à imprimer pour cet exemplaire (vide s'il n'y en a pas)."""
+    category = getattr(item.record, "category", None)
+    if category is None:
+        return ""
+    return (category.abbreviation or "").strip()
+
+
+def _wrap_words(words: list[str], font: str, size: float, max_width: float) -> list[str]:
+    """Découpe en lignes sans jamais couper un mot ni tronquer.
+
+    Sert à chercher la taille de police : on veut la largeur réelle des lignes,
+    y compris quand un mot seul dépasse (cas traité par l'appelant).
+    """
+    lines: list[str] = []
+    current = ""
+    for word in words:
+        candidate = f"{current} {word}".strip()
+        if not current or _text_width(candidate, font, size) <= max_width:
+            current = candidate
+        else:
+            lines.append(current)
+            current = word
+    if current:
+        lines.append(current)
+    return lines or [""]
+
+
+def render_spine_labels_roll_pdf(items: Sequence) -> bytes:
+    """PDF « ruban » des étiquettes de tranche : une page par exemplaire.
+
+    Les exemplaires dont la notice n'a pas de catégorie — ou dont la catégorie
+    n'a pas d'abréviation — n'ont rien à imprimer et sont ignorés ici ; la vue
+    prévient l'utilisateur avant d'en arriver là.
+    """
+    fmt = _roll_settings()
+    w = fmt["tape_width_mm"] * mm
+    h = fmt["label_length_mm"] * mm
+
+    buf = io.BytesIO()
+    pdf = canvas.Canvas(buf, pagesize=(w, h))
+    drawn = 0
+    for item in items:
+        text = spine_label_text(item)
+        if not text:
+            continue
+        _draw_roll_spine_label(pdf, w, h, text)
+        pdf.showPage()
+        drawn += 1
+    if not drawn:
+        pdf.showPage()
+    pdf.save()
+    return buf.getvalue()
+
+
+def spine_layout(text: str, inner_w: float, inner_h: float) -> tuple[float, list[str]]:
+    """Taille de police et lignes retenues pour une cote, en points.
+
+    On part du plafond et on descend jusqu'à ce que la cote tienne en largeur
+    **et** en hauteur : une cote courte occupe donc toute l'étiquette, une cote
+    longue passe à la ligne et rétrécit. Sous `SPINE_MIN_PT` on arrête : mieux
+    vaut rogner que produire une cote illisible.
+    """
+    words = text.split()
+    size = SPINE_MAX_PT
+    lines = _wrap_words(words, ROLL_FONT, size, inner_w)
+    while size > SPINE_MIN_PT:
+        lines = _wrap_words(words, ROLL_FONT, size, inner_w)
+        widest = max(_text_width(line, ROLL_FONT, size) for line in lines)
+        block_h = (len(lines) - 1) * size * SPINE_LINE_RATIO + size * SPINE_CAP_RATIO
+        if widest <= inner_w and block_h <= inner_h:
+            break
+        size -= 0.5
+    return size, [_fit_to_width(line, ROLL_FONT, size, inner_w) for line in lines]
+
+
+def _draw_roll_spine_label(pdf, w, h, text: str) -> None:
+    """Cote centrée, à la plus grande taille qui tienne sur l'étiquette."""
+    left = ROLL_INSET_MM * mm
+    right = w - ROLL_INSET_MM * mm
+    bottom = ROLL_FEED_INSET_MM * mm
+    top = h - ROLL_FEED_INSET_MM * mm
+
+    size, lines = spine_layout(text, right - left, top - bottom)
+    line_h = size * SPINE_LINE_RATIO
+    cap = size * SPINE_CAP_RATIO
+    block_h = (len(lines) - 1) * line_h + cap
+    baseline = (bottom + top + block_h) / 2 - cap
+
+    pdf.setFillColor(colors.black)
+    pdf.setFont(ROLL_FONT, size)
+    for line in lines:
+        pdf.drawCentredString(w / 2, baseline, line)
+        baseline -= line_h

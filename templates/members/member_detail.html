@@ -88,11 +88,8 @@
         <div><dt>{% trans "Inscrit le" %}</dt><dd>{{ member.registration_date }}</dd></div>
         <div><dt>{% trans "Expire le" %}</dt><dd>{{ member.expiration_date|default:"—" }}</dd></div>
         <div><dt>{% trans "Téléphone" %}</dt><dd>{{ member.contact_phone|default:"—" }}</dd></div>
-        {% if member.parent_account %}
-        <div>
-            <dt>{% trans "Compte parent" %}</dt>
-            <dd><a href="{% url 'members:detail' member.parent_account.pk %}" class="cell-link">{{ member.parent_account.full_name }}</a></dd>
-        </div>
+        {% if member.spoken_languages_display %}
+        <div><dt>{% trans "Langues parlées" %}</dt><dd>{{ member.spoken_languages_display }}</dd></div>
         {% endif %}
         {% if member.replaces_card_number %}
         <div><dt>{% trans "Ancienne carte" %}</dt><dd>{{ member.replaces_card_number }}</dd></div>
@@ -100,22 +97,31 @@
     </dl>
 </div>
 
-{% if dependents %}
-<h2 class="section-title" style="margin-top:28px">{% trans "Membres rattachés" %}</h2>
+{% with family=member.family.all %}
+{% if family %}
+<h2 class="section-title" style="margin-top:28px">{% trans "Famille" %} <small>({{ family|length }})</small></h2>
 <div class="list">
-    {% for dep in dependents %}
-    <a href="{% url 'members:detail' dep.pk %}" class="list-row">
+    {% for child in family %}
+    <div class="list-row">
         <div class="lrow-icon" style="--lr-bg:var(--sky-light);--lr-fg:var(--sky-dark)">
             {% icon "user" size="18px" %}
         </div>
         <div class="lrow-body">
-            <div class="lrow-title">{{ dep.full_name }}</div>
-            <div class="lrow-sub">{% trans "Carte" %} {{ dep.card_number }}</div>
+            <div class="lrow-title">
+                {{ child.first_name }}
+                {% if child.is_adult %}<span class="muted">· {% trans "Adulte" %}</span>
+                {% elif child.age is not None %}<span class="muted">· {% blocktrans with n=child.age %}{{ n }} ans{% endblocktrans %}</span>{% endif %}
+                {% if child.gender %}<span class="muted">· {{ child.get_gender_display }}</span>{% endif %}
+            </div>
+            {% if child.languages_display %}
+            <div class="lrow-sub">{{ child.languages_display }}</div>
+            {% endif %}
         </div>
-    </a>
+    </div>
     {% endfor %}
 </div>
 {% endif %}
+{% endwith %}
 
 <h2 class="section-title" style="margin-top:28px">
     <span>{% trans "Prêts en cours" %} <small>({{ active_count }})</small></span>

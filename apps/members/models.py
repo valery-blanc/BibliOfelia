@@ -25,8 +25,8 @@ class MemberStatus(models.TextChoices):
 
 
 class MemberCategory(models.Model):
-    code = models.CharField(max_length=20, unique=True)
-    name = models.CharField(max_length=80)
+    code = models.CharField(max_length=20, unique=True, verbose_name=_("code"))
+    name = models.CharField(max_length=80, verbose_name=_("nom"))
     max_concurrent_loans = models.PositiveIntegerField(default=3)
     default_loan_duration_days = models.PositiveIntegerField(default=21)
     allowed_document_types = models.JSONField(
@@ -51,32 +51,59 @@ class MemberCategory(models.Model):
 
 
 class Member(models.Model):
-    card_number = models.CharField(max_length=13, unique=True, blank=True)
-    first_name = models.CharField(max_length=80)
-    last_name = models.CharField(max_length=80)
-    birth_date = models.DateField(null=True, blank=True)
+    card_number = models.CharField(
+        max_length=13, unique=True, blank=True, verbose_name=_("n° de carte")
+    )
+    first_name = models.CharField(max_length=80, verbose_name=_("prénom"))
+    last_name = models.CharField(max_length=80, verbose_name=_("nom"))
+    birth_date = models.DateField(
+        null=True, blank=True, verbose_name=_("date de naissance")
+    )
     category = models.ForeignKey(
-        MemberCategory, related_name="members", on_delete=models.PROTECT
+        MemberCategory,
+        related_name="members",
+        on_delete=models.PROTECT,
+        verbose_name=_("catégorie"),
     )
-    contact_phone = models.CharField(max_length=40, blank=True)
-    address = models.TextField(blank=True)
-    registration_date = models.DateField(default=date.today)
-    expiration_date = models.DateField(null=True, blank=True)
+    contact_phone = models.CharField(
+        max_length=40, blank=True, verbose_name=_("téléphone")
+    )
+    address = models.TextField(blank=True, verbose_name=_("adresse"))
+    registration_date = models.DateField(
+        default=date.today, verbose_name=_("date d'inscription")
+    )
+    expiration_date = models.DateField(
+        null=True, blank=True, verbose_name=_("date d'expiration")
+    )
     status = models.CharField(
-        max_length=15, choices=MemberStatus.choices, default=MemberStatus.ACTIVE
+        max_length=15,
+        choices=MemberStatus.choices,
+        default=MemberStatus.ACTIVE,
+        verbose_name=_("statut"),
     )
-    notes = models.TextField(blank=True)
-    preferred_language = models.CharField(max_length=10, blank=True, default="")
-    replaces_card_number = models.CharField(max_length=13, blank=True)
-    parent_account = models.ForeignKey(
-        "self",
-        null=True,
+    notes = models.TextField(blank=True, verbose_name=_("notes"))
+    preferred_language = models.CharField(
+        max_length=10,
         blank=True,
-        related_name="dependents",
-        on_delete=models.SET_NULL,
-        help_text=_("Compte collectif parent (école/famille)."),
+        default="",
+        verbose_name=_("langue de correspondance"),
     )
-    photo = models.FileField(upload_to="member_photos/", blank=True, null=True)
+    # FEAT-065 : langues que l'usager parle — à ne pas confondre avec
+    # `preferred_language`, qui dit seulement dans quelle langue lui écrire.
+    # Codes figés (cf. apps/members/languages.py) ; le champ libre reçoit tout
+    # ce qui n'est pas dans la liste, sans vérification.
+    spoken_languages = models.JSONField(
+        default=list, blank=True, verbose_name=_("langues parlées")
+    )
+    spoken_languages_other = models.CharField(
+        max_length=200, blank=True, verbose_name=_("autres langues")
+    )
+    replaces_card_number = models.CharField(
+        max_length=13, blank=True, verbose_name=_("ancienne carte")
+    )
+    photo = models.FileField(
+        upload_to="member_photos/", blank=True, null=True, verbose_name=_("photo")
+    )
 
     class Meta:
         verbose_name = _("usager")
@@ -110,3 +137,85 @@ class Member(models.Model):
     @property
     def is_active(self) -> bool:
         return self.status == MemberStatus.ACTIVE
+
+    @property
+    def family_first_names(self) -> list[str]:
+        """FEAT-072 : prénoms des personnes rattachées, pour la carte imprimée."""
+        return [
+            person.first_name
+            for person in self.family.all()
+            if person.first_name
+        ]
+
+    @property
+    def spoken_languages_display(self) -> str:
+        """FEAT-065 : langues cochées puis champ libre, en une ligne."""
+        from .languages import display
+
+        return display(self.spoken_languages, self.spoken_languages_other)
+
+
+class FamilyGender(models.TextChoices):
+    GIRL = "f", _("Fille")
+    BOY = "m", _("Garçon")
+    OTHER = "x", _("Autre")
+
+
+class MemberFamilyMember(models.Model):
+    """FEAT-072 : personne rattachée à la carte d'un usager.
+
+    Remplace `MemberChild` (FEAT-066), qui ne savait décrire que des enfants :
+    en pratique une carte sert à toute une maisonnée — conjoint, grands-parents,
+    enfants.
+
+    On note une **année de naissance** pour les enfants plutôt qu'un âge : un âge
+    saisi une fois devient faux l'année suivante, une année de naissance reste
+    vraie. Pour un adulte, l'année n'apporte rien et n'est pas demandée.
+
+    Ces personnes ne sont pas des usagers : pas de carte, pas d'emprunt à leur
+    nom. D'où le CASCADE — leur fiche n'existe que rattachée au titulaire.
+    """
+
+    member = models.ForeignKey(
+        Member, related_name="family", on_delete=models.CASCADE
+    )
+    first_name = models.CharField(max_length=80, verbose_name=_("prénom"))
+    gender = models.CharField(
+        max_length=1, choices=FamilyGender.choices, blank=True, verbose_name=_("sexe")
+    )
+    is_adult = models.BooleanField(default=False, verbose_name=_("adulte"))
+    birth_year = models.PositiveSmallIntegerField(
+        null=True, blank=True, verbose_name=_("année de naissance")
+    )
+    # Mêmes codes que Member.spoken_languages (cf. catalog.Language, FEAT-070).
+    languages = models.JSONField(
+        default=list, blank=True, verbose_name=_("langues parlées")
+    )
+    languages_other = models.CharField(
+        max_length=200, blank=True, verbose_name=_("autres langues")
+    )
+
+    class Meta:
+        verbose_name = _("membre de la famille")
+        verbose_name_plural = _("membres de la famille")
+        ordering = ["first_name"]
+
+    def __str__(self) -> str:
+        return self.first_name
+
+    @property
+    def age(self) -> int | None:
+        """Âge approché en années, ou None pour un adulte ou une année absente.
+
+        Approximation assumée : la bibliothèque a besoin de savoir « environ
+        7 ans », pas de la date d'anniversaire.
+        """
+        if self.is_adult or not self.birth_year:
+            return None
+        return date.today().year - self.birth_year
+
+    @property
+    def languages_display(self) -> str:
+        from .languages import display
+
+        return display(self.languages, self.languages_other)

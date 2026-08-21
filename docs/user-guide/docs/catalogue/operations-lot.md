@@ -6,6 +6,25 @@ de masse") depuis la liste du catalogue.
 
 ## Sélectionner plusieurs notices
 
+Deux cases, au-dessus de la liste, cochent tout d'un coup :
+
+- **Sélectionner les N résultats visibles** — les lignes de la page affichée.
+- **Sélectionner les N résultats de la recherche** — **toutes les pages**. Cette
+  case n'apparaît que s'il y a plus d'une page.
+
+Le nombre annoncé est le nombre réel : vous savez donc toujours combien de
+livres vous vous apprêtez à modifier ou à supprimer.
+
+!!! warning "Ne confondez pas les deux"
+    Cocher « résultats visibles » ne prend que la page courante — 25 lignes.
+    Sur un fonds de plusieurs centaines de livres, c'est la deuxième case qu'il
+    vous faut. Cocher l'une décoche l'autre, et cocher une ligne à la main
+    annule la sélection étendue.
+
+Avant une suppression, la page de confirmation rappelle le total. Au-delà de
+100 lignes, elle n'en affiche que les 100 premières et indique combien
+d'autres suivront — mais **toutes** seront bien supprimées.
+
 Depuis la page [**Catalogue**](/bibliofelia/fr/catalog/){ target="_blank" },
 chaque ligne de notice a une case à cocher à gauche. Cochez les notices que vous voulez traiter.
 
@@ -14,17 +33,30 @@ sélectionnées") et les opérations disponibles.
 
 ## Opérations disponibles
 
-### Changer la catégorie en lot
+### Affecter en masse depuis le catalogue
 
-Pour reclasser plusieurs livres dans une nouvelle catégorie (par
-exemple, déplacer des livres "Jeunesse" vers "Adolescent"), cochez-les
-et choisissez **Changer la catégorie**.
+Dès que vous cochez une ligne, une barre apparaît en haut de la liste avec des
+menus déroulants et un bouton **Affecter**.
 
-### Changer la localisation en lot
+**En mode notices** (l'affichage par défaut), deux menus :
 
-Si vous déplacez tout un rayon vers un autre emplacement, sélectionnez
-les notices concernées et utilisez **Changer la localisation**. Cette
-opération s'applique à tous les exemplaires des notices choisies.
+- **Catégorie** — appliquée aux notices cochées
+- **Emplacement** — appliqué à **tous les exemplaires** de ces notices
+
+**En mode exemplaires** (case « Chercher les exemplaires » cochée), un menu :
+
+- **Provenance** — appliquée aux exemplaires cochés
+
+Chaque information se règle là où elle vit : la catégorie appartient au livre,
+la provenance à l'exemplaire.
+
+!!! tip "« Ne pas modifier » est la valeur de départ"
+    Un menu laissé sur **Ne pas modifier** ne touche à rien. Vous pouvez donc
+    changer la catégorie sans risquer de vider l'emplacement au passage.
+    Pour retirer une affectation, choisissez **— (vider)**.
+
+Après l'affectation, vous revenez sur le catalogue **avec vos filtres
+toujours actifs** : pratique pour enchaîner plusieurs lots.
 
 ### Supprimer les notices sélectionnées
 

@@ -1,0 +1,45 @@
+{% extends "base.html" %}
+{% load i18n biblio_icons widget_tweaks %}
+
+{% block title %}{{ form_title }}{% endblock %}
+
+{% block tile_strip %}{% include "partials/_tile_strip.html" with active="advanced" %}{% endblock %}
+
+{% block content %}
+<nav class="breadcrumb">
+    <a href="{% url 'core:advanced' %}">{% trans "Avancé" %}</a> /
+    <a href="{% url 'catalog:category_list' %}">{% trans "Catégories" %}</a> /
+    <strong>{% if category %}{{ category.code }}{% else %}{% trans "Nouvelle" %}{% endif %}</strong>
+</nav>
+
+<header class="pagehead">
+    <div class="pagehead-icon" style="--ph-bg:var(--olive-light);--ph-fg:#6B5A0E">
+        {% icon "bookmark" size="28px" %}
+    </div>
+    <div class="pagehead-text">
+        <h1 class="pagehead-title">{{ form_title }}</h1>
+        {% if category %}<div class="pagehead-sub">{{ category.code }}</div>{% endif %}
+    </div>
+</header>
+
+<form method="post" action="{{ form_action }}" class="card">
+    {% csrf_token %}
+    {% if form.non_field_errors %}<div class="msg msg-error">{{ form.non_field_errors }}</div>{% endif %}
+    {% for field in form %}
+        <div class="field">
+            <label for="{{ field.id_for_label }}">
+                {{ field.label }}{% if field.field.required %} <span class="req" aria-hidden="true">*</span>{% endif %}
+            </label>
+            {{ field|add_class:"form-control" }}
+            {% if field.help_text %}<small class="help-hint">{{ field.help_text }}</small>{% endif %}
+            {% for error in field.errors %}<small class="field-error">{{ error }}</small>{% endfor %}
+        </div>
+    {% endfor %}
+    <div class="form-actions">
+        <button type="submit" class="btn btn--primary">
+            {% icon "check" size="16px" %} {% trans "Enregistrer" %}
+        </button>
+        <a href="{% url 'catalog:category_list' %}" class="btn btn--ghost">{% trans "Annuler" %}</a>
+    </div>
+</form>
+{% endblock %}

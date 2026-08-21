@@ -8,6 +8,7 @@ from .models import (
     Category,
     ExcelCatalogJob,
     Item,
+    Language,
     Location,
     Tag,
 )
@@ -62,3 +63,12 @@ class ItemAdmin(admin.ModelAdmin):
     search_fields = ("internal_id", "ean13", "record__title")
     autocomplete_fields = ("record", "location")
     readonly_fields = ("internal_id", "ean13", "created_at", "updated_at")
+
+
+@admin.register(Language)
+class LanguageAdmin(TranslationAdmin):
+    """FEAT-070 : la liste des langues se complète aussi ici."""
+
+    list_display = ("code", "name")
+    search_fields = ("code", "name")
+    ordering = ("code",)

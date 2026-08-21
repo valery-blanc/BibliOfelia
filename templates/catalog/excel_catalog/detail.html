@@ -130,6 +130,14 @@ fichier « perd » des livres sans que rien ne l'indique (105 lignes → 104 not
                         <div class="help-hint" style="margin-top:4px">
                             {% trans "ISBN invalide (ni 10 ni 13 chiffres) : ligne non importée." %}
                         </div>
+                        {% elif "EXTERNAL_CODE_DUPLICATE" in entry.warning %}
+                        <div class="help-hint" style="margin-top:4px">
+                            {% trans "Code externe déjà porté par un autre exemplaire : code ignoré, le reste de la ligne est importé." %}
+                        </div>
+                        {% elif "EXTERNAL_CODE_INVALID" in entry.warning %}
+                        <div class="help-hint" style="margin-top:4px">
+                            {% trans "Code externe refusé : il doit être alphanumérique et faire 20 caractères au plus. Le reste de la ligne est importé." %}
+                        </div>
                         {% endif %}
                         {% if entry.label %}<div class="help-hint">{{ entry.label }}</div>{% endif %}
                     {% endif %}

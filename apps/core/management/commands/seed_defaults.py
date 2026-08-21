@@ -13,25 +13,73 @@ from django.db import transaction
 from apps.core.models import Setting
 
 
-# FEAT-042 : (code, parent_code, default_loan_duration_days,
-#            name_fr, name_en, name_es, name_mg)
+# FEAT-071 : catégories officielles Ofelia — 5 tranches d'âge × 4 types de
+# document. Le **code est la cote** imprimée sur l'étiquette de tranche : c'est
+# déjà la convention des bibliothèques Ofelia, et une cote différente du code
+# n'aurait ici aucune justification.
+#
+# Construites par produit des deux tables ci-dessous plutôt qu'écrites à la
+# main : 20 lignes × 5 colonnes recopiées, c'est une coquille assurée — et la
+# structure « tranche d'âge × type » se lit d'un coup d'œil.
+_AGE_GROUPS = [
+    ("AD",  "Adultes",        "Adults",          "Adultos",          "Olon-dehibe"),
+    ("JE",  "Jeunesse",       "Youth",           "Juvenil",          "Tanora"),
+    ("ADO", "Adolescents",    "Teens",           "Adolescentes",     "Zatovo"),
+    ("EN",  "Enfants",        "Children",        "Infantil",         "Ankizy"),
+    ("PE",  "Petite enfance", "Early childhood", "Primera infancia", "Zaza madinika"),
+]
+_DOC_KINDS = [
+    ("FIC", "Fiction",        "Fiction",       "Ficción",    "Tantara foronina"),
+    ("DOC", "Documentaire",   "Non-fiction",   "Documental", "Fampianarana"),
+    ("ALB", "Album",          "Picture books",  "Álbum",     "Boky misy sary"),
+    ("BD",  "Bande dessinée", "Comics",        "Cómic",      "Tantara an-tsary"),
+]
+
+# (code, parent_code, default_loan_duration_days, name_fr, name_en, name_es,
+#  name_mg, abbreviation) — cf. FEAT-042 pour les traductions, FEAT-067 pour la
+# cote. Plus de hiérarchie parent : une tranche d'âge n'est pas un rayon.
 CATEGORIES = [
-    ("ENF",     None,  None, "Enfance",              "Childhood",          "Infancia",                  "Fahazazana"),
-    ("ENF-ALB", "ENF", None, "Albums",               "Picture books",      "Álbumes ilustrados",        "Boky misy sary"),
-    ("ENF-LEC", "ENF", None, "Premières lectures",   "Early reading",      "Primeras lecturas",         "Famakiana voalohany"),
-    ("ENF-ROM", "ENF", None, "Romans jeunesse",      "Children's novels",  "Novelas juveniles",         "Tantara ho an'ny ankizy"),
-    ("ADU",     None,  None, "Adultes",              "Adults",             "Adultos",                   "Olon-dehibe"),
-    ("ADU-ROM", "ADU", None, "Romans",               "Novels",             "Novelas",                   "Tantara foronina"),
-    ("ADU-NOU", "ADU", None, "Nouvelles",            "Short stories",      "Cuentos",                   "Tantara fohy"),
-    ("ADU-POE", "ADU", None, "Poésie",               "Poetry",             "Poesía",                    "Tononkalo"),
-    ("ADU-THE", "ADU", None, "Théâtre",              "Theatre",            "Teatro",                    "Tantara an-tsehatra"),
-    ("DOC",     None,  None, "Documentaires",        "Non-fiction",        "Documentales",              "Boky fampianarana"),
-    ("DOC-SCI", "DOC", None, "Sciences",             "Sciences",           "Ciencias",                  "Siansa"),
-    ("DOC-HIS", "DOC", None, "Histoire",             "History",            "Historia",                  "Tantara"),
-    ("DOC-GEO", "DOC", None, "Géographie",           "Geography",          "Geografía",                 "Jeografia"),
-    ("DOC-PRA", "DOC", None, "Pratique",             "Practical",          "Práctico",                  "Fampiharana"),
-    ("DOC-REL", "DOC", None, "Religions",            "Religions",          "Religiones",                "Fivavahana"),
-    ("PER",     None,  7,    "Périodiques",          "Periodicals",        "Publicaciones periódicas",  "Gazety sy gazety boky"),
+    (
+        f"{age_code} {kind_code}",
+        None,
+        None,
+        f"{age_fr} {kind_fr}",
+        f"{age_en} {kind_en}",
+        f"{age_es} {kind_es}",
+        f"{age_mg} {kind_mg}",
+        f"{age_code} {kind_code}",
+    )
+    for age_code, age_fr, age_en, age_es, age_mg in _AGE_GROUPS
+    for kind_code, kind_fr, kind_en, kind_es, kind_mg in _DOC_KINDS
+]
+
+# FEAT-070 : (code, name_fr, name_en, name_es, name_mg). Codes internationaux
+# principaux, sans variante régionale : `fr` couvre le français de France, du
+# Canada et de Suisse ; `pt` le portugais et le brésilien. La liste est
+# extensible depuis l'écran Avancé → Langues.
+LANGUAGES_SEED = [
+    ("fr",       "Français",     "French",          "Francés",     "Frantsay"),
+    ("en",       "Anglais",      "English",         "Inglés",      "Anglisy"),
+    ("pt",       "Portugais",    "Portuguese",      "Portugués",   "Portogey"),
+    ("es",       "Espagnol",     "Spanish",         "Español",     "Espaniola"),
+    ("it",       "Italien",      "Italian",         "Italiano",    "Italiana"),
+    ("de",       "Allemand",     "German",          "Alemán",      "Alemana"),
+    ("ar",       "Arabe",        "Arabic",          "Árabe",       "Arabo"),
+    ("sq",       "Albanais",     "Albanian",        "Albanés",     "Albaney"),
+    ("tr",       "Turc",         "Turkish",         "Turco",       "Tiorka"),
+    ("ru",       "Russe",        "Russian",         "Ruso",        "Rosiana"),
+    ("sh",       "Serbo-croate", "Serbo-Croatian",  "Serbocroata", "Serbo-kroaty"),
+    ("ta",       "Tamoul",       "Tamil",           "Tamil",       "Tamoly"),
+    ("zh",       "Chinois",      "Chinese",         "Chino",       "Sinoa"),
+    ("pl",       "Polonais",     "Polish",          "Polaco",      "Poloney"),
+    ("fa",       "Persan",       "Persian",         "Persa",       "Persana"),
+    ("fa-farsi", "Farsi",        "Farsi",           "Farsi",       "Farsy"),
+    ("el",       "Grec",         "Greek",           "Griego",      "Grika"),
+    ("so",       "Somali",       "Somali",          "Somalí",      "Somaly"),
+    ("ro",       "Roumain",      "Romanian",        "Rumano",      "Romaniana"),
+    ("uk",       "Ukrainien",    "Ukrainian",       "Ucraniano",   "Okrainiana"),
+    ("ja",       "Japonais",     "Japanese",        "Japonés",     "Japoney"),
+    ("mg",       "Malgache",     "Malagasy",        "Malgache",    "Malagasy"),
 ]
 
 # FEAT-042 : (code, max_loans, default_loan_duration_days, card_validity_months,
@@ -116,7 +164,7 @@ class Command(BaseCommand):
         cat_created = 0
         cat_backfilled = 0
         cat_by_code: dict[str, Category] = {}
-        for code, parent_code, dur, name_fr, name_en, name_es, name_mg in CATEGORIES:
+        for code, parent_code, dur, name_fr, name_en, name_es, name_mg, abbr in CATEGORIES:
             parent = cat_by_code.get(parent_code) if parent_code else None
             obj, created = Category.objects.get_or_create(
                 code=code,
@@ -126,6 +174,7 @@ class Command(BaseCommand):
                     "name_en": name_en,
                     "name_es": name_es,
                     "name_mg": name_mg,
+                    "abbreviation": abbr,
                     "parent": parent,
                     "default_loan_duration_days": dur,
                 },
@@ -134,9 +183,37 @@ class Command(BaseCommand):
             if created:
                 cat_created += 1
             else:
-                if _backfill_translations(obj, name_fr, name_en, name_es, name_mg):
+                changed = _backfill_translations(obj, name_fr, name_en, name_es, name_mg)
+                # FEAT-067 : ne remplit que si vide — une cote ajustée à la main
+                # ne doit pas être écrasée au redémarrage.
+                if not obj.abbreviation and abbr:
+                    obj.abbreviation = abbr
+                    changed = True
+                if changed:
                     obj.save()
                     cat_backfilled += 1
+
+        # FEAT-070 : langues (documents + langues parlées des usagers).
+        from apps.catalog.models import Language
+
+        lang_created = 0
+        lang_backfilled = 0
+        for code, name_fr, name_en, name_es, name_mg in LANGUAGES_SEED:
+            obj, created = Language.objects.get_or_create(
+                code=code,
+                defaults={
+                    "name": name_fr,
+                    "name_fr": name_fr,
+                    "name_en": name_en,
+                    "name_es": name_es,
+                    "name_mg": name_mg,
+                },
+            )
+            if created:
+                lang_created += 1
+            elif _backfill_translations(obj, name_fr, name_en, name_es, name_mg):
+                obj.save()
+                lang_backfilled += 1
 
         mcat_created = 0
         mcat_backfilled = 0
@@ -165,6 +242,7 @@ class Command(BaseCommand):
             self.style.SUCCESS(
                 f"seed_defaults : {settings_created} Setting, "
                 f"{cat_created} Category créées (+{cat_backfilled} backfill traductions), "
-                f"{mcat_created} MemberCategory créées (+{mcat_backfilled} backfill traductions)."
+                f"{mcat_created} MemberCategory créées (+{mcat_backfilled} backfill traductions), "
+                f"{lang_created} Language créées (+{lang_backfilled} backfill traductions)."
             )
         )

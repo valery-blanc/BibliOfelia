@@ -1,0 +1,84 @@
+{% extends "base.html" %}
+{% load i18n biblio_icons %}
+
+{% block title %}{% trans "Catégories" %}{% endblock %}
+
+{% block tile_strip %}{% include "partials/_tile_strip.html" with active="advanced" %}{% endblock %}
+
+{% block content %}
+<nav class="breadcrumb">
+    <a href="{% url 'core:advanced' %}">{% trans "Avancé" %}</a> /
+    <strong>{% trans "Catégories" %}</strong>
+</nav>
+
+<header class="pagehead">
+    <div class="pagehead-icon" style="--ph-bg:var(--olive-light);--ph-fg:#6B5A0E">
+        {% icon "bookmark" size="28px" %}
+    </div>
+    <div class="pagehead-text">
+        <h1 class="pagehead-title">{% trans "Catégories" %}</h1>
+        <div class="pagehead-sub">{% trans "Classement des notices et cote imprimée sur la tranche des livres" %}</div>
+    </div>
+    <div class="pagehead-action">
+        <a href="{% url 'catalog:category_create' %}" class="btn btn--primary">
+            {% icon "plus" size="16px" %}
+            <span class="hide-sm">{% trans "Nouvelle catégorie" %}</span>
+        </a>
+    </div>
+</header>
+
+<div class="table-wrap">
+    <table class="table">
+        <thead>
+            <tr>
+                <th>{% trans "Code" %}</th>
+                <th>{% trans "Nom" %}</th>
+                <th>{% trans "Abréviation" %}</th>
+                <th>{% trans "Parent" %}</th>
+                <th style="text-align:right">{% trans "Notices" %}</th>
+                <th></th>
+            </tr>
+        </thead>
+        <tbody>
+        {% for cat in categories %}
+            <tr>
+                <td><span class="cell-title">{{ cat.code }}</span></td>
+                <td>{{ cat.name }}</td>
+                <td>
+                    {% if cat.abbreviation %}<span class="code-pill">{{ cat.abbreviation }}</span>
+                    {% else %}<span class="muted">—</span>{% endif %}
+                </td>
+                <td>{% if cat.parent %}{{ cat.parent.code }}{% else %}<span class="muted">—</span>{% endif %}</td>
+                <td style="text-align:right">
+                    {% if cat.records_count %}
+                    <a href="{% url 'catalog:record_list' %}?category={{ cat.pk }}" class="cell-link">{{ cat.records_count }}</a>
+                    {% else %}0{% endif %}
+                </td>
+                <td style="text-align:right">
+                    <div style="display:inline-flex;gap:6px">
+                        <a href="{% url 'catalog:category_edit' pk=cat.pk %}" class="btn btn--ghost btn--sm">
+                            {% icon "pencil" size="14px" %} <span class="hide-sm">{% trans "Éditer" %}</span>
+                        </a>
+                        <a href="{% url 'catalog:category_delete' pk=cat.pk %}" class="btn btn--ghost btn--sm" style="color:#B83232">
+                            {% icon "trash-2" size="14px" %} <span class="hide-sm">{% trans "Supprimer" %}</span>
+                        </a>
+                    </div>
+                </td>
+            </tr>
+        {% empty %}
+            <tr><td colspan="6" class="muted" style="text-align:center;padding:24px">{% trans "Aucune catégorie définie." %}</td></tr>
+        {% endfor %}
+        </tbody>
+    </table>
+</div>
+
+<div class="card" style="margin-top:18px">
+    <h3>{% trans "L'abréviation" %}</h3>
+    <p class="muted">
+        {% trans "C'est la cote qui part sur l'étiquette de tranche, pour ranger le livre au bon rayon sans le sortir de l'étagère. Exemple : « RO FI ADO » pour « Romans fiction pour adolescents »." %}
+    </p>
+    <p class="muted">
+        {% trans "Elle vaut pour toutes les notices de la catégorie. Les étiquettes s'impriment depuis Impressions → Étiquettes." %}
+    </p>
+</div>
+{% endblock %}

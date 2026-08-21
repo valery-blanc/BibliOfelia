@@ -63,6 +63,9 @@ plugins:
             Ajouter un livre: Add a book
             Gérer les exemplaires: Manage copies
             Localisations: Locations
+            Catégories: Categories
+            Provenances: Sources
+            Langues: Languages
             Recherche: Search
             Opérations en lot: Bulk operations
             Récolement: Inventory check
@@ -105,6 +108,9 @@ plugins:
             Ajouter un livre: Añadir un libro
             Gérer les exemplaires: Gestionar los ejemplares
             Localisations: Ubicaciones
+            Catégories: Categorías
+            Provenances: Procedencias
+            Langues: Idiomas
             Recherche: Búsqueda
             Opérations en lot: Operaciones en lote
             Récolement: Inventario
@@ -147,6 +153,9 @@ plugins:
             Ajouter un livre: Manampy boky
             Gérer les exemplaires: Fitantanana kopia
             Localisations: Toerana
+            Catégories: Sokajy
+            Provenances: Fiaviana
+            Langues: Fiteny
             Recherche: Fikarohana
             Opérations en lot: Asa marobe
             Récolement: Récolement
@@ -197,6 +206,9 @@ nav:
       - Ajouter un livre: catalogue/ajouter-livre.md
       - Gérer les exemplaires: catalogue/exemplaires.md
       - Localisations: catalogue/localisations.md
+      - Catégories: catalogue/categories.md
+      - Provenances: catalogue/provenances.md
+      - Langues: catalogue/langues.md
       - Recherche: catalogue/recherche.md
       - Opérations en lot: catalogue/operations-lot.md
       - Récolement: inventaire/recolement.md

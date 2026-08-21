@@ -8,7 +8,7 @@ from django.contrib import messages
 from django.core.paginator import Paginator
 from django.db import transaction
 from django.db.models import Count, Q
-from django.http import JsonResponse
+from django.http import JsonResponse, QueryDict
 from django.shortcuts import get_object_or_404, redirect, render
 from django.urls import reverse
 from django.utils import timezone, translation
@@ -23,11 +23,16 @@ from apps.loans.models import LoanStatus, ReservationStatus
 
 from .forms import (
     BibliographicRecordForm,
+    CategoryForm,
+    LanguageForm,
     ItemBulkCreateForm,
     ItemForm,
     LocationForm,
+    ProvenanceForm,
     ScanCatalogSessionForm,
 )
+from .languages import language_choices
+from .lookup import find_item
 from .models import (
     BibliographicRecord,
     Category,
@@ -37,7 +42,9 @@ from .models import (
     Item,
     ItemState,
     ItemStatus,
+    Language,
     Location,
+    Provenance,
     RetiredItemCode,
     ScanInputMode,
     ScanItem,
@@ -50,6 +57,11 @@ from .openlibrary import lookup_isbn, lookup_isbn_multi, lookup_issn_multi, norm
 READ_ROLES = (Role.LIBRARIAN, Role.SUPERADMIN, Role.READONLY)
 WRITE_ROLES = (Role.LIBRARIAN, Role.SUPERADMIN)
 
+# FEAT-073 : « sélectionner tous les résultats » peut viser des centaines de
+# lignes. On plafonne ce que la page de confirmation **affiche** ; la sélection,
+# elle, reste entière.
+PREVIEW_LIMIT = 100
+
 _ACTIVE_ITEM_STATUSES = (
     ItemStatus.AVAILABLE,
     ItemStatus.ON_LOAN,
@@ -58,81 +70,160 @@ _ACTIVE_ITEM_STATUSES = (
 )
 
 
-@require_role(*READ_ROLES)
-def record_list(request):
-    """Liste + recherche filtrée des notices. SPEC §6.1 (Recherche).
+# ─── FEAT-073 : filtres du catalogue, réutilisables hors de l'affichage ────
+# Extraits de `record_list` pour que les actions de masse puissent reconstruire
+# exactement la même recherche quand l'utilisateur coche « tous les résultats » :
+# sans ça, « sélectionner tout » ne pourrait porter que sur la page visible.
 
-    `q` peut être :
-    - un EAN13 d'exemplaire (290…) → filtre via `items__ean13`
-    - un ISBN 10/13 → filtre direct sur `isbn_13`/`isbn_10`
-    - un ISSN (préfixe EAN13 977 ou saisi « 1828-552X ») → filtre sur `issn` (FEAT-052)
-    - du texte libre → FTS5 sur titre/sous-titre/auteurs/résumé
+
+def filtered_records(params):
+    """Notices correspondant aux filtres. Retourne `(queryset, relevance)`.
+
+    `relevance` est l'ordre FTS (ou None) : l'affichage en a besoin, les actions
+    de masse l'ignorent.
     """
-    q = (request.GET.get("q") or "").strip()
     records = BibliographicRecord.objects.select_related("category").prefetch_related(
         "authors"
     )
     relevance = None
+
+    q = (params.get("q") or "").strip()
     if q:
         kind, value = classify_query(q)
-        if kind == "isbn":
+        # FEAT-063 : le code externe n'a pas de forme reconnaissable (il est
+        # classé « text »), on tente donc la résolution d'exemplaire d'abord.
+        item = find_item(q)
+        if item is not None:
+            records = records.filter(pk=item.record_id)
+        elif kind == "isbn":
             records = records.filter(Q(isbn_13=value) | Q(isbn_10=value))
         elif kind == "issn":
             records = records.filter(issn=value)
-        elif kind == "item":
-            records = records.filter(items__ean13=value).distinct()
-        elif kind == "member":
-            # Pas de sens dans le catalogue : on traite comme texte vide
+        elif kind in ("item", "member"):
+            # Code d'exemplaire ou carte d'usager qui ne correspond à rien :
+            # pas de repli plein texte, ce serait du bruit.
             records = records.none()
         else:
             ids = fts_search(value)
             records = records.filter(pk__in=ids)
             relevance = {pk: i for i, pk in enumerate(ids)}
 
-    category = request.GET.get("category") or ""
-    if category:
-        records = records.filter(category_id=category)
-    language = request.GET.get("language") or ""
-    if language:
-        records = records.filter(language=language)
-    doc_type = request.GET.get("document_type") or ""
-    if doc_type:
-        records = records.filter(document_type=doc_type)
-    location = request.GET.get("location") or ""
-    if location:
-        # Notices ayant au moins un exemplaire dans cet emplacement.
-        records = records.filter(items__location_id=location).distinct()
-    q_tag = (request.GET.get("q_tag") or "").strip()
+    if params.get("category"):
+        records = records.filter(category_id=params["category"])
+    if params.get("language"):
+        records = records.filter(language=params["language"])
+    if params.get("document_type"):
+        records = records.filter(document_type=params["document_type"])
+    q_tag = (params.get("q_tag") or "").strip()
     if q_tag:
         records = records.filter(tags__name__icontains=q_tag).distinct()
 
-    records = list(records)
-    if relevance is not None:
-        records.sort(key=lambda r: relevance.get(r.pk, 1 << 30))
-    else:
-        records.sort(key=lambda r: r.title.lower())
+    # Emplacement et provenance qualifient l'exemplaire, pas la notice : en mode
+    # notice on garde celles qui ont **au moins un** exemplaire qui correspond.
+    if params.get("mode") != "items":
+        if params.get("location"):
+            records = records.filter(items__location_id=params["location"]).distinct()
+        if params.get("provenance"):
+            records = records.filter(
+                items__provenance_id=params["provenance"]
+            ).distinct()
+    return records, relevance
 
-    paginator = Paginator(records, 25)
+
+def filtered_items(params, records=None):
+    """Exemplaires correspondant aux filtres (mode « exemplaires »)."""
+    if records is None:
+        records, _relevance = filtered_records(params)
+    items = (
+        Item.objects.filter(record__in=records.values("pk"))
+        .select_related("record", "record__category", "location", "provenance")
+        .prefetch_related("record__authors")
+    )
+    if params.get("location"):
+        items = items.filter(location_id=params["location"])
+    if params.get("provenance"):
+        items = items.filter(provenance_id=params["provenance"])
+    return items
+
+
+def _selected_pks(request, kind: str) -> list[int]:
+    """Identifiants visés par une action de masse.
+
+    Deux intentions bien distinctes (FEAT-073) :
+    - cases cochées → les `ids` postés ;
+    - « sélectionner tous les résultats » → **toute la recherche**, pages
+      suivantes comprises, reconstruite depuis les filtres transmis dans
+      `back_qs`. Se contenter des cases visibles ferait croire à l'utilisateur
+      qu'il a tout traité alors qu'il n'aurait touché que 25 lignes.
+    """
+    if request.POST.get("select_all") == "1":
+        params = QueryDict(request.POST.get("back_qs") or "")
+        records, _relevance = filtered_records(params)
+        if kind == "items":
+            return list(filtered_items(params, records).values_list("pk", flat=True))
+        return list(records.values_list("pk", flat=True))
+    return [int(x) for x in request.POST.getlist("ids") if x.isdigit()]
+
+
+@require_role(*READ_ROLES)
+def record_list(request):
+    """Catalogue : recherche filtrée, par notice ou par exemplaire. SPEC §6.1.
+
+    `q` peut être :
+    - un code Ofelia d'exemplaire (EAN13 290…) → la notice de cet exemplaire
+    - un code Ofelia externe (FEAT-063) → idem
+    - un ISBN 10/13 → filtre direct sur `isbn_13`/`isbn_10`
+    - un ISSN (préfixe EAN13 977 ou saisi « 1828-552X ») → filtre sur `issn` (FEAT-052)
+    - du texte libre → FTS5 sur titre/sous-titre/auteurs/résumé
+
+    FEAT-064 : `mode=items` renvoie une ligne **par exemplaire** au lieu d'une
+    ligne par notice. C'est le seul moyen de voir qu'un même titre a un
+    exemplaire acheté et un exemplaire prêté par une autre bibliothèque — et
+    donc de ne rendre que les seconds.
+    """
+    items_mode = request.GET.get("mode") == "items"
+    q = (request.GET.get("q") or "").strip()
+    records, relevance = filtered_records(request.GET)
+
+    if items_mode:
+        items = filtered_items(request.GET, records)
+        if relevance is not None:
+            rows = list(items)
+            rows.sort(key=lambda it: (relevance.get(it.record_id, 1 << 30), it.internal_id))
+        else:
+            rows = items.order_by("record__title", "internal_id")
+    else:
+        rows = list(records)
+        if relevance is not None:
+            rows.sort(key=lambda r: relevance.get(r.pk, 1 << 30))
+        else:
+            rows.sort(key=lambda r: r.title.lower())
+
+    paginator = Paginator(rows, 25)
     page = paginator.get_page(request.GET.get("page"))
     # Querystring sans `page` : permet aux liens de pagination de conserver
-    # tous les filtres actifs (q, category, document_type, language, location, q_tag).
+    # tous les filtres actifs (q, mode, category, document_type, language,
+    # location, provenance, q_tag).
     base_params = request.GET.copy()
     base_params.pop("page", None)
     base_qs = base_params.urlencode()
     context = {
         "page_obj": page,
+        "items_mode": items_mode,
         "q": q,
-        "q_tag": q_tag,
+        "q_tag": (request.GET.get("q_tag") or "").strip(),
         "base_qs": base_qs,
-        "total": len(records),
+        "total": paginator.count,
         "categories": Category.objects.all(),
         "locations": Location.objects.all(),
+        "provenances": Provenance.objects.all(),
         "document_types": DocumentType.choices,
+        # FEAT-070 : le filtre langue liste les langues du catalogue, pas les
+        # 4 langues de l'interface — sinon un livre en allemand est infiltrable.
+        "languages": language_choices(include_blank=False),
         "selected": {
-            "category": category,
-            "language": language,
-            "document_type": doc_type,
-            "location": location,
+            key: request.GET.get(key) or ""
+            for key in ("category", "language", "document_type", "location", "provenance")
         },
     }
     return render(request, "catalog/record_list.html", context)
@@ -294,8 +385,15 @@ def item_create(request, record_pk):
                     "acquisition_source", "donor", "notes",
                 )
             }
-            for _i in range(copies):
-                Item.objects.create(record=record, **base)
+            # FEAT-063 : le code externe n'est acceptable que sur un exemplaire
+            # unique (le formulaire refuse la combinaison code + copies > 1).
+            external_code = form.cleaned_data.get("external_code") or ""
+            for index in range(copies):
+                Item.objects.create(
+                    record=record,
+                    external_code=external_code if index == 0 else "",
+                    **base,
+                )
             messages.success(
                 request, _("%(n)s exemplaire(s) ajouté(s).") % {"n": copies}
             )
@@ -390,120 +488,118 @@ def _summarize_for_bulk_delete(records):
 @require_role(Role.SUPERADMIN)
 def record_bulk_delete_confirm(request):
     """FEAT-026 : page de confirmation pour la suppression en masse."""
-    ids = [int(x) for x in request.POST.getlist("ids") if x.isdigit()]
+    ids = _selected_pks(request, "records")
     records = (
         BibliographicRecord.objects
         .filter(pk__in=ids)
         .prefetch_related("items", "reservations")
         .order_by("title")
     )
-    summaries = _summarize_for_bulk_delete(records)
+    total = records.count()
+    summaries = _summarize_for_bulk_delete(records[:PREVIEW_LIMIT])
     return render(
         request,
         "catalog/record_bulk_delete.html",
-        {"summaries": summaries, "ids": ids, "count": len(summaries)},
-    )
-
-
-# ─── FEAT-041 : affectation en masse catégorie / emplacement ──────────────
-
-
-@require_POST
-@require_role(*WRITE_ROLES)
-def record_bulk_assign_category_confirm(request):
-    ids = [int(x) for x in request.POST.getlist("ids") if x.isdigit()]
-    records = (
-        BibliographicRecord.objects.filter(pk__in=ids)
-        .select_related("category")
-        .order_by("title")
-    )
-    return render(
-        request,
-        "catalog/record_bulk_assign_category.html",
         {
-            "records": records,
+            "summaries": summaries,
             "ids": ids,
-            "count": records.count(),
-            "categories": Category.objects.all().order_by("code"),
+            "count": total,
+            "hidden_count": max(0, total - PREVIEW_LIMIT),
         },
     )
 
 
+# ─── FEAT-069 : affectation en masse depuis la page catalogue ──────────────
+# Plus de page de confirmation : la barre d'action porte les menus déroulants et
+# poste directement ici. Sentinelle « keep » = ne pas modifier, chaîne vide =
+# vider le champ — sans elle, les deux seraient indiscernables.
+
+_KEEP = "keep"
+
+
+def _chosen(request, field: str, model):
+    """Lit un menu d'affectation. Retourne `(faut_il_modifier, objet_ou_None)`.
+
+    `keep` (défaut) → on ne touche pas au champ ; chaîne vide → on le vide ;
+    identifiant → on affecte l'objet. Un identifiant inconnu est traité comme un
+    vidage plutôt que comme une erreur : la liste vient d'un menu déroulant, une
+    valeur invalide ne peut venir que d'un objet supprimé entre-temps.
+    """
+    # `get(field, _KEEP)` et non `get(field) or _KEEP` : une chaîne vide est un
+    # choix explicite (« vider »), pas une absence.
+    raw = request.POST.get(field, _KEEP).strip()
+    if raw == _KEEP:
+        return False, None
+    if not raw.isdigit():
+        return True, None
+    return True, model.objects.filter(pk=int(raw)).first()
+
+
 @require_POST
 @require_role(*WRITE_ROLES)
-def record_bulk_assign_category(request):
-    ids = [int(x) for x in request.POST.getlist("ids") if x.isdigit()]
-    raw = request.POST.get("category") or ""
-    category_id = int(raw) if raw.isdigit() else None
-    category = (
-        Category.objects.filter(pk=category_id).first() if category_id else None
-    )
-    updated = (
-        BibliographicRecord.objects.filter(pk__in=ids).update(
-            category_id=category.pk if category else None
-        )
-    )
-    if category:
-        messages.success(
-            request,
-            _("%(n)s notice(s) affectée(s) à la catégorie %(c)s.")
-            % {"n": updated, "c": category.name},
-        )
+def record_bulk_assign(request):
+    """Affecte catégorie et/ou emplacement aux notices visées.
+
+    La catégorie appartient à la notice ; l'emplacement, lui, est porté par les
+    exemplaires : on l'applique donc à **tous** les exemplaires des notices
+    visées (comportement FEAT-041 conservé).
+    """
+    ids = _selected_pks(request, "records")
+    done = []
+    with transaction.atomic():
+        change_cat, category = _chosen(request, "category", Category)
+        if change_cat:
+            n = BibliographicRecord.objects.filter(pk__in=ids).update(
+                category_id=category.pk if category else None
+            )
+            done.append(
+                _("%(n)s notice(s) → catégorie %(v)s") % {"n": n, "v": category.name}
+                if category
+                else _("%(n)s notice(s) sans catégorie") % {"n": n}
+            )
+        change_loc, location = _chosen(request, "location", Location)
+        if change_loc:
+            n = Item.objects.filter(record_id__in=ids).update(
+                location_id=location.pk if location else None
+            )
+            done.append(
+                _("%(n)s exemplaire(s) → emplacement %(v)s") % {"n": n, "v": location.code}
+                if location
+                else _("%(n)s exemplaire(s) sans emplacement") % {"n": n}
+            )
+    if done:
+        messages.success(request, " · ".join(str(d) for d in done))
     else:
-        messages.success(
-            request,
-            _("%(n)s notice(s) sans catégorie (catégorie vidée).") % {"n": updated},
-        )
-    return redirect("catalog:record_list")
+        messages.info(request, _("Rien à modifier : aucun menu n'a été changé."))
+    return redirect(_back_to_catalog(request))
 
 
 @require_POST
 @require_role(*WRITE_ROLES)
-def record_bulk_assign_location_confirm(request):
-    ids = [int(x) for x in request.POST.getlist("ids") if x.isdigit()]
-    records = (
-        BibliographicRecord.objects.filter(pk__in=ids)
-        .prefetch_related("items")
-        .order_by("title")
+def item_bulk_assign(request):
+    """Affecte une provenance aux exemplaires visés."""
+    ids = _selected_pks(request, "items")
+    change, provenance = _chosen(request, "provenance", Provenance)
+    if not change:
+        messages.info(request, _("Rien à modifier : aucun menu n'a été changé."))
+        return redirect(_back_to_catalog(request))
+    n = Item.objects.filter(pk__in=ids).update(
+        provenance_id=provenance.pk if provenance else None
     )
-    item_count = Item.objects.filter(record_id__in=ids).count()
-    return render(
+    messages.success(
         request,
-        "catalog/record_bulk_assign_location.html",
-        {
-            "records": records,
-            "ids": ids,
-            "count": records.count(),
-            "item_count": item_count,
-            "locations": Location.objects.all().order_by("code"),
-        },
+        _("%(n)s exemplaire(s) → provenance %(v)s") % {"n": n, "v": provenance.code}
+        if provenance
+        else _("%(n)s exemplaire(s) sans provenance") % {"n": n},
     )
+    return redirect(_back_to_catalog(request))
 
 
-@require_POST
-@require_role(*WRITE_ROLES)
-def record_bulk_assign_location(request):
-    ids = [int(x) for x in request.POST.getlist("ids") if x.isdigit()]
-    raw = request.POST.get("location") or ""
-    location_id = int(raw) if raw.isdigit() else None
-    location = (
-        Location.objects.filter(pk=location_id).first() if location_id else None
-    )
-    updated = Item.objects.filter(record_id__in=ids).update(
-        location_id=location.pk if location else None
-    )
-    if location:
-        messages.success(
-            request,
-            _("%(n)s exemplaire(s) affecté(s) à l'emplacement %(l)s.")
-            % {"n": updated, "l": location.code},
-        )
-    else:
-        messages.success(
-            request,
-            _("%(n)s exemplaire(s) sans emplacement (emplacement vidé).") % {"n": updated},
-        )
-    return redirect("catalog:record_list")
+def _back_to_catalog(request) -> str:
+    """Retour au catalogue en conservant les filtres actifs."""
+    qs = (request.POST.get("back_qs") or "").lstrip("?")
+    base = reverse("catalog:record_list")
+    return f"{base}?{qs}" if qs else base
 
 
 @require_POST
@@ -515,7 +611,7 @@ def record_bulk_delete(request):
     sur la notice → CANCELLED, CASCADE manuel des prêts/consultations, puis
     delete (qui cascade les items via Item.record=CASCADE).
     """
-    ids = [int(x) for x in request.POST.getlist("ids") if x.isdigit()]
+    ids = _selected_pks(request, "records")
     qs = BibliographicRecord.objects.filter(pk__in=ids)
     deleted = 0
     user = request.user if request.user.is_authenticated else None
@@ -637,6 +733,360 @@ def location_delete(request, pk):
     )
 
 
+# ─── FEAT-070 : gestion des langues ────────────────────────────────────────
+# Une seule liste pour la langue des documents et les langues parlées des
+# usagers. Extensible : un fonds peut contenir n'importe quelle langue.
+
+
+@require_role(*WRITE_ROLES)
+def language_list(request):
+    """Liste des langues, triée par libellé traduit, avec le nombre de notices.
+
+    `BibliographicRecord.language` est un code libre (les sources en ligne en
+    renvoient de toutes sortes) : le compteur se fait par code, pas par clé
+    étrangère.
+    """
+    rows = list(Language.objects.all())
+    counts = dict(
+        BibliographicRecord.objects.filter(language__in=[lang.code for lang in rows])
+        .values_list("language")
+        .annotate(n=Count("pk"))
+    )
+    for lang in rows:
+        lang.records_count = counts.get(lang.code, 0)
+    rows.sort(key=lambda lang: str(lang).lower())
+    return render(
+        request,
+        "catalog/language_list.html",
+        {"languages": rows, "total": len(rows)},
+    )
+
+
+@require_role(*WRITE_ROLES)
+def language_create(request):
+    if request.method == "POST":
+        form = LanguageForm(request.POST)
+        if form.is_valid():
+            form.save()
+            messages.success(request, _("Langue ajoutée."))
+            return redirect("catalog:language_list")
+    else:
+        form = LanguageForm()
+    return render(
+        request,
+        "catalog/language_form.html",
+        {
+            "form": form,
+            "form_action": reverse("catalog:language_create"),
+            "form_title": _("Nouvelle langue"),
+        },
+    )
+
+
+@require_role(*WRITE_ROLES)
+def language_edit(request, pk):
+    language = get_object_or_404(Language, pk=pk)
+    if request.method == "POST":
+        form = LanguageForm(request.POST, instance=language)
+        if form.is_valid():
+            form.save()
+            messages.success(request, _("Langue mise à jour."))
+            return redirect("catalog:language_list")
+    else:
+        form = LanguageForm(instance=language)
+    return render(
+        request,
+        "catalog/language_form.html",
+        {
+            "form": form,
+            "form_action": reverse("catalog:language_edit", args=[pk]),
+            "form_title": _("Modifier la langue"),
+            "language": language,
+        },
+    )
+
+
+@require_role(*WRITE_ROLES)
+def language_delete(request, pk):
+    """Retirer une langue de la liste ne touche à aucune notice.
+
+    `BibliographicRecord.language` est un code libre : les notices gardent le
+    leur, il s'affichera brut au lieu du libellé traduit.
+    """
+    language = get_object_or_404(Language, pk=pk)
+    records_count = BibliographicRecord.objects.filter(language=language.code).count()
+    if request.method == "POST":
+        language.delete()
+        messages.success(request, _("Langue retirée de la liste."))
+        return redirect("catalog:language_list")
+    return render(
+        request,
+        "catalog/language_confirm_delete.html",
+        {"language": language, "records_count": records_count},
+    )
+
+
+# ─── FEAT-067 : gestion des catégories ─────────────────────────────────────
+# Les catégories n'étaient modifiables que dans /admin/, jamais montré aux
+# bibliothécaires : sans cet écran, l'abréviation de rayon ne serait saisissable
+# par personne sur le terrain.
+
+
+@require_role(*WRITE_ROLES)
+def category_list(request):
+    """Liste des catégories avec leur cote et le nombre de notices."""
+    categories = (
+        Category.objects.select_related("parent")
+        .annotate(records_count=Count("records"))
+        .order_by("code")
+    )
+    return render(
+        request,
+        "catalog/category_list.html",
+        {"categories": categories, "total": categories.count()},
+    )
+
+
+@require_role(*WRITE_ROLES)
+def category_create(request):
+    if request.method == "POST":
+        form = CategoryForm(request.POST)
+        if form.is_valid():
+            form.save()
+            messages.success(request, _("Catégorie créée."))
+            return redirect("catalog:category_list")
+    else:
+        form = CategoryForm()
+    return render(
+        request,
+        "catalog/category_form.html",
+        {
+            "form": form,
+            "form_action": reverse("catalog:category_create"),
+            "form_title": _("Nouvelle catégorie"),
+        },
+    )
+
+
+@require_role(*WRITE_ROLES)
+def category_edit(request, pk):
+    category = get_object_or_404(Category, pk=pk)
+    if request.method == "POST":
+        form = CategoryForm(request.POST, instance=category)
+        if form.is_valid():
+            form.save()
+            messages.success(request, _("Catégorie mise à jour."))
+            return redirect("catalog:category_list")
+    else:
+        form = CategoryForm(instance=category)
+    return render(
+        request,
+        "catalog/category_form.html",
+        {
+            "form": form,
+            "form_action": reverse("catalog:category_edit", args=[pk]),
+            "form_title": _("Modifier la catégorie"),
+            "category": category,
+        },
+    )
+
+
+@require_role(*WRITE_ROLES)
+def category_delete(request, pk):
+    """Supprimer une catégorie ne supprime aucune notice (SET_NULL)."""
+    category = get_object_or_404(
+        Category.objects.annotate(records_count=Count("records")), pk=pk
+    )
+    children_count = category.children.count()
+    if request.method == "POST":
+        category.delete()
+        messages.success(request, _("Catégorie supprimée."))
+        return redirect("catalog:category_list")
+    return render(
+        request,
+        "catalog/category_confirm_delete.html",
+        {
+            "category": category,
+            "records_count": category.records_count,
+            "children_count": children_count,
+        },
+    )
+
+
+# ─── FEAT-064 : gestion des provenances ────────────────────────────────────
+
+
+@require_role(*WRITE_ROLES)
+def provenance_list(request):
+    """Liste des provenances avec le nombre d'exemplaires rattachés."""
+    provenances = Provenance.objects.annotate(items_count=Count("items")).order_by("code")
+    return render(
+        request,
+        "catalog/provenance_list.html",
+        {"provenances": provenances, "total": provenances.count()},
+    )
+
+
+@require_role(*WRITE_ROLES)
+def provenance_create(request):
+    if request.method == "POST":
+        form = ProvenanceForm(request.POST)
+        if form.is_valid():
+            form.save()
+            messages.success(request, _("Provenance créée."))
+            return redirect("catalog:provenance_list")
+    else:
+        form = ProvenanceForm()
+    return render(
+        request,
+        "catalog/provenance_form.html",
+        {
+            "form": form,
+            "form_action": reverse("catalog:provenance_create"),
+            "form_title": _("Nouvelle provenance"),
+        },
+    )
+
+
+@require_role(*WRITE_ROLES)
+def provenance_edit(request, pk):
+    provenance = get_object_or_404(Provenance, pk=pk)
+    if request.method == "POST":
+        form = ProvenanceForm(request.POST, instance=provenance)
+        if form.is_valid():
+            form.save()
+            messages.success(request, _("Provenance mise à jour."))
+            return redirect("catalog:provenance_list")
+    else:
+        form = ProvenanceForm(instance=provenance)
+    return render(
+        request,
+        "catalog/provenance_form.html",
+        {
+            "form": form,
+            "form_action": reverse("catalog:provenance_edit", args=[pk]),
+            "form_title": _("Modifier la provenance"),
+            "provenance": provenance,
+        },
+    )
+
+
+@require_role(*WRITE_ROLES)
+def provenance_delete(request, pk):
+    """Suppression d'une provenance — refusée tant que des exemplaires la portent.
+
+    Item.provenance est en PROTECT : effacer une provenance encore utilisée
+    ferait disparaître la seule trace de « à qui appartient ce livre ». On
+    renvoie donc l'utilisateur vers la liste des exemplaires concernés.
+    """
+    provenance = get_object_or_404(
+        Provenance.objects.annotate(items_count=Count("items")), pk=pk
+    )
+    if request.method == "POST":
+        if provenance.items_count:
+            messages.error(
+                request,
+                _("Impossible : %(n)s exemplaire(s) portent encore cette provenance.")
+                % {"n": provenance.items_count},
+            )
+            return redirect("catalog:provenance_list")
+        provenance.delete()
+        messages.success(request, _("Provenance supprimée."))
+        return redirect("catalog:provenance_list")
+    return render(
+        request,
+        "catalog/provenance_confirm_delete.html",
+        {"provenance": provenance, "items_count": provenance.items_count},
+    )
+
+
+# ─── FEAT-064 : actions de masse sur les exemplaires ───────────────────────
+# Le mode « exemplaires » du catalogue coche des Item, pas des notices : ces
+# vues sont le pendant de record_bulk_* pour ce mode.
+
+
+def _selected_items_qs(request):
+    ids = _selected_pks(request, "items")
+    return ids, (
+        Item.objects.filter(pk__in=ids)
+        .select_related("record", "location", "provenance")
+        .order_by("record__title", "internal_id")
+    )
+
+
+@require_POST
+@require_role(Role.SUPERADMIN)
+def item_bulk_delete_confirm(request):
+    """Page de confirmation : ce qui sera supprimé, et ce que ça entraîne.
+
+    Les identifiants sont réinjectés en clair dans le formulaire plutôt que de
+    rejouer la recherche au moment de valider : ce qui a été confirmé est
+    exactement ce qui sera supprimé, même si le catalogue bouge entre-temps.
+    Seul **l'affichage** est plafonné, pour qu'une sélection de 900 exemplaires
+    ne produise pas une page interminable.
+    """
+    ids, items = _selected_items_qs(request)
+    items = list(items)
+    on_loan = sum(1 for it in items if it.status == ItemStatus.ON_LOAN)
+    reserved = sum(1 for it in items if it.status == ItemStatus.RESERVED_FOR_PICKUP)
+    return render(
+        request,
+        "catalog/item_bulk_delete.html",
+        {
+            "items": items[:PREVIEW_LIMIT],
+            "hidden_count": max(0, len(items) - PREVIEW_LIMIT),
+            "ids": ids,
+            "count": len(items),
+            "on_loan": on_loan,
+            "reserved": reserved,
+        },
+    )
+
+
+@require_POST
+@require_role(Role.SUPERADMIN)
+def item_bulk_delete(request):
+    """Suppression définitive d'exemplaires (rendre un fonds prêté, par ex.).
+
+    Même traitement que la suppression unitaire (FEAT-027) : prêts en cours
+    → LOST, réservations servies par ces exemplaires → CANCELLED, historique de
+    prêts et consultations effacé (Loan.item est en PROTECT), et tombstone du
+    code Ofelia (FEAT-043) pour qu'une étiquette déjà collée ne soit jamais
+    réattribuée.
+    """
+    from apps.loans.models import InHouseConsultation, Loan, Reservation
+
+    ids = _selected_pks(request, "items")
+    user = request.user if request.user.is_authenticated else None
+    items = list(Item.objects.filter(pk__in=ids).select_related("record"))
+    with transaction.atomic():
+        Loan.objects.filter(item_id__in=ids, status__in=_OPEN_LOAN_STATUSES).update(
+            status=LoanStatus.LOST, return_date=timezone.now()
+        )
+        Reservation.objects.filter(
+            fulfilled_by_item_id__in=ids, status__in=_OPEN_RESERVATION_STATUSES
+        ).update(status=ReservationStatus.CANCELLED)
+        Loan.objects.filter(item_id__in=ids).delete()
+        InHouseConsultation.objects.filter(item_id__in=ids).delete()
+        for item in items:
+            if not item.internal_id:
+                continue
+            RetiredItemCode.objects.get_or_create(
+                internal_id=item.internal_id,
+                defaults={
+                    "ean13": item.ean13 or "",
+                    "record_title_snapshot": (item.record.title or "")[:255],
+                    "retired_by": user,
+                    "reason": RetiredItemCode.REASON_BULK_DELETE,
+                },
+            )
+        Item.objects.filter(pk__in=ids).delete()
+    messages.success(
+        request, _("%(n)s exemplaire(s) supprimé(s).") % {"n": len(items)}
+    )
+    return redirect(f"{reverse('catalog:record_list')}?mode=items")
+
+
 # ─── FEAT-046 : catalogage en scan caméra continu ──────────────────────────
 # Miroir du récolement (FEAT-045) mais en création : on scanne des ISBN, on
 # édite les notices détectées, puis `finalize_scan_session()` les matérialise.
@@ -721,7 +1171,7 @@ def scan_session(request, pk):
             "items": items,
             "categories": Category.objects.all().order_by("code"),
             "locations": Location.objects.all().order_by("code"),
-            "languages": settings.LANGUAGES,
+            "languages": language_choices(include_blank=False),
             "states": ItemState.choices,
             "finalized": session.state != ScanSessionState.OPEN,
             "input_mode": session.input_mode,

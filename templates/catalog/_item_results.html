@@ -1,0 +1,161 @@
+{% load i18n biblio_icons %}
+{% comment %}
+FEAT-064 — résultats du catalogue en mode « exemplaires » : une ligne par
+exemplaire, avec code Ofelia, code externe et provenance à la place du
+compteur d'exemplaires. Les actions de masse portent sur les Item cochés.
+{% endcomment %}
+
+{% if user.is_librarian or user.is_superadmin %}
+<form method="post" x-data="{count:0, visibleAll:false, allResults:false}">
+    {% csrf_token %}
+    <div x-show="count > 0 || allResults"
+         style="display:flex;flex-direction:column;align-items:stretch;gap:10px;padding:14px;background:var(--amber-light);border:1px solid var(--amber);border-radius:8px;margin-bottom:10px">
+        <span style="font-size:14px">
+            <template x-if="!allResults"><span><strong x-text="count"></strong> {% trans "exemplaire(s) sélectionné(s)" %}</span></template>
+            <template x-if="allResults"><span><strong>{{ total }}</strong> {% blocktrans %}résultats de la recherche{% endblocktrans %}</span></template>
+        </span>
+        <input type="hidden" name="select_all" :value="allResults ? '1' : ''">
+        {# FEAT-069 : la provenance se pilote au niveau de l'exemplaire. #}
+        <input type="hidden" name="back_qs" value="{{ base_qs }}">
+        <div class="bulk-assign">
+            <div class="field">
+                <label>{% trans "Provenance" %}</label>
+                <select name="provenance" class="filter-select">
+                    <option value="keep">{% trans "Ne pas modifier" %}</option>
+                    <option value="">{% trans "— (vider)" %}</option>
+                    {% for prov in provenances %}
+                    <option value="{{ prov.pk }}">{{ prov }}</option>
+                    {% endfor %}
+                </select>
+            </div>
+            <button type="submit" class="btn btn--primary"
+                    formaction="{% url 'catalog:item_bulk_assign' %}">
+                {% icon "check" size="14px" %} {% trans "Affecter" %}
+            </button>
+            {% if user.is_superadmin %}
+            <button type="submit" class="btn btn--primary" style="background:#B83232;border-color:#B83232"
+                    formaction="{% url 'catalog:item_bulk_delete_confirm' %}">
+                {% icon "trash-2" size="14px" %} {% trans "Supprimer les exemplaires sélectionnés" %}
+            </button>
+            {% endif %}
+        </div>
+    </div>
+
+    {% include "catalog/_select_all.html" %}
+
+    {# Table desktop — checkboxes name=ids_desktop #}
+    <div class="table-wrap hide-sm">
+        <table class="table">
+            <thead>
+                <tr>
+                    <th style="width:30px"></th>
+                    <th>{% trans "Titre" %}</th>
+                    <th>{% trans "Auteur(s)" %}</th>
+                    <th>{% trans "Catégorie" %}</th>
+                    <th>{% trans "Code Ofelia" %}</th>
+                    <th>{% trans "Code Ofelia externe" %}</th>
+                    <th>{% trans "Provenance" %}</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for item in page_obj %}
+                <tr>
+                    <td><input type="checkbox" name="ids_desktop" value="{{ item.pk }}"
+                               data-iid="{{ item.pk }}"
+                               @change="document.querySelector('input[name=ids_mobile][data-iid=\'{{ item.pk }}\']').checked = $event.target.checked; count = document.querySelectorAll('input[name=ids_desktop]:checked').length"></td>
+                    <td>
+                        <a href="{% url 'catalog:record_detail' item.record_id %}" class="cell-link">{{ item.record.title }}</a>
+                    </td>
+                    <td class="muted">{% for a in item.record.authors.all %}{{ a.full_name }}{% if not forloop.last %}, {% endif %}{% endfor %}</td>
+                    <td class="muted">{{ item.record.category.name|default:"—" }}</td>
+                    <td>{{ item.ean13 }}</td>
+                    <td class="muted">{{ item.external_code|default:"—" }}</td>
+                    <td class="muted">{{ item.provenance|default:"—" }}</td>
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    </div>
+
+    {# Liste mobile avec checkboxes name=ids_mobile (BUG-016) #}
+    <div class="list only-sm">
+        {% for item in page_obj %}
+        <div class="list-row" style="gap:10px">
+            <input type="checkbox" name="ids_mobile" value="{{ item.pk }}"
+                   data-iid="{{ item.pk }}"
+                   @change="document.querySelector('input[name=ids_desktop][data-iid=\'{{ item.pk }}\']').checked = $event.target.checked; count = document.querySelectorAll('input[name=ids_mobile]:checked').length"
+                   style="width:18px;height:18px;flex-shrink:0;align-self:center">
+            <a href="{% url 'catalog:record_detail' item.record_id %}" class="list-row" style="flex:1;padding:0;background:transparent;border:0;box-shadow:none">
+                <div class="lrow-icon" style="--lr-bg:var(--amber-light);--lr-fg:#946906">
+                    {% icon "package" size="18px" %}
+                </div>
+                <div class="lrow-body">
+                    <div class="lrow-title" style="color:var(--burgundy)">{{ item.record.title }}</div>
+                    <div class="lrow-sub">
+                        {{ item.ean13 }}{% if item.external_code %} · {{ item.external_code }}{% endif %}
+                        {% if item.provenance %} · {{ item.provenance }}{% endif %}
+                    </div>
+                </div>
+            </a>
+        </div>
+        {% endfor %}
+    </div>
+    {# Au submit : transformer les inputs visibles en name=ids #}
+    <script>
+    document.currentScript.parentElement.addEventListener('submit', function() {
+        const isDesktop = window.matchMedia('(min-width: 600px)').matches;
+        const src = isDesktop ? 'ids_desktop' : 'ids_mobile';
+        document.querySelectorAll('input[name=' + src + ']:checked').forEach(function(c) {
+            const h = document.createElement('input');
+            h.type = 'hidden'; h.name = 'ids'; h.value = c.value;
+            c.form.appendChild(h);
+        });
+    });
+    </script>
+</form>
+{% else %}
+<div class="table-wrap hide-sm">
+    <table class="table">
+        <thead>
+            <tr>
+                <th>{% trans "Titre" %}</th>
+                <th>{% trans "Auteur(s)" %}</th>
+                <th>{% trans "Catégorie" %}</th>
+                <th>{% trans "Code Ofelia" %}</th>
+                <th>{% trans "Code Ofelia externe" %}</th>
+                <th>{% trans "Provenance" %}</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for item in page_obj %}
+            <tr>
+                <td>
+                    <a href="{% url 'catalog:record_detail' item.record_id %}" class="cell-link">{{ item.record.title }}</a>
+                </td>
+                <td class="muted">{% for a in item.record.authors.all %}{{ a.full_name }}{% if not forloop.last %}, {% endif %}{% endfor %}</td>
+                <td class="muted">{{ item.record.category.name|default:"—" }}</td>
+                <td>{{ item.ean13 }}</td>
+                <td class="muted">{{ item.external_code|default:"—" }}</td>
+                <td class="muted">{{ item.provenance|default:"—" }}</td>
+            </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+</div>
+<div class="list only-sm">
+    {% for item in page_obj %}
+    <a href="{% url 'catalog:record_detail' item.record_id %}" class="list-row">
+        <div class="lrow-icon" style="--lr-bg:var(--amber-light);--lr-fg:#946906">
+            {% icon "package" size="18px" %}
+        </div>
+        <div class="lrow-body">
+            <div class="lrow-title" style="color:var(--burgundy)">{{ item.record.title }}</div>
+            <div class="lrow-sub">
+                {{ item.ean13 }}{% if item.external_code %} · {{ item.external_code }}{% endif %}
+                {% if item.provenance %} · {{ item.provenance }}{% endif %}
+            </div>
+        </div>
+    </a>
+    {% endfor %}
+</div>
+{% endif %}

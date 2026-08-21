@@ -1,0 +1,50 @@
+{% extends "base.html" %}
+{% load i18n biblio_icons %}
+
+{% block title %}{% trans "Retirer la langue" %}{% endblock %}
+
+{% block tile_strip %}{% include "partials/_tile_strip.html" with active="advanced" %}{% endblock %}
+
+{% block content %}
+<nav class="breadcrumb">
+    <a href="{% url 'core:advanced' %}">{% trans "Avancé" %}</a> /
+    <a href="{% url 'catalog:language_list' %}">{% trans "Langues" %}</a> /
+    <strong>{% trans "Retirer" %}</strong>
+</nav>
+
+<header class="pagehead">
+    <div class="pagehead-icon" style="--ph-bg:var(--blush);--ph-fg:#B83232">
+        {% icon "trash-2" size="28px" %}
+    </div>
+    <div class="pagehead-text">
+        <h1 class="pagehead-title">{% trans "Retirer la langue" %}</h1>
+        <div class="pagehead-sub">{{ language.name }} · {{ language.code }}</div>
+    </div>
+</header>
+
+<div class="card">
+    <p>{% blocktrans with name=language.name %}Confirmez-vous le retrait de <strong>{{ name }}</strong> de la liste ?{% endblocktrans %}</p>
+
+    <h3 style="margin-top:18px">{% trans "Conséquences" %}</h3>
+    <ul>
+        <li>{% trans "Aucune notice n'est supprimée ni modifiée." %}</li>
+        {% if records_count %}
+        <li>
+            <strong>{{ records_count }}</strong>
+            {% blocktrans count counter=records_count with code=language.code %}notice garde le code « {{ code }} », qui s'affichera tel quel au lieu du nom traduit.{% plural %}notices gardent le code « {{ code }} », qui s'affichera tel quel au lieu du nom traduit.{% endblocktrans %}
+        </li>
+        {% endif %}
+        <li>{% trans "La langue ne sera plus proposée à la saisie, ni pour un livre ni pour un usager." %}</li>
+    </ul>
+
+    <form method="post" style="margin-top:18px">
+        {% csrf_token %}
+        <div class="form-actions" style="border:0;padding:0;margin:0">
+            <button type="submit" class="btn btn--primary" style="background:#B83232;border-color:#B83232">
+                {% icon "trash-2" size="16px" %} {% trans "Retirer de la liste" %}
+            </button>
+            <a href="{% url 'catalog:language_list' %}" class="btn btn--ghost">{% trans "Annuler" %}</a>
+        </div>
+    </form>
+</div>
+{% endblock %}

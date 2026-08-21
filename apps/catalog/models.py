@@ -83,10 +83,21 @@ class Author(models.Model):
 
 
 class Category(models.Model):
-    code = models.CharField(max_length=20, unique=True)
-    name = models.CharField(max_length=120)
+    code = models.CharField(max_length=20, unique=True, verbose_name=_("code"))
+    name = models.CharField(max_length=120, verbose_name=_("nom"))
+    # FEAT-067 : cote de rayon lisible sur la tranche du livre — « Romans
+    # fiction pour adolescents » → « RO FI ADO ». Non traduite : une cote est
+    # physique, elle ne change pas avec la langue de l'interface.
+    abbreviation = models.CharField(
+        max_length=20, blank=True, verbose_name=_("abréviation")
+    )
     parent = models.ForeignKey(
-        "self", null=True, blank=True, related_name="children", on_delete=models.SET_NULL
+        "self",
+        null=True,
+        blank=True,
+        related_name="children",
+        on_delete=models.SET_NULL,
+        verbose_name=_("catégorie parente"),
     )
     default_loan_duration_days = models.PositiveIntegerField(null=True, blank=True)
 
@@ -113,10 +124,15 @@ class Tag(models.Model):
 
 
 class Location(models.Model):
-    code = models.CharField(max_length=20)
-    description = models.TextField(blank=True)
+    code = models.CharField(max_length=20, verbose_name=_("code"))
+    description = models.TextField(blank=True, verbose_name=_("description"))
     parent = models.ForeignKey(
-        "self", null=True, blank=True, related_name="children", on_delete=models.SET_NULL
+        "self",
+        null=True,
+        blank=True,
+        related_name="children",
+        on_delete=models.SET_NULL,
+        verbose_name=_("emplacement parent"),
     )
 
     class Meta:
@@ -131,29 +147,110 @@ class Location(models.Model):
         return self.code
 
 
+
+
+class Language(models.Model):
+    """FEAT-070 : langue d'un document, et langue parlée par un usager.
+
+    Une seule liste pour les deux usages : deux listes de langues dans la même
+    application, c'est une de trop. Les codes suivent les abréviations
+    internationales principales, **sans variante régionale** — `fr` couvre le
+    français de France, du Canada et de Suisse, `pt` le portugais et le
+    brésilien (règle Val 2026-08-20).
+
+    Liste extensible par les bibliothécaires (écran Avancé → Langues) : un fonds
+    peut contenir n'importe quelle langue, la figer dans le code reviendrait à
+    rendre certains livres incatalogables.
+    """
+
+    code = models.CharField(max_length=10, unique=True)
+    name = models.CharField(max_length=80)
+
+    class Meta:
+        verbose_name = _("langue")
+        verbose_name_plural = _("langues")
+        ordering = ["code"]
+
+    def __str__(self) -> str:
+        return self.name or self.code
+
+class Provenance(models.Model):
+    """FEAT-064 : d'où vient un exemplaire.
+
+    Sert surtout aux fonds qui n'appartiennent pas à la bibliothèque — livres
+    prêtés par une autre bibliothèque, dépôts temporaires. Le jour où il faut
+    les rendre, la provenance est le seul moyen de les retrouver tous, y compris
+    quand un même titre a aussi un exemplaire acheté par Ofelia.
+
+    Liste gérée plutôt que texte libre (décision Val 2026-08-19) : « Bibl.
+    Genève » et « Bibliothèque Genève » saisis à la main donneraient deux
+    provenances distinctes, et un filtre qui ment sur un rendu de fonds coûte
+    cher.
+    """
+
+    code = models.CharField(max_length=20, unique=True, verbose_name=_("code"))
+    label = models.CharField(max_length=120, blank=True, verbose_name=_("nom complet"))
+    notes = models.TextField(blank=True, verbose_name=_("notes"))
+
+    class Meta:
+        verbose_name = _("provenance")
+        verbose_name_plural = _("provenances")
+        ordering = ["code"]
+
+    def __str__(self) -> str:
+        # Le nom complet se suffit à lui-même : répéter le code devant ne fait
+        # qu'allonger les menus et les colonnes (retour Val 2026-08-21). Le code
+        # reste la clé de saisie (import Excel) et le repli quand aucun nom n'a
+        # été renseigné.
+        return self.label or self.code
+
 class BibliographicRecord(models.Model):
-    title = models.CharField(max_length=300, db_index=True)
-    subtitle = models.CharField(max_length=300, blank=True)
-    authors = models.ManyToManyField(Author, blank=True, related_name="records")
-    publisher = models.CharField(max_length=200, blank=True)
-    publication_year = models.IntegerField(null=True, blank=True)
-    language = models.CharField(max_length=10, blank=True, default="fr")
-    isbn_13 = models.CharField(max_length=13, blank=True, null=True, db_index=True)
-    isbn_10 = models.CharField(max_length=10, blank=True, null=True, db_index=True)
+    title = models.CharField(max_length=300, db_index=True, verbose_name=_("titre"))
+    subtitle = models.CharField(max_length=300, blank=True, verbose_name=_("sous-titre"))
+    authors = models.ManyToManyField(
+        Author, blank=True, related_name="records", verbose_name=_("auteurs")
+    )
+    publisher = models.CharField(max_length=200, blank=True, verbose_name=_("éditeur"))
+    publication_year = models.IntegerField(
+        null=True, blank=True, verbose_name=_("année de publication")
+    )
+    language = models.CharField(
+        max_length=10, blank=True, default="fr", verbose_name=_("langue")
+    )
+    isbn_13 = models.CharField(
+        max_length=13, blank=True, null=True, db_index=True, verbose_name=_("ISBN-13")
+    )
+    isbn_10 = models.CharField(
+        max_length=10, blank=True, null=True, db_index=True, verbose_name=_("ISBN-10")
+    )
     # FEAT-052 : périodiques (revues/magazines). ISSN normalisé 8 caractères
     # (7 chiffres + clé 0-9/X), stocké sans tiret. L'ISSN identifie le titre
     # de la revue, pas le numéro : contrainte unique → « 1 notice par ISSN ».
     issn = models.CharField(max_length=8, blank=True, null=True, db_index=True)
-    summary = models.TextField(blank=True)
-    cover_image = models.FileField(upload_to="covers/", blank=True, null=True)
-    category = models.ForeignKey(
-        Category, null=True, blank=True, related_name="records", on_delete=models.SET_NULL
+    summary = models.TextField(blank=True, verbose_name=_("résumé"))
+    cover_image = models.FileField(
+        upload_to="covers/", blank=True, null=True, verbose_name=_("couverture")
     )
-    tags = models.ManyToManyField(Tag, blank=True, related_name="records")
-    series_name = models.CharField(max_length=200, blank=True)
-    series_volume = models.CharField(max_length=20, blank=True)
+    category = models.ForeignKey(
+        Category,
+        null=True,
+        blank=True,
+        related_name="records",
+        on_delete=models.SET_NULL,
+        verbose_name=_("catégorie"),
+    )
+    tags = models.ManyToManyField(
+        Tag, blank=True, related_name="records", verbose_name=_("tags")
+    )
+    series_name = models.CharField(max_length=200, blank=True, verbose_name=_("série"))
+    series_volume = models.CharField(
+        max_length=20, blank=True, verbose_name=_("tome")
+    )
     document_type = models.CharField(
-        max_length=20, choices=DocumentType.choices, default=DocumentType.BOOK
+        max_length=20,
+        choices=DocumentType.choices,
+        default=DocumentType.BOOK,
+        verbose_name=_("type de document"),
     )
     created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now=True)
@@ -202,6 +299,17 @@ class BibliographicRecord(models.Model):
 class Item(models.Model):
     internal_id = models.CharField(max_length=20, unique=True, blank=True)
     ean13 = models.CharField(max_length=13, unique=True, blank=True)
+    # FEAT-063 : code attribué hors BibliOfelia (autre bibliothèque, donateur,
+    # catalogage antérieur). Stocké normalisé (majuscules, sans séparateurs) par
+    # `apps.catalog.lookup.normalize_external_code` pour que la saisie et le
+    # scan retombent toujours sur la même chaîne.
+    external_code = models.CharField(
+        max_length=20,
+        blank=True,
+        db_index=True,
+        verbose_name=_("code Ofelia externe"),
+        help_text=_("Code déjà porté par le livre, jusqu'à 20 caractères. Ex. BCF13298781X."),
+    )
     record = models.ForeignKey(
         BibliographicRecord, related_name="items", on_delete=models.CASCADE
     )
@@ -214,6 +322,17 @@ class Item(models.Model):
         max_length=15, choices=AcquisitionSource.choices, default=AcquisitionSource.UNKNOWN
     )
     donor = models.CharField(max_length=120, blank=True)
+    # FEAT-064 : PROTECT — supprimer une provenance encore portée par des
+    # exemplaires effacerait la seule trace de « à qui appartient ce livre ».
+    # L'écran de suppression annonce le nombre d'exemplaires à traiter d'abord.
+    provenance = models.ForeignKey(
+        "Provenance",
+        null=True,
+        blank=True,
+        related_name="items",
+        on_delete=models.PROTECT,
+        verbose_name=_("provenance"),
+    )
     notes = models.TextField(blank=True)
     status = models.CharField(
         max_length=25, choices=ItemStatus.choices, default=ItemStatus.AVAILABLE
@@ -237,6 +356,16 @@ class Item(models.Model):
         ordering = ["internal_id"]
         indexes = [
             models.Index(fields=["status", "location"], name="item_status_location_idx"),
+        ]
+        constraints = [
+            # FEAT-063 : un code externe désigne un exemplaire et un seul (sinon
+            # un scan serait ambigu), mais autant d'exemplaires que l'on veut
+            # peuvent ne pas en avoir — d'où l'unicité partielle.
+            models.UniqueConstraint(
+                fields=["external_code"],
+                condition=~models.Q(external_code=""),
+                name="item_external_code_unique_not_blank",
+            ),
         ]
 
     def __str__(self) -> str:
@@ -403,6 +532,14 @@ class ScanSession(models.Model):
         null=True,
         blank=True,
         related_name="+",
+        on_delete=models.SET_NULL,
+    )
+    # FEAT-064 : provenance appliquée à tous les exemplaires créés par le lot.
+    default_provenance = models.ForeignKey(
+        "Provenance",
+        null=True,
+        blank=True,
+        related_name="default_for_sessions",
         on_delete=models.SET_NULL,
     )
 

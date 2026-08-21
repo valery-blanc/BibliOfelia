@@ -58,6 +58,18 @@ perdida](../faq.md#carte-perdue)).
 
 Luego imprima la nueva tarjeta normalmente.
 
+## La familia en el carné
+
+Si el usuario tiene personas asociadas a su carné (véase
+[Inscribir a un miembro](inscription.md)), sus nombres se imprimen en una
+**columna «Familia»** a la derecha del carné.
+
+Es lo que permite ver de un vistazo, en el mostrador, quién puede tomar prestado
+con este carné, sin abrir la ficha.
+
+Si hay más nombres de los que caben, la lista termina con «…». La ficha del
+usuario, en cambio, los muestra todos.
+
 ## Ver también
 
 - [Tarjetas perdidas o robadas](../faq.md#carte-perdue)

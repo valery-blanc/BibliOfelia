@@ -10,6 +10,7 @@ from django.shortcuts import redirect, render
 from django.urls import reverse
 from django.views.decorators.http import require_POST
 
+from apps.catalog.lookup import find_item
 from apps.catalog.models import BibliographicRecord, Item
 from apps.loans.models import Loan, LoanStatus, Reservation, ReservationStatus
 from apps.members.models import Member
@@ -94,17 +95,20 @@ def dashboard(request):
 def global_search(request):
     """Aiguille la barre de recherche unique. SPEC §6.1.
 
-    Codes (EAN13 290/291, ISBN) → fiche directe ; texte → liste catalogue FTS.
+    Codes (Ofelia 290, code externe FEAT-063, carte 291, ISBN, ISSN) → fiche
+    directe ; texte → liste catalogue FTS.
     """
     raw = (request.GET.get("q") or "").strip()
     if not raw:
         return redirect("core:dashboard")
     kind, value = classify_query(raw)
-    if kind == "item":
-        item = Item.objects.filter(ean13=value).select_related("record").first()
-        if item:
-            return redirect("catalog:record_detail", pk=item.record_id)
-    elif kind == "member":
+    # FEAT-063 : un code Ofelia externe n'a aucune forme reconnaissable, il est
+    # classé « text ». On tente donc la résolution d'exemplaire avant de partir
+    # en plein texte, quel que soit le type détecté.
+    item = find_item(raw, Item.objects.select_related("record"))
+    if item:
+        return redirect("catalog:record_detail", pk=item.record_id)
+    if kind == "member":
         member = Member.objects.filter(card_number=value).first()
         if member:
             return redirect("members:detail", pk=member.pk)

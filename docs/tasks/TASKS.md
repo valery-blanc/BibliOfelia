@@ -1187,7 +1187,7 @@ Signalés par Val 2026-05-30 (navigation espagnole).
 - [x] Gate i18n : `makemessages` + `scripts/translations_sprint26.py` (9 × EN/ES/MG) + `i18n_check.py` → **0**
 - [x] Déploiement **instances Avignon** (image `ofelia/bibliofelia:avignon` rebuildée, web+worker recréés, healthy) + **Box** (rebuild `edubox-bibliofelia` + worker, healthy)
 - [x] Test fonctionnel Val **OK 2026-08-03** (points 1 à 6)
-- [ ] Commit unique groupé + push origin/main (après confirmation Val)
+- [x] Commit unique groupé + push origin/main → commit `cddb518` (« clôture Sprint 26 »)
 
 ### Retours de test Val (2026-08-03) — 2e itération
 
@@ -1224,7 +1224,7 @@ Signalés par Val 2026-05-30 (navigation espagnole).
 - [x] Gate i18n : `makemessages` + `translations_sprint26.py` (12 × EN/ES/MG) + `i18n_check.py` → **0**
 - [x] Redéploiement : image Avignon rebuildée + web/worker recréés (grand-saconnex, sanjuan) ; Box rebuildée + recréée ; smoke tests 200
 - [ ] Test fonctionnel Val
-- [ ] Commit unique groupé + push origin/main (après confirmation Val)
+- [x] Commit unique groupé + push origin/main → commit `cddb518` (« clôture Sprint 26 »)
 
 ## Sprint 27 — Imprimante à ruban Brother QL-810W
 
@@ -1246,7 +1246,7 @@ Signalés par Val 2026-05-30 (navigation espagnole).
 - [x] Tests `apps/printing/tests/test_roll_printing.py` (15 cas : géométrie, 1 page par sortie, réglages, ruban étroit, vues, bouton masqué)
 - [x] Vérification visuelle du rendu (PDF → PNG 300 dpi depuis le conteneur)
 - [x] SPEC §6.7 + en-tête
-- [ ] Test fonctionnel Val (imprimer depuis Bruxelles sur la QL-810W)
+- [x] Test fonctionnel Val — OK 2026-08-18 (cf. « c'est ok pour les étiquettes livres et les cartes membres » plus bas)
 
 ### Fin de sprint
 - [x] `pytest` complet : **438 passed** (423 → 438, +15 nouveaux, 0 régression)
@@ -1258,7 +1258,7 @@ Signalés par Val 2026-05-30 (navigation espagnole).
 - [x] Smoke tests grand-saconnex : pickers, page ruban, PDF étiquettes en 200 ; réglages `printing_roll` en 200 ; `https://grand-saconnex.bibliofelia.org/` en 302 → `/fr/` (le PDF cartes rend 302 « aucune sélection » : l'instance a 0 usager et 104 exemplaires)
 - [x] Guide en ligne rebuildé (`bibliofelia-docs`) : section ruban en 200 sur `docs.bibliofelia.org` (FR/EN/ES/MG) et sur `grand-saconnex.bibliofelia.org/docs/`
 - [x] Nœud de **secours Avignon** remis au même niveau (sync + rebuild image) — sinon une bascule annulerait le déploiement
-- [ ] Instance **sanjuan** : conteneurs encore sur l'ancienne image (le tag partagé pointe déjà sur la neuve) — à recréer quand Val le décide
+- [x] Instance **sanjuan** : recréée sur la nouvelle image lors de la clôture Sprint 27
 
 ### Retours de test Val (2026-08-18) — 2e itération étiquettes
 
@@ -1300,3 +1300,233 @@ Signalés par Val 2026-05-30 (navigation espagnole).
 - [x] Smoke tests : `sanjuan.bibliofelia.org` et `grand-saconnex.bibliofelia.org` en 302 → `/fr/`, `docs.bibliofelia.org` en 200, pickers et réglages `printing_roll` en 200 sur les 2 instances
 - [x] `pytest` : **444 passed** (438 → 444) ; `manage.py check` : 0 issue ; gate i18n : **0**
 - [x] Commit groupé + push origin/main
+
+## Sprint 28 — Codes externes, provenance, langues/enfants usagers, catégories abrégées
+
+> Ouvert le 2026-08-19 depuis `temp.txt` (6 features). Décisions Val prises au
+> lancement (questions posées avant tout code) :
+> 1. **Provenance** = liste gérée (modèle dédié, comme les emplacements), pas de texte libre.
+> 2. **Catégorie abrégée** portée par la **catégorie** (héritée par les notices), pas par la notice.
+> 3. Saisie des abréviations : **nouvel écran « Catégories »** dans l'UI biblio + colonne Excel
+>    (les catégories n'étaient éditables que dans `/admin/`, jamais montré aux bibliothécaires).
+> 4. Suppression des exemplaires d'une provenance : **depuis la recherche d'exemplaires**
+>    (filtrer → tout cocher → supprimer), pas d'écran dédié dans les Paramètres.
+>
+> Relevé terrain 2026-08-19 (avant migration destructive `parent_account`) :
+> Box 22 usagers dont **1 avec parent_account** ; sanjuan 0 usager ;
+> grand-saconnex 1 usager / 104 exemplaires, 0 parent_account.
+
+### FEAT-063 — Code Ofelia externe (20 car. alphanumériques)
+- [x] Doc `docs/specs/FEAT-063-code-ofelia-externe.md`
+- [x] `Item.external_code` + contrainte d'unicité partielle (`item_external_code_unique_not_blank`) + migration `0013`
+- [x] `apps/catalog/lookup.py` : `find_item()` / `normalize_external_code()` / `is_valid_external_code()` — garde-fou : pas de requête pour du texte libre
+- [x] Câblage : recherche globale, recherche catalogue, prêt, retour, récolement (pointage stocké sous le code Ofelia), API OfeliaScan
+- [x] `ItemForm` (normalisation + message clair si code déjà pris) ; `ItemBulkCreateForm` refuse code + copies > 1 ; colonne « Code externe » sur la fiche notice et le picker d'impression
+- [x] Import Excel : colonne `EXTERNAL_CODE` + alias (`_resolve_column`), avertissements `EXTERNAL_CODE_DUPLICATE` / `EXTERNAL_CODE_INVALID` expliqués dans le rapport
+- [x] Tests : 35 nouveaux (`test_external_code.py` 33 + 2 prêt/retour) — suite **479 passed**
+
+### FEAT-064 — Provenance des exemplaires + recherche par exemplaire
+- [x] Doc `docs/specs/FEAT-064-provenance-exemplaires.md`
+- [x] Modèle `Provenance` (code + libellé + notes) + `Item.provenance` (PROTECT) + migration `0014`
+- [x] Écran de gestion Provenances (liste avec compteur cliquable, création, édition, suppression refusée tant que des exemplaires la portent) + entrée dans « Avancé »
+- [x] `ScanSession.default_provenance` appliquée dans `_add_copies` + champ dans le formulaire de lot
+- [x] Import Excel : colonne `PROVENANCE` (résolue par code **ou** libellé, alias `ORIGINE`), avertissement `PROVENANCE_UNKNOWN`
+- [x] Catalogue : case « Chercher les exemplaires » (`mode=items`) → 1 ligne par exemplaire,
+      colonnes Code Ofelia / Code Ofelia externe / Provenance, colonne « Ex. » retirée
+      (partial `catalog/_item_results.html`, desktop + mobile, lecture seule si non biblio)
+- [x] Filtre provenance (mode notice = « au moins un exemplaire », mode exemplaire = la ligne elle-même) + actions de masse : affecter une provenance (biblio), supprimer les exemplaires (superadmin, avec tombstones FEAT-043 et clôture des prêts en cours)
+- [x] Tests : 26 nouveaux (`test_provenance.py`) — suite **505 passed**
+
+### FEAT-065 — Langues parlées de l'usager
+- [x] Doc `docs/specs/FEAT-065-langues-parlees-usager.md`
+- [x] `Member.spoken_languages` (JSON) + `spoken_languages_other` + migration `members/0004`
+- [x] `apps/members/languages.py` (22 langues, codes figés, `labels_for` conserve un code inconnu) + `LanguageChecklistWidget` / `SpokenLanguagesField` partagés avec les enfants + CSS `div.lang-grid`
+- [x] Formulaire (encadré de cases + champ libre « autres langues ») + affichage sur la fiche
+- [x] Tests : `test_languages_and_children.py` (FEAT-065 : 9 cas)
+
+### FEAT-066 — Enfants de l'usager (remplace `parent_account`)
+- [x] Doc `docs/specs/FEAT-066-enfants-usager.md`
+- [x] Suppression `Member.parent_account` (modèle, form, admin, vues, fiche, page de suppression) ; le test « détache les dépendants » devient « supprime les enfants »
+- [x] Modèle `MemberChild` (sexe, prénom, âge, langues + autres langues), CASCADE depuis l'usager
+- [x] Formset inline dans le formulaire usager (ajout/retrait de lignes en JS, sans dépendance) ; une ligne au prénom vide est ignorée, ce qui fait office de suppression
+- [x] **Piège Django corrigé** : marquer `DELETE` *après* `super().clean()` est sans effet — `BaseModelFormSet.clean()` met `deleted_forms` en cache via `validate_unique()`, et la ligne vidée était enregistrée au lieu d'être supprimée
+- [x] Tests : `test_languages_and_children.py` (FEAT-066 : 7 cas) — suite **520 passed**
+
+### FEAT-067 — Catégorie abrégée + écran de gestion des catégories
+- [x] Doc `docs/specs/FEAT-067-categorie-abregee.md`
+- [x] `Category.abbreviation` (non traduite : une cote est physique) + migration `0015`
+- [x] Écran Catégories (liste code/nom/cote/parent/nb notices, création, édition, suppression qui ne supprime aucune notice) + entrée dans « Avancé » — 1re UI biblio pour les catégories
+- [x] `seed_defaults` : 8e colonne `abbreviation` sur les 16 catégories, backfill si vide, **jamais** d'écrasement d'une cote saisie à la main
+- [x] Import Excel : colonne `CATEGORY_ABBR` (+ alias `ABREVIATION`…), avertissement `CATEGORY_ABBR_ORPHAN` si aucune catégorie n'est résolue ; cote affichée sur la fiche notice
+- [x] Tests : 14 nouveaux (`test_categories.py`)
+
+### FEAT-068 — Étiquettes de tranche (62 × 35 mm, abréviation centrée)
+- [x] Doc `docs/specs/FEAT-068-etiquettes-tranche.md`
+- [x] `render_spine_labels_roll_pdf` + `spine_layout()` : dichotomie de 96 pt à 10 pt jusqu'à ce que la cote tienne en largeur **et** en hauteur — « PER » remplit l'étiquette, « RO FI ADO » sort sur 2 lignes comme la maquette
+- [x] Vue `spine_labels_roll_pdf` + route + bouton « Étiquettes de tranche » (PDF direct, `_blank`) ; exemplaires sans cote ignorés, message clair si aucun n'en a
+- [x] Vérification visuelle 300 dpi (pypdfium2) : « RO FI / ADO », « PER » pleine étiquette, « BANDES DESSINEES JEUNESSE » sur 3 lignes sans débordement
+- [x] Tests : 19 nouveaux (`test_spine_labels.py`)
+
+### Fin de sprint
+- [x] `pytest` complet : **553 passed** (444 → 553, +109 nouveaux, 0 régression)
+- [x] `manage.py check` : 0 issue
+- [x] Gate i18n : `makemessages` (via l'image Docker sur Fez — pas de `xgettext` sur le poste) + `scripts/translations_sprint28.py` (**119 chaînes + 15 formes plurielles** × EN/ES/MG) + `i18n_check.py` → **0**
+- [x] **Trou du gate comblé** : `i18n_check.py` n'auditait que `msgstr`, jamais `msgstr[0]`/`msgstr[1]` — 15 `{% blocktrans count %}` sortaient en français dans les 3 autres langues, dont 7 antérieurs au sprint (emplacements, récolement, rapport d'import). Contrôle ajouté + vérifié en le faisant échouer volontairement
+- [x] Guide utilisateur ×4 langues : 2 pages neuves (`catalogue/provenances`, `catalogue/categories`) + sections ajoutées à `catalogue/recherche` (code externe, mode exemplaires), `catalogue/exemplaires` (code externe, provenance), `usagers/inscription` (langues parlées, enfants), `impressions/etiquettes` (étiquettes de tranche), `inventaire/catalogage-excel` (3 colonnes) ; nav + `nav_translations` mis à jour ; `mkdocs build --strict` OK
+- [x] **Box** déployée (rebuild + migrations `catalog/0013-0015` + `members/0004`, seed = 16 cotes backfillées, healthy, 0 migration en attente) ; guide local remplacé
+- [x] **Gotcha guide sur la Box** : remplacer `/var/lib/bibliofelia-docs` par un `mv` casse le bind-mount nginx (l'inode monté suit l'ancien répertoire) → nginx servait encore l'ancien guide (404 sur les pages neuves). Il faut **vider et réextraire dans le répertoire monté**, jamais le remplacer
+- [x] **Instances Fez** (nœud actif) : image rebuildée, `grand-saconnex` (104 exemplaires, 1 usager) et `sanjuan` recréées, migrations OK, données intactes, écrans neufs en 200
+- [x] Guide en ligne `bibliofelia-docs` rebuildé (le contexte de build est `~/BibliOfelia/docs/user-guide` : il faut aussi y synchroniser les sources du guide) — `docs.bibliofelia.org` et `/docs/` des instances en 200 (FR/EN/ES/MG)
+- [x] **Nœud de secours Avignon** resynchronisé + image rebuildée
+- [x] Test fonctionnel Val **OK 2026-08-21**
+- [x] Commit unique groupé + push origin/main
+
+### Retours de test Val (2026-08-20) — 2e itération
+
+> Remarques déposées dans `temp2.txt`. Arbitrages pris avant de coder :
+> 1. **Catégories** : remapper les anciennes vers les nouvelles **puis les supprimer**.
+> 2. **Langues** : normaliser les codes hérités de la BnF (`fre-fre` → `fr`, 94 notices sur la Box).
+> 3. **Barres d'action** : fenêtre **notices** = catégorie + emplacement ; fenêtre
+>    **exemplaires** = provenance (correction Val : chaque information se pilote au niveau
+>    où elle appartient).
+> 4. **Carte de membre** : prénoms de la famille en **colonne de droite**.
+
+#### BUG-027 — Provenance absente de plusieurs écrans
+- [x] Doc `docs/bugs/BUG-027-provenance-ecrans-manquants.md`
+- [x] Colonne Provenance dans le tableau des exemplaires de la fiche notice **et** dans le picker d'impression
+- [x] Page d'import Excel : `EXTERNAL_CODE`, `PROVENANCE`, `CATEGORY_ABBR` annoncés avec leur description
+- [x] Audit des autres écrans montrant un exemplaire — tableau de décision dans `BUG-027` (rapport de récolement, exemplaires inactifs et API OfeliaScan écartés, avec la raison)
+- [x] **Faux positif confirmé** : le champ provenance **est** présent au formulaire
+      d'exemplaire ; c'est la liste vide (0 provenance en base) qui trompait l'œil. L'aide du
+      champ renvoie désormais vers Avancé → Provenances quand la liste est vide
+- [x] Tests : couverts par `test_provenance.py` et les écrans existants
+
+#### FEAT-069 — Affectation en masse depuis la page catalogue
+- [x] Doc `docs/specs/FEAT-069-affectation-masse-catalogue.md`
+- [x] Barre notices : menus Catégorie + Emplacement (« Ne pas modifier » par défaut, « — (vider) » explicite) + bouton Affecter
+- [x] Barre exemplaires : menu Provenance + bouton Affecter (correction Val : chaque information au niveau où elle appartient)
+- [x] 3 pages de confirmation d'affectation supprimées ; retour au catalogue **avec les filtres actifs** (`back_qs`) ; les suppressions gardent leur confirmation
+- [x] Tests : `test_bulk_assign.py` réécrit (19 cas). **Piège attrapé** : `get(field) or _KEEP` confondait chaîne vide et absence → « vider » était impossible
+
+#### FEAT-070 — Liste de langues gérée
+- [x] Doc `docs/specs/FEAT-070-langues-gerees.md`
+- [x] Modèle `Language` (code + nom traduit) + seed des 22 + migration `catalog/0016`
+- [x] Langue des notices, filtre du catalogue, lot de scan et langues parlées branchés dessus (`choices` en **callable** : la liste est modifiable serveur allumé)
+- [x] Tri alphabétique par libellé **traduit** — l'ordre suit donc la langue de l'interface
+- [x] Normalisation des codes hérités en migration `catalog/0017` — vérifié sur la Box : `fr` passe de 205 à 305 notices, plus aucun `fre-fre`/`fre-eng`/`fre-jpn`
+- [x] Écran Avancé → Langues (liste triée, compteur cliquable, suppression qui ne touche aucune notice) + `LanguageAdmin`
+- [x] Tests : `test_languages.py` (32 cas)
+
+#### FEAT-071 — Catégories officielles Ofelia
+- [x] Doc `docs/specs/FEAT-071-categories-ofelia.md`
+- [x] Seed des 20 catégories (code = cote), noms traduits ×4, construites par produit `_AGE_GROUPS × _DOC_KINDS`
+- [x] Commande `migrate_categories` (`--dry-run`, idempotente) : retrait du préfixe de langue, fusion, remap des anciennes, jamais de suppression d'une catégorie non reclassée
+- [x] **Coquille corrigée** : « Adolescents Fiction » → `ADO FIC` (la liste fournie disait `ADO DOC`, en doublon avec « Adolescents Documentaire »)
+- [x] Appliqué : **Box** (32 notices déplacées, 16 anciennes supprimées, `TEST` laissée intacte) et **grand-saconnex** (11 catégories `FR …` fusionnées, **104 notices reclassées, 0 orpheline**) ; sanjuan (catalogue vide) alignée aussi
+- [x] Tests : `test_categories_migration.py` (15 cas)
+
+#### FEAT-072 — Gestion des familles (remplace les enfants)
+- [x] Doc `docs/specs/FEAT-072-gestion-familles.md`
+- [x] `MemberChild` → `MemberFamilyMember` (**renommage**, pas recréation) ; `age` → `birth_year` converti + `is_adult` — migration `members/0005`
+- [x] Libellés « Enfants » → « Famille » (formulaire, fiche, page de suppression) ; champ « Adulte ou enfant », l'année de naissance n'est demandée que pour un enfant
+- [x] Carte de membre : colonne « Famille » à droite (A4 + ruban), tronquée par « … » si la place manque
+- [x] **Régression attrapée au rendu 300 dpi** : la colonne tronquait le nom sur la planche A4 (« Rakoto H… ») → le bloc texte se décale à gauche **uniquement** quand il y a une famille ; une carte sans famille garde le rendu du Sprint 27
+- [x] Tests : 7 cas de carte famille + cas famille dans `test_languages_and_children.py`
+
+#### 2e vague — vérifications
+- [x] `pytest` : **620 passed** (553 → 620, +67, 0 régression)
+- [x] `manage.py check` : 0 issue
+- [x] Gate i18n : `translations_sprint28.py` étendu (**137 chaînes + 16 pluriels** × EN/ES/MG) → `i18n_check.py` = **0**
+- [x] Guide utilisateur ×4 langues : page neuve `catalogue/langues`, section « Affecter en masse » qui remplace les 2 anciennes sous-sections, tableau des 20 catégories officielles, « Enfants » → « Famille » dans l'inscription, colonne Famille dans `usagers/carte` ; `mkdocs build --strict` OK
+- [x] Déploiement **Box** (migrations + `migrate_categories` + guide), **grand-saconnex** et **sanjuan** sur Fez, guide en ligne, nœud de secours Avignon resynchronisé
+- [x] Test fonctionnel Val **OK 2026-08-21**
+
+### Retours de test Val (2026-08-21) — 3e itération
+
+> « Tout le reste est ok (testé validé) ». Restent 4 points : les libellés
+> anglais de la page notice, les 2 boutons de recherche, la double sélection,
+> et la provenance en toutes lettres.
+
+#### BUG-028 — Libellés de formulaire en anglais dans une interface française
+- [x] Doc `docs/bugs/BUG-028-libelles-formulaires-anglais.md`
+- [x] Cause : sans `labels` ni `verbose_name`, **Django fabrique** le libellé depuis le nom du
+      champ Python (`publication_year` → « Publication year »). La chaîne n'existe nulle part
+      dans le code → `makemessages` ne la voit pas, `i18n_check.py` non plus
+- [x] **Ampleur bien plus large que signalé** : 25 champs, soit toute la fiche notice **et**
+      tout le formulaire usager ; l'audit a débusqué 8 champs de plus (accounts, inventory, loans)
+- [x] 41 `verbose_name=_()` posés sur les modèles (corrige aussi `/admin/` et les erreurs de
+      validation) ; `tags` traité par `Meta.labels` (le label d'un M2M vient du `related_name`)
+- [x] Migrations `catalog/0018`, `catalog/0019`, `members/0006`, `accounts/0002`,
+      `inventory/0004`, `loans/0003` — métadonnées seules, aucune donnée touchée
+- [x] **Garde-fou** `apps/core/tests/test_form_labels.py` : parcourt tous les `ModelForm` et
+      échoue si un libellé n'est pas un objet de traduction *lazy*. Tester la **nature** de
+      l'objet plutôt que les mots évite une liste blanche (« Code », « Notes », « Date »…) et
+      attrape un oubli qui ressemblerait à du français
+- [x] Tests : 5 cas
+
+#### FEAT-073 — Catalogue : boutons de recherche, sélection étendue, provenance lisible
+- [x] Doc `docs/specs/FEAT-073-catalogue-ui-selection.md`
+- [x] Case « Chercher les exemplaires » → boutons **« Rechercher des notices »** et
+      **« Rechercher des exemplaires »** ; celui du mode courant est mis en avant ; défaut
+      inchangé (notices, sans filtre)
+- [x] **Deux cases de sélection** : « les N résultats visibles » (page courante) et « les N
+      résultats de la recherche » (toutes les pages, masquée s'il n'y a qu'une page). Cocher
+      l'une décoche l'autre ; cocher une ligne annule la sélection étendue
+- [x] `filtered_records()` / `filtered_items()` extraites de `record_list` + `_selected_pks()` :
+      la sélection étendue reconstruit **la recherche**, filtres compris (`back_qs`)
+- [x] Pages de confirmation : identifiants réinjectés en clair (ce qui est confirmé est ce qui
+      sera supprimé) mais **affichage plafonné** à 100 lignes + « … et N autres non affichés »
+- [x] Provenance en toutes lettres (filtre, colonnes, menus d'affectation, confirmations)
+- [x] Tests : 19 cas (`test_catalog_selection.py`)
+
+#### 3e vague — vérifications
+- [x] `pytest` : **643 passed** (620 → 643) ; `manage.py check` : 0 issue
+- [x] Gate i18n : `translations_sprint28.py` étendu (**174 chaînes + 20 pluriels** × EN/ES/MG) → **0**
+- [x] Guide utilisateur ×4 langues : `catalogue/recherche` (les 2 boutons) et
+      `catalogue/operations-lot` (les 2 cases de sélection) ; `mkdocs build --strict` OK
+- [x] Déploiement Box + grand-saconnex + sanjuan + guide en ligne + secours Avignon
+- [x] Smoke tests : fiche notice en français, 2 boutons présents, ancienne case absente,
+      cases de sélection, provenance complète — sur la Box et les 2 instances
+- [x] Test fonctionnel Val **OK 2026-08-21**
+- [x] Commit unique groupé + push origin/main
+
+#### Retours Val (2026-08-21) — ajustements
+- [x] **Provenance** : `__str__` renvoie le nom complet seul (`label or code`) — répéter le
+      code devant n'allongeait que les menus et les colonnes
+- [x] **Boutons de mode** groupés dans `.search-modes` : ils restent côte à côte même quand la
+      barre de filtres passe à la ligne (et pleine largeur sur mobile)
+- [x] **Couleurs** : bordeaux (mode courant) / olive (l'autre) — deux fonds pleins de la
+      charte, plus de bouton blanc qui se fond dans la page
+- [x] **Question « faut-il un tour complet du site ? »** → tour fait automatiquement :
+      `test_i18n_coverage.py` couvre les 3 angles morts restants (texte en dur dans les
+      templates, `messages`/`ValidationError`/`help_text` sans `_()`, `choices` et
+      `verbose_name` de Meta). Résultat : **3 vrais oublis corrigés** (les 4 rôles utilisateur
+      + `Setting.Meta`), 3 chaînes de `500.html` **justifiées** (handler500 n'a ni context
+      processor ni middleware de langue, textes en 4 langues en dur, déjà documenté)
+- [x] `pytest` : **648 passed** ; gate i18n (**180 chaînes + 20 pluriels**) → 0
+- [x] Test fonctionnel Val **OK 2026-08-21**
+
+### Clôture Sprint 28
+- [x] **Test fonctionnel Val OK 2026-08-21** — les 4 vagues validées (« c'est ok pour ces
+      3 points et pour le reste »)
+- [x] `pytest` : **648 passed** (444 au commit `cddb518` → 648, +204, 0 régression)
+- [x] `manage.py check` : 0 issue
+- [x] Gate i18n : `scripts/translations_sprint28.py` (**180 chaînes + 20 formes plurielles**
+      × EN/ES/MG) → `i18n_check.py` = **0**
+- [x] **3 garde-fous i18n ajoutés ce sprint** : `i18n_check.py` audite désormais les pluriels
+      (15 `{% blocktrans count %}` sortaient en français, dont 7 antérieurs) ;
+      `test_form_labels.py` vérifie que les libellés sont extractibles ;
+      `test_i18n_coverage.py` couvre les 3 angles morts restants
+- [x] Guide utilisateur ×4 langues : 3 pages neuves (`catalogue/provenances`,
+      `catalogue/categories`, `catalogue/langues`) + 6 pages enrichies
+- [x] SPEC §5.2, §6.1, §6.2, §6.7, §6.9, §6.12 + en-tête
+- [x] Commit unique groupé + push origin/main
+- [x] Déploiement final : Box, grand-saconnex, sanjuan, `docs.bibliofelia.org`, secours Avignon
+
+### Reste ouvert (hors Sprint 28)
+- [ ] Sprint 26 — 4 « Test fonctionnel Val » jamais confirmés explicitement (BUG-025 import
+      Excel sans ISBN, BUG-026 commentaires multi-lignes, FEAT-061 guide sur smartphone). Le
+      code est déployé et committé (`cddb518`) depuis le 2026-08-18 : il ne manque que la
+      confirmation
+- [ ] Catégorie `TEST` restée sur la Box : `migrate_categories` ne supprime jamais une
+      catégorie qu'elle n'a pas su reclasser. À retirer à la main si elle ne sert plus

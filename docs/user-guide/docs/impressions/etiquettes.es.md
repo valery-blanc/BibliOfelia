@@ -85,6 +85,32 @@ Ofelia y el código de estantería.
     socio. En una etiqueta el código de barras debe seguir en negro: una barra
     roja ya no la lee el lector.
 
+## Las etiquetas de lomo
+
+Una etiqueta de lomo lleva una sola cosa: la **abreviatura de la categoría**
+del libro, en letra muy grande. Pegada en el lomo, se lee a un metro de la
+estantería y permite colocar un libro sin sacarlo.
+
+En la página **Etiquetas**, seleccione sus ejemplares y haga clic en
+**Etiquetas de lomo**. Misma cinta y mismo formato que las etiquetas de
+libros (62 × 35 mm, una etiqueta por página).
+
+El texto va centrado y su tamaño se ajusta solo: `PER` llena la etiqueta,
+`RO FI ADO` se reparte en dos líneas.
+
+```
+|--------------------------|
+|          RO FI           |
+|           ADO            |
+|--------------------------|
+```
+
+!!! warning "Primero hay que rellenar la abreviatura"
+    La abreviatura se escribe en la **categoría**, no en el libro (véase
+    [Categorías](../catalogue/categories.md)). Un ejemplar cuya categoría no
+    tiene abreviatura se omite al imprimir; si ninguno la tiene, BibliOfelia
+    se lo dice en vez de generar un PDF vacío.
+
 ## Ver también
 
 - [Gestionar los ejemplares](../catalogue/exemplaires.md)

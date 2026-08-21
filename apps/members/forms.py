@@ -8,7 +8,35 @@ from django import forms
 from django.conf import settings
 from django.utils.translation import gettext_lazy as _
 
-from .models import Member
+from .languages import spoken_language_choices
+from .models import Member, MemberFamilyMember
+
+
+class LanguageChecklistWidget(forms.CheckboxSelectMultiple):
+    """FEAT-065 : les 22 langues en cases à cocher, dans un encadré.
+
+    Des cases plutôt qu'un multi-select : sur un téléphone, un `<select
+    multiple>` se manipule mal, et une bibliothécaire doit pouvoir cocher deux
+    langues sans savoir qu'il faut maintenir Ctrl.
+    """
+
+    def __init__(self, attrs=None):
+        merged = {"class": "lang-grid"}
+        merged.update(attrs or {})
+        # FEAT-070 : `choices` est un callable — la liste vit en base et peut
+        # être complétée pendant que le serveur tourne.
+        super().__init__(attrs=merged, choices=spoken_language_choices)
+
+
+class SpokenLanguagesField(forms.MultipleChoiceField):
+    """Champ des langues parlées, stocké en JSON (liste de codes)."""
+
+    def __init__(self, **kwargs):
+        kwargs.setdefault("choices", spoken_language_choices)
+        kwargs.setdefault("widget", LanguageChecklistWidget)
+        kwargs.setdefault("required", False)
+        kwargs.setdefault("label", _("Langues parlées"))
+        super().__init__(**kwargs)
 
 
 class MemberForm(forms.ModelForm):
@@ -18,12 +46,15 @@ class MemberForm(forms.ModelForm):
     laissés vides ; `expiration_date` reste ajustable (SPEC §6.2).
     """
 
+    spoken_languages = SpokenLanguagesField()
+
     class Meta:
         model = Member
         fields = [
             "first_name", "last_name", "category", "preferred_language",
+            "spoken_languages", "spoken_languages_other",
             "birth_date", "contact_phone", "address", "registration_date",
-            "expiration_date", "parent_account", "photo", "notes",
+            "expiration_date", "photo", "notes",
         ]
         widgets = {
             # BUG-015 : format ISO obligatoire pour <input type="date">,
@@ -35,10 +66,19 @@ class MemberForm(forms.ModelForm):
             "address": forms.Textarea(attrs={"rows": 2}),
             "notes": forms.Textarea(attrs={"rows": 2}),
         }
+        labels = {
+            "spoken_languages_other": _("Autres langues"),
+        }
+        help_texts = {
+            "spoken_languages_other": _(
+                "Langues absentes de la liste, séparées par des virgules."
+            ),
+        }
 
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)
         self.fields["expiration_date"].required = False
+        self.fields["spoken_languages_other"].required = False
         self.fields["registration_date"].help_text = _(
             "Par défaut : aujourd'hui."
         )
@@ -56,8 +96,97 @@ class MemberForm(forms.ModelForm):
         self.fields["preferred_language"].widget = forms.Select(
             choices=[("", _("Langue de la bibliothèque"))] + list(settings.LANGUAGES)
         )
-        # Un usager ne peut pas être son propre compte parent.
-        parents = Member.objects.all()
+
+
+class MemberFamilyMemberForm(forms.ModelForm):
+    """FEAT-072 : une ligne « famille » du formulaire usager."""
+
+    KIND_CHILD = "child"
+    KIND_ADULT = "adult"
+
+    kind = forms.ChoiceField(
+        label=_("Adulte ou enfant"),
+        required=False,
+        choices=[(KIND_CHILD, _("Enfant")), (KIND_ADULT, _("Adulte"))],
+        initial=KIND_CHILD,
+    )
+    languages = SpokenLanguagesField()
+
+    class Meta:
+        model = MemberFamilyMember
+        fields = ["gender", "first_name", "birth_year", "languages", "languages_other"]
+        labels = {
+            "gender": _("Sexe"),
+            "first_name": _("Prénom"),
+            "birth_year": _("Année de naissance"),
+            "languages_other": _("Autres langues"),
+        }
+
+    field_order = ["first_name", "gender", "kind", "birth_year"]
+
+    def __init__(self, *args, **kwargs):
+        super().__init__(*args, **kwargs)
+        for name in ("gender", "first_name", "birth_year", "languages_other"):
+            self.fields[name].required = False
+        current_year = date.today().year
+        self.fields["birth_year"].widget.attrs.update(
+            {"min": current_year - 120, "max": current_year, "placeholder": "2019"}
+        )
+        self.fields["birth_year"].help_text = _("Pour un enfant : l'âge est calculé.")
         if self.instance and self.instance.pk:
-            parents = parents.exclude(pk=self.instance.pk)
-        self.fields["parent_account"].queryset = parents
+            self.fields["kind"].initial = (
+                self.KIND_ADULT if self.instance.is_adult else self.KIND_CHILD
+            )
+
+    def clean(self):
+        cleaned = super().clean()
+        is_adult = cleaned.get("kind") == self.KIND_ADULT
+        cleaned["is_adult"] = is_adult
+        if is_adult:
+            # Une année de naissance n'apporte rien pour un adulte : on l'efface
+            # plutôt que de garder une donnée qui ne sera jamais affichée.
+            cleaned["birth_year"] = None
+        return cleaned
+
+    def save(self, commit=True):
+        instance = super().save(commit=False)
+        instance.is_adult = self.cleaned_data.get("is_adult", False)
+        if instance.is_adult:
+            instance.birth_year = None
+        if commit:
+            instance.save()
+        return instance
+
+
+class BaseMemberFamilyFormSet(forms.BaseInlineFormSet):
+    """Ignore les lignes laissées vides plutôt que de bloquer l'enregistrement.
+
+    Le formulaire propose toujours une ligne libre : sans ça, enregistrer une
+    fiche sans toucher à la famille renverrait « ce champ est obligatoire ».
+    """
+
+    def clean(self):
+        # L'ordre compte : `BaseModelFormSet.clean()` appelle `validate_unique()`,
+        # qui lit `self.deleted_forms` — une `cached_property`. Marquer les
+        # suppressions APRÈS le super() les rendrait invisibles à `save()`, et
+        # la ligne vidée serait enregistrée telle quelle au lieu d'être
+        # supprimée (constaté en test 2026-08-19).
+        for form in self.forms:
+            if getattr(form, "cleaned_data", None) is None:
+                continue
+            if form.cleaned_data.get("first_name"):
+                continue
+            # Ligne sans prénom : rien à enregistrer, on la marque supprimée.
+            form.cleaned_data["DELETE"] = True
+            form.errors.clear()
+        super().clean()
+
+
+MemberFamilyFormSet = forms.inlineformset_factory(
+    Member,
+    MemberFamilyMember,
+    form=MemberFamilyMemberForm,
+    formset=BaseMemberFamilyFormSet,
+    extra=1,
+    can_delete=True,
+)

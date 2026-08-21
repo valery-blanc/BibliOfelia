@@ -11,6 +11,8 @@ Usage local (avant commit) :
 
 Exit code :
 - 0 si tous les `.po` de en/es/mg ont 0 `msgstr ""` et 0 `#, fuzzy`.
+  Les formes plurielles (`msgstr[0]`, `msgstr[1]`) sont auditées depuis le
+  Sprint 28 : elles échappaient au contrôle et sortaient en français.
 - 1 sinon : affiche la liste des chaînes manquantes/fuzzy, locale par locale.
 
 Le script est volontairement sans dépendance externe (stdlib uniquement) pour
@@ -66,6 +68,30 @@ def audit(po_path: Path) -> tuple[list[str], list[str]]:
             i += 1
         msgid_block = lines[start][len("msgid "):] + "".join(lines[start + 1:i])
         msgid = _unquote(msgid_block)
+        # Bloc pluriel : `msgid_plural` puis `msgstr[0]`, `msgstr[1]`… Ces blocs
+        # étaient ignorés jusqu'au Sprint 28 — un `{% blocktrans count %}` non
+        # traduit passait donc le gate sans bruit, et la page sortait en français
+        # dans les 3 autres langues.
+        if i < len(lines) and lines[i].startswith("msgid_plural "):
+            i += 1
+            while i < len(lines) and lines[i].startswith('"'):
+                i += 1
+            forms: list[str] = []
+            while i < len(lines) and lines[i].startswith("msgstr["):
+                start_form = i
+                i += 1
+                while i < len(lines) and lines[i].startswith('"'):
+                    i += 1
+                head = lines[start_form]
+                value = head[head.index(" ") + 1:] + "".join(lines[start_form + 1:i])
+                forms.append(_unquote(value))
+            if msgid:
+                if not all(forms):
+                    empty.append(msgid)
+                elif is_fuzzy:
+                    fuzzy.append(msgid)
+            continue
+
         if i < len(lines) and lines[i].startswith("msgstr "):
             ms_start = i
             i += 1

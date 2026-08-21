@@ -52,6 +52,33 @@ Si un ejemplar está demasiado dañado para ser prestado (pero no
 perdido), puede **descartarlo**: permanece en la base pero deja de
 poder prestarse. Use el botón **Descartar** desde su ficha.
 
+## El código Ofelia externo
+
+Algunos libros llegan con una etiqueta que no es la suya: un fondo prestado
+por otra biblioteca, una donación ya catalogada, un inventario anterior a
+BibliOfelia. En vez de pegar su etiqueta encima, escriba ese código en el
+campo **Código Ofelia externo** del ejemplar (hasta 20 letras o cifras, por
+ejemplo `BCF13298781X`).
+
+A partir de ahí, ese código funciona **exactamente como un código Ofelia**:
+al prestar, al devolver, en el recuento, en la búsqueda. Puede escribirlo o
+escanearlo, con o sin guiones, en mayúsculas o en minúsculas.
+
+!!! warning "Un código, un ejemplar"
+    Dos ejemplares no pueden llevar el mismo código externo: BibliOfelia no
+    sabría cuál está escaneando. Si el código ya está ocupado, el
+    formulario le indica en qué ejemplar se encuentra.
+
+## La procedencia
+
+El campo **Procedencia** dice de dónde viene este ejemplar: comprado por la
+biblioteca, donado, prestado por una biblioteca asociada… Se elige de una
+lista que usted mismo gestiona (véase [Procedencias](provenances.md)).
+
+La procedencia es lo que permite, llegado el día, localizar **todos** los
+libros de un depósito para devolverlos, incluso cuando un mismo título
+tiene además un ejemplar que le pertenece.
+
 ## Imprimir las etiquetas
 
 Para imprimir los códigos de barras de los ejemplares en etiquetas

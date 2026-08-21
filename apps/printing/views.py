@@ -17,6 +17,8 @@ from .services import (
     render_item_labels_roll_pdf,
     render_member_cards_pdf,
     render_member_cards_roll_pdf,
+    render_spine_labels_roll_pdf,
+    spine_label_text,
     submit_to_cups,
 )
 
@@ -122,10 +124,30 @@ def cards_roll_pdf(request):
     return _pdf_response(render_member_cards_roll_pdf(members), "cartes-ruban.pdf")
 
 
+@require_role(Role.LIBRARIAN, Role.SUPERADMIN)
+def spine_labels_roll_pdf(request):
+    """FEAT-068 : étiquettes de tranche, une cote de catégorie par page."""
+    items = _selected_items(request)
+    if not items:
+        messages.error(request, _("Aucun exemplaire sélectionné."))
+        return redirect("printing:labels")
+    printable = [item for item in items if spine_label_text(item)]
+    if not printable:
+        messages.error(
+            request,
+            _("Aucun exemplaire sélectionné n'a de catégorie abrégée : "
+              "renseignez l'abréviation de la catégorie avant d'imprimer."),
+        )
+        return redirect("printing:labels")
+    return _pdf_response(
+        render_spine_labels_roll_pdf(printable), "etiquettes-tranche.pdf"
+    )
+
+
 def _selected_items(request) -> list:
     return list(
         Item.objects.filter(pk__in=_extract_ids(request))
-        .select_related("record", "location")
+        .select_related("record", "record__category", "location")
         .prefetch_related("record__authors")
     )
 

@@ -2,6 +2,7 @@
 from __future__ import annotations
 
 from django.db import models
+from django.utils.translation import gettext_lazy as _
 
 
 class Setting(models.Model):
@@ -13,8 +14,8 @@ class Setting(models.Model):
     updated_at = models.DateTimeField(auto_now=True)
 
     class Meta:
-        verbose_name = "paramètre"
-        verbose_name_plural = "paramètres"
+        verbose_name = _("paramètre")
+        verbose_name_plural = _("paramètres")
         ordering = ["key"]
 
     def __str__(self) -> str:

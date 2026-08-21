@@ -118,6 +118,8 @@ def _add_copies(
             record=record,
             location=location,
             state=state,
+            # FEAT-064 : provenance du lot, appliquée à tous ses exemplaires.
+            provenance=item.session.default_provenance,
             catalog_session=item.session,  # FEAT-046 : rattachement du lot (impression ciblée)
             notes=(item.notes or "") + ("\n" if item.notes else "") + notes_suffix,
         )

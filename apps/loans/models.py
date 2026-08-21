@@ -82,9 +82,10 @@ class InHouseConsultation(models.Model):
         blank=True,
         related_name="consultations",
         on_delete=models.SET_NULL,
+        verbose_name=_("usager"),
     )
-    date = models.DateField(default=date.today)
-    count = models.PositiveIntegerField(default=1)
+    date = models.DateField(default=date.today, verbose_name=_("date"))
+    count = models.PositiveIntegerField(default=1, verbose_name=_("nombre"))
 
     class Meta:
         verbose_name = _("consultation sur place")

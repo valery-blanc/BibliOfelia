@@ -60,6 +60,18 @@ very](../faq.md#carte-perdue)).
 
 Avy eo atontao ny karatra vaovao araka ny mahazatra.
 
+## Ny fianakaviana eo amin'ny karatra
+
+Raha manana olona mifandray amin'ny karatrany ny mpampiasa (jereo ny
+[Hanoratra mpikambana](inscription.md)) dia atao pirinty ao anaty **tsanganana
+« Fianakaviana »** eo ankavanan'ny karatra ny anarany.
+
+Izany no ahafahana mahita eo no ho eo, eo amin'ny birao, hoe iza no afaka
+mindrana amin'ity karatra ity — tsy mila manokatra ny rakitra.
+
+Raha be noho izay zakan'ny karatra ny anarana dia mifarana amin'ny « … » ny
+lisitra. Ny rakitry ny mpampiasa kosa mampiseho azy rehetra.
+
 ## Jereo koa
 
 - [Karatra very na nangalarina](../faq.md#carte-perdue)

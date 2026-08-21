@@ -30,6 +30,39 @@ Deux chemins pour ouvrir le formulaire d'inscription :
     sur sa fiche et sur sa carte imprimée. Pratique pour identifier
     rapidement les enfants ou les nouveaux lecteurs.
 
+### Les langues parlées
+
+Sous la catégorie, un encadré liste 22 langues. Cochez **toutes** celles que
+la personne parle — il n'y a pas de limite. Ce qui manque à la liste se
+saisit dans **Autres langues**, séparé par des virgules.
+
+À ne pas confondre avec **Langue** juste au-dessus : celle-ci dit dans
+quelle langue BibliOfelia doit lui **écrire** (relances, courriers). Les
+langues parlées, elles, servent à l'accueillir et à lui proposer les bons
+livres.
+
+### La famille
+
+La section **Famille** liste les personnes qui partagent cette carte :
+conjoint, grands-parents, enfants. Pour chacune : **prénom**, **sexe**,
+**Adulte ou enfant**, et les **langues** parlées (le même encadré, replié sous
+« Langues parlées »).
+
+Pour un enfant, indiquez son **année de naissance** : BibliOfelia en déduit
+l'âge et le tient à jour tout seul. Pour un adulte, il n'y a rien d'autre à
+saisir.
+
+Cliquez sur **Ajouter une personne** pour une ligne de plus, sur **Retirer**
+pour en enlever une. Une ligne sans prénom est simplement ignorée : vous
+pouvez laisser la ligne vide qui vous est proposée.
+
+!!! info "Ces personnes ne sont pas des membres"
+    Elles n'ont ni carte ni emprunt à leur nom. Ces informations servent
+    uniquement à orienter les propositions de lecture. Si vous voulez que l'une
+    d'elles emprunte elle-même, inscrivez-la comme membre à part entière.
+
+    Leurs prénoms apparaissent sur la [carte de membre](carte.md) imprimée.
+
 ## Enregistrer
 
 Cliquez sur **Enregistrer**. BibliOfelia attribue automatiquement :

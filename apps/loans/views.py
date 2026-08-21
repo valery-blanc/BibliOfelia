@@ -10,6 +10,7 @@ from django.views.decorators.http import require_POST
 
 from apps.accounts.models import Role
 from apps.accounts.permissions import require_role
+from apps.catalog.lookup import find_item
 from apps.catalog.models import BibliographicRecord, Item
 from apps.core.search import normalize_code
 from apps.members.models import Member
@@ -93,7 +94,7 @@ def _lend_post(request):
 
     if action == "add_item":
         ean = normalize_code(request.POST.get("ean", ""))
-        item = Item.objects.filter(ean13=ean).select_related("record").first()
+        item = find_item(ean, Item.objects.select_related("record"))
         if not item:
             messages.error(request, _("Exemplaire introuvable : %(ean)s.") % {"ean": ean})
         elif item.pk in basket:
@@ -175,7 +176,7 @@ def return_items(request):
 
 def _process_return(request):
     ean = normalize_code(request.POST.get("ean", ""))
-    item = Item.objects.filter(ean13=ean).select_related("record").first()
+    item = find_item(ean, Item.objects.select_related("record"))
     if not item:
         messages.error(request, _("Exemplaire introuvable : %(ean)s.") % {"ean": ean})
         return

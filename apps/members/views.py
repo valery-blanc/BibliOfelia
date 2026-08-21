@@ -21,7 +21,7 @@ from apps.accounts.permissions import require_role
 from apps.catalog.models import ItemStatus
 from apps.loans.models import LoanStatus, ReservationStatus
 
-from .forms import MemberForm
+from .forms import MemberFamilyFormSet, MemberForm
 from .models import Member, MemberCategory, MemberStatus
 from .notifications import member_alerts
 from .services import (
@@ -72,7 +72,7 @@ def member_list(request):
 @require_role(*READ_ROLES)
 def member_detail(request, pk):
     member = get_object_or_404(
-        Member.objects.select_related("category", "parent_account"), pk=pk
+        Member.objects.select_related("category").prefetch_related("family"), pk=pk
     )
     active_loans = (
         member.loans.filter(status__in=_ACTIVE_LOAN_STATUSES)
@@ -86,7 +86,6 @@ def member_detail(request, pk):
             "member": member,
             "active_loans": active_loans,
             "active_count": active_loans.count(),
-            "dependents": member.dependents.all(),
             "days_left": days_until_expiration(member),
             "expiring_soon": is_expiring_soon(member),
             "alerts": member_alerts(member),
@@ -123,8 +122,11 @@ def member_history(request, pk):
 def member_create(request):
     if request.method == "POST":
         form = MemberForm(request.POST, request.FILES)
-        if form.is_valid():
+        family = MemberFamilyFormSet(request.POST)
+        if form.is_valid() and family.is_valid():
             member = form.save()
+            family.instance = member
+            family.save()
             messages.success(
                 request,
                 _("Usager inscrit — carte n° %(card)s.") % {"card": member.card_number},
@@ -132,8 +134,11 @@ def member_create(request):
             return redirect("members:detail", pk=member.pk)
     else:
         form = MemberForm()
+        family = MemberFamilyFormSet()
     return render(
-        request, "members/member_form.html", {"form": form, "form_title": _("Nouvel usager")}
+        request,
+        "members/member_form.html",
+        {"form": form, "family": family, "form_title": _("Nouvel usager")},
     )
 
 
@@ -142,16 +147,24 @@ def member_edit(request, pk):
     member = get_object_or_404(Member, pk=pk)
     if request.method == "POST":
         form = MemberForm(request.POST, request.FILES, instance=member)
-        if form.is_valid():
+        family = MemberFamilyFormSet(request.POST, instance=member)
+        if form.is_valid() and family.is_valid():
             form.save()
+            family.save()
             messages.success(request, _("Fiche usager mise à jour."))
             return redirect("members:detail", pk=member.pk)
     else:
         form = MemberForm(instance=member)
+        family = MemberFamilyFormSet(instance=member)
     return render(
         request,
         "members/member_form.html",
-        {"form": form, "member": member, "form_title": _("Modifier l'usager")},
+        {
+            "form": form,
+            "family": family,
+            "member": member,
+            "form_title": _("Modifier l'usager"),
+        },
     )
 
 
@@ -219,8 +232,6 @@ def member_delete(request, pk):
     past_loans_count = member.loans.exclude(
         status__in=_ACTIVE_LOAN_STATUSES
     ).count()
-    dependents = member.dependents.all()
-
     if request.method == "POST":
         with transaction.atomic():
             active_reservations.update(status=ReservationStatus.CANCELLED)
@@ -231,7 +242,6 @@ def member_delete(request, pk):
                 if loan.item.status == ItemStatus.ON_LOAN:
                     loan.item.status = ItemStatus.AVAILABLE
                     loan.item.save(update_fields=["status"])
-            dependents.update(parent_account=None)
             member.loans.all().delete()
             member.reservations.all().delete()
             member.consultations.all().delete()
@@ -248,6 +258,5 @@ def member_delete(request, pk):
             "active_loans": active_loans,
             "active_reservations_count": active_reservations.count(),
             "past_loans_count": past_loans_count,
-            "dependents": dependents,
         },
     )

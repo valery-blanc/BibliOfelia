@@ -87,6 +87,34 @@ kaody Ofelia sy kaody talantalana eo ambany.
     mpikambana. Eo amin'ny marika dia tsy maintsy mainty ny kaody tsipika:
     tsy vakin'ny douchette intsony ny tsipika mena.
 
+## Ny etiketin'ny lamosina
+
+Zavatra iray ihany no entin'ny etiketin'ny lamosina : ny **fanafohezan'ny
+sokajin'ny** boky, amin'ny litera lehibe be. Rehefa apetaka amin'ny lamosina
+izy dia vakiana eny amin'ny iray metatra miala amin'ny talantalana, ka afaka
+mametraka boky ianao nefa tsy manaisotra azy.
+
+Ao amin'ny pejy **Etikety**, fidio ny kopia avy eo tsindrio **Etiketin'ny
+lamosina**. Riban mitovy sy endrika mitovy amin'ny etiketin'ny boky
+(62 × 35 mm, etikety iray isaky ny pejy).
+
+Eo afovoany ny soratra ary mifanaraka ho azy ny habeny : mameno ny etikety ny
+`PER`, fa mizara roa andalana kosa ny `RO FI ADO`.
+
+```
+|--------------------------|
+|          RO FI           |
+|           ADO            |
+|--------------------------|
+```
+
+!!! warning "Fenoina aloha ny fanafohezana"
+    Soratana eo amin'ny **sokajy** ny fanafohezana, fa tsy eo amin'ny boky
+    (jereo ny [Sokajy](../catalogue/categories.md)). Ny kopia izay tsy manana
+    fanafohezana ny sokajiny dia tsy tafiditra amin'ny fanontana ; raha tsy
+    misy manana mihitsy dia lazain'ny BibliOfelia aminao fa tsy manome PDF
+    foana.
+
 ## Jereo koa
 
 - [Fitantanana kopia](../catalogue/exemplaires.md)

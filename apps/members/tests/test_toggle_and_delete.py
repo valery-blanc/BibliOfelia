@@ -166,15 +166,14 @@ def test_delete_cancels_active_reservations(
     assert not Reservation.objects.filter(member__isnull=False).exists()
 
 
-def test_delete_detaches_dependents(client, superadmin, member, category):
-    dep = Member.objects.create(
-        first_name="Pierre", last_name="Curie",
-        category=category, parent_account=member,
-    )
+def test_delete_removes_the_family(client, superadmin, member, category):
+    """FEAT-072 : les fiches de famille ne survivent pas à l'usager (CASCADE)."""
+    from apps.members.models import MemberFamilyMember
+
+    MemberFamilyMember.objects.create(member=member, first_name="Pierre", birth_year=2019)
     client.force_login(superadmin)
     client.post(f"/fr/members/{member.pk}/delete/")
-    dep.refresh_from_db()
-    assert dep.parent_account is None
+    assert not MemberFamilyMember.objects.exists()
 
 
 def test_delete_cascades_past_loans(

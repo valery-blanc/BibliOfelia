@@ -37,6 +37,7 @@ from .models import (
     ScanSessionState,
     Tag,
 )
+from .lookup import is_valid_external_code, normalize_external_code
 from .openlibrary import normalize_isbn
 from .sources import SEARCHES, SOURCE_LABELS
 from .sources._fuzzy import CONFIDENCE_FLOOR, HIGHLIGHT_BELOW, best_candidate
@@ -77,7 +78,45 @@ IMPORT_OVERRIDE_COLUMNS = [
     "language",
     "tags",
     "condition",  # → état de l'exemplaire (Item.state)
+    "external_code",  # FEAT-063 → code Ofelia externe de l'exemplaire
+    "provenance",     # FEAT-064 → provenance de l'exemplaire
+    "category_abbr",  # FEAT-067 → abréviation (cote) de la catégorie
 ]
+
+# En-têtes acceptés pour les colonnes dont le nom « naturel » varie d'un
+# fichier à l'autre. Clés déjà normalisées par `_norm` (minuscules, sans
+# accents). Le nom canonique reste toujours accepté.
+_COLUMN_ALIASES = {
+    "external_code": [
+        "code_externe",
+        "code externe",
+        "code_ofelia_externe",
+        "code ofelia externe",
+        "ofelia_ext",
+        "externalcode",
+    ],
+    "provenance": ["origine"],
+    "category_abbr": [
+        "abbreviation",
+        "abreviation",
+        "categorie_abregee",
+        "categorie abregee",
+        "category_abbreviation",
+        "cat_abbr",
+    ],
+}
+
+
+def _resolve_column(headers: dict[str, int], name: str) -> int | None:
+    """Index de la colonne `name`, en acceptant ses alias d'en-tête."""
+    idx = headers.get(name)
+    if idx:
+        return idx
+    for alias in _COLUMN_ALIASES.get(name, ()):
+        idx = headers.get(alias)
+        if idx:
+            return idx
+    return None
 
 # Garde-fous tags (alignés sur enrichment.py).
 _MAX_TAGS_PER_RECORD = 10
@@ -385,13 +424,27 @@ def run_verify_job(job: ExcelCatalogJob) -> None:
     job.result_file.save(f"verify-{job.pk}.xlsx", ContentFile(buffer.getvalue()), save=False)
 
 
-def _parse_row_overrides(row, override_cols: dict, resolved_category) -> tuple[dict, list[str]]:
+def _parse_row_overrides(
+    row,
+    override_cols: dict,
+    resolved_category,
+    external_codes: set[str] | None = None,
+    provenances: dict | None = None,
+) -> tuple[dict, list[str]]:
     """FEAT-053 : extrait les overrides fiche/exemplaire d'une ligne Excel.
 
     Ne retient que les colonnes présentes ET non vides (cellule vide → l'info
     existante est conservée). Renvoie ``(overrides, warnings)``. AUTHOR et TAGS
     sont des listes (remplacement, pas fusion). ``resolved_category`` est la
     Category déjà résolue depuis la colonne CATEGORY (None si absente/inconnue).
+
+    ``external_codes`` (FEAT-063) est l'ensemble des codes Ofelia externes déjà
+    pris — en base au démarrage du job, puis enrichi ligne après ligne. Un code
+    déjà pris n'est pas appliqué : deux exemplaires portant le même code
+    rendraient tout scan ambigu.
+
+    ``provenances`` (FEAT-064) indexe les provenances connues par code **et**
+    par libellé normalisés, chargées une seule fois pour tout le fichier.
     """
     def _cell(field: str) -> str:
         idx = override_cols.get(field)
@@ -450,6 +503,36 @@ def _parse_row_overrides(row, override_cols: dict, resolved_category) -> tuple[d
             overrides["state"] = resolved
         else:
             warnings.append("CONDITION_UNKNOWN")
+
+    # FEAT-067 : la cote appartient à la catégorie, pas à la ligne — on la pose
+    # sur la Category résolue par la colonne CATEGORY. Sans catégorie résolue,
+    # elle n'a pas de cible : on le signale plutôt que de la perdre en silence.
+    abbr = _cell("category_abbr")
+    if abbr:
+        if resolved_category is None:
+            warnings.append("CATEGORY_ABBR_ORPHAN")
+        elif resolved_category.abbreviation != abbr[:20]:
+            resolved_category.abbreviation = abbr[:20]
+            resolved_category.save(update_fields=["abbreviation"])
+
+    provenance_raw = _cell("provenance")
+    if provenance_raw:
+        provenance = (provenances or {}).get(_norm(provenance_raw))
+        if provenance is not None:
+            overrides["provenance"] = provenance
+        else:
+            warnings.append("PROVENANCE_UNKNOWN")
+
+    external_code = normalize_external_code(_cell("external_code"))
+    if external_code:
+        if not is_valid_external_code(external_code):
+            warnings.append("EXTERNAL_CODE_INVALID")
+        elif external_codes is not None and external_code in external_codes:
+            warnings.append("EXTERNAL_CODE_DUPLICATE")
+        else:
+            overrides["external_code"] = external_code
+            if external_codes is not None:
+                external_codes.add(external_code)
 
     return overrides, warnings
 
@@ -516,6 +599,24 @@ def _apply_import_overrides(job, session, overrides_by_local: dict[str, dict]) -
             if "state" in overrides and copy_ids:
                 Item.objects.filter(pk__in=copy_ids).update(state=overrides["state"])
 
+            if "provenance" in overrides and copy_ids:
+                Item.objects.filter(pk__in=copy_ids).update(
+                    provenance=overrides["provenance"]
+                )
+
+            # FEAT-063 : le code externe désigne UN exemplaire — s'il y a
+            # plusieurs copies sur la ligne, il va sur la première.
+            if "external_code" in overrides and copy_ids:
+                code = overrides["external_code"]
+                target = copy_ids[0]
+                already_taken = (
+                    Item.objects.filter(external_code=code)
+                    .exclude(pk=target)
+                    .exists()
+                )
+                if not already_taken:
+                    Item.objects.filter(pk=target).update(external_code=code)
+
 
 def run_import_job(job: ExcelCatalogJob) -> None:
     """Mode IMPORT : crée une ScanSession virtuelle + ses ScanItem, finalise."""
@@ -531,7 +632,9 @@ def run_import_job(job: ExcelCatalogJob) -> None:
     col_loc = headers.get("location")
     col_cat = headers.get("category")
     # FEAT-053 : colonnes optionnelles d'affectation fiche/exemplaire.
-    override_cols = {name: headers.get(name) for name in IMPORT_OVERRIDE_COLUMNS}
+    override_cols = {
+        name: _resolve_column(headers, name) for name in IMPORT_OVERRIDE_COLUMNS
+    }
     # local_id → dict d'overrides (uniquement les colonnes présentes ET non vides).
     overrides_by_local: dict[str, dict] = {}
 
@@ -549,6 +652,21 @@ def run_import_job(job: ExcelCatalogJob) -> None:
         job.save(update_fields=["scan_session"])
 
     known_locations = {loc.code for loc in Location.objects.all()}
+    # FEAT-063 : codes externes déjà attribués (en base), enrichis au fil des
+    # lignes pour attraper aussi les doublons internes au fichier.
+    from .models import Item as _Item
+
+    external_codes = set(
+        _Item.objects.exclude(external_code="").values_list("external_code", flat=True)
+    )
+    # FEAT-064 : provenances indexées par code et par libellé (une seule requête).
+    from .models import Provenance
+
+    provenances: dict = {}
+    for prov in Provenance.objects.all():
+        provenances[_norm(prov.code)] = prov
+        if prov.label:
+            provenances.setdefault(_norm(prov.label), prov)
     total = 0
     for row_idx, row in enumerate(ws.iter_rows(min_row=2, values_only=True), start=2):
         raw_isbn = _cell_str(row[col_isbn - 1]) if col_isbn and col_isbn <= len(row) else ""
@@ -598,7 +716,9 @@ def run_import_job(job: ExcelCatalogJob) -> None:
 
         # FEAT-053 : overrides fiche/exemplaire (colonnes présentes + non vides).
         local_id = f"excel-{job.pk}-{row_idx}"
-        overrides, ov_warnings = _parse_row_overrides(row, override_cols, category)
+        overrides, ov_warnings = _parse_row_overrides(
+            row, override_cols, category, external_codes, provenances
+        )
         warnings.extend(ov_warnings)
         if overrides:
             overrides_by_local[local_id] = overrides

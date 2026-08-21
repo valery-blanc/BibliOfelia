@@ -56,6 +56,18 @@ card](../faq.md#carte-perdue)).
 
 Then print the new card normally.
 
+## The family on the card
+
+If the member has people attached to their card (see
+[Enroll a member](inscription.md)), their first names are printed in a
+**"Family" column** on the right of the card.
+
+That is what lets you see at a glance, at the desk, who may borrow with this
+card — without opening the profile.
+
+If there are more names than the card can show, the list ends with "…". The
+member's profile shows them all.
+
 ## See also
 
 - [Lost or stolen card](../faq.md#carte-perdue)

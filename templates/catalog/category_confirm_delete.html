@@ -1,0 +1,55 @@
+{% extends "base.html" %}
+{% load i18n biblio_icons %}
+
+{% block title %}{% trans "Supprimer la catégorie" %}{% endblock %}
+
+{% block tile_strip %}{% include "partials/_tile_strip.html" with active="advanced" %}{% endblock %}
+
+{% block content %}
+<nav class="breadcrumb">
+    <a href="{% url 'core:advanced' %}">{% trans "Avancé" %}</a> /
+    <a href="{% url 'catalog:category_list' %}">{% trans "Catégories" %}</a> /
+    <strong>{% trans "Supprimer" %}</strong>
+</nav>
+
+<header class="pagehead">
+    <div class="pagehead-icon" style="--ph-bg:var(--blush);--ph-fg:#B83232">
+        {% icon "trash-2" size="28px" %}
+    </div>
+    <div class="pagehead-text">
+        <h1 class="pagehead-title">{% trans "Supprimer la catégorie" %}</h1>
+        <div class="pagehead-sub">{{ category.code }} · {{ category.name }}</div>
+    </div>
+</header>
+
+<div class="card">
+    <p>{% blocktrans with code=category.code %}Confirmez-vous la suppression de la catégorie <strong>{{ code }}</strong> ?{% endblocktrans %}</p>
+
+    <h3 style="margin-top:18px">{% trans "Conséquences" %}</h3>
+    <ul>
+        <li>
+            <strong>{{ records_count }}</strong>
+            {% blocktrans count counter=records_count %}notice se retrouvera sans catégorie (aucune notice n'est supprimée).{% plural %}notices se retrouveront sans catégorie (aucune notice n'est supprimée).{% endblocktrans %}
+        </li>
+        {% if children_count %}
+        <li>
+            <strong>{{ children_count }}</strong>
+            {% blocktrans count counter=children_count %}sous-catégorie perdra son parent (deviendra racine).{% plural %}sous-catégories perdront leur parent (deviendront racine).{% endblocktrans %}
+        </li>
+        {% endif %}
+        {% if category.abbreviation %}
+        <li>{% blocktrans with abbr=category.abbreviation %}L'abréviation « {{ abbr }} » disparaît : les étiquettes de tranche déjà collées restent, mais ne pourront plus être réimprimées.{% endblocktrans %}</li>
+        {% endif %}
+    </ul>
+
+    <form method="post" style="margin-top:18px">
+        {% csrf_token %}
+        <div class="form-actions" style="border:0;padding:0;margin:0">
+            <button type="submit" class="btn btn--primary" style="background:#B83232;border-color:#B83232">
+                {% icon "trash-2" size="16px" %} {% trans "Supprimer définitivement" %}
+            </button>
+            <a href="{% url 'catalog:category_list' %}" class="btn btn--ghost">{% trans "Annuler" %}</a>
+        </div>
+    </form>
+</div>
+{% endblock %}

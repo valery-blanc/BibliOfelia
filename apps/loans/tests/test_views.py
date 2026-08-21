@@ -55,6 +55,27 @@ def test_lend_full_workflow(client, librarian, member, item):
     assert Loan.objects.filter(item=item, member=member).count() == 1
 
 
+def test_lend_accepts_external_code(client, librarian, member, item):
+    """FEAT-063 : l'étiquette d'une autre bibliothèque vaut le code Ofelia."""
+    item.external_code = "BCF13298781X"
+    item.save(update_fields=["external_code"])
+    client.force_login(librarian)
+    client.post("/fr/loans/lend/", {"action": "set_member", "card": member.card_number})
+    client.post("/fr/loans/lend/", {"action": "add_item", "ean": "bcf-1329 8781x"})
+    assert client.session["lend_basket"] == [item.pk]
+
+
+def test_return_accepts_external_code(client, librarian, member, item):
+    """FEAT-063 : idem au retour."""
+    item.external_code = "BCF13298781X"
+    item.save(update_fields=["external_code"])
+    create_loan(item, member, librarian)
+    client.force_login(librarian)
+    client.post("/fr/loans/return/", {"action": "add_item", "ean": "BCF13298781X"})
+    item.refresh_from_db()
+    assert item.status == ItemStatus.AVAILABLE
+
+
 def test_lend_unknown_card_sets_no_member(client, librarian):
     client.force_login(librarian)
     client.post("/fr/loans/lend/", {"action": "set_member", "card": "0000000000000"})

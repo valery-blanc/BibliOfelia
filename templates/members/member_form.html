@@ -24,6 +24,98 @@
     {% include "partials/_field.html" with field=form.category %}
     {% include "partials/_field.html" with field=form.preferred_language %}
 
+    {# FEAT-065 : langues parlées, à ne pas confondre avec la langue de courrier. #}
+    <div class="field">
+        <label>{% trans "Langues parlées" %}</label>
+        {{ form.spoken_languages }}
+        {% for error in form.spoken_languages.errors %}<small class="field-error">{{ error }}</small>{% endfor %}
+    </div>
+    {% include "partials/_field.html" with field=form.spoken_languages_other %}
+
+    {# FEAT-072 : personnes rattachées à la carte, adultes comme enfants. #}
+    <h3 class="section-title" style="margin-top:22px">{% trans "Famille" %}</h3>
+    <p class="help-hint" style="margin-top:-6px">
+        {% trans "Les personnes qui partagent cette carte. Elles n'ont pas de carte à leur nom : ces informations servent à leur proposer les bons livres." %}
+    </p>
+    {{ family.management_form }}
+    {% if family.non_form_errors %}<div class="msg msg-error">{{ family.non_form_errors }}</div>{% endif %}
+    <div id="children-rows">
+        {% for cform in family %}
+        <div class="child-row">
+            {{ cform.id }}
+            <div class="child-row-head">
+                <div class="field">
+                    <label for="{{ cform.first_name.id_for_label }}">{% trans "Prénom" %}</label>
+                    {{ cform.first_name }}
+                    {% for error in cform.first_name.errors %}<small class="field-error">{{ error }}</small>{% endfor %}
+                </div>
+                <div class="field">
+                    <label for="{{ cform.gender.id_for_label }}">{% trans "Sexe" %}</label>
+                    {{ cform.gender }}
+                </div>
+                <div class="field">
+                    <label for="{{ cform.kind.id_for_label }}">{% trans "Adulte ou enfant" %}</label>
+                    {{ cform.kind }}
+                </div>
+                <div class="field">
+                    <label for="{{ cform.birth_year.id_for_label }}">{% trans "Année de naissance" %}</label>
+                    {{ cform.birth_year }}
+                    {% for error in cform.birth_year.errors %}<small class="field-error">{{ error }}</small>{% endfor %}
+                </div>
+                <button type="button" class="btn btn--ghost btn--sm js-remove-child" style="color:#B83232">
+                    {% icon "trash-2" size="14px" %} <span class="hide-sm">{% trans "Retirer" %}</span>
+                </button>
+            </div>
+            <details class="child-langs" {% if cform.languages.value %}open{% endif %}>
+                <summary>{% trans "Langues parlées" %}</summary>
+                {{ cform.languages }}
+                <div class="field" style="margin-top:10px">
+                    <label for="{{ cform.languages_other.id_for_label }}">{% trans "Autres langues" %}</label>
+                    {{ cform.languages_other }}
+                </div>
+            </details>
+            <div style="display:none">{{ cform.DELETE }}</div>
+        </div>
+        {% endfor %}
+    </div>
+    <button type="button" id="add-child" class="btn btn--ghost btn--sm">
+        {% icon "plus" size="14px" %} {% trans "Ajouter une personne" %}
+    </button>
+    <template id="child-empty-form">
+        <div class="child-row">
+            <div class="child-row-head">
+                <div class="field">
+                    <label>{% trans "Prénom" %}</label>
+                    {{ family.empty_form.first_name }}
+                </div>
+                <div class="field">
+                    <label>{% trans "Sexe" %}</label>
+                    {{ family.empty_form.gender }}
+                </div>
+                <div class="field">
+                    <label>{% trans "Adulte ou enfant" %}</label>
+                    {{ family.empty_form.kind }}
+                </div>
+                <div class="field">
+                    <label>{% trans "Année de naissance" %}</label>
+                    {{ family.empty_form.birth_year }}
+                </div>
+                <button type="button" class="btn btn--ghost btn--sm js-remove-child" style="color:#B83232">
+                    {% icon "trash-2" size="14px" %} <span class="hide-sm">{% trans "Retirer" %}</span>
+                </button>
+            </div>
+            <details class="child-langs">
+                <summary>{% trans "Langues parlées" %}</summary>
+                {{ family.empty_form.languages }}
+                <div class="field" style="margin-top:10px">
+                    <label>{% trans "Autres langues" %}</label>
+                    {{ family.empty_form.languages_other }}
+                </div>
+            </details>
+            <div style="display:none">{{ family.empty_form.DELETE }}</div>
+        </div>
+    </template>
+
     <details class="advanced-section" {% if user.always_show_advanced %}open{% endif %}>
         <summary>{% trans "Options avancées" %}</summary>
         {% include "partials/_field.html" with field=form.birth_date %}
@@ -31,7 +123,6 @@
         {% include "partials/_field.html" with field=form.address %}
         {% include "partials/_field.html" with field=form.registration_date %}
         {% include "partials/_field.html" with field=form.expiration_date %}
-        {% include "partials/_field.html" with field=form.parent_account %}
         {% if form.instance.photo %}
         <div class="field">
             <label>{% trans "Photo actuelle" %}</label>
@@ -69,6 +160,45 @@
         d.setFullYear(d.getFullYear() + 1);
         var pad = function (n) { return n < 10 ? "0" + n : "" + n; };
         exp.value = d.getFullYear() + "-" + pad(d.getMonth() + 1) + "-" + pad(d.getDate());
+    });
+})();
+
+// FEAT-072 : ajout/retrait de lignes « famille ». Une ligne dont le prénom est
+// vide est ignorée côté serveur : retirer une ligne revient donc à vider ses
+// champs et à la masquer, ce qui marche aussi bien pour une ligne déjà
+// enregistrée que pour une ligne qu'on vient d'ajouter.
+(function () {
+    var rows = document.getElementById("children-rows");
+    var addBtn = document.getElementById("add-child");
+    var tpl = document.getElementById("child-empty-form");
+    var totalInput = document.querySelector('input[name$="-TOTAL_FORMS"]');
+    if (!rows || !addBtn || !tpl || !totalInput) return;
+
+    addBtn.addEventListener("click", function () {
+        var index = parseInt(totalInput.value, 10);
+        var html = tpl.innerHTML.replace(/__prefix__/g, index);
+        var holder = document.createElement("div");
+        holder.innerHTML = html;
+        var row = holder.firstElementChild;
+        rows.appendChild(row);
+        totalInput.value = index + 1;
+        var first = row.querySelector('input[type="text"]');
+        if (first) first.focus();
+    });
+
+    rows.addEventListener("click", function (event) {
+        var btn = event.target.closest(".js-remove-child");
+        if (!btn) return;
+        var row = btn.closest(".child-row");
+        if (!row) return;
+        row.querySelectorAll("input, select").forEach(function (el) {
+            if (el.type === "checkbox" || el.type === "radio") {
+                el.checked = el.name.endsWith("-DELETE");
+            } else if (el.type !== "hidden") {
+                el.value = "";
+            }
+        });
+        row.style.display = "none";
     });
 })();
 </script>

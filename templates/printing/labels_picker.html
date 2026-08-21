@@ -47,6 +47,9 @@
         <button type="submit" formaction="{% url 'printing:labels_roll_pdf' %}" formtarget="_blank" class="btn btn--primary">
             {% icon "printer" size="16px" %} {% blocktrans with w=roll.tape_width_mm %}Ruban {{ w }} mm (Brother QL){% endblocktrans %}
         </button>
+        <button type="submit" formaction="{% url 'printing:spine_labels_roll_pdf' %}" formtarget="_blank" class="btn btn--primary">
+            {% icon "bookmark" size="16px" %} {% trans "Étiquettes de tranche" %}
+        </button>
         {% endif %}
         <button type="submit" formaction="{% url 'printing:labels_send' %}" formmethod="post" formenctype="application/x-www-form-urlencoded" class="btn btn--ghost">
             {% icon "printer" size="16px" %} {% trans "Imprimer (CUPS)" %}
@@ -61,6 +64,8 @@
                     <th>{% trans "Titre" %}</th>
                     <th>{% trans "Emplacement" %}</th>
                     <th>{% trans "Code Ofelia" %}</th>
+                    <th>{% trans "Code externe" %}</th>
+                    <th>{% trans "Provenance" %}</th>
                 </tr>
             </thead>
             <tbody>
@@ -71,9 +76,11 @@
                     <td><span class="cell-title">{{ item.record.title|truncatechars:50 }}</span></td>
                     <td>{{ item.location.code|default:"—" }}</td>
                     <td>{{ item.ean13 }}</td>
+                    <td>{{ item.external_code|default:"—" }}</td>
+                    <td>{{ item.provenance|default:"—" }}</td>
                 </tr>
             {% empty %}
-                <tr><td colspan="5" class="muted" style="text-align:center;padding:24px">{% trans "Aucun exemplaire." %}</td></tr>
+                <tr><td colspan="7" class="muted" style="text-align:center;padding:24px">{% trans "Aucun exemplaire." %}</td></tr>
             {% endfor %}
             </tbody>
         </table>

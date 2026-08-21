@@ -3,21 +3,29 @@ from __future__ import annotations
 
 from django.contrib.auth.models import AbstractUser
 from django.db import models
+from django.utils.translation import gettext_lazy as _
 
 
 class Role(models.TextChoices):
-    SUPERADMIN = "superadmin", "Superadmin"
-    LIBRARIAN = "librarian", "Bibliothécaire"
-    CONTRIBUTOR_API = "contributor_api", "Contributeur OfeliaScan"
-    READONLY = "readonly", "Support / lecture seule"
+    SUPERADMIN = "superadmin", _("Superadmin")
+    LIBRARIAN = "librarian", _("Bibliothécaire")
+    CONTRIBUTOR_API = "contributor_api", _("Contributeur OfeliaScan")
+    READONLY = "readonly", _("Support / lecture seule")
 
 
 class User(AbstractUser):
     role = models.CharField(
-        max_length=20, choices=Role.choices, default=Role.LIBRARIAN
+        max_length=20,
+        choices=Role.choices,
+        default=Role.LIBRARIAN,
+        verbose_name=_("rôle"),
     )
-    default_language = models.CharField(max_length=10, blank=True, default="")
-    always_show_advanced = models.BooleanField(default=False)
+    default_language = models.CharField(
+        max_length=10, blank=True, default="", verbose_name=_("langue par défaut")
+    )
+    always_show_advanced = models.BooleanField(
+        default=False, verbose_name=_("toujours afficher les options avancées")
+    )
 
     class Meta(AbstractUser.Meta):
         swappable = "AUTH_USER_MODEL"

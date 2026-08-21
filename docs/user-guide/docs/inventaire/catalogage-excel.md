@@ -95,6 +95,9 @@ celles dont vous disposez, dans n'importe quel ordre.
 | `LANGUAGE` | le code langue (fr, en, es…) |
 | `TAGS` | des mots-clés séparés par des **virgules** |
 | `CONDITION` | l'état de l'exemplaire (Neuf, Bon, Usé, Abîmé) |
+| `EXTERNAL_CODE` | le code d'une autre bibliothèque déjà posé sur le livre |
+| `PROVENANCE` | le code ou le nom d'une provenance existante |
+| `CATEGORY_ABBR` | l'abréviation de la catégorie (cote de rayon) |
 
 Dans l'encadré
 [**Importer dans BibliOfelia**](/bibliofelia/fr/catalog/excel-catalog/){ target="_blank" },

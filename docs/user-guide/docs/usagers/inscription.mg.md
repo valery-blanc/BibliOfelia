@@ -30,6 +30,38 @@ Lalana roa hanokarana ny formulaire fisoratana:
     takelaka sy amin'ny karatra voatonta izy. Tsara mba hahafantarana
     haingana ireo ankizy na ireo mpamaky vaovao.
 
+### Ny fiteny tenenina
+
+Eo ambanin'ny sokajy dia misy boaty mitanisa fiteny 22. Mariho **izay rehetra**
+tenenin'ilay olona — tsy misy fetra. Izay tsy ao anaty lisitra dia soratana ao
+amin'ny **Fiteny hafa**, sarahina amin'ny faingo.
+
+Aza afangaro amin'ny **Fiteny** eo ambony : io dia milaza ny fiteny tokony
+**hanoratan'ny** BibliOfelia aminy (fampahatsiahivana, taratasy). Ny fiteny
+tenenina kosa dia entina handraisana azy sy hanolorana boky mifanaraka aminy.
+
+### Ny fianakaviana
+
+Ny fizarana **Fianakaviana** dia mitanisa ny olona mizara ity karatra ity :
+vady, raibe sy renibe, zanaka. Ho an'ny tsirairay : **anarana**, **lahy na
+vavy**, **Olon-dehibe na ankizy**, ary ny **fiteny** teneniny (ilay boaty
+ihany, miafina ao ambanin'ny « Fiteny tenenina »).
+
+Ho an'ny ankizy, soraty ny **taona nahaterahany** : ny BibliOfelia no manisa ny
+taonany ary manavao azy ho azy. Ho an'ny olon-dehibe dia tsy misy zavatra hafa
+fenoina.
+
+Tsindrio **Hanampy olona** raha te hanampy andalana, ary **Esory** raha te
+hanaisotra iray. Ny andalana tsy misy anarana dia tsy raisina : azonao avela
+foana ilay andalana atolotra anao.
+
+!!! info "Tsy mpikambana ireo olona ireo"
+    Tsy manana karatra na fampindramana amin'ny anarany izy ireo. Ireo
+    fanazavana ireo dia entina hanolorana boky mifanaraka aminy ihany. Raha
+    tianao hindrana boky ny iray amin'izy ireo dia soraty ho mpikambana feno izy.
+
+    Miseho eo amin'ny [karatra mpikambana](carte.md) vita pirinty ny anarany.
+
 ## Tehirizo
 
 Click amin'ny **Tehirizo**. Ny BibliOfelia dia manome automatika:

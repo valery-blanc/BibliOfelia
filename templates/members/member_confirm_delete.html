@@ -37,18 +37,20 @@
         {% if past_loans_count %}
         <li><strong>{{ past_loans_count }}</strong> {% trans "prêt(s) passé(s) seront supprimés (historique perdu)." %}</li>
         {% endif %}
-        {% if dependents %}
+        {% with family=member.family.all %}
+        {% if family %}
         <li>
-            <strong>{{ dependents|length }}</strong> {% trans "compte(s) rattaché(s) verront leur lien rompu :" %}
+            <strong>{{ family|length }}</strong> {% trans "fiche(s) de famille seront supprimées avec l'usager :" %}
             <ul>
-                {% for dep in dependents %}
-                <li>{{ dep.full_name }}</li>
+                {% for child in family %}
+                <li>{{ child.first_name }}</li>
                 {% endfor %}
             </ul>
         </li>
         {% endif %}
-        {% if not active_loans and not active_reservations_count and not past_loans_count and not dependents %}
-        <li class="muted">{% trans "Aucun impact : usager sans prêt, réservation ni dépendant." %}</li>
+        {% endwith %}
+        {% if not active_loans and not active_reservations_count and not past_loans_count and not member.family.all %}
+        <li class="muted">{% trans "Aucun impact : usager sans prêt, réservation ni personne rattachée." %}</li>
         {% endif %}
     </ul>
 

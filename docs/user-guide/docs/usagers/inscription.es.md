@@ -30,6 +30,36 @@ Dos rutas para abrir el formulario de inscripción:
     tarjeta impresa. Útil para identificar rápidamente a los niños o
     a los nuevos lectores.
 
+### Los idiomas hablados
+
+Debajo de la categoría, un recuadro enumera 22 idiomas. Marque **todos** los
+que hable la persona: no hay límite. Lo que falte en la lista se escribe en
+**Otros idiomas**, separado por comas.
+
+No hay que confundirlo con **Idioma**, justo encima: ese dice en qué idioma
+debe BibliOfelia **escribirle** (avisos, cartas). Los idiomas hablados
+sirven para acogerle y proponerle los libros adecuados.
+
+### La familia
+
+La sección **Familia** enumera las personas que comparten este carné: pareja,
+abuelos, hijos. Para cada una: **nombre**, **sexo**, **Adulto o niño**, y los
+**idiomas** que habla (el mismo recuadro, plegado bajo "Idiomas hablados").
+
+Para un niño, indique su **año de nacimiento**: BibliOfelia deduce la edad y la
+mantiene al día por sí solo. Para un adulto no hay nada más que rellenar.
+
+Haga clic en **Añadir una persona** para una línea más, y en **Quitar** para
+eliminar una. Una línea sin nombre simplemente se ignora: puede dejar vacía la
+línea que se le ofrece.
+
+!!! info "Estas personas no son miembros"
+    No tienen carné ni préstamos a su nombre. Esta información solo sirve para
+    orientar las propuestas de lectura. Si quiere que una de ellas tome prestado
+    ella misma, inscríbala como miembro de pleno derecho.
+
+    Sus nombres aparecen en el [carné de miembro](carte.md) impreso.
+
 ## Guardar
 
 Haga clic en **Guardar**. BibliOfelia asigna automáticamente:

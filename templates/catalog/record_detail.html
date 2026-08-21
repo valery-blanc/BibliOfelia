@@ -49,7 +49,15 @@
         <div style="grid-column:1/-1"><dt>{% trans "Sous-titre" %}</dt><dd>{{ record.subtitle }}</dd></div>
         {% endif %}
         <div><dt>{% trans "Auteur(s)" %}</dt><dd>{% for a in record.authors.all %}{{ a.full_name }}{% if not forloop.last %}, {% endif %}{% empty %}—{% endfor %}</dd></div>
-        <div><dt>{% trans "Catégorie" %}</dt><dd>{{ record.category.name|default:"—" }}</dd></div>
+        <div>
+            <dt>{% trans "Catégorie" %}</dt>
+            <dd>
+                {{ record.category.name|default:"—" }}
+                {% if record.category.abbreviation %}
+                <span class="code-pill" title="{% trans 'Cote imprimée sur la tranche' %}">{{ record.category.abbreviation }}</span>
+                {% endif %}
+            </dd>
+        </div>
         <div><dt>{% trans "Type" %}</dt><dd>{{ record.get_document_type_display }}</dd></div>
         <div><dt>{% trans "Éditeur" %}</dt><dd>{{ record.publisher|default:"—" }}</dd></div>
         <div><dt>{% trans "Année" %}</dt><dd>{{ record.publication_year|default:"—" }}</dd></div>
@@ -89,7 +97,9 @@
             <tr>
                 <th>{% trans "Code interne" %}</th>
                 <th>{% trans "Code Ofelia" %}</th>
+                <th>{% trans "Code externe" %}</th>
                 <th>{% trans "Emplacement" %}</th>
+                <th>{% trans "Provenance" %}</th>
                 <th>{% trans "État" %}</th>
                 <th>{% trans "Statut" %}</th>
                 <th></th>
@@ -100,7 +110,9 @@
             <tr>
                 <td><span class="cell-title">{{ item.internal_id }}</span></td>
                 <td>{{ item.ean13 }}</td>
+                <td>{{ item.external_code|default:"—" }}</td>
                 <td>{{ item.location.code|default:"—" }}</td>
+                <td>{{ item.provenance|default:"—" }}</td>
                 <td>{{ item.get_state_display }}</td>
                 <td>
                     {% if item.status == "available" %}

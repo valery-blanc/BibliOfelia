@@ -30,6 +30,37 @@ Two paths to open the enrollment form:
     profile and the printed card. Useful to quickly identify children
     or new readers.
 
+### Spoken languages
+
+Below the category, a box lists 22 languages. Tick **all** the ones the
+person speaks — there is no limit. Anything missing from the list goes into
+**Other languages**, separated by commas.
+
+Not to be confused with **Language** just above: that one says which
+language BibliOfelia should **write** to them in (reminders, letters).
+Spoken languages are there to welcome them and suggest the right books.
+
+### The family
+
+The **Family** section lists the people who share this card: partner,
+grandparents, children. For each one: **first name**, **sex**, **Adult or
+child**, and the **languages** they speak (the same box, folded under "Spoken
+languages").
+
+For a child, enter their **year of birth**: BibliOfelia works out the age and
+keeps it up to date on its own. For an adult, there is nothing else to fill in.
+
+Click **Add a person** for one more line, **Remove** to take one away. A line
+with no first name is simply ignored: you can leave the blank line you are
+offered.
+
+!!! info "These people are not members"
+    They have no card and no loans in their name. This information is only used
+    to guide reading suggestions. If you want one of them to borrow books
+    themselves, enroll them as a full member.
+
+    Their first names appear on the printed [member card](carte.md).
+
 ## Save
 
 Click **Save**. BibliOfelia automatically assigns:

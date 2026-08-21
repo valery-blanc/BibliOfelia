@@ -1,0 +1,38 @@
+{% load i18n %}
+{% comment %}
+FEAT-073 — deux cases « tout sélectionner », volontairement distinctes.
+
+« Tout cocher » ne cochait que la page courante sans le dire : sur un fonds de
+900 exemplaires, croire qu'on a tout sélectionné avant une suppression est un
+piège. Les deux intentions sont donc séparées, et s'excluent l'une l'autre.
+
+La seconde case n'apparaît que s'il y a plusieurs pages — sinon elle ferait
+doublon avec la première.
+
+Le formulaire hôte doit déclarer `x-data="{count:0, visibleAll:false, allResults:false}"`
+et poster `select_all` + `back_qs` (cf. `_selected_pks` côté vue).
+{% endcomment %}
+<div class="select-all">
+    <label>
+        <input type="checkbox" x-model="visibleAll"
+               @change="allResults = false;
+                        document.querySelectorAll('input[name=ids_desktop]').forEach(c => c.checked = $event.target.checked);
+                        document.querySelectorAll('input[name=ids_mobile]').forEach(c => c.checked = $event.target.checked);
+                        count = document.querySelectorAll('input[name=ids_desktop]:checked').length">
+        {% blocktrans count counter=page_obj.object_list|length %}Sélectionner le résultat visible{% plural %}Sélectionner les {{ counter }} résultats visibles{% endblocktrans %}
+    </label>
+
+    {% if page_obj.paginator.num_pages > 1 %}
+    <label>
+        <input type="checkbox" x-model="allResults"
+               @change="if (allResults) {
+                            visibleAll = false;
+                            document.querySelectorAll('input[name=ids_desktop]').forEach(c => c.checked = false);
+                            document.querySelectorAll('input[name=ids_mobile]').forEach(c => c.checked = false);
+                            count = 0;
+                        }">
+        {% blocktrans count counter=total %}Sélectionner le résultat de la recherche{% plural %}Sélectionner les {{ counter }} résultats de la recherche{% endblocktrans %}
+        <small class="muted">{% trans "(toutes les pages)" %}</small>
+    </label>
+    {% endif %}
+</div>

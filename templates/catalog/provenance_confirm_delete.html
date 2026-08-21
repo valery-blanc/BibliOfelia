@@ -1,0 +1,53 @@
+{% extends "base.html" %}
+{% load i18n biblio_icons %}
+
+{% block title %}{% trans "Supprimer la provenance" %}{% endblock %}
+
+{% block tile_strip %}{% include "partials/_tile_strip.html" with active="advanced" %}{% endblock %}
+
+{% block content %}
+<nav class="breadcrumb">
+    <a href="{% url 'core:advanced' %}">{% trans "Avancé" %}</a> /
+    <a href="{% url 'catalog:provenance_list' %}">{% trans "Provenances" %}</a> /
+    <strong>{% trans "Supprimer" %}</strong>
+</nav>
+
+<header class="pagehead">
+    <div class="pagehead-icon" style="--ph-bg:var(--blush);--ph-fg:#B83232">
+        {% icon "trash-2" size="28px" %}
+    </div>
+    <div class="pagehead-text">
+        <h1 class="pagehead-title">{% trans "Supprimer la provenance" %}</h1>
+        <div class="pagehead-sub">{{ provenance.code }}{% if provenance.label %} · {{ provenance.label }}{% endif %}</div>
+    </div>
+</header>
+
+<div class="card">
+{% if items_count %}
+    <div class="msg msg-error">
+        {% blocktrans count counter=items_count %}Suppression impossible : {{ counter }} exemplaire porte encore cette provenance.{% plural %}Suppression impossible : {{ counter }} exemplaires portent encore cette provenance.{% endblocktrans %}
+    </div>
+    <p class="muted">
+        {% trans "Effacer la provenance ferait perdre la trace de l'origine de ces exemplaires. Traitez-les d'abord : rattachez-les à une autre provenance, ou supprimez-les si le fonds est rendu." %}
+    </p>
+    <div class="form-actions" style="border:0;padding:0;margin-top:14px">
+        <a href="{% url 'catalog:record_list' %}?mode=items&provenance={{ provenance.pk }}" class="btn btn--primary">
+            {% icon "search" size="16px" %} {% trans "Voir ces exemplaires" %}
+        </a>
+        <a href="{% url 'catalog:provenance_list' %}" class="btn btn--ghost">{% trans "Retour" %}</a>
+    </div>
+{% else %}
+    <p>{% blocktrans with code=provenance.code %}Confirmez-vous la suppression de la provenance <strong>{{ code }}</strong> ?{% endblocktrans %}</p>
+    <p class="muted">{% trans "Aucun exemplaire ne la porte : la suppression n'a aucun effet sur le catalogue." %}</p>
+    <form method="post" style="margin-top:18px">
+        {% csrf_token %}
+        <div class="form-actions" style="border:0;padding:0;margin:0">
+            <button type="submit" class="btn btn--primary" style="background:#B83232;border-color:#B83232">
+                {% icon "trash-2" size="16px" %} {% trans "Supprimer définitivement" %}
+            </button>
+            <a href="{% url 'catalog:provenance_list' %}" class="btn btn--ghost">{% trans "Annuler" %}</a>
+        </div>
+    </form>
+{% endif %}
+</div>
+{% endblock %}

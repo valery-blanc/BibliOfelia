@@ -29,5 +29,5 @@ class MemberAdmin(admin.ModelAdmin):
     )
     list_filter = ("status", "category")
     search_fields = ("card_number", "last_name", "first_name", "contact_phone")
-    autocomplete_fields = ("category", "parent_account")
+    autocomplete_fields = ("category",)
     readonly_fields = ("card_number",)

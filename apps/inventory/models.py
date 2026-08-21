@@ -27,15 +27,26 @@ class InventoryStatus(models.TextChoices):
 
 class InventorySession(models.Model):
     session_id = models.UUIDField(default=uuid.uuid4, unique=True, editable=False)
-    label = models.CharField(max_length=120, blank=True)
+    label = models.CharField(max_length=120, blank=True, verbose_name=_("nom"))
     scope_type = models.CharField(
-        max_length=10, choices=InventoryScope.choices, default=InventoryScope.ALL
+        max_length=10,
+        choices=InventoryScope.choices,
+        default=InventoryScope.ALL,
+        verbose_name=_("périmètre"),
     )
     scope_location = models.ForeignKey(
-        "catalog.Location", null=True, blank=True, on_delete=models.SET_NULL
+        "catalog.Location",
+        null=True,
+        blank=True,
+        on_delete=models.SET_NULL,
+        verbose_name=_("emplacement"),
     )
     scope_category = models.ForeignKey(
-        "catalog.Category", null=True, blank=True, on_delete=models.SET_NULL
+        "catalog.Category",
+        null=True,
+        blank=True,
+        on_delete=models.SET_NULL,
+        verbose_name=_("catégorie"),
     )
     status = models.CharField(
         max_length=10, choices=InventoryStatus.choices, default=InventoryStatus.OPEN

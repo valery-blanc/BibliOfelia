@@ -94,6 +94,9 @@ orden.
 | `YEAR` | el año de publicación |
 | `LANGUAGE` | el código de idioma (fr, en, es…) |
 | `TAGS` | palabras clave separadas por **comas** |
+| `EXTERNAL_CODE` | el código de otra biblioteca ya puesto en el libro |
+| `PROVENANCE` | el código o el nombre de una procedencia existente |
+| `CATEGORY_ABBR` | la abreviatura de la categoría (signatura) |
 | `CONDITION` | el estado del ejemplar (Nuevo, Bueno, Desgastado, Dañado) |
 
 En el recuadro

@@ -1,0 +1,98 @@
+{% extends "base.html" %}
+{% load i18n biblio_icons %}
+
+{% block title %}{% trans "Supprimer des exemplaires" %}{% endblock %}
+
+{% block tile_strip %}{% include "partials/_tile_strip.html" with active="catalogue" %}{% endblock %}
+
+{# Vue @require_POST : le sélecteur de langue doit repartir sur le catalogue. #}
+{% block lang_next %}/{{ LANGUAGE_CODE }}/catalog/{% endblock %}
+
+{% block content %}
+<header class="pagehead">
+    <div class="pagehead-icon" style="--ph-bg:var(--blush);--ph-fg:#B83232">
+        {% icon "trash-2" size="28px" %}
+    </div>
+    <div class="pagehead-text">
+        <h1 class="pagehead-title">{% trans "Supprimer des exemplaires" %}</h1>
+        <div class="pagehead-sub">
+            {% blocktrans count counter=count %}{{ counter }} exemplaire sélectionné{% plural %}{{ counter }} exemplaires sélectionnés{% endblocktrans %}
+        </div>
+    </div>
+</header>
+
+{% if not count %}
+<div class="card">
+    <p class="muted">{% trans "Aucun exemplaire sélectionné." %}</p>
+    <a href="{% url 'catalog:record_list' %}?mode=items" class="btn btn--ghost">{% trans "Retour au catalogue" %}</a>
+</div>
+{% else %}
+<div class="card">
+    <div class="msg msg-error">
+        {% trans "Cette suppression est définitive. Les notices, elles, restent au catalogue." %}
+    </div>
+
+    <h3 style="margin-top:18px">{% trans "Conséquences" %}</h3>
+    <ul>
+        {% if on_loan %}
+        <li>
+            <strong>{{ on_loan }}</strong>
+            {% blocktrans count counter=on_loan %}exemplaire est actuellement prêté : son prêt sera clos en « perdu ».{% plural %}exemplaires sont actuellement prêtés : leurs prêts seront clos en « perdu ».{% endblocktrans %}
+        </li>
+        {% endif %}
+        {% if reserved %}
+        <li>
+            <strong>{{ reserved }}</strong>
+            {% blocktrans count counter=reserved %}exemplaire est mis de côté : la réservation servie sera annulée.{% plural %}exemplaires sont mis de côté : les réservations servies seront annulées.{% endblocktrans %}
+        </li>
+        {% endif %}
+        <li>{% trans "L'historique de prêts et de consultations de ces exemplaires est effacé." %}</li>
+        <li>{% trans "Leurs codes Ofelia sont mis de côté définitivement : ils ne seront jamais réattribués à un autre livre, même si l'étiquette a déjà été imprimée." %}</li>
+    </ul>
+
+    <h3 style="margin-top:18px">{% trans "Exemplaires concernés" %}</h3>
+    <div class="table-wrap">
+        <table class="table">
+            <thead>
+                <tr>
+                    <th>{% trans "Titre" %}</th>
+                    <th>{% trans "Code Ofelia" %}</th>
+                    <th>{% trans "Code externe" %}</th>
+                    <th>{% trans "Provenance" %}</th>
+                    <th>{% trans "Statut" %}</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for it in items %}
+                <tr>
+                    <td>{{ it.record.title|truncatechars:60 }}</td>
+                    <td>{{ it.ean13 }}</td>
+                    <td class="muted">{{ it.external_code|default:"—" }}</td>
+                    <td class="muted">{{ it.provenance|default:"—" }}</td>
+                    <td class="muted">{{ it.get_status_display }}</td>
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    </div>
+    {% if hidden_count %}
+    <p class="muted text-sm" style="margin-top:8px">
+        {% blocktrans count counter=hidden_count %}… et {{ counter }} autre exemplaire non affiché ici. Il sera supprimé lui aussi.{% plural %}… et {{ counter }} autres exemplaires non affichés ici. Ils seront supprimés eux aussi.{% endblocktrans %}
+    </p>
+    {% endif %}
+
+    <form method="post" action="{% url 'catalog:item_bulk_delete' %}" style="margin-top:18px">
+        {% csrf_token %}
+        {% for pk in ids %}
+        <input type="hidden" name="ids" value="{{ pk }}">
+        {% endfor %}
+        <div class="form-actions" style="border:0;padding:0;margin:0">
+            <button type="submit" class="btn btn--primary" style="background:#B83232;border-color:#B83232">
+                {% icon "trash-2" size="16px" %} {% trans "Supprimer définitivement" %}
+            </button>
+            <a href="{% url 'catalog:record_list' %}?mode=items" class="btn btn--ghost">{% trans "Annuler" %}</a>
+        </div>
+    </form>
+</div>
+{% endif %}
+{% endblock %}

@@ -69,6 +69,11 @@ FORCE_SCRIPT_NAME) pour que `translate_url` côté set_language sache résoudre 
             </tbody>
         </table>
     </div>
+    {% if hidden_count %}
+    <p class="muted text-sm" style="margin-top:8px">
+        {% blocktrans count counter=hidden_count %}… et {{ counter }} autre notice non affichée ici. Elle sera supprimée elle aussi.{% plural %}… et {{ counter }} autres notices non affichées ici. Elles seront supprimées elles aussi.{% endblocktrans %}
+    </p>
+    {% endif %}
 
     <form method="post" action="{% url 'catalog:record_bulk_delete' %}" style="margin-top:18px">
         {% csrf_token %}
