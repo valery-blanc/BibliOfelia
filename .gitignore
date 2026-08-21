@@ -71,6 +71,7 @@ secrets/
 # Notes de travail locales de Val (bugs / petites features) — jamais dans git
 temp.txt
 temp_*.txt
+temp[0-9]*.txt
 
 # Documentation utilisateur (Sprint 15)
 docs/user-guide/site/
