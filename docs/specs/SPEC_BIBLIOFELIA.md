@@ -4,7 +4,9 @@ Spécification détaillée du logiciel de gestion de bibliothèque BibliOfelia, 
 
 Version : 1.0 (cible v1)
 Statut : draft pour Spec-Driven Development
-Dernière modif spec : 2026-08-22 — **Sprint 29** : **FEAT-074** — **suppression du chemin d'impression CUPS**. Le bouton « Imprimer (CUPS) » de l'écran d'étiquettes renvoyait un **403 CSRF** (POST forcé sur un formulaire `method="get"` sans jeton) et n'a donc jamais fonctionné ; sur le fond, `submit_to_cups()` suppose une imprimante visible depuis le serveur, alors que l'étiqueteuse est sur le poste du bibliothécaire et le serveur hors de la bibliothèque. Vue, route, `submit_to_cups()`, réglages `CUPS_*`, `pycups`/`libcups2` et l'étape « Imprimante » du wizard sont retirés ; le PDF (planche A4 ou ruban 62 mm) devient l'unique chemin d'impression. Le wizard passe de **8 à 7 étapes**. Cf. §2.1, §6.7, §11.3.
+Dernière modif spec : 2026-08-22 — **Sprint 29 CLOS** (validé Val 2026-08-22) : **FEAT-075** — **deux écrans d'étiquettes** au lieu d'un : « Étiquettes codes Ofelia » (PDF A4 ou ruban) et « Étiquettes de tranche » (ruban seul, colonnes *Catégorie* et *Cote imprimée*), même sélection d'exemplaires partagée (`_picker_context` + `printing/_picker_base.html`) ; le bouton « Générer PDF » devient « **PDF A4** » ; les cotes de tranche sont **condensées à 60 % en largeur, hauteur inchangée** (`SPINE_WIDTH_SCALE`) pour tenir sur les tranches minces, et disposent elles aussi d'une **planche A4**. — **FEAT-076** — nouveau chapitre **« Méta-données »** dans le menu Avancé (emplacements, langues, catégories, provenances, enrichissement), extrait du chapitre Inventaire. — **FEAT-077** — **logo compact** dans la topbar (`ofelia-logo-small.png`, l'emblème seul : ~30 px de large au lieu de ~104) et **date + heure de la Box** à droite du « Bonjour » sur l'accueil, la Box perdant son horloge à chaque extinction (pas de pile RTC). L'heure affichée est **celle du serveur**, rafraîchie à partir de l'horodatage rendu — jamais celle du poste, sans quoi un poste à l'heure masquerait une Box déréglée. `TIME_ZONE` devient réglable : variable d'environnement **`TZ`** par instance (défaut `UTC` inchangé, c'est ainsi que la Box prend le fuseau du Pi), surchargeable par un réglage **Avancé → Paramètres → Fuseau horaire**. L'heure est suivie de l'abréviation du fuseau (`CEST`, `-03`…). Cf. §6.6, §6.7, §10.1, §10.2.
+
+Modif précédente : 2026-08-22 — **Sprint 29, 1re vague** : **FEAT-074** — **suppression du chemin d'impression CUPS**. Le bouton « Imprimer (CUPS) » de l'écran d'étiquettes renvoyait un **403 CSRF** (POST forcé sur un formulaire `method="get"` sans jeton) et n'a donc jamais fonctionné ; sur le fond, `submit_to_cups()` suppose une imprimante visible depuis le serveur, alors que l'étiqueteuse est sur le poste du bibliothécaire et le serveur hors de la bibliothèque. Vue, route, `submit_to_cups()`, réglages `CUPS_*`, `pycups`/`libcups2` et l'étape « Imprimante » du wizard sont retirés ; le PDF (planche A4 ou ruban 62 mm) devient l'unique chemin d'impression. Le wizard passe de **8 à 7 étapes**. Cf. §2.1, §6.7, §11.3.
 
 Modif précédente : 2026-08-21 — **Sprint 28, 3e vague** : **BUG-028** — libellés de formulaire en anglais dans une interface française (« Title », « Language »… sur la fiche notice, et tout le formulaire usager) : Django fabriquait le libellé depuis le nom du champ, hors de portée de `gettext` et donc du gate i18n. 41 `verbose_name=_()` posés + garde-fou `test_form_labels.py`. — **FEAT-073** — catalogue : la case « Chercher les exemplaires » devient deux boutons **« Rechercher des notices »** / **« Rechercher des exemplaires »** ; **deux cases de sélection** (résultats visibles / tous les résultats de la recherche, pages suivantes comprises) remplacent le « Tout cocher » qui ne prenait que la page courante ; la **provenance s'affiche en toutes lettres**. Cf. §6.1, §6.9.
 
@@ -1140,7 +1142,8 @@ Insight : pendant un récolement scopé sur une `Location` X, si un exemplaire e
 > - **Diagnostic** (`core:diagnostics`) : versions, dernière sauvegarde, file django-q2.
 >
 > Implémentation Sprint 4 (FEAT-017) — **navigation** :
-> - Onglet **« Avancé »** (`core:advanced`) dans la barre de nav : page index regroupant Impression, Rapports, Inventaire et Administration, chaque lien explicité d'une phrase. C'est le point d'accès unique aux écrans hors-workflow.
+> - Onglet **« Avancé »** (`core:advanced`) dans la barre de nav : page index regroupant Impression, Rapports, Inventaire, Méta-données et Administration, chaque lien explicité d'une phrase. C'est le point d'accès unique aux écrans hors-workflow.
+> - **FEAT-076 (Sprint 29)** : chapitre **« Méta-données »** (bleu `--sky`, icône `database`) extrait du chapitre Inventaire — emplacements, langues, catégories, provenances, enrichissement des métadonnées. Ce sont des listes de référence, réglées une fois puis consommées par les menus déroulants du catalogue ; l'Inventaire ne garde que les sessions de travail (récolement, catalogage par scan / douchette / Excel).
 > - Barre principale allégée : plus de « Tableau de bord » (le logo `house` y mène) ni de « Récolement » (→ Avancé / Inventaire).
 > - Menu utilisateur (haut-droite) : « Mon compte » (auto-édition de son propre compte via `accounts:user_edit` ; formulaire restreint sans `role`/`is_active` pour les non-superadmins) + « Déconnexion ». L'entrée « Mode avancé/simple » (§10.3) n'est plus surfacée mais le mécanisme reste actif côté modèle.
 
@@ -1197,6 +1200,15 @@ mais pas exporter.
 - Emplacements
 - Tags
 - Format d'étiquette et de carte
+- **Fuseau horaire (FEAT-077)** — liste des fuseaux IANA, première entrée
+  « Fuseau du système » qui laisse la main à la machine. Deux niveaux : la
+  variable d'environnement **`TZ`** de l'instance donne le défaut (défaut `UTC` ;
+  c'est ainsi que la Box prend le fuseau du Raspberry Pi), le réglage des
+  Paramètres le surcharge sans redéploiement. `Setting.timezone` +
+  `apps.core.middleware.TimezoneMiddleware`, qui active le fuseau à chaque
+  requête. Un fuseau invalide est ignoré avec un log — jamais fatal. Le réglage
+  vaut pour **toutes** les dates de l'application, pas seulement l'heure de
+  l'accueil.
 - Backup (chemin clé USB, fréquence, cloud)
 - ZeroTier (statut, ID réseau)
 
@@ -1238,6 +1250,26 @@ mais pas exporter.
   - Langue préférée en bas-gauche (Helvetica-Bold 9, code ISO 2 lettres)
 - Setting `card_format` (JSON) : `{per_a4, show_logo, show_photo}`
 - Impression sur papier ordinaire en v1, à plastifier
+
+#### Deux écrans d'étiquettes (FEAT-075)
+
+Depuis le Sprint 29, les deux sortes d'étiquettes ont chacune leur écran et leur
+entrée dans le menu Avancé → Impression :
+
+| Écran | Route | Boutons |
+|---|---|---|
+| **Étiquettes codes Ofelia** | `printing:labels` | « PDF A4 », « Ruban 62 mm (Brother QL) » |
+| **Étiquettes de tranche** | `printing:spine_labels` | « PDF A4 », « Ruban 62 mm (Brother QL) » |
+
+La sélection d'exemplaires est **la même des deux côtés** : filtres emplacement
+et derniers ajouts, table, case « tout cocher », prise en charge de
+`?catalog_session=N` (FEAT-046). Elle vit dans `views._picker_context()` et dans
+le gabarit `printing/_picker_base.html` ; chaque écran n'override que ses
+boutons et ses colonnes de fin de ligne.
+
+Le libellé « Générer PDF » devient « **PDF A4** » sur les écrans d'impression
+(étiquettes et cartes membres) : à côté d'un bouton « Ruban 62 mm », c'est le
+format qui distingue les sorties.
 
 #### Ruban continu Brother QL-810W (FEAT-062)
 
@@ -1340,8 +1372,9 @@ façon fiable en test.
 
 #### Étiquettes de tranche (FEAT-068)
 
-Troisième bouton de l'écran **Impressions → Étiquettes** : « Étiquettes de
-tranche ». Même ruban et même géométrie que les étiquettes de livres — **62 × 35
+Écran **Avancé → Impression → Étiquettes de tranche** (`printing:spine_labels`,
+FEAT-075 ; c'était un troisième bouton de l'écran des codes Ofelia jusqu'au
+Sprint 29). Même ruban et même géométrie que les étiquettes de livres — **62 × 35
 mm, une étiquette par page** — mais un seul contenu : l'**abréviation de la
 catégorie** de la notice (FEAT-067), centrée horizontalement et verticalement,
 découpée en lignes sur les espaces. Pour « Romans fiction pour adolescents »
@@ -1364,8 +1397,32 @@ découpée en lignes sur les espaces. Pour « Romans fiction pour adolescents »
   pas d'abréviation, n'a rien à imprimer : il est ignoré. Si **aucun**
   exemplaire sélectionné n'a de cote, l'écran le dit au lieu de sortir un PDF
   vide.
-- Le bouton suit le réglage `roll_printer_format.enabled`, comme les autres
-  sorties ruban.
+- Le bouton ruban suit le réglage `roll_printer_format.enabled`, comme les
+  autres sorties ruban. **FEAT-075** : quand il est désactivé, la **planche A4**
+  reste disponible et un encadré dit où réactiver le ruban.
+- **FEAT-075 — planche A4 de cotes** : `render_spine_labels_pdf(items)`, même
+  grille que les étiquettes « code Ofelia » (`item_label_format`, 80 × 40 mm par
+  défaut soit 3 × 7 = 21 par page), cadre de découpe gris clair, cote centrée et
+  condensée par cellule. Route `printing:spine_labels_pdf`. Une seule géométrie
+  de planche à régler pour les deux sortes d'étiquettes. La cote y est dessinée
+  à **70 % de la taille qui remplirait la cellule** (`SPINE_A4_SIZE_SCALE`),
+  hauteur et largeur, sans recalculer le découpage en lignes : une cellule A4
+  est plus grande qu'une étiquette de ruban et la cote y sortait démesurée. Le
+  ruban, lui, garde sa taille pleine.
+- **FEAT-075 — cote condensée** : le texte est tracé à **60 % de sa largeur
+  naturelle, à hauteur inchangée** (`SPINE_WIDTH_SCALE = 0.60`), pour tenir sur
+  la tranche d'un livre mince. La **taille de police ne change pas** :
+  `spine_layout()` reçoit la largeur utile **réelle** — jamais une largeur
+  gonflée par la condensation, ce qui reviendrait à écrire plus gros au lieu de
+  plus étroit — et `_draw_spine_text()` encadre le tracé d'un `scale(0.60, 1)`.
+  Sur une étiquette 62 × 35 mm, `RO FI ADO` passe de 41,9 mm à **25,1 mm** de
+  large, hauteur de capitale inchangée à 11,3 mm. ReportLab n'embarquant aucune
+  police *condensed* (ni les 14 Type1 standard, ni `fonts-dejavu-core`), la
+  transformation du canvas est la seule solution exacte sans ajouter une police
+  à l'image Docker — contrainte hors-ligne.
+- **FEAT-075 — écran dédié** : la table affiche **Catégorie** et **Cote
+  imprimée** à la place du code Ofelia, du code externe et de la provenance, de
+  sorte que l'absence d'abréviation (`aucune`) se voie avant l'impression.
 
 ### 6.8 Notifications offline
 
@@ -2109,14 +2166,15 @@ Procédure physique en cas d'oubli total :
 4. **Catalogue** : recherche + liste + détail notice/exemplaire
 5. **Membres** : recherche + liste + détail (libellé UI : « Membres »)
 6. **Réservations** : à honorer + en attente
-7. **Avancé** : Inventaire, Rapports, Impression, Administration (onglet regroupeur)
+7. **Avancé** : Impression, Rapports, Inventaire, Méta-données, Administration (onglet regroupeur)
    - **Inventaire** : sessions + détail session (libellé UI ; app/code = `inventory`)
    - **Rapports** : sélection + génération PDF/CSV
    - **Paramètres** : sections regroupées
 
 > **Navigation (refonte UI 2026-05-23, design OFELIA)** :
 >
-> - **Topbar sticky** : logo OFELIA + nom de la bibliothèque + sélecteur de langue (pill) + aide + avatar utilisateur (dropdown Mon compte / Déconnexion). Page login : topbar allégée sans avatar.
+> - **Topbar sticky** : logo OFELIA (**FEAT-077** : `ofelia-logo-small.png`, l'emblème seul, ~30 px de large ; `ofelia-logo.png` reste réservé aux impressions) + nom de la bibliothèque + sélecteur de langue (pill) + aide + avatar utilisateur (dropdown Mon compte / Déconnexion). Page login : topbar allégée sans avatar.
+> - **Accueil (FEAT-077)** : le hero porte à droite du « Bonjour, <nom> » la **date et l'heure de la Box**, alignées sur le bloc de salutation (heure en bordeaux, date en dessous ; le bloc passe à la ligne sur mobile). La Box n'a pas de pile RTC : hors ligne, elle repart sur une heure fausse à chaque extinction, et prêts, retards et sauvegardes en dépendent. Le gabarit publie l'horodatage serveur dans `data-clock` et le script n'utilise l'horloge du navigateur que pour mesurer le temps écoulé depuis le chargement (rafraîchissement toutes les 15 s) — un poste bien à l'heure ne peut donc pas masquer une Box déréglée. L'heure est suivie de l'**abréviation du fuseau** (`CEST`, `-03`… — certaines zones IANA, dont l'Argentine, n'ont pas de sigle littéral et s'écrivent par leur décalage). Corollaire : le fuseau est réglable (§6.6), faute de quoi une bibliothèque hors UTC croirait sa Box déréglée en permanence.
 > - **Accueil** : grille de **6 grosses tuiles colorées** (Catalogue=amber, Membres=sky, Prêt=orange, Retour=olive, Réservations=blush, Avancé=forest) avec illustrations SVG multicolores 64×64 OFELIA, responsive 1→2→4 colonnes (600/900 px). Bannière scan rapide. KPIs 6 cartes.
 > - **Tile strip** (pages secondaires) : bande horizontale scrollable de chips colorés sous la topbar, permettant de naviguer entre toutes les sections sans repasser par l'accueil. Chip actif = couleur de section.
 > - **Page head** : chaque page secondaire affiche l'illustration SVG de la section + titre + sous-titre + bouton d'action principal.

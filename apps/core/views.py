@@ -68,7 +68,13 @@ def dashboard(request):
         .order_by("ready_since", "created_at")
     )
 
+    # FEAT-077 : sigle du fuseau affiché à côté de l'heure de la Box. On ne
+    # passe pas par `{% now "T" %}` : pour les zones sans sigle littéral
+    # (Amérique du Sud), Django rendrait « -04 », qui n'apprend rien.
+    from .timeutils import abbreviation
+
     return render(request, "core/dashboard.html", {
+        "clock_abbr": abbreviation(),
         "kpi_active_loans": active_loans,
         "kpi_overdue": overdue,
         "kpi_reservations_ready": reservations_ready,

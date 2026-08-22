@@ -150,6 +150,64 @@ class LanguagesForm(forms.Form):
         }, "Langues actives (effectif au prochain redémarrage)")
 
 
+class TimezoneForm(forms.Form):
+    """FEAT-077 — fuseau horaire de la bibliothèque.
+
+    Le réglage vaut pour toute l'application (heure affichée sur l'accueil,
+    dates de prêt, horodatage des sauvegardes). Laissé vide, on garde le fuseau
+    du système : c'est le cas de la Box, qui prend celui du Raspberry Pi.
+    """
+
+    KEY = "timezone"
+
+    name = forms.ChoiceField(
+        label=_("Fuseau horaire"), required=False,
+        help_text=_(
+            "Utilisé pour l'heure affichée sur l'accueil et pour toutes les dates. "
+            "Vide = fuseau du système."
+        ),
+    )
+
+    def __init__(self, *args, **kwargs):
+        super().__init__(*args, **kwargs)
+        self.fields["name"].choices = self._choices()
+        if not self.is_bound:
+            self.fields["name"].initial = Setting.get(self.KEY, "") or ""
+
+    @staticmethod
+    def _label(name: str) -> str:
+        from .timeutils import zone_label
+
+        return zone_label(name)
+
+    @classmethod
+    def _choices(cls) -> list[tuple[str, str]]:
+        import zoneinfo
+
+        blank = _("Fuseau du système : %(tz)s") % {"tz": cls._label(settings.TIME_ZONE)}
+        return [("", blank)] + [
+            (z, cls._label(z)) for z in sorted(zoneinfo.available_timezones())
+        ]
+
+    def clean_name(self) -> str:
+        import zoneinfo
+
+        name = (self.cleaned_data.get("name") or "").strip()
+        if not name:
+            return ""
+        try:
+            zoneinfo.ZoneInfo(name)
+        except Exception as exc:  # noqa: BLE001 — message utilisateur, pas de trace
+            raise forms.ValidationError(
+                _("Fuseau horaire inconnu : %(tz)s") % {"tz": name}
+            ) from exc
+        return name
+
+    def save(self) -> None:
+        Setting.set(self.KEY, self.cleaned_data["name"],
+                    "Fuseau horaire de la bibliothèque (FEAT-077)")
+
+
 class BackupConfigForm(forms.Form):
     """SPEC §8 : chemin USB, fréquence, cloud opt-in."""
     KEY = "backup_config"

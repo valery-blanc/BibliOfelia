@@ -13,6 +13,9 @@ urlpatterns = [
     path("labels-roll.pdf", views.labels_roll_pdf, name="labels_roll_pdf"),
     path("cards-roll.pdf", views.cards_roll_pdf, name="cards_roll_pdf"),
     # FEAT-068 — étiquettes de tranche (cote de catégorie)
+    # FEAT-075 : écran de sélection dédié, distinct des étiquettes « code Ofelia »
+    path("spine-labels/", views.spine_labels_picker, name="spine_labels"),
+    path("spine-labels.pdf", views.spine_labels_pdf, name="spine_labels_pdf"),
     path(
         "spine-labels-roll.pdf",
         views.spine_labels_roll_pdf,

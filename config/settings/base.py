@@ -31,6 +31,7 @@ env = environ.Env(
     AVAHI_SERVICE_PATH=(str, "/etc/avahi/services/bibliofelia.service"),
     MDNS_SERVICE_PORT=(int, 80),
     BACKUP_USB_PATH=(str, "/backup"),
+    TZ=(str, "UTC"),
     SECURE_COOKIES=(bool, True),
 )
 
@@ -91,6 +92,9 @@ MIDDLEWARE = [
     "axes.middleware.AxesMiddleware",
     "apps.setup.middleware.SetupRequiredMiddleware",
     "apps.core.middleware.MethodNotAllowedPrettyMiddleware",
+    # FEAT-077 : fuseau horaire réglé dans les Paramètres, après l'auth (le
+    # réglage est global, mais on veut la session et les messages déjà en place).
+    "apps.core.middleware.TimezoneMiddleware",
 ]
 
 ROOT_URLCONF = "config.urls"
@@ -174,7 +178,11 @@ LOGOUT_REDIRECT_URL = "accounts:login"
 
 # Internationalisation
 LANGUAGE_CODE = env("DEFAULT_LANGUAGE")
-TIME_ZONE = "UTC"
+# FEAT-077 : l'accueil affiche l'heure de la Box pour qu'on voie qu'elle a
+# perdu son horloge. Encore faut-il qu'elle soit dans le bon fuseau, sinon
+# chaque bibliothèque croirait sa Box déréglée en permanence. Défaut inchangé
+# (UTC) : chaque instance pose son fuseau, ex. TZ=Indian/Antananarivo.
+TIME_ZONE = env("TZ")
 USE_I18N = True
 USE_TZ = True
 

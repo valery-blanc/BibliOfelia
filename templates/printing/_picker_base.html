@@ -1,0 +1,89 @@
+{% extends "base.html" %}
+{% load i18n biblio_icons %}
+
+{# FEAT-075 — base commune aux deux écrans d'étiquettes : même sélection d'exemplaires, seuls le titre et les boutons changent. #}
+
+{% block title %}{{ page_title }}{% endblock %}
+
+{% block tile_strip %}{% include "partials/_tile_strip.html" with active="advanced" %}{% endblock %}
+
+{% block content %}
+<header class="pagehead">
+    <div class="pagehead-icon" style="--ph-bg:var(--orange);--ph-fg:#fff">
+        {% icon page_icon size="28px" %}
+    </div>
+    <div class="pagehead-text">
+        <h1 class="pagehead-title">{{ page_title }}</h1>
+        <div class="pagehead-sub">{{ page_sub }}</div>
+    </div>
+</header>
+
+{% if session_label %}
+<div class="card msg-info" style="margin-bottom:14px">
+    {% blocktrans %}Étiquettes du lot de catalogage : <strong>{{ session_label }}</strong>. Les exemplaires du lot sont pré-cochés.{% endblocktrans %}
+    &nbsp;<a href="{{ picker_url }}">{% trans "Voir tous les exemplaires" %}</a>
+</div>
+{% endif %}
+
+<form method="get" class="filter-bar">
+    {% if catalog_session %}<input type="hidden" name="catalog_session" value="{{ catalog_session }}">{% endif %}
+    <div class="field" style="margin:0;flex:0 0 auto">
+        <label>{% trans "Emplacement" %}</label>
+        <input type="text" name="location" value="{{ location }}" placeholder="A1" style="width:120px">
+    </div>
+    <label style="display:flex;align-items:center;gap:8px;font-size:14px;font-weight:600;color:var(--ink-soft);align-self:center;margin-top:18px">
+        <input type="checkbox" name="pending" value="1" {% if pending %}checked{% endif %}>
+        {% trans "Derniers ajouts" %}
+    </label>
+    <button type="submit" class="btn btn--primary">
+        {% icon "filter" size="16px" %} {% trans "Filtrer" %}
+    </button>
+</form>
+
+<form method="get" action="{{ form_action }}" id="labelsForm">
+    <div style="display:flex;gap:8px;flex-wrap:wrap;margin-bottom:14px">
+        {% block picker_buttons %}{% endblock %}
+    </div>
+    {% block picker_notice %}{% endblock %}
+    <div class="table-wrap">
+        <table class="table">
+            <thead>
+                <tr>
+                    <th style="width:40px"><input type="checkbox" id="selectAll"></th>
+                    <th>{% trans "ID interne" %}</th>
+                    <th>{% trans "Titre" %}</th>
+                    <th>{% trans "Emplacement" %}</th>
+                    {% block extra_head %}
+                    <th>{% trans "Code Ofelia" %}</th>
+                    <th>{% trans "Code externe" %}</th>
+                    <th>{% trans "Provenance" %}</th>
+                    {% endblock %}
+                </tr>
+            </thead>
+            <tbody>
+            {% for item in items %}
+                <tr>
+                    <td><input type="checkbox" name="ids" value="{{ item.pk }}"{% if catalog_session %} checked{% endif %}></td>
+                    <td>{{ item.internal_id }}</td>
+                    <td><span class="cell-title">{{ item.record.title|truncatechars:50 }}</span></td>
+                    <td>{{ item.location.code|default:"—" }}</td>
+                    {% block extra_cells %}
+                    <td>{{ item.ean13 }}</td>
+                    <td>{{ item.external_code|default:"—" }}</td>
+                    <td>{{ item.provenance|default:"—" }}</td>
+                    {% endblock %}
+                </tr>
+            {% empty %}
+                <tr><td colspan="7" class="muted" style="text-align:center;padding:24px">{% trans "Aucun exemplaire." %}</td></tr>
+            {% endfor %}
+            </tbody>
+        </table>
+    </div>
+</form>
+
+<script>
+document.getElementById('selectAll').addEventListener('change', function(e) {
+    document.querySelectorAll('input[name="ids"]').forEach(cb => cb.checked = e.target.checked);
+});
+</script>
+{% endblock %}

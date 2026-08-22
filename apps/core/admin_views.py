@@ -27,6 +27,7 @@ from .forms import (
     LoanReservationDefaultsForm,
     MemberCardFormatForm,
     RollPrinterFormatForm,
+    TimezoneForm,
 )
 from .models import Setting
 
@@ -37,6 +38,8 @@ from django.views.decorators.http import require_POST
 FORMS = {
     "identity": (gettext_lazy("Identité"), LibraryIdentityForm),
     "languages": (gettext_lazy("Langues"), LanguagesForm),
+    # FEAT-077 : l'accueil affiche l'heure de la Box ; encore faut-il le bon fuseau.
+    "timezone": (gettext_lazy("Fuseau horaire"), TimezoneForm),
     "loans": (gettext_lazy("Durées prêts & réservations"), LoanReservationDefaultsForm),
     # BUG-021 : sections d'impression restaurées (FEAT-047 les avait retirées à
     # tort — c'était le seul endroit pour régler la taille des étiquettes).

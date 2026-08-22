@@ -4,6 +4,7 @@ from __future__ import annotations
 from django.contrib import messages
 from django.http import HttpResponse
 from django.shortcuts import redirect, render
+from django.urls import reverse
 from django.utils.translation import gettext as _
 
 from apps.accounts.models import Role
@@ -17,6 +18,7 @@ from .services import (
     render_item_labels_roll_pdf,
     render_member_cards_pdf,
     render_member_cards_roll_pdf,
+    render_spine_labels_pdf,
     render_spine_labels_roll_pdf,
     spine_label_text,
 )
@@ -28,10 +30,16 @@ def _pdf_response(pdf: bytes, filename: str) -> HttpResponse:
     return resp
 
 
-@require_role(Role.LIBRARIAN, Role.SUPERADMIN)
-def labels_picker(request):
-    """Écran de sélection : choisit les exemplaires à étiqueter (par filtre)."""
-    qs = Item.objects.select_related("record", "location").order_by("-created_at")
+def _picker_context(request) -> dict:
+    """Sélection d'exemplaires partagée par les deux écrans d'étiquettes (FEAT-075).
+
+    Mêmes filtres, même table, même case « tout cocher » : seuls les boutons
+    d'impression changent d'un écran à l'autre.
+    """
+    qs = (
+        Item.objects.select_related("record", "record__category", "location")
+        .order_by("-created_at")
+    )
     location = request.GET.get("location") or ""
     if location:
         qs = qs.filter(location__code=location)
@@ -52,11 +60,41 @@ def labels_picker(request):
         qs = qs[:1000]
     else:
         qs = qs[:500]
-    return render(request, "printing/labels_picker.html", {
+    return {
         "items": qs, "location": location, "pending": pending,
         "catalog_session": catalog_session, "session_label": session_label,
         "roll": _roll_settings(),
-    })
+    }
+
+
+@require_role(Role.LIBRARIAN, Role.SUPERADMIN)
+def labels_picker(request):
+    """Écran de sélection des étiquettes « code Ofelia » (planche A4 ou ruban)."""
+    context = _picker_context(request) | {
+        "picker_url": reverse("printing:labels"),
+        "form_action": reverse("printing:labels_pdf"),
+        "page_icon": "printer",
+        "page_title": _("Étiquettes codes Ofelia"),
+        "page_sub": _("Sélectionnez les exemplaires à imprimer puis générez le PDF"),
+    }
+    return render(request, "printing/labels_picker.html", context)
+
+
+@require_role(Role.LIBRARIAN, Role.SUPERADMIN)
+def spine_labels_picker(request):
+    """FEAT-075 : écran dédié aux étiquettes de tranche (cote de catégorie).
+
+    Même sélection que l'écran des codes Ofelia, mais un seul bouton : la cote
+    n'existe qu'au format ruban, il n'y a pas de planche A4 correspondante.
+    """
+    context = _picker_context(request) | {
+        "picker_url": reverse("printing:spine_labels"),
+        "form_action": reverse("printing:spine_labels_pdf"),
+        "page_icon": "bookmark",
+        "page_title": _("Étiquettes de tranche"),
+        "page_sub": _("Sélectionnez les exemplaires dont la cote doit être collée sur la tranche"),
+    }
+    return render(request, "printing/spine_labels_picker.html", context)
 
 
 @require_role(Role.LIBRARIAN, Role.SUPERADMIN)
@@ -105,13 +143,16 @@ def cards_roll_pdf(request):
     return _pdf_response(render_member_cards_roll_pdf(members), "cartes-ruban.pdf")
 
 
-@require_role(Role.LIBRARIAN, Role.SUPERADMIN)
-def spine_labels_roll_pdf(request):
-    """FEAT-068 : étiquettes de tranche, une cote de catégorie par page."""
+def _printable_spine_items(request):
+    """Exemplaires sélectionnés qui ont bien une cote — ou une redirection.
+
+    Partagé par la planche A4 et le ruban : mieux vaut le dire que sortir un
+    PDF vide (FEAT-068).
+    """
     items = _selected_items(request)
     if not items:
         messages.error(request, _("Aucun exemplaire sélectionné."))
-        return redirect("printing:labels")
+        return None, redirect("printing:spine_labels")
     printable = [item for item in items if spine_label_text(item)]
     if not printable:
         messages.error(
@@ -119,7 +160,27 @@ def spine_labels_roll_pdf(request):
             _("Aucun exemplaire sélectionné n'a de catégorie abrégée : "
               "renseignez l'abréviation de la catégorie avant d'imprimer."),
         )
-        return redirect("printing:labels")
+        return None, redirect("printing:spine_labels")
+    return printable, None
+
+
+@require_role(Role.LIBRARIAN, Role.SUPERADMIN)
+def spine_labels_pdf(request):
+    """FEAT-075 : planche A4 de cotes de tranche, à découper."""
+    printable, error = _printable_spine_items(request)
+    if error is not None:
+        return error
+    return _pdf_response(
+        render_spine_labels_pdf(printable), "etiquettes-tranche-a4.pdf"
+    )
+
+
+@require_role(Role.LIBRARIAN, Role.SUPERADMIN)
+def spine_labels_roll_pdf(request):
+    """FEAT-068 : étiquettes de tranche, une cote de catégorie par page."""
+    printable, error = _printable_spine_items(request)
+    if error is not None:
+        return error
     return _pdf_response(
         render_spine_labels_roll_pdf(printable), "etiquettes-tranche.pdf"
     )

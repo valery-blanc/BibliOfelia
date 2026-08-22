@@ -803,6 +803,28 @@ SPINE_MAX_PT = 96.0
 SPINE_LINE_RATIO = 1.12  # interligne, en multiples de la taille de police
 SPINE_CAP_RATIO = 0.72   # hauteur des capitales, pour le centrage vertical
 
+# FEAT-075 — cote condensée : le texte est dessiné à 60 % de sa largeur
+# naturelle, à hauteur inchangée (« 40 % de moins en largeur », Val 2026-08-22).
+# ReportLab n'embarque aucune police étroite — les 14 polices Type1 standard
+# n'ont pas de variante condensed, et `fonts-dejavu-core` non plus — donc on
+# condense par transformation du canvas plutôt qu'en ajoutant une police à
+# l'image Docker, contrainte hors-ligne oblige. La taille de police, elle, ne
+# change pas d'un iota : `spine_layout()` reçoit la largeur utile réelle, jamais
+# une largeur gonflée. Le but est une cote qui tienne sur une tranche mince, pas
+# une cote plus grosse.
+SPINE_WIDTH_SCALE = 0.60
+
+# Retrait des cellules de la planche A4 : ni ruban ni avance papier ici, juste
+# de quoi ne pas coller au trait de découpe.
+SPINE_A4_INSET_MM = 3.0
+
+# Sur la planche A4, la cellule (70 × 42 mm par défaut) est plus grande que
+# l'étiquette de ruban : remplie à ras bord, la cote sortait démesurée. On la
+# ramène à 70 % en hauteur **et** en largeur (Val 2026-08-22). Le découpage en
+# lignes, lui, reste celui calculé à la taille pleine : on réduit le dessin, on
+# ne le remet pas en page.
+SPINE_A4_SIZE_SCALE = 0.70
+
 
 def spine_label_text(item) -> str:
     """Cote à imprimer pour cet exemplaire (vide s'il n'y en a pas)."""
@@ -880,14 +902,32 @@ def spine_layout(text: str, inner_w: float, inner_h: float) -> tuple[float, list
     return size, [_fit_to_width(line, ROLL_FONT, size, inner_w) for line in lines]
 
 
-def _draw_roll_spine_label(pdf, w, h, text: str) -> None:
-    """Cote centrée, à la plus grande taille qui tienne sur l'étiquette."""
-    left = ROLL_INSET_MM * mm
-    right = w - ROLL_INSET_MM * mm
-    bottom = ROLL_FEED_INSET_MM * mm
-    top = h - ROLL_FEED_INSET_MM * mm
+def _draw_spine_text(pdf, x, y, w, h, text: str,
+                     inset_x: float, inset_y: float,
+                     size_scale: float = 1.0) -> None:
+    """Cote centrée et condensée dans le rectangle (x, y, w, h).
+
+    La taille de police est celle qu'imposent la largeur et la hauteur utiles,
+    exactement comme avant FEAT-075 : la condensation ne sert **pas** à écrire
+    plus gros, mais à écrire plus étroit. Le bloc de texte occupe donc 60 % de
+    la largeur qu'il prenait, à hauteur de capitale inchangée — c'est ce qui
+    lui permet de tenir sur la tranche d'un livre mince sans rien perdre en
+    lisibilité à un mètre du rayon.
+
+    `size_scale` réduit ensuite le dessin entier — hauteur **et** largeur —
+    sans toucher au découpage en lignes : c'est le levier de la planche A4,
+    dont les cellules sont plus grandes que les étiquettes de ruban.
+
+    Partagé par le ruban (une cote par page) et la planche A4 (une cote par
+    cellule) : même rendu, seuls les marges et le facteur de taille changent.
+    """
+    left = x + inset_x
+    right = x + w - inset_x
+    bottom = y + inset_y
+    top = y + h - inset_y
 
     size, lines = spine_layout(text, right - left, top - bottom)
+    size *= size_scale
     line_h = size * SPINE_LINE_RATIO
     cap = size * SPINE_CAP_RATIO
     block_h = (len(lines) - 1) * line_h + cap
@@ -895,6 +935,61 @@ def _draw_roll_spine_label(pdf, w, h, text: str) -> None:
 
     pdf.setFillColor(colors.black)
     pdf.setFont(ROLL_FONT, size)
+    pdf.saveState()
+    # Seul l'axe X est comprimé : les glyphes gardent leur hauteur.
+    pdf.scale(SPINE_WIDTH_SCALE, 1)
     for line in lines:
-        pdf.drawCentredString(w / 2, baseline, line)
+        pdf.drawCentredString((x + w / 2) / SPINE_WIDTH_SCALE, baseline, line)
         baseline -= line_h
+    pdf.restoreState()
+
+
+def _draw_roll_spine_label(pdf, w, h, text: str) -> None:
+    """Une cote par page de ruban, aux retraits du format continu."""
+    _draw_spine_text(
+        pdf, 0, 0, w, h, text, ROLL_INSET_MM * mm, ROLL_FEED_INSET_MM * mm
+    )
+
+
+def render_spine_labels_pdf(items: Sequence) -> bytes:
+    """FEAT-075 : planche A4 de cotes de tranche, à découper.
+
+    Même grille que les étiquettes « code Ofelia » (`item_label_format`, 80×40
+    mm par défaut soit 3×7 par page) : une seule géométrie de planche à régler
+    pour les deux sortes d'étiquettes. Les exemplaires sans abréviation sont
+    ignorés, comme sur le ruban.
+
+    La cote est dessinée à `SPINE_A4_SIZE_SCALE` de la taille qui remplirait la
+    cellule : une cellule A4 est plus grande qu'une étiquette de ruban, et une
+    cote qui la remplit à ras bord sort démesurée.
+    """
+    fmt = _item_label_settings()
+    label_w = fmt["width_mm"] * mm
+    label_h = fmt["height_mm"] * mm
+    cols = max(1, int(A4[0] // label_w))
+    rows = max(1, int(A4[1] // label_h))
+    per_page = cols * rows
+    inset = SPINE_A4_INSET_MM * mm
+
+    printable = [(item, spine_label_text(item)) for item in items]
+    printable = [(item, text) for item, text in printable if text]
+
+    buf = io.BytesIO()
+    pdf = canvas.Canvas(buf, pagesize=A4)
+    for idx, (_item, text) in enumerate(printable):
+        slot = idx % per_page
+        x = (slot % cols) * label_w
+        y = A4[1] - (slot // cols + 1) * label_h
+        pdf.setLineWidth(0.2)
+        pdf.setStrokeColor(colors.lightgrey)
+        pdf.rect(x + 1, y + 1, label_w - 2, label_h - 2)
+        _draw_spine_text(
+            pdf, x, y, label_w, label_h, text, inset, inset,
+            size_scale=SPINE_A4_SIZE_SCALE,
+        )
+        if slot == per_page - 1 and idx != len(printable) - 1:
+            pdf.showPage()
+
+    pdf.showPage()
+    pdf.save()
+    return buf.getvalue()

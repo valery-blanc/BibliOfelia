@@ -7,8 +7,17 @@
 
 {# ── Hero ── #}
 <section class="hero">
-    <div class="hero-greet">{% trans "Bonjour," %} <b>{{ user.get_username }}</b>.</div>
-    <div class="hero-sub">{% trans "Voici ce qui se passe à la bibliothèque aujourd'hui." %}</div>
+    <div class="hero-text">
+        <div class="hero-greet">{% trans "Bonjour," %} <b>{{ user.get_username }}</b>.</div>
+        <div class="hero-sub">{% trans "Voici ce qui se passe à la bibliothèque aujourd'hui." %}</div>
+    </div>
+    {# FEAT-077 : date et heure de la Box. Elle perd son horloge quand on la coupe ; #}
+    {# les afficher permet au bibliothécaire de s'en apercevoir sans rien chercher. #}
+    <div class="hero-clock" data-clock="{% now 'Y-m-d H:i:s' %}"
+         title="{% trans "Date et heure de la Box" %}">
+        <div class="hero-clock-time"><span class="hero-clock-hm">{% now "H:i" %}</span><span class="hero-clock-tz">{{ clock_abbr }}</span></div>
+        <div class="hero-clock-date">{% now "DATE_FORMAT" %}</div>
+    </div>
 </section>
 
 {# ── Scan + recherche (placés en haut, sous la topbar, au-dessus des tuiles) ── #}
@@ -349,5 +358,27 @@
     </div>
 </div>
 {% endif %}
+
+
+<script>
+// FEAT-077 — l'heure affichée est celle de la Box, jamais celle du poste : on
+// part de l'horodatage rendu par le serveur et on n'utilise l'horloge du
+// navigateur que pour mesurer le temps écoulé depuis le chargement. Un poste
+// bien à l'heure ne masque donc pas une Box déréglée, ce qui est tout l'objet
+// de cet affichage.
+(function () {
+    var box = document.querySelector('.hero-clock');
+    if (!box) { return; }
+    var out = box.querySelector('.hero-clock-hm');  // jamais .hero-clock-time : le sigle du fuseau y vit aussi
+    var start = new Date(box.dataset.clock.replace(' ', 'T'));
+    if (isNaN(start)) { return; }
+    var loadedAt = Date.now();
+    setInterval(function () {
+        var now = new Date(start.getTime() + (Date.now() - loadedAt));
+        out.textContent = ('0' + now.getHours()).slice(-2) + ':'
+                        + ('0' + now.getMinutes()).slice(-2);
+    }, 15000);
+})();
+</script>
 
 {% endblock %}

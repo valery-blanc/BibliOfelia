@@ -1,8 +1,10 @@
 #!/usr/bin/env python3
 """Traductions Sprint 29 — FR → EN/ES/MG.
 
-Couvre FEAT-074 (suppression du chemin d'impression CUPS). Une seule chaîne
-change : la description de l'écran « Étiquettes codes Ofelia » dans le menu
+Couvre FEAT-074 (suppression du chemin CUPS), FEAT-075 (écrans d'étiquettes
+séparés), FEAT-076 (chapitre Méta-données) et FEAT-077 (horloge de la Box).
+
+Le gros du sprint est une chaîne qui change : la description de l'écran « Étiquettes codes Ofelia » dans le menu
 Avancé, qui annonçait un envoi direct à une imprimante CUPS et parle désormais
 du ruban 62 mm. Le vocabulaire suit celui déjà retenu pour le bouton
 « Ruban %(w)s mm (Brother QL) » : *tape* / *cinta* / *riban*.
@@ -25,24 +27,125 @@ _LABELS_HELP = (
     "ouvrages. PDF planche A4 ou ruban 62 mm pour l'étiqueteuse Brother QL."
 )
 
+# FEAT-075 / FEAT-076 — écrans d'étiquettes séparés et chapitre « Méta-données ».
+# Le vocabulaire de la cote suit celui déjà retenu pour « Cote imprimée sur la
+# tranche » (FEAT-067) : *shelf mark* / *signatura* / *kaody*.
+_SPINE_MENU = (
+    "Imprime la cote de la catégorie (« RO FI ADO ») à coller sur la tranche, pour "
+    "ranger et retrouver un livre sans le sortir du rayon."
+)
+_SPINE_SUB = "Sélectionnez les exemplaires dont la cote doit être collée sur la tranche"
+_SPINE_NO_ROLL = (
+    "L'impression ruban est désactivée : seule la planche A4 est disponible ici. "
+    "Activez-la dans Paramètres → Impressions — Ruban continu pour imprimer les "
+    "cotes à l'étiqueteuse."
+)
+_META_INTRO = (
+    "Les listes de référence du catalogue : elles alimentent les menus déroulants "
+    "des notices et des exemplaires."
+)
+_TZ_HELP = (
+    "Utilisé pour l'heure affichée sur l'accueil et pour toutes les dates. "
+    "Vide = fuseau du système."
+)
+
 TRANSLATIONS: dict[str, dict[str, str]] = {
     "en": {
         _LABELS_HELP: (
             "Generates the labels (Ofelia code + title + location) to stick on the "
             "books. A4 PDF sheet or 62 mm tape for the Brother QL label printer."
         ),
+        _SPINE_MENU: (
+            "Prints the category shelf mark (“RO FI ADO”) to stick on the "
+            "spine, so a book can be shelved and found again without pulling it out."
+        ),
+        _SPINE_SUB: "Select the copies whose shelf mark goes on the spine",
+        _SPINE_NO_ROLL: (
+            "Tape printing is off: only the A4 sheet is available here. Turn it on "
+            "under Settings → Printing — Continuous tape to print shelf "
+            "marks on the label printer."
+        ),
+        _META_INTRO: (
+            "The catalogue's reference lists: they fill the drop-down menus of "
+            "records and copies."
+        ),
+        "PDF A4": "A4 PDF",
+        "Date et heure de la Box": "Box date and time",
+        "Fuseau horaire": "Time zone",
+        _TZ_HELP: (
+            "Used for the time shown on the home page and for every date. "
+            "Blank = system time zone."
+        ),
+        "Fuseau du système : %(tz)s": "System time zone: %(tz)s",
+        "Fuseau horaire inconnu : %(tz)s": "Unknown time zone: %(tz)s",
+        "Cote imprimée": "Printed shelf mark",
+        "Méta-données": "Metadata",
+        "aucune": "none",
     },
     "es": {
         _LABELS_HELP: (
             "Genera las etiquetas (código Ofelia + título + ubicación) para pegar en "
             "los libros. Hoja PDF A4 o cinta de 62 mm para la etiquetadora Brother QL."
         ),
+        _SPINE_MENU: (
+            "Imprime la signatura de la categoría («RO FI ADO») para pegar en el lomo, "
+            "y así ordenar y encontrar un libro sin sacarlo del estante."
+        ),
+        _SPINE_SUB: "Seleccione los ejemplares cuya signatura debe pegarse en el lomo",
+        _SPINE_NO_ROLL: (
+            "La impresión en cinta está desactivada: aquí solo está disponible la "
+            "hoja A4. Actívela en Ajustes → Impresiones — Cinta continua para "
+            "imprimir las signaturas en la etiquetadora."
+        ),
+        _META_INTRO: (
+            "Las listas de referencia del catálogo: alimentan los menús desplegables "
+            "de los registros y los ejemplares."
+        ),
+        "PDF A4": "PDF A4",
+        "Cote imprimée": "Signatura impresa",
+        "Date et heure de la Box": "Fecha y hora de la Box",
+        "Fuseau horaire": "Zona horaria",
+        _TZ_HELP: (
+            "Se usa para la hora mostrada en la pantalla de inicio y para todas las "
+            "fechas. Vacío = zona horaria del sistema."
+        ),
+        "Fuseau du système : %(tz)s": "Zona horaria del sistema: %(tz)s",
+        "Fuseau horaire inconnu : %(tz)s": "Zona horaria desconocida: %(tz)s",
+        "Méta-données": "Metadatos",
+        "aucune": "ninguna",
     },
     "mg": {
         _LABELS_HELP: (
             "Mamorona ny marika (kaody Ofelia + lohateny + toerana) hapetaka amin'ny "
             "boky. Taratasy PDF A4 na riban 62 mm ho an'ny mpanonta marika Brother QL."
         ),
+        _SPINE_MENU: (
+            "Manonta ny kaodin'ny sokajy (« RO FI ADO ») hapetaka amin'ny lamosina, "
+            "mba handaminana sy hahitana boky nefa tsy misintona azy eo amin'ny "
+            "talantalana."
+        ),
+        _SPINE_SUB: "Fidio ireo boky tokony hapetahana kaody eo amin'ny lamosina",
+        _SPINE_NO_ROLL: (
+            "Mihidy ny fanontana amin'ny riban : ny taratasy A4 ihany no misy eto. "
+            "Sokafy ao amin'ny Kirakira → Fanontana — Riban mitohy izy raha te "
+            "hanonta ny kaody amin'ny mpanonta marika."
+        ),
+        _META_INTRO: (
+            "Ny lisitra fanondro amin'ny katalaogy : izy ireo no mameno ny menio "
+            "midina eo amin'ny rakitra sy ny boky."
+        ),
+        "PDF A4": "PDF A4",
+        "Cote imprimée": "Kaody atao pirinty",
+        "Date et heure de la Box": "Daty sy ora ny Box",
+        "Fuseau horaire": "Faritra ora",
+        _TZ_HELP: (
+            "Ampiasaina ho an'ny ora aseho eo amin'ny pejy fandraisana sy ho an'ny "
+            "daty rehetra. Foana = faritra ora ny rafitra."
+        ),
+        "Fuseau du système : %(tz)s": "Faritra ora ny rafitra: %(tz)s",
+        "Fuseau horaire inconnu : %(tz)s": "Faritra ora tsy fantatra : %(tz)s",
+        "Méta-données": "Metadata",
+        "aucune": "tsy misy",
     },
 }
 

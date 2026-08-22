@@ -299,7 +299,46 @@ ul { list-style: none; padding: 0; }
 }
 
 /* ────────── Hero (accueil) ────────── */
-.hero { margin: 4px 0 18px; }
+.hero {
+  margin: 4px 0 18px;
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: 12px 20px;
+  flex-wrap: wrap;
+}
+.hero-text { min-width: 0; }
+/* FEAT-077 — date et heure de la Box, alignées sur le bloc de salutation. */
+.hero-clock {
+  margin-left: auto;
+  text-align: right;
+  flex-shrink: 0;
+  line-height: 1.15;
+}
+.hero-clock-time {
+  font-family: var(--font-brand);
+  font-size: 22px;
+  font-weight: 600;
+  letter-spacing: -0.02em;
+  color: var(--burgundy);
+  font-variant-numeric: tabular-nums;
+}
+/* Abréviation du fuseau (CEST, -03…) : discrète, elle n'a d'intérêt que le
+   jour où l'on doute de l'heure affichée. */
+.hero-clock-tz {
+  margin-left: 6px;
+  font-family: var(--font-body);
+  font-size: 12px;
+  font-weight: 600;
+  letter-spacing: 0.02em;
+  color: var(--ink-soft);
+  vertical-align: 2px;
+}
+.hero-clock-date {
+  margin-top: 6px;
+  color: var(--ink-soft);
+  font-size: 14px;
+}
 .hero-greet {
   font-family: var(--font-brand);
   font-size: 26px;
@@ -389,6 +428,7 @@ ul { list-style: none; padding: 0; }
   :root { --page-pad: 24px; }
   .tilegrid { grid-template-columns: repeat(2, 1fr); gap: 14px; }
   .hero-greet { font-size: 32px; }
+  .hero-clock-time { font-size: 26px; }
 }
 @media (min-width: 900px) {
   .tilegrid { grid-template-columns: repeat(4, 1fr); }

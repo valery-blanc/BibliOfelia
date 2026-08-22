@@ -4,6 +4,71 @@ Source de vérité de l'avancement v1. Une case `[x]` = livrable terminé et dé
 
 Mise à jour : 2026-05-26 (Sprint 12 **CLOS** — FEAT-038 (cartes membres : fond crème, logo OFELIA filigrane, photo HG, langue BG, bloc droite), FEAT-039 (étiquettes 70×42 mm, titre wrap 2 lignes, auteurs 2 lignes, logo Ofelia), split paramétrage `labels` → `printing_cards` + `printing_labels`. BUG-013 v2 (sélecteur de langue qui perdait `/bibliofelia/` à chaque déploiement : wrapper `apps/core/i18n_views.py:set_language` force `FORCE_SCRIPT_NAME` + échange code langue même sur URL non résolue). **Gate i18n pérenne** : `scripts/i18n_check.py` exit != 0 si chaîne manquante ; documenté dans CLAUDE.md comme obligatoire avant tout commit ; 207 entrées EN/ES/MG appliquées (Sprints 10-12 incl. FORMS labels enrobés `gettext_lazy`). 304 tests verts (287 → 304). Sprint 11 **CLOS** — — BUG-014 (saisie clavier sur `/loans/lend/` + `/loans/return/` : bouton scan repassé `type="button"` + bouton « Valider » visible séparé pour la saisie clavier), FEAT-034 (UI réservations : liste d'attente PENDING sur fiche notice, expiration affichée sur exemplaires mis de côté, section « Réservations à relancer » sur page Retour, paramètres `default_loan_days`/`reservation_expiry_days`/`pickup_hold_days` exposés dans `/settings/loans/`), FEAT-035 (Setting `default_loan_days` global défaut 21, section « Relances à faire » bas du dashboard avec 10 prêts en retard), FEAT-036 (`Reservation.notified_at` + endpoint `POST /loans/reservations/<pk>/notify/`, page Réservations enrichie code Ofelia / dates avec heure / date limite retrait / police 16-17 px + cadre « Notifications à faire » entre tuiles et bannière scan sur dashboard), BUG-015 (DateInput format ISO `%Y-%m-%d` sur `MemberForm`, sinon locale FR remplit pas l'input HTML5), FEAT-037 (photo membre dans pagehead fiche + miniature sur form, expiration_date = registration_date + 1 an auto JS au change + initial `today + 1 an` à la création). 287 tests verts (266 → 287, +21). Migration `loans/0002_reservation_notified_at`. 5 vagues de déploiement Pi. 2 nouvelles entrées MEMORY (DateInput ISO format, bouton scan type=button + Valider visible). — Sprint 10 **CLOS end-to-end** — FEAT-032 + FEAT-033 validés Val 2026-05-24 sur la Pi, **+ OfeliaScan mobile mis à jour le 2026-05-24** : test prod 18:26 → session récolement scope=A1 reçue d'OfeliaScan avec 16 scans, 16 exemplaires relocate de J1 → A1 automatiquement. Bout-en-bout fonctionnel : catalogage OfeliaScan envoie `location_code`, picker récolement OfeliaScan envoie `scope_type=location` + `scope_location_code`, BibliOfelia déplace les items au scan. FEAT-032 : UI librarian /catalog/locations/ + endpoint GET /api/v1/locations testés OK. FEAT-033 : relocate auto vérifiée via UI web ET via OfeliaScan mobile. Commit `9d4fe83` + push + déploiement Pi (rebuild Docker + migration `0003`). 266 tests verts. — Sprint 8 **CLOS** — FEAT-025 **validé Val 2026-05-23** : refonte design global, 23 templates métiers harmonisés sur le design system OFELIA. Lot A pilote validé en premier (record_detail, member_detail, reports/index, settings_index), puis Lots B+C+D livrés d'un bloc. Helpers CSS ajoutés (`.req`, `.help-hint`, `.field-error`, `.form-control`, `details.advanced-section`, `.isbn-row`, `.form-actions`), `_field.html` migré `.form-row` → `.field`. Découverte d'infra : templates **embarqués au build Docker**, pas bind-mountés → rebuild obligatoire pour tout changement de template (documenté dans FEAT-025). — Sprint 7 **CLOS** — FEAT-024 **validé Val 2026-05-23** : scanner caméra navigateur sur Android Firefox HTTPS OK, fallback OfeliaScan automatique en HTTP LAN, Chrome Android sans Play Store via `S.browser_fallback_url`, bouton Annuler pendant polling. Décision UX : caméra-d'abord automatique, pas de toggle utilisateur. Décision infra : pas de cert auto-signé. 3 commits Pi `d7c8e8f` → `9d2af81` → `e9993a5`. FEAT-023 **validé Val 2026-05-23** : banner dashboard → OfeliaScan ouvre → scan livre → retour BibliOfelia → fiche notice affichée, bout-en-bout fonctionnel. Modèle `ScanHandoff` + endpoints `/api/v1/scan-handoff[/{token}]` + JS `scan-handoff.js` + 4 boutons « Scanner » câblés. BUG-010 entrypoint Dockerfile + BUG-011 CSRF cookie HttpOnly + Chrome Android `intent://` URL résolus. Sprints 3/5/6 clos. Reste pour Sprint 7 : Android-side OfeliaScan déjà fonctionnelle côté Val (intent filter + activity scan-one + POST callback) — implémentation Android terminée hors repo. Prochain sprint : FEAT-024 scanner caméra navigateur (HTTPS).)
 
+## ⏭️ REPRISE — état au 22/08/2026
+
+**Sprint 29 CLOS.** Dernier commit : voir `git log -1` (commit de clôture Sprint 29,
+succède à `a85d8c2` qui portait FEAT-074 seul).
+
+**Tests : 678 passed**, mesurés sur le code du commit de clôture Sprint 29, dans un
+conteneur `--target dev` sur Fez (Docker absent du poste Windows, dev local cassé et
+volontairement non réparé). Gate i18n : `python scripts/i18n_check.py` = 0.
+
+**Déploiement** : Box (`edubox-bibliofelia`, healthy, 0 migration en attente),
+instances Fez `sanjuan` et `grand-saconnex` (healthy), secours Avignon (source
+synchronisée + image rebâtie). Les quatre portent le même code.
+
+### 🔴 À FAIRE EN PREMIER
+
+- **Reporter `TZ: ${TZ:-UTC}` dans `C:\WORK\keebee\docker-compose.yml`** (services
+  `bibliofelia` et `bibliofelia-worker`). La modification n'existe pour l'instant que
+  sur la Box, dans un fichier qui appartient au projet **keebee**. **Signal d'échec à
+  guetter** : après un déploiement keebee, l'accueil de la Box réaffiche l'heure UTC
+  au lieu de CEST — c'est que les deux lignes ont été écrasées. Sauvegarde sur la
+  Box : `/opt/edubox/docker-compose.yml.bak-tz`.
+
+### ⏳ Ouvert, avec son motif
+
+- **Fuseau de la Box non réglé** (`Setting.timezone` vide → suit `Europe/Zurich` du
+  Pi). Volontaire : la Box est à Genève chez Val, afficher l'heure du Venezuela
+  pendant les tests ferait croire à une horloge fausse. À poser sur
+  `America/Caracas (UTC-4)` au moment du départ pour Canaima.
+- **Catégorie `TEST` sur la Box** — vérifiée le 22/08 : toujours présente (pk=17),
+  **0 notice rattachée**, donc supprimable sans risque. Laissée en place faute de
+  demande explicite ; c'est une donnée de production, pas du code.
+- **Sprint 26 — 4 « Test fonctionnel Val » jamais confirmés** (BUG-025, BUG-026,
+  FEAT-061). Le code est déployé et committé depuis `cddb518` (18/08) : il ne manque
+  que la confirmation.
+- **Sprint 15 Task 4** — coordonnées d'annotation à capturer via
+  `bounding_box()`, jamais codées en dur.
+
+### 🧨 Réfuté / abandonné pendant le Sprint 29
+
+- **Réparer le CSRF du bouton « Imprimer (CUPS) »** : le corriger aurait donné un
+  bouton affichant « Imprimante indisponible » puis retombant sur le PDF, soit ce
+  que fait déjà « PDF A4 ». Chemin supprimé (FEAT-074), pas réparé.
+- **CUPS côté serveur en général** : impossible par topologie (imprimante sur le
+  LAN de la bibliothèque, serveur hébergé ailleurs). Ne pas le rebâtir.
+- **Agent d'impression local** sur le poste de la bibliothèque : techniquement
+  propre, écarté — un composant de plus à dépanner à distance pour remplacer un
+  réglage du pilote Windows à faire une fois.
+- **Police condensée embarquée** (`fonts-dejavu-extra` / `DejaVuSansCondensed`) :
+  ~10 % de largeur gagnée là où il en fallait 40. La transformation du canvas
+  (`SPINE_WIDTH_SCALE`) est exacte et sans dépendance.
+- **Rétablir les sigles `VET` / `ART`** : retirés de la base IANA. Les rendre
+  supposerait une table maintenue à la main pour 486 fuseaux, qui dériverait à
+  chaque mise à jour de tzdata. On affiche la ville à la place.
+
+### ⚠️ Deux pièges rencontrés, à ne pas refaire
+
+- **Condensation de la cote** : `spine_layout()` doit recevoir la largeur utile
+  **réelle**. Lui passer `inner_w / SPINE_WIDTH_SCALE` lui fait choisir une police
+  plus grande — le texte sort plus haut et pas plus étroit, l'inverse du besoin.
+  Verrouillé par `test_font_size_is_computed_on_the_real_width_not_a_widened_one`.
+- **Horloge de l'accueil** : le script ne doit viser que `.hero-clock-hm`. Viser
+  `.hero-clock-time` efface le sigle du fuseau au premier rafraîchissement (15 s).
+  Verrouillé par `test_refresh_script_never_overwrites_the_timezone`.
+
+
 ## Sprint 0 — Squelette
 
 - [x] **Task #1** Squelette projet : Django + Docker dev + git init
@@ -1529,7 +1594,9 @@ Signalés par Val 2026-05-30 (navigation espagnole).
       code est déployé et committé (`cddb518`) depuis le 2026-08-18 : il ne manque que la
       confirmation
 - [ ] Catégorie `TEST` restée sur la Box : `migrate_categories` ne supprime jamais une
-      catégorie qu'elle n'a pas su reclasser. À retirer à la main si elle ne sert plus
+      catégorie qu'elle n'a pas su reclasser. À retirer à la main si elle ne sert plus.
+      **Vérifiée le 2026-08-22** : toujours là (pk=17), **0 notice rattachée** — donc
+      supprimable sans risque, mais c'est une donnée de production : sur demande de Val
 
 ## Sprint 29 — Nettoyage du chemin d'impression
 
@@ -1568,6 +1635,125 @@ bibliothèque. **Décision Val : tout supprimer.**
       `sanjuan` et `grand-saconnex` recréées (healthy) ; source synchronisée et image
       rebâtie sur le secours **Avignon**. Route `printing:labels_send` vérifiée absente,
       traductions EN/ES/MG vérifiées compilées dans l'image
-- [ ] **Test fonctionnel Val** — écran Étiquettes : le bouton CUPS a disparu,
-      « Générer PDF » / « Ruban 62 mm » / « Étiquettes de tranche » fonctionnent
-- [ ] Commit unique groupé + push origin/main
+- [x] **Test fonctionnel Val OK 2026-08-22** — écran Étiquettes : bouton CUPS
+      disparu, « Générer PDF » / « Ruban 62 mm » / « Étiquettes de tranche » OK
+- [x] Commit unique groupé + push origin/main → commit `a85d8c2`
+
+### FEAT-075 — Deux écrans d'étiquettes + libellé « PDF A4 » + cote condensée
+
+Demande Val (2026-08-22) : séparer les deux sortes d'étiquettes en deux pages et
+deux entrées de menu (même fonctionnement général, même code de base), renommer
+« Générer PDF » en « PDF A4 », et rendre la cote de tranche **35 % plus étroite
+à hauteur constante** pour qu'elle tienne sur les tranches minces.
+
+- [x] `apps/printing/views.py` — `_picker_context()` extrait et partagé ;
+      nouvelle vue `spine_labels_picker`
+- [x] `apps/printing/urls.py` — route `spine-labels/` (`printing:spine_labels`)
+- [x] `templates/printing/_picker_base.html` — gabarit commun (filtres, table,
+      « tout cocher », `?catalog_session=N`)
+- [x] `templates/printing/labels_picker.html` — n'override que ses boutons ;
+      « Générer PDF » → « **PDF A4** » ; le bouton de tranche part sur son écran
+- [x] `templates/printing/spine_labels_picker.html` — bouton ruban seul,
+      colonnes **Catégorie** / **Cote imprimée**, encadré d'explication quand
+      l'impression ruban est désactivée
+- [x] `templates/printing/cards_picker.html` — « Générer PDF » → « PDF A4 »
+      aussi, pour que le bouton ne porte pas deux noms selon l'écran
+- [x] `templates/core/advanced.html` — entrée « Étiquettes de tranche » dans le
+      chapitre Impression
+- [x] `apps/printing/services.py` — `SPINE_WIDTH_SCALE = 0.60` + `scale(0.60, 1)`
+      autour du tracé, dans `_draw_spine_text()` partagé ruban / A4.
+      **Deux corrections successives** : (1) la 1re version élargissait la zone
+      de calcul, donc grossissait la police au lieu de condenser — contraire à
+      la demande ; (2) Val a relevé le même symptôme après essai et porté la
+      consigne de 35 % à **40 %**. Mesures finales : `RO FI ADO` 41,9 mm →
+      **25,1 mm** de large, capitale inchangée à 11,3 mm (police 44,5 pt, la
+      même qu'avant FEAT-075). Garde-fou :
+      `test_font_size_is_computed_on_the_real_width_not_a_widened_one` relit la
+      taille de police dans le flux PDF
+- [x] **Planche A4 de cotes** (demande Val du 2026-08-22, absente de la 1re
+      version) : `render_spine_labels_pdf()`, vue `spine_labels_pdf`, route
+      `spine-labels.pdf`, bouton « PDF A4 » sur l'écran des cotes. Même grille
+      que les étiquettes code Ofelia (`item_label_format`, 21 par page)
+- [x] **Cote A4 réduite à 70 %** (`SPINE_A4_SIZE_SCALE`, retour Val du
+      2026-08-22) : la cellule A4 (70 × 42 mm) étant plus grande qu'une étiquette
+      de ruban, la cote la remplissait démesurément. Hauteur et largeur réduites
+      de 30 %, découpage en lignes inchangé. `RO FI ADO` : 31,0 × 14,0 mm →
+      **21,7 × 9,8 mm**. Le ruban garde sa taille pleine
+      (`test_roll_label_keeps_its_full_size`)
+- [x] Redirections d'erreur de `spine_labels_roll_pdf` → `printing:spine_labels`
+- [x] `docs/specs/FEAT-075-ecrans-etiquettes-separes.md`
+
+### FEAT-076 — Chapitre « Méta-données » dans le menu Avancé
+
+- [x] `templates/core/advanced.html` — nouveau chapitre (bleu `--sky`, icône
+      `database`) entre Inventaire et Administration : emplacements, langues,
+      catégories, provenances, enrichissement. L'Inventaire ne garde que les
+      sessions de travail
+- [x] `docs/specs/FEAT-076-menu-metadonnees.md`
+
+### Vérifications 2e vague
+
+- [x] `pytest` sur Fez : **662 passed** (648 → 662, +14 tests d'étiquettes)
+- [x] Gate i18n : 8 chaînes neuves × EN/ES/MG (dont l'encadré « ruban désactivé » réécrit) dans
+      `scripts/translations_sprint29.py` → `i18n_check.py` = **0**
+- [x] SPEC §6.7 (deux écrans, cote condensée), §10.1 (menu) + en-tête
+
+### FEAT-077 — Logo compact + horloge de la Box
+
+Demande Val (2026-08-22) : logo de la topbar plus petit, et date/heure à droite
+du « Bonjour » sur l'accueil — **la Box perd son horloge quand on l'éteint**
+(pas de pile RTC), les bibliothécaires doivent pouvoir s'en apercevoir.
+
+- [x] `static/img/ofelia-logo-small.png` (emblème seul, 726 × 688) + `base.html`
+      → ~30 px de large au lieu de ~104. `ofelia-logo.png` conservé (impressions)
+- [x] `templates/core/dashboard.html` — hero en deux blocs, heure + date à
+      droite, script de rafraîchissement (15 s) **basé sur l'horodatage serveur**
+- [x] `static/css/ofelia.css` — `.hero` en flex, `.hero-clock` (tabular-nums)
+- [x] **`TIME_ZONE` lu dans `TZ`** (défaut UTC inchangé) : sans ça, une Box à
+      Madagascar aurait affiché 3 h de moins que la pendule et aurait paru
+      déréglée en permanence — l'inverse du but recherché
+- [x] **Réglage du fuseau dans Avancé → Paramètres** (demande Val du 2026-08-22) :
+      `TimezoneForm` (liste IANA + « Fuseau du système »), section `timezone` dans
+      le registre `FORMS`, `TimezoneMiddleware` qui l'active à chaque requête.
+      Deux niveaux : `TZ` de l'instance = défaut, réglage Paramètres = surcharge
+- [x] **Libellés de la liste enrichis** (retour Val du 2026-08-22, il cherchait
+      le fuseau de Canaima) : « Europe/Zurich — CEST (UTC+2) », « America/Caracas
+      (UTC-4) ». Coût mesuré dans le conteneur : ~220 ms au 1er rendu, ~40 ms
+      ensuite → pas de cache
+- [x] **Abréviation du fuseau** affichée à côté de l'heure. Sigle IANA quand il
+      existe (`CEST`, `IST`), **nom de la ville** sinon (`Caracas`, `San Juan`) :
+      la base a retiré les sigles littéraux d'Amérique du Sud et un « -04 »
+      n'apprend rien au bibliothécaire (retour Val 2026-08-22)
+- [x] **BUG corrigé** : le sigle disparaissait au bout de 15 s — le script
+      écrasait tout le bloc heure via `textContent`. L'heure a désormais son
+      propre span `.hero-clock-hm` ; un test interdit de viser à nouveau
+      `.hero-clock-time`
+- [x] `apps/core/timeutils.py` — `abbreviation()` / `utc_offset()` / `city()` /
+      `zone_label()` partagés entre l'accueil et les Paramètres
+- [x] `TZ` posée hors dépôt : `America/Argentina/San_Juan` (sanjuan),
+      `Europe/Zurich` (grand-saconnex), `Europe/Zurich` sur la Box (lu de
+      `timedatectl`, donc « la TZ de la Box »)
+- [x] `apps/core/tests/test_dashboard_clock.py` — 10 tests, dont un qui interdit
+      `new Date()` sans argument dans le script (l'horloge du poste masquerait
+      celle de la Box), la surcharge du réglage, le repli sur le système et le
+      fuseau inconnu non fatal
+- [x] `docs/specs/FEAT-077-logo-compact-horloge-box.md`
+- [x] `pytest` : **678 passed** ; gate i18n = 0
+- [x] Déploiement : Fez (`sanjuan`, `grand-saconnex`), secours Avignon, **et la
+      Box** — remise à jour le 2026-08-22 (`git pull` → `a85d8c2` + copie des
+      FEAT-075/076/077 non committés, rebuild `bibliofelia` + `bibliofelia-worker`,
+      0 migration en attente, healthy)
+- [!] `/opt/edubox/docker-compose.yml` (projet **keebee**) modifié sur la Box pour
+      y ajouter `TZ: ${TZ:-UTC}` sur les deux services. **À reporter dans
+      `C:\WORK\keebee\docker-compose.yml`**, sinon le prochain déploiement keebee
+      l'efface. Sauvegarde sur la Box : `docker-compose.yml.bak-tz`
+- [x] Déploiement Fez (`sanjuan`, `grand-saconnex`, healthy) + secours Avignon
+      (source synchronisée + image rebâtie)
+- [x] ~~Box non mise à jour~~ — **rattrapé le 2026-08-22** : elle était
+      injoignable pendant la 1re vague puis en panne au début de la 2e ; remise
+      en ligne par Val en fin de session, elle a reçu `a85d8c2` + FEAT-075/076/077
+      (rebuild `bibliofelia` + `bibliofelia-worker`, 0 migration en attente, healthy)
+- [x] **Test fonctionnel Val OK 2026-08-22**, en quatre temps : étiquettes
+      (« c'est bon »), logo (« validé »), heure sur la Box (« ok validé »), puis
+      fuseaux et libellés (« c'est ok comme ça »)
+- [x] Commit unique groupé + push origin/main

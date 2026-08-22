@@ -19,7 +19,7 @@
 <form method="get" action="{% url 'printing:cards_pdf' %}">
     <div style="display:flex;gap:8px;flex-wrap:wrap;margin-bottom:14px">
         <button type="submit" class="btn btn--primary">
-            {% icon "file-text" size="16px" %} {% trans "Générer PDF" %}
+            {% icon "file-text" size="16px" %} {% trans "PDF A4" %}
         </button>
         {% if roll.enabled %}
         <button type="submit" formaction="{% url 'printing:cards_roll_pdf' %}" formtarget="_blank" class="btn btn--primary">

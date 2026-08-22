@@ -1,0 +1,39 @@
+{% extends "printing/_picker_base.html" %}
+{% load i18n biblio_icons %}
+
+{# Étiquettes de tranche : la cote de catégorie seule, en planche A4 ou au ruban 62 mm (FEAT-075). #}
+
+{% block picker_buttons %}
+    <button type="submit" class="btn btn--primary">
+        {% icon "file-text" size="16px" %} {% trans "PDF A4" %}
+    </button>
+    {% if roll.enabled %}
+    <button type="submit" formaction="{% url 'printing:spine_labels_roll_pdf' %}" formtarget="_blank" class="btn btn--primary">
+        {% icon "bookmark" size="16px" %} {% blocktrans with w=roll.tape_width_mm %}Ruban {{ w }} mm (Brother QL){% endblocktrans %}
+    </button>
+    {% endif %}
+{% endblock %}
+
+{% block picker_notice %}
+    {% if not roll.enabled %}
+    <div class="card msg-warning" style="margin-bottom:14px">
+        {% trans "L'impression ruban est désactivée : seule la planche A4 est disponible ici. Activez-la dans Paramètres → Impressions — Ruban continu pour imprimer les cotes à l'étiqueteuse." %}
+    </div>
+    {% endif %}
+{% endblock %}
+
+{% block extra_head %}
+    <th>{% trans "Catégorie" %}</th>
+    <th>{% trans "Cote imprimée" %}</th>
+{% endblock %}
+
+{% block extra_cells %}
+    <td>{{ item.record.category.name|default:"—" }}</td>
+    <td>
+        {% if item.record.category.abbreviation %}
+            <strong>{{ item.record.category.abbreviation }}</strong>
+        {% else %}
+            <span class="muted">{% trans "aucune" %}</span>
+        {% endif %}
+    </td>
+{% endblock %}
