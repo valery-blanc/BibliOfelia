@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2026-08-21 08:46+0000\n"
+"POT-Creation-Date: 2026-08-22 09:41+0000\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -176,7 +176,7 @@ msgstr ""
 #: templates/catalog/scan_session.html:160
 #: templates/catalog/scan_session.html:188
 #: templates/printing/labels_picker.html:29
-#: templates/printing/labels_picker.html:65
+#: templates/printing/labels_picker.html:62
 msgid "Emplacement"
 msgstr ""
 
@@ -185,7 +185,7 @@ msgstr ""
 #: templates/catalog/_item_results.html:126
 #: templates/catalog/item_bulk_delete.html:61
 #: templates/catalog/record_detail.html:102
-#: templates/printing/labels_picker.html:68
+#: templates/printing/labels_picker.html:65
 msgid "Provenance"
 msgstr ""
 
@@ -1104,7 +1104,7 @@ msgstr ""
 msgid "Téléphone"
 msgstr ""
 
-#: apps/core/forms.py:119 apps/setup/forms.py:37 apps/setup/views.py:31
+#: apps/core/forms.py:119 apps/setup/forms.py:37 apps/setup/views.py:30
 msgid "Langues activées"
 msgstr ""
 
@@ -1116,7 +1116,7 @@ msgstr ""
 msgid "La langue par défaut doit être activée."
 msgstr ""
 
-#: apps/core/forms.py:157 apps/setup/forms.py:77
+#: apps/core/forms.py:157 apps/setup/forms.py:68
 msgid "Chemin clé USB"
 msgstr ""
 
@@ -1128,7 +1128,7 @@ msgstr ""
 msgid "Sauvegarde cloud (rclone)"
 msgstr ""
 
-#: apps/core/forms.py:162 apps/setup/forms.py:82
+#: apps/core/forms.py:162 apps/setup/forms.py:73
 msgid "Remote rclone"
 msgstr ""
 
@@ -1792,47 +1792,37 @@ msgstr ""
 msgid "Usager %(n)s supprimé."
 msgstr ""
 
-#: apps/printing/services.py:324 templates/members/member_detail.html:102
+#: apps/printing/services.py:322 templates/members/member_detail.html:102
 #: templates/members/member_form.html:36
 msgid "Famille"
 msgstr ""
 
-#: apps/printing/services.py:401 apps/printing/services.py:801
+#: apps/printing/services.py:399 apps/printing/services.py:760
 msgid "Carte de membre"
 msgstr ""
 
-#: apps/printing/services.py:409 apps/printing/services.py:810
+#: apps/printing/services.py:407 apps/printing/services.py:769
 #, python-format
 msgid "Catégorie : %(c)s"
 msgstr ""
 
-#: apps/printing/services.py:413 apps/printing/services.py:814
+#: apps/printing/services.py:411 apps/printing/services.py:773
 #, python-format
 msgid "Valide jusqu'au %(d)s"
 msgstr ""
 
-#: apps/printing/views.py:67 apps/printing/views.py:79
-#: apps/printing/views.py:112 apps/printing/views.py:132
+#: apps/printing/views.py:66 apps/printing/views.py:93
+#: apps/printing/views.py:113
 #: templates/catalog/item_bulk_assign_provenance.html:26
 #: templates/catalog/item_bulk_delete.html:26
 msgid "Aucun exemplaire sélectionné."
 msgstr ""
 
-#: apps/printing/views.py:84
-#, python-format
-msgid "Job d'impression envoyé (#%(id)s)."
-msgstr ""
-
-#: apps/printing/views.py:86
-#, python-format
-msgid "Imprimante indisponible : %(e)s"
-msgstr ""
-
-#: apps/printing/views.py:102 apps/printing/views.py:122
+#: apps/printing/views.py:83 apps/printing/views.py:103
 msgid "Aucun usager sélectionné."
 msgstr ""
 
-#: apps/printing/views.py:138
+#: apps/printing/views.py:119
 msgid ""
 "Aucun exemplaire sélectionné n'a de catégorie abrégée : renseignez "
 "l'abréviation de la catégorie avant d'imprimer."
@@ -1914,7 +1904,7 @@ msgstr ""
 #: templates/members/member_detail.html:135
 #: templates/members/member_history.html:30
 #: templates/members/member_history.html:62
-#: templates/printing/labels_picker.html:64
+#: templates/printing/labels_picker.html:61
 #: templates/reports/inactive_list.html:71
 #: templates/reports/overdue_list.html:38
 #: templates/reports/reservations_pickup.html:36
@@ -1936,7 +1926,7 @@ msgstr ""
 msgid "Aucune activité"
 msgstr ""
 
-#: apps/setup/forms.py:20 apps/setup/views.py:29
+#: apps/setup/forms.py:20 apps/setup/views.py:28
 #: templates/accounts/login.html:27 templates/accounts/login.html:29
 #: templates/base.html:65 templates/base.html:67
 #: templates/catalog/record_detail.html:64
@@ -1960,66 +1950,46 @@ msgid "Email"
 msgstr ""
 
 #: apps/setup/forms.py:69
-msgid "Activer l'impression CUPS"
-msgstr ""
-
-#: apps/setup/forms.py:70
-msgid "Si désactivé : impression en PDF uniquement."
-msgstr ""
-
-#: apps/setup/forms.py:72
-msgid "Serveur CUPS"
-msgstr ""
-
-#: apps/setup/forms.py:73
-msgid "Vide = CUPS local (sur la box)."
-msgstr ""
-
-#: apps/setup/forms.py:78
 msgid "Sauvegarde horaire automatique"
 msgstr ""
 
-#: apps/setup/forms.py:80
+#: apps/setup/forms.py:71
 msgid "Sauvegarde cloud (optionnel)"
 msgstr ""
 
-#: apps/setup/forms.py:86
+#: apps/setup/forms.py:77
 msgid "Activer ZeroTier"
 msgstr ""
 
-#: apps/setup/forms.py:87
+#: apps/setup/forms.py:78
 msgid "Network ID"
 msgstr ""
 
-#: apps/setup/forms.py:92
+#: apps/setup/forms.py:83
 msgid "Installer des données de démonstration (50 notices, 20 usagers, prêts)"
 msgstr ""
 
-#: apps/setup/views.py:30
+#: apps/setup/views.py:29
 msgid "Bibliothèque"
 msgstr ""
 
-#: apps/setup/views.py:32
+#: apps/setup/views.py:31
 msgid "Administrateur"
 msgstr ""
 
-#: apps/setup/views.py:33
-msgid "Imprimante"
-msgstr ""
-
-#: apps/setup/views.py:34
+#: apps/setup/views.py:32
 msgid "Sauvegarde"
 msgstr ""
 
-#: apps/setup/views.py:35
+#: apps/setup/views.py:33
 msgid "ZeroTier"
 msgstr ""
 
-#: apps/setup/views.py:36
+#: apps/setup/views.py:34
 msgid "Démo"
 msgstr ""
 
-#: apps/setup/views.py:91
+#: apps/setup/views.py:89
 #, python-format
 msgid "Étapes manquantes : %(m)s"
 msgstr ""
@@ -2406,7 +2376,7 @@ msgstr ""
 #: templates/catalog/item_bulk_assign_provenance.html:37
 #: templates/catalog/item_bulk_delete.html:59
 #: templates/catalog/record_detail.html:99
-#: templates/printing/labels_picker.html:66
+#: templates/printing/labels_picker.html:63
 #: templates/reports/inactive_list.html:70
 msgid "Code Ofelia"
 msgstr ""
@@ -2899,7 +2869,7 @@ msgstr ""
 
 #: templates/catalog/item_bulk_delete.html:60
 #: templates/catalog/record_detail.html:100
-#: templates/printing/labels_picker.html:67
+#: templates/printing/labels_picker.html:64
 msgid "Code externe"
 msgstr ""
 
@@ -4026,7 +3996,7 @@ msgstr ""
 #: templates/core/advanced.html:44
 msgid ""
 "Génère les étiquettes (code Ofelia + titre + emplacement) à coller sur les "
-"ouvrages. PDF planche A4 ou envoi direct à l'imprimante CUPS."
+"ouvrages. PDF planche A4 ou ruban 62 mm pour l'étiqueteuse Brother QL."
 msgstr ""
 
 #: templates/core/advanced.html:53 templates/printing/cards_picker.html:14
@@ -4988,16 +4958,12 @@ msgstr ""
 msgid "Étiquettes de tranche"
 msgstr ""
 
-#: templates/printing/labels_picker.html:55
-msgid "Imprimer (CUPS)"
-msgstr ""
-
-#: templates/printing/labels_picker.html:63
+#: templates/printing/labels_picker.html:60
 #: templates/reports/inactive_list.html:69
 msgid "ID interne"
 msgstr ""
 
-#: templates/printing/labels_picker.html:83
+#: templates/printing/labels_picker.html:80
 msgid "Aucun exemplaire."
 msgstr ""
 

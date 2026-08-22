@@ -11,15 +11,13 @@ SPEC §6.7 :
   monochrome) ou une carte membre (62×89 mm, dessin couché au format carte
   bancaire) par page. Paramètres dans Setting `roll_printer_format` (FEAT-062).
 
-L'intégration CUPS (pycups) reste limitée à l'image Docker Linux (cf.
-`requirements.txt` ; le package est installé conditionnellement dans le
-Dockerfile). En dev Windows et en l'absence de CUPS, on génère le PDF.
+L'impression passe toujours par un PDF servi au navigateur : l'étiqueteuse est
+branchée sur le poste client, pas sur le serveur (cf. FEAT-074).
 """
 from __future__ import annotations
 
 import io
 import logging
-from dataclasses import dataclass
 from typing import Sequence
 
 from django.conf import settings
@@ -432,45 +430,6 @@ def _draw_member_card(pdf, x, y, w, h, member, library_name: str,
         pdf.setFont("Helvetica-Bold", 9)
         pdf.drawString(x + 5 * mm, y + 5 * mm,
                        member.preferred_language.upper())
-
-
-# ----------------------------------------------------------------------
-# Envoi CUPS (Linux uniquement, échec silencieux ailleurs)
-# ----------------------------------------------------------------------
-@dataclass
-class PrintResult:
-    sent: bool
-    job_id: int | None = None
-    error: str = ""
-
-
-def submit_to_cups(pdf_bytes: bytes, job_title: str = "BibliOfelia") -> PrintResult:
-    """Envoie un PDF à l'imprimante par défaut via CUPS.
-
-    `pycups` n'est pas installé en dev Windows : on retourne `sent=False`.
-    Côté Pi (Docker Linux), si CUPS_HOST est vide, le serveur local est utilisé.
-    """
-    try:
-        import cups  # type: ignore[import-not-found]
-    except Exception:
-        return PrintResult(sent=False, error="pycups non disponible (dev ?)")
-    try:
-        if settings.CUPS_HOST:
-            conn = cups.Connection(host=settings.CUPS_HOST, port=settings.CUPS_PORT)
-        else:
-            conn = cups.Connection()
-        printer = conn.getDefault()
-        if not printer:
-            return PrintResult(sent=False, error="Aucune imprimante par défaut")
-        import tempfile
-
-        with tempfile.NamedTemporaryFile(suffix=".pdf", delete=False) as fh:
-            fh.write(pdf_bytes)
-            tmp_path = fh.name
-        job_id = conn.printFile(printer, tmp_path, job_title, {})
-        return PrintResult(sent=True, job_id=job_id)
-    except Exception as exc:
-        return PrintResult(sent=False, error=str(exc))
 
 
 def _library_name() -> str:

@@ -31,8 +31,6 @@ env = environ.Env(
     AVAHI_SERVICE_PATH=(str, "/etc/avahi/services/bibliofelia.service"),
     MDNS_SERVICE_PORT=(int, 80),
     BACKUP_USB_PATH=(str, "/backup"),
-    CUPS_HOST=(str, ""),
-    CUPS_PORT=(int, 631),
     SECURE_COOKIES=(bool, True),
 )
 
@@ -313,10 +311,6 @@ MDNS_SERVICE_PORT = env("MDNS_SERVICE_PORT")
 
 # Sauvegardes
 BACKUP_USB_PATH = env("BACKUP_USB_PATH")
-
-# Impression
-CUPS_HOST = env("CUPS_HOST")
-CUPS_PORT = env("CUPS_PORT")
 
 # Logging
 LOGGING = {

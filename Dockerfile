@@ -9,11 +9,9 @@ ENV PYTHONDONTWRITEBYTECODE=1 \
     PIP_DISABLE_PIP_VERSION_CHECK=1 \
     DJANGO_SETTINGS_MODULE=config.settings.prod
 
-# Dépendances système : SQLite, libcups, fontconfig, gettext (i18n), curl (healthcheck)
+# Dépendances système : SQLite, fontconfig, gettext (i18n), curl (healthcheck)
 RUN apt-get update && apt-get install -y --no-install-recommends \
         sqlite3 \
-        libcups2 \
-        libcups2-dev \
         gcc \
         gettext \
         curl \
@@ -25,7 +23,7 @@ RUN apt-get update && apt-get install -y --no-install-recommends \
 WORKDIR /app
 
 COPY requirements.txt requirements-dev.txt ./
-RUN pip install -r requirements.txt && pip install pycups==2.0.4
+RUN pip install -r requirements.txt
 
 # -----------------------------------------------------------------------------
 FROM base AS dev

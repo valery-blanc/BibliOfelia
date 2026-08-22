@@ -6,7 +6,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: BibliOfelia 1.0\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2026-08-21 08:46+0000\n"
+"POT-Creation-Date: 2026-08-22 09:41+0000\n"
 "PO-Revision-Date: 2026-05-22 00:00+0000\n"
 "Last-Translator: Claude Code\n"
 "Language-Team: English\n"
@@ -174,7 +174,7 @@ msgstr "External Ofelia code"
 #: templates/catalog/scan_session.html:160
 #: templates/catalog/scan_session.html:188
 #: templates/printing/labels_picker.html:29
-#: templates/printing/labels_picker.html:65
+#: templates/printing/labels_picker.html:62
 msgid "Emplacement"
 msgstr "Location"
 
@@ -183,7 +183,7 @@ msgstr "Location"
 #: templates/catalog/_item_results.html:126
 #: templates/catalog/item_bulk_delete.html:61
 #: templates/catalog/record_detail.html:102
-#: templates/printing/labels_picker.html:68
+#: templates/printing/labels_picker.html:65
 msgid "Provenance"
 msgstr "Source"
 
@@ -221,7 +221,8 @@ msgstr "No source exists yet: create one from Advanced → Sources."
 #, python-format
 msgid ""
 "Le code externe doit être alphanumérique et faire %(n)s caractères au plus."
-msgstr "The external code must be alphanumeric and at most %(n)s characters long."
+msgstr ""
+"The external code must be alphanumeric and at most %(n)s characters long."
 
 #: apps/catalog/forms.py:178
 #, python-format
@@ -240,7 +241,9 @@ msgstr "Up to 20 identical copies at once."
 msgid ""
 "Un code externe ne peut être attribué qu'à un seul exemplaire : créez-les "
 "sans code, puis saisissez le code sur l'exemplaire concerné."
-msgstr "An external code can only be given to a single copy: create them without a code, then enter the code on the relevant copy."
+msgstr ""
+"An external code can only be given to a single copy: create them without a "
+"code, then enter the code on the relevant copy."
 
 #: apps/catalog/forms.py:219
 msgid "Court, sans espace : A1, JEU-BD, RES…"
@@ -294,7 +297,9 @@ msgstr "Short, no spaces: ENF-ALB, ADU-ROM…"
 msgid ""
 "Cote imprimée sur l'étiquette de tranche. Ex. « RO FI ADO » pour « Romans "
 "fiction pour adolescents »."
-msgstr "Shelf mark printed on the spine label. E.g. “RO FI ADO” for “Teen fiction novels”."
+msgstr ""
+"Shelf mark printed on the spine label. E.g. “RO FI ADO” for “Teen fiction "
+"novels”."
 
 #: apps/catalog/forms.py:274
 msgid "Sous-catégorie de… (optionnel)."
@@ -308,7 +313,9 @@ msgstr "Empty = the library's default period."
 msgid ""
 "Abréviation internationale principale, sans variante régionale : fr, en, pt, "
 "de… (« fr » couvre le français de France, du Canada et de Suisse)."
-msgstr "Main international abbreviation, without regional variant: fr, en, pt, de… (“fr” covers French from France, Canada and Switzerland)."
+msgstr ""
+"Main international abbreviation, without regional variant: fr, en, pt, de… "
+"(“fr” covers French from France, Canada and Switzerland)."
 
 #: apps/catalog/forms.py:301
 msgid "Nom de la langue dans la langue de saisie courante."
@@ -359,7 +366,9 @@ msgstr "Applied to new copies; editable row by row."
 msgid ""
 "Appliquée à tous les exemplaires du lot. Ex. des livres prêtés par une autre "
 "bibliothèque, à retrouver le jour du retour."
-msgstr "Applied to every copy in the batch. E.g. books lent by another library, to be found again on the day they go back."
+msgstr ""
+"Applied to every copy in the batch. E.g. books lent by another library, to "
+"be found again on the day they go back."
 
 #: apps/catalog/languages.py:50
 msgid "— non précisée —"
@@ -1105,7 +1114,7 @@ msgstr "Contact (email)"
 msgid "Téléphone"
 msgstr "Phone"
 
-#: apps/core/forms.py:119 apps/setup/forms.py:37 apps/setup/views.py:31
+#: apps/core/forms.py:119 apps/setup/forms.py:37 apps/setup/views.py:30
 msgid "Langues activées"
 msgstr "Enabled languages"
 
@@ -1117,7 +1126,7 @@ msgstr "Default language"
 msgid "La langue par défaut doit être activée."
 msgstr "The default language must be enabled."
 
-#: apps/core/forms.py:157 apps/setup/forms.py:77
+#: apps/core/forms.py:157 apps/setup/forms.py:68
 msgid "Chemin clé USB"
 msgstr "USB drive path"
 
@@ -1129,7 +1138,7 @@ msgstr "Hourly backup"
 msgid "Sauvegarde cloud (rclone)"
 msgstr "Cloud backup (rclone)"
 
-#: apps/core/forms.py:162 apps/setup/forms.py:82
+#: apps/core/forms.py:162 apps/setup/forms.py:73
 msgid "Remote rclone"
 msgstr "rclone remote"
 
@@ -1800,51 +1809,43 @@ msgstr "Member reactivated."
 msgid "Usager %(n)s supprimé."
 msgstr "Member %(n)s deleted."
 
-#: apps/printing/services.py:324 templates/members/member_detail.html:102
+#: apps/printing/services.py:322 templates/members/member_detail.html:102
 #: templates/members/member_form.html:36
 msgid "Famille"
 msgstr "Family"
 
-#: apps/printing/services.py:401 apps/printing/services.py:801
+#: apps/printing/services.py:399 apps/printing/services.py:760
 msgid "Carte de membre"
 msgstr "Member card"
 
-#: apps/printing/services.py:409 apps/printing/services.py:810
+#: apps/printing/services.py:407 apps/printing/services.py:769
 #, python-format
 msgid "Catégorie : %(c)s"
 msgstr "Category: %(c)s"
 
-#: apps/printing/services.py:413 apps/printing/services.py:814
+#: apps/printing/services.py:411 apps/printing/services.py:773
 #, python-format
 msgid "Valide jusqu'au %(d)s"
 msgstr "Valid until %(d)s"
 
-#: apps/printing/views.py:67 apps/printing/views.py:79
-#: apps/printing/views.py:112 apps/printing/views.py:132
+#: apps/printing/views.py:66 apps/printing/views.py:93
+#: apps/printing/views.py:113
 #: templates/catalog/item_bulk_assign_provenance.html:26
 #: templates/catalog/item_bulk_delete.html:26
 msgid "Aucun exemplaire sélectionné."
 msgstr "No item selected."
 
-#: apps/printing/views.py:84
-#, python-format
-msgid "Job d'impression envoyé (#%(id)s)."
-msgstr "Print job sent (#%(id)s)."
-
-#: apps/printing/views.py:86
-#, python-format
-msgid "Imprimante indisponible : %(e)s"
-msgstr "Printer unavailable: %(e)s"
-
-#: apps/printing/views.py:102 apps/printing/views.py:122
+#: apps/printing/views.py:83 apps/printing/views.py:103
 msgid "Aucun usager sélectionné."
 msgstr "No member selected."
 
-#: apps/printing/views.py:138
+#: apps/printing/views.py:119
 msgid ""
 "Aucun exemplaire sélectionné n'a de catégorie abrégée : renseignez "
 "l'abréviation de la catégorie avant d'imprimer."
-msgstr "None of the selected copies has an abbreviated category: fill in the category abbreviation before printing."
+msgstr ""
+"None of the selected copies has an abbreviated category: fill in the "
+"category abbreviation before printing."
 
 #: apps/reports/forms.py:12
 msgid "Du"
@@ -1922,7 +1923,7 @@ msgstr "Top 10 borrowed works"
 #: templates/members/member_detail.html:135
 #: templates/members/member_history.html:30
 #: templates/members/member_history.html:62
-#: templates/printing/labels_picker.html:64
+#: templates/printing/labels_picker.html:61
 #: templates/reports/inactive_list.html:71
 #: templates/reports/overdue_list.html:38
 #: templates/reports/reservations_pickup.html:36
@@ -1944,7 +1945,7 @@ msgstr "Issued by BibliOfelia on %(d)s."
 msgid "Aucune activité"
 msgstr "No activity"
 
-#: apps/setup/forms.py:20 apps/setup/views.py:29
+#: apps/setup/forms.py:20 apps/setup/views.py:28
 #: templates/accounts/login.html:27 templates/accounts/login.html:29
 #: templates/base.html:65 templates/base.html:67
 #: templates/catalog/record_detail.html:64
@@ -1968,66 +1969,46 @@ msgid "Email"
 msgstr "Email"
 
 #: apps/setup/forms.py:69
-msgid "Activer l'impression CUPS"
-msgstr "Enable CUPS printing"
-
-#: apps/setup/forms.py:70
-msgid "Si désactivé : impression en PDF uniquement."
-msgstr "If disabled: PDF printing only."
-
-#: apps/setup/forms.py:72
-msgid "Serveur CUPS"
-msgstr "CUPS server"
-
-#: apps/setup/forms.py:73
-msgid "Vide = CUPS local (sur la box)."
-msgstr "Empty = local CUPS (on the box)."
-
-#: apps/setup/forms.py:78
 msgid "Sauvegarde horaire automatique"
 msgstr "Automatic hourly backup"
 
-#: apps/setup/forms.py:80
+#: apps/setup/forms.py:71
 msgid "Sauvegarde cloud (optionnel)"
 msgstr "Cloud backup (optional)"
 
-#: apps/setup/forms.py:86
+#: apps/setup/forms.py:77
 msgid "Activer ZeroTier"
 msgstr "Enable ZeroTier"
 
-#: apps/setup/forms.py:87
+#: apps/setup/forms.py:78
 msgid "Network ID"
 msgstr "Network ID"
 
-#: apps/setup/forms.py:92
+#: apps/setup/forms.py:83
 msgid "Installer des données de démonstration (50 notices, 20 usagers, prêts)"
 msgstr "Install demo data (50 records, 20 members, loans)"
 
-#: apps/setup/views.py:30
+#: apps/setup/views.py:29
 msgid "Bibliothèque"
 msgstr "Library"
 
-#: apps/setup/views.py:32
+#: apps/setup/views.py:31
 msgid "Administrateur"
 msgstr "Administrator"
 
-#: apps/setup/views.py:33
-msgid "Imprimante"
-msgstr "Printer"
-
-#: apps/setup/views.py:34
+#: apps/setup/views.py:32
 msgid "Sauvegarde"
 msgstr "Backup"
 
-#: apps/setup/views.py:35
+#: apps/setup/views.py:33
 msgid "ZeroTier"
 msgstr "ZeroTier"
 
-#: apps/setup/views.py:36
+#: apps/setup/views.py:34
 msgid "Démo"
 msgstr "Demo"
 
-#: apps/setup/views.py:91
+#: apps/setup/views.py:89
 #, python-format
 msgid "Étapes manquantes : %(m)s"
 msgstr "Missing steps: %(m)s"
@@ -2418,7 +2399,7 @@ msgstr "Category"
 #: templates/catalog/item_bulk_assign_provenance.html:37
 #: templates/catalog/item_bulk_delete.html:59
 #: templates/catalog/record_detail.html:99
-#: templates/printing/labels_picker.html:66
+#: templates/printing/labels_picker.html:63
 #: templates/reports/inactive_list.html:70
 msgid "Code Ofelia"
 msgstr "Ofelia code"
@@ -2522,7 +2503,9 @@ msgstr[1] "sub-categories will lose their parent (they become top-level ones)."
 msgid ""
 "L'abréviation « %(abbr)s » disparaît : les étiquettes de tranche déjà "
 "collées restent, mais ne pourront plus être réimprimées."
-msgstr "The abbreviation “%(abbr)s” disappears: spine labels already stuck on books stay, but they can no longer be reprinted."
+msgstr ""
+"The abbreviation “%(abbr)s” disappears: spine labels already stuck on books "
+"stay, but they can no longer be reprinted."
 
 #: templates/catalog/category_form.html:12
 #: templates/catalog/language_form.html:12
@@ -2557,13 +2540,18 @@ msgid ""
 "C'est la cote qui part sur l'étiquette de tranche, pour ranger le livre au "
 "bon rayon sans le sortir de l'étagère. Exemple : « RO FI ADO » pour « Romans "
 "fiction pour adolescents »."
-msgstr "This is the shelf mark that goes on the spine label, so a book can be shelved in the right place without pulling it off the shelf. Example: “RO FI ADO” for “Teen fiction novels”."
+msgstr ""
+"This is the shelf mark that goes on the spine label, so a book can be "
+"shelved in the right place without pulling it off the shelf. Example: “RO FI "
+"ADO” for “Teen fiction novels”."
 
 #: templates/catalog/category_list.html:81
 msgid ""
 "Elle vaut pour toutes les notices de la catégorie. Les étiquettes "
 "s'impriment depuis Impressions → Étiquettes."
-msgstr "It applies to every record in the category. Labels are printed from Printing → Labels."
+msgstr ""
+"It applies to every record in the category. Labels are printed from Printing "
+"→ Labels."
 
 #: templates/catalog/excel_catalog/_import_form.html:6
 msgid ""
@@ -2813,13 +2801,17 @@ msgstr "Invalid ISBN (neither 10 nor 13 digits): row not imported."
 msgid ""
 "Code externe déjà porté par un autre exemplaire : code ignoré, le reste de "
 "la ligne est importé."
-msgstr "External code already used by another copy: the code is ignored, the rest of the row is imported."
+msgstr ""
+"External code already used by another copy: the code is ignored, the rest of "
+"the row is imported."
 
 #: templates/catalog/excel_catalog/detail.html:139
 msgid ""
 "Code externe refusé : il doit être alphanumérique et faire 20 caractères au "
 "plus. Le reste de la ligne est importé."
-msgstr "External code rejected: it must be alphanumeric and at most 20 characters. The rest of the row is imported."
+msgstr ""
+"External code rejected: it must be alphanumeric and at most 20 characters. "
+"The rest of the row is imported."
 
 #: templates/catalog/excel_catalog/index.html:20
 msgid "Vérifier ou importer un fichier Excel d'inventaire."
@@ -2918,7 +2910,8 @@ msgid "exemplaire est mis de côté : la réservation servie sera annulée."
 msgid_plural ""
 "exemplaires sont mis de côté : les réservations servies seront annulées."
 msgstr[0] "copy is set aside: the reservation it serves will be cancelled."
-msgstr[1] "copies are set aside: the reservations they serve will be cancelled."
+msgstr[1] ""
+"copies are set aside: the reservations they serve will be cancelled."
 
 #: templates/catalog/item_bulk_delete.html:49
 msgid ""
@@ -2929,11 +2922,13 @@ msgstr "The loan and in-house reading history of these copies is erased."
 msgid ""
 "Leurs codes Ofelia sont mis de côté définitivement : ils ne seront jamais "
 "réattribués à un autre livre, même si l'étiquette a déjà été imprimée."
-msgstr "Their Ofelia codes are permanently set aside: they will never be given to another book, even if the label has already been printed."
+msgstr ""
+"Their Ofelia codes are permanently set aside: they will never be given to "
+"another book, even if the label has already been printed."
 
 #: templates/catalog/item_bulk_delete.html:60
 #: templates/catalog/record_detail.html:100
-#: templates/printing/labels_picker.html:67
+#: templates/printing/labels_picker.html:64
 msgid "Code externe"
 msgstr "External code"
 
@@ -2945,8 +2940,10 @@ msgid ""
 msgid_plural ""
 "… et %(counter)s autres exemplaires non affichés ici. Ils seront supprimés "
 "eux aussi."
-msgstr[0] "… and %(counter)s other copy not shown here. It will be deleted too."
-msgstr[1] "… and %(counter)s other copies not shown here. They will be deleted too."
+msgstr[0] ""
+"… and %(counter)s other copy not shown here. It will be deleted too."
+msgstr[1] ""
+"… and %(counter)s other copies not shown here. They will be deleted too."
 
 #: templates/catalog/item_form.html:4 templates/catalog/item_form.html:15
 msgid "Modifier l'exemplaire"
@@ -2989,14 +2986,20 @@ msgid ""
 msgid_plural ""
 "notices gardent le code « %(code)s », qui s'affichera tel quel au lieu du "
 "nom traduit."
-msgstr[0] "record keeps the code “%(code)s”, which will show as-is instead of the translated name."
-msgstr[1] "records keep the code “%(code)s”, which will show as-is instead of the translated name."
+msgstr[0] ""
+"record keeps the code “%(code)s”, which will show as-is instead of the "
+"translated name."
+msgstr[1] ""
+"records keep the code “%(code)s”, which will show as-is instead of the "
+"translated name."
 
 #: templates/catalog/language_confirm_delete.html:37
 msgid ""
 "La langue ne sera plus proposée à la saisie, ni pour un livre ni pour un "
 "usager."
-msgstr "The language will no longer be offered when cataloguing a book or enrolling a member."
+msgstr ""
+"The language will no longer be offered when cataloguing a book or enrolling "
+"a member."
 
 #: templates/catalog/language_confirm_delete.html:44
 msgid "Retirer de la liste"
@@ -3018,20 +3021,27 @@ msgstr "One list, two uses"
 msgid ""
 "Cette liste alimente à la fois la langue d'un livre et les langues parlées "
 "d'un usager. Ajoutez-y une langue dès qu'un livre ou un lecteur l'exige."
-msgstr "This list feeds both a book’s language and a member’s spoken languages. Add a language to it as soon as a book or a reader needs one."
+msgstr ""
+"This list feeds both a book’s language and a member’s spoken languages. Add "
+"a language to it as soon as a book or a reader needs one."
 
 #: templates/catalog/language_list.html:74
 msgid ""
 "Utilisez les abréviations internationales principales, sans variante "
 "régionale : « fr » couvre le français de France, du Canada et de Suisse, "
 "« pt » le portugais et le brésilien."
-msgstr "Use the main international abbreviations, without regional variants: “fr” covers French from France, Canada and Switzerland, “pt” covers Portuguese and Brazilian."
+msgstr ""
+"Use the main international abbreviations, without regional variants: “fr” "
+"covers French from France, Canada and Switzerland, “pt” covers Portuguese "
+"and Brazilian."
 
 #: templates/catalog/language_list.html:77
 msgid ""
 "Les menus déroulants sont triés par ordre alphabétique dans la langue de "
 "l'interface : l'ordre change donc d'une langue à l'autre."
-msgstr "Drop-down lists are sorted alphabetically in the interface language, so the order changes from one language to another."
+msgstr ""
+"Drop-down lists are sorted alphabetically in the interface language, so the "
+"order changes from one language to another."
 
 #: templates/catalog/location_confirm_delete.html:4
 #: templates/catalog/location_confirm_delete.html:20
@@ -3058,8 +3068,10 @@ msgid ""
 msgid_plural ""
 "exemplaires rattachés perdront leur emplacement (affichés « — » dans la "
 "fiche)."
-msgstr[0] "attached copy will lose its shelf location (shown as “—” on the record)."
-msgstr[1] "attached copies will lose their shelf location (shown as “—” on the record)."
+msgstr[0] ""
+"attached copy will lose its shelf location (shown as “—” on the record)."
+msgstr[1] ""
+"attached copies will lose their shelf location (shown as “—” on the record)."
 
 #: templates/catalog/location_confirm_delete.html:37
 msgid "sous-emplacement perdra son parent (deviendra racine)."
@@ -3123,7 +3135,10 @@ msgid ""
 "Effacer la provenance ferait perdre la trace de l'origine de ces "
 "exemplaires. Traitez-les d'abord : rattachez-les à une autre provenance, ou "
 "supprimez-les si le fonds est rendu."
-msgstr "Deleting the source would lose track of where these copies came from. Deal with them first: attach them to another source, or delete them if the collection is going back."
+msgstr ""
+"Deleting the source would lose track of where these copies came from. Deal "
+"with them first: attach them to another source, or delete them if the "
+"collection is going back."
 
 #: templates/catalog/provenance_confirm_delete.html:35
 msgid "Voir ces exemplaires"
@@ -3153,7 +3168,8 @@ msgstr "No copy uses it: deleting it has no effect on the catalogue."
 #: templates/catalog/provenance_list.html:20
 msgid ""
 "D'où viennent les exemplaires : achat, don, prêt d'une autre bibliothèque…"
-msgstr "Where the copies come from: purchase, donation, loan from another library…"
+msgstr ""
+"Where the copies come from: purchase, donation, loan from another library…"
 
 #: templates/catalog/provenance_list.html:64
 msgid ""
@@ -3170,14 +3186,19 @@ msgid ""
 "La provenance suit l'exemplaire, pas le titre : un même livre peut avoir un "
 "exemplaire acheté par la bibliothèque et un autre prêté par une bibliothèque "
 "partenaire."
-msgstr "The source follows the copy, not the title: the same book can have one copy bought by the library and another lent by a partner library."
+msgstr ""
+"The source follows the copy, not the title: the same book can have one copy "
+"bought by the library and another lent by a partner library."
 
 #: templates/catalog/provenance_list.html:76
 msgid ""
 "Le jour où il faut rendre un fonds, ouvrez le catalogue, cochez « Chercher "
 "les exemplaires », filtrez sur la provenance : vous obtenez la liste exacte "
 "des livres à sortir."
-msgstr "When a collection has to go back, open the catalogue, tick “Search copies” and filter on the source: you get the exact list of books to pull off the shelves."
+msgstr ""
+"When a collection has to go back, open the catalogue, tick “Search copies” "
+"and filter on the source: you get the exact list of books to pull off the "
+"shelves."
 
 #: templates/catalog/record_bulk_assign_category.html:4
 msgid "Affecter une catégorie"
@@ -3275,8 +3296,10 @@ msgid ""
 msgid_plural ""
 "… et %(counter)s autres notices non affichées ici. Elles seront supprimées "
 "elles aussi."
-msgstr[0] "… and %(counter)s other record not shown here. It will be deleted too."
-msgstr[1] "… and %(counter)s other records not shown here. They will be deleted too."
+msgstr[0] ""
+"… and %(counter)s other record not shown here. It will be deleted too."
+msgstr[1] ""
+"… and %(counter)s other records not shown here. They will be deleted too."
 
 #: templates/catalog/record_bulk_delete.html:85
 msgid "Confirmer la suppression"
@@ -4091,10 +4114,8 @@ msgstr "Ofelia code labels"
 #: templates/core/advanced.html:44
 msgid ""
 "Génère les étiquettes (code Ofelia + titre + emplacement) à coller sur les "
-"ouvrages. PDF planche A4 ou envoi direct à l'imprimante CUPS."
-msgstr ""
-"Generates labels (Ofelia code + title + location) to stick on the works. A4 "
-"PDF sheet or direct CUPS printer dispatch."
+"ouvrages. PDF planche A4 ou ruban 62 mm pour l'étiqueteuse Brother QL."
+msgstr "Generates the labels (Ofelia code + title + location) to stick on the books. A4 PDF sheet or 62 mm tape for the Brother QL label printer."
 
 #: templates/core/advanced.html:53 templates/printing/cards_picker.html:14
 msgid "Cartes membres"
@@ -4178,19 +4199,25 @@ msgstr ""
 msgid ""
 "Langues proposées pour les livres et pour les langues parlées des usagers. "
 "Complétez la liste si un fonds l'exige."
-msgstr "Languages offered for books and for members’ spoken languages. Extend the list if a collection needs it."
+msgstr ""
+"Languages offered for books and for members’ spoken languages. Extend the "
+"list if a collection needs it."
 
 #: templates/core/advanced.html:160
 msgid ""
 "Classement des notices et abréviation imprimée sur la tranche des livres "
 "(« RO FI ADO »)."
-msgstr "Classification of records and the abbreviation printed on book spines (“RO FI ADO”)."
+msgstr ""
+"Classification of records and the abbreviation printed on book spines (“RO "
+"FI ADO”)."
 
 #: templates/core/advanced.html:170
 msgid ""
 "D'où viennent les exemplaires (achat, don, prêt d'une autre bibliothèque). "
 "Permet de retrouver et de rendre un fonds entier."
-msgstr "Where the copies come from (purchase, donation, loan from another library). Lets you find and return a whole collection."
+msgstr ""
+"Where the copies come from (purchase, donation, loan from another library). "
+"Lets you find and return a whole collection."
 
 #: templates/core/advanced.html:180
 msgid ""
@@ -4583,8 +4610,12 @@ msgid ""
 msgid_plural ""
 "exemplaires ont été déplacés automatiquement vers <strong>%(code)s</strong> "
 "pendant cette session (leur location précédente a été corrigée)."
-msgstr[0] "copy was moved automatically to <strong>%(code)s</strong> during this session (its previous location was corrected)."
-msgstr[1] "copies were moved automatically to <strong>%(code)s</strong> during this session (their previous location was corrected)."
+msgstr[0] ""
+"copy was moved automatically to <strong>%(code)s</strong> during this "
+"session (its previous location was corrected)."
+msgstr[1] ""
+"copies were moved automatically to <strong>%(code)s</strong> during this "
+"session (their previous location was corrected)."
 
 #: templates/inventory/session_report.html:57
 msgid "Continuer l'inventaire"
@@ -4899,7 +4930,8 @@ msgstr "family record(s) will be deleted along with the member:"
 
 #: templates/members/member_confirm_delete.html:53
 msgid "Aucun impact : usager sans prêt, réservation ni personne rattachée."
-msgstr "No impact: this member has no loan, no reservation and nobody attached."
+msgstr ""
+"No impact: this member has no loan, no reservation and nobody attached."
 
 #: templates/members/member_detail.html:54
 msgid "Renouveler la carte"
@@ -4954,7 +4986,9 @@ msgstr "No current loan."
 msgid ""
 "Les personnes qui partagent cette carte. Elles n'ont pas de carte à leur "
 "nom : ces informations servent à leur proposer les bons livres."
-msgstr "The people who share this card. They have no card of their own: this is only here to help suggest the right books to them."
+msgstr ""
+"The people who share this card. They have no card of their own: this is only "
+"here to help suggest the right books to them."
 
 #: templates/members/member_form.html:82
 msgid "Ajouter une personne"
@@ -5086,16 +5120,12 @@ msgstr "Latest additions"
 msgid "Étiquettes de tranche"
 msgstr "Spine labels"
 
-#: templates/printing/labels_picker.html:55
-msgid "Imprimer (CUPS)"
-msgstr "Print (CUPS)"
-
-#: templates/printing/labels_picker.html:63
+#: templates/printing/labels_picker.html:60
 #: templates/reports/inactive_list.html:69
 msgid "ID interne"
 msgstr "Internal ID"
 
-#: templates/printing/labels_picker.html:83
+#: templates/printing/labels_picker.html:80
 msgid "Aucun exemplaire."
 msgstr "No items."
 

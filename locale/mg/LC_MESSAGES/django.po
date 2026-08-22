@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: BibliOfelia 1.0\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2026-08-21 08:46+0000\n"
+"POT-Creation-Date: 2026-08-22 09:41+0000\n"
 "PO-Revision-Date: 2026-05-22 00:00+0000\n"
 "Last-Translator: Claude Code\n"
 "Language-Team: Malagasy\n"
@@ -177,7 +177,7 @@ msgstr "Kaody Ofelia ivelany"
 #: templates/catalog/scan_session.html:160
 #: templates/catalog/scan_session.html:188
 #: templates/printing/labels_picker.html:29
-#: templates/printing/labels_picker.html:65
+#: templates/printing/labels_picker.html:62
 msgid "Emplacement"
 msgstr "Toerana"
 
@@ -186,7 +186,7 @@ msgstr "Toerana"
 #: templates/catalog/_item_results.html:126
 #: templates/catalog/item_bulk_delete.html:61
 #: templates/catalog/record_detail.html:102
-#: templates/printing/labels_picker.html:68
+#: templates/printing/labels_picker.html:65
 msgid "Provenance"
 msgstr "Fiaviana"
 
@@ -218,13 +218,16 @@ msgstr "Fanamarihana"
 #: apps/catalog/forms.py:154
 msgid ""
 "Aucune provenance n'existe encore : créez-en une depuis Avancé → Provenances."
-msgstr "Mbola tsy misy fiaviana : mamorona iray avy ao amin'ny Mandroso → Fiaviana."
+msgstr ""
+"Mbola tsy misy fiaviana : mamorona iray avy ao amin'ny Mandroso → Fiaviana."
 
 #: apps/catalog/forms.py:169
 #, python-format
 msgid ""
 "Le code externe doit être alphanumérique et faire %(n)s caractères au plus."
-msgstr "Ny kaody ivelany dia tsy maintsy litera na isa ary tsy mihoatra ny %(n)s marika."
+msgstr ""
+"Ny kaody ivelany dia tsy maintsy litera na isa ary tsy mihoatra ny %(n)s "
+"marika."
 
 #: apps/catalog/forms.py:178
 #, python-format
@@ -243,7 +246,9 @@ msgstr "Kopia mitovy hatramin'ny 20 indray mandeha."
 msgid ""
 "Un code externe ne peut être attribué qu'à un seul exemplaire : créez-les "
 "sans code, puis saisissez le code sur l'exemplaire concerné."
-msgstr "Kopia iray ihany no azo omena kaody ivelany : amboary aloha ny kopia tsy misy kaody, avy eo soraty ny kaody amin'ny kopia voakasika."
+msgstr ""
+"Kopia iray ihany no azo omena kaody ivelany : amboary aloha ny kopia tsy "
+"misy kaody, avy eo soraty ny kaody amin'ny kopia voakasika."
 
 #: apps/catalog/forms.py:219
 msgid "Court, sans espace : A1, JEU-BD, RES…"
@@ -297,7 +302,9 @@ msgstr "Fohy, tsy misy elanelana : ENF-ALB, ADU-ROM…"
 msgid ""
 "Cote imprimée sur l'étiquette de tranche. Ex. « RO FI ADO » pour « Romans "
 "fiction pour adolescents »."
-msgstr "Kaody atao pirinty amin'ny etiketin'ny lamosin-boky. Oh. « RO FI ADO » ho an'ny « Tantara foronina ho an'ny tanora »."
+msgstr ""
+"Kaody atao pirinty amin'ny etiketin'ny lamosin-boky. Oh. « RO FI ADO » ho "
+"an'ny « Tantara foronina ho an'ny tanora »."
 
 #: apps/catalog/forms.py:274
 msgid "Sous-catégorie de… (optionnel)."
@@ -311,7 +318,10 @@ msgstr "Foana = faharetana mahazatra amin'ny tranomboky."
 msgid ""
 "Abréviation internationale principale, sans variante régionale : fr, en, pt, "
 "de… (« fr » couvre le français de France, du Canada et de Suisse)."
-msgstr "Fanafohezana iraisam-pirenena fototra, tsy misy karazany isam-paritra : fr, en, pt, de… (ny « fr » dia mahafaoka ny frantsay any Frantsa, Kanada ary Soisa)."
+msgstr ""
+"Fanafohezana iraisam-pirenena fototra, tsy misy karazany isam-paritra : fr, "
+"en, pt, de… (ny « fr » dia mahafaoka ny frantsay any Frantsa, Kanada ary "
+"Soisa)."
 
 #: apps/catalog/forms.py:301
 msgid "Nom de la langue dans la langue de saisie courante."
@@ -328,7 +338,9 @@ msgstr "Fohy, tsy misy elanelana : OFELIA, BM-GE, DON-DUPONT…"
 #: apps/catalog/forms.py:324
 msgid ""
 "Nom lisible affiché dans les listes. Ex. « Prêt Bibliothèque de Genève »."
-msgstr "Anarana mora vakiana aseho anaty lisitra. Oh. « Nampindramin'ny Tranomboky Genève »."
+msgstr ""
+"Anarana mora vakiana aseho anaty lisitra. Oh. « Nampindramin'ny Tranomboky "
+"Genève »."
 
 #: apps/catalog/forms.py:325
 msgid "Contact, date de restitution prévue, conditions du dépôt…"
@@ -362,7 +374,9 @@ msgstr "Ampiharina amin'ny kopia vaovao; azo ovaina isaky ny andalana."
 msgid ""
 "Appliquée à tous les exemplaires du lot. Ex. des livres prêtés par une autre "
 "bibliothèque, à retrouver le jour du retour."
-msgstr "Ampiharina amin'ny kopia rehetra amin'ilay andiany. Oh. boky nampindramin'ny tranomboky hafa, ho hita indray amin'ny andro famerenana."
+msgstr ""
+"Ampiharina amin'ny kopia rehetra amin'ilay andiany. Oh. boky nampindramin'ny "
+"tranomboky hafa, ho hita indray amin'ny andro famerenana."
 
 #: apps/catalog/languages.py:50
 msgid "— non précisée —"
@@ -618,7 +632,8 @@ msgstr "kaody Ofelia ivelany"
 
 #: apps/catalog/models.py:311
 msgid "Code déjà porté par le livre, jusqu'à 20 caractères. Ex. BCF13298781X."
-msgstr "Kaody efa hita eo amin'ny boky, 20 marika farafahabetsany. Oh. BCF13298781X."
+msgstr ""
+"Kaody efa hita eo amin'ny boky, 20 marika farafahabetsany. Oh. BCF13298781X."
 
 #: apps/catalog/models.py:354 templates/catalog/scan_session.html:15
 #: templates/inventory/session_report.html:15
@@ -1110,7 +1125,7 @@ msgstr "Fifandraisana (email)"
 msgid "Téléphone"
 msgstr "Telefaonina"
 
-#: apps/core/forms.py:119 apps/setup/forms.py:37 apps/setup/views.py:31
+#: apps/core/forms.py:119 apps/setup/forms.py:37 apps/setup/views.py:30
 msgid "Langues activées"
 msgstr "Fiteny mavitrika"
 
@@ -1122,7 +1137,7 @@ msgstr "Fiteny mahazatra"
 msgid "La langue par défaut doit être activée."
 msgstr "Tsy maintsy mavitrika ny fiteny mahazatra."
 
-#: apps/core/forms.py:157 apps/setup/forms.py:77
+#: apps/core/forms.py:157 apps/setup/forms.py:68
 msgid "Chemin clé USB"
 msgstr "Lalan'ny USB"
 
@@ -1134,7 +1149,7 @@ msgstr "Tahiry isan'ora"
 msgid "Sauvegarde cloud (rclone)"
 msgstr "Tahiry an-tranonkala (rclone)"
 
-#: apps/core/forms.py:162 apps/setup/forms.py:82
+#: apps/core/forms.py:162 apps/setup/forms.py:73
 msgid "Remote rclone"
 msgstr "Remote rclone"
 
@@ -1810,51 +1825,43 @@ msgstr "Naverina mavitrika ny mpikambana."
 msgid "Usager %(n)s supprimé."
 msgstr "Voafafa ny mpikambana %(n)s."
 
-#: apps/printing/services.py:324 templates/members/member_detail.html:102
+#: apps/printing/services.py:322 templates/members/member_detail.html:102
 #: templates/members/member_form.html:36
 msgid "Famille"
 msgstr "Fianakaviana"
 
-#: apps/printing/services.py:401 apps/printing/services.py:801
+#: apps/printing/services.py:399 apps/printing/services.py:760
 msgid "Carte de membre"
 msgstr "Karatra mpikambana"
 
-#: apps/printing/services.py:409 apps/printing/services.py:810
+#: apps/printing/services.py:407 apps/printing/services.py:769
 #, python-format
 msgid "Catégorie : %(c)s"
 msgstr "Sokajy: %(c)s"
 
-#: apps/printing/services.py:413 apps/printing/services.py:814
+#: apps/printing/services.py:411 apps/printing/services.py:773
 #, python-format
 msgid "Valide jusqu'au %(d)s"
 msgstr "Manan-kery hatramin'ny %(d)s"
 
-#: apps/printing/views.py:67 apps/printing/views.py:79
-#: apps/printing/views.py:112 apps/printing/views.py:132
+#: apps/printing/views.py:66 apps/printing/views.py:93
+#: apps/printing/views.py:113
 #: templates/catalog/item_bulk_assign_provenance.html:26
 #: templates/catalog/item_bulk_delete.html:26
 msgid "Aucun exemplaire sélectionné."
 msgstr "Tsy misy kopia nofidiana."
 
-#: apps/printing/views.py:84
-#, python-format
-msgid "Job d'impression envoyé (#%(id)s)."
-msgstr "Nalefa ny asa fanontana (#%(id)s)."
-
-#: apps/printing/views.py:86
-#, python-format
-msgid "Imprimante indisponible : %(e)s"
-msgstr "Tsy mety ny mpanonta: %(e)s"
-
-#: apps/printing/views.py:102 apps/printing/views.py:122
+#: apps/printing/views.py:83 apps/printing/views.py:103
 msgid "Aucun usager sélectionné."
 msgstr "Tsy misy mpampiasa nofidiana."
 
-#: apps/printing/views.py:138
+#: apps/printing/views.py:119
 msgid ""
 "Aucun exemplaire sélectionné n'a de catégorie abrégée : renseignez "
 "l'abréviation de la catégorie avant d'imprimer."
-msgstr "Tsy misy amin'ireo kopia voafidy manana sokajy nafohezina : fenoy aloha ny fanafohezan'ny sokajy alohan'ny hanontana."
+msgstr ""
+"Tsy misy amin'ireo kopia voafidy manana sokajy nafohezina : fenoy aloha ny "
+"fanafohezan'ny sokajy alohan'ny hanontana."
 
 #: apps/reports/forms.py:12
 msgid "Du"
@@ -1932,7 +1939,7 @@ msgstr "Top 10 boky nindramina"
 #: templates/members/member_detail.html:135
 #: templates/members/member_history.html:30
 #: templates/members/member_history.html:62
-#: templates/printing/labels_picker.html:64
+#: templates/printing/labels_picker.html:61
 #: templates/reports/inactive_list.html:71
 #: templates/reports/overdue_list.html:38
 #: templates/reports/reservations_pickup.html:36
@@ -1954,7 +1961,7 @@ msgstr "Navoakan'i BibliOfelia tamin'ny %(d)s."
 msgid "Aucune activité"
 msgstr "Tsy misy hetsika"
 
-#: apps/setup/forms.py:20 apps/setup/views.py:29
+#: apps/setup/forms.py:20 apps/setup/views.py:28
 #: templates/accounts/login.html:27 templates/accounts/login.html:29
 #: templates/base.html:65 templates/base.html:67
 #: templates/catalog/record_detail.html:64
@@ -1978,68 +1985,48 @@ msgid "Email"
 msgstr "Email"
 
 #: apps/setup/forms.py:69
-msgid "Activer l'impression CUPS"
-msgstr "Hampiasa ny fanontana CUPS"
-
-#: apps/setup/forms.py:70
-msgid "Si désactivé : impression en PDF uniquement."
-msgstr "Raha tsy mavitrika: PDF ihany no atonta."
-
-#: apps/setup/forms.py:72
-msgid "Serveur CUPS"
-msgstr "Mpizara CUPS"
-
-#: apps/setup/forms.py:73
-msgid "Vide = CUPS local (sur la box)."
-msgstr "Foana = CUPS an-toerana (eo amin'ny vata)."
-
-#: apps/setup/forms.py:78
 msgid "Sauvegarde horaire automatique"
 msgstr "Tahiry isan'ora hoazy"
 
-#: apps/setup/forms.py:80
+#: apps/setup/forms.py:71
 msgid "Sauvegarde cloud (optionnel)"
 msgstr "Tahiry an-tranonkala (azo atao)"
 
-#: apps/setup/forms.py:86
+#: apps/setup/forms.py:77
 msgid "Activer ZeroTier"
 msgstr "Hampiasa ZeroTier"
 
-#: apps/setup/forms.py:87
+#: apps/setup/forms.py:78
 msgid "Network ID"
 msgstr "ID tambazotra"
 
-#: apps/setup/forms.py:92
+#: apps/setup/forms.py:83
 msgid "Installer des données de démonstration (50 notices, 20 usagers, prêts)"
 msgstr ""
 "Hametraka angon-drakitra ho fampisehoana (notice 50, mpampiasa 20, "
 "fampindramana)"
 
-#: apps/setup/views.py:30
+#: apps/setup/views.py:29
 msgid "Bibliothèque"
 msgstr "Tranomboky"
 
-#: apps/setup/views.py:32
+#: apps/setup/views.py:31
 msgid "Administrateur"
 msgstr "Mpitantana"
 
-#: apps/setup/views.py:33
-msgid "Imprimante"
-msgstr "Mpanonta"
-
-#: apps/setup/views.py:34
+#: apps/setup/views.py:32
 msgid "Sauvegarde"
 msgstr "Tahiry"
 
-#: apps/setup/views.py:35
+#: apps/setup/views.py:33
 msgid "ZeroTier"
 msgstr "ZeroTier"
 
-#: apps/setup/views.py:36
+#: apps/setup/views.py:34
 msgid "Démo"
 msgstr "Fampisehoana"
 
-#: apps/setup/views.py:91
+#: apps/setup/views.py:89
 #, python-format
 msgid "Étapes manquantes : %(m)s"
 msgstr "Dingana tsy ampy: %(m)s"
@@ -2433,7 +2420,7 @@ msgstr "Sokajy"
 #: templates/catalog/item_bulk_assign_provenance.html:37
 #: templates/catalog/item_bulk_delete.html:59
 #: templates/catalog/record_detail.html:99
-#: templates/printing/labels_picker.html:66
+#: templates/printing/labels_picker.html:63
 #: templates/reports/inactive_list.html:70
 msgid "Code Ofelia"
 msgstr "Kaody Ofelia"
@@ -2537,7 +2524,9 @@ msgstr[1] "zana-tsokajy no ho very ny sokajy ambony (ho lasa fototra)."
 msgid ""
 "L'abréviation « %(abbr)s » disparaît : les étiquettes de tranche déjà "
 "collées restent, mais ne pourront plus être réimprimées."
-msgstr "Manjavona ny fanafohezana « %(abbr)s » : mijanona ny etiketin-damosina efa napetaka, fa tsy ho azo atao pirinty indray."
+msgstr ""
+"Manjavona ny fanafohezana « %(abbr)s » : mijanona ny etiketin-damosina efa "
+"napetaka, fa tsy ho azo atao pirinty indray."
 
 #: templates/catalog/category_form.html:12
 #: templates/catalog/language_form.html:12
@@ -2572,13 +2561,19 @@ msgid ""
 "C'est la cote qui part sur l'étiquette de tranche, pour ranger le livre au "
 "bon rayon sans le sortir de l'étagère. Exemple : « RO FI ADO » pour « Romans "
 "fiction pour adolescents »."
-msgstr "Izy no kaody mankany amin'ny etiketin'ny lamosin-boky, mba hametrahana ny boky eo amin'ny toerana mety nefa tsy mila manaisotra azy amin'ny talantalana. Ohatra : « RO FI ADO » ho an'ny « Tantara foronina ho an'ny tanora »."
+msgstr ""
+"Izy no kaody mankany amin'ny etiketin'ny lamosin-boky, mba hametrahana ny "
+"boky eo amin'ny toerana mety nefa tsy mila manaisotra azy amin'ny "
+"talantalana. Ohatra : « RO FI ADO » ho an'ny « Tantara foronina ho an'ny "
+"tanora »."
 
 #: templates/catalog/category_list.html:81
 msgid ""
 "Elle vaut pour toutes les notices de la catégorie. Les étiquettes "
 "s'impriment depuis Impressions → Étiquettes."
-msgstr "Mihatra amin'ny rakitra rehetra ao amin'ilay sokajy izy. Ny etikety dia atao pirinty avy ao amin'ny Fanontana → Etikety."
+msgstr ""
+"Mihatra amin'ny rakitra rehetra ao amin'ilay sokajy izy. Ny etikety dia atao "
+"pirinty avy ao amin'ny Fanontana → Etikety."
 
 #: templates/catalog/excel_catalog/_import_form.html:6
 msgid ""
@@ -2651,7 +2646,8 @@ msgstr "safidy : kaody na anaran'ny fiaviana efa misy"
 
 #: templates/catalog/excel_catalog/_import_form.html:22
 msgid "optionnel : abréviation (cote) de la catégorie indiquée en CATEGORY"
-msgstr "safidy : fanafohezana (kaody) an'ny sokajy voatondro ao amin'ny CATEGORY"
+msgstr ""
+"safidy : fanafohezana (kaody) an'ny sokajy voatondro ao amin'ny CATEGORY"
 
 #: templates/catalog/excel_catalog/_import_form.html:25
 msgid ""
@@ -2832,13 +2828,17 @@ msgstr "ISBN diso (tsy 10 na 13 isa): tsy nampidirina ilay andalana."
 msgid ""
 "Code externe déjà porté par un autre exemplaire : code ignoré, le reste de "
 "la ligne est importé."
-msgstr "Efa an'ny kopia hafa io kaody ivelany io : tsy raisina ny kaody, fa ampidirina ihany ny ambin'ny andalana."
+msgstr ""
+"Efa an'ny kopia hafa io kaody ivelany io : tsy raisina ny kaody, fa "
+"ampidirina ihany ny ambin'ny andalana."
 
 #: templates/catalog/excel_catalog/detail.html:139
 msgid ""
 "Code externe refusé : il doit être alphanumérique et faire 20 caractères au "
 "plus. Le reste de la ligne est importé."
-msgstr "Tsy ekena ny kaody ivelany : tsy maintsy litera na isa ary tsy mihoatra ny 20 marika. Ampidirina ihany ny ambin'ny andalana."
+msgstr ""
+"Tsy ekena ny kaody ivelany : tsy maintsy litera na isa ary tsy mihoatra ny "
+"20 marika. Ampidirina ihany ny ambin'ny andalana."
 
 #: templates/catalog/excel_catalog/index.html:20
 msgid "Vérifier ou importer un fichier Excel d'inventaire."
@@ -2923,14 +2923,20 @@ msgstr "Hamafa kopia"
 #: templates/catalog/item_bulk_delete.html:32
 msgid ""
 "Cette suppression est définitive. Les notices, elles, restent au catalogue."
-msgstr "Tsy azo averina io famafana io. Ny rakitra kosa dia mijanona ao amin'ny katalaogy."
+msgstr ""
+"Tsy azo averina io famafana io. Ny rakitra kosa dia mijanona ao amin'ny "
+"katalaogy."
 
 #: templates/catalog/item_bulk_delete.html:40
 msgid "exemplaire est actuellement prêté : son prêt sera clos en « perdu »."
 msgid_plural ""
 "exemplaires sont actuellement prêtés : leurs prêts seront clos en « perdu »."
-msgstr[0] "kopia no ampindramina amin'izao : hofaranana ho « very » ny fampindramana azy."
-msgstr[1] "kopia no ampindramina amin'izao : hofaranana ho « very » ny fampindramana azy ireo."
+msgstr[0] ""
+"kopia no ampindramina amin'izao : hofaranana ho « very » ny fampindramana "
+"azy."
+msgstr[1] ""
+"kopia no ampindramina amin'izao : hofaranana ho « very » ny fampindramana "
+"azy ireo."
 
 #: templates/catalog/item_bulk_delete.html:46
 msgid "exemplaire est mis de côté : la réservation servie sera annulée."
@@ -2942,17 +2948,21 @@ msgstr[1] "kopia no natokana : hofoanana ny famandrihana tompoin'izy ireo."
 #: templates/catalog/item_bulk_delete.html:49
 msgid ""
 "L'historique de prêts et de consultations de ces exemplaires est effacé."
-msgstr "Voafafa ny tantaran'ny fampindramana sy ny famakiana an-toerana amin'ireo kopia ireo."
+msgstr ""
+"Voafafa ny tantaran'ny fampindramana sy ny famakiana an-toerana amin'ireo "
+"kopia ireo."
 
 #: templates/catalog/item_bulk_delete.html:50
 msgid ""
 "Leurs codes Ofelia sont mis de côté définitivement : ils ne seront jamais "
 "réattribués à un autre livre, même si l'étiquette a déjà été imprimée."
-msgstr "Atokana tanteraka ny kaody Ofelia-n'izy ireo : tsy homena boky hafa mihitsy, na dia efa vita pirinty aza ny etikety."
+msgstr ""
+"Atokana tanteraka ny kaody Ofelia-n'izy ireo : tsy homena boky hafa mihitsy, "
+"na dia efa vita pirinty aza ny etikety."
 
 #: templates/catalog/item_bulk_delete.html:60
 #: templates/catalog/record_detail.html:100
-#: templates/printing/labels_picker.html:67
+#: templates/printing/labels_picker.html:64
 msgid "Code externe"
 msgstr "Kaody ivelany"
 
@@ -2994,7 +3004,8 @@ msgstr "Esory"
 #: templates/catalog/language_confirm_delete.html:26
 #, python-format
 msgid "Confirmez-vous le retrait de <strong>%(name)s</strong> de la liste ?"
-msgstr "Hanaisotra ny <strong>%(name)s</strong> amin'ny lisitra tokoa ve ianao ?"
+msgstr ""
+"Hanaisotra ny <strong>%(name)s</strong> amin'ny lisitra tokoa ve ianao ?"
 
 #: templates/catalog/language_confirm_delete.html:30
 msgid "Aucune notice n'est supprimée ni modifiée."
@@ -3008,14 +3019,20 @@ msgid ""
 msgid_plural ""
 "notices gardent le code « %(code)s », qui s'affichera tel quel au lieu du "
 "nom traduit."
-msgstr[0] "rakitra no mitazona ny kaody « %(code)s », ka io no haseho fa tsy ny anarana nadika."
-msgstr[1] "rakitra no mitazona ny kaody « %(code)s », ka io no haseho fa tsy ny anarana nadika."
+msgstr[0] ""
+"rakitra no mitazona ny kaody « %(code)s », ka io no haseho fa tsy ny anarana "
+"nadika."
+msgstr[1] ""
+"rakitra no mitazona ny kaody « %(code)s », ka io no haseho fa tsy ny anarana "
+"nadika."
 
 #: templates/catalog/language_confirm_delete.html:37
 msgid ""
 "La langue ne sera plus proposée à la saisie, ni pour un livre ni pour un "
 "usager."
-msgstr "Tsy hatolotra intsony io fiteny io rehefa manasokajy boky na manoratra mpampiasa."
+msgstr ""
+"Tsy hatolotra intsony io fiteny io rehefa manasokajy boky na manoratra "
+"mpampiasa."
 
 #: templates/catalog/language_confirm_delete.html:44
 msgid "Retirer de la liste"
@@ -3037,20 +3054,27 @@ msgstr "Lisitra tokana, fampiasana roa"
 msgid ""
 "Cette liste alimente à la fois la langue d'un livre et les langues parlées "
 "d'un usager. Ajoutez-y une langue dès qu'un livre ou un lecteur l'exige."
-msgstr "Io lisitra io no mamelona ny fitenin'ny boky sy ny fiteny tenenin'ny mpampiasa. Ampio fiteny izy raha ilain'ny boky na ny mpamaky iray."
+msgstr ""
+"Io lisitra io no mamelona ny fitenin'ny boky sy ny fiteny tenenin'ny "
+"mpampiasa. Ampio fiteny izy raha ilain'ny boky na ny mpamaky iray."
 
 #: templates/catalog/language_list.html:74
 msgid ""
 "Utilisez les abréviations internationales principales, sans variante "
 "régionale : « fr » couvre le français de France, du Canada et de Suisse, "
 "« pt » le portugais et le brésilien."
-msgstr "Ampiasao ny fanafohezana iraisam-pirenena fototra, tsy misy karazany isam-paritra : ny « fr » dia mahafaoka ny frantsay any Frantsa, Kanada ary Soisa, ny « pt » kosa ny portogey sy ny breziliana."
+msgstr ""
+"Ampiasao ny fanafohezana iraisam-pirenena fototra, tsy misy karazany isam-"
+"paritra : ny « fr » dia mahafaoka ny frantsay any Frantsa, Kanada ary Soisa, "
+"ny « pt » kosa ny portogey sy ny breziliana."
 
 #: templates/catalog/language_list.html:77
 msgid ""
 "Les menus déroulants sont triés par ordre alphabétique dans la langue de "
 "l'interface : l'ordre change donc d'une langue à l'autre."
-msgstr "Voalamina araka ny abidia amin'ny fitenin'ny efijery ny lisitra midina, ka miova arakaraka ny fiteny ny filaharana."
+msgstr ""
+"Voalamina araka ny abidia amin'ny fitenin'ny efijery ny lisitra midina, ka "
+"miova arakaraka ny fiteny ny filaharana."
 
 #: templates/catalog/location_confirm_delete.html:4
 #: templates/catalog/location_confirm_delete.html:20
@@ -3077,8 +3101,10 @@ msgid ""
 msgid_plural ""
 "exemplaires rattachés perdront leur emplacement (affichés « — » dans la "
 "fiche)."
-msgstr[0] "kopia mifandray no ho very ny toerany (aseho « — » ao amin'ny rakitra)."
-msgstr[1] "kopia mifandray no ho very ny toerany (aseho « — » ao amin'ny rakitra)."
+msgstr[0] ""
+"kopia mifandray no ho very ny toerany (aseho « — » ao amin'ny rakitra)."
+msgstr[1] ""
+"kopia mifandray no ho very ny toerany (aseho « — » ao amin'ny rakitra)."
 
 #: templates/catalog/location_confirm_delete.html:37
 msgid "sous-emplacement perdra son parent (deviendra racine)."
@@ -3137,15 +3163,20 @@ msgid ""
 msgid_plural ""
 "Suppression impossible : %(counter)s exemplaires portent encore cette "
 "provenance."
-msgstr[0] "Tsy azo fafana : mbola misy kopia %(counter)s manana io fiaviana io."
-msgstr[1] "Tsy azo fafana : mbola misy kopia %(counter)s manana io fiaviana io."
+msgstr[0] ""
+"Tsy azo fafana : mbola misy kopia %(counter)s manana io fiaviana io."
+msgstr[1] ""
+"Tsy azo fafana : mbola misy kopia %(counter)s manana io fiaviana io."
 
 #: templates/catalog/provenance_confirm_delete.html:31
 msgid ""
 "Effacer la provenance ferait perdre la trace de l'origine de ces "
 "exemplaires. Traitez-les d'abord : rattachez-les à une autre provenance, ou "
 "supprimez-les si le fonds est rendu."
-msgstr "Raha fafana ny fiaviana dia very ny fantatra momba ny niavian'ireo kopia ireo. Karakarao aloha izy ireo : ampiarahо amin'ny fiaviana hafa, na fafao raha averina ny fanangonana."
+msgstr ""
+"Raha fafana ny fiaviana dia very ny fantatra momba ny niavian'ireo kopia "
+"ireo. Karakarao aloha izy ireo : ampiarahо amin'ny fiaviana hafa, na fafao "
+"raha averina ny fanangonana."
 
 #: templates/catalog/provenance_confirm_delete.html:35
 msgid "Voir ces exemplaires"
@@ -3170,18 +3201,22 @@ msgstr "Hamafa ny fiaviana <strong>%(code)s</strong> tokoa ve ianao ?"
 msgid ""
 "Aucun exemplaire ne la porte : la suppression n'a aucun effet sur le "
 "catalogue."
-msgstr "Tsy misy kopia mampiasa azy : tsy misy fiantraikany amin'ny katalaogy ny famafana azy."
+msgstr ""
+"Tsy misy kopia mampiasa azy : tsy misy fiantraikany amin'ny katalaogy ny "
+"famafana azy."
 
 #: templates/catalog/provenance_list.html:20
 msgid ""
 "D'où viennent les exemplaires : achat, don, prêt d'une autre bibliothèque…"
-msgstr "Ny niavian'ny kopia : vidiana, natolotra, nampindramin'ny tranomboky hafa…"
+msgstr ""
+"Ny niavian'ny kopia : vidiana, natolotra, nampindramin'ny tranomboky hafa…"
 
 #: templates/catalog/provenance_list.html:64
 msgid ""
 "Aucune provenance définie. Cliquez sur « Nouvelle provenance » pour "
 "commencer."
-msgstr "Mbola tsy misy fiaviana voafaritra. Tsindrio « Fiaviana vaovao » hanombohana."
+msgstr ""
+"Mbola tsy misy fiaviana voafaritra. Tsindrio « Fiaviana vaovao » hanombohana."
 
 #: templates/catalog/provenance_list.html:71
 msgid "À quoi ça sert"
@@ -3192,14 +3227,20 @@ msgid ""
 "La provenance suit l'exemplaire, pas le titre : un même livre peut avoir un "
 "exemplaire acheté par la bibliothèque et un autre prêté par une bibliothèque "
 "partenaire."
-msgstr "Ny fiaviana dia manaraka ny kopia, fa tsy ny lohateny : boky iray ihany dia mety hanana kopia novidin'ny tranomboky sy kopia hafa nampindramin'ny tranomboky mpiara-miasa."
+msgstr ""
+"Ny fiaviana dia manaraka ny kopia, fa tsy ny lohateny : boky iray ihany dia "
+"mety hanana kopia novidin'ny tranomboky sy kopia hafa nampindramin'ny "
+"tranomboky mpiara-miasa."
 
 #: templates/catalog/provenance_list.html:76
 msgid ""
 "Le jour où il faut rendre un fonds, ouvrez le catalogue, cochez « Chercher "
 "les exemplaires », filtrez sur la provenance : vous obtenez la liste exacte "
 "des livres à sortir."
-msgstr "Amin'ny andro tsy maintsy hamerenana fanangonana, sokafy ny katalaogy, mariho « Karohy ny kopia », sivano araka ny fiaviana : hahazo ny lisitra marina ny boky halaina ianao."
+msgstr ""
+"Amin'ny andro tsy maintsy hamerenana fanangonana, sokafy ny katalaogy, "
+"mariho « Karohy ny kopia », sivano araka ny fiaviana : hahazo ny lisitra "
+"marina ny boky halaina ianao."
 
 #: templates/catalog/record_bulk_assign_category.html:4
 msgid "Affecter une catégorie"
@@ -3298,7 +3339,8 @@ msgid_plural ""
 "… et %(counter)s autres notices non affichées ici. Elles seront supprimées "
 "elles aussi."
 msgstr[0] "… ary rakitra %(counter)s hafa tsy aseho eto. Hofafana koa izy."
-msgstr[1] "… ary rakitra %(counter)s hafa tsy aseho eto. Hofafana koa izy ireo."
+msgstr[1] ""
+"… ary rakitra %(counter)s hafa tsy aseho eto. Hofafana koa izy ireo."
 
 #: templates/catalog/record_bulk_delete.html:85
 msgid "Confirmer la suppression"
@@ -4127,10 +4169,8 @@ msgstr "Marika kaody Ofelia"
 #: templates/core/advanced.html:44
 msgid ""
 "Génère les étiquettes (code Ofelia + titre + emplacement) à coller sur les "
-"ouvrages. PDF planche A4 ou envoi direct à l'imprimante CUPS."
-msgstr ""
-"Mamorona marika (kaody Ofelia + lohateny + toerana) hapetaka amin'ny boky. "
-"Taratasy PDF A4 na fandefasana mivantana amin'ny mpanonta CUPS."
+"ouvrages. PDF planche A4 ou ruban 62 mm pour l'étiqueteuse Brother QL."
+msgstr "Mamorona ny marika (kaody Ofelia + lohateny + toerana) hapetaka amin'ny boky. Taratasy PDF A4 na riban 62 mm ho an'ny mpanonta marika Brother QL."
 
 #: templates/core/advanced.html:53 templates/printing/cards_picker.html:14
 msgid "Cartes membres"
@@ -4217,19 +4257,25 @@ msgstr ""
 msgid ""
 "Langues proposées pour les livres et pour les langues parlées des usagers. "
 "Complétez la liste si un fonds l'exige."
-msgstr "Fiteny atolotra ho an'ny boky sy ho an'ny fiteny tenenin'ny mpampiasa. Ampio ny lisitra raha ilain'ny fanangonana."
+msgstr ""
+"Fiteny atolotra ho an'ny boky sy ho an'ny fiteny tenenin'ny mpampiasa. Ampio "
+"ny lisitra raha ilain'ny fanangonana."
 
 #: templates/core/advanced.html:160
 msgid ""
 "Classement des notices et abréviation imprimée sur la tranche des livres "
 "(« RO FI ADO »)."
-msgstr "Fanasokajiana ny rakitra sy ny fanafohezana atao pirinty amin'ny lamosin-boky (« RO FI ADO »)."
+msgstr ""
+"Fanasokajiana ny rakitra sy ny fanafohezana atao pirinty amin'ny lamosin-"
+"boky (« RO FI ADO »)."
 
 #: templates/core/advanced.html:170
 msgid ""
 "D'où viennent les exemplaires (achat, don, prêt d'une autre bibliothèque). "
 "Permet de retrouver et de rendre un fonds entier."
-msgstr "Ny niavian'ny kopia (vidiana, natolotra, nampindramin'ny tranomboky hafa). Ahafahana mahita sy mamerina fanangonana manontolo."
+msgstr ""
+"Ny niavian'ny kopia (vidiana, natolotra, nampindramin'ny tranomboky hafa). "
+"Ahafahana mahita sy mamerina fanangonana manontolo."
 
 #: templates/core/advanced.html:180
 msgid ""
@@ -4632,8 +4678,12 @@ msgid ""
 msgid_plural ""
 "exemplaires ont été déplacés automatiquement vers <strong>%(code)s</strong> "
 "pendant cette session (leur location précédente a été corrigée)."
-msgstr[0] "kopia no nafindra ho any amin'ny <strong>%(code)s</strong> nandritra ity fotoana ity (voahitsy ny toerany teo aloha)."
-msgstr[1] "kopia no nafindra ho any amin'ny <strong>%(code)s</strong> nandritra ity fotoana ity (voahitsy ny toerany teo aloha)."
+msgstr[0] ""
+"kopia no nafindra ho any amin'ny <strong>%(code)s</strong> nandritra ity "
+"fotoana ity (voahitsy ny toerany teo aloha)."
+msgstr[1] ""
+"kopia no nafindra ho any amin'ny <strong>%(code)s</strong> nandritra ity "
+"fotoana ity (voahitsy ny toerany teo aloha)."
 
 #: templates/inventory/session_report.html:57
 msgid "Continuer l'inventaire"
@@ -4948,7 +4998,9 @@ msgstr "rakitry ny fianakaviana hofafana miaraka amin'ny mpampiasa :"
 
 #: templates/members/member_confirm_delete.html:53
 msgid "Aucun impact : usager sans prêt, réservation ni personne rattachée."
-msgstr "Tsy misy fiantraikany : mpampiasa tsy manana fampindramana, famandrihana na olona miankina."
+msgstr ""
+"Tsy misy fiantraikany : mpampiasa tsy manana fampindramana, famandrihana na "
+"olona miankina."
 
 #: templates/members/member_detail.html:54
 msgid "Renouveler la carte"
@@ -5003,7 +5055,9 @@ msgstr "Tsy misy fampindramana mandeha."
 msgid ""
 "Les personnes qui partagent cette carte. Elles n'ont pas de carte à leur "
 "nom : ces informations servent à leur proposer les bons livres."
-msgstr "Ny olona mizara ity karatra ity. Tsy manana karatra manokana izy ireo : ireo fanazavana ireo dia hanolorana boky mifanaraka aminy ihany."
+msgstr ""
+"Ny olona mizara ity karatra ity. Tsy manana karatra manokana izy ireo : ireo "
+"fanazavana ireo dia hanolorana boky mifanaraka aminy ihany."
 
 #: templates/members/member_form.html:82
 msgid "Ajouter une personne"
@@ -5135,16 +5189,12 @@ msgstr "Nampidirina farany"
 msgid "Étiquettes de tranche"
 msgstr "Etiketin'ny lamosina"
 
-#: templates/printing/labels_picker.html:55
-msgid "Imprimer (CUPS)"
-msgstr "Atonta (CUPS)"
-
-#: templates/printing/labels_picker.html:63
+#: templates/printing/labels_picker.html:60
 #: templates/reports/inactive_list.html:69
 msgid "ID interne"
 msgstr "ID anaty"
 
-#: templates/printing/labels_picker.html:83
+#: templates/printing/labels_picker.html:80
 msgid "Aucun exemplaire."
 msgstr "Tsy misy kopia."
 

@@ -4,7 +4,9 @@ Spécification détaillée du logiciel de gestion de bibliothèque BibliOfelia, 
 
 Version : 1.0 (cible v1)
 Statut : draft pour Spec-Driven Development
-Dernière modif spec : 2026-08-21 — **Sprint 28, 3e vague (en test)** : **BUG-028** — libellés de formulaire en anglais dans une interface française (« Title », « Language »… sur la fiche notice, et tout le formulaire usager) : Django fabriquait le libellé depuis le nom du champ, hors de portée de `gettext` et donc du gate i18n. 41 `verbose_name=_()` posés + garde-fou `test_form_labels.py`. — **FEAT-073** — catalogue : la case « Chercher les exemplaires » devient deux boutons **« Rechercher des notices »** / **« Rechercher des exemplaires »** ; **deux cases de sélection** (résultats visibles / tous les résultats de la recherche, pages suivantes comprises) remplacent le « Tout cocher » qui ne prenait que la page courante ; la **provenance s'affiche en toutes lettres**. Cf. §6.1, §6.9.
+Dernière modif spec : 2026-08-22 — **Sprint 29** : **FEAT-074** — **suppression du chemin d'impression CUPS**. Le bouton « Imprimer (CUPS) » de l'écran d'étiquettes renvoyait un **403 CSRF** (POST forcé sur un formulaire `method="get"` sans jeton) et n'a donc jamais fonctionné ; sur le fond, `submit_to_cups()` suppose une imprimante visible depuis le serveur, alors que l'étiqueteuse est sur le poste du bibliothécaire et le serveur hors de la bibliothèque. Vue, route, `submit_to_cups()`, réglages `CUPS_*`, `pycups`/`libcups2` et l'étape « Imprimante » du wizard sont retirés ; le PDF (planche A4 ou ruban 62 mm) devient l'unique chemin d'impression. Le wizard passe de **8 à 7 étapes**. Cf. §2.1, §6.7, §11.3.
+
+Modif précédente : 2026-08-21 — **Sprint 28, 3e vague** : **BUG-028** — libellés de formulaire en anglais dans une interface française (« Title », « Language »… sur la fiche notice, et tout le formulaire usager) : Django fabriquait le libellé depuis le nom du champ, hors de portée de `gettext` et donc du gate i18n. 41 `verbose_name=_()` posés + garde-fou `test_form_labels.py`. — **FEAT-073** — catalogue : la case « Chercher les exemplaires » devient deux boutons **« Rechercher des notices »** / **« Rechercher des exemplaires »** ; **deux cases de sélection** (résultats visibles / tous les résultats de la recherche, pages suivantes comprises) remplacent le « Tout cocher » qui ne prenait que la page courante ; la **provenance s'affiche en toutes lettres**. Cf. §6.1, §6.9.
 
 Modif précédente : 2026-08-20 — **Sprint 28, 2e vague** : **BUG-027** — provenance absente de la fiche notice, du picker d'impression et de la liste des colonnes d'import Excel (le champ du formulaire d'exemplaire, lui, était bien là : c'est la liste vide qui trompait l'œil). — **FEAT-069** — **affectation en masse directement dans le catalogue** : menus déroulants « Ne pas modifier » + bouton « Affecter » dans la barre d'action (catégorie et emplacement côté notices, provenance côté exemplaires), les 3 pages de confirmation d'affectation disparaissent. — **FEAT-070** — **liste de langues gérée** (`catalog.Language`), partagée par la langue des documents et les langues parlées ; codes internationaux principaux sans variante régionale, menus triés par libellé traduit, écran Avancé → Langues, et normalisation des codes hérités de la BnF (`fre-fre` → `fr`). — **FEAT-071** — **catégories officielles Ofelia** (5 tranches d'âge × 4 types, code = cote) + commande `migrate_categories` qui retire le préfixe de langue des catégories existantes et remappe les anciennes. — **FEAT-072** — **gestion des familles** en remplacement des enfants : adultes comme enfants, année de naissance plutôt qu'âge, et colonne « Famille » sur la carte de membre. Cf. §5.2, §6.1, §6.2, §6.7, §6.12.
 
@@ -45,7 +47,7 @@ Une application Android compagnon, OfeliaScan, permet de scanner les codes-barre
 - Raspberry Pi 5, 4 Go de RAM
 - Stockage : carte SD (système) + clé USB (sauvegardes)
 - Onduleur : Waveshare UPS HAT (E) ou équivalent (partagé avec Edubox)
-- Imprimante d'étiquettes : thermique USB (modèle à préciser, support CUPS requis)
+- Imprimante d'étiquettes : Brother QL-810W (ruban continu 62 mm), branchée sur le **poste du bibliothécaire** — le serveur produit un PDF, le poste l'imprime (FEAT-062, FEAT-074)
 - Périphériques : aucun en v1 côté librairie (écran et douchette en v2)
 
 ### 2.2 Réseau
@@ -104,7 +106,6 @@ BibliOfelia partage le Raspberry Pi avec les autres services Ofelia (Moodle, Kol
 | Audit | django-auditlog | Traçabilité automatique des modifications |
 | Génération barcode | python-barcode | EAN-13 vectoriel et PNG |
 | Génération PDF | ReportLab | Étiquettes et cartes membres |
-| Impression | pycups | API Python pour CUPS |
 | HTTP client | httpx | Lookup ISBN async vers OpenLibrary |
 
 ### 3.2 Frontend
@@ -562,7 +563,7 @@ Travail de catalogage à partir d'un fichier Excel (migration `catalog/0009_exce
 - Bouton "Ajouter un exemplaire" depuis une notice
 - Champ `nombre de copies` (1 par défaut, jusqu'à 20) pour création groupée
 - Chaque exemplaire reçoit un internal_id et un EAN13 calculé
-- Bouton "Imprimer étiquette(s)" qui envoie au CUPS
+- Bouton "Imprimer étiquette(s)" qui ouvre le PDF d'étiquettes (FEAT-074)
 
 #### Import batch depuis OfeliaScan
 - Réception via API REST (cf. §6.10)
@@ -1209,8 +1210,8 @@ mais pas exporter.
 > Implémentation Sprint 4 (FEAT-012), refonte Sprint 12 (FEAT-038 + FEAT-039) :
 > - `apps/printing/services.py` : `render_item_labels_pdf(items)` (80×40 mm par défaut, planche A4 3×7 = 21 étiquettes ; dimensions paramétrables via `Setting.item_label_format`) ; `render_member_cards_pdf(members)` (8/A4 par défaut, paramétrable via `Setting.card_format`).
 > - Codes-barres : `python-barcode` → PNG en mémoire → ReportLab.
-> - CUPS : `pycups` (installé uniquement dans l'image Linux Docker, optionnel) ; `submit_to_cups(pdf)` retourne `sent=False` silencieusement en dev Windows, le PDF est servi en fallback.
-> - Routes : `printing:labels`, `printing:labels_pdf`, `printing:labels_send`, `printing:cards`, `printing:cards_pdf` (rôle LIBRARIAN/SUPERADMIN).
+> - **FEAT-074 (Sprint 29) : plus aucun envoi direct à une imprimante.** Le chemin CUPS (`submit_to_cups()`, route `printing:labels_send`, bouton « Imprimer (CUPS) », réglages `CUPS_HOST`/`CUPS_PORT`, paquets `pycups`/`libcups2`) est **supprimé** : il renvoyait un 403 CSRF depuis l'écran, et il supposait une imprimante visible depuis le serveur — or l'étiqueteuse est sur le poste du bibliothécaire et le serveur est hébergé hors de la bibliothèque. **L'unique chemin d'impression est le PDF servi au navigateur.**
+> - Routes : `printing:labels`, `printing:labels_pdf`, `printing:cards`, `printing:cards_pdf` (rôle LIBRARIAN/SUPERADMIN).
 > - FEAT-062 (Sprint 27) : ruban continu Brother QL-810W — `render_item_labels_roll_pdf(items)` et `render_member_cards_roll_pdf(members)` (une sortie par page, `Setting.roll_printer_format`), routes `printing:labels_roll_pdf` et `printing:cards_roll_pdf`, section de réglages `printing_roll`. Les planches A4 ci-dessus sont inchangées, les deux formats coexistent.
 > - Paramétrage : sections **Impressions — Cartes membres** (`printing_cards` → `card_format`) et **Impressions — Étiquettes codes Ofelia** (`printing_labels` → `item_label_format`) dans `/admin/settings/`. Migration douce depuis l'ancien `label_format` via `_card_settings()` / `_item_label_settings()`. **BUG-021** : FEAT-047 avait retiré ces deux sections du registre `FORMS` (`admin_views.py`) en les croyant redondantes — or c'était le **seul** accès UI au format d'impression → restaurées (les `Setting`, formulaires et valeurs seed n'avaient jamais bougé).
 
@@ -1224,8 +1225,7 @@ mais pas exporter.
   - Code-barres EAN13 centré, ~40 % de la hauteur cellule
   - Bas : `internal_id` à gauche, code Ofelia (EAN13) au centre, code Location à droite, nom bibliothèque en bas-droite (italique 5.5 pt)
 - Setting `item_label_format` (JSON) : `{width_mm, height_mm, title_max_chars, title_lines, show_logo}`
-- File d'impression : génération de tous les exemplaires sélectionnés en un job CUPS
-- Fallback PDF si imprimante absente
+- Génération de tous les exemplaires sélectionnés dans un seul PDF, imprimé depuis le poste client (FEAT-074)
 
 #### Cartes membres (FEAT-038)
 - Format par défaut : 8 cartes par feuille A4 (paramétrable 4/6/8/10)
@@ -1250,7 +1250,11 @@ bibliothécaire** : ni la Box ni les instances Avignon ne peuvent lui parler
 (constat 2026-08-18 : scan du LAN en 9100 depuis la Box → seul le laser
 DCP-L3550CDW répond, la QL n'est pas en réseau). Le serveur produit donc un PDF
 à la géométrie exacte du ruban et c'est le **navigateur du poste** qui l'envoie
-au pilote Brother. `submit_to_cups()` n'est pas utilisé sur ce chemin.
+au pilote Brother. **FEAT-074** : c'est désormais le seul chemin possible, l'envoi
+serveur → imprimante ayant été retiré. Le format et l'orientation se règlent une
+fois pour toutes dans les **options d'impression du pilote Brother** côté poste
+(et non dans la fenêtre de propriétés ouverte depuis le dialogue de Chrome, qui
+ne vaut que pour le job en cours).
 
 **Géométrie** — une étiquette (ou une carte) par page, marges nulles, avec deux
 retraits de sécurité sans lesquels le pilote rogne le dessin :
@@ -2194,10 +2198,10 @@ nginx (keebee) sert `/bibliofelia/static/` et `/bibliofelia/media/` par
 ### 11.3 Wizard de premier démarrage
 
 > Implémentation Sprint 4 (FEAT-015) :
-> - Multi-step session-based dans `apps/setup/views.py` (8 étapes : langue, identité, langues activées, superadmin, imprimante, sauvegarde, ZeroTier, démo).
-> - `apps/setup/services.py:apply_wizard()` persiste les choix dans `Setting.*` (`library_name`, `box_name`, `library_identity`, `languages_config`, `printer_config`, `backup_config`, `zerotier`), crée le superadmin, génère et **hashe** la `recovery_key` (§9.3 ; clé en clair affichée une seule fois), installe les schedules django-q2 + le service Avahi, et bascule `setup_completed=True`.
+> - Multi-step session-based dans `apps/setup/views.py` (**7 étapes** depuis FEAT-074 : langue, identité, langues activées, superadmin, sauvegarde, ZeroTier, démo — l'étape « imprimante » ne configurait que CUPS et a été retirée avec lui).
+> - `apps/setup/services.py:apply_wizard()` persiste les choix dans `Setting.*` (`library_name`, `box_name`, `library_identity`, `languages_config`, `backup_config`, `zerotier`), crée le superadmin, génère et **hashe** la `recovery_key` (§9.3 ; clé en clair affichée une seule fois), installe les schedules django-q2 + le service Avahi, et bascule `setup_completed=True`.
 > - Routes : `setup:wizard`, `setup:step`, `setup:finalize` — non préfixées par la langue (hors `i18n_patterns`).
-> - Détection auto CUPS / USB / ZeroTier : **différée** (saisie manuelle en v1).
+> - Détection auto USB / ZeroTier : **différée** (saisie manuelle en v1).
 
 
 
@@ -2206,11 +2210,10 @@ nginx (keebee) sert `/bibliofelia/static/` et `/bibliofelia/media/` par
 2. Nom et adresse de la bibliothèque
 3. Langues additionnelles à activer
 4. Création du compte superadmin
-5. Configuration imprimante (détection CUPS auto, ou skip)
-6. Configuration clé USB de backup (détection auto, ou skip)
-7. Configuration ZeroTier (skip ou saisie network ID)
-8. Choix d'importer ou non un jeu de données de démo
-9. Récapitulatif et génération de la `recovery_key` à imprimer
+5. Configuration clé USB de backup (détection auto, ou skip)
+6. Configuration ZeroTier (skip ou saisie network ID)
+7. Choix d'importer ou non un jeu de données de démo
+8. Récapitulatif et génération de la `recovery_key` à imprimer
 
 ### 11.4 Données de démo
 
@@ -2385,7 +2388,7 @@ telle fonctionnalité (emails de confirmation) sera développée. Détails et pr
 |--------|--------|-----------|
 | Carte SD corrompue | Perte de données | Sauvegarde horaire USB + cloud, restauration scriptée |
 | Coupure courant fréquente | Corruption SQLite | UPS Waveshare + WAL mode + journaling |
-| Imprimante non-CUPS | Bloque les étiquettes | Fallback PDF systématique |
+| Imprimante inaccessible depuis le serveur (USB sur le poste, serveur hors du LAN) | Bloque les étiquettes | **Impression PDF systématique** depuis le poste client — plus aucun envoi serveur → imprimante (FEAT-074) |
 | Réseau partagé peu fiable | API OfeliaScan flaky | Idempotency keys + retry côté client |
 | Métadonnées OpenLibrary incomplètes pour livres locaux | Catalogage manuel | Workflow saisie manuelle clair, pas de blocage |
 | Personnel changeant | Perte de savoir | Doc multilingue, mode simple par défaut |
@@ -2419,7 +2422,6 @@ Bricolage Grotesque + DM Sans (woff2 locaux — remplace Inter)
 python-barcode + ReportLab
 openpyxl (catalogage Excel FEAT-050)
 rapidfuzz (matching titre+auteur FEAT-050)
-pycups
 httpx
 gunicorn
 nginx (partagé Edubox)

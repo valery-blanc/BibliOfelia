@@ -1530,3 +1530,44 @@ Signalés par Val 2026-05-30 (navigation espagnole).
       confirmation
 - [ ] Catégorie `TEST` restée sur la Box : `migrate_categories` ne supprime jamais une
       catégorie qu'elle n'a pas su reclasser. À retirer à la main si elle ne sert plus
+
+## Sprint 29 — Nettoyage du chemin d'impression
+
+### FEAT-074 — Suppression du chemin CUPS
+
+Constat Val (2026-08-22) : le bouton « Imprimer (CUPS) » de l'écran **Étiquettes
+codes Ofelia** renvoie une page **« Interdit (403) — La vérification CSRF a
+échoué »**. Diagnostic : POST forcé (`formmethod="post"`) sur un formulaire
+`method="get"` sans `{% csrf_token %}` → le bouton n'a jamais fonctionné. Sur le
+fond, CUPS suppose une imprimante visible depuis le serveur, alors que
+l'étiqueteuse est sur le poste du bibliothécaire et le site hébergé hors de la
+bibliothèque. **Décision Val : tout supprimer.**
+
+- [x] `templates/printing/labels_picker.html` — bouton « Imprimer (CUPS) » retiré
+- [x] `apps/printing/views.py` — vue `labels_send()` retirée
+- [x] `apps/printing/urls.py` — route `printing:labels_send` retirée
+- [x] `apps/printing/services.py` — `submit_to_cups()`, `PrintResult`, import
+      `dataclass` et mention CUPS du docstring retirés
+- [x] `config/settings/base.py` + `.env.example` — réglages `CUPS_HOST` / `CUPS_PORT` retirés
+- [x] `Dockerfile` — `libcups2`, `libcups2-dev`, `pip install pycups==2.0.4` retirés
+      (`gcc` conservé : peut servir à d'autres roues sans binaire ARM)
+- [x] `requirements.txt` — commentaire pycups retiré
+- [x] `templates/core/advanced.html` — description de l'écran d'étiquettes
+      réécrite (« … ou ruban 62 mm pour l'étiqueteuse Brother QL »)
+- [x] Wizard : étape « Imprimante » (CUPS uniquement) retirée → **8 étapes → 7**,
+      formulaires et clés de session renumérotés, `Setting.printer_config` plus écrit
+- [x] `docs/specs/FEAT-074-suppression-cups.md` créé
+- [x] SPEC §2.1, §3.1, §6.7, §11.3, §12 + en-tête mis à jour (plus aucune mention
+      CUPS hors historique FEAT-074)
+- [x] Gate i18n : `makemessages -a --no-obsolete` (joué dans un conteneur sur Fez, Docker
+      absent en local) + `scripts/translations_sprint29.py` (1 chaîne × EN/ES/MG) →
+      `i18n_check.py` = **0**. Les chaînes CUPS supprimées sortent des `.po` via `--no-obsolete`
+- [x] `pytest` sur Fez (image `--target dev`) : **648 passed**, 0 régression ;
+      `manage.py check` : 0 issue
+- [x] Déploiement : image `ofelia/bibliofelia:avignon` rebâtie sur Fez, instances
+      `sanjuan` et `grand-saconnex` recréées (healthy) ; source synchronisée et image
+      rebâtie sur le secours **Avignon**. Route `printing:labels_send` vérifiée absente,
+      traductions EN/ES/MG vérifiées compilées dans l'image
+- [ ] **Test fonctionnel Val** — écran Étiquettes : le bouton CUPS a disparu,
+      « Générer PDF » / « Ruban 62 mm » / « Étiquettes de tranche » fonctionnent
+- [ ] Commit unique groupé + push origin/main

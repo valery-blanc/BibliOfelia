@@ -51,9 +51,6 @@
             {% icon "bookmark" size="16px" %} {% trans "Étiquettes de tranche" %}
         </button>
         {% endif %}
-        <button type="submit" formaction="{% url 'printing:labels_send' %}" formmethod="post" formenctype="application/x-www-form-urlencoded" class="btn btn--ghost">
-            {% icon "printer" size="16px" %} {% trans "Imprimer (CUPS)" %}
-        </button>
     </div>
     <div class="table-wrap">
         <table class="table">

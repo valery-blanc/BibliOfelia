@@ -39,10 +39,9 @@ def apply_wizard(session_data: dict) -> WizardCompletion:
     s2 = session_data.get("step2", {})  # library
     s3 = session_data.get("step3", {})  # languages
     s4 = session_data.get("step4", {})  # superadmin
-    s5 = session_data.get("step5", {})  # printer
-    s6 = session_data.get("step6", {})  # backup
-    s7 = session_data.get("step7", {})  # zerotier
-    s8 = session_data.get("step8", {})  # demo
+    s5 = session_data.get("step5", {})  # backup
+    s6 = session_data.get("step6", {})  # zerotier
+    s7 = session_data.get("step7", {})  # demo
 
     # 1. Identité
     Setting.set("library_name", s2.get("name", "BibliOfelia"))
@@ -74,43 +73,36 @@ def apply_wizard(session_data: dict) -> WizardCompletion:
     user.password = make_password(s4["password"])
     user.save()
 
-    # 4. Imprimante
+    # 4. Backup
     if s5:
-        Setting.set("printer_config", {
-            "enabled": bool(s5.get("enabled")),
-            "cups_host": s5.get("cups_host", ""),
-        })
-
-    # 5. Backup
-    if s6:
         Setting.set("backup_config", {
-            "usb_path": s6.get("usb_path", "/backup"),
-            "hourly_enabled": bool(s6.get("hourly_enabled", True)),
-            "cloud_enabled": bool(s6.get("cloud_enabled")),
-            "cloud_remote": s6.get("cloud_remote", ""),
+            "usb_path": s5.get("usb_path", "/backup"),
+            "hourly_enabled": bool(s5.get("hourly_enabled", True)),
+            "cloud_enabled": bool(s5.get("cloud_enabled")),
+            "cloud_remote": s5.get("cloud_remote", ""),
         })
 
-    # 6. ZeroTier
-    if s7:
+    # 5. ZeroTier
+    if s6:
         Setting.set("zerotier", {
-            "network_id": s7.get("network_id", ""),
-            "status": "pending" if s7.get("enabled") else "disabled",
+            "network_id": s6.get("network_id", ""),
+            "status": "pending" if s6.get("enabled") else "disabled",
         })
 
-    # 7. Recovery key
+    # 6. Recovery key
     rkey = generate_recovery_key()
     Setting.set("recovery_key_hash", make_password(rkey),
                 "Hash de la clé de récupération (§9.3)")
 
-    # 8. Démo
+    # 7. Démo
     demo_installed = False
-    if s8.get("install_demo"):
+    if s7.get("install_demo"):
         from .demo import install_demo
 
         install_demo()
         demo_installed = True
 
-    # 9. Schedules django-q2 + service Avahi
+    # 8. Schedules django-q2 + service Avahi
     try:
         call_command("setup_schedules")
     except Exception:
@@ -123,7 +115,7 @@ def apply_wizard(session_data: dict) -> WizardCompletion:
     except Exception:
         pass
 
-    # 10. Marquer le wizard terminé
+    # 9. Marquer le wizard terminé
     Setting.set("setup_completed", True, "Wizard d'installation terminé")
 
     return WizardCompletion(

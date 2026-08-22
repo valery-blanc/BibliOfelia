@@ -19,7 +19,6 @@ from .services import (
     render_member_cards_roll_pdf,
     render_spine_labels_roll_pdf,
     spine_label_text,
-    submit_to_cups,
 )
 
 
@@ -67,24 +66,6 @@ def labels_pdf(request):
         messages.error(request, _("Aucun exemplaire sélectionné."))
         return redirect("printing:labels")
     return _pdf_response(render_item_labels_pdf(items), "labels.pdf")
-
-
-@require_role(Role.LIBRARIAN, Role.SUPERADMIN)
-def labels_send(request):
-    """Envoie directement à CUPS (Pi). Fallback : redirige vers le PDF."""
-    if request.method != "POST":
-        return redirect("printing:labels")
-    items = _selected_items(request)
-    if not items:
-        messages.error(request, _("Aucun exemplaire sélectionné."))
-        return redirect("printing:labels")
-    pdf = render_item_labels_pdf(items)
-    result = submit_to_cups(pdf, job_title="BibliOfelia labels")
-    if result.sent:
-        messages.success(request, _("Job d'impression envoyé (#%(id)s).") % {"id": result.job_id})
-        return redirect("printing:labels")
-    messages.warning(request, _("Imprimante indisponible : %(e)s") % {"e": result.error})
-    return _pdf_response(pdf, "labels.pdf")
 
 
 @require_role(Role.LIBRARIAN, Role.SUPERADMIN)

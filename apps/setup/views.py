@@ -18,10 +18,9 @@ from .forms import (
     Step2LibraryForm,
     Step3LanguagesForm,
     Step4SuperadminForm,
-    Step5PrinterForm,
-    Step6BackupForm,
-    Step7ZerotierForm,
-    Step8DemoForm,
+    Step5BackupForm,
+    Step6ZerotierForm,
+    Step7DemoForm,
 )
 from .services import apply_wizard
 
@@ -30,10 +29,9 @@ WIZARD_STEPS = [
     ("step2", _("Bibliothèque"), Step2LibraryForm),
     ("step3", _("Langues activées"), Step3LanguagesForm),
     ("step4", _("Administrateur"), Step4SuperadminForm),
-    ("step5", _("Imprimante"), Step5PrinterForm),
-    ("step6", _("Sauvegarde"), Step6BackupForm),
-    ("step7", _("ZeroTier"), Step7ZerotierForm),
-    ("step8", _("Démo"), Step8DemoForm),
+    ("step5", _("Sauvegarde"), Step5BackupForm),
+    ("step6", _("ZeroTier"), Step6ZerotierForm),
+    ("step7", _("Démo"), Step7DemoForm),
 ]
 SESSION_KEY = "setup_wizard_data"
 

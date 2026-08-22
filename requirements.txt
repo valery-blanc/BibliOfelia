@@ -28,9 +28,6 @@ python-barcode==0.15.1
 reportlab==4.2.5
 Pillow==11.0.0
 
-# CUPS impression (Linux uniquement, optionnel en dev Windows)
-# pycups==2.0.4  -- installé seulement dans l'image Docker Linux
-
 # HTTP client
 httpx==0.28.1
 

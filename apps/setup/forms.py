@@ -64,16 +64,7 @@ class Step4SuperadminForm(forms.Form):
         return cleaned
 
 
-class Step5PrinterForm(forms.Form):
-    enabled = forms.BooleanField(
-        label=_("Activer l'impression CUPS"), required=False, initial=False,
-        help_text=_("Si désactivé : impression en PDF uniquement."),
-    )
-    cups_host = forms.CharField(label=_("Serveur CUPS"), required=False, max_length=120,
-                                help_text=_("Vide = CUPS local (sur la box)."))
-
-
-class Step6BackupForm(forms.Form):
+class Step5BackupForm(forms.Form):
     usb_path = forms.CharField(label=_("Chemin clé USB"), max_length=200, initial="/backup")
     hourly_enabled = forms.BooleanField(label=_("Sauvegarde horaire automatique"),
                                         required=False, initial=True)
@@ -82,12 +73,12 @@ class Step6BackupForm(forms.Form):
     cloud_remote = forms.CharField(label=_("Remote rclone"), required=False, max_length=120)
 
 
-class Step7ZerotierForm(forms.Form):
+class Step6ZerotierForm(forms.Form):
     enabled = forms.BooleanField(label=_("Activer ZeroTier"), required=False)
     network_id = forms.CharField(label=_("Network ID"), required=False, max_length=32)
 
 
-class Step8DemoForm(forms.Form):
+class Step7DemoForm(forms.Form):
     install_demo = forms.BooleanField(
         label=_("Installer des données de démonstration (50 notices, 20 usagers, prêts)"),
         required=False,
