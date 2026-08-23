@@ -79,3 +79,7 @@ docs/user-guide/preview/
 
 # Étiquettes de test générées hors application (scripts jetables)
 _test-etiquettes/
+
+# Sauvegardes hors-Box et bundles git (crees pendant le durcissement, aout 2026)
+# Ce sont des archives de plusieurs Mo : elles n ont rien a faire dans le depot.
+_snapshots/
