@@ -36,7 +36,10 @@ conteneur `bibliofelia-docs` rebâti pour le guide.
   `bibliofelia` et `bibliofelia-worker`) — hérité du Sprint 29, **toujours pas fait**.
   La modification n'existe que sur la Box, dans un fichier qui appartient à keebee.
   **Signal d'échec** : après un déploiement keebee, l'accueil de la Box réaffiche l'heure
-  UTC au lieu de CEST. Sauvegarde sur la Box : `/opt/edubox/docker-compose.yml.bak-tz`.
+  UTC au lieu de CEST. ⚠️ **La sauvegarde `docker-compose.yml.bak-tz` annoncée par le
+  Sprint 29 N'EXISTE PLUS** sur la Box (vérifié le 23/08 : seul `docker-compose.yml` est
+  là). État constaté le 23/08 : les deux lignes `TZ: ${TZ:-UTC}` sont bien présentes,
+  **lignes 234 et 268**. C'est la seule copie — les relire avant tout déploiement keebee.
 
 ### ⏳ Ouvert, avec son motif
 
@@ -54,7 +57,7 @@ conteneur `bibliofelia-docs` rebâti pour le guide.
   elle, l'accepte. Correctif d'une ligne, groupé avec la décision (1) ci-dessus.
 - **Guide utilisateur prêt/retour** : captures périmées depuis FEAT-080/081.
 - **Sprint 26** : quatre « Test fonctionnel Val » jamais confirmés explicitement.
-- **Catégorie `TEST`** restée sur la Box (`migrate_categories` ne supprime jamais).
+- **Catégorie `TEST`** restée sur la Box (`migrate_categories` ne supprime jamais). Vérifié le 23/08 : elle porte le nom « tests » et **0 notice** — sa suppression est donc sans risque, elle n'attend qu'un feu vert.
 
 ### 🧯 Ce qui a été RÉFUTÉ — ne pas le rebâtir
 
