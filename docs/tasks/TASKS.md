@@ -7,11 +7,11 @@ Mise à jour : 2026-05-26 (Sprint 12 **CLOS** — FEAT-038 (cartes membres : fon
 ## ⏭️ REPRISE — état au 23/08/2026
 
 **Sprint 30 CLOS**, validé par Val le 2026-08-23 (« ok tout fonctionne »).
-Quatre features : **FEAT-078** (export Excel du catalogue), **FEAT-079** (mise à jour
+Cinq features : **FEAT-078** (export Excel du catalogue), **FEAT-079** (mise à jour
 d'exemplaires), **FEAT-080** (identification complète au prêt et au retour),
-**FEAT-081** (ancienne carte d'usager reconnue partout).
+**FEAT-081** (ancienne carte d'usager reconnue partout), **FEAT-082** (version 1.0).
 
-**Tests : 747 passed**, mesurés sur le code du commit de clôture Sprint 30, dans un
+**Tests : 750 passed**, mesurés sur le code du commit de clôture Sprint 30, dans un
 conteneur `--target dev` sur Fez (Docker absent du poste Windows, dev local cassé et
 volontairement non réparé). Gate i18n : `python scripts/i18n_check.py` = **0**
 (34 chaînes + 3 pluriels × EN/ES/MG dans `scripts/translations_sprint30.py`).
@@ -1918,6 +1918,22 @@ ni la liste des usagers. **Enquête** sur `grand-saconnex` (un seul usager) :
       carte », deux boutons fantômes identiques dont l'un prolonge la validité et
       l'autre invalide le numéro ; son `confirm()` se valide sans lire. Candidat
       à durcissement (libellé, message nommant le numéro désactivé) → **décision Val**
+
+### FEAT-082 — Version 1.0
+
+Demande Val (2026-08-23), en voyant le pied de page : « la version actuelle est
+v0.1.0-dev, on peut la passer à 1.0 (et pas de mention de dev) ».
+
+- [x] `config/settings/base.py` — `BIBLIOFELIA_VERSION` : `0.1.0-dev` → **`1.0`**
+- [x] **Défaut de cohérence corrigé au passage** : le pied de page codait la version
+      **en dur** dans `apps/core/context_processors.py`, alors que `/pairing/info`,
+      `/health`, le service Avahi et les rapports lisent le réglage. Les deux
+      pouvaient annoncer des versions différentes du même logiciel, et une surcharge
+      par variable d'environnement n'atteignait jamais l'écran
+- [x] `apps/core/tests/test_version.py` — 3 tests : défaut à `1.0` sans « dev »,
+      pied de page qui **suit le réglage** (et non une constante recopiée), et
+      `/pairing/info` qui annonce la même valeur
+- [x] `pytest` : **750 passed** (747 → 750, +3)
 
 ### Étiquette de test du code externe (hors dépôt)
 
