@@ -2,7 +2,7 @@
 
 Beaucoup de bibliothèques arrivent dans le projet Ofelia avec un fonds
 déjà saisi dans un **tableur Excel** (un identifiant maison, un titre, un
-auteur, parfois un ISBN). Le **catalogage Excel** offre deux outils pour
+auteur, parfois un ISBN). Le **catalogage Excel** offre quatre outils pour
 exploiter ce fichier :
 
 1. **Vérifier un fichier** — BibliOfelia annote votre tableur avec ce que
@@ -11,6 +11,11 @@ exploiter ce fichier :
    fichier et le corriger à la main.
 2. **Importer dans le catalogue** — BibliOfelia transforme une liste
    d'ISBN en notices et exemplaires, d'un seul coup.
+3. **Exporter le catalogue** — BibliOfelia vous rend tout votre fonds dans
+   un tableur, une ligne par exemplaire.
+4. **Mettre à jour des exemplaires** — vous renvoyez ce tableur corrigé, et
+   BibliOfelia applique vos corrections aux livres déjà catalogués, sans
+   jamais en créer de nouveaux.
 
 !!! info "Réservé aux bibliothécaires"
     Le catalogage Excel se trouve dans le menu **Avancé**, accessible aux
@@ -22,8 +27,9 @@ Depuis le menu [**Avancé**](/bibliofelia/fr/advanced/){ target="_blank" },
 section **Inventaire**, cliquez sur
 [**Catalogage Excel**](/bibliofelia/fr/catalog/excel-catalog/){ target="_blank" }.
 
-La page propose deux encadrés côte à côte : **Vérifier un fichier** (à
-gauche) et **Importer dans BibliOfelia** (à droite).
+La page propose quatre encadrés : **Vérifier un fichier**, **Importer dans
+BibliOfelia**, **Exporter le catalogue** et **Mettre à jour des
+exemplaires**.
 
 ## Vérifier un fichier
 
@@ -128,6 +134,97 @@ exactement comme un lot scanné à la caméra.
     ligne (OpenLibrary, Google Books, BnF…). Les colonnes du fichier
     restent prioritaires : l'enrichissement ne complète que ce qui est
     encore vide.
+
+## Exporter le catalogue
+
+À utiliser pour **récupérer tout votre fonds** dans un tableur : pour le
+relire, en garder une copie hors ligne, ou préparer une correction en masse.
+
+Dans l'encadré **Exporter le catalogue**, cliquez sur **Exporter le
+catalogue**. Le fichier `catalogue-AAAA-MM-JJ.xlsx` se télécharge
+immédiatement — il n'y a rien à attendre.
+
+Le tableur contient **une ligne par exemplaire**, pas par titre. Un livre
+que vous possédez en trois exemplaires occupe donc trois lignes : c'est
+normal, car l'emplacement, l'état, la provenance et le code externe
+appartiennent à l'**exemplaire** et non à la fiche.
+
+| Colonne | Contenu |
+|---|---|
+| `OFELIA_CODE` | le code Ofelia de l'exemplaire (le code-barres de l'étiquette) |
+| `INTERNAL_ID` | le code lisible imprimé à côté du code-barres (`OFL-…`) |
+| `EXTERNAL_CODE` | le code d'une autre bibliothèque posé sur le livre |
+| `ISBN`, `TITLE`, `AUTHOR`, `EDITOR`, `YEAR`, `LANGUAGE` | les informations de la fiche |
+| `CATEGORY`, `CATEGORY_ABBR`, `TYPE`, `TAGS` | le classement |
+| `CONDITION`, `PROVENANCE`, `LOCATION` | les informations de l'exemplaire |
+
+!!! tip "C'est le fichier de la mise à jour"
+    Les colonnes de l'export sont **exactement** celles que BibliOfelia sait
+    relire. Corrigez ce que vous voulez dans Excel, puis renvoyez le même
+    fichier par **Mettre à jour des exemplaires** : rien d'autre à préparer.
+
+## Mettre à jour des exemplaires
+
+À utiliser pour **corriger en masse** des livres **déjà** dans le catalogue :
+changer des emplacements après un déménagement de rayon, passer une série en
+« Usé », attribuer des codes externes, rattraper des titres mal saisis.
+
+!!! success "Aucun livre n'est créé"
+    Cet outil ne crée **jamais** de fiche ni d'exemplaire. Si une ligne
+    désigne un exemplaire qui n'existe pas, elle est **signalée** et laissée
+    de côté — jamais transformée en nouveau livre. Vous pouvez donc renvoyer
+    un export sans risquer de dupliquer votre bibliothèque.
+
+Chaque ligne doit dire **de quel exemplaire elle parle**. Le fichier doit
+donc contenir au moins une de ces deux colonnes :
+
+| Colonne | Contenu |
+|---|---|
+| `OFELIA_CODE` | le code Ofelia de l'exemplaire — le code-barres `290…` **ou** le code lisible `OFL-…` |
+| `EXTERNAL_CODE` | le code d'une autre bibliothèque posé sur le livre |
+
+!!! info "Si les deux colonnes sont remplies"
+    C'est le **code Ofelia** qui désigne l'exemplaire, et le code externe de
+    la ligne **lui est appliqué**. C'est ainsi qu'on attribue des codes
+    externes à beaucoup de livres d'un coup : une colonne `OFELIA_CODE` pour
+    dire de quel livre il s'agit, une colonne `EXTERNAL_CODE` avec le code à
+    poser.
+
+Toutes les autres colonnes de l'import sont acceptées et **facultatives** :
+`TITLE`, `AUTHOR`, `CATEGORY`, `CATEGORY_ABBR`, `TYPE`, `EDITOR`, `YEAR`,
+`LANGUAGE`, `TAGS`, `CONDITION`, `PROVENANCE`, `LOCATION` et `ISBN`.
+
+!!! warning "Une cellule vide n'efface rien"
+    Une cellule **remplie** remplace la valeur existante ; une cellule
+    **vide** laisse la valeur en place. Cet outil ne sert donc **pas** à
+    vider un champ — pour cela, ouvrez la fiche du livre. C'est ce qui vous
+    permet de renvoyer un export entier après n'avoir corrigé que deux
+    colonnes.
+
+Choisissez votre fichier, cliquez sur **Mettre à jour les exemplaires**,
+puis suivez le travail comme un import. La page de détail affiche :
+
+- **Exemplaires modifiés** — les lignes qui ont réellement changé quelque
+  chose ;
+- **Lignes sans changement** — l'exemplaire a bien été retrouvé, mais le
+  fichier disait déjà la même chose que le catalogue ;
+- **Erreurs** — les lignes non appliquées, avec un bandeau rouge et le
+  détail plus bas.
+
+| Avertissement | Ce qu'il veut dire |
+|---|---|
+| `OFELIA_CODE_UNKNOWN` | aucun exemplaire ne porte ce code Ofelia — ligne ignorée |
+| `EXTERNAL_CODE_UNKNOWN` | aucun exemplaire ne porte ce code externe — ligne ignorée |
+| `NO_KEY` | la ligne ne dit pas de quel exemplaire elle parle |
+| `EXTERNAL_CODE_DUPLICATE` | ce code externe est déjà sur un autre livre — non repris, le reste de la ligne est appliqué |
+| `ISBN_CONFLICT` | cet ISBN appartient déjà à une autre fiche — non repris, le reste est appliqué |
+| `LOCATION_UNKNOWN`, `CATEGORY_UNKNOWN`, `PROVENANCE_UNKNOWN` | la valeur n'existe pas dans vos listes — ignorée, le reste est appliqué |
+
+!!! tip "Une fiche, plusieurs exemplaires"
+    Le titre, l'auteur ou l'éditeur appartiennent à la **fiche** : les
+    corriger sur la ligne d'un exemplaire les corrige pour **tous** les
+    exemplaires de ce livre. L'emplacement, l'état, la provenance et le code
+    externe, eux, ne touchent que l'exemplaire de la ligne.
 
 ## Suivre vos travaux
 

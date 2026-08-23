@@ -76,3 +76,6 @@ temp[0-9]*.txt
 # Documentation utilisateur (Sprint 15)
 docs/user-guide/site/
 docs/user-guide/preview/
+
+# Étiquettes de test générées hors application (scripts jetables)
+_test-etiquettes/

@@ -9,6 +9,18 @@
 
 {% block content %}
 
+{% comment %}
+FEAT-080 : pastille de code, pour distinguer d'un coup d'œil le code Ofelia du
+code externe dans une ligne déjà dense.
+{% endcomment %}
+<style>
+.code-chip { display:inline-block; font-family:ui-monospace,SFMono-Regular,Menlo,monospace;
+    font-size:11.5px; letter-spacing:.02em; background:var(--olive-light,#F2EFDD);
+    color:#5A4E12; border-radius:6px; padding:1px 6px; margin-right:6px; white-space:nowrap; }
+.code-chip--ext { background:var(--blush-light,#F7E9E9); color:#7A2B3C; }
+</style>
+
+
 <header class="pagehead">
     <div class="pagehead-icon pagehead-icon--illus"
          style="box-shadow:var(--shadow-sm),inset 0 0 0 2px var(--orange)">
@@ -134,9 +146,24 @@
                 <div class="lrow-icon" style="--lr-bg:var(--amber-light);--lr-fg:#946906;width:36px;height:36px;border-radius:10px">
                     {% icon "book-open" size="16px" %}
                 </div>
+                {% comment %}
+                FEAT-080 : le bibliothécaire doit reconnaître le livre qu'il vient
+                de scanner sans rouvrir sa fiche — titre, auteur, et les DEUX
+                codes, puisqu'on peut avoir scanné l'un ou l'autre.
+                {% endcomment %}
                 <div style="flex:1;min-width:0">
                     <div style="font-weight:600;font-size:14px">{{ item.record.title }}</div>
-                    <div style="font-size:12px;color:var(--grey)">{{ item.internal_id }}</div>
+                    {% if item.record.authors.all %}
+                    <div style="font-size:12px;color:var(--ink)">
+                        {% for a in item.record.authors.all %}{{ a.full_name }}{% if not forloop.last %}, {% endif %}{% endfor %}
+                    </div>
+                    {% endif %}
+                    <div style="font-size:12px;color:var(--grey)">
+                        <span class="code-chip">{% trans "Ofelia" %} {{ item.ean13 }}</span>
+                        {% if item.external_code %}
+                        <span class="code-chip">{% trans "Externe" %} {{ item.external_code }}</span>
+                        {% endif %}
+                    </div>
                 </div>
                 <form method="post" action="{% url 'loans:lend' %}" style="margin:0">
                     {% csrf_token %}

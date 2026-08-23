@@ -2,7 +2,7 @@
 
 Many libraries join the Ofelia project with a collection already typed into
 an **Excel spreadsheet** (an in-house id, a title, an author, sometimes an
-ISBN). **Excel cataloging** offers two tools to make use of that file:
+ISBN). **Excel cataloging** offers four tools to make use of that file:
 
 1. **Check a file** — BibliOfelia annotates your spreadsheet with what the
    online databases know about each book, without changing anything in the
@@ -10,6 +10,11 @@ ISBN). **Excel cataloging** offers two tools to make use of that file:
    file and fix it by hand.
 2. **Import into the catalog** — BibliOfelia turns a list of ISBNs into
    records and copies, all at once.
+3. **Export the catalog** — BibliOfelia hands your whole collection back as
+   a spreadsheet, one row per copy.
+4. **Update copies** — you send that corrected spreadsheet back, and
+   BibliOfelia applies your fixes to books already catalogued, without ever
+   creating new ones.
 
 !!! info "Librarians only"
     Excel cataloging lives in the **Advanced** menu, available to
@@ -21,8 +26,8 @@ From the [**Advanced**](/bibliofelia/en/advanced/){ target="_blank" } menu,
 **Inventory** section, click
 [**Excel cataloging**](/bibliofelia/en/catalog/excel-catalog/){ target="_blank" }.
 
-The page shows two boxes side by side: **Check a file** (left) and
-**Import into BibliOfelia** (right).
+The page shows four boxes: **Check a file**, **Import into BibliOfelia**,
+**Export the catalog** and **Update copies**.
 
 ## Check a file
 
@@ -123,6 +128,93 @@ exactly like a batch scanned with the camera.
     **enrichment** on the batch to fetch the metadata online (OpenLibrary,
     Google Books, BnF…). The file's columns stay authoritative: enrichment
     only fills in what is still empty.
+
+## Export the catalog
+
+Use this to **get your whole collection back** as a spreadsheet: to read it
+through, to keep an offline copy, or to prepare a bulk correction.
+
+In the **Export the catalog** box, click **Export the catalog**. The file
+`catalogue-YYYY-MM-DD.xlsx` downloads straight away — there is nothing to
+wait for.
+
+The spreadsheet holds **one row per copy**, not per title. A book you own in
+three copies takes three rows: that is expected, because location,
+condition, provenance and external code belong to the **copy**, not to the
+record.
+
+| Column | Content |
+|---|---|
+| `OFELIA_CODE` | the copy's Ofelia code (the barcode on the label) |
+| `INTERNAL_ID` | the readable code printed next to the barcode (`OFL-…`) |
+| `EXTERNAL_CODE` | another library's code already on the book |
+| `ISBN`, `TITLE`, `AUTHOR`, `EDITOR`, `YEAR`, `LANGUAGE` | the record's details |
+| `CATEGORY`, `CATEGORY_ABBR`, `TYPE`, `TAGS` | the classification |
+| `CONDITION`, `PROVENANCE`, `LOCATION` | the copy's details |
+
+!!! tip "This is the update file"
+    The export columns are **exactly** the ones BibliOfelia can read back.
+    Fix whatever you like in Excel, then send the same file through **Update
+    copies**: nothing else to prepare.
+
+## Update copies
+
+Use this to **correct in bulk** books **already** in the catalog: change
+locations after moving a shelf, mark a series as “Worn”, assign external
+codes, fix badly typed titles.
+
+!!! success "No book is ever created"
+    This tool **never** creates a record or a copy. If a row points at a copy
+    that does not exist, it is **reported** and set aside — never turned into
+    a new book. So you can send an export back without any risk of
+    duplicating your library.
+
+Every row must say **which copy it is about**. The file must therefore hold
+at least one of these two columns:
+
+| Column | Content |
+|---|---|
+| `OFELIA_CODE` | the copy's Ofelia code — the `290…` barcode **or** the readable `OFL-…` code |
+| `EXTERNAL_CODE` | another library's code on the book |
+
+!!! info "If both columns are filled in"
+    The **Ofelia code** is what identifies the copy, and the row's external
+    code **is applied to it**. That is how external codes get assigned to
+    many books at once: an `OFELIA_CODE` column to say which book, an
+    `EXTERNAL_CODE` column with the code to put on it.
+
+Every other import column is accepted and **optional**: `TITLE`, `AUTHOR`,
+`CATEGORY`, `CATEGORY_ABBR`, `TYPE`, `EDITOR`, `YEAR`, `LANGUAGE`, `TAGS`,
+`CONDITION`, `PROVENANCE`, `LOCATION` and `ISBN`.
+
+!!! warning "An empty cell erases nothing"
+    A **filled** cell replaces the existing value; an **empty** cell leaves
+    the value alone. So this tool cannot be used to clear a field — open the
+    book's page for that. That is what lets you send back a whole export
+    after fixing only two columns.
+
+Pick your file, click **Update the copies**, then follow the job like an
+import. The detail page shows:
+
+- **Copies changed** — the rows that really changed something;
+- **Rows with no change** — the copy was found, but the file already said
+  the same thing as the catalog;
+- **Errors** — the rows that were not applied, with a red banner and the
+  details below.
+
+| Warning | What it means |
+|---|---|
+| `OFELIA_CODE_UNKNOWN` | no copy carries this Ofelia code — row skipped |
+| `EXTERNAL_CODE_UNKNOWN` | no copy carries this external code — row skipped |
+| `NO_KEY` | the row does not say which copy it is about |
+| `EXTERNAL_CODE_DUPLICATE` | this external code is already on another book — not applied, the rest of the row is |
+| `ISBN_CONFLICT` | this ISBN already belongs to another record — not applied, the rest is |
+| `LOCATION_UNKNOWN`, `CATEGORY_UNKNOWN`, `PROVENANCE_UNKNOWN` | the value is not in your lists — ignored, the rest is applied |
+
+!!! tip "One record, several copies"
+    Title, author and publisher belong to the **record**: fixing them on one
+    copy's row fixes them for **every** copy of that book. Location,
+    condition, provenance and external code only touch the copy on that row.
 
 ## Track your jobs
 

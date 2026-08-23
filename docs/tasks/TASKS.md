@@ -4,69 +4,72 @@ Source de vérité de l'avancement v1. Une case `[x]` = livrable terminé et dé
 
 Mise à jour : 2026-05-26 (Sprint 12 **CLOS** — FEAT-038 (cartes membres : fond crème, logo OFELIA filigrane, photo HG, langue BG, bloc droite), FEAT-039 (étiquettes 70×42 mm, titre wrap 2 lignes, auteurs 2 lignes, logo Ofelia), split paramétrage `labels` → `printing_cards` + `printing_labels`. BUG-013 v2 (sélecteur de langue qui perdait `/bibliofelia/` à chaque déploiement : wrapper `apps/core/i18n_views.py:set_language` force `FORCE_SCRIPT_NAME` + échange code langue même sur URL non résolue). **Gate i18n pérenne** : `scripts/i18n_check.py` exit != 0 si chaîne manquante ; documenté dans CLAUDE.md comme obligatoire avant tout commit ; 207 entrées EN/ES/MG appliquées (Sprints 10-12 incl. FORMS labels enrobés `gettext_lazy`). 304 tests verts (287 → 304). Sprint 11 **CLOS** — — BUG-014 (saisie clavier sur `/loans/lend/` + `/loans/return/` : bouton scan repassé `type="button"` + bouton « Valider » visible séparé pour la saisie clavier), FEAT-034 (UI réservations : liste d'attente PENDING sur fiche notice, expiration affichée sur exemplaires mis de côté, section « Réservations à relancer » sur page Retour, paramètres `default_loan_days`/`reservation_expiry_days`/`pickup_hold_days` exposés dans `/settings/loans/`), FEAT-035 (Setting `default_loan_days` global défaut 21, section « Relances à faire » bas du dashboard avec 10 prêts en retard), FEAT-036 (`Reservation.notified_at` + endpoint `POST /loans/reservations/<pk>/notify/`, page Réservations enrichie code Ofelia / dates avec heure / date limite retrait / police 16-17 px + cadre « Notifications à faire » entre tuiles et bannière scan sur dashboard), BUG-015 (DateInput format ISO `%Y-%m-%d` sur `MemberForm`, sinon locale FR remplit pas l'input HTML5), FEAT-037 (photo membre dans pagehead fiche + miniature sur form, expiration_date = registration_date + 1 an auto JS au change + initial `today + 1 an` à la création). 287 tests verts (266 → 287, +21). Migration `loans/0002_reservation_notified_at`. 5 vagues de déploiement Pi. 2 nouvelles entrées MEMORY (DateInput ISO format, bouton scan type=button + Valider visible). — Sprint 10 **CLOS end-to-end** — FEAT-032 + FEAT-033 validés Val 2026-05-24 sur la Pi, **+ OfeliaScan mobile mis à jour le 2026-05-24** : test prod 18:26 → session récolement scope=A1 reçue d'OfeliaScan avec 16 scans, 16 exemplaires relocate de J1 → A1 automatiquement. Bout-en-bout fonctionnel : catalogage OfeliaScan envoie `location_code`, picker récolement OfeliaScan envoie `scope_type=location` + `scope_location_code`, BibliOfelia déplace les items au scan. FEAT-032 : UI librarian /catalog/locations/ + endpoint GET /api/v1/locations testés OK. FEAT-033 : relocate auto vérifiée via UI web ET via OfeliaScan mobile. Commit `9d4fe83` + push + déploiement Pi (rebuild Docker + migration `0003`). 266 tests verts. — Sprint 8 **CLOS** — FEAT-025 **validé Val 2026-05-23** : refonte design global, 23 templates métiers harmonisés sur le design system OFELIA. Lot A pilote validé en premier (record_detail, member_detail, reports/index, settings_index), puis Lots B+C+D livrés d'un bloc. Helpers CSS ajoutés (`.req`, `.help-hint`, `.field-error`, `.form-control`, `details.advanced-section`, `.isbn-row`, `.form-actions`), `_field.html` migré `.form-row` → `.field`. Découverte d'infra : templates **embarqués au build Docker**, pas bind-mountés → rebuild obligatoire pour tout changement de template (documenté dans FEAT-025). — Sprint 7 **CLOS** — FEAT-024 **validé Val 2026-05-23** : scanner caméra navigateur sur Android Firefox HTTPS OK, fallback OfeliaScan automatique en HTTP LAN, Chrome Android sans Play Store via `S.browser_fallback_url`, bouton Annuler pendant polling. Décision UX : caméra-d'abord automatique, pas de toggle utilisateur. Décision infra : pas de cert auto-signé. 3 commits Pi `d7c8e8f` → `9d2af81` → `e9993a5`. FEAT-023 **validé Val 2026-05-23** : banner dashboard → OfeliaScan ouvre → scan livre → retour BibliOfelia → fiche notice affichée, bout-en-bout fonctionnel. Modèle `ScanHandoff` + endpoints `/api/v1/scan-handoff[/{token}]` + JS `scan-handoff.js` + 4 boutons « Scanner » câblés. BUG-010 entrypoint Dockerfile + BUG-011 CSRF cookie HttpOnly + Chrome Android `intent://` URL résolus. Sprints 3/5/6 clos. Reste pour Sprint 7 : Android-side OfeliaScan déjà fonctionnelle côté Val (intent filter + activity scan-one + POST callback) — implémentation Android terminée hors repo. Prochain sprint : FEAT-024 scanner caméra navigateur (HTTPS).)
 
-## ⏭️ REPRISE — état au 22/08/2026
+## ⏭️ REPRISE — état au 23/08/2026
 
-**Sprint 29 CLOS.** Dernier commit : voir `git log -1` (commit de clôture Sprint 29,
-succède à `a85d8c2` qui portait FEAT-074 seul).
+**Sprint 30 CLOS**, validé par Val le 2026-08-23 (« ok tout fonctionne »).
+Quatre features : **FEAT-078** (export Excel du catalogue), **FEAT-079** (mise à jour
+d'exemplaires), **FEAT-080** (identification complète au prêt et au retour),
+**FEAT-081** (ancienne carte d'usager reconnue partout).
 
-**Tests : 678 passed**, mesurés sur le code du commit de clôture Sprint 29, dans un
+**Tests : 747 passed**, mesurés sur le code du commit de clôture Sprint 30, dans un
 conteneur `--target dev` sur Fez (Docker absent du poste Windows, dev local cassé et
-volontairement non réparé). Gate i18n : `python scripts/i18n_check.py` = 0.
+volontairement non réparé). Gate i18n : `python scripts/i18n_check.py` = **0**
+(34 chaînes + 3 pluriels × EN/ES/MG dans `scripts/translations_sprint30.py`).
 
-**Déploiement** : Box (`edubox-bibliofelia`, healthy, 0 migration en attente),
-instances Fez `sanjuan` et `grand-saconnex` (healthy), secours Avignon (source
-synchronisée + image rebâtie). Les quatre portent le même code.
+**Déploiement** : instances Fez `sanjuan` et `grand-saconnex` (healthy), secours
+**Avignon** (source synchronisée + image rebâtie), **Box** (`edubox-bibliofelia`), et le
+conteneur `bibliofelia-docs` rebâti pour le guide.
 
 ### 🔴 À FAIRE EN PREMIER
 
+- **L'IP de la Box a changé : `192.168.0.147` → `192.168.0.204`.** Les anciennes fiches
+  et `infra.md` annonçaient `.147`, qui ne répond plus (ni ping ni SSH, depuis le poste
+  comme depuis Fez). **Protocole si elle a encore bougé** : balayer le /24 depuis Fez puis
+  interroger la route publique, qui identifie la Box sans authentification :
+  ```bash
+  ssh fez 'for i in $(seq 1 254); do (ping -c1 -W1 192.168.0.$i >/dev/null 2>&1 &); done
+           sleep 6; ip neigh | grep -v FAILED'
+  ssh fez 'curl -s -m 5 http://192.168.0.<ip>/bibliofelia/api/v1/pairing/info'
+  ```
+  **Signal de reconnaissance** : la réponse contient `"box_name":"Canaima"`.
 - **Reporter `TZ: ${TZ:-UTC}` dans `C:\WORK\keebee\docker-compose.yml`** (services
-  `bibliofelia` et `bibliofelia-worker`). La modification n'existe pour l'instant que
-  sur la Box, dans un fichier qui appartient au projet **keebee**. **Signal d'échec à
-  guetter** : après un déploiement keebee, l'accueil de la Box réaffiche l'heure UTC
-  au lieu de CEST — c'est que les deux lignes ont été écrasées. Sauvegarde sur la
-  Box : `/opt/edubox/docker-compose.yml.bak-tz`.
+  `bibliofelia` et `bibliofelia-worker`) — hérité du Sprint 29, **toujours pas fait**.
+  La modification n'existe que sur la Box, dans un fichier qui appartient à keebee.
+  **Signal d'échec** : après un déploiement keebee, l'accueil de la Box réaffiche l'heure
+  UTC au lieu de CEST. Sauvegarde sur la Box : `/opt/edubox/docker-compose.yml.bak-tz`.
 
 ### ⏳ Ouvert, avec son motif
 
-- **Fuseau de la Box non réglé** (`Setting.timezone` vide → suit `Europe/Zurich` du
-  Pi). Volontaire : la Box est à Genève chez Val, afficher l'heure du Venezuela
-  pendant les tests ferait croire à une horloge fausse. À poser sur
-  `America/Caracas (UTC-4)` au moment du départ pour Canaima.
-- **Catégorie `TEST` sur la Box** — vérifiée le 22/08 : toujours présente (pk=17),
-  **0 notice rattachée**, donc supprimable sans risque. Laissée en place faute de
-  demande explicite ; c'est une donnée de production, pas du code.
-- **Sprint 26 — 4 « Test fonctionnel Val » jamais confirmés** (BUG-025, BUG-026,
-  FEAT-061). Le code est déployé et committé depuis `cddb518` (18/08) : il ne manque
-  que la confirmation.
-- **Sprint 15 Task 4** — coordonnées d'annotation à capturer via
-  `bounding_box()`, jamais codées en dur.
+- **Trois décisions rendues à Val**, aucune n'est un bug à corriger à l'aveugle :
+  1. **Scan caméra et code externe** — `static/js/scan-camera.js` n'accepte qu'un EAN-13
+     de préfixe 290/291/978/979. Un code externe alphanumérique (Code39/Code128) est donc
+     refusé à la caméra, alors qu'il passe au clavier et à la douchette USB. Deux niveaux
+     d'ouverture proposés, avec leurs risques — cf. Sprint 30.
+  2. **Sexe de l'usager** — `Member` n'a pas ce champ ; l'ajouter = migration + donnée
+     personnelle de plus.
+  3. **Bouton « Remplacer la carte »** — trop facile à déclencher (cf. FEAT-081).
+- **Code interne `OFL-…` non résolu par `find_item`** : seuls l'EAN13 et le code externe
+  le sont. Un bibliothécaire qui lit le code interne à l'écran et le tape dans la
+  recherche n'obtient rien — alors que la fenêtre « Mettre à jour des exemplaires »,
+  elle, l'accepte. Correctif d'une ligne, groupé avec la décision (1) ci-dessus.
+- **Guide utilisateur prêt/retour** : captures périmées depuis FEAT-080/081.
+- **Sprint 26** : quatre « Test fonctionnel Val » jamais confirmés explicitement.
+- **Catégorie `TEST`** restée sur la Box (`migrate_categories` ne supprime jamais).
 
-### 🧨 Réfuté / abandonné pendant le Sprint 29
+### 🧯 Ce qui a été RÉFUTÉ — ne pas le rebâtir
 
-- **Réparer le CSRF du bouton « Imprimer (CUPS) »** : le corriger aurait donné un
-  bouton affichant « Imprimante indisponible » puis retombant sur le PDF, soit ce
-  que fait déjà « PDF A4 ». Chemin supprimé (FEAT-074), pas réparé.
-- **CUPS côté serveur en général** : impossible par topologie (imprimante sur le
-  LAN de la bibliothèque, serveur hébergé ailleurs). Ne pas le rebâtir.
-- **Agent d'impression local** sur le poste de la bibliothèque : techniquement
-  propre, écarté — un composant de plus à dépanner à distance pour remplacer un
-  réglage du pilote Windows à faire une fois.
-- **Police condensée embarquée** (`fonts-dejavu-extra` / `DejaVuSansCondensed`) :
-  ~10 % de largeur gagnée là où il en fallait 40. La transformation du canvas
-  (`SPINE_WIDTH_SCALE`) est exacte et sans dépendance.
-- **Rétablir les sigles `VET` / `ART`** : retirés de la base IANA. Les rendre
-  supposerait une table maintenue à la main pour 486 fuseaux, qui dériverait à
-  chaque mise à jour de tzdata. On affiche la ville à la place.
-
-### ⚠️ Deux pièges rencontrés, à ne pas refaire
-
-- **Condensation de la cote** : `spine_layout()` doit recevoir la largeur utile
-  **réelle**. Lui passer `inner_w / SPINE_WIDTH_SCALE` lui fait choisir une police
-  plus grande — le texte sort plus haut et pas plus étroit, l'inverse du besoin.
-  Verrouillé par `test_font_size_is_computed_on_the_real_width_not_a_widened_one`.
-- **Horloge de l'accueil** : le script ne doit viser que `.hero-clock-hm`. Viser
-  `.hero-clock-time` efface le sigle du fuseau au premier rafraîchissement (15 s).
-  Verrouillé par `test_refresh_script_never_overwrites_the_timezone`.
+- ⛔ **« La carte de Val n'était pas reconnue à cause d'un défaut de recherche »** — faux.
+  Enquête : sa carte avait été **remplacée** le 2026-08-20 à 14:02 UTC (compteur
+  `Setting.next_replacement_card_seq` passé de 900 000 000 à 900 000 001). Le vrai défaut
+  était ailleurs : rien ne disait qu'il fallait **réimprimer**, et seul l'écran de prêt
+  acceptait l'ancien numéro. Ne pas chercher un bug dans `classify_query`.
+- ⛔ **« BibliOfelia peut imprimer un code externe »** — non : `printing/services.py`
+  n'encode que des **EAN13** (`from barcode import EAN13`), or un code externe est
+  alphanumérique. L'étiquette de test a été produite par un script **hors dépôt**
+  (`C:\WORK\BibliOfelia\_test-etiquettes\`). Ne pas chercher l'option dans l'UI.
+- ⛔ **« Un commentaire `{# … #}` peut tenir sur plusieurs lignes »** — non, vérifié en
+  conteneur : `tag_re` de Django n'active pas `DOTALL`, le commentaire s'affiche **en clair
+  dans la page**. Un test l'interdit désormais sur les écrans prêt et retour.
 
 
 ## Sprint 0 — Squelette
@@ -1757,3 +1760,219 @@ du « Bonjour » sur l'accueil — **la Box perd son horloge quand on l'éteint*
       (« c'est bon »), logo (« validé »), heure sur la Box (« ok validé »), puis
       fuseaux et libellés (« c'est ok comme ça »)
 - [x] Commit unique groupé + push origin/main
+
+## Sprint 30 — Export Excel du catalogue + mise à jour d'exemplaires
+
+Demande Val (2026-08-23), depuis `https://grand-saconnex.bibliofelia.org/fr/catalog/excel-catalog/` :
+deux fenêtres de plus sur l'écran Catalogage Excel — un **export** de toute la
+base avec les champs supportés par l'import, et une **mise à jour d'exemplaires**
+qui ne crée rien, clée sur le code Ofelia et/ou le code externe.
+
+### FEAT-078 — Export Excel de tout le catalogue
+
+- [x] `apps/catalog/excel_export.py` — `EXPORT_COLUMNS` (16 colonnes),
+      `items_queryset()`, `export_row()`, `build_catalog_workbook()`
+- [x] Vue `catalog:excel_catalog_export` + route + carte
+      `templates/catalog/excel_catalog/_export_form.html`
+- [x] **Une ligne par exemplaire** (l'emplacement, l'état, la provenance et le
+      code externe appartiennent à l'exemplaire, pas à la fiche) ; tri titre puis
+      code interne ; en-têtes gras, `freeze_panes`, largeurs de colonne posées
+- [x] **Export synchrone**, pas un job : aucun appel réseau, c'est une lecture de
+      base. `openpyxl` en `write_only` + `.iterator(chunk_size=500)` pour ne pas
+      faire tenir deux fois le catalogue en RAM sur une Box à 4 Go
+- [x] Colonnes = **exactement** celles que l'import/la mise à jour savent relire,
+      plus `OFELIA_CODE` et `INTERNAL_ID` → le fichier se renvoie tel quel
+- [x] `apps/catalog/tests/test_excel_export.py` — 8 tests
+- [x] `docs/specs/FEAT-078-export-excel-catalogue.md`
+
+### FEAT-079 — Mise à jour d'exemplaires depuis Excel
+
+- [x] `ExcelJobMode.UPDATE` + `ExcelCatalogJob.updated` / `.unchanged` → migration
+      `catalog/0020_excel_update_mode` (`makemigrations --check` = *No changes detected*)
+- [x] `run_update_job()`, `_apply_item_update()`, `_find_item_by_ofelia_code()`,
+      `UPDATE_KEY_COLUMNS` / `UPDATE_OVERRIDE_COLUMNS`, alias d'en-tête FR
+- [x] `validate_xlsx` : branche UPDATE — au moins une colonne clé (alias compris),
+      sinon upload refusé **sans créer de job**
+- [x] Vue `catalog:excel_catalog_update` + carte `_update_form.html` + branches
+      `mode == "update"` de `detail.html` (compteurs, bandeau rouge, colonne
+      « Exemplaire » au lieu d'« ISBN », explications des 6 nouveaux avertissements)
+- [x] **Ne crée jamais rien** — vérifié par comptage notices + exemplaires dans
+      les tests. Seule création héritée de l'import : les tags absents
+- [x] **Code Ofelia prioritaire** : les deux codes présents → le code Ofelia
+      identifie l'exemplaire et le code externe de la ligne **lui est appliqué**
+      (règle Val). Un code Ofelia inconnu **ne retombe pas** sur le code externe
+- [x] `LOCATION` et `ISBN` deviennent modifiables (en import, clé et création
+      seulement). `ISBN_CONFLICT` garde-fou sur l'unicité d'`isbn_13` — sans lui la
+      ligne aurait fait tomber le lot entier
+- [x] Robustesse : **une transaction par ligne** (`ROW_ERROR` → les autres passent),
+      référentiels chargés une fois, sauvegarde partielle toutes les 10 lignes
+- [x] `apps/catalog/tests/test_excel_update.py` — 35 tests, dont l'aller-retour
+      export → mise à jour « 0 modification, 0 erreur » et un garde-fou de
+      cohérence colonnes d'export ⊆ colonnes relisables
+- [x] `docs/specs/FEAT-079-mise-a-jour-exemplaires-excel.md`
+
+### Corollaire — résolutions insensibles à la langue
+
+L'export écrit `TYPE`, `CONDITION` et `CATEGORY` dans la langue du
+bibliothécaire, alors que le job de relecture tourne dans le **worker
+django-q2, en français**. Sans ces trois helpers, un fichier exporté en espagnol
+serait revenu avec `TYPE_UNKNOWN` + `CATEGORY_UNKNOWN` sur **chaque** ligne —
+l'aller-retour n'aurait marché qu'en français.
+
+- [x] `_translated_label_aliases()` — libellés `DocumentType` / `ItemState` de
+      toutes les langues de l'instance (vérifié en conteneur : `Livre` /
+      `Comic / manga` / `Cómic / manga` / `Tantara an-tsary / manga` → `comic`)
+- [x] `_resolve_category()` — tous les champs `name_<lang>` de modeltranslation,
+      puis à défaut par **code** de catégorie
+- [x] `_get_or_create_tag()` — recherche multi-langue avant création, sinon chaque
+      tag serait recréé en double avec le libellé espagnol dans le champ français
+- [x] Ces trois helpers servent **aussi à l'import**, strictement plus permissifs
+      qu'avant → aucune régression
+
+### Qualité
+
+- [x] `pytest` sur Fez (image `--target dev`) : **721 passed** (678 → 721, +43),
+      0 régression
+- [x] `makemigrations --check --dry-run` : *No changes detected*
+- [x] Gate i18n : `makemessages -a --no-obsolete` (conteneur Fez) +
+      `scripts/translations_sprint30.py` (24 chaînes + 2 pluriels × EN/ES/MG) →
+      `python scripts/i18n_check.py` = **0**
+- [x] `compilemessages` OK, tests rejoués **avec les `.mo` compilés**
+      (43 passed) — c'est ce qui prouve la relecture multi-langue
+- [x] Correctif au passage : `{% icon "alert-triangle" %}` → `"triangle-alert"`
+      dans `detail.html` (le fichier `static/icons/alert-triangle.svg` n'existe
+      pas, l'icône des deux bandeaux ne s'affichait pas)
+
+### FEAT-080 — Identification complète au prêt et au retour
+
+Né du test physique du code externe `BCF132770013` : avec deux codes possibles
+par exemplaire, le comptoir n'affichait qu'un titre et le code interne `OFL-…`
+— celui qui n'est imprimé sur aucune étiquette. Et au retour, la personne
+debout en face du bibliothécaire n'était nommée nulle part.
+
+- [x] **Panier de prêt** : titre + auteur(s) + **code Ofelia** + **code externe**,
+      les deux affichés quel que soit celui qui a été scanné (pastilles
+      `.code-chip`). `OFL-…` retiré de la ligne
+- [x] **Journal de retour** : photo / nom / prénom / âge de la personne qui rend
+      (cliquable vers sa fiche), titre + auteur(s), les deux codes, et une mention
+      explicite « Retour effectué » / « … livre perdu réintégré » / « Aucun
+      prêt actif ». Message flash nominatif
+- [x] `ReturnResult.loan` — sans le prêt soldé, la vue ne peut plus nommer
+      l'emprunteur ; pour le livre perdu réintégré, le prêt est **lu avant**
+      l'`update()` de masse qui le solde
+- [x] `Member.age` — années **révolues** (anniversaire non passé décompté), `None`
+      sans date de naissance. Aucune migration : propriété calculée
+- [x] `prefetch_related("record__authors")` sur le panier et sur la résolution du
+      retour (sinon une requête par livre scanné)
+- [x] Journal en **session** : le gabarit tolère les entrées antérieures à
+      FEAT-080, qui n'ont pas les nouvelles clés (test dédié)
+- [!] **Sexe non affiché** : `Member` n'a pas ce champ (seul
+      `MemberFamilyMember.gender` existe, FEAT-072, et ces personnes n'empruntent
+      pas). L'ajouter = migration + donnée personnelle de plus → **décision Val**
+- [x] **Correctif de gabarit** : trois commentaires `{# … #}` étaient à cheval sur
+      deux lignes. Vérifié en conteneur — le lexer Django n'active pas `DOTALL`,
+      un tel commentaire s'affiche **en clair dans la page**. Repassés en
+      `{% comment %}`, avec un test qui interdit `FEAT-080` ou `{#` dans le HTML rendu
+- [x] `apps/loans/tests/test_lend_return_display.py` — 13 tests
+- [x] `docs/specs/FEAT-080-identification-pret-retour.md` + SPEC §6.3
+- [x] `pytest` : **734 passed** (721 → 734, +13) ; gate i18n = 0 (32 chaînes +
+      3 pluriels × EN/ES/MG)
+- [x] Déployé sur Fez (`sanjuan`, `grand-saconnex`, healthy) ; les deux écrans
+      rendus en 200, sans commentaire cassé
+
+### FEAT-081 — Ancienne carte d'usager reconnue partout
+
+Signalé par Val : sa carte `2910000000017` n'était pas reconnue depuis l'accueil
+ni la liste des usagers. **Enquête** sur `grand-saconnex` (un seul usager) :
+
+| Fait | Valeur |
+|---|---|
+| Carte courante | `2919000000003` |
+| Ancienne carte | `2910000000017` — celle qui était scannée |
+| Inscription | 2026-08-18 |
+| Remplacement | **2026-08-20 à 14:02 UTC** (16:02 CEST) |
+
+`Setting.next_replacement_card_seq` est passé de `900 000 000` à `900 000 001`
+à cet horodatage → `replace_card()` a tourné **une fois**, le 20 août.
+`2910000000017` = numéro auto à la création (`build_ean13("291", pk=1)`),
+`2919000000003` = 1re carte de remplacement. Seul chemin d'appel : le bouton
+« Remplacer la carte » de la fiche usager (POST + `confirm()`).
+
+- [x] `apps/members/lookup.py` — `find_member` (carte courante **puis** ancienne,
+      saisie normalisée) et `is_replaced_card`. Pendant de `find_item`
+- [x] Les **trois** écrans passent par le même résolveur : accueil
+      (`core:search`), liste des usagers (`+ replaces_card_number__icontains`),
+      prêt (doublon inline supprimé). Avant : le prêt seul acceptait l'ancienne
+- [x] **Avertissement** « Carte remplacée » quand la résolution passe par
+      l'ancienne carte — une carte périmée ne doit pas marcher en silence
+- [x] **Rappel de réimpression** après `replace_card` : le numéro change en base,
+      la carte en poche porte encore l'ancien. C'est exactement ce qui a produit
+      ce ticket
+- [x] `apps/core/views.py` n'importait ni `messages` ni `gettext` — ajoutés
+- [x] `apps/members/tests/test_card_lookup.py` — 13 tests, dont la priorité du
+      porteur actuel et les trois écrans qui répondent pareil
+- [x] `docs/specs/FEAT-081-ancienne-carte-usager.md` + SPEC §6.2
+- [x] `pytest` : **747 passed** (734 → 747, +13) ; gate i18n = 0
+- [x] Déployé Fez ; résolution vérifiée en direct sur `grand-saconnex`
+- [!] **Bouton « Remplacer la carte » non touché** : voisin de « Renouveler la
+      carte », deux boutons fantômes identiques dont l'un prolonge la validité et
+      l'autre invalide le numéro ; son `confirm()` se valide sans lire. Candidat
+      à durcissement (libellé, message nommant le numéro désactivé) → **décision Val**
+
+### Étiquette de test du code externe (hors dépôt)
+
+- [x] `BCF132770013` vérifié présent sur `OFL-20260803-0064` (grand-saconnex) et
+      résolu par `find_item` sous toutes ses formes (casse, tirets, espaces)
+- [x] PDF **62 × 35 mm** (Code128) + planche A4 (Code128 + Code39) générés par un
+      script jetable : BibliOfelia ne sait produire que des EAN13, or un code
+      externe est alphanumérique. Fichiers dans `C:\WORK\BibliOfelia\_test-etiquettes\`
+- [x] Pas de décodeur (zbar) disponible → vérification **géométrique** :
+      145 modules = 12×11+13 (structure Code128 exacte), écart à un multiple entier
+      de module **0 µm**, zones de silence ≈ 3 mm, barre fine 0,339 mm
+- [x] **Correctif au passage** : le pas demandé (0,33 mm) tombait sur 7,795 px à
+      600 dpi et python-barcode arrondissait chaque barre séparément (7 ou 8 px)
+      → code-barres à pas irrégulier. Pas aligné sur un pixel entier
+
+### Reste à faire
+
+- [x] ~~Guide utilisateur `catalogage-excel*.md` à faire~~ — **fait dans la même
+      session** : les deux nouvelles fenêtres documentées en FR + EN + ES + MG, et le
+      conteneur `bibliofelia-docs` rebâti. Vérifié sur le **contenu servi**, pas sur le
+      succès du build (`grep OFELIA_CODE_UNKNOWN` dans l'`index.html` publié)
+- [ ] Guide utilisateur : écrans **prêt et retour** (FEAT-080/081). Les pages
+      `prets-retours/*` décrivent des écrans qui ont changé d'aspect (panier avec les
+      deux codes, journal de retour avec la fiche de l'usager) et les **captures sont
+      donc périmées**. À reprendre en FR + EN + ES + MG. *Motif du report : arrivé en
+      fin de session, après la validation de Val*
+- [x] Déploiement complet : Fez (`sanjuan`, `grand-saconnex`), secours **Avignon**
+      (source + image à jour de FEAT-081) et **la Box**
+- [x] **Test fonctionnel Val — OK 2026-08-23**, en trois temps : « ok ca fonctionne »
+      (FEAT-078/079), « le code barre externe fonctionne » (FEAT-080 + étiquette
+      Code128), « ok tout fonctionne » (FEAT-081)
+- [x] Commit unique groupé + push origin/main
+
+### Audit demandé par Val — « code externe accepté partout où le code Ofelia l'est »
+
+Demande du 2026-08-23, en marge du sprint. Résultat :
+
+- [x] **Saisie clavier / douchette USB : conforme partout.** Tous les points
+      d'entrée passent par `apps/catalog/lookup.py::find_item` (code Ofelia
+      d'abord, puis code externe) : recherche de l'accueil (`core:global_search`),
+      recherche du catalogue (`filtered_records`, notices **et** exemplaires),
+      prêt (`loans:lend` → `add_item`), retour (`_process_return`), récolement web
+      (`inventory:add_scan` → `record_scan`), récolement API OfeliaScan
+      (`/api/v1/inventory/…/items`). La douchette USB (`scan-wedge.js`) n'applique
+      aucun filtre de forme → elle transmet n'importe quel code au serveur
+- [!] **Scan caméra : le code externe est rejeté.** `static/js/scan-camera.js`
+      n'accepte qu'un **EAN-13 à clé valide et préfixe 290/291/978/979** (+977 en
+      catalogage). Un code externe est donc refusé dans deux cas : (a) c'est un
+      EAN-13 d'un autre préfixe, (b) c'est un Code39/Code128/Codabar — très
+      courant sur les étiquettes de bibliothèque — or les deux moteurs sont
+      configurés **EAN-13 uniquement** (`Html5QrcodeSupportedFormats.EAN_13`,
+      Quagga `ean_reader`). **Décision Val requise**, cf. ci-dessous
+- [ ] (a) Ouvrir le filtre de préfixe à tout EAN-13 à clé valide — petit
+      changement, garde-fous checksum + consensus conservés, léger risque de
+      lecture parasite d'un code-barres produit voisin
+- [ ] (b) Activer les lecteurs Code39/Code128 — couvre le gros des étiquettes de
+      bibliothèque, mais décodage plus lent et Code39 sans somme de contrôle →
+      plus de fausses lectures. À ne faire que si Val le demande

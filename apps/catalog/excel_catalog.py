@@ -9,6 +9,9 @@ Deux modes, tous deux exécutés en tâche django-q2 via ``run_excel_catalog_job
 - **IMPORT** : matérialise une liste d'ISBN en notices + exemplaires via une
   ``ScanSession`` virtuelle, puis ``finalize_scan_session`` (réutilise le
   pipeline FEAT-021 / FEAT-046).
+- **UPDATE** (FEAT-079) : met à jour des exemplaires **existants**, retrouvés
+  par leur code Ofelia et/ou leur code externe. Ne crée jamais rien : une ligne
+  dont l'exemplaire est introuvable est signalée et laissée de côté.
 
 La validation du fichier (``validate_xlsx``) est faite côté vue, avant la
 création du job ; le runner ré-ouvre ensuite ``job.uploaded_file``.
@@ -83,6 +86,17 @@ IMPORT_OVERRIDE_COLUMNS = [
     "category_abbr",  # FEAT-067 → abréviation (cote) de la catégorie
 ]
 
+# FEAT-079 : colonnes qui identifient l'exemplaire à mettre à jour. Au moins
+# l'une d'elles doit être présente dans le fichier ; le code Ofelia l'emporte
+# sur le code externe quand les deux sont renseignés sur une ligne.
+UPDATE_KEY_COLUMNS = ["ofelia_code", "internal_id", "external_code"]
+
+# FEAT-079 : colonnes modifiables en mise à jour. Ce sont celles de l'import,
+# plus LOCATION et ISBN — en import ces deux-là ne sont pas des « overrides »
+# (ISBN est la clé, LOCATION est posée à la création de l'exemplaire), en mise
+# à jour ce sont des champs comme les autres.
+UPDATE_OVERRIDE_COLUMNS = IMPORT_OVERRIDE_COLUMNS + ["location", "isbn"]
+
 # En-têtes acceptés pour les colonnes dont le nom « naturel » varie d'un
 # fichier à l'autre. Clés déjà normalisées par `_norm` (minuscules, sans
 # accents). Le nom canonique reste toujours accepté.
@@ -96,6 +110,23 @@ _COLUMN_ALIASES = {
         "externalcode",
     ],
     "provenance": ["origine"],
+    # FEAT-079 : dans l'UI, « code Ofelia » désigne l'EAN13 290… et « code
+    # interne » l'identifiant OFL-… ; les deux sont acceptés comme clé, et
+    # `_find_item_by_ofelia_code` essaie l'un puis l'autre quelle que soit la
+    # colonne d'où vient la valeur.
+    "ofelia_code": [
+        "code_ofelia",
+        "code ofelia",
+        "ofelia",
+        "ean13",
+        "ean_13",
+    ],
+    "internal_id": [
+        "code_interne",
+        "code interne",
+        "internalid",
+        "id_ofelia",
+    ],
     "category_abbr": [
         "abbreviation",
         "abreviation",
@@ -168,16 +199,104 @@ def _norm(value: str) -> str:
     return s.strip().lower()
 
 
+# FEAT-078 : libellés traduits → valeur, construits une fois par processus.
+_LABEL_ALIAS_CACHE: dict[str, dict[str, str]] = {}
+
+
+def _translated_label_aliases(key: str, choices) -> dict[str, str]:
+    """Libellés de `choices` normalisés → valeur, dans toutes les langues.
+
+    L'export (FEAT-078) écrit TYPE et CONDITION avec leur libellé traduit dans
+    la langue du bibliothécaire. Sans cette table, un fichier exporté en
+    espagnol reviendrait en mise à jour avec « Libro » / « Bueno » partout,
+    donc TYPE_UNKNOWN et CONDITION_UNKNOWN sur chaque ligne — l'aller-retour ne
+    marcherait qu'en français.
+    """
+    cached = _LABEL_ALIAS_CACHE.get(key)
+    if cached is not None:
+        return cached
+    from django.conf import settings
+    from django.utils.translation import override
+
+    mapping: dict[str, str] = {}
+    for lang_code, _lang_label in settings.LANGUAGES:
+        with override(lang_code):
+            for value, label in choices:
+                norm = _norm(str(label))
+                if norm:
+                    mapping.setdefault(norm, value)
+    _LABEL_ALIAS_CACHE[key] = mapping
+    return mapping
+
+
+def _translated_name_fields() -> list[str]:
+    """Champs `name_<lang>` créés par modeltranslation, pour Category et Tag."""
+    from django.conf import settings
+
+    return [f"name_{code.replace('-', '_')}" for code, _label in settings.LANGUAGES]
+
+
+def _resolve_category(value: str):
+    """Catégorie désignée par son nom (dans n'importe quelle langue) ou son code.
+
+    `Category.name` est un champ traduit (modeltranslation) : l'export FEAT-078
+    écrit celui de la langue du bibliothécaire, alors que le job, lui, tourne
+    dans le worker django-q2, en français. Une recherche sur `name` seul
+    renverrait donc CATEGORY_UNKNOWN sur chaque ligne d'un fichier exporté en
+    espagnol. Le nom passe avant le code : c'est ce que le bibliothécaire tape.
+    """
+    from django.db.models import Q
+
+    value = (value or "").strip()
+    if not value:
+        return None
+    query = Q()
+    for field in _translated_name_fields():
+        query |= Q(**{f"{field}__iexact": value})
+    return (
+        Category.objects.filter(query).first()
+        or Category.objects.filter(code__iexact=value).first()
+    )
+
+
+def _get_or_create_tag(name: str):
+    """Tag portant `name` dans une langue quelconque, créé à défaut.
+
+    Même raison que `_resolve_category` : sans la recherche multi-langue, un
+    fichier exporté en espagnol recréerait chaque tag en double, le libellé
+    espagnol atterrissant dans le champ français.
+    """
+    from django.db.models import Q
+
+    query = Q()
+    for field in _translated_name_fields():
+        query |= Q(**{f"{field}__iexact": name})
+    existing = Tag.objects.filter(query).first()
+    if existing is not None:
+        return existing
+    return Tag.objects.create(name=name)
+
+
 def _resolve_document_type(value: str) -> str | None:
-    """FEAT-053 : mappe une valeur TYPE (code ou libellé FR) → DocumentType.
-    None si non reconnue."""
-    return _DOCUMENT_TYPE_ALIASES.get(_norm(value))
+    """FEAT-053 : mappe une valeur TYPE (code ou libellé) → DocumentType.
+
+    Les alias FR écrits à la main l'emportent (ils couvrent les variantes de
+    saisie : « BD », « manga », « périodique »…) ; à défaut on cherche parmi
+    les libellés officiels de toutes les langues (FEAT-078). None si inconnue.
+    """
+    norm = _norm(value)
+    return _DOCUMENT_TYPE_ALIASES.get(norm) or _translated_label_aliases(
+        "document_type", DocumentType.choices
+    ).get(norm)
 
 
 def _resolve_item_state(value: str) -> str | None:
-    """FEAT-053 : mappe une valeur CONDITION (code ou libellé FR) → ItemState.
-    None si non reconnue."""
-    return _ITEM_STATE_ALIASES.get(_norm(value))
+    """FEAT-053 : mappe une valeur CONDITION (code ou libellé) → ItemState.
+    None si non reconnue. Voir `_resolve_document_type` pour les langues."""
+    norm = _norm(value)
+    return _ITEM_STATE_ALIASES.get(norm) or _translated_label_aliases(
+        "item_state", ItemState.choices
+    ).get(norm)
 
 
 def _split_multi(value: str, sep: str) -> list[str]:
@@ -229,6 +348,10 @@ def _row_label(row, headers: dict[str, int]) -> str:
 def required_columns(mode: str) -> list[str]:
     if mode == ExcelJobMode.IMPORT:
         return ["isbn"]
+    if mode == ExcelJobMode.UPDATE:
+        # FEAT-079 : pas une liste de colonnes toutes obligatoires mais un
+        # « au moins une de celles-ci » — traité à part dans `validate_xlsx`.
+        return UPDATE_KEY_COLUMNS
     return ["id", "title", "author", "isbn"]
 
 
@@ -239,6 +362,7 @@ def validate_xlsx(uploaded_file, mode: str) -> list[str]:
     présence des colonnes obligatoires.
     """
     import openpyxl
+    from django.utils.translation import gettext
 
     errors: list[str] = []
     name = (getattr(uploaded_file, "name", "") or "").lower()
@@ -266,11 +390,25 @@ def validate_xlsx(uploaded_file, mode: str) -> list[str]:
         if (ws.max_row or 0) > MAX_ROWS + 1:
             errors.append(f"Trop de lignes (maximum {MAX_ROWS}).")
         headers = _header_map(ws)
-        missing = [c.upper() for c in required_columns(mode) if c not in headers]
-        if missing:
-            errors.append(
-                "Colonnes obligatoires manquantes : " + ", ".join(missing) + "."
-            )
+        if mode == ExcelJobMode.UPDATE:
+            # FEAT-079 : la mise à jour ne crée rien, il lui faut de quoi
+            # retrouver l'exemplaire. Une seule des colonnes clés suffit, et
+            # les alias d'en-tête sont acceptés (CODE_OFELIA, CODE_EXTERNE…).
+            if not any(_resolve_column(headers, c) for c in UPDATE_KEY_COLUMNS):
+                errors.append(
+                    gettext(
+                        "Colonne d'identification manquante : le fichier doit "
+                        "porter une colonne OFELIA_CODE (ou INTERNAL_ID) et/ou "
+                        "EXTERNAL_CODE, sinon les exemplaires à mettre à jour "
+                        "ne peuvent pas être retrouvés."
+                    )
+                )
+        else:
+            missing = [c.upper() for c in required_columns(mode) if c not in headers]
+            if missing:
+                errors.append(
+                    "Colonnes obligatoires manquantes : " + ", ".join(missing) + "."
+                )
     finally:
         wb.close()
     try:
@@ -537,6 +675,13 @@ def _parse_row_overrides(
     return overrides, warnings
 
 
+# Champs scalaires de la notice pilotables depuis un fichier Excel (import
+# comme mise à jour). AUTHOR et TAGS sont des M2M, traités à part.
+_RECORD_SCALARS = (
+    "title", "publisher", "publication_year", "language", "document_type", "category",
+)
+
+
 def _apply_import_overrides(job, session, overrides_by_local: dict[str, dict]) -> None:
     """FEAT-053 : applique les overrides aux notices/exemplaires produits.
 
@@ -552,9 +697,6 @@ def _apply_import_overrides(job, session, overrides_by_local: dict[str, dict]) -
     if not overrides_by_local:
         return
 
-    _RECORD_SCALARS = (
-        "title", "publisher", "publication_year", "language", "document_type", "category",
-    )
     items = {
         si.local_id: si
         for si in ScanItem.objects.filter(
@@ -593,8 +735,7 @@ def _apply_import_overrides(job, session, overrides_by_local: dict[str, dict]) -
                     if "tags" in overrides:
                         record.tags.clear()
                         for name in overrides["tags"]:
-                            tag, _ = Tag.objects.get_or_create(name=name)
-                            record.tags.add(tag)
+                            record.tags.add(_get_or_create_tag(name))
 
             if "state" in overrides and copy_ids:
                 Item.objects.filter(pk__in=copy_ids).update(state=overrides["state"])
@@ -710,7 +851,7 @@ def run_import_job(job: ExcelCatalogJob) -> None:
             loc_code = ""
         category = None
         if cat_name:
-            category = Category.objects.filter(name__iexact=cat_name).first()
+            category = _resolve_category(cat_name)
             if category is None:
                 warnings.append("CATEGORY_UNKNOWN")
 
@@ -755,6 +896,279 @@ def run_import_job(job: ExcelCatalogJob) -> None:
     job.save(update_fields=["matched_by_isbn", "not_found"])
 
 
+# ─── FEAT-079 : mise à jour d'exemplaires existants ──────────────────────
+
+
+def _cell_at(row, col: int | None) -> str:
+    """Valeur texte de la colonne `col` (1-based) de `row`, "" si absente."""
+    if col and col <= len(row):
+        return _cell_str(row[col - 1])
+    return ""
+
+
+def _find_item_by_ofelia_code(raw: str):
+    """Exemplaire désigné par un code Ofelia, ou None.
+
+    Deux écritures circulent pour le même exemplaire : l'EAN13 « 290… » que
+    porte le code-barres de l'étiquette, et le code interne « OFL-… » imprimé
+    en clair juste à côté. L'export écrit les deux ; un fichier repris à la
+    main peut ne contenir que l'un ou l'autre, on essaie donc les deux.
+    """
+    from .models import Item
+
+    value = (raw or "").strip()
+    if not value:
+        return None
+    code = normalize_external_code(value)
+    return (
+        Item.objects.filter(ean13=code).first()
+        or Item.objects.filter(internal_id__iexact=value).first()
+    )
+
+
+def _apply_item_update(item, overrides, location_value, isbn_value, locations):
+    """Applique une ligne de mise à jour à `item`. Renvoie ``(changed, warnings)``.
+
+    Une cellule vide ne touche à rien (même règle qu'à l'import) : le fichier
+    exporté peut être renvoyé avec deux colonnes corrigées sans que les autres
+    soient réécrites. Chaque champ est comparé avant écriture, pour que
+    « lignes mises à jour » compte les changements réels et pas les lignes lues.
+    """
+    from .models import Author, BibliographicRecord, Item
+
+    warnings: list[str] = []
+    record = item.record
+    record_changed: list[str] = []
+    item_changed: list[str] = []
+
+    for field in _RECORD_SCALARS:
+        if field not in overrides:
+            continue
+        if field == "category":
+            wanted = overrides["category"]
+            if record.category_id != (wanted.pk if wanted else None):
+                record.category = wanted
+                record_changed.append("category")
+        elif getattr(record, field) != overrides[field]:
+            setattr(record, field, overrides[field])
+            record_changed.append(field)
+
+    # ISBN : en import c'est la clé de la ligne, en mise à jour c'est un champ
+    # comme un autre — une coquille d'ISBN se corrige dans le fichier exporté.
+    if isbn_value:
+        isbn = normalize_isbn(isbn_value)
+        if len(isbn) not in (10, 13):
+            warnings.append("ISBN_INVALID")
+        else:
+            field = "isbn_13" if len(isbn) == 13 else "isbn_10"
+            if (getattr(record, field) or "") != isbn:
+                # L'unicité d'isbn_13 est garantie en base : sans ce garde-fou,
+                # la ligne ferait planter tout le lot au lieu d'être signalée.
+                taken = (
+                    field == "isbn_13"
+                    and BibliographicRecord.objects.filter(isbn_13=isbn)
+                    .exclude(pk=record.pk)
+                    .exists()
+                )
+                if taken:
+                    warnings.append("ISBN_CONFLICT")
+                else:
+                    setattr(record, field, isbn)
+                    record_changed.append(field)
+
+    m2m_changed = False
+    if "authors" in overrides:
+        wanted = overrides["authors"]
+        if sorted(a.full_name for a in record.authors.all()) != sorted(wanted):
+            record.authors.set(
+                [Author.objects.get_or_create(full_name=name)[0] for name in wanted]
+            )
+            m2m_changed = True
+    if "tags" in overrides:
+        wanted = overrides["tags"]
+        if sorted(t.name for t in record.tags.all()) != sorted(wanted):
+            record.tags.set([_get_or_create_tag(name) for name in wanted])
+            m2m_changed = True
+
+    if "state" in overrides and item.state != overrides["state"]:
+        item.state = overrides["state"]
+        item_changed.append("state")
+
+    if "provenance" in overrides and item.provenance_id != overrides["provenance"].pk:
+        item.provenance = overrides["provenance"]
+        item_changed.append("provenance")
+
+    code = overrides.get("external_code")
+    if code and item.external_code != code:
+        # Un code externe désigne un exemplaire et un seul (contrainte partielle
+        # d'unicité) : si deux lignes du fichier se disputent le même code, la
+        # première l'emporte et la seconde est signalée.
+        if Item.objects.filter(external_code=code).exclude(pk=item.pk).exists():
+            warnings.append("EXTERNAL_CODE_DUPLICATE")
+        else:
+            item.external_code = code
+            item_changed.append("external_code")
+
+    if location_value:
+        location = locations.get(_norm(location_value))
+        if location is None:
+            warnings.append("LOCATION_UNKNOWN")
+        elif item.location_id != location.pk:
+            item.location = location
+            item_changed.append("location")
+
+    if record_changed:
+        record.save(update_fields=record_changed + ["updated_at"])
+    if item_changed:
+        item.save(update_fields=item_changed + ["updated_at"])
+
+    return bool(record_changed or item_changed or m2m_changed), warnings
+
+
+def run_update_job(job: ExcelCatalogJob) -> None:
+    """Mode UPDATE (FEAT-079) : met à jour des exemplaires **existants**.
+
+    Aucune création, jamais : une ligne dont l'exemplaire est introuvable est
+    comptée en erreur et listée dans le rapport, pas transformée en nouveau
+    livre. C'est toute la différence avec l'import, et c'est ce qui permet de
+    renvoyer un fichier exporté sans risquer de dupliquer la bibliothèque.
+
+    Clé de la ligne : code Ofelia (EAN13 « 290… » ou code interne « OFL-… »)
+    et/ou code externe. Si les deux sont renseignés, **le code Ofelia gagne** —
+    c'est lui qui désigne l'exemplaire, et le code externe de la ligne lui est
+    alors appliqué (c'est la façon d'attribuer un code externe en masse).
+    """
+    import openpyxl
+    from django.db import transaction
+
+    from .models import Item, Location, Provenance
+
+    wb = openpyxl.load_workbook(job.uploaded_file.path, read_only=True, data_only=True)
+    ws = wb.active
+    headers = _header_map(ws)
+    key_cols = {name: _resolve_column(headers, name) for name in UPDATE_KEY_COLUMNS}
+    override_cols = {
+        name: _resolve_column(headers, name) for name in UPDATE_OVERRIDE_COLUMNS
+    }
+
+    # Référentiels chargés une fois pour tout le fichier (une bibliothèque a
+    # quelques dizaines d'emplacements et de provenances, pas des milliers).
+    locations = {_norm(loc.code): loc for loc in Location.objects.all()}
+    provenances: dict = {}
+    for prov in Provenance.objects.all():
+        provenances[_norm(prov.code)] = prov
+        if prov.label:
+            provenances.setdefault(_norm(prov.label), prov)
+
+    total = 0
+    for row_idx, row in enumerate(ws.iter_rows(min_row=2, values_only=True), start=2):
+        # openpyxl compte souvent des lignes vides après les données.
+        if not any(_cell_str(cell) for cell in row):
+            continue
+        total += 1
+
+        ofelia_raw = _cell_at(row, key_cols.get("ofelia_code")) or _cell_at(
+            row, key_cols.get("internal_id")
+        )
+        external_raw = normalize_external_code(
+            _cell_at(row, key_cols.get("external_code"))
+        )
+
+        item = None
+        failure = ""
+        failure_code = ""
+        if ofelia_raw:
+            item = _find_item_by_ofelia_code(ofelia_raw)
+            if item is None:
+                # On ne retombe pas sur le code externe : un code Ofelia qui ne
+                # correspond à rien veut dire que la ligne désigne mal son
+                # exemplaire. Mieux vaut la signaler que modifier au jugé.
+                failure, failure_code = "OFELIA_CODE_UNKNOWN", ofelia_raw
+        elif external_raw:
+            item = Item.objects.filter(external_code=external_raw).first()
+            if item is None:
+                failure, failure_code = "EXTERNAL_CODE_UNKNOWN", external_raw
+        else:
+            failure = "NO_KEY"
+
+        if item is None:
+            job.errors += 1
+            job.processed += 1
+            job.report.append({
+                "row": row_idx,
+                "code": failure_code,
+                "warning": failure,
+                "label": _row_label(row, headers),
+            })
+            continue
+
+        warnings: list[str] = []
+        cat_name = _cell_at(row, override_cols.get("category"))
+        category = None
+        if cat_name:
+            category = _resolve_category(cat_name)
+            if category is None:
+                warnings.append("CATEGORY_UNKNOWN")
+
+        # `_parse_row_overrides` pose la cote directement sur la catégorie : on
+        # relève sa valeur avant/après, sinon un fichier qui ne corrige que des
+        # cotes s'afficherait comme « 0 ligne mise à jour ».
+        abbr_before = category.abbreviation if category else None
+        # `external_codes=None` : l'unicité du code externe est vérifiée plus
+        # bas en excluant l'exemplaire lui-même, sinon une ligne qui renvoie le
+        # code déjà porté par son propre exemplaire passerait pour un doublon.
+        overrides, ov_warnings = _parse_row_overrides(
+            row, override_cols, category, None, provenances
+        )
+        warnings.extend(ov_warnings)
+        abbr_changed = category is not None and category.abbreviation != abbr_before
+
+        try:
+            with transaction.atomic():
+                changed, apply_warnings = _apply_item_update(
+                    item,
+                    overrides,
+                    _cell_at(row, override_cols.get("location")),
+                    _cell_at(row, override_cols.get("isbn")),
+                    locations,
+                )
+        except Exception as exc:  # filet : une ligne qui casse n'annule pas le lot
+            logger.exception("UPDATE ligne %s (%s) KO", row_idx, item.internal_id)
+            job.errors += 1
+            job.processed += 1
+            job.report.append({
+                "row": row_idx,
+                "code": item.internal_id,
+                "warning": "ROW_ERROR",
+                "label": str(exc)[:200],
+            })
+            continue
+
+        warnings.extend(apply_warnings)
+        if changed or abbr_changed:
+            job.updated += 1
+        else:
+            job.unchanged += 1
+        if warnings:
+            job.report.append({
+                "row": row_idx,
+                "code": item.internal_id,
+                "warning": ", ".join(warnings),
+                "label": _row_label(row, headers),
+            })
+        job.processed += 1
+        if job.processed % 10 == 0:
+            job.save(update_fields=[
+                "processed", "updated", "unchanged", "errors", "report",
+            ])
+
+    wb.close()
+    job.total = total
+    job.save(update_fields=[
+        "total", "processed", "updated", "unchanged", "errors", "report",
+    ])
+
+
 def run_excel_catalog_job(job_id: int) -> None:
     """Point d'entrée django-q2 : dispatch VERIFY / IMPORT.
 
@@ -770,6 +1184,8 @@ def run_excel_catalog_job(job_id: int) -> None:
         job.save(update_fields=["state"])
         if job.mode == ExcelJobMode.VERIFY:
             run_verify_job(job)
+        elif job.mode == ExcelJobMode.UPDATE:
+            run_update_job(job)
         else:
             run_import_job(job)
         job.state = ExcelJobState.FINISHED

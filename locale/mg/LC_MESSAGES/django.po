@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: BibliOfelia 1.0\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2026-08-22 19:31+0000\n"
+"POT-Creation-Date: 2026-08-23 19:58+0000\n"
 "PO-Revision-Date: 2026-05-22 00:00+0000\n"
 "Last-Translator: Claude Code\n"
 "Language-Team: Malagasy\n"
@@ -106,14 +106,14 @@ msgstr ""
 msgid "Compte %(u)s supprimé."
 msgstr "Voafafa ny kaonty %(u)s."
 
-#: apps/api/models.py:23 apps/catalog/models.py:615 apps/catalog/models.py:678
-#: apps/core/forms.py:481 apps/loans/models.py:20
+#: apps/api/models.py:23 apps/catalog/models.py:615 apps/catalog/models.py:680
+#: apps/core/forms.py:453 apps/loans/models.py:20
 #: templates/catalog/record_detail.html:204
 #: templates/loans/reservations.html:97
 msgid "En attente"
 msgstr "Miandry"
 
-#: apps/api/models.py:24 apps/catalog/models.py:617 apps/catalog/models.py:680
+#: apps/api/models.py:24 apps/catalog/models.py:617 apps/catalog/models.py:682
 msgid "Terminé"
 msgstr "Vita"
 
@@ -132,6 +132,13 @@ msgstr "Boky"
 #: apps/api/models.py:31
 msgid "Carte membre"
 msgstr "Karatra mpikambana"
+
+#: apps/catalog/excel_catalog.py:400
+msgid ""
+"Colonne d'identification manquante : le fichier doit porter une colonne "
+"OFELIA_CODE (ou INTERNAL_ID) et/ou EXTERNAL_CODE, sinon les exemplaires à "
+"mettre à jour ne peuvent pas être retrouvés."
+msgstr "Tsy misy ny fariana famantarana : tsy maintsy manana fariana OFELIA_CODE (na INTERNAL_ID) sy/na EXTERNAL_CODE ilay rakitra, raha tsy izany dia tsy hita ireo kopia hohavaozina."
 
 #: apps/catalog/forms.py:35 templates/catalog/_item_results.html:53
 #: templates/catalog/_item_results.html:122
@@ -190,7 +197,7 @@ msgstr "Toerana"
 msgid "Provenance"
 msgstr "Fiaviana"
 
-#: apps/catalog/forms.py:140 templates/catalog/excel_catalog/index.html:51
+#: apps/catalog/forms.py:140 templates/catalog/excel_catalog/index.html:69
 #: templates/catalog/record_detail.html:103
 #: templates/catalog/scan_session.html:167
 #: templates/catalog/scan_session.html:189
@@ -398,7 +405,7 @@ msgstr "Tantara an-tsary / manga"
 msgid "CD audio"
 msgstr "CD feo"
 
-#: apps/catalog/models.py:28 apps/members/models.py:161
+#: apps/catalog/models.py:28 apps/members/models.py:179
 msgid "Autre"
 msgstr "Hafa"
 
@@ -700,13 +707,13 @@ msgstr "akora voakaroka"
 msgid "items scannés"
 msgstr "akora voakaroka"
 
-#: apps/catalog/models.py:616 apps/catalog/models.py:679
+#: apps/catalog/models.py:616 apps/catalog/models.py:681
 #: apps/inventory/models.py:23 apps/loans/models.py:12
 #: templates/catalog/scan_session_list.html:24
 msgid "En cours"
 msgstr "An-dalana"
 
-#: apps/catalog/models.py:618 apps/catalog/models.py:681
+#: apps/catalog/models.py:618 apps/catalog/models.py:683
 msgid "Échec"
 msgstr "Tsy nahomby"
 
@@ -730,11 +737,15 @@ msgstr "fanatsarana metadata"
 msgid "Vérification"
 msgstr "Fanamarinana"
 
-#: apps/catalog/models.py:731
+#: apps/catalog/models.py:676
+msgid "Mise à jour"
+msgstr "Fanavaozana"
+
+#: apps/catalog/models.py:740
 msgid "catalogage Excel"
 msgstr "katalaogy Excel"
 
-#: apps/catalog/models.py:732
+#: apps/catalog/models.py:741
 msgid "catalogages Excel"
 msgstr "katalaogy Excel"
 
@@ -974,17 +985,21 @@ msgstr ""
 msgid "Modifications enregistrées."
 msgstr "Voatahiry ny fanovana."
 
-#: apps/catalog/views.py:1393
+#: apps/catalog/views.py:1403
 msgid "Aucun fichier sélectionné."
 msgstr "Tsy misy rakitra voafidy."
 
-#: apps/catalog/views.py:1416
+#: apps/catalog/views.py:1426
 msgid "Vérification lancée. Suivez l'avancement ici."
 msgstr "Nanomboka ny fanamarinana. Araho eto ny fandrosoana."
 
-#: apps/catalog/views.py:1426
+#: apps/catalog/views.py:1436
 msgid "Import lancé. Suivez l'avancement ici."
 msgstr "Nanomboka ny fanafarana. Araho eto ny fandrosoana."
+
+#: apps/catalog/views.py:1447
+msgid "Mise à jour lancée. Suivez l'avancement ici."
+msgstr "Nanomboka ny fanavaozana. Araho eto ny fandrosoana."
 
 #: apps/core/admin_views.py:39
 msgid "Identité"
@@ -1145,144 +1160,146 @@ msgstr "Tsy maintsy mavitrika ny fiteny mahazatra."
 msgid ""
 "Utilisé pour l'heure affichée sur l'accueil et pour toutes les dates. Vide = "
 "fuseau du système."
-msgstr "Ampiasaina ho an'ny ora aseho eo amin'ny pejy fandraisana sy ho an'ny daty rehetra. Foana = faritra ora ny rafitra."
+msgstr ""
+"Ampiasaina ho an'ny ora aseho eo amin'ny pejy fandraisana sy ho an'ny daty "
+"rehetra. Foana = faritra ora ny rafitra."
 
-#: apps/core/forms.py:215
+#: apps/core/forms.py:187
 #, python-format
 msgid "Fuseau du système : %(tz)s"
 msgstr "Faritra ora ny rafitra: %(tz)s"
 
-#: apps/core/forms.py:230
+#: apps/core/forms.py:202
 #, python-format
 msgid "Fuseau horaire inconnu : %(tz)s"
 msgstr "Faritra ora tsy fantatra : %(tz)s"
 
-#: apps/core/forms.py:243 apps/setup/forms.py:68
+#: apps/core/forms.py:215 apps/setup/forms.py:68
 msgid "Chemin clé USB"
 msgstr "Lalan'ny USB"
 
-#: apps/core/forms.py:245
+#: apps/core/forms.py:217
 msgid "Sauvegarde horaire"
 msgstr "Tahiry isan'ora"
 
-#: apps/core/forms.py:246
+#: apps/core/forms.py:218
 msgid "Sauvegarde cloud (rclone)"
 msgstr "Tahiry an-tranonkala (rclone)"
 
-#: apps/core/forms.py:248 apps/setup/forms.py:73
+#: apps/core/forms.py:220 apps/setup/forms.py:73
 msgid "Remote rclone"
 msgstr "Remote rclone"
 
-#: apps/core/forms.py:249
+#: apps/core/forms.py:221
 msgid "Ex: ofelia:bibliofelia"
 msgstr "Oh: ofelia:bibliofelia"
 
-#: apps/core/forms.py:252
+#: apps/core/forms.py:224
 msgid "Passphrase de chiffrement configurée"
 msgstr "Voakirakira ny tenimiafina fanafenana"
 
-#: apps/core/forms.py:254
+#: apps/core/forms.py:226
 msgid "Renseignée via la commande `setup_backup_encryption`."
 msgstr "Apetraka amin'ny baiko `setup_backup_encryption`."
 
-#: apps/core/forms.py:284
+#: apps/core/forms.py:256
 msgid "Cartes par feuille A4"
 msgstr "Karatra isaky ny taratasy A4"
 
-#: apps/core/forms.py:289
+#: apps/core/forms.py:261
 msgid "Logo OFELIA en fond"
 msgstr "Logo OFELIA ho ambadika"
 
-#: apps/core/forms.py:292
+#: apps/core/forms.py:264
 msgid "Affiche le logo grandes lettres OFELIA centré sur chaque carte."
 msgstr "Aseho afovoany amin'ny karatra tsirairay ny logo OFELIA litera lehibe."
 
-#: apps/core/forms.py:295
+#: apps/core/forms.py:267
 msgid "Photo du membre"
 msgstr "Sary an'ilay mpikambana"
 
-#: apps/core/forms.py:298
+#: apps/core/forms.py:270
 msgid "Affiche la photo en haut à gauche quand le membre en a une."
 msgstr "Aseho eo ambony havia ny sary raha manana izany ilay mpikambana."
 
-#: apps/core/forms.py:323
+#: apps/core/forms.py:295
 msgid "Largeur (mm)"
 msgstr "Sakany (mm)"
 
-#: apps/core/forms.py:327
+#: apps/core/forms.py:299
 msgid "Hauteur (mm)"
 msgstr "Halavany (mm)"
 
-#: apps/core/forms.py:331
+#: apps/core/forms.py:303
 msgid "Caractères max titre"
 msgstr "Litera mahafeno ny lohateny"
 
-#: apps/core/forms.py:333
+#: apps/core/forms.py:305
 msgid "Cumulé sur les lignes du titre."
 msgstr "Manangona amin'ny andalan'ny lohateny."
 
-#: apps/core/forms.py:336
+#: apps/core/forms.py:308
 msgid "Lignes de titre"
 msgstr "Andalan'ny lohateny"
 
-#: apps/core/forms.py:340
+#: apps/core/forms.py:312
 msgid "Lignes d'auteurs"
 msgstr "Andalan'ny mpanoratra"
 
-#: apps/core/forms.py:344
+#: apps/core/forms.py:316
 msgid "Logo Ofelia"
 msgstr "Logo Ofelia"
 
-#: apps/core/forms.py:376
+#: apps/core/forms.py:348
 msgid "Imprimante à ruban disponible"
 msgstr "Misy mpanonta riban"
 
-#: apps/core/forms.py:378
+#: apps/core/forms.py:350
 msgid "Affiche le bouton « Ruban » sur les écrans d'impression."
 msgstr "Mampiseho ny bokotra « Riban » eo amin'ny pejy fanontana."
 
-#: apps/core/forms.py:381
+#: apps/core/forms.py:353
 msgid "Largeur du ruban (mm)"
 msgstr "Sakan'ny riban (mm)"
 
-#: apps/core/forms.py:386
+#: apps/core/forms.py:358
 msgid "Longueur d'une étiquette (mm)"
 msgstr "Halavan'ny marika (mm)"
 
-#: apps/core/forms.py:388
+#: apps/core/forms.py:360
 msgid "Doit correspondre à la longueur de coupe réglée dans le pilote Brother."
 msgstr ""
 "Tsy maintsy mifanaraka amin'ny halavan'ny fanapahana voafaritra ao amin'ny "
 "pilote Brother."
 
-#: apps/core/forms.py:391
+#: apps/core/forms.py:363
 msgid "Longueur d'une carte membre (mm)"
 msgstr "Halavan'ny karatra mpikambana (mm)"
 
-#: apps/core/forms.py:393
+#: apps/core/forms.py:365
 msgid ""
 "89 mm : juste sous le format continu natif du pilote Brother (62 × 89,9 mm)."
 msgstr ""
 "89 mm: eo ambanin'ny refy mitohy voajanahary ao amin'ny pilote Brother (62 × "
 "89,9 mm)."
 
-#: apps/core/forms.py:396
+#: apps/core/forms.py:368
 msgid "Ruban bicolore noir/rouge"
 msgstr "Riban loko roa mainty/mena"
 
-#: apps/core/forms.py:398
+#: apps/core/forms.py:370
 msgid "Rouge sur les cartes membres. Les étiquettes restent monochromes."
 msgstr "Mena amin'ny karatra mpikambana. Mainty ihany ny marika."
 
-#: apps/core/forms.py:401
+#: apps/core/forms.py:373
 msgid "Logo Ofelia sur les étiquettes"
 msgstr "Logo Ofelia eo amin'ny marika"
 
-#: apps/core/forms.py:431
+#: apps/core/forms.py:403
 msgid "Durée par défaut d'un prêt (jours)"
 msgstr "Faharetan'ny fampindramana mahazatra (andro)"
 
-#: apps/core/forms.py:433
+#: apps/core/forms.py:405
 msgid ""
 "Utilisée si ni la catégorie de document ni la catégorie de membre n'en "
 "définit une. Défaut : 21 jours (3 semaines)."
@@ -1290,11 +1307,11 @@ msgstr ""
 "Ampiasaina raha tsy mamaritra izany ny sokajin'ny boky na ny sokajin'ny "
 "mpikambana. Mahazatra : 21 andro (herinandro 3)."
 
-#: apps/core/forms.py:436
+#: apps/core/forms.py:408
 msgid "Validité d'une réservation en attente (jours)"
 msgstr "Faharetan'ny famandrihana miandry (andro)"
 
-#: apps/core/forms.py:438
+#: apps/core/forms.py:410
 msgid ""
 "Délai au-delà duquel une réservation pour laquelle aucun exemplaire ne s'est "
 "libéré expire automatiquement."
@@ -1302,11 +1319,11 @@ msgstr ""
 "Fe-potoana izay maharitra ny famandrihana izay tsy nahazoana boky malalaka "
 "dia tapitra ho azy."
 
-#: apps/core/forms.py:441
+#: apps/core/forms.py:413
 msgid "Durée de mise de côté à retirer (jours)"
 msgstr "Faharetan'ny fanavahana mba ho zahana (andro)"
 
-#: apps/core/forms.py:443
+#: apps/core/forms.py:415
 msgid ""
 "Une fois un exemplaire mis de côté pour un membre, il a ce délai pour venir "
 "le retirer avant que la réservation ne bascule au membre suivant."
@@ -1315,11 +1332,11 @@ msgstr ""
 "potoana izay izy mba haka azy alohan'ny hifindran'ny famandrihana amin'ny "
 "mpikambana manaraka."
 
-#: apps/core/forms.py:477
+#: apps/core/forms.py:449
 msgid "Identifiant réseau ZeroTier"
 msgstr "ID tambazotra ZeroTier"
 
-#: apps/core/forms.py:480 templates/catalog/item_bulk_delete.html:62
+#: apps/core/forms.py:452 templates/catalog/item_bulk_delete.html:62
 #: templates/catalog/record_detail.html:104
 #: templates/catalog/record_detail.html:186
 #: templates/inventory/session_list.html:55
@@ -1327,11 +1344,11 @@ msgstr "ID tambazotra ZeroTier"
 msgid "Statut"
 msgstr "Toetra"
 
-#: apps/core/forms.py:481
+#: apps/core/forms.py:453
 msgid "Désactivé"
 msgstr "Tsy mavitrika"
 
-#: apps/core/forms.py:482
+#: apps/core/forms.py:454
 msgid "Connecté"
 msgstr "Voarohy"
 
@@ -1342,6 +1359,12 @@ msgstr "safidy"
 #: apps/core/models.py:18
 msgid "paramètres"
 msgstr "safidy"
+
+#: apps/core/views.py:129 apps/loans/views.py:83
+#, python-format
+msgid ""
+"Carte remplacée : %(old)s. %(name)s utilise désormais la carte n° %(new)s."
+msgstr "Karatra nosoloina : %(old)s. Ny karatra n° %(new)s no ampiasain'i %(name)s izao."
 
 #: apps/inventory/forms.py:25 templates/core/admin/enrichment_detail.html:52
 #: templates/core/admin/enrichment_index.html:61
@@ -1425,7 +1448,7 @@ msgstr "Manokana ho an'ny"
 msgid "Retourné"
 msgstr "Naverina"
 
-#: apps/loans/models.py:14 templates/loans/return.html:77
+#: apps/loans/models.py:14 templates/loans/return.html:148
 #: templates/members/member_list.html:40
 msgid "En retard"
 msgstr "Tara"
@@ -1517,99 +1540,104 @@ msgstr ""
 msgid "Une réservation d'un autre usager existe sur cette notice."
 msgstr "Misy famandrihan'ny mpikambana hafa amin'ity rakitra ity."
 
-#: apps/loans/services.py:239
+#: apps/loans/services.py:259
 msgid "Ce prêt n'est pas renouvelable."
 msgstr "Tsy azo havaozina ity fampindramana ity."
 
-#: apps/loans/services.py:245
+#: apps/loans/services.py:265
 #, python-format
 msgid "Nombre maximum de renouvellements atteint (%(n)s)."
 msgstr "Tratra ny isan'ny fanavaozana ambony indrindra (%(n)s)."
 
-#: apps/loans/services.py:253
+#: apps/loans/services.py:273
 msgid "Une réservation est en attente sur cette notice."
 msgstr "Misy famandrihana miandry amin'ity rakitra ity."
 
-#: apps/loans/views.py:80
+#: apps/loans/views.py:94
 msgid "Aucun usager pour cette carte."
 msgstr "Tsy misy mpikambana mifandraika amin'ity karatra ity."
 
-#: apps/loans/views.py:91
+#: apps/loans/views.py:105
 msgid "Scannez d'abord une carte d'usager."
 msgstr "Skano aloha ny karatry ny mpikambana."
 
-#: apps/loans/views.py:99 apps/loans/views.py:181
+#: apps/loans/views.py:113 apps/loans/views.py:206
 #, python-format
 msgid "Exemplaire introuvable : %(ean)s."
 msgstr "Tsy hita ny kopia: %(ean)s."
 
-#: apps/loans/views.py:101
+#: apps/loans/views.py:115
 msgid "Cet exemplaire est déjà dans la liste."
 msgstr "Efa ao anaty lisitra ity kopia ity."
 
-#: apps/loans/views.py:121
+#: apps/loans/views.py:135
 msgid "Aucun exemplaire à prêter."
 msgstr "Tsy misy kopia hampindramina."
 
-#: apps/loans/views.py:133
+#: apps/loans/views.py:147
 #, python-format
 msgid "%(title)s : %(err)s"
 msgstr "%(title)s : %(err)s"
 
-#: apps/loans/views.py:141
+#: apps/loans/views.py:155
 #, python-format
 msgid "%(n)s prêt(s) enregistré(s)."
 msgstr "Fampindramana %(n)s no voarakitra."
 
-#: apps/loans/views.py:195
+#: apps/loans/views.py:236
 msgid "Aucun prêt actif pour cet exemplaire."
 msgstr "Tsy misy fampindramana mavitrika ho an'ity kopia ity."
 
-#: apps/loans/views.py:197
+#: apps/loans/views.py:240
+#, python-format
+msgid "Retour effectué : %(title)s, rendu par %(member)s."
+msgstr "Vita ny famerenana : %(title)s, naverin'i %(member)s."
+
+#: apps/loans/views.py:245
+#, python-format
+msgid "Retour effectué : %(title)s."
+msgstr "Vita ny famerenana : %(title)s."
+
+#: apps/loans/views.py:248
 msgid "Livre perdu réintégré au fonds."
 msgstr "Naverina tao amin'ny tahiry ny boky very."
 
-#: apps/loans/views.py:199
-#, python-format
-msgid "Retour enregistré : %(t)s."
-msgstr "Voarakitra ny famerenana: %(t)s."
-
-#: apps/loans/views.py:203
+#: apps/loans/views.py:252
 #, python-format
 msgid "À mettre de côté pour %(m)s (réservation)."
 msgstr "Hatokana ho an'i %(m)s (famandrihana)."
 
-#: apps/loans/views.py:219
+#: apps/loans/views.py:268
 #, python-format
 msgid "Prêt renouvelé jusqu'au %(d)s."
 msgstr "Nohavaozina hatramin'ny %(d)s ny fampindramana."
 
-#: apps/loans/views.py:234
+#: apps/loans/views.py:283
 msgid "Livre déclaré perdu."
 msgstr "Nambara fa very ny boky."
 
-#: apps/loans/views.py:236
+#: apps/loans/views.py:285
 msgid "Ce prêt n'est pas actif."
 msgstr "Tsy mavitrika ity fampindramana ity."
 
-#: apps/loans/views.py:250
+#: apps/loans/views.py:299
 msgid "Consultation sur place enregistrée."
 msgstr "Voarakitra ny famakiana an-toerana."
 
-#: apps/loans/views.py:299
+#: apps/loans/views.py:348
 #, python-format
 msgid "Notification enregistrée pour %(m)s."
 msgstr "Voarakitra ny fampahafantarana ho an'i %(m)s."
 
-#: apps/loans/views.py:303
+#: apps/loans/views.py:352
 msgid "Ce membre a déjà été notifié."
 msgstr "Efa nampahafantarina ity mpikambana ity."
 
-#: apps/loans/views.py:317
+#: apps/loans/views.py:366
 msgid "Réservation enregistrée."
 msgstr "Voarakitra ny famandrihana."
 
-#: apps/loans/views.py:331
+#: apps/loans/views.py:380
 msgid "Réservation annulée."
 msgstr "Nofoanana ny famandrihana."
 
@@ -1701,7 +1729,7 @@ msgstr "sokajin'ny mpikambana"
 msgid "n° de carte"
 msgstr "laharan'ny karatra"
 
-#: apps/members/models.py:57 apps/members/models.py:182
+#: apps/members/models.py:57 apps/members/models.py:200
 msgid "prénom"
 msgstr "anarana"
 
@@ -1733,11 +1761,11 @@ msgstr "sata"
 msgid "langue de correspondance"
 msgstr "fiteny ifandraisana"
 
-#: apps/members/models.py:96 apps/members/models.py:192
+#: apps/members/models.py:96 apps/members/models.py:210
 msgid "langues parlées"
 msgstr "fiteny tenenina"
 
-#: apps/members/models.py:99 apps/members/models.py:195
+#: apps/members/models.py:99 apps/members/models.py:213
 msgid "autres langues"
 msgstr "fiteny hafa"
 
@@ -1753,31 +1781,31 @@ msgstr "sary"
 msgid "usagers"
 msgstr "mpikambana"
 
-#: apps/members/models.py:159
+#: apps/members/models.py:177
 msgid "Fille"
 msgstr "Zazavavy"
 
-#: apps/members/models.py:160
+#: apps/members/models.py:178
 msgid "Garçon"
 msgstr "Zazalahy"
 
-#: apps/members/models.py:184
+#: apps/members/models.py:202
 msgid "sexe"
 msgstr "lahy na vavy"
 
-#: apps/members/models.py:186
+#: apps/members/models.py:204
 msgid "adulte"
 msgstr "olon-dehibe"
 
-#: apps/members/models.py:188
+#: apps/members/models.py:206
 msgid "année de naissance"
 msgstr "taona nahaterahana"
 
-#: apps/members/models.py:199
+#: apps/members/models.py:217
 msgid "membre de la famille"
 msgstr "mpianakavy"
 
-#: apps/members/models.py:200
+#: apps/members/models.py:218
 msgid "membres de la famille"
 msgstr "mpianakavy"
 
@@ -1801,46 +1829,54 @@ msgstr "Lany andro %(n)s andro lasa ny karatra."
 msgid "Carte expirante dans %(n)s jours."
 msgstr "Ho lany andro afaka %(n)s andro ny karatra."
 
-#: apps/members/views.py:104
+#: apps/members/views.py:108
 msgid "Sans catégorie"
 msgstr "Tsy misy sokajy"
 
-#: apps/members/views.py:132
+#: apps/members/views.py:136
 #, python-format
 msgid "Usager inscrit — carte n° %(card)s."
 msgstr "Voasoratra anarana ny mpikambana — karatra laharana %(card)s."
 
-#: apps/members/views.py:141
+#: apps/members/views.py:145
 msgid "Nouvel usager"
 msgstr "Mpikambana vaovao"
 
-#: apps/members/views.py:154
+#: apps/members/views.py:158
 msgid "Fiche usager mise à jour."
 msgstr "Nohavaozina ny rakitry ny mpikambana."
 
-#: apps/members/views.py:166
+#: apps/members/views.py:170
 msgid "Modifier l'usager"
 msgstr "Ovay ny mpikambana"
 
-#: apps/members/views.py:177
+#: apps/members/views.py:182
 #, python-format
 msgid "Nouvelle carte émise : n° %(card)s."
 msgstr "Karatra vaovao navoaka: laharana %(card)s."
 
-#: apps/members/views.py:189
+#: apps/members/views.py:190
+#, python-format
+msgid ""
+"La carte n° %(old)s est désormais l'ancienne : imprimez la nouvelle carte et "
+"remettez-la à l'usager. En attendant, l'ancienne reste reconnue au scan et "
+"le signale."
+msgstr "Lasa taloha ny karatra n° %(old)s : atontay ny karatra vaovao dia omeo ilay mpampiasa. Mandra-pahatongan'izay, mbola fantatra rehefa kitihina ilay taloha, ary voalaza izany."
+
+#: apps/members/views.py:204
 #, python-format
 msgid "Carte renouvelée jusqu'au %(date)s."
 msgstr "Nohavaozina hatramin'ny %(date)s ny karatra."
 
-#: apps/members/views.py:201
+#: apps/members/views.py:216
 msgid "Usager désactivé."
 msgstr "Natsahatra ny mpikambana."
 
-#: apps/members/views.py:207
+#: apps/members/views.py:222
 msgid "Usager réactivé."
 msgstr "Naverina mavitrika ny mpikambana."
 
-#: apps/members/views.py:250
+#: apps/members/views.py:265
 #, python-format
 msgid "Usager %(n)s supprimé."
 msgstr "Voafafa ny mpikambana %(n)s."
@@ -1935,7 +1971,7 @@ msgid "Prêts retournés"
 msgstr "Fampindramana naverina"
 
 #: apps/reports/pdf.py:52 templates/core/dashboard.html:152
-#: templates/loans/return.html:123
+#: templates/loans/return.html:194
 msgid "Prêts en retard"
 msgstr "Fampindramana tara"
 
@@ -1972,7 +2008,7 @@ msgstr "Top 10 boky nindramina"
 #: templates/catalog/record_bulk_delete.html:46
 #: templates/catalog/record_list.html:176
 #: templates/catalog/record_list.html:245 templates/core/dashboard.html:323
-#: templates/inventory/session_report.html:114 templates/loans/return.html:128
+#: templates/inventory/session_report.html:114 templates/loans/return.html:199
 #: templates/members/member_detail.html:135
 #: templates/members/member_history.html:30
 #: templates/members/member_history.html:62
@@ -2465,7 +2501,7 @@ msgstr "Kaody Ofelia"
 
 #: templates/catalog/_record_form.html:27
 #: templates/catalog/_record_form.html:28 templates/catalog/record_list.html:47
-#: templates/catalog/record_list.html:48 templates/loans/return.html:45
+#: templates/catalog/record_list.html:48 templates/loans/return.html:69
 msgid "Scanner le code-barres"
 msgstr "Hi-scan ny code-barres"
 
@@ -2613,6 +2649,37 @@ msgstr ""
 "Mihatra amin'ny rakitra rehetra ao amin'ilay sokajy izy. Ny etikety dia atao "
 "pirinty avy ao amin'ny Fanontana → Etikety."
 
+#: templates/catalog/excel_catalog/_export_form.html:5
+#, python-format
+msgid ""
+"Télécharge la totalité du catalogue dans un fichier .xlsx : <strong>%(n)s "
+"exemplaire</strong>, une ligne par exemplaire."
+msgid_plural ""
+"Télécharge la totalité du catalogue dans un fichier .xlsx : <strong>%(n)s "
+"exemplaires</strong>, une ligne par exemplaire."
+msgstr[0] "Maka ny katalaogy manontolo amin'ny rakitra .xlsx : <strong>kopia %(n)s</strong>, andalana iray isaky ny kopia."
+msgstr[1] "Maka ny katalaogy manontolo amin'ny rakitra .xlsx : <strong>kopia %(n)s</strong>, andalana iray isaky ny kopia."
+
+#: templates/catalog/excel_catalog/_export_form.html:8
+msgid ""
+"Le fichier porte exactement les colonnes que BibliOfelia sait relire, plus "
+"les codes qui identifient l'exemplaire (OFELIA_CODE, INTERNAL_ID). C'est le "
+"point de départ d'une correction en masse : exportez, corrigez dans Excel, "
+"renvoyez le fichier par « Mettre à jour les exemplaires »."
+msgstr "Mitondra tsy misy ombiombiny ireo fariana hain'ny BibliOfelia vakina indray ilay rakitra, miampy ny kaody manondro ny kopia (OFELIA_CODE, INTERNAL_ID). Izy no fiaingana amin'ny fanitsiana be dia be : avoahy, ahitsio ao amin'ny Excel, dia averino amin'ny « Hanavao ireo kopia »."
+
+#: templates/catalog/excel_catalog/_export_form.html:18
+#: templates/catalog/excel_catalog/index.html:45
+msgid "Exporter le catalogue"
+msgstr "Havoaka ny katalaogy"
+
+#: templates/catalog/excel_catalog/_export_form.html:21
+msgid ""
+"Une notice en plusieurs exemplaires sort sur plusieurs lignes : "
+"l'emplacement, l'état, la provenance et le code externe appartiennent à "
+"l'exemplaire, pas à la fiche."
+msgstr "Ny raki-tsoratra manana kopia maromaro dia mivoaka andalana maromaro : ny toerana, ny toe-javatra, ny fiaviana ary ny kaody ivelany dia an'ny kopia, fa tsy an'ny raki-tsoratra."
+
 #: templates/catalog/excel_catalog/_import_form.html:6
 msgid ""
 "Téléversez un fichier .xlsx avec au moins une colonne ISBN. Chaque ISBN "
@@ -2711,6 +2778,48 @@ msgstr ""
 "amin'ny scan ». Azo fenoina aorian'izay amin'ny alalan'ny fampitomboana ny "
 "metadata (lohateny, mpanoratra…)."
 
+#: templates/catalog/excel_catalog/_update_form.html:11
+msgid ""
+"Téléversez un fichier .xlsx pour corriger des exemplaires <strong>déjà "
+"présents</strong> dans le catalogue. Aucune notice ni aucun exemplaire n'est "
+"créé : une ligne dont l'exemplaire est introuvable est signalée, pas ajoutée."
+msgstr "Ampidiro ny rakitra .xlsx hanitsiana kopia <strong>efa ao</strong> amin'ny katalaogy. Tsy misy raki-tsoratra na kopia noforonina : ny andalana tsy ahitana ny kopiany dia tsindriana, fa tsy ampiana."
+
+#: templates/catalog/excel_catalog/_update_form.html:14
+msgid "code Ofelia de l'exemplaire (EAN13 « 290… » ou code interne « OFL-… »)"
+msgstr "kaody Ofelia an'ny kopia (EAN13 « 290… » na kaody anatiny « OFL-… »)"
+
+#: templates/catalog/excel_catalog/_update_form.html:15
+msgid "code externe de l'exemplaire"
+msgstr "kaody ivelany an'ny kopia"
+
+#: templates/catalog/excel_catalog/_update_form.html:18
+msgid ""
+"Au moins l'une des deux colonnes doit être renseignée sur chaque ligne. Si "
+"les deux le sont, <strong>c'est le code Ofelia qui identifie l'exemplaire</"
+"strong> et le code externe de la ligne lui est appliqué — c'est ainsi qu'on "
+"attribue des codes externes en masse."
+msgstr "Tsy maintsy fenoina isaky ny andalana ny iray farafahakeliny amin'ireo fariana roa. Raha feno izy roa, <strong>ny kaody Ofelia no manondro ny kopia</strong> ary ampiharina aminy ny kaody ivelany eo amin'ny andalana — izany no fomba fanomezana kaody ivelany betsaka."
+
+#: templates/catalog/excel_catalog/_update_form.html:21
+msgid ""
+"Toutes les autres colonnes de l'import sont acceptées et facultatives : "
+"TITLE, AUTHOR, CATEGORY, CATEGORY_ABBR, TYPE, EDITOR, YEAR, LANGUAGE, TAGS, "
+"CONDITION, PROVENANCE, LOCATION et ISBN. Une cellule remplie remplace la "
+"valeur existante ; <strong>une cellule vide laisse la valeur en place</"
+"strong> (le fichier ne sert donc pas à effacer un champ)."
+msgstr "Ekena ary tsy voatery ireo fariana hafa rehetra amin'ny fampidirana : TITLE, AUTHOR, CATEGORY, CATEGORY_ABBR, TYPE, EDITOR, YEAR, LANGUAGE, TAGS, CONDITION, PROVENANCE, LOCATION ary ISBN. Ny efitra feno dia manolo ny sanda misy ; <strong>ny efitra foana dia mamela ny sanda eo</strong> (tsy azo ampiasaina hamafana fariana àry ilay rakitra)."
+
+#: templates/catalog/excel_catalog/_update_form.html:26
+msgid "Mettre à jour les exemplaires"
+msgstr "Hanavao ireo kopia"
+
+#: templates/catalog/excel_catalog/_update_form.html:29
+msgid ""
+"Le plus simple est de partir du fichier produit par « Exporter le "
+"catalogue » : il porte déjà les bonnes colonnes et les bons codes."
+msgstr "Ny tsotra indrindra dia ny miainga amin'ny rakitra avy amin'ny « Havoaka ny katalaogy » : efa mitondra ny fariana sy ny kaody marina izy."
+
 #: templates/catalog/excel_catalog/_verify_form.html:6
 msgid ""
 "Téléversez un fichier .xlsx avec les colonnes ID, TITLE, AUTHOR, ISBN. "
@@ -2770,12 +2879,26 @@ msgstr ""
 "ISBN no anaovana ny fampidirana, ka tsy nampiana tao amin'ny katalôgy izy "
 "ireo. Hita etsy ambany ny antsipiriany — raketo an-tanana ireo boky ireo."
 
-#: templates/catalog/excel_catalog/detail.html:63
+#: templates/catalog/excel_catalog/detail.html:69
+#, python-format
+msgid "%(n)s ligne non appliquée"
+msgid_plural "%(n)s lignes non appliquées"
+msgstr[0] "Andalana %(n)s tsy nampiharina"
+msgstr[1] "Andalana %(n)s tsy nampiharina"
+
+#: templates/catalog/excel_catalog/detail.html:70
+msgid ""
+"L'exemplaire de ces lignes n'a pas été retrouvé, ou la ligne ne porte aucun "
+"code d'identification. La mise à jour ne crée jamais d'exemplaire : ces "
+"lignes n'ont rien modifié. Le détail est listé plus bas."
+msgstr "Tsy hita ny kopian'ireo andalana ireo, na tsy mitondra kaody famantarana ilay andalana. Tsy mamorona kopia mihitsy ny fanavaozana : tsy nanova na inona na inona ireo andalana ireo. Ao ambany ny antsipiriany."
+
+#: templates/catalog/excel_catalog/detail.html:76
 #: templates/core/admin/enrichment_detail.html:44
 msgid "Quota Google Books atteint"
 msgstr "Tratra ny fetran'ny Google Books"
 
-#: templates/catalog/excel_catalog/detail.html:64
+#: templates/catalog/excel_catalog/detail.html:77
 #, python-format
 msgid ""
 "%(n)s ligne(s) ont pu rester incomplètes car le quota d'une source en ligne "
@@ -2786,83 +2909,97 @@ msgstr ""
 "tserasera (Google Books) (tsanganana SOURCE_BY_ISBN = RATE_LIMITED). Avereno "
 "atao rahampitso ny fanamarinana — miverina isan'andro ny fetra."
 
-#: templates/catalog/excel_catalog/detail.html:70
+#: templates/catalog/excel_catalog/detail.html:83
 #: templates/core/admin/enrichment_detail.html:53
 msgid "Total"
 msgstr "Totaly"
 
-#: templates/catalog/excel_catalog/detail.html:71
-#: templates/catalog/excel_catalog/index.html:52
+#: templates/catalog/excel_catalog/detail.html:84
+#: templates/catalog/excel_catalog/index.html:70
 #: templates/core/admin/enrichment_detail.html:54
 #: templates/core/admin/enrichment_index.html:127
 msgid "Traitées"
 msgstr "Voakarakara"
 
-#: templates/catalog/excel_catalog/detail.html:72
+#: templates/catalog/excel_catalog/detail.html:85
 #: templates/core/admin/enrichment_detail.html:57
 msgid "Quota atteint"
 msgstr "Tratra ny fetra"
 
-#: templates/catalog/excel_catalog/detail.html:74
+#: templates/catalog/excel_catalog/detail.html:87
 msgid "Trouvées par ISBN"
 msgstr "Hita tamin'ny ISBN"
 
-#: templates/catalog/excel_catalog/detail.html:75
+#: templates/catalog/excel_catalog/detail.html:88
 msgid "Trouvées par titre+auteur"
 msgstr "Hita tamin'ny lohateny+mpanoratra"
 
-#: templates/catalog/excel_catalog/detail.html:76
+#: templates/catalog/excel_catalog/detail.html:89
 msgid "Non trouvées"
 msgstr "Tsy hita"
 
-#: templates/catalog/excel_catalog/detail.html:78
+#: templates/catalog/excel_catalog/detail.html:91
+msgid "Exemplaires modifiés"
+msgstr "Kopia novaina"
+
+#: templates/catalog/excel_catalog/detail.html:92
+msgid "Lignes sans changement"
+msgstr "Andalana tsy niova"
+
+#: templates/catalog/excel_catalog/detail.html:94
 msgid "Notices complétées"
 msgstr "Notice nofenoina"
 
-#: templates/catalog/excel_catalog/detail.html:79
+#: templates/catalog/excel_catalog/detail.html:95
 msgid "Notices créées"
 msgstr "Notice noforonina"
 
-#: templates/catalog/excel_catalog/detail.html:81
+#: templates/catalog/excel_catalog/detail.html:97
 #: templates/core/admin/enrichment_detail.html:58
 #: templates/core/admin/enrichment_index.html:129
 msgid "Erreurs"
 msgstr "Tsy fetezana"
 
-#: templates/catalog/excel_catalog/detail.html:83
+#: templates/catalog/excel_catalog/detail.html:99
 #: templates/core/admin/enrichment_detail.html:60
 msgid "Terminé le"
 msgstr "Vita tamin'ny"
 
-#: templates/catalog/excel_catalog/detail.html:91
+#: templates/catalog/excel_catalog/detail.html:107
 msgid "Télécharger le fichier annoté"
 msgstr "Alaivo ny rakitra misy fanamarihana"
 
-#: templates/catalog/excel_catalog/detail.html:97
+#: templates/catalog/excel_catalog/detail.html:113
 msgid "Voir le lot importé"
 msgstr "Hijery ny andiana nafarana"
 
-#: templates/catalog/excel_catalog/detail.html:105
+#: templates/catalog/excel_catalog/detail.html:121
 msgid "Avertissements"
 msgstr "Fampitandremana"
 
-#: templates/catalog/excel_catalog/detail.html:110
+#: templates/catalog/excel_catalog/detail.html:126
 msgid "Ligne"
 msgstr "Andalana"
 
-#: templates/catalog/excel_catalog/detail.html:112
+#: templates/catalog/excel_catalog/detail.html:128
+#: templates/reports/overdue_list.html:37
+#: templates/reports/reservations_pickup.html:37
+msgid "Exemplaire"
+msgstr "Kopia"
+
+#: templates/catalog/excel_catalog/detail.html:132
 msgid "Détail"
 msgstr "Antsipiriany"
 
-#: templates/catalog/excel_catalog/detail.html:127
+#: templates/catalog/excel_catalog/detail.html:147
 msgid "Ligne sans ISBN : non importée, à cataloguer à la main."
 msgstr "Andalana tsy misy ISBN: tsy nampidirina, raketo an-tanana."
 
-#: templates/catalog/excel_catalog/detail.html:131
+#: templates/catalog/excel_catalog/detail.html:151
 msgid "ISBN invalide (ni 10 ni 13 chiffres) : ligne non importée."
 msgstr "ISBN diso (tsy 10 na 13 isa): tsy nampidirina ilay andalana."
 
-#: templates/catalog/excel_catalog/detail.html:135
+#: templates/catalog/excel_catalog/detail.html:155
 msgid ""
 "Code externe déjà porté par un autre exemplaire : code ignoré, le reste de "
 "la ligne est importé."
@@ -2870,7 +3007,7 @@ msgstr ""
 "Efa an'ny kopia hafa io kaody ivelany io : tsy raisina ny kaody, fa "
 "ampidirina ihany ny ambin'ny andalana."
 
-#: templates/catalog/excel_catalog/detail.html:139
+#: templates/catalog/excel_catalog/detail.html:159
 msgid ""
 "Code externe refusé : il doit être alphanumérique et faire 20 caractères au "
 "plus. Le reste de la ligne est importé."
@@ -2878,9 +3015,47 @@ msgstr ""
 "Tsy ekena ny kaody ivelany : tsy maintsy litera na isa ary tsy mihoatra ny "
 "20 marika. Ampidirina ihany ny ambin'ny andalana."
 
+#: templates/catalog/excel_catalog/detail.html:163
+msgid ""
+"Aucun exemplaire ne porte ce code Ofelia : ligne ignorée. Vérifiez le code, "
+"ou repartez d'un export récent du catalogue."
+msgstr "Tsy misy kopia mitondra io kaody Ofelia io : nalaina an-tsirambina ny andalana. Hamarino ny kaody, na miaingà amin'ny famoahana katalaogy vaovao."
+
+#: templates/catalog/excel_catalog/detail.html:167
+msgid ""
+"Aucun exemplaire ne porte ce code externe : ligne ignorée. Un code externe "
+"s'attribue en mise à jour à partir du code Ofelia, ou à la main sur la fiche "
+"de l'exemplaire."
+msgstr "Tsy misy kopia mitondra io kaody ivelany io : nalaina an-tsirambina ny andalana. Ny kaody ivelany dia omena amin'ny fanavaozana miainga amin'ny kaody Ofelia, na an-tanana eo amin'ny pejin'ny kopia."
+
+#: templates/catalog/excel_catalog/detail.html:171
+msgid ""
+"Ligne sans code Ofelia ni code externe : impossible de savoir quel "
+"exemplaire mettre à jour."
+msgstr "Andalana tsy misy kaody Ofelia na kaody ivelany : tsy fantatra izay kopia tokony hohavaozina."
+
+#: templates/catalog/excel_catalog/detail.html:175
+msgid ""
+"Cette ligne a provoqué une erreur technique et a été laissée de côté ; les "
+"autres lignes du fichier ont bien été traitées."
+msgstr "Nahatonga hadisoana ara-teknika ity andalana ity ka navela ; voakarakara tsara kosa ny andalana hafa ao amin'ny rakitra."
+
+#: templates/catalog/excel_catalog/detail.html:179
+msgid ""
+"Cet ISBN appartient déjà à une autre notice : il n'a pas été repris, le "
+"reste de la ligne est appliqué."
+msgstr "Efa an'ny raki-tsoratra hafa io ISBN io : tsy nampiharina izy, fa nampiharina kosa ny ambin'ny andalana."
+
+#: templates/catalog/excel_catalog/detail.html:183
+msgid ""
+"Emplacement inconnu : créez-le dans Avancé → Méta-données → Emplacements, ou "
+"corrigez le code. Le reste de la ligne est appliqué."
+msgstr "Toerana tsy fantatra : foronina ao amin'ny Mandroso → Angona → Toerana, na ahitsio ny kaody. Nampiharina ny ambin'ny andalana."
+
 #: templates/catalog/excel_catalog/index.html:20
-msgid "Vérifier ou importer un fichier Excel d'inventaire."
-msgstr "Hamarino na afaro rakitra Excel an'ny fanisana."
+msgid ""
+"Vérifier, importer, exporter ou mettre à jour un fichier Excel d'inventaire."
+msgstr "Hamarino, ampidiro, avoahy na havaozy ny rakitra Excel momba ny fanisam-bokatra."
 
 #: templates/catalog/excel_catalog/index.html:28
 msgid "Vérifier un fichier"
@@ -2890,26 +3065,30 @@ msgstr "Hamarina rakitra"
 msgid "Importer dans BibliOfelia"
 msgstr "Afaro ao amin'ny BibliOfelia"
 
-#: templates/catalog/excel_catalog/index.html:43
+#: templates/catalog/excel_catalog/index.html:54
+msgid "Mettre à jour des exemplaires"
+msgstr "Hanavao kopia"
+
+#: templates/catalog/excel_catalog/index.html:61
 msgid "Travaux récents"
 msgstr "Asa vao haingana"
 
-#: templates/catalog/excel_catalog/index.html:49
+#: templates/catalog/excel_catalog/index.html:67
 #: templates/core/admin/enrichment_index.html:124
 msgid "Lancé le"
 msgstr "Natomboka tamin'ny"
 
-#: templates/catalog/excel_catalog/index.html:50
+#: templates/catalog/excel_catalog/index.html:68
 #: templates/catalog/record_detail.html:61
 msgid "Type"
 msgstr "Karazana"
 
-#: templates/catalog/excel_catalog/index.html:75
+#: templates/catalog/excel_catalog/index.html:93
 #: templates/core/admin/enrichment_index.html:154
 msgid "Détails"
 msgstr "Antsipiriany"
 
-#: templates/catalog/excel_catalog/index.html:84
+#: templates/catalog/excel_catalog/index.html:102
 msgid "Aucun travail lancé pour l'instant."
 msgstr "Tsy misy asa natomboka aloha."
 
@@ -3223,7 +3402,7 @@ msgstr "Hijery ireo kopia ireo"
 #: templates/catalog/provenance_confirm_delete.html:37
 #: templates/catalog/record_confirm_delete.html:24
 #: templates/core/dashboard.html:80 templates/core/dashboard.html:187
-#: templates/loans/return.html:4 templates/loans/return.html:18
+#: templates/loans/return.html:4 templates/loans/return.html:42
 #: templates/members/member_history.html:64
 #: templates/partials/_tile_strip.html:40
 msgid "Retour"
@@ -3358,7 +3537,7 @@ msgid "Notices à supprimer"
 msgstr "Rakitra hofafana"
 
 #: templates/catalog/record_bulk_delete.html:48
-#: templates/core/dashboard.html:148 templates/loans/lend.html:84
+#: templates/core/dashboard.html:148 templates/loans/lend.html:96
 #: templates/members/member_detail.html:127
 #: templates/members/member_history.html:24
 msgid "Prêts en cours"
@@ -3477,7 +3656,7 @@ msgid "Liste d'attente"
 msgstr "Lisitry ny fiandrasana"
 
 #: templates/catalog/record_detail.html:184 templates/core/dashboard.html:324
-#: templates/loans/return.html:129
+#: templates/loans/return.html:200
 msgid "Membre"
 msgstr "Mpikambana"
 
@@ -4203,13 +4382,17 @@ msgstr "Fanontana"
 msgid ""
 "Génère les étiquettes (code Ofelia + titre + emplacement) à coller sur les "
 "ouvrages. PDF planche A4 ou ruban 62 mm pour l'étiqueteuse Brother QL."
-msgstr "Mamorona ny marika (kaody Ofelia + lohateny + toerana) hapetaka amin'ny boky. Taratasy PDF A4 na riban 62 mm ho an'ny mpanonta marika Brother QL."
+msgstr ""
+"Mamorona ny marika (kaody Ofelia + lohateny + toerana) hapetaka amin'ny "
+"boky. Taratasy PDF A4 na riban 62 mm ho an'ny mpanonta marika Brother QL."
 
 #: templates/core/advanced.html:54
 msgid ""
 "Imprime la cote de la catégorie (« RO FI ADO ») à coller sur la tranche, "
 "pour ranger et retrouver un livre sans le sortir du rayon."
-msgstr "Manonta ny kaodin'ny sokajy (« RO FI ADO ») hapetaka amin'ny lamosina, mba handaminana sy hahitana boky nefa tsy misintona azy eo amin'ny talantalana."
+msgstr ""
+"Manonta ny kaodin'ny sokajy (« RO FI ADO ») hapetaka amin'ny lamosina, mba "
+"handaminana sy hahitana boky nefa tsy misintona azy eo amin'ny talantalana."
 
 #: templates/core/advanced.html:63 templates/printing/cards_picker.html:14
 msgid "Cartes membres"
@@ -4292,7 +4475,9 @@ msgstr "Metadata"
 msgid ""
 "Les listes de référence du catalogue : elles alimentent les menus déroulants "
 "des notices et des exemplaires."
-msgstr "Ny lisitra fanondro amin'ny katalaogy : izy ireo no mameno ny menio midina eo amin'ny rakitra sy ny boky."
+msgstr ""
+"Ny lisitra fanondro amin'ny katalaogy : izy ireo no mameno ny menio midina "
+"eo amin'ny rakitra sy ny boky."
 
 #: templates/core/advanced.html:165
 msgid ""
@@ -4442,16 +4627,16 @@ msgid "Lecteurs inscrits, cartes et historique"
 msgstr "Mpamaky voasoratra, karatra sy tantara"
 
 #: templates/core/dashboard.html:71 templates/loans/lend.html:4
-#: templates/loans/lend.html:18 templates/partials/_tile_strip.html:33
+#: templates/loans/lend.html:30 templates/partials/_tile_strip.html:33
 msgid "Prêt"
 msgstr "Fampindramana"
 
-#: templates/core/dashboard.html:72 templates/loans/lend.html:19
+#: templates/core/dashboard.html:72 templates/loans/lend.html:31
 msgid "Enregistrer un nouveau prêt"
 msgstr "Manoratra fampindramana vaovao"
 
 #: templates/core/dashboard.html:81 templates/core/dashboard.html:188
-#: templates/loans/return.html:19
+#: templates/loans/return.html:43
 msgid "Enregistrer un retour"
 msgstr "Manoratra famerenana"
 
@@ -4589,7 +4774,7 @@ msgstr "Tambajotra"
 msgid "Relances à faire"
 msgstr "Fampahatsiarovana hatao"
 
-#: templates/core/dashboard.html:325 templates/loans/return.html:130
+#: templates/core/dashboard.html:325 templates/loans/return.html:201
 #: templates/members/member_detail.html:136
 #: templates/members/member_history.html:32
 #: templates/reports/overdue_list.html:36
@@ -4754,8 +4939,8 @@ msgstr "andrasana"
 msgid "Saisir un code Ofelia à la main"
 msgstr "Soraty an-tanana ny kaody Ofelia"
 
-#: templates/inventory/session_report.html:74 templates/loans/lend.html:40
-#: templates/loans/lend.html:114 templates/loans/return.html:37
+#: templates/inventory/session_report.html:74 templates/loans/lend.html:52
+#: templates/loans/lend.html:126 templates/loans/return.html:61
 msgid "Valider"
 msgstr "Hankato"
 
@@ -4831,56 +5016,64 @@ msgstr "Famakiana an-toerana"
 msgid "Compte les documents consultés sans sortie de la bibliothèque."
 msgstr "Manisa ny antontan-taratasy novakiana tsy nivoaka ny tranomboky."
 
-#: templates/loans/lend.html:24
+#: templates/loans/lend.html:36
 msgid "1 · Membre"
 msgstr "1 · Mpikambana"
 
-#: templates/loans/lend.html:37
+#: templates/loans/lend.html:49
 msgid "Scanner ou saisir le n° de carte"
 msgstr "Skano na soraty ny laharan'ny karatra"
 
-#: templates/loans/lend.html:48 templates/members/member_list.html:61
+#: templates/loans/lend.html:60 templates/members/member_list.html:61
 #: templates/members/member_list.html:62
 msgid "Scanner la carte"
 msgstr "Manaova scan amin'ny karatra"
 
-#: templates/loans/lend.html:90
+#: templates/loans/lend.html:102
 msgid "échéance"
 msgstr "fe-potoana"
 
-#: templates/loans/lend.html:100
+#: templates/loans/lend.html:112
 msgid "2 · Livres"
 msgstr "2 · Boky"
 
-#: templates/loans/lend.html:111
+#: templates/loans/lend.html:123
 msgid "Scanner le code-barres du livre"
 msgstr "Skano ny kaody tsipiky ny boky"
 
-#: templates/loans/lend.html:122
+#: templates/loans/lend.html:134
 msgid "Scanner un livre"
 msgstr "Manaova scan amin'ny boky"
 
-#: templates/loans/lend.html:129
+#: templates/loans/lend.html:141
 msgid "Panier"
 msgstr "Vata"
 
-#: templates/loans/lend.html:154
+#: templates/loans/lend.html:163 templates/loans/return.html:128
+msgid "Ofelia"
+msgstr "Ofelia"
+
+#: templates/loans/lend.html:165 templates/loans/return.html:133
+msgid "Externe"
+msgstr "Kaody ivelany"
+
+#: templates/loans/lend.html:182
 msgid "Aucun livre scanné pour l'instant."
 msgstr "Tsy misy boky voaskana aloha."
 
-#: templates/loans/lend.html:160
+#: templates/loans/lend.html:188
 msgid "3 · Confirmer"
 msgstr "3 · Hamafiso"
 
-#: templates/loans/lend.html:166
+#: templates/loans/lend.html:194
 msgid "Note (facultatif)"
 msgstr "Naoty (tsy voatery)"
 
-#: templates/loans/lend.html:167
+#: templates/loans/lend.html:195
 msgid "Ex. : override réservation"
 msgstr "Oh.: manova famandrihana"
 
-#: templates/loans/lend.html:172
+#: templates/loans/lend.html:200
 #, python-format
 msgid "Prêter %(n)s livre"
 msgid_plural "Prêter %(n)s livres"
@@ -4950,55 +5143,70 @@ msgstr "Exp."
 msgid "Aucune réservation en attente."
 msgstr "Tsy misy famandrihana miandry."
 
-#: templates/loans/return.html:25
+#: templates/loans/return.html:49
 msgid "Scanner un livre à rendre"
 msgstr "Manaova scan amin'ny boky averina"
 
-#: templates/loans/return.html:34
+#: templates/loans/return.html:58
 msgid "Scanner le code-barres du livre rendu"
 msgstr "Skano ny kaody tsipiky ny boky naverina"
 
-#: templates/loans/return.html:53
+#: templates/loans/return.html:77
 msgid "Retours de la séance"
 msgstr "Famerenana tamin'ity fotoana ity"
 
-#: templates/loans/return.html:57
+#: templates/loans/return.html:81
 msgid "Vider"
 msgstr "Foano"
 
-#: templates/loans/return.html:71
-msgid "perdu réintégré"
-msgstr "very naverina"
+#: templates/loans/return.html:112
+msgid "Rendu par"
+msgstr "Naverin'i"
 
-#: templates/loans/return.html:72
-msgid "aucun prêt actif"
-msgstr "tsy misy fampindramana mavitrika"
+#: templates/loans/return.html:121
+#, python-format
+msgid "%(n)s an"
+msgid_plural "%(n)s ans"
+msgstr[0] "%(n)s taona"
+msgstr[1] "%(n)s taona"
 
-#: templates/loans/return.html:81
+#: templates/loans/return.html:138
+msgid "Aucun prêt actif — rien à solder"
+msgstr "Tsy misy fampindramana mavitrika — tsy misy hovahana"
+
+#: templates/loans/return.html:140
+msgid "Retour effectué — livre perdu réintégré au fonds"
+msgstr "Vita ny famerenana — naverina tao amin'ny tahiry ny boky very"
+
+#: templates/loans/return.html:142
+msgid "Retour effectué"
+msgstr "Vita ny famerenana"
+
+#: templates/loans/return.html:152
 msgid "À temps"
 msgstr "Ara-potoana"
 
-#: templates/loans/return.html:91
+#: templates/loans/return.html:162
 msgid "Réservations à relancer"
 msgstr "Famandrihana arenina"
 
-#: templates/loans/return.html:108
+#: templates/loans/return.html:179
 #, python-format
 msgid "%(n)s jour de retard"
 msgid_plural "%(n)s jours de retard"
 msgstr[0] "Andro %(n)s tara"
 msgstr[1] "Andro %(n)s tara"
 
-#: templates/loans/return.html:110
+#: templates/loans/return.html:181
 msgid "Expire aujourd'hui"
 msgstr "Tapitra androany"
 
-#: templates/loans/return.html:112
+#: templates/loans/return.html:183
 #, python-format
 msgid "Encore %(n)s jours"
 msgstr "Mbola %(n)s andro"
 
-#: templates/loans/return.html:118
+#: templates/loans/return.html:189
 msgid ""
 "Contacter ces membres pour qu'ils viennent retirer leur livre avant qu'il ne "
 "reparte au suivant."
@@ -5250,7 +5458,10 @@ msgid ""
 "L'impression ruban est désactivée : seule la planche A4 est disponible ici. "
 "Activez-la dans Paramètres → Impressions — Ruban continu pour imprimer les "
 "cotes à l'étiqueteuse."
-msgstr "Mihidy ny fanontana amin'ny riban : ny taratasy A4 ihany no misy eto. Sokafy ao amin'ny Kirakira → Fanontana — Riban mitohy izy raha te hanonta ny kaody amin'ny mpanonta marika."
+msgstr ""
+"Mihidy ny fanontana amin'ny riban : ny taratasy A4 ihany no misy eto. Sokafy "
+"ao amin'ny Kirakira → Fanontana — Riban mitohy izy raha te hanonta ny kaody "
+"amin'ny mpanonta marika."
 
 #: templates/printing/spine_labels_picker.html:27
 msgid "Cote imprimée"
@@ -5389,11 +5600,6 @@ msgstr[1] "%(count)s fampindramana tara."
 #: templates/reports/overdue_list.html:21
 msgid "Seuil (jours)"
 msgstr "Fetra (andro)"
-
-#: templates/reports/overdue_list.html:37
-#: templates/reports/reservations_pickup.html:37
-msgid "Exemplaire"
-msgstr "Kopia"
 
 #: templates/reports/overdue_list.html:39
 #: templates/reports/reservations_pickup.html:33

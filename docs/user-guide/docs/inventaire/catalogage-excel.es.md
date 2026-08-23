@@ -2,7 +2,7 @@
 
 Muchas bibliotecas llegan al proyecto Ofelia con un fondo ya escrito en una
 **hoja de cálculo Excel** (un identificador propio, un título, un autor, a
-veces un ISBN). La **catalogación Excel** ofrece dos herramientas para
+veces un ISBN). La **catalogación Excel** ofrece cuatro herramientas para
 aprovechar ese archivo:
 
 1. **Verificar un archivo** — BibliOfelia anota su hoja de cálculo con lo
@@ -11,6 +11,11 @@ aprovechar ese archivo:
    del archivo y corregirlo a mano.
 2. **Importar en el catálogo** — BibliOfelia convierte una lista de ISBN en
    fichas y ejemplares, de una sola vez.
+3. **Exportar el catálogo** — BibliOfelia le devuelve todo su fondo en una
+   hoja de cálculo, una línea por ejemplar.
+4. **Actualizar ejemplares** — usted devuelve esa hoja corregida y
+   BibliOfelia aplica sus correcciones a los libros ya catalogados, sin
+   crear nunca ninguno nuevo.
 
 !!! info "Solo para bibliotecarios"
     La catalogación Excel se encuentra en el menú **Avanzado**, disponible
@@ -22,8 +27,8 @@ Desde el menú [**Avanzado**](/bibliofelia/es/advanced/){ target="_blank" },
 sección **Inventario**, haga clic en
 [**Catalogación Excel**](/bibliofelia/es/catalog/excel-catalog/){ target="_blank" }.
 
-La página muestra dos recuadros uno al lado del otro: **Verificar un
-archivo** (a la izquierda) e **Importar en BibliOfelia** (a la derecha).
+La página muestra cuatro recuadros: **Verificar un archivo**, **Importar en
+BibliOfelia**, **Exportar el catálogo** y **Actualizar ejemplares**.
 
 ## Verificar un archivo
 
@@ -129,6 +134,94 @@ exactamente como un lote escaneado con la cámara.
     (OpenLibrary, Google Books, BnF…). Las columnas del archivo siguen
     teniendo prioridad: el enriquecimiento solo completa lo que aún está
     vacío.
+
+## Exportar el catálogo
+
+Úselo para **recuperar todo su fondo** en una hoja de cálculo: para releerlo,
+guardar una copia sin conexión o preparar una corrección masiva.
+
+En el recuadro **Exportar el catálogo**, haga clic en **Exportar el
+catálogo**. El archivo `catalogue-AAAA-MM-DD.xlsx` se descarga de inmediato:
+no hay nada que esperar.
+
+La hoja contiene **una línea por ejemplar**, no por título. Un libro que
+usted tiene en tres ejemplares ocupa, pues, tres líneas: es normal, porque la
+ubicación, el estado, la procedencia y el código externo pertenecen al
+**ejemplar** y no a la ficha.
+
+| Columna | Contenido |
+|---|---|
+| `OFELIA_CODE` | el código Ofelia del ejemplar (el código de barras de la etiqueta) |
+| `INTERNAL_ID` | el código legible impreso junto al código de barras (`OFL-…`) |
+| `EXTERNAL_CODE` | el código de otra biblioteca ya puesto en el libro |
+| `ISBN`, `TITLE`, `AUTHOR`, `EDITOR`, `YEAR`, `LANGUAGE` | los datos de la ficha |
+| `CATEGORY`, `CATEGORY_ABBR`, `TYPE`, `TAGS` | la clasificación |
+| `CONDITION`, `PROVENANCE`, `LOCATION` | los datos del ejemplar |
+
+!!! tip "Es el archivo de la actualización"
+    Las columnas de la exportación son **exactamente** las que BibliOfelia
+    sabe releer. Corrija lo que quiera en Excel y devuelva el mismo archivo
+    por **Actualizar ejemplares**: no hay nada más que preparar.
+
+## Actualizar ejemplares
+
+Úselo para **corregir masivamente** libros **ya** presentes en el catálogo:
+cambiar ubicaciones tras mover un estante, pasar una serie a «Desgastado»,
+asignar códigos externos, arreglar títulos mal escritos.
+
+!!! success "No se crea ningún libro"
+    Esta herramienta **nunca** crea una ficha ni un ejemplar. Si una línea
+    señala un ejemplar que no existe, se **avisa** y se deja de lado: nunca
+    se convierte en un libro nuevo. Puede, pues, devolver una exportación sin
+    riesgo de duplicar su biblioteca.
+
+Cada línea debe decir **de qué ejemplar habla**. El archivo debe contener,
+por tanto, al menos una de estas dos columnas:
+
+| Columna | Contenido |
+|---|---|
+| `OFELIA_CODE` | el código Ofelia del ejemplar: el código de barras `290…` **o** el código legible `OFL-…` |
+| `EXTERNAL_CODE` | el código de otra biblioteca puesto en el libro |
+
+!!! info "Si las dos columnas están rellenadas"
+    Es el **código Ofelia** el que designa el ejemplar, y el código externo
+    de la línea **se le aplica**. Así se asignan códigos externos a muchos
+    libros de una vez: una columna `OFELIA_CODE` para decir de qué libro se
+    trata y una columna `EXTERNAL_CODE` con el código que hay que poner.
+
+Se aceptan todas las demás columnas de la importación, y son **opcionales**:
+`TITLE`, `AUTHOR`, `CATEGORY`, `CATEGORY_ABBR`, `TYPE`, `EDITOR`, `YEAR`,
+`LANGUAGE`, `TAGS`, `CONDITION`, `PROVENANCE`, `LOCATION` e `ISBN`.
+
+!!! warning "Una celda vacía no borra nada"
+    Una celda **rellenada** sustituye el valor existente; una celda **vacía**
+    deja el valor tal cual. Esta herramienta **no** sirve, pues, para vaciar
+    un campo: para eso, abra la ficha del libro. Eso es lo que le permite
+    devolver una exportación entera tras haber corregido solo dos columnas.
+
+Elija su archivo, haga clic en **Actualizar los ejemplares** y siga el
+trabajo como una importación. La página de detalle muestra:
+
+- **Ejemplares modificados** — las líneas que cambiaron algo realmente;
+- **Líneas sin cambio** — el ejemplar se encontró, pero el archivo ya decía
+  lo mismo que el catálogo;
+- **Errores** — las líneas no aplicadas, con un cartel rojo y el detalle más
+  abajo.
+
+| Advertencia | Qué significa |
+|---|---|
+| `OFELIA_CODE_UNKNOWN` | ningún ejemplar lleva este código Ofelia — línea ignorada |
+| `EXTERNAL_CODE_UNKNOWN` | ningún ejemplar lleva este código externo — línea ignorada |
+| `NO_KEY` | la línea no dice de qué ejemplar habla |
+| `EXTERNAL_CODE_DUPLICATE` | este código externo ya está en otro libro — no aplicado, el resto de la línea sí |
+| `ISBN_CONFLICT` | este ISBN ya pertenece a otra ficha — no aplicado, el resto sí |
+| `LOCATION_UNKNOWN`, `CATEGORY_UNKNOWN`, `PROVENANCE_UNKNOWN` | el valor no existe en sus listas — ignorado, el resto se aplica |
+
+!!! tip "Una ficha, varios ejemplares"
+    El título, el autor o la editorial pertenecen a la **ficha**: corregirlos
+    en la línea de un ejemplar los corrige para **todos** los ejemplares de
+    ese libro. La ubicación, el estado, la procedencia y el código externo,
+    en cambio, solo afectan al ejemplar de esa línea.
 
 ## Seguir sus trabajos
 

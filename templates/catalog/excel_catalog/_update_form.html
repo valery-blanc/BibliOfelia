@@ -1,0 +1,30 @@
+{% load i18n biblio_icons %}
+{% comment %}
+FEAT-079 : mise à jour d'exemplaires existants. Ne crée jamais de notice.
+Les paragraphes qui contiennent du HTML passent par blocktrans : la balise trans
+échapperait le balisage et afficherait « strong » en clair à l'écran.
+{% endcomment %}
+<form method="post" action="{% url 'catalog:excel_catalog_update' %}"
+      enctype="multipart/form-data" class="excel-form">
+    {% csrf_token %}
+    <p class="muted text-sm" style="margin-bottom:14px">
+        {% blocktrans %}Téléversez un fichier .xlsx pour corriger des exemplaires <strong>déjà présents</strong> dans le catalogue. Aucune notice ni aucun exemplaire n'est créé : une ligne dont l'exemplaire est introuvable est signalée, pas ajoutée.{% endblocktrans %}
+    </p>
+    <ul class="excel-cols">
+        <li><strong>OFELIA_CODE</strong> — {% trans "code Ofelia de l'exemplaire (EAN13 « 290… » ou code interne « OFL-… »)" %}</li>
+        <li><strong>EXTERNAL_CODE</strong> — {% trans "code externe de l'exemplaire" %}</li>
+    </ul>
+    <p class="muted text-sm" style="margin-bottom:14px">
+        {% blocktrans %}Au moins l'une des deux colonnes doit être renseignée sur chaque ligne. Si les deux le sont, <strong>c'est le code Ofelia qui identifie l'exemplaire</strong> et le code externe de la ligne lui est appliqué — c'est ainsi qu'on attribue des codes externes en masse.{% endblocktrans %}
+    </p>
+    <p class="muted text-sm" style="margin-bottom:14px">
+        {% blocktrans %}Toutes les autres colonnes de l'import sont acceptées et facultatives : TITLE, AUTHOR, CATEGORY, CATEGORY_ABBR, TYPE, EDITOR, YEAR, LANGUAGE, TAGS, CONDITION, PROVENANCE, LOCATION et ISBN. Une cellule remplie remplace la valeur existante ; <strong>une cellule vide laisse la valeur en place</strong> (le fichier ne sert donc pas à effacer un champ).{% endblocktrans %}
+    </p>
+    <input type="file" name="file" accept=".xlsx" required class="form-control" style="margin:14px 0">
+    <div class="form-actions" style="border:0;padding:0">
+        <button type="submit" class="btn btn--primary">
+            {% icon "pencil" size="16px" %} {% trans "Mettre à jour les exemplaires" %}
+        </button>
+    </div>
+    <p class="excel-hint">{% trans "Le plus simple est de partir du fichier produit par « Exporter le catalogue » : il porte déjà les bonnes colonnes et les bons codes." %}</p>
+</form>

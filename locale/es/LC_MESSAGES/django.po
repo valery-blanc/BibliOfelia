@@ -6,7 +6,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: BibliOfelia 1.0\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2026-08-22 19:31+0000\n"
+"POT-Creation-Date: 2026-08-23 19:58+0000\n"
 "PO-Revision-Date: 2026-05-22 00:00+0000\n"
 "Last-Translator: Claude Code\n"
 "Language-Team: Español\n"
@@ -103,14 +103,14 @@ msgstr "Imposible: debe permanecer al menos un superadmin activo."
 msgid "Compte %(u)s supprimé."
 msgstr "Cuenta %(u)s eliminada."
 
-#: apps/api/models.py:23 apps/catalog/models.py:615 apps/catalog/models.py:678
-#: apps/core/forms.py:481 apps/loans/models.py:20
+#: apps/api/models.py:23 apps/catalog/models.py:615 apps/catalog/models.py:680
+#: apps/core/forms.py:453 apps/loans/models.py:20
 #: templates/catalog/record_detail.html:204
 #: templates/loans/reservations.html:97
 msgid "En attente"
 msgstr "En espera"
 
-#: apps/api/models.py:24 apps/catalog/models.py:617 apps/catalog/models.py:680
+#: apps/api/models.py:24 apps/catalog/models.py:617 apps/catalog/models.py:682
 msgid "Terminé"
 msgstr "Finalizado"
 
@@ -129,6 +129,13 @@ msgstr "Libro"
 #: apps/api/models.py:31
 msgid "Carte membre"
 msgstr "Tarjeta de miembro"
+
+#: apps/catalog/excel_catalog.py:400
+msgid ""
+"Colonne d'identification manquante : le fichier doit porter une colonne "
+"OFELIA_CODE (ou INTERNAL_ID) et/ou EXTERNAL_CODE, sinon les exemplaires à "
+"mettre à jour ne peuvent pas être retrouvés."
+msgstr "Falta la columna de identificación: el archivo debe tener una columna OFELIA_CODE (o INTERNAL_ID) y/o EXTERNAL_CODE, de lo contrario no se pueden encontrar los ejemplares que hay que actualizar."
 
 #: apps/catalog/forms.py:35 templates/catalog/_item_results.html:53
 #: templates/catalog/_item_results.html:122
@@ -187,7 +194,7 @@ msgstr "Ubicación"
 msgid "Provenance"
 msgstr "Procedencia"
 
-#: apps/catalog/forms.py:140 templates/catalog/excel_catalog/index.html:51
+#: apps/catalog/forms.py:140 templates/catalog/excel_catalog/index.html:69
 #: templates/catalog/record_detail.html:103
 #: templates/catalog/scan_session.html:167
 #: templates/catalog/scan_session.html:189
@@ -394,7 +401,7 @@ msgstr "Cómic / manga"
 msgid "CD audio"
 msgstr "CD de audio"
 
-#: apps/catalog/models.py:28 apps/members/models.py:161
+#: apps/catalog/models.py:28 apps/members/models.py:179
 msgid "Autre"
 msgstr "Otro"
 
@@ -695,13 +702,13 @@ msgstr "ítem escaneado"
 msgid "items scannés"
 msgstr "ítems escaneados"
 
-#: apps/catalog/models.py:616 apps/catalog/models.py:679
+#: apps/catalog/models.py:616 apps/catalog/models.py:681
 #: apps/inventory/models.py:23 apps/loans/models.py:12
 #: templates/catalog/scan_session_list.html:24
 msgid "En cours"
 msgstr "En curso"
 
-#: apps/catalog/models.py:618 apps/catalog/models.py:681
+#: apps/catalog/models.py:618 apps/catalog/models.py:683
 msgid "Échec"
 msgstr "Fallido"
 
@@ -725,11 +732,15 @@ msgstr "enriquecimientos de metadatos"
 msgid "Vérification"
 msgstr "Verificación"
 
-#: apps/catalog/models.py:731
+#: apps/catalog/models.py:676
+msgid "Mise à jour"
+msgstr "Actualización"
+
+#: apps/catalog/models.py:740
 msgid "catalogage Excel"
 msgstr "catalogación Excel"
 
-#: apps/catalog/models.py:732
+#: apps/catalog/models.py:741
 msgid "catalogages Excel"
 msgstr "catalogaciones Excel"
 
@@ -970,17 +981,21 @@ msgstr ""
 msgid "Modifications enregistrées."
 msgstr "Cambios guardados."
 
-#: apps/catalog/views.py:1393
+#: apps/catalog/views.py:1403
 msgid "Aucun fichier sélectionné."
 msgstr "Ningún archivo seleccionado."
 
-#: apps/catalog/views.py:1416
+#: apps/catalog/views.py:1426
 msgid "Vérification lancée. Suivez l'avancement ici."
 msgstr "Verificación iniciada. Siga el avance aquí."
 
-#: apps/catalog/views.py:1426
+#: apps/catalog/views.py:1436
 msgid "Import lancé. Suivez l'avancement ici."
 msgstr "Importación iniciada. Siga el avance aquí."
+
+#: apps/catalog/views.py:1447
+msgid "Mise à jour lancée. Suivez l'avancement ici."
+msgstr "Actualización iniciada. Siga el avance aquí."
 
 #: apps/core/admin_views.py:39
 msgid "Identité"
@@ -1140,144 +1155,146 @@ msgstr "El idioma por defecto debe estar activado."
 msgid ""
 "Utilisé pour l'heure affichée sur l'accueil et pour toutes les dates. Vide = "
 "fuseau du système."
-msgstr "Se usa para la hora mostrada en la pantalla de inicio y para todas las fechas. Vacío = zona horaria del sistema."
+msgstr ""
+"Se usa para la hora mostrada en la pantalla de inicio y para todas las "
+"fechas. Vacío = zona horaria del sistema."
 
-#: apps/core/forms.py:215
+#: apps/core/forms.py:187
 #, python-format
 msgid "Fuseau du système : %(tz)s"
 msgstr "Zona horaria del sistema: %(tz)s"
 
-#: apps/core/forms.py:230
+#: apps/core/forms.py:202
 #, python-format
 msgid "Fuseau horaire inconnu : %(tz)s"
 msgstr "Zona horaria desconocida: %(tz)s"
 
-#: apps/core/forms.py:243 apps/setup/forms.py:68
+#: apps/core/forms.py:215 apps/setup/forms.py:68
 msgid "Chemin clé USB"
 msgstr "Ruta llave USB"
 
-#: apps/core/forms.py:245
+#: apps/core/forms.py:217
 msgid "Sauvegarde horaire"
 msgstr "Copia horaria"
 
-#: apps/core/forms.py:246
+#: apps/core/forms.py:218
 msgid "Sauvegarde cloud (rclone)"
 msgstr "Copia en la nube (rclone)"
 
-#: apps/core/forms.py:248 apps/setup/forms.py:73
+#: apps/core/forms.py:220 apps/setup/forms.py:73
 msgid "Remote rclone"
 msgstr "Destino rclone"
 
-#: apps/core/forms.py:249
+#: apps/core/forms.py:221
 msgid "Ex: ofelia:bibliofelia"
 msgstr "Ej: ofelia:bibliofelia"
 
-#: apps/core/forms.py:252
+#: apps/core/forms.py:224
 msgid "Passphrase de chiffrement configurée"
 msgstr "Frase de cifrado configurada"
 
-#: apps/core/forms.py:254
+#: apps/core/forms.py:226
 msgid "Renseignée via la commande `setup_backup_encryption`."
 msgstr "Establecido mediante el comando `setup_backup_encryption`."
 
-#: apps/core/forms.py:284
+#: apps/core/forms.py:256
 msgid "Cartes par feuille A4"
 msgstr "Tarjetas por hoja A4"
 
-#: apps/core/forms.py:289
+#: apps/core/forms.py:261
 msgid "Logo OFELIA en fond"
 msgstr "Logo OFELIA de fondo"
 
-#: apps/core/forms.py:292
+#: apps/core/forms.py:264
 msgid "Affiche le logo grandes lettres OFELIA centré sur chaque carte."
 msgstr "Muestra el logo OFELIA en grandes letras centrado en cada tarjeta."
 
-#: apps/core/forms.py:295
+#: apps/core/forms.py:267
 msgid "Photo du membre"
 msgstr "Foto del miembro"
 
-#: apps/core/forms.py:298
+#: apps/core/forms.py:270
 msgid "Affiche la photo en haut à gauche quand le membre en a une."
 msgstr "Muestra la foto arriba a la izquierda cuando el miembro tiene una."
 
-#: apps/core/forms.py:323
+#: apps/core/forms.py:295
 msgid "Largeur (mm)"
 msgstr "Ancho (mm)"
 
-#: apps/core/forms.py:327
+#: apps/core/forms.py:299
 msgid "Hauteur (mm)"
 msgstr "Alto (mm)"
 
-#: apps/core/forms.py:331
+#: apps/core/forms.py:303
 msgid "Caractères max titre"
 msgstr "Caracteres máximos del título"
 
-#: apps/core/forms.py:333
+#: apps/core/forms.py:305
 msgid "Cumulé sur les lignes du titre."
 msgstr "Acumulado en las líneas del título."
 
-#: apps/core/forms.py:336
+#: apps/core/forms.py:308
 msgid "Lignes de titre"
 msgstr "Líneas de título"
 
-#: apps/core/forms.py:340
+#: apps/core/forms.py:312
 msgid "Lignes d'auteurs"
 msgstr "Líneas de autores"
 
-#: apps/core/forms.py:344
+#: apps/core/forms.py:316
 msgid "Logo Ofelia"
 msgstr "Logo Ofelia"
 
-#: apps/core/forms.py:376
+#: apps/core/forms.py:348
 msgid "Imprimante à ruban disponible"
 msgstr "Impresora de cinta disponible"
 
-#: apps/core/forms.py:378
+#: apps/core/forms.py:350
 msgid "Affiche le bouton « Ruban » sur les écrans d'impression."
 msgstr "Muestra el botón « Cinta » en las pantallas de impresión."
 
-#: apps/core/forms.py:381
+#: apps/core/forms.py:353
 msgid "Largeur du ruban (mm)"
 msgstr "Ancho de la cinta (mm)"
 
-#: apps/core/forms.py:386
+#: apps/core/forms.py:358
 msgid "Longueur d'une étiquette (mm)"
 msgstr "Longitud de una etiqueta (mm)"
 
-#: apps/core/forms.py:388
+#: apps/core/forms.py:360
 msgid "Doit correspondre à la longueur de coupe réglée dans le pilote Brother."
 msgstr ""
 "Debe coincidir con la longitud de corte configurada en el controlador "
 "Brother."
 
-#: apps/core/forms.py:391
+#: apps/core/forms.py:363
 msgid "Longueur d'une carte membre (mm)"
 msgstr "Longitud de una tarjeta de socio (mm)"
 
-#: apps/core/forms.py:393
+#: apps/core/forms.py:365
 msgid ""
 "89 mm : juste sous le format continu natif du pilote Brother (62 × 89,9 mm)."
 msgstr ""
 "89 mm: justo por debajo del tamaño continuo nativo del controlador Brother "
 "(62 × 89,9 mm)."
 
-#: apps/core/forms.py:396
+#: apps/core/forms.py:368
 msgid "Ruban bicolore noir/rouge"
 msgstr "Cinta bicolor negro/rojo"
 
-#: apps/core/forms.py:398
+#: apps/core/forms.py:370
 msgid "Rouge sur les cartes membres. Les étiquettes restent monochromes."
 msgstr "Rojo en las tarjetas de socio. Las etiquetas siguen monocromas."
 
-#: apps/core/forms.py:401
+#: apps/core/forms.py:373
 msgid "Logo Ofelia sur les étiquettes"
 msgstr "Logotipo Ofelia en las etiquetas"
 
-#: apps/core/forms.py:431
+#: apps/core/forms.py:403
 msgid "Durée par défaut d'un prêt (jours)"
 msgstr "Duración predeterminada del préstamo (días)"
 
-#: apps/core/forms.py:433
+#: apps/core/forms.py:405
 msgid ""
 "Utilisée si ni la catégorie de document ni la catégorie de membre n'en "
 "définit une. Défaut : 21 jours (3 semaines)."
@@ -1285,11 +1302,11 @@ msgstr ""
 "Se utiliza si ni la categoría de documento ni la categoría de miembro "
 "definen una. Predeterminado: 21 días (3 semanas)."
 
-#: apps/core/forms.py:436
+#: apps/core/forms.py:408
 msgid "Validité d'une réservation en attente (jours)"
 msgstr "Validez de una reserva pendiente (días)"
 
-#: apps/core/forms.py:438
+#: apps/core/forms.py:410
 msgid ""
 "Délai au-delà duquel une réservation pour laquelle aucun exemplaire ne s'est "
 "libéré expire automatiquement."
@@ -1297,11 +1314,11 @@ msgstr ""
 "Plazo tras el cual una reserva para la que ningún ejemplar quedó disponible "
 "expira automáticamente."
 
-#: apps/core/forms.py:441
+#: apps/core/forms.py:413
 msgid "Durée de mise de côté à retirer (jours)"
 msgstr "Plazo de reserva para retirar (días)"
 
-#: apps/core/forms.py:443
+#: apps/core/forms.py:415
 msgid ""
 "Une fois un exemplaire mis de côté pour un membre, il a ce délai pour venir "
 "le retirer avant que la réservation ne bascule au membre suivant."
@@ -1309,11 +1326,11 @@ msgstr ""
 "Una vez reservado un ejemplar para un miembro, éste dispone de este plazo "
 "para retirarlo antes de que la reserva pase al siguiente miembro."
 
-#: apps/core/forms.py:477
+#: apps/core/forms.py:449
 msgid "Identifiant réseau ZeroTier"
 msgstr "ID de red ZeroTier"
 
-#: apps/core/forms.py:480 templates/catalog/item_bulk_delete.html:62
+#: apps/core/forms.py:452 templates/catalog/item_bulk_delete.html:62
 #: templates/catalog/record_detail.html:104
 #: templates/catalog/record_detail.html:186
 #: templates/inventory/session_list.html:55
@@ -1321,11 +1338,11 @@ msgstr "ID de red ZeroTier"
 msgid "Statut"
 msgstr "Estado"
 
-#: apps/core/forms.py:481
+#: apps/core/forms.py:453
 msgid "Désactivé"
 msgstr "Desactivado"
 
-#: apps/core/forms.py:482
+#: apps/core/forms.py:454
 msgid "Connecté"
 msgstr "Conectado"
 
@@ -1336,6 +1353,12 @@ msgstr "ajuste"
 #: apps/core/models.py:18
 msgid "paramètres"
 msgstr "ajustes"
+
+#: apps/core/views.py:129 apps/loans/views.py:83
+#, python-format
+msgid ""
+"Carte remplacée : %(old)s. %(name)s utilise désormais la carte n° %(new)s."
+msgstr "Tarjeta sustituida: %(old)s. %(name)s usa ahora la tarjeta n.º %(new)s."
 
 #: apps/inventory/forms.py:25 templates/core/admin/enrichment_detail.html:52
 #: templates/core/admin/enrichment_index.html:61
@@ -1419,7 +1442,7 @@ msgstr "Reservar para"
 msgid "Retourné"
 msgstr "Devuelto"
 
-#: apps/loans/models.py:14 templates/loans/return.html:77
+#: apps/loans/models.py:14 templates/loans/return.html:148
 #: templates/members/member_list.html:40
 msgid "En retard"
 msgstr "Atrasado"
@@ -1510,99 +1533,104 @@ msgstr "Límite de préstamos alcanzado (%(limit)s) para este usuario."
 msgid "Une réservation d'un autre usager existe sur cette notice."
 msgstr "Otro usuario tiene una reserva sobre este registro."
 
-#: apps/loans/services.py:239
+#: apps/loans/services.py:259
 msgid "Ce prêt n'est pas renouvelable."
 msgstr "Este préstamo no se puede renovar."
 
-#: apps/loans/services.py:245
+#: apps/loans/services.py:265
 #, python-format
 msgid "Nombre maximum de renouvellements atteint (%(n)s)."
 msgstr "Número máximo de renovaciones alcanzado (%(n)s)."
 
-#: apps/loans/services.py:253
+#: apps/loans/services.py:273
 msgid "Une réservation est en attente sur cette notice."
 msgstr "Hay una reserva pendiente sobre este registro."
 
-#: apps/loans/views.py:80
+#: apps/loans/views.py:94
 msgid "Aucun usager pour cette carte."
 msgstr "Ningún usuario para esta tarjeta."
 
-#: apps/loans/views.py:91
+#: apps/loans/views.py:105
 msgid "Scannez d'abord une carte d'usager."
 msgstr "Escanee primero una tarjeta de usuario."
 
-#: apps/loans/views.py:99 apps/loans/views.py:181
+#: apps/loans/views.py:113 apps/loans/views.py:206
 #, python-format
 msgid "Exemplaire introuvable : %(ean)s."
 msgstr "Ejemplar no encontrado: %(ean)s."
 
-#: apps/loans/views.py:101
+#: apps/loans/views.py:115
 msgid "Cet exemplaire est déjà dans la liste."
 msgstr "Este ejemplar ya está en la lista."
 
-#: apps/loans/views.py:121
+#: apps/loans/views.py:135
 msgid "Aucun exemplaire à prêter."
 msgstr "Ningún ejemplar para prestar."
 
-#: apps/loans/views.py:133
+#: apps/loans/views.py:147
 #, python-format
 msgid "%(title)s : %(err)s"
 msgstr "%(title)s: %(err)s"
 
-#: apps/loans/views.py:141
+#: apps/loans/views.py:155
 #, python-format
 msgid "%(n)s prêt(s) enregistré(s)."
 msgstr "%(n)s préstamo(s) registrado(s)."
 
-#: apps/loans/views.py:195
+#: apps/loans/views.py:236
 msgid "Aucun prêt actif pour cet exemplaire."
 msgstr "Ningún préstamo activo para este ejemplar."
 
-#: apps/loans/views.py:197
+#: apps/loans/views.py:240
+#, python-format
+msgid "Retour effectué : %(title)s, rendu par %(member)s."
+msgstr "Devolución registrada: %(title)s, entregado por %(member)s."
+
+#: apps/loans/views.py:245
+#, python-format
+msgid "Retour effectué : %(title)s."
+msgstr "Devolución registrada: %(title)s."
+
+#: apps/loans/views.py:248
 msgid "Livre perdu réintégré au fonds."
 msgstr "Libro perdido reintegrado al fondo."
 
-#: apps/loans/views.py:199
-#, python-format
-msgid "Retour enregistré : %(t)s."
-msgstr "Devolución registrada: %(t)s."
-
-#: apps/loans/views.py:203
+#: apps/loans/views.py:252
 #, python-format
 msgid "À mettre de côté pour %(m)s (réservation)."
 msgstr "Apartar para %(m)s (reserva)."
 
-#: apps/loans/views.py:219
+#: apps/loans/views.py:268
 #, python-format
 msgid "Prêt renouvelé jusqu'au %(d)s."
 msgstr "Préstamo renovado hasta el %(d)s."
 
-#: apps/loans/views.py:234
+#: apps/loans/views.py:283
 msgid "Livre déclaré perdu."
 msgstr "Libro declarado perdido."
 
-#: apps/loans/views.py:236
+#: apps/loans/views.py:285
 msgid "Ce prêt n'est pas actif."
 msgstr "Este préstamo no está activo."
 
-#: apps/loans/views.py:250
+#: apps/loans/views.py:299
 msgid "Consultation sur place enregistrée."
 msgstr "Consulta en sala registrada."
 
-#: apps/loans/views.py:299
+#: apps/loans/views.py:348
 #, python-format
 msgid "Notification enregistrée pour %(m)s."
 msgstr "Notificación registrada para %(m)s."
 
-#: apps/loans/views.py:303
+#: apps/loans/views.py:352
 msgid "Ce membre a déjà été notifié."
 msgstr "Este miembro ya ha sido notificado."
 
-#: apps/loans/views.py:317
+#: apps/loans/views.py:366
 msgid "Réservation enregistrée."
 msgstr "Reserva registrada."
 
-#: apps/loans/views.py:331
+#: apps/loans/views.py:380
 msgid "Réservation annulée."
 msgstr "Reserva cancelada."
 
@@ -1694,7 +1722,7 @@ msgstr "categorías de usuario"
 msgid "n° de carte"
 msgstr "n.º de carné"
 
-#: apps/members/models.py:57 apps/members/models.py:182
+#: apps/members/models.py:57 apps/members/models.py:200
 msgid "prénom"
 msgstr "nombre"
 
@@ -1726,11 +1754,11 @@ msgstr "estado"
 msgid "langue de correspondance"
 msgstr "idioma de correspondencia"
 
-#: apps/members/models.py:96 apps/members/models.py:192
+#: apps/members/models.py:96 apps/members/models.py:210
 msgid "langues parlées"
 msgstr "idiomas hablados"
 
-#: apps/members/models.py:99 apps/members/models.py:195
+#: apps/members/models.py:99 apps/members/models.py:213
 msgid "autres langues"
 msgstr "otros idiomas"
 
@@ -1746,31 +1774,31 @@ msgstr "foto"
 msgid "usagers"
 msgstr "usuarios"
 
-#: apps/members/models.py:159
+#: apps/members/models.py:177
 msgid "Fille"
 msgstr "Niña"
 
-#: apps/members/models.py:160
+#: apps/members/models.py:178
 msgid "Garçon"
 msgstr "Niño"
 
-#: apps/members/models.py:184
+#: apps/members/models.py:202
 msgid "sexe"
 msgstr "sexo"
 
-#: apps/members/models.py:186
+#: apps/members/models.py:204
 msgid "adulte"
 msgstr "adulto"
 
-#: apps/members/models.py:188
+#: apps/members/models.py:206
 msgid "année de naissance"
 msgstr "año de nacimiento"
 
-#: apps/members/models.py:199
+#: apps/members/models.py:217
 msgid "membre de la famille"
 msgstr "miembro de la familia"
 
-#: apps/members/models.py:200
+#: apps/members/models.py:218
 msgid "membres de la famille"
 msgstr "miembros de la familia"
 
@@ -1794,46 +1822,54 @@ msgstr "Tarjeta caducada hace %(n)s días."
 msgid "Carte expirante dans %(n)s jours."
 msgstr "Tarjeta caduca en %(n)s días."
 
-#: apps/members/views.py:104
+#: apps/members/views.py:108
 msgid "Sans catégorie"
 msgstr "Sin categoría"
 
-#: apps/members/views.py:132
+#: apps/members/views.py:136
 #, python-format
 msgid "Usager inscrit — carte n° %(card)s."
 msgstr "Usuario inscrito — tarjeta n.º %(card)s."
 
-#: apps/members/views.py:141
+#: apps/members/views.py:145
 msgid "Nouvel usager"
 msgstr "Nuevo usuario"
 
-#: apps/members/views.py:154
+#: apps/members/views.py:158
 msgid "Fiche usager mise à jour."
 msgstr "Ficha de usuario actualizada."
 
-#: apps/members/views.py:166
+#: apps/members/views.py:170
 msgid "Modifier l'usager"
 msgstr "Editar usuario"
 
-#: apps/members/views.py:177
+#: apps/members/views.py:182
 #, python-format
 msgid "Nouvelle carte émise : n° %(card)s."
 msgstr "Nueva tarjeta emitida: n.º %(card)s."
 
-#: apps/members/views.py:189
+#: apps/members/views.py:190
+#, python-format
+msgid ""
+"La carte n° %(old)s est désormais l'ancienne : imprimez la nouvelle carte et "
+"remettez-la à l'usager. En attendant, l'ancienne reste reconnue au scan et "
+"le signale."
+msgstr "La tarjeta n.º %(old)s es ahora la antigua: imprima la nueva tarjeta y entréguesela al usuario. Mientras tanto, la antigua sigue reconociéndose al escanear, y se avisa de ello."
+
+#: apps/members/views.py:204
 #, python-format
 msgid "Carte renouvelée jusqu'au %(date)s."
 msgstr "Tarjeta renovada hasta el %(date)s."
 
-#: apps/members/views.py:201
+#: apps/members/views.py:216
 msgid "Usager désactivé."
 msgstr "Usuario desactivado."
 
-#: apps/members/views.py:207
+#: apps/members/views.py:222
 msgid "Usager réactivé."
 msgstr "Usuario reactivado."
 
-#: apps/members/views.py:250
+#: apps/members/views.py:265
 #, python-format
 msgid "Usager %(n)s supprimé."
 msgstr "Usuario %(n)s eliminado."
@@ -1928,7 +1964,7 @@ msgid "Prêts retournés"
 msgstr "Préstamos devueltos"
 
 #: apps/reports/pdf.py:52 templates/core/dashboard.html:152
-#: templates/loans/return.html:123
+#: templates/loans/return.html:194
 msgid "Prêts en retard"
 msgstr "Préstamos vencidos"
 
@@ -1965,7 +2001,7 @@ msgstr "Top 10 obras prestadas"
 #: templates/catalog/record_bulk_delete.html:46
 #: templates/catalog/record_list.html:176
 #: templates/catalog/record_list.html:245 templates/core/dashboard.html:323
-#: templates/inventory/session_report.html:114 templates/loans/return.html:128
+#: templates/inventory/session_report.html:114 templates/loans/return.html:199
 #: templates/members/member_detail.html:135
 #: templates/members/member_history.html:30
 #: templates/members/member_history.html:62
@@ -2454,7 +2490,7 @@ msgstr "Código Ofelia"
 
 #: templates/catalog/_record_form.html:27
 #: templates/catalog/_record_form.html:28 templates/catalog/record_list.html:47
-#: templates/catalog/record_list.html:48 templates/loans/return.html:45
+#: templates/catalog/record_list.html:48 templates/loans/return.html:69
 msgid "Scanner le code-barres"
 msgstr "Escanear el código de barras"
 
@@ -2605,6 +2641,37 @@ msgstr ""
 "Vale para todos los registros de la categoría. Las etiquetas se imprimen "
 "desde Impresiones → Etiquetas."
 
+#: templates/catalog/excel_catalog/_export_form.html:5
+#, python-format
+msgid ""
+"Télécharge la totalité du catalogue dans un fichier .xlsx : <strong>%(n)s "
+"exemplaire</strong>, une ligne par exemplaire."
+msgid_plural ""
+"Télécharge la totalité du catalogue dans un fichier .xlsx : <strong>%(n)s "
+"exemplaires</strong>, une ligne par exemplaire."
+msgstr[0] "Descarga la totalidad del catálogo en un archivo .xlsx: <strong>%(n)s ejemplar</strong>, una línea por ejemplar."
+msgstr[1] "Descarga la totalidad del catálogo en un archivo .xlsx: <strong>%(n)s ejemplares</strong>, una línea por ejemplar."
+
+#: templates/catalog/excel_catalog/_export_form.html:8
+msgid ""
+"Le fichier porte exactement les colonnes que BibliOfelia sait relire, plus "
+"les codes qui identifient l'exemplaire (OFELIA_CODE, INTERNAL_ID). C'est le "
+"point de départ d'une correction en masse : exportez, corrigez dans Excel, "
+"renvoyez le fichier par « Mettre à jour les exemplaires »."
+msgstr "El archivo lleva exactamente las columnas que BibliOfelia sabe releer, más los códigos que identifican el ejemplar (OFELIA_CODE, INTERNAL_ID). Es el punto de partida de una corrección masiva: exporte, corrija en Excel y devuelva el archivo con «Actualizar los ejemplares»."
+
+#: templates/catalog/excel_catalog/_export_form.html:18
+#: templates/catalog/excel_catalog/index.html:45
+msgid "Exporter le catalogue"
+msgstr "Exportar el catálogo"
+
+#: templates/catalog/excel_catalog/_export_form.html:21
+msgid ""
+"Une notice en plusieurs exemplaires sort sur plusieurs lignes : "
+"l'emplacement, l'état, la provenance et le code externe appartiennent à "
+"l'exemplaire, pas à la fiche."
+msgstr "Un registro con varios ejemplares sale en varias líneas: la ubicación, el estado, la procedencia y el código externo pertenecen al ejemplar, no a la ficha."
+
 #: templates/catalog/excel_catalog/_import_form.html:6
 msgid ""
 "Téléversez un fichier .xlsx avec au moins une colonne ISBN. Chaque ISBN "
@@ -2702,6 +2769,48 @@ msgstr ""
 "escaneo». Los metadatos (título, autor…) pueden completarse después mediante "
 "el enriquecimiento."
 
+#: templates/catalog/excel_catalog/_update_form.html:11
+msgid ""
+"Téléversez un fichier .xlsx pour corriger des exemplaires <strong>déjà "
+"présents</strong> dans le catalogue. Aucune notice ni aucun exemplaire n'est "
+"créé : une ligne dont l'exemplaire est introuvable est signalée, pas ajoutée."
+msgstr "Suba un archivo .xlsx para corregir ejemplares <strong>ya presentes</strong> en el catálogo. No se crea ningún registro ni ningún ejemplar: una línea cuyo ejemplar no se encuentra se señala, no se añade."
+
+#: templates/catalog/excel_catalog/_update_form.html:14
+msgid "code Ofelia de l'exemplaire (EAN13 « 290… » ou code interne « OFL-… »)"
+msgstr "código Ofelia del ejemplar (EAN13 «290…» o código interno «OFL-…»)"
+
+#: templates/catalog/excel_catalog/_update_form.html:15
+msgid "code externe de l'exemplaire"
+msgstr "código externo del ejemplar"
+
+#: templates/catalog/excel_catalog/_update_form.html:18
+msgid ""
+"Au moins l'une des deux colonnes doit être renseignée sur chaque ligne. Si "
+"les deux le sont, <strong>c'est le code Ofelia qui identifie l'exemplaire</"
+"strong> et le code externe de la ligne lui est appliqué — c'est ainsi qu'on "
+"attribue des codes externes en masse."
+msgstr "Al menos una de las dos columnas debe estar rellenada en cada línea. Si lo están las dos, <strong>es el código Ofelia el que identifica el ejemplar</strong> y el código externo de la línea se le aplica: así se asignan códigos externos de forma masiva."
+
+#: templates/catalog/excel_catalog/_update_form.html:21
+msgid ""
+"Toutes les autres colonnes de l'import sont acceptées et facultatives : "
+"TITLE, AUTHOR, CATEGORY, CATEGORY_ABBR, TYPE, EDITOR, YEAR, LANGUAGE, TAGS, "
+"CONDITION, PROVENANCE, LOCATION et ISBN. Une cellule remplie remplace la "
+"valeur existante ; <strong>une cellule vide laisse la valeur en place</"
+"strong> (le fichier ne sert donc pas à effacer un champ)."
+msgstr "Se aceptan todas las demás columnas de la importación, y son opcionales: TITLE, AUTHOR, CATEGORY, CATEGORY_ABBR, TYPE, EDITOR, YEAR, LANGUAGE, TAGS, CONDITION, PROVENANCE, LOCATION e ISBN. Una celda rellenada sustituye el valor existente; <strong>una celda vacía deja el valor tal cual</strong> (el archivo no sirve, pues, para borrar un campo)."
+
+#: templates/catalog/excel_catalog/_update_form.html:26
+msgid "Mettre à jour les exemplaires"
+msgstr "Actualizar los ejemplares"
+
+#: templates/catalog/excel_catalog/_update_form.html:29
+msgid ""
+"Le plus simple est de partir du fichier produit par « Exporter le "
+"catalogue » : il porte déjà les bonnes colonnes et les bons codes."
+msgstr "Lo más sencillo es partir del archivo que produce «Exportar el catálogo»: ya lleva las columnas y los códigos correctos."
+
 #: templates/catalog/excel_catalog/_verify_form.html:6
 msgid ""
 "Téléversez un fichier .xlsx avec les colonnes ID, TITLE, AUTHOR, ISBN. "
@@ -2760,12 +2869,26 @@ msgstr ""
 "ISBN, así que no se añadieron al catálogo. El detalle está más abajo — "
 "catalogue esos libros a mano."
 
-#: templates/catalog/excel_catalog/detail.html:63
+#: templates/catalog/excel_catalog/detail.html:69
+#, python-format
+msgid "%(n)s ligne non appliquée"
+msgid_plural "%(n)s lignes non appliquées"
+msgstr[0] "%(n)s línea no aplicada"
+msgstr[1] "%(n)s líneas no aplicadas"
+
+#: templates/catalog/excel_catalog/detail.html:70
+msgid ""
+"L'exemplaire de ces lignes n'a pas été retrouvé, ou la ligne ne porte aucun "
+"code d'identification. La mise à jour ne crée jamais d'exemplaire : ces "
+"lignes n'ont rien modifié. Le détail est listé plus bas."
+msgstr "No se encontró el ejemplar de estas líneas, o la línea no lleva ningún código de identificación. La actualización nunca crea un ejemplar: estas líneas no modificaron nada. El detalle se lista más abajo."
+
+#: templates/catalog/excel_catalog/detail.html:76
 #: templates/core/admin/enrichment_detail.html:44
 msgid "Quota Google Books atteint"
 msgstr "Cuota de Google Books alcanzada"
 
-#: templates/catalog/excel_catalog/detail.html:64
+#: templates/catalog/excel_catalog/detail.html:77
 #, python-format
 msgid ""
 "%(n)s ligne(s) ont pu rester incomplètes car le quota d'une source en ligne "
@@ -2776,83 +2899,97 @@ msgstr ""
 "una fuente en línea (Google Books) (columna SOURCE_BY_ISBN = RATE_LIMITED). "
 "Vuelva a lanzar la verificación mañana — la cuota se reinicia cada día."
 
-#: templates/catalog/excel_catalog/detail.html:70
+#: templates/catalog/excel_catalog/detail.html:83
 #: templates/core/admin/enrichment_detail.html:53
 msgid "Total"
 msgstr "Total"
 
-#: templates/catalog/excel_catalog/detail.html:71
-#: templates/catalog/excel_catalog/index.html:52
+#: templates/catalog/excel_catalog/detail.html:84
+#: templates/catalog/excel_catalog/index.html:70
 #: templates/core/admin/enrichment_detail.html:54
 #: templates/core/admin/enrichment_index.html:127
 msgid "Traitées"
 msgstr "Procesadas"
 
-#: templates/catalog/excel_catalog/detail.html:72
+#: templates/catalog/excel_catalog/detail.html:85
 #: templates/core/admin/enrichment_detail.html:57
 msgid "Quota atteint"
 msgstr "Cuota alcanzada"
 
-#: templates/catalog/excel_catalog/detail.html:74
+#: templates/catalog/excel_catalog/detail.html:87
 msgid "Trouvées par ISBN"
 msgstr "Encontradas por ISBN"
 
-#: templates/catalog/excel_catalog/detail.html:75
+#: templates/catalog/excel_catalog/detail.html:88
 msgid "Trouvées par titre+auteur"
 msgstr "Encontradas por título+autor"
 
-#: templates/catalog/excel_catalog/detail.html:76
+#: templates/catalog/excel_catalog/detail.html:89
 msgid "Non trouvées"
 msgstr "No encontradas"
 
-#: templates/catalog/excel_catalog/detail.html:78
+#: templates/catalog/excel_catalog/detail.html:91
+msgid "Exemplaires modifiés"
+msgstr "Ejemplares modificados"
+
+#: templates/catalog/excel_catalog/detail.html:92
+msgid "Lignes sans changement"
+msgstr "Líneas sin cambio"
+
+#: templates/catalog/excel_catalog/detail.html:94
 msgid "Notices complétées"
 msgstr "Fichas completadas"
 
-#: templates/catalog/excel_catalog/detail.html:79
+#: templates/catalog/excel_catalog/detail.html:95
 msgid "Notices créées"
 msgstr "Fichas creadas"
 
-#: templates/catalog/excel_catalog/detail.html:81
+#: templates/catalog/excel_catalog/detail.html:97
 #: templates/core/admin/enrichment_detail.html:58
 #: templates/core/admin/enrichment_index.html:129
 msgid "Erreurs"
 msgstr "Errores"
 
-#: templates/catalog/excel_catalog/detail.html:83
+#: templates/catalog/excel_catalog/detail.html:99
 #: templates/core/admin/enrichment_detail.html:60
 msgid "Terminé le"
 msgstr "Finalizado el"
 
-#: templates/catalog/excel_catalog/detail.html:91
+#: templates/catalog/excel_catalog/detail.html:107
 msgid "Télécharger le fichier annoté"
 msgstr "Descargar el archivo anotado"
 
-#: templates/catalog/excel_catalog/detail.html:97
+#: templates/catalog/excel_catalog/detail.html:113
 msgid "Voir le lot importé"
 msgstr "Ver el lote importado"
 
-#: templates/catalog/excel_catalog/detail.html:105
+#: templates/catalog/excel_catalog/detail.html:121
 msgid "Avertissements"
 msgstr "Advertencias"
 
-#: templates/catalog/excel_catalog/detail.html:110
+#: templates/catalog/excel_catalog/detail.html:126
 msgid "Ligne"
 msgstr "Fila"
 
-#: templates/catalog/excel_catalog/detail.html:112
+#: templates/catalog/excel_catalog/detail.html:128
+#: templates/reports/overdue_list.html:37
+#: templates/reports/reservations_pickup.html:37
+msgid "Exemplaire"
+msgstr "Ejemplar"
+
+#: templates/catalog/excel_catalog/detail.html:132
 msgid "Détail"
 msgstr "Detalle"
 
-#: templates/catalog/excel_catalog/detail.html:127
+#: templates/catalog/excel_catalog/detail.html:147
 msgid "Ligne sans ISBN : non importée, à cataloguer à la main."
 msgstr "Línea sin ISBN: no importada, catalóguela a mano."
 
-#: templates/catalog/excel_catalog/detail.html:131
+#: templates/catalog/excel_catalog/detail.html:151
 msgid "ISBN invalide (ni 10 ni 13 chiffres) : ligne non importée."
 msgstr "ISBN inválido (ni 10 ni 13 cifras): línea no importada."
 
-#: templates/catalog/excel_catalog/detail.html:135
+#: templates/catalog/excel_catalog/detail.html:155
 msgid ""
 "Code externe déjà porté par un autre exemplaire : code ignoré, le reste de "
 "la ligne est importé."
@@ -2860,7 +2997,7 @@ msgstr ""
 "Código externo ya usado por otro ejemplar: se ignora el código, el resto de "
 "la fila se importa."
 
-#: templates/catalog/excel_catalog/detail.html:139
+#: templates/catalog/excel_catalog/detail.html:159
 msgid ""
 "Code externe refusé : il doit être alphanumérique et faire 20 caractères au "
 "plus. Le reste de la ligne est importé."
@@ -2868,9 +3005,47 @@ msgstr ""
 "Código externo rechazado: debe ser alfanumérico y tener como máximo 20 "
 "caracteres. El resto de la fila se importa."
 
+#: templates/catalog/excel_catalog/detail.html:163
+msgid ""
+"Aucun exemplaire ne porte ce code Ofelia : ligne ignorée. Vérifiez le code, "
+"ou repartez d'un export récent du catalogue."
+msgstr "Ningún ejemplar lleva este código Ofelia: línea ignorada. Compruebe el código o vuelva a partir de una exportación reciente del catálogo."
+
+#: templates/catalog/excel_catalog/detail.html:167
+msgid ""
+"Aucun exemplaire ne porte ce code externe : ligne ignorée. Un code externe "
+"s'attribue en mise à jour à partir du code Ofelia, ou à la main sur la fiche "
+"de l'exemplaire."
+msgstr "Ningún ejemplar lleva este código externo: línea ignorada. Un código externo se asigna al actualizar a partir del código Ofelia, o a mano en la ficha del ejemplar."
+
+#: templates/catalog/excel_catalog/detail.html:171
+msgid ""
+"Ligne sans code Ofelia ni code externe : impossible de savoir quel "
+"exemplaire mettre à jour."
+msgstr "Línea sin código Ofelia ni código externo: es imposible saber qué ejemplar hay que actualizar."
+
+#: templates/catalog/excel_catalog/detail.html:175
+msgid ""
+"Cette ligne a provoqué une erreur technique et a été laissée de côté ; les "
+"autres lignes du fichier ont bien été traitées."
+msgstr "Esta línea provocó un error técnico y se dejó de lado; las demás líneas del archivo sí se procesaron."
+
+#: templates/catalog/excel_catalog/detail.html:179
+msgid ""
+"Cet ISBN appartient déjà à une autre notice : il n'a pas été repris, le "
+"reste de la ligne est appliqué."
+msgstr "Este ISBN ya pertenece a otro registro: no se aplicó, el resto de la línea sí."
+
+#: templates/catalog/excel_catalog/detail.html:183
+msgid ""
+"Emplacement inconnu : créez-le dans Avancé → Méta-données → Emplacements, ou "
+"corrigez le code. Le reste de la ligne est appliqué."
+msgstr "Ubicación desconocida: créela en Avanzado → Metadatos → Ubicaciones, o corrija el código. El resto de la línea se aplicó."
+
 #: templates/catalog/excel_catalog/index.html:20
-msgid "Vérifier ou importer un fichier Excel d'inventaire."
-msgstr "Verificar o importar un archivo Excel de inventario."
+msgid ""
+"Vérifier, importer, exporter ou mettre à jour un fichier Excel d'inventaire."
+msgstr "Verificar, importar, exportar o actualizar un archivo Excel de inventario."
 
 #: templates/catalog/excel_catalog/index.html:28
 msgid "Vérifier un fichier"
@@ -2880,26 +3055,30 @@ msgstr "Verificar un archivo"
 msgid "Importer dans BibliOfelia"
 msgstr "Importar en BibliOfelia"
 
-#: templates/catalog/excel_catalog/index.html:43
+#: templates/catalog/excel_catalog/index.html:54
+msgid "Mettre à jour des exemplaires"
+msgstr "Actualizar ejemplares"
+
+#: templates/catalog/excel_catalog/index.html:61
 msgid "Travaux récents"
 msgstr "Trabajos recientes"
 
-#: templates/catalog/excel_catalog/index.html:49
+#: templates/catalog/excel_catalog/index.html:67
 #: templates/core/admin/enrichment_index.html:124
 msgid "Lancé le"
 msgstr "Iniciado el"
 
-#: templates/catalog/excel_catalog/index.html:50
+#: templates/catalog/excel_catalog/index.html:68
 #: templates/catalog/record_detail.html:61
 msgid "Type"
 msgstr "Tipo"
 
-#: templates/catalog/excel_catalog/index.html:75
+#: templates/catalog/excel_catalog/index.html:93
 #: templates/core/admin/enrichment_index.html:154
 msgid "Détails"
 msgstr "Detalles"
 
-#: templates/catalog/excel_catalog/index.html:84
+#: templates/catalog/excel_catalog/index.html:102
 msgid "Aucun travail lancé pour l'instant."
 msgstr "Ningún trabajo iniciado por ahora."
 
@@ -3213,7 +3392,7 @@ msgstr "Ver estos ejemplares"
 #: templates/catalog/provenance_confirm_delete.html:37
 #: templates/catalog/record_confirm_delete.html:24
 #: templates/core/dashboard.html:80 templates/core/dashboard.html:187
-#: templates/loans/return.html:4 templates/loans/return.html:18
+#: templates/loans/return.html:4 templates/loans/return.html:42
 #: templates/members/member_history.html:64
 #: templates/partials/_tile_strip.html:40
 msgid "Retour"
@@ -3348,7 +3527,7 @@ msgid "Notices à supprimer"
 msgstr "Fichas a eliminar"
 
 #: templates/catalog/record_bulk_delete.html:48
-#: templates/core/dashboard.html:148 templates/loans/lend.html:84
+#: templates/core/dashboard.html:148 templates/loans/lend.html:96
 #: templates/members/member_detail.html:127
 #: templates/members/member_history.html:24
 msgid "Prêts en cours"
@@ -3464,7 +3643,7 @@ msgid "Liste d'attente"
 msgstr "Lista de espera"
 
 #: templates/catalog/record_detail.html:184 templates/core/dashboard.html:324
-#: templates/loans/return.html:129
+#: templates/loans/return.html:200
 msgid "Membre"
 msgstr "Miembro"
 
@@ -4188,13 +4367,17 @@ msgstr "Impresión"
 msgid ""
 "Génère les étiquettes (code Ofelia + titre + emplacement) à coller sur les "
 "ouvrages. PDF planche A4 ou ruban 62 mm pour l'étiqueteuse Brother QL."
-msgstr "Genera las etiquetas (código Ofelia + título + ubicación) para pegar en los libros. Hoja PDF A4 o cinta de 62 mm para la etiquetadora Brother QL."
+msgstr ""
+"Genera las etiquetas (código Ofelia + título + ubicación) para pegar en los "
+"libros. Hoja PDF A4 o cinta de 62 mm para la etiquetadora Brother QL."
 
 #: templates/core/advanced.html:54
 msgid ""
 "Imprime la cote de la catégorie (« RO FI ADO ») à coller sur la tranche, "
 "pour ranger et retrouver un livre sans le sortir du rayon."
-msgstr "Imprime la signatura de la categoría («RO FI ADO») para pegar en el lomo, y así ordenar y encontrar un libro sin sacarlo del estante."
+msgstr ""
+"Imprime la signatura de la categoría («RO FI ADO») para pegar en el lomo, y "
+"así ordenar y encontrar un libro sin sacarlo del estante."
 
 #: templates/core/advanced.html:63 templates/printing/cards_picker.html:14
 msgid "Cartes membres"
@@ -4277,7 +4460,9 @@ msgstr "Metadatos"
 msgid ""
 "Les listes de référence du catalogue : elles alimentent les menus déroulants "
 "des notices et des exemplaires."
-msgstr "Las listas de referencia del catálogo: alimentan los menús desplegables de los registros y los ejemplares."
+msgstr ""
+"Las listas de referencia del catálogo: alimentan los menús desplegables de "
+"los registros y los ejemplares."
 
 #: templates/core/advanced.html:165
 msgid ""
@@ -4426,16 +4611,16 @@ msgid "Lecteurs inscrits, cartes et historique"
 msgstr "Lectores registrados, tarjetas e historial"
 
 #: templates/core/dashboard.html:71 templates/loans/lend.html:4
-#: templates/loans/lend.html:18 templates/partials/_tile_strip.html:33
+#: templates/loans/lend.html:30 templates/partials/_tile_strip.html:33
 msgid "Prêt"
 msgstr "Préstamo"
 
-#: templates/core/dashboard.html:72 templates/loans/lend.html:19
+#: templates/core/dashboard.html:72 templates/loans/lend.html:31
 msgid "Enregistrer un nouveau prêt"
 msgstr "Registrar un nuevo préstamo"
 
 #: templates/core/dashboard.html:81 templates/core/dashboard.html:188
-#: templates/loans/return.html:19
+#: templates/loans/return.html:43
 msgid "Enregistrer un retour"
 msgstr "Registrar una devolución"
 
@@ -4573,7 +4758,7 @@ msgstr "Red"
 msgid "Relances à faire"
 msgstr "Recordatorios por enviar"
 
-#: templates/core/dashboard.html:325 templates/loans/return.html:130
+#: templates/core/dashboard.html:325 templates/loans/return.html:201
 #: templates/members/member_detail.html:136
 #: templates/members/member_history.html:32
 #: templates/reports/overdue_list.html:36
@@ -4737,8 +4922,8 @@ msgstr "esperados"
 msgid "Saisir un code Ofelia à la main"
 msgstr "Introducir un código Ofelia a mano"
 
-#: templates/inventory/session_report.html:74 templates/loans/lend.html:40
-#: templates/loans/lend.html:114 templates/loans/return.html:37
+#: templates/inventory/session_report.html:74 templates/loans/lend.html:52
+#: templates/loans/lend.html:126 templates/loans/return.html:61
 msgid "Valider"
 msgstr "Validar"
 
@@ -4814,56 +4999,64 @@ msgstr "Consulta en sala"
 msgid "Compte les documents consultés sans sortie de la bibliothèque."
 msgstr "Cuenta los documentos consultados sin salir de la biblioteca."
 
-#: templates/loans/lend.html:24
+#: templates/loans/lend.html:36
 msgid "1 · Membre"
 msgstr "1 · Miembro"
 
-#: templates/loans/lend.html:37
+#: templates/loans/lend.html:49
 msgid "Scanner ou saisir le n° de carte"
 msgstr "Escanee o introduzca el n.º de tarjeta"
 
-#: templates/loans/lend.html:48 templates/members/member_list.html:61
+#: templates/loans/lend.html:60 templates/members/member_list.html:61
 #: templates/members/member_list.html:62
 msgid "Scanner la carte"
 msgstr "Escanear la tarjeta"
 
-#: templates/loans/lend.html:90
+#: templates/loans/lend.html:102
 msgid "échéance"
 msgstr "vencimiento"
 
-#: templates/loans/lend.html:100
+#: templates/loans/lend.html:112
 msgid "2 · Livres"
 msgstr "2 · Libros"
 
-#: templates/loans/lend.html:111
+#: templates/loans/lend.html:123
 msgid "Scanner le code-barres du livre"
 msgstr "Escanee el código de barras del libro"
 
-#: templates/loans/lend.html:122
+#: templates/loans/lend.html:134
 msgid "Scanner un livre"
 msgstr "Escanear un libro"
 
-#: templates/loans/lend.html:129
+#: templates/loans/lend.html:141
 msgid "Panier"
 msgstr "Carrito"
 
-#: templates/loans/lend.html:154
+#: templates/loans/lend.html:163 templates/loans/return.html:128
+msgid "Ofelia"
+msgstr "Ofelia"
+
+#: templates/loans/lend.html:165 templates/loans/return.html:133
+msgid "Externe"
+msgstr "Código externo"
+
+#: templates/loans/lend.html:182
 msgid "Aucun livre scanné pour l'instant."
 msgstr "Ningún libro escaneado por ahora."
 
-#: templates/loans/lend.html:160
+#: templates/loans/lend.html:188
 msgid "3 · Confirmer"
 msgstr "3 · Confirmar"
 
-#: templates/loans/lend.html:166
+#: templates/loans/lend.html:194
 msgid "Note (facultatif)"
 msgstr "Nota (opcional)"
 
-#: templates/loans/lend.html:167
+#: templates/loans/lend.html:195
 msgid "Ex. : override réservation"
 msgstr "Ej.: anular reserva"
 
-#: templates/loans/lend.html:172
+#: templates/loans/lend.html:200
 #, python-format
 msgid "Prêter %(n)s livre"
 msgid_plural "Prêter %(n)s livres"
@@ -4933,55 +5126,70 @@ msgstr "Exp."
 msgid "Aucune réservation en attente."
 msgstr "Ninguna reserva pendiente."
 
-#: templates/loans/return.html:25
+#: templates/loans/return.html:49
 msgid "Scanner un livre à rendre"
 msgstr "Escanear un libro para devolver"
 
-#: templates/loans/return.html:34
+#: templates/loans/return.html:58
 msgid "Scanner le code-barres du livre rendu"
 msgstr "Escanee el código de barras del libro devuelto"
 
-#: templates/loans/return.html:53
+#: templates/loans/return.html:77
 msgid "Retours de la séance"
 msgstr "Devoluciones de la sesión"
 
-#: templates/loans/return.html:57
+#: templates/loans/return.html:81
 msgid "Vider"
 msgstr "Vaciar"
 
-#: templates/loans/return.html:71
-msgid "perdu réintégré"
-msgstr "perdido reintegrado"
+#: templates/loans/return.html:112
+msgid "Rendu par"
+msgstr "Devuelto por"
 
-#: templates/loans/return.html:72
-msgid "aucun prêt actif"
-msgstr "ningún préstamo activo"
+#: templates/loans/return.html:121
+#, python-format
+msgid "%(n)s an"
+msgid_plural "%(n)s ans"
+msgstr[0] "%(n)s año"
+msgstr[1] "%(n)s años"
 
-#: templates/loans/return.html:81
+#: templates/loans/return.html:138
+msgid "Aucun prêt actif — rien à solder"
+msgstr "Ningún préstamo activo — nada que saldar"
+
+#: templates/loans/return.html:140
+msgid "Retour effectué — livre perdu réintégré au fonds"
+msgstr "Devolución registrada — libro perdido reintegrado al fondo"
+
+#: templates/loans/return.html:142
+msgid "Retour effectué"
+msgstr "Devolución registrada"
+
+#: templates/loans/return.html:152
 msgid "À temps"
 msgstr "A tiempo"
 
-#: templates/loans/return.html:91
+#: templates/loans/return.html:162
 msgid "Réservations à relancer"
 msgstr "Reservas por reactivar"
 
-#: templates/loans/return.html:108
+#: templates/loans/return.html:179
 #, python-format
 msgid "%(n)s jour de retard"
 msgid_plural "%(n)s jours de retard"
 msgstr[0] "%(n)s día de retraso"
 msgstr[1] "%(n)s días de retraso"
 
-#: templates/loans/return.html:110
+#: templates/loans/return.html:181
 msgid "Expire aujourd'hui"
 msgstr "Vence hoy"
 
-#: templates/loans/return.html:112
+#: templates/loans/return.html:183
 #, python-format
 msgid "Encore %(n)s jours"
 msgstr "Quedan %(n)s días"
 
-#: templates/loans/return.html:118
+#: templates/loans/return.html:189
 msgid ""
 "Contacter ces membres pour qu'ils viennent retirer leur livre avant qu'il ne "
 "reparte au suivant."
@@ -5232,7 +5440,10 @@ msgid ""
 "L'impression ruban est désactivée : seule la planche A4 est disponible ici. "
 "Activez-la dans Paramètres → Impressions — Ruban continu pour imprimer les "
 "cotes à l'étiqueteuse."
-msgstr "La impresión en cinta está desactivada: aquí solo está disponible la hoja A4. Actívela en Ajustes → Impresiones — Cinta continua para imprimir las signaturas en la etiquetadora."
+msgstr ""
+"La impresión en cinta está desactivada: aquí solo está disponible la hoja "
+"A4. Actívela en Ajustes → Impresiones — Cinta continua para imprimir las "
+"signaturas en la etiquetadora."
 
 #: templates/printing/spine_labels_picker.html:27
 msgid "Cote imprimée"
@@ -5371,11 +5582,6 @@ msgstr[1] "%(count)s préstamos atrasados."
 #: templates/reports/overdue_list.html:21
 msgid "Seuil (jours)"
 msgstr "Umbral (días)"
-
-#: templates/reports/overdue_list.html:37
-#: templates/reports/reservations_pickup.html:37
-msgid "Exemplaire"
-msgstr "Ejemplar"
 
 #: templates/reports/overdue_list.html:39
 #: templates/reports/reservations_pickup.html:33

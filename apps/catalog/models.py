@@ -672,6 +672,8 @@ class EnrichmentJob(models.Model):
 class ExcelJobMode(models.TextChoices):
     VERIFY = "verify", _("Vérification")
     IMPORT = "import", _("Import")
+    # FEAT-079 : met à jour des exemplaires existants, n'en crée jamais.
+    UPDATE = "update", _("Mise à jour")
 
 
 class ExcelJobState(models.TextChoices):
@@ -690,6 +692,8 @@ class ExcelCatalogJob(models.Model):
       de bord sur le catalogue.
     - IMPORT : matérialise une liste d'ISBN en notices + exemplaires via une
       ScanSession virtuelle (réutilise `finalize_scan_session`).
+    - UPDATE (FEAT-079) : met à jour des exemplaires **existants**, retrouvés
+      par leur code Ofelia et/ou leur code externe. Aucune création.
     """
 
     mode = models.CharField(max_length=10, choices=ExcelJobMode.choices)
@@ -712,6 +716,11 @@ class ExcelCatalogJob(models.Model):
     matched_by_ta = models.PositiveIntegerField(default=0)
     not_found = models.PositiveIntegerField(default=0)
     errors = models.PositiveIntegerField(default=0)
+    # FEAT-079 (mode UPDATE) : lignes dont l'exemplaire a bien été retrouvé,
+    # séparées selon qu'elles ont changé quelque chose ou non. Sans ce partage,
+    # « 300 lignes traitées » ne dit pas si le fichier a eu un effet.
+    updated = models.PositiveIntegerField(default=0)
+    unchanged = models.PositiveIntegerField(default=0)
     # BUG-019 : lignes où une source a atteint son quota (429) pendant la
     # vérification → résultat potentiellement incomplet, à relancer plus tard.
     rate_limited = models.PositiveIntegerField(default=0)

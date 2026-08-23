@@ -52,15 +52,28 @@ fichier « perd » des livres sans que rien ne l'indique (105 lignes → 104 not
 {% endcomment %}
 {% if job.mode == "import" and job.errors %}
 <div class="card" style="background:#FBECEC;border:1px solid #B83232;margin-bottom:16px">
-    <strong style="color:#B83232">{% icon "alert-triangle" size="16px" %}
+    <strong style="color:#B83232">{% icon "triangle-alert" size="16px" %}
         {% blocktrans count n=job.errors %}{{ n }} ligne non importée{% plural %}{{ n }} lignes non importées{% endblocktrans %}</strong>
     <p style="margin:6px 0 0">{% trans "Ces lignes ont un ISBN manquant ou invalide : l'import se fait par ISBN, elles n'ont donc pas été ajoutées au catalogue. Le détail est listé plus bas — cataloguez ces livres à la main." %}</p>
 </div>
 {% endif %}
 
+{% comment %}
+FEAT-079 : même logique en mise à jour — une ligne dont l'exemplaire n'a pas été
+retrouvé n'est PAS créée (c'est le principe du mode). Si personne ne le dit, le
+bibliothécaire croit avoir corrigé des livres qui n'ont pas bougé.
+{% endcomment %}
+{% if job.mode == "update" and job.errors %}
+<div class="card" style="background:#FBECEC;border:1px solid #B83232;margin-bottom:16px">
+    <strong style="color:#B83232">{% icon "triangle-alert" size="16px" %}
+        {% blocktrans count n=job.errors %}{{ n }} ligne non appliquée{% plural %}{{ n }} lignes non appliquées{% endblocktrans %}</strong>
+    <p style="margin:6px 0 0">{% trans "L'exemplaire de ces lignes n'a pas été retrouvé, ou la ligne ne porte aucun code d'identification. La mise à jour ne crée jamais d'exemplaire : ces lignes n'ont rien modifié. Le détail est listé plus bas." %}</p>
+</div>
+{% endif %}
+
 {% if job.rate_limited %}
 <div class="card" style="background:var(--amber-light);border:1px solid var(--amber);margin-bottom:16px">
-    <strong>{% icon "alert-triangle" size="16px" %} {% trans "Quota Google Books atteint" %}</strong>
+    <strong>{% icon "triangle-alert" size="16px" %} {% trans "Quota Google Books atteint" %}</strong>
     <p style="margin:6px 0 0">{% blocktrans with n=job.rate_limited %}{{ n }} ligne(s) ont pu rester incomplètes car le quota d'une source en ligne (Google Books) a été atteint (colonne SOURCE_BY_ISBN = RATE_LIMITED). Relancez la vérification demain — le quota se réinitialise chaque jour.{% endblocktrans %}</p>
 </div>
 {% endif %}
@@ -74,6 +87,9 @@ fichier « perd » des livres sans que rien ne l'indique (105 lignes → 104 not
         <div><dt>{% trans "Trouvées par ISBN" %}</dt><dd>{{ job.matched_by_isbn }}</dd></div>
         <div><dt>{% trans "Trouvées par titre+auteur" %}</dt><dd>{{ job.matched_by_ta }}</dd></div>
         <div><dt>{% trans "Non trouvées" %}</dt><dd>{{ job.not_found }}</dd></div>
+        {% elif job.mode == "update" %}
+        <div><dt>{% trans "Exemplaires modifiés" %}</dt><dd>{{ job.updated }}</dd></div>
+        <div><dt>{% trans "Lignes sans changement" %}</dt><dd>{{ job.unchanged }}</dd></div>
         {% else %}
         <div><dt>{% trans "Notices complétées" %}</dt><dd>{{ job.matched_by_isbn }}</dd></div>
         <div><dt>{% trans "Notices créées" %}</dt><dd>{{ job.not_found }}</dd></div>
@@ -108,7 +124,11 @@ fichier « perd » des livres sans que rien ne l'indique (105 lignes → 104 not
         <thead>
             <tr>
                 <th>{% trans "Ligne" %}</th>
+                {% if job.mode == "update" %}
+                <th>{% trans "Exemplaire" %}</th>
+                {% else %}
                 <th>ISBN</th>
+                {% endif %}
                 <th>{% trans "Détail" %}</th>
             </tr>
         </thead>
@@ -116,7 +136,7 @@ fichier « perd » des livres sans que rien ne l'indique (105 lignes → 104 not
             {% for entry in job.report %}
             <tr>
                 <td>{{ entry.row|default:"—" }}</td>
-                <td>{{ entry.isbn|default:"—" }}</td>
+                <td>{{ entry.code|default:entry.isbn|default:"—" }}</td>
                 <td>
                     {% if entry.global_error %}
                         <span style="color:#B83232">{{ entry.global_error }}</span>
@@ -137,6 +157,30 @@ fichier « perd » des livres sans que rien ne l'indique (105 lignes → 104 not
                         {% elif "EXTERNAL_CODE_INVALID" in entry.warning %}
                         <div class="help-hint" style="margin-top:4px">
                             {% trans "Code externe refusé : il doit être alphanumérique et faire 20 caractères au plus. Le reste de la ligne est importé." %}
+                        </div>
+                        {% elif entry.warning == "OFELIA_CODE_UNKNOWN" %}
+                        <div class="help-hint" style="margin-top:4px">
+                            {% trans "Aucun exemplaire ne porte ce code Ofelia : ligne ignorée. Vérifiez le code, ou repartez d'un export récent du catalogue." %}
+                        </div>
+                        {% elif entry.warning == "EXTERNAL_CODE_UNKNOWN" %}
+                        <div class="help-hint" style="margin-top:4px">
+                            {% trans "Aucun exemplaire ne porte ce code externe : ligne ignorée. Un code externe s'attribue en mise à jour à partir du code Ofelia, ou à la main sur la fiche de l'exemplaire." %}
+                        </div>
+                        {% elif entry.warning == "NO_KEY" %}
+                        <div class="help-hint" style="margin-top:4px">
+                            {% trans "Ligne sans code Ofelia ni code externe : impossible de savoir quel exemplaire mettre à jour." %}
+                        </div>
+                        {% elif entry.warning == "ROW_ERROR" %}
+                        <div class="help-hint" style="margin-top:4px">
+                            {% trans "Cette ligne a provoqué une erreur technique et a été laissée de côté ; les autres lignes du fichier ont bien été traitées." %}
+                        </div>
+                        {% elif "ISBN_CONFLICT" in entry.warning %}
+                        <div class="help-hint" style="margin-top:4px">
+                            {% trans "Cet ISBN appartient déjà à une autre notice : il n'a pas été repris, le reste de la ligne est appliqué." %}
+                        </div>
+                        {% elif "LOCATION_UNKNOWN" in entry.warning %}
+                        <div class="help-hint" style="margin-top:4px">
+                            {% trans "Emplacement inconnu : créez-le dans Avancé → Méta-données → Emplacements, ou corrigez le code. Le reste de la ligne est appliqué." %}
                         </div>
                         {% endif %}
                         {% if entry.label %}<div class="help-hint">{{ entry.label }}</div>{% endif %}

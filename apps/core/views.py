@@ -4,13 +4,16 @@ from __future__ import annotations
 from datetime import date, timedelta
 from urllib.parse import urlencode
 
+from django.contrib import messages
 from django.contrib.auth.decorators import login_required
 from django.db.models import Q
 from django.shortcuts import redirect, render
 from django.urls import reverse
+from django.utils.translation import gettext as _
 from django.views.decorators.http import require_POST
 
 from apps.catalog.lookup import find_item
+from apps.members.lookup import find_member, is_replaced_card
 from apps.catalog.models import BibliographicRecord, Item
 from apps.loans.models import Loan, LoanStatus, Reservation, ReservationStatus
 from apps.members.models import Member
@@ -115,8 +118,22 @@ def global_search(request):
     if item:
         return redirect("catalog:record_detail", pk=item.record_id)
     if kind == "member":
-        member = Member.objects.filter(card_number=value).first()
+        # FEAT-081 : `find_member` accepte la carte courante ET l'ancienne carte
+        # qu'elle remplace. L'écran de prêt le faisait déjà ; ici, scanner une
+        # carte réimprimée ne rendait rien et partait en recherche plein texte.
+        member = find_member(value)
         if member:
+            if is_replaced_card(member, value):
+                messages.info(
+                    request,
+                    _("Carte remplacée : %(old)s. %(name)s utilise désormais la "
+                      "carte n° %(new)s.")
+                    % {
+                        "old": value,
+                        "name": member.full_name,
+                        "new": member.card_number,
+                    },
+                )
             return redirect("members:detail", pk=member.pk)
     elif kind == "isbn":
         record = (

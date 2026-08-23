@@ -42,10 +42,14 @@ def member_list(request):
     q = (request.GET.get("q") or "").strip()
     members = Member.objects.select_related("category")
     if q:
+        # FEAT-081 : `replaces_card_number` dans la recherche, sinon scanner une
+        # ancienne carte sur cet écran ne remonte aucune ligne — alors que le
+        # prêt, lui, reconnaît la même carte.
         members = members.filter(
             Q(first_name__icontains=q)
             | Q(last_name__icontains=q)
             | Q(card_number__icontains=q)
+            | Q(replaces_card_number__icontains=q)
         )
     category = request.GET.get("category") or ""
     if category:
@@ -172,9 +176,20 @@ def member_edit(request, pk):
 @require_role(*WRITE_ROLES)
 def member_replace_card(request, pk):
     member = get_object_or_404(Member, pk=pk)
+    old_number = member.card_number
     new_number = replace_card(member)
     messages.success(
         request, _("Nouvelle carte émise : n° %(card)s.") % {"card": new_number}
+    )
+    # FEAT-081 : le numéro change en base, mais la carte physique dans la poche
+    # de l'usager porte encore l'ancien. Sans ce rappel, on découvre le décalage
+    # au comptoir, des jours plus tard, en scannant une carte qui n'est plus la
+    # bonne. L'ancien numéro reste reconnu partout (`find_member`) et signalé.
+    messages.warning(
+        request,
+        _("La carte n° %(old)s est désormais l'ancienne : imprimez la nouvelle "
+          "carte et remettez-la à l'usager. En attendant, l'ancienne reste "
+          "reconnue au scan et le signale.") % {"old": old_number},
     )
     return redirect("members:detail", pk=member.pk)
 

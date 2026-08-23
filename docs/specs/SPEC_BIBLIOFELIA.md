@@ -4,7 +4,9 @@ Spécification détaillée du logiciel de gestion de bibliothèque BibliOfelia, 
 
 Version : 1.0 (cible v1)
 Statut : draft pour Spec-Driven Development
-Dernière modif spec : 2026-08-22 — **Sprint 29 CLOS** (validé Val 2026-08-22) : **FEAT-075** — **deux écrans d'étiquettes** au lieu d'un : « Étiquettes codes Ofelia » (PDF A4 ou ruban) et « Étiquettes de tranche » (ruban seul, colonnes *Catégorie* et *Cote imprimée*), même sélection d'exemplaires partagée (`_picker_context` + `printing/_picker_base.html`) ; le bouton « Générer PDF » devient « **PDF A4** » ; les cotes de tranche sont **condensées à 60 % en largeur, hauteur inchangée** (`SPINE_WIDTH_SCALE`) pour tenir sur les tranches minces, et disposent elles aussi d'une **planche A4**. — **FEAT-076** — nouveau chapitre **« Méta-données »** dans le menu Avancé (emplacements, langues, catégories, provenances, enrichissement), extrait du chapitre Inventaire. — **FEAT-077** — **logo compact** dans la topbar (`ofelia-logo-small.png`, l'emblème seul : ~30 px de large au lieu de ~104) et **date + heure de la Box** à droite du « Bonjour » sur l'accueil, la Box perdant son horloge à chaque extinction (pas de pile RTC). L'heure affichée est **celle du serveur**, rafraîchie à partir de l'horodatage rendu — jamais celle du poste, sans quoi un poste à l'heure masquerait une Box déréglée. `TIME_ZONE` devient réglable : variable d'environnement **`TZ`** par instance (défaut `UTC` inchangé, c'est ainsi que la Box prend le fuseau du Pi), surchargeable par un réglage **Avancé → Paramètres → Fuseau horaire**. L'heure est suivie de l'abréviation du fuseau (`CEST`, `-03`…). Cf. §6.6, §6.7, §10.1, §10.2.
+Dernière modif spec : 2026-08-23 — **Sprint 30** : **FEAT-078** — **export Excel de tout le catalogue** depuis l'écran Catalogage Excel, **une ligne par exemplaire**, avec exactement les colonnes que l'import sait relire plus les codes qui identifient l'exemplaire (`OFELIA_CODE`, `INTERNAL_ID`). Téléchargement **synchrone** (aucun appel réseau, c'est une lecture de base) et `openpyxl` en mode `write_only`. — **FEAT-079** — **mise à jour d'exemplaires existants** à partir d'un `.xlsx` : même formulaire que l'import mais **ne crée jamais rien**, une ligne dont l'exemplaire est introuvable est signalée et laissée de côté. Clé de ligne : **code Ofelia et/ou code externe**, et si les deux sont présents **le code Ofelia identifie l'exemplaire, auquel le code externe de la ligne est appliqué** — c'est ainsi qu'on attribue des codes externes en masse. Nouveau mode `ExcelJobMode.UPDATE` + compteurs `updated` / `unchanged` (migration `catalog/0020`). Corollaire de l'export : `TYPE`, `CONDITION`, `CATEGORY` et `TAGS` se relisent désormais dans **toutes** les langues de l'instance, le fichier étant écrit dans la langue du bibliothécaire alors que le job tourne dans le worker, en français. — **FEAT-080** — les écrans de **prêt** et de **retour** identifient désormais complètement ce qui vient d'être scanné : le panier de prêt affiche titre + auteur + **les deux codes** de l'exemplaire (Ofelia et externe), et le journal de retour y ajoute **qui rapporte le livre** (photo, nom, prénom, âge quand ils existent) et une mention explicite « Retour effectué ». `ReturnResult` transporte le prêt soldé et `Member` gagne une propriété `age` (aucune migration). — **FEAT-081** — une **ancienne carte d'usager** (`replaces_card_number`) est désormais reconnue par les **trois** écrans qui résolvent un numéro de carte (accueil, liste des usagers, prêt) et non plus par le seul prêt, via un résolveur partagé `apps/members/lookup.py::find_member` — pendant de `find_item` pour les exemplaires. Le passage par l'ancienne carte est **signalé** à l'écran, et le remplacement d'une carte rappelle qu'il faut **réimprimer** la nouvelle : sans quoi le décalage entre la base et la carte en poche se découvre au comptoir, des jours plus tard. Cf. §5.2, §6.2, §6.3, §6.12.
+
+Modif précédente : 2026-08-22 — **Sprint 29 CLOS** (validé Val 2026-08-22) : **FEAT-075** — **deux écrans d'étiquettes** au lieu d'un : « Étiquettes codes Ofelia » (PDF A4 ou ruban) et « Étiquettes de tranche » (ruban seul, colonnes *Catégorie* et *Cote imprimée*), même sélection d'exemplaires partagée (`_picker_context` + `printing/_picker_base.html`) ; le bouton « Générer PDF » devient « **PDF A4** » ; les cotes de tranche sont **condensées à 60 % en largeur, hauteur inchangée** (`SPINE_WIDTH_SCALE`) pour tenir sur les tranches minces, et disposent elles aussi d'une **planche A4**. — **FEAT-076** — nouveau chapitre **« Méta-données »** dans le menu Avancé (emplacements, langues, catégories, provenances, enrichissement), extrait du chapitre Inventaire. — **FEAT-077** — **logo compact** dans la topbar (`ofelia-logo-small.png`, l'emblème seul : ~30 px de large au lieu de ~104) et **date + heure de la Box** à droite du « Bonjour » sur l'accueil, la Box perdant son horloge à chaque extinction (pas de pile RTC). L'heure affichée est **celle du serveur**, rafraîchie à partir de l'horodatage rendu — jamais celle du poste, sans quoi un poste à l'heure masquerait une Box déréglée. `TIME_ZONE` devient réglable : variable d'environnement **`TZ`** par instance (défaut `UTC` inchangé, c'est ainsi que la Box prend le fuseau du Pi), surchargeable par un réglage **Avancé → Paramètres → Fuseau horaire**. L'heure est suivie de l'abréviation du fuseau (`CEST`, `-03`…). Cf. §6.6, §6.7, §10.1, §10.2.
 
 Modif précédente : 2026-08-22 — **Sprint 29, 1re vague** : **FEAT-074** — **suppression du chemin d'impression CUPS**. Le bouton « Imprimer (CUPS) » de l'écran d'étiquettes renvoyait un **403 CSRF** (POST forcé sur un formulaire `method="get"` sans jeton) et n'a donc jamais fonctionné ; sur le fond, `submit_to_cups()` suppose une imprimante visible depuis le serveur, alors que l'étiqueteuse est sur le poste du bibliothécaire et le serveur hors de la bibliothèque. Vue, route, `submit_to_cups()`, réglages `CUPS_*`, `pycups`/`libcups2` et l'étape « Imprimante » du wizard sont retirés ; le PDF (planche A4 ou ruban 62 mm) devient l'unique chemin d'impression. Le wizard passe de **8 à 7 étapes**. Cf. §2.1, §6.7, §11.3.
 
@@ -538,13 +540,18 @@ Index dédiés :
 - `Loan(due_date, status)` pour rapports retards
 - FTS5 virtuel sur `(title, subtitle, summary, authors_concat)` via triggers sync (`catalog_record_fts`, migration `catalog/0002_fts5`). `authors_concat` est un `group_concat(full_name, ' ')` resynchronisé sur ajout/suppression M2M `BibliographicRecord.authors`.
 
-#### ExcelCatalogJob (FEAT-050)
+#### ExcelCatalogJob (FEAT-050, FEAT-079)
 Travail de catalogage à partir d'un fichier Excel (migration `catalog/0009_excel_catalog_job`).
-- `mode` (`verify` / `import`), `state` (`pending`/`running`/`finished`/`failed`)
+- `mode` (`verify` / `import` / **`update`** FEAT-079), `state` (`pending`/`running`/`finished`/`failed`)
 - `uploaded_file`, `result_file` (`media/excel_jobs/AAAA/MM/`)
 - `scan_session` (FK `ScanSession`, SET_NULL — mode IMPORT uniquement)
 - `total`, `processed`, `matched_by_isbn`, `matched_by_ta`, `not_found`, `errors`, `rate_limited` (BUG-019 — lignes incomplètes pour cause de quota 429 ; migration `catalog/0010`)
-- `report` (JSON list — avertissements par ligne)
+- **`updated`, `unchanged`** (FEAT-079, migration `catalog/0020`) — mode UPDATE :
+  lignes dont l'exemplaire a été retrouvé, séparées selon qu'elles ont changé
+  quelque chose ou non. Sans ce partage, « 300 lignes traitées » ne dit pas si le
+  fichier a eu un effet.
+- `report` (JSON list — avertissements par ligne ; clé `code` en mode UPDATE là
+  où les autres modes posent `isbn`)
 - `created_at`, `finished_at`, `created_by` (User, SET_NULL)
 - Logique : `apps/catalog/excel_catalog.py` (cf. §6.12). Tâche django-q2
   `run_excel_catalog_job(job_id)` idempotente (garde `state != PENDING`).
@@ -912,13 +919,50 @@ jamais affichée ne rend service à personne.
   - CASCADE manuel : `member.loans.all().delete()`, `member.reservations.all().delete()`, `member.consultations.all().delete()` (les FK sont `PROTECT`, on cascade explicitement dans la vue).
   - `member.delete()`.
 
+#### Résolution d'un numéro de carte (FEAT-081)
+
+Tout écran qui accepte un numéro de carte scanné ou saisi passe par
+**`apps.members.lookup.find_member`** — pendant de `apps.catalog.lookup.find_item`
+pour les exemplaires. Deux numéros désignent le même usager :
+
+1. sa **carte courante** (`card_number`) ;
+2. l'**ancienne carte** qu'elle remplace (`replaces_card_number`, posée par
+   `services.replace_card`).
+
+La carte courante est essayée en premier : si un numéro était à la fois carte
+d'un usager et ancienne carte d'un autre, le **porteur actuel** gagne. La saisie
+est normalisée (`normalize_code` : casse, tirets, espaces).
+
+Appelants : `core:search` (accueil), `members:list` (via
+`replaces_card_number__icontains`), `loans:lend` (étape carte). Avant FEAT-081,
+seul le prêt acceptait l'ancienne carte : le même code-barres ouvrait la fiche
+au prêt et ne rendait rien depuis l'accueil.
+
+**Signalement.** Quand la résolution passe par l'ancienne carte, l'écran affiche
+« Carte remplacée : *ancien n°*. *Prénom Nom* utilise désormais la carte
+n° *nouveau n°*. » — une carte périmée ne doit pas continuer à fonctionner en
+silence.
+
+**Remplacement de carte.** `replace_card` archive l'ancien numéro et en génère
+un neuf dans la plage de séquence `900 000 000+` (compteur
+`Setting.next_replacement_card_seq`), là où la carte initiale vaut
+`build_ean13("291", member.pk)`. L'écran rappelle ensuite qu'il faut **imprimer
+la nouvelle carte** : le numéro change en base, la carte physique dans la poche
+de l'usager porte encore l'ancien.
+
 ### 6.3 Prêts et retours
 
 #### Workflow de prêt
 1. Bibliothécaire ouvre l'écran "Prêt"
 2. Scan ou saisie de la carte membre (BUG-014 : la touche **Entrée** dans le champ texte soumet bien la saisie manuelle ; le bouton « Scanner » est `type="button"` et un submit caché reprend l'implicit submission HTML)
 3. Affichage de la fiche membre, prêts actifs, messages en attente, alertes (retards, carte expirante)
-4. Scan ou saisie des EAN13 des livres (idem BUG-014)
+4. Scan ou saisie des codes des livres (idem BUG-014). Le code peut être le
+   **code Ofelia** (EAN13 `290…`) **ou le code Ofelia externe** (FEAT-063) :
+   toutes les entrées passent par `apps.catalog.lookup.find_item`.
+   **FEAT-080** — chaque ligne du panier affiche alors *titre*, *auteur(s)*,
+   *code Ofelia* **et** *code externe*, quel que soit celui qui a été scanné :
+   c'est ce qui permet de vérifier qu'ils désignent bien le même livre. Le code
+   interne `OFL-…` n'y figure pas — il n'est imprimé sur aucune étiquette.
 5. Pour chaque livre, vérifications :
    - Exemplaire `available`
    - Pas de réservation prioritaire d'un autre usager (sinon alerte + override possible avec note)
@@ -930,11 +974,39 @@ jamais affichée ne rend service à personne.
 
 #### Workflow de retour
 1. Bibliothécaire ouvre l'écran "Retour"
-2. Scan des EAN13 des livres
+2. Scan du code du livre — code Ofelia **ou** code externe (`find_item`)
 3. Pour chaque exemplaire : recherche du Loan actif, marquage `returned`, mise à jour Item.status
 4. Si l'exemplaire a une réservation en attente : passage en `reserved_for_pickup`, alerte affichée
 5. Si retour en retard : note automatique, statistique
 6. Validation finale
+
+**FEAT-080 — journal de la séance.** Chaque retour y est identifié en entier :
+
+- **qui rapporte le livre** : photo (pastille neutre à défaut), nom, prénom, et
+  **âge** s'il est calculable, le tout cliquable vers la fiche usager ;
+- **titre** et **auteur(s)** de la notice ;
+- **code Ofelia** et **code externe** de l'exemplaire ;
+- une mention explicite de l'issue : « Retour effectué », « Retour effectué —
+  livre perdu réintégré au fonds », ou « Aucun prêt actif — rien à solder ».
+
+Le message flash est nominatif lui aussi : « Retour effectué : *titre*, rendu par
+*Prénom Nom*. »
+
+Deux points d'implémentation :
+- `ReturnResult` transporte le **prêt soldé** (`loan`). Sans lui, la vue reprend
+  la main quand le prêt est déjà `returned` et ne peut plus nommer l'emprunteur.
+  Pour la **réintégration d'un livre perdu**, le prêt est lu **avant** l'`update()`
+  de masse qui le solde, sans quoi ce serait le seul retour anonyme.
+- Le journal vit en **session** (JSON) : une entrée antérieure à FEAT-080 n'a pas
+  les nouvelles clés, le gabarit teste donc la présence de chacune et se rabat sur
+  `internal_id` pour le code.
+
+`Member.age` (FEAT-080) : âge en **années révolues**, `None` sans date de
+naissance. Contrairement à `MemberFamilyMember.age` qui n'a qu'une année et
+approxime, l'anniversaire pas encore passé est décompté. **Le sexe n'est pas
+affiché : `Member` n'a pas ce champ** — seules les personnes rattachées à une
+carte en ont un (`MemberFamilyMember.gender`, FEAT-072), et elles n'empruntent
+pas.
 
 #### Renouvellement
 - Depuis la fiche membre ou la liste des prêts en cours
@@ -956,7 +1028,7 @@ jamais affichée ne rend service à personne.
 - Aucune facturation automatique (à décider par la bibliothèque)
 
 #### Retour différé d'un livre déclaré perdu
-- Possible depuis l'écran de retour : si on scanne un EAN13 d'un Item `lost`, on propose la "réintégration"
+- Possible depuis l'écran de retour : si on scanne le code d'un Item `lost`, on propose la "réintégration"
 - Loan.status `lost` reste, mais Item.status repasse à `available`
 - Audit log conserve la trace
 
@@ -1876,12 +1948,21 @@ RUNNING / FINISHED / FAILED), `mode`, `sources` (JSON list), `scope_filter`
 `rate_limited` (BUG-019 — notices non complétées pour cause de quota 429,
 rejouables), `report` (JSON list), `created_by` (User, SET_NULL).
 
-### 6.12 Catalogage Excel (FEAT-050, FEAT-053)
+### 6.12 Catalogage Excel (FEAT-050, FEAT-053, FEAT-078, FEAT-079)
 
-Deux outils sous **Avancé → Inventaire → Catalogage Excel**
+**Quatre outils** sous **Avancé → Inventaire → Catalogage Excel**
 (`catalog:excel_catalog_index`, rôle **librarian + superadmin**) pour traiter un
-fonds existant fourni sous forme de tableur `.xlsx`. Les jobs s'exécutent en
-tâche django-q2 (`apps.catalog.excel_catalog.run_excel_catalog_job`).
+fonds existant fourni sous forme de tableur `.xlsx` :
+
+| Outil | Route | Exécution | Crée des données ? |
+|---|---|---|---|
+| Vérifier un fichier | `excel_catalog_verify` | job django-q2 | non |
+| Importer dans BibliOfelia | `excel_catalog_import` | job django-q2 | **oui** (notices + exemplaires) |
+| Exporter le catalogue (FEAT-078) | `excel_catalog_export` | **synchrone** | non |
+| Mettre à jour des exemplaires (FEAT-079) | `excel_catalog_update` | job django-q2 | **non, jamais** |
+
+Les trois modes de job s'exécutent en tâche django-q2
+(`apps.catalog.excel_catalog.run_excel_catalog_job`, dispatch sur `job.mode`).
 
 **Pourquoi** : beaucoup de bibliothèques Ofelia arrivent avec un inventaire
 Excel (ID maison, titre, auteur, ISBN parfois incomplet). FEAT-031 ne couvre
@@ -1998,6 +2079,94 @@ Pipeline :
    restent **inchangés** (l'override est spécifique à l'import Excel).
 5. Enrichissement métadonnées **non automatique** (lancer un job FEAT-031
    ensuite si besoin).
+
+**Mode EXPORT (FEAT-078)** — téléchargement direct de tout le catalogue,
+**une ligne par exemplaire** (`apps/catalog/excel_export.py`).
+
+Colonnes, dans cet ordre : `OFELIA_CODE` (`Item.ean13`), `INTERNAL_ID`
+(`Item.internal_id`), `EXTERNAL_CODE`, `ISBN` (13 sinon 10), `TITLE`, `AUTHOR`
+(joints par `; `), `CATEGORY`, `CATEGORY_ABBR`, `TYPE` (libellé traduit),
+`EDITOR`, `YEAR`, `LANGUAGE`, `TAGS` (joints par `, `), `CONDITION` (libellé
+traduit), `PROVENANCE` (code), `LOCATION` (code). Ce sont **exactement** les
+colonnes que l'import et la mise à jour savent relire, plus les deux codes
+d'identification : le fichier exporté se renvoie tel quel dans « Mettre à jour
+des exemplaires ».
+
+Tri : titre de notice puis code interne. En-têtes en gras, `freeze_panes = "A2"`,
+largeurs de colonne posées. Nom du fichier : `catalogue-AAAA-MM-JJ.xlsx`.
+
+Une notice à trois exemplaires sort sur trois lignes — l'emplacement, l'état, la
+provenance et le code externe appartiennent à l'exemplaire, pas à la fiche. Une
+notice **sans** exemplaire n'a pas de ligne.
+
+*Choix d'implémentation* : export **synchrone** (pas de job) parce qu'il ne fait
+aucun appel réseau — c'est une lecture de base, largement dans le `--timeout 60`
+de gunicorn pour un catalogue Ofelia. `openpyxl` en mode `write_only` +
+`.iterator(chunk_size=500)` : les lignes partent au fichier au fil de
+l'itération au lieu de s'empiler en mémoire.
+
+**Mode UPDATE (FEAT-079)** — met à jour des exemplaires **existants**.
+**Ne crée jamais de notice ni d'exemplaire** : une ligne dont l'exemplaire est
+introuvable est comptée en erreur et listée dans le rapport. C'est cette
+garantie qui permet de renvoyer un export corrigé sans risquer de dupliquer la
+bibliothèque. (Seule création possible, héritée de l'import : les **tags**
+absents — un tag est une étiquette libre, pas une entrée de référentiel.)
+
+*Identification de la ligne* — au moins une colonne clé doit être présente dans
+le fichier, sinon l'upload est refusé sans créer de job :
+- `OFELIA_CODE` — accepte l'**EAN13 « 290… »** (code-barres de l'étiquette) **et**
+  le **code interne « OFL-… »** (code lisible imprimé à côté). Alias :
+  `CODE_OFELIA`, `CODE OFELIA`, `OFELIA`, `EAN13`, `EAN_13`.
+- `INTERNAL_ID` — colonne dédiée au code interne, lue si `OFELIA_CODE` est vide.
+  Alias : `CODE_INTERNE`, `CODE INTERNE`, `INTERNALID`, `ID_OFELIA`.
+- `EXTERNAL_CODE` — code Ofelia externe (FEAT-063), normalisé avant recherche.
+
+| Cas | Comportement |
+|---|---|
+| Code Ofelia seul | exemplaire retrouvé par EAN13 puis par code interne |
+| Code externe seul | exemplaire retrouvé par `external_code` |
+| **Les deux renseignés** | **le code Ofelia identifie l'exemplaire**, et le code externe de la ligne **lui est appliqué** — c'est la façon d'attribuer des codes externes en masse |
+| Code Ofelia inconnu | `OFELIA_CODE_UNKNOWN`, ligne ignorée — **pas de repli sur le code externe** : la ligne désigne mal son exemplaire, mieux vaut le dire que modifier au jugé |
+| Code externe inconnu | `EXTERNAL_CODE_UNKNOWN`, ligne ignorée |
+| Aucun code sur la ligne | `NO_KEY`, ligne ignorée |
+| Ligne entièrement vide | ignorée en silence (openpyxl en compte après les données) |
+
+*Champs modifiables* : toutes les colonnes d'override de l'import (`TITLE`,
+`AUTHOR`, `CATEGORY`, `CATEGORY_ABBR`, `TYPE`, `EDITOR`, `YEAR`, `LANGUAGE`,
+`TAGS`, `CONDITION`, `PROVENANCE`, `EXTERNAL_CODE`) **plus `LOCATION` et
+`ISBN`** — en import ISBN est la clé et LOCATION n'est posée qu'à la création,
+ici ce sont des champs comme les autres. **Sémantique identique à l'import** :
+cellule remplie → remplace, **cellule vide → laisse en place** (le fichier ne
+vide jamais un champ) ; `AUTHOR` et `TAGS` remplacent sans fusionner. Les champs
+de notice valent pour **tous** les exemplaires de cette notice.
+
+*Avertissements par ligne* : `ISBN_CONFLICT` (ISBN-13 déjà porté par une autre
+notice — non repris, sans quoi la contrainte d'unicité ferait tomber le lot
+entier), `EXTERNAL_CODE_DUPLICATE`, `LOCATION_UNKNOWN`, `CATEGORY_UNKNOWN`,
+`PROVENANCE_UNKNOWN`, `TYPE_UNKNOWN`, `CONDITION_UNKNOWN`, `YEAR_INVALID`,
+`ISBN_INVALID`, `EXTERNAL_CODE_INVALID`, `CATEGORY_ABBR_ORPHAN` — valeur
+ignorée, **reste de la ligne appliqué**. Un avertissement n'est pas une erreur :
+`errors` ne compte que les lignes qui n'ont rien pu appliquer, et la page de
+détail affiche un bandeau rouge « N lignes non appliquées » dès `errors > 0`.
+
+*Robustesse* : **une transaction par ligne** (une ligne qui casse → `ROW_ERROR`,
+les autres passent) ; référentiels chargés une seule fois pour tout le fichier ;
+sauvegarde partielle toutes les 10 lignes ; `save(update_fields=…)` sur les
+seuls champs réellement modifiés.
+
+**Résolutions insensibles à la langue (FEAT-078/079)** — l'export écrit `TYPE`,
+`CONDITION` et `CATEGORY` dans la langue du bibliothécaire, alors que le job de
+relecture tourne dans le **worker django-q2**, en français. Sans quoi un fichier
+exporté en espagnol reviendrait avec `TYPE_UNKNOWN` et `CATEGORY_UNKNOWN` sur
+chaque ligne. Trois helpers partagés par l'import **et** la mise à jour :
+- `_translated_label_aliases()` — libellés de `DocumentType` / `ItemState` dans
+  toutes les langues de `settings.LANGUAGES` → valeur (construit une fois par
+  processus). Les alias FR écrits à la main gardent la priorité.
+- `_resolve_category()` — cherche le nom dans **tous** les champs `name_<lang>`
+  de modeltranslation, puis à défaut par **code** de catégorie.
+- `_get_or_create_tag()` — même recherche multi-langue avant de créer, sinon un
+  fichier espagnol recréerait chaque tag en double, le libellé espagnol logé
+  dans le champ français.
 
 **Sources — `search(title, author, limit=5)`** : ajouté à chaque module de
 `apps/catalog/sources/` (en plus de `lookup(isbn)`). OpenLibrary

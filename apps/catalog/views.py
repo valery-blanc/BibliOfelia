@@ -1377,9 +1377,19 @@ def scan_session_commit(request, pk):
 
 @require_role(*WRITE_ROLES)
 def excel_catalog_index(request):
-    """Page de garde : 2 outils (Vérifier / Importer) + jobs récents."""
+    """Page de garde : 4 outils + jobs récents.
+
+    Vérifier / Importer (FEAT-050), Exporter (FEAT-078) et Mettre à jour les
+    exemplaires (FEAT-079). Le compteur d'exemplaires est affiché sur la carte
+    d'export : c'est ce que le fichier contiendra, et ça évite de télécharger
+    pour découvrir un classeur vide.
+    """
     jobs = ExcelCatalogJob.objects.filter(created_by=request.user)[:10]
-    return render(request, "catalog/excel_catalog/index.html", {"jobs": jobs})
+    return render(
+        request,
+        "catalog/excel_catalog/index.html",
+        {"jobs": jobs, "item_count": Item.objects.count()},
+    )
 
 
 def _start_excel_job(request, mode):
@@ -1425,6 +1435,41 @@ def excel_catalog_import_create(request):
         return redirect("catalog:excel_catalog_index")
     messages.success(request, _("Import lancé. Suivez l'avancement ici."))
     return redirect("catalog:excel_catalog_detail", pk=job.pk)
+
+
+@require_POST
+@require_role(*WRITE_ROLES)
+def excel_catalog_update_create(request):
+    """FEAT-079 : lance une mise à jour d'exemplaires à partir d'un .xlsx."""
+    job = _start_excel_job(request, ExcelJobMode.UPDATE)
+    if job is None:
+        return redirect("catalog:excel_catalog_index")
+    messages.success(request, _("Mise à jour lancée. Suivez l'avancement ici."))
+    return redirect("catalog:excel_catalog_detail", pk=job.pk)
+
+
+@require_role(*WRITE_ROLES)
+def excel_catalog_export(request):
+    """FEAT-078 : télécharge tout le catalogue en .xlsx (1 ligne/exemplaire).
+
+    Synchrone : l'export ne fait aucun appel réseau (contrairement à la
+    vérification), c'est une lecture de base — passer par la file django-q2
+    ajouterait une page d'attente pour quelques secondes de travail.
+    """
+    from django.http import HttpResponse
+
+    from .excel_export import build_catalog_workbook
+
+    content = build_catalog_workbook()
+    resp = HttpResponse(
+        content,
+        content_type=(
+            "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet"
+        ),
+    )
+    filename = f"catalogue-{timezone.localdate().isoformat()}.xlsx"
+    resp["Content-Disposition"] = f'attachment; filename="{filename}"'
+    return resp
 
 
 @require_role(*WRITE_ROLES)

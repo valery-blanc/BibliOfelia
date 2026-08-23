@@ -1,0 +1,22 @@
+{% load i18n biblio_icons %}
+{# FEAT-078 : export de tout le catalogue, une ligne par exemplaire. #}
+<div class="excel-form">
+    <p class="muted text-sm" style="margin-bottom:14px">
+        {% blocktrans count n=item_count %}Télécharge la totalité du catalogue dans un fichier .xlsx : <strong>{{ n }} exemplaire</strong>, une ligne par exemplaire.{% plural %}Télécharge la totalité du catalogue dans un fichier .xlsx : <strong>{{ n }} exemplaires</strong>, une ligne par exemplaire.{% endblocktrans %}
+    </p>
+    <p class="muted text-sm" style="margin-bottom:14px">
+        {% trans "Le fichier porte exactement les colonnes que BibliOfelia sait relire, plus les codes qui identifient l'exemplaire (OFELIA_CODE, INTERNAL_ID). C'est le point de départ d'une correction en masse : exportez, corrigez dans Excel, renvoyez le fichier par « Mettre à jour les exemplaires »." %}
+    </p>
+    <ul class="excel-cols">
+        <li><strong>OFELIA_CODE</strong>, <strong>INTERNAL_ID</strong>, <strong>EXTERNAL_CODE</strong></li>
+        <li><strong>ISBN</strong>, <strong>TITLE</strong>, <strong>AUTHOR</strong>, <strong>EDITOR</strong>, <strong>YEAR</strong>, <strong>LANGUAGE</strong></li>
+        <li><strong>CATEGORY</strong>, <strong>CATEGORY_ABBR</strong>, <strong>TYPE</strong>, <strong>TAGS</strong></li>
+        <li><strong>CONDITION</strong>, <strong>PROVENANCE</strong>, <strong>LOCATION</strong></li>
+    </ul>
+    <div class="form-actions" style="border:0;padding:0;margin-top:14px">
+        <a href="{% url 'catalog:excel_catalog_export' %}" class="btn btn--primary">
+            {% icon "book-down" size="16px" %} {% trans "Exporter le catalogue" %}
+        </a>
+    </div>
+    <p class="excel-hint">{% trans "Une notice en plusieurs exemplaires sort sur plusieurs lignes : l'emplacement, l'état, la provenance et le code externe appartiennent à l'exemplaire, pas à la fiche." %}</p>
+</div>

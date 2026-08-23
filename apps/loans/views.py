@@ -11,6 +11,7 @@ from django.views.decorators.http import require_POST
 from apps.accounts.models import Role
 from apps.accounts.permissions import require_role
 from apps.catalog.lookup import find_item
+from apps.members.lookup import find_member, is_replaced_card
 from apps.catalog.models import BibliographicRecord, Item
 from apps.core.search import normalize_code
 from apps.members.models import Member
@@ -45,8 +46,12 @@ def lend(request):
     if member_pk:
         member = Member.objects.filter(pk=member_pk).select_related("category").first()
     basket_ids = request.session.get("lend_basket", [])
+    # FEAT-080 : le panier affiche titre + auteur + code Ofelia + code externe,
+    # d'où le prefetch des auteurs (sinon une requête par livre scanné).
     basket = list(
-        Item.objects.filter(pk__in=basket_ids).select_related("record")
+        Item.objects.filter(pk__in=basket_ids)
+        .select_related("record")
+        .prefetch_related("record__authors")
     )
     context = {
         "member": member,
@@ -68,12 +73,21 @@ def _lend_post(request):
 
     if action == "set_member":
         card = normalize_code(request.POST.get("card", ""))
-        member = Member.objects.filter(card_number=card).first()
-        if not member:
-            member = Member.objects.filter(
-                replaces_card_number=card
-            ).first()
+        # FEAT-081 : même résolveur que l'accueil et la liste des usagers, pour
+        # que les trois écrans répondent pareil au même code-barres.
+        member = find_member(card)
         if member:
+            if is_replaced_card(member, card):
+                messages.info(
+                    request,
+                    _("Carte remplacée : %(old)s. %(name)s utilise désormais la "
+                      "carte n° %(new)s.")
+                    % {
+                        "old": card,
+                        "name": member.full_name,
+                        "new": member.card_number,
+                    },
+                )
             request.session["lend_member"] = member.pk
             request.session["lend_basket"] = []
         else:
@@ -175,16 +189,43 @@ def return_items(request):
 
 
 def _process_return(request):
+    """FEAT-080 : le journal de la séance identifie complètement chaque retour.
+
+    Titre, auteur, les **deux** codes de l'exemplaire et surtout **qui rapporte
+    le livre** : au comptoir, c'est la personne en face du bibliothécaire, et
+    l'écran ne la nommait nulle part. Le journal vit en session (JSON) : les
+    entrées écrites avant cette version n'ont pas les nouvelles clés, le gabarit
+    doit donc les afficher vides plutôt que planter.
+    """
     ean = normalize_code(request.POST.get("ean", ""))
-    item = find_item(ean, Item.objects.select_related("record"))
+    item = find_item(
+        ean,
+        Item.objects.select_related("record").prefetch_related("record__authors"),
+    )
     if not item:
         messages.error(request, _("Exemplaire introuvable : %(ean)s.") % {"ean": ean})
         return
     result = return_item(item, request.user)
+    member = result.loan.member if result.loan else None
     log = request.session.get("return_log", [])
     entry = {
         "title": item.record.title,
+        "authors": ", ".join(a.full_name for a in item.record.authors.all()[:3]),
         "internal_id": item.internal_id,
+        "ean13": item.ean13,
+        "external_code": item.external_code,
+        "member": member.full_name if member else "",
+        "member_pk": member.pk if member else None,
+        # Demande Val : reconnaître la personne au comptoir. Chaque champ est
+        # facultatif côté base ("" / None) et le gabarit ne l'affiche que s'il
+        # est renseigné. `Member` n'a pas de champ sexe (seules les personnes
+        # rattachées à une carte en ont un, FEAT-072) : il n'y a rien à afficher.
+        "member_last_name": member.last_name if member else "",
+        "member_first_name": member.first_name if member else "",
+        "member_age": member.age if member else None,
+        "member_photo": (
+            member.photo.url if member and member.photo else ""
+        ),
         "kind": result.kind,
         "overdue": result.was_overdue,
         "reservation": result.reservation.member.full_name if result.reservation else "",
@@ -193,10 +234,18 @@ def _process_return(request):
     request.session["return_log"] = log
     if result.kind == "no_loan":
         messages.warning(request, _("Aucun prêt actif pour cet exemplaire."))
-    elif result.kind == "reintegrated":
-        messages.success(request, _("Livre perdu réintégré au fonds."))
+    elif member:
+        messages.success(
+            request,
+            _("Retour effectué : %(title)s, rendu par %(member)s.")
+            % {"title": item.record.title, "member": member.full_name},
+        )
     else:
-        messages.success(request, _("Retour enregistré : %(t)s.") % {"t": item.record.title})
+        messages.success(
+            request, _("Retour effectué : %(title)s.") % {"title": item.record.title}
+        )
+    if result.kind == "reintegrated":
+        messages.success(request, _("Livre perdu réintégré au fonds."))
     if result.reservation:
         messages.warning(
             request,

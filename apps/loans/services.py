@@ -183,6 +183,11 @@ class ReturnResult:
     kind: str  # "returned" | "reintegrated" | "no_loan"
     was_overdue: bool = False
     reservation: Reservation | None = None
+    # FEAT-080 : le prêt soldé, pour que l'écran de retour puisse nommer la
+    # personne qui rapporte le livre. Sans lui, la seule façon de la retrouver
+    # était de rouvrir la fiche de l'exemplaire — alors qu'on vient tout juste
+    # de la connaître.
+    loan: Loan | None = None
 
 
 @transaction.atomic
@@ -191,16 +196,27 @@ def return_item(item: Item, librarian=None) -> ReturnResult:
     livre perdu (réintégration) et la satisfaction des réservations."""
     if item.status == ItemStatus.LOST:
         # Retour différé d'un livre déclaré perdu (SPEC §6.3).
+        # FEAT-080 : on lit le prêt **avant** de le solder, sinon le `update()`
+        # de masse ne laisse aucun moyen de dire qui rapporte le livre.
+        lost_loan = (
+            Loan.objects.filter(item=item, status=LoanStatus.LOST)
+            .select_related("member")
+            .order_by("-loan_date")
+            .first()
+        )
         Loan.objects.filter(item=item, status=LoanStatus.LOST).update(
             return_date=timezone.now()
         )
         item.status = ItemStatus.AVAILABLE
         item.save(update_fields=["status"])
         reservation = satisfy_reservations_for_item(item)
-        return ReturnResult(item=item, kind="reintegrated", reservation=reservation)
+        return ReturnResult(
+            item=item, kind="reintegrated", reservation=reservation, loan=lost_loan
+        )
 
     loan = (
         Loan.objects.filter(item=item, status__in=_OPEN_LOAN_STATUSES)
+        .select_related("member")
         .order_by("-loan_date")
         .first()
     )
@@ -218,7 +234,11 @@ def return_item(item: Item, librarian=None) -> ReturnResult:
     item.save(update_fields=["status"])
     reservation = satisfy_reservations_for_item(item)
     return ReturnResult(
-        item=item, kind="returned", was_overdue=was_overdue, reservation=reservation
+        item=item,
+        kind="returned",
+        was_overdue=was_overdue,
+        reservation=reservation,
+        loan=loan,
     )
 
 

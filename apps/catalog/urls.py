@@ -84,6 +84,18 @@ urlpatterns = [
         views.excel_catalog_import_create,
         name="excel_catalog_import",
     ),
+    # FEAT-078 : export Excel de tout le catalogue (téléchargement direct)
+    path(
+        "excel-catalog/export/",
+        views.excel_catalog_export,
+        name="excel_catalog_export",
+    ),
+    # FEAT-079 : mise à jour d'exemplaires existants à partir d'un .xlsx
+    path(
+        "excel-catalog/update/",
+        views.excel_catalog_update_create,
+        name="excel_catalog_update",
+    ),
     path("excel-catalog/<int:pk>/", views.excel_catalog_detail, name="excel_catalog_detail"),
     path(
         "excel-catalog/<int:pk>/download/",

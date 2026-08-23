@@ -135,6 +135,24 @@ class Member(models.Model):
         return f"{self.first_name} {self.last_name}".strip()
 
     @property
+    def age(self) -> int | None:
+        """FEAT-080 : âge en années révolues, None si la date de naissance manque.
+
+        Contrairement à `MemberFamilyMember.age`, qui n'a qu'une année de
+        naissance et approxime, on a ici la date complète : on décompte
+        l'anniversaire pas encore passé, sinon un usager né en décembre
+        paraîtrait un an plus vieux pendant onze mois.
+        """
+        if not self.birth_date:
+            return None
+        today = date.today()
+        return (
+            today.year
+            - self.birth_date.year
+            - ((today.month, today.day) < (self.birth_date.month, self.birth_date.day))
+        )
+
+    @property
     def is_active(self) -> bool:
         return self.status == MemberStatus.ACTIVE
 
