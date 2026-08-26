@@ -1,0 +1,51 @@
+# Fins de ligne — BUG-040
+#
+# Le poste de développement est sous Windows avec `core.autocrlf = true`. Sans
+# ce fichier, `git archive` et les exports produisent des fichiers en CRLF, et
+# un `\r` dans un shebang rend le script introuvable pour le noyau Linux :
+#
+#     [FATAL tini] exec /app/scripts/entrypoint.sh failed: No such file or directory
+#
+# alors que le fichier existe et qu'il est exécutable. Le message désigne en
+# réalité l'interpréteur, que le noyau cherche sous le nom « /bin/sh\r ».
+#
+# Constaté le 2026-08-26 en remontant la Ofelia Box sur une carte neuve : 680
+# fichiers en CRLF, dont 5 scripts à shebang, et BibliOfelia qui redémarrait en
+# boucle avec le code 127.
+
+# Par défaut, git décide seul de ce qui est du texte ; on garde ce comportement
+# mais on impose LF dans le dépôt.
+* text=auto eol=lf
+
+# Tout ce qui est exécuté ou interprété sous Linux, sans ambiguïté possible.
+*.sh          text eol=lf
+*.py          text eol=lf
+*.yml         text eol=lf
+*.yaml        text eol=lf
+*.toml        text eol=lf
+*.cfg         text eol=lf
+*.ini         text eol=lf
+Dockerfile*   text eol=lf
+entrypoint*   text eol=lf
+Makefile      text eol=lf
+
+# Les fichiers de traduction sont lus par gettext, qui n'aime pas les CRLF.
+*.po          text eol=lf
+*.pot         text eol=lf
+
+# Binaires : jamais de conversion, elle les corromprait.
+*.mo          binary
+*.png         binary
+*.jpg         binary
+*.jpeg        binary
+*.gif         binary
+*.ico         binary
+*.pdf         binary
+*.woff        binary
+*.woff2       binary
+*.ttf         binary
+*.otf         binary
+*.zip         binary
+*.gz          binary
+*.tgz         binary
+*.sqlite3     binary
