@@ -165,7 +165,7 @@ Pour les détails complets (clés SSH, API tierces, services locaux), lancer le 
 | **ANQA** | `192.168.0.133` | Windows — build, GPU (RTX 5070 Ti) | `ssh -i ~/.ssh/id_ed25519_claude Val@192.168.0.133` |
 | **Fez** | `192.168.0.221` | Debian 24/7 — **nœud actif** : Traefik + instances BibliOfelia (`bo-sanjuan-*`, `bo-grand-saconnex-*`, `bibliofelia-docs`) | `ssh fez` |
 | **Avignon** | `192.168.0.222` | Debian 24/7 — **nœud de secours** du couple failover (aucun conteneur BibliOfelia en marche) | `ssh avignon` |
-| **Tulear** | `192.168.0.200` | Windows — CRM SwissKap, Supabase locale | `ssh -i ~/.ssh/id_ed25519 val@192.168.0.200` |
+| **Tulear** | `192.168.0.200` | Windows — poste de travail : hub repos `C:\WORK`, hub clés SSH | `ssh -i ~/.ssh/id_ed25519_claude val@192.168.0.200` (alias `ssh tulear`) |
 | **GitHub** | `github.com` | Compte `valery-blanc` | `ssh -i ~/.ssh/id_ed25519_github git@github.com` |
 
 Repo BibliOfelia : `https://github.com/valery-blanc/BibliOfelia` (remote `origin`).
