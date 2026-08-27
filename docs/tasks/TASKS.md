@@ -4,7 +4,72 @@ Source de vérité de l'avancement v1. Une case `[x]` = livrable terminé et dé
 
 Mise à jour : 2026-05-26 (Sprint 12 **CLOS** — FEAT-038 (cartes membres : fond crème, logo OFELIA filigrane, photo HG, langue BG, bloc droite), FEAT-039 (étiquettes 70×42 mm, titre wrap 2 lignes, auteurs 2 lignes, logo Ofelia), split paramétrage `labels` → `printing_cards` + `printing_labels`. BUG-013 v2 (sélecteur de langue qui perdait `/bibliofelia/` à chaque déploiement : wrapper `apps/core/i18n_views.py:set_language` force `FORCE_SCRIPT_NAME` + échange code langue même sur URL non résolue). **Gate i18n pérenne** : `scripts/i18n_check.py` exit != 0 si chaîne manquante ; documenté dans CLAUDE.md comme obligatoire avant tout commit ; 207 entrées EN/ES/MG appliquées (Sprints 10-12 incl. FORMS labels enrobés `gettext_lazy`). 304 tests verts (287 → 304). Sprint 11 **CLOS** — — BUG-014 (saisie clavier sur `/loans/lend/` + `/loans/return/` : bouton scan repassé `type="button"` + bouton « Valider » visible séparé pour la saisie clavier), FEAT-034 (UI réservations : liste d'attente PENDING sur fiche notice, expiration affichée sur exemplaires mis de côté, section « Réservations à relancer » sur page Retour, paramètres `default_loan_days`/`reservation_expiry_days`/`pickup_hold_days` exposés dans `/settings/loans/`), FEAT-035 (Setting `default_loan_days` global défaut 21, section « Relances à faire » bas du dashboard avec 10 prêts en retard), FEAT-036 (`Reservation.notified_at` + endpoint `POST /loans/reservations/<pk>/notify/`, page Réservations enrichie code Ofelia / dates avec heure / date limite retrait / police 16-17 px + cadre « Notifications à faire » entre tuiles et bannière scan sur dashboard), BUG-015 (DateInput format ISO `%Y-%m-%d` sur `MemberForm`, sinon locale FR remplit pas l'input HTML5), FEAT-037 (photo membre dans pagehead fiche + miniature sur form, expiration_date = registration_date + 1 an auto JS au change + initial `today + 1 an` à la création). 287 tests verts (266 → 287, +21). Migration `loans/0002_reservation_notified_at`. 5 vagues de déploiement Pi. 2 nouvelles entrées MEMORY (DateInput ISO format, bouton scan type=button + Valider visible). — Sprint 10 **CLOS end-to-end** — FEAT-032 + FEAT-033 validés Val 2026-05-24 sur la Pi, **+ OfeliaScan mobile mis à jour le 2026-05-24** : test prod 18:26 → session récolement scope=A1 reçue d'OfeliaScan avec 16 scans, 16 exemplaires relocate de J1 → A1 automatiquement. Bout-en-bout fonctionnel : catalogage OfeliaScan envoie `location_code`, picker récolement OfeliaScan envoie `scope_type=location` + `scope_location_code`, BibliOfelia déplace les items au scan. FEAT-032 : UI librarian /catalog/locations/ + endpoint GET /api/v1/locations testés OK. FEAT-033 : relocate auto vérifiée via UI web ET via OfeliaScan mobile. Commit `9d4fe83` + push + déploiement Pi (rebuild Docker + migration `0003`). 266 tests verts. — Sprint 8 **CLOS** — FEAT-025 **validé Val 2026-05-23** : refonte design global, 23 templates métiers harmonisés sur le design system OFELIA. Lot A pilote validé en premier (record_detail, member_detail, reports/index, settings_index), puis Lots B+C+D livrés d'un bloc. Helpers CSS ajoutés (`.req`, `.help-hint`, `.field-error`, `.form-control`, `details.advanced-section`, `.isbn-row`, `.form-actions`), `_field.html` migré `.form-row` → `.field`. Découverte d'infra : templates **embarqués au build Docker**, pas bind-mountés → rebuild obligatoire pour tout changement de template (documenté dans FEAT-025). — Sprint 7 **CLOS** — FEAT-024 **validé Val 2026-05-23** : scanner caméra navigateur sur Android Firefox HTTPS OK, fallback OfeliaScan automatique en HTTP LAN, Chrome Android sans Play Store via `S.browser_fallback_url`, bouton Annuler pendant polling. Décision UX : caméra-d'abord automatique, pas de toggle utilisateur. Décision infra : pas de cert auto-signé. 3 commits Pi `d7c8e8f` → `9d2af81` → `e9993a5`. FEAT-023 **validé Val 2026-05-23** : banner dashboard → OfeliaScan ouvre → scan livre → retour BibliOfelia → fiche notice affichée, bout-en-bout fonctionnel. Modèle `ScanHandoff` + endpoints `/api/v1/scan-handoff[/{token}]` + JS `scan-handoff.js` + 4 boutons « Scanner » câblés. BUG-010 entrypoint Dockerfile + BUG-011 CSRF cookie HttpOnly + Chrome Android `intent://` URL résolus. Sprints 3/5/6 clos. Reste pour Sprint 7 : Android-side OfeliaScan déjà fonctionnelle côté Val (intent filter + activity scan-one + POST callback) — implémentation Android terminée hors repo. Prochain sprint : FEAT-024 scanner caméra navigateur (HTTPS).)
 
-## ⏭️ REPRISE — état au 23/08/2026
+## ⏭️ REPRISE — état au 27/08/2026
+
+**Aucun développement BibliOfelia dans cette session** — travail d'**infrastructure du
+parc** (températures CPU, ZeroTier, nettoyage Tulear), consigné dans
+`~/.claude/skills/infra.md`, qui reste la source de vérité pour tout ce qui touche aux
+machines. Ce qui suit ne concerne que le dépôt.
+
+**Dernier commit** : `1321bcf` — correction de la clé SSH de Tulear dans le tableau
+d'infra de `CLAUDE.md` (`id_ed25519` n'existe pas sur le poste, c'est
+`id_ed25519_claude` ; alias `ssh tulear` ajouté). Plus, dans cette clôture, la fiche
+**BUG-040** et sa reprise dans la SPEC — voir ci-dessous.
+
+**Tests : 750 passed**, mesurés sur le **commit de clôture du Sprint 30** — chiffre
+**repris**, pas remesuré : rien d'exécutable n'a bougé depuis. Gate i18n :
+`python scripts/i18n_check.py` = **0** (rejoué le 27/08, aucune chaîne ajoutée).
+
+**Déploiement** : rien à déployer, aucun changement de code. Instances Fez `sanjuan` et
+`grand-saconnex` et Box `edubox-bibliofelia` toujours `healthy` (12 conteneurs debout sur
+la Box, vérifié le 27/08).
+
+### 🩹 Dette documentaire rattrapée dans cette clôture
+
+**BUG-040 était corrigé dans le code depuis le 26/08 (commit `2832c15`) sans exister nulle
+part dans la doc** — ni fiche `docs/bugs/`, ni ligne dans `TASKS.md`, ni mot dans la SPEC,
+alors que `CLAUDE.md` impose les trois. C'est exactement le trou que `/vb-clear` cherche :
+un correctif livré par une session, jamais réconcilié par la suivante. Créés ici :
+`docs/bugs/BUG-040-crlf-shebang.md` + §11.1 de la SPEC + l'entrée ci-dessous.
+
+### 🔴 À FAIRE EN PREMIER
+
+- **Reporter `TZ: ${TZ:-UTC}` dans `C:\WORK\keebee\docker-compose.yml`** (services
+  `bibliofelia` et `bibliofelia-worker`). **Toujours pas fait, hérité du Sprint 29** —
+  revérifié le 27/08 : le fichier de keebee sur le poste n'a **aucune** ligne `TZ`, alors
+  que la Box en a deux (**lignes 248 et 282** de `/opt/edubox/docker-compose.yml`).
+  **La Box est la seule copie de cette modification**, dans un fichier qui appartient à
+  keebee : le prochain déploiement keebee l'écrase.
+  **Signal d'échec** : l'accueil de la Box réaffiche l'heure UTC au lieu de CEST.
+
+### 🧨 Réfuté / corrigé dans cette session
+
+- ⛔ **« L'IP de la Box est passée de `.147` à `.204` »** — faux, corrigé par Val. Elle
+  porte **plusieurs adresses simultanément** : `eth0` `192.168.0.147`, wifi **client**
+  `.204`/`.205`, **hotspot** `192.168.50.1` (connexion NetworkManager `Ofelia-AP`, pas
+  `hostapd`), et depuis le 27/08 **ZeroTier `10.115.169.161`**. La radio ne fait qu'une
+  chose à la fois : quand `Ofelia-AP` est active, la Box **n'a pas** d'adresse en `.20x`.
+  ✅ **`canaima.local` (mDNS) suit l'interface active** ; l'IP ZeroTier est la seule
+  adresse stable. Ne plus écrire « la Box a changé d'IP ».
+- ⛔ **« ZeroTier n'a pas été réinstallé sur la Box »** — faux. Le paquet 1.16.2 était
+  présent et le service actif après le remontage du 26/08 ; il manquait le **`join`**
+  (`networks.d/` vide). Piège : `zerotier-cli` n'est pas dans le `PATH` de l'utilisateur
+  `ofelia`, donc un `which` répond « absent » alors que le binaire est là.
+- 🚫 **ZeroTier restera limité à Tulear + la Box** (décision Val du 27/08). Fez y est en
+  `ACCESS_DENIED` **volontairement** : ce n'est pas un incident, ne pas proposer de
+  l'autoriser.
+
+### ⏳ Ouvert, avec son motif
+
+- **Les 4 « Test fonctionnel Val » du Sprint 26** restent non cochés depuis le 28/08 —
+  motif inchangé : jamais confirmés explicitement par Val, et personne d'autre ne peut
+  cocher un test fonctionnel à sa place.
+- **Les 3 items `[!]` du Sprint 30** (sexe non affiché, bouton « Remplacer la carte »,
+  scan caméra qui rejette le code externe) attendent **un arbitrage de Val**, pas un
+  correctif : les toucher à l'aveugle serait une décision produit prise à sa place.
+- **Captures d'écran du guide utilisateur** : inchangées, aucun écran n'a bougé.
+
+## ⏭️ REPRISE — état au 23/08/2026 *(supplanté par le bloc du 27/08 ci-dessus)*
 
 **Sprint 30 CLOS**, validé par Val le 2026-08-23 (« ok tout fonctionne »).
 Cinq features : **FEAT-078** (export Excel du catalogue), **FEAT-079** (mise à jour
@@ -22,9 +87,12 @@ conteneur `bibliofelia-docs` rebâti pour le guide.
 
 ### 🔴 À FAIRE EN PREMIER
 
-- **L'IP de la Box a changé : `192.168.0.147` → `192.168.0.204`.** Les anciennes fiches
-  et `infra.md` annonçaient `.147`, qui ne répond plus (ni ping ni SSH, depuis le poste
-  comme depuis Fez). **Protocole si elle a encore bougé** : balayer le /24 depuis Fez puis
+- ⛔ **FAUX, corrigé le 27/08 par Val** : « l'IP de la Box a changé de `.147` à `.204` ».
+  La Box porte **plusieurs adresses à la fois** — `eth0` `192.168.0.147`, wifi client
+  `.204`/`.205`, hotspot `192.168.50.1` (connexion NM `Ofelia-AP`), ZeroTier
+  `10.115.169.161`. **La radio ne fait qu'une chose à la fois** : le 23/08 le câble était
+  débranché, d'où le silence de `.147`. Voir le bloc du 27/08. **Protocole de recherche** :
+  balayer le /24 depuis Fez puis
   interroger la route publique, qui identifie la Box sans authentification :
   ```bash
   ssh fez 'for i in $(seq 1 254); do (ping -c1 -W1 192.168.0.$i >/dev/null 2>&1 &); done
@@ -39,7 +107,7 @@ conteneur `bibliofelia-docs` rebâti pour le guide.
   UTC au lieu de CEST. ⚠️ **La sauvegarde `docker-compose.yml.bak-tz` annoncée par le
   Sprint 29 N'EXISTE PLUS** sur la Box (vérifié le 23/08 : seul `docker-compose.yml` est
   là). État constaté le 23/08 : les deux lignes `TZ: ${TZ:-UTC}` sont bien présentes,
-  **lignes 234 et 268**. C'est la seule copie — les relire avant tout déploiement keebee.
+  **lignes 248 et 282** (relevées le 27/08 ; elles bougent à chaque édition du fichier). C'est la seule copie — les relire avant tout déploiement keebee.
 
 ### ⏳ Ouvert, avec son motif
 
@@ -1763,6 +1831,25 @@ du « Bonjour » sur l'accueil — **la Box perd son horloge quand on l'éteint*
       (« c'est bon »), logo (« validé »), heure sur la Box (« ok validé »), puis
       fuseaux et libellés (« c'est ok comme ça »)
 - [x] Commit unique groupé + push origin/main
+
+## Hors sprint — BUG-040 : fins de ligne LF (26/08/2026)
+
+Découvert au remontage de la Box sur carte neuve. Corrigé dans le code le 26/08
+(commit `2832c15`), **documenté seulement le 27/08** lors d'un `/vb-clear` — la
+session qui avait livré le correctif n'avait créé ni fiche ni entrée ici.
+
+- [x] `.gitattributes` à la racine imposant `text eol=lf` (commit `2832c15`)
+- [x] Fiche `docs/bugs/BUG-040-crlf-shebang.md` *(rattrapée le 27/08)*
+- [x] SPEC §11.1 — sous-section « Fins de ligne » *(rattrapée le 27/08)*
+- [x] En-tête de version de la SPEC *(rattrapé le 27/08)*
+
+⚠️ **À retenir** : « No such file or directory » sur un script qui **existe** =
+presque toujours un CRLF dans le shebang. Le message désigne l'**interpréteur**
+(`/bin/sh`), jamais le script. Vérifier : `head -1 <script> | od -c`.
+
+ℹ️ **BUG-039** (la restauration réinstallait du code périmé) est le défaut jumeau
+de la même nuit, mais il vit dans `RESTAURER-OFELIA.sh` — dépôt **ofeliabox**,
+pas ici.
 
 ## Sprint 30 — Export Excel du catalogue + mise à jour d'exemplaires
 
