@@ -6,8 +6,11 @@ Izy no mamela ny fahalalana haingana azy mandritra ny fampindramana.
 ## Manonta karatra tokana
 
 Avy amin'ny [takelakan'ny mpianatra](fiche.md), click amin'ny
-**Hanonta ny karatra** (na mandehana ao amin'ny **Mandroso →
-Fanontana → Karatra**).
+**Hanonta ny karatra (62 mm)**: misokatra ny PDF ruban Brother QL
+amin'ny onglet vaovao.
+
+Ho an'ny planche A4 (karatra maromaro), mandehana ao amin'ny
+**Mandroso → Fanontana → Karatra**.
 
 ## Manonta karatra maro miaraka
 

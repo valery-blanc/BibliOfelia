@@ -20,10 +20,14 @@ Dos rutas para abrir el formulario de inscripción:
 - **Categoría** — Adultos, Niños, Adolescentes… (configurada por el
   administrador). La categoría determina la duración del préstamo
   predeterminada y el número máximo de préstamos simultáneos.
-- **Teléfono**, **correo**, **dirección** (todos opcionales)
+- **Teléfono**, **correo** (opcionales — el correo sirve para
+  facturas y recordatorios)
+- **Dirección** troceada: calle, complemento, código postal,
+  localidad, estado, país (todos opcionales)
 - **Fecha de inscripción** — hoy por defecto
-- **Fecha de expiración** — calculada automáticamente (inscripción
-  + 1 año), modificable
+- **Fecha de expiración** — calculada automáticamente según la
+  validez de la categoría (a menudo 1 año), modificable
+- **Comentario** — en **Opciones avanzadas**, hasta 500 caracteres
 
 !!! tip "Foto del miembro (opcional)"
     Puede añadir una foto del miembro. Aparecerá en la ficha y en la
@@ -66,6 +70,9 @@ Haga clic en **Guardar**. BibliOfelia asigna automáticamente:
 
 - Un **número de tarjeta** único (empieza por 291 — es el código de
   barras de la tarjeta)
+- Una **factura de cuota** si la categoría tiene un importe (0 =
+  gratis, no se emite nada). Véase
+  [Tarifas y categorías de usuarios](../caisse/tarifs.md).
 
 Después puede pasar a la impresión de la tarjeta.
 

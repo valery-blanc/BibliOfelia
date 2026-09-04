@@ -22,10 +22,18 @@ En haut, l'en-tête affiche :
 - **Catégorie** et **numéro de carte**
 - **Badge de statut** : Actif, Inactif ou Carte expirée
 
+Juste sous les boutons, l'encadré **Compte** dit en un coup d'œil si
+l'usager est **à jour**, s'il a un montant **à régler**, ou s'il est
+**en retard** (depuis quelle date). Le détail est ventilé : cotisation,
+animation, amende. Voir [Caisse et factures](../caisse/caisse.md).
+
 Plus bas, une carte récapitulative avec :
 
 - Numéro de carte, catégorie, date d'inscription, date d'expiration,
-  téléphone, email
+  téléphone, email, adresse (rue, code postal, localité, pays)
+
+Un **Commentaire** (jusqu'à 500 caractères) s'affiche s'il a été saisi
+dans **Modifier → Options avancées**.
 
 Et la section **Prêts en cours** qui liste les livres actuellement
 empruntés avec leur titre et leur date de retour.
@@ -37,10 +45,15 @@ Les boutons sous le nom donnent accès aux opérations :
 - **Modifier** — changer les coordonnées, la photo, la catégorie
 - **Historique** — voir tous les prêts passés
 - **Renouveler la carte** — repousser la date d'expiration
-  ([détails](renouvellement.md))
+  ([détails](renouvellement.md)). Le bouton est grisé tant que la
+  carte est encore valable plus de 30 jours.
 - **Remplacer la carte** — attribuer un nouveau numéro de carte (carte
   perdue, volée ou abîmée)
+- **Imprimer la carte (62 mm)** — ouvre le PDF ruban Brother QL dans
+  un nouvel onglet, sans passer par Avancé → Impressions
 - **Désactiver** — geler le compte sans le supprimer
+- **Compte et factures** / **Amende** / **Frais d'animation** — voir
+  [Caisse](../caisse/caisse.md)
 
 ## Voir l'historique
 

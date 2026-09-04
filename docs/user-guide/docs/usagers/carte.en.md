@@ -5,8 +5,11 @@ quickly during a loan.
 
 ## Print a single card
 
-From the [member profile](fiche.md), click **Print card** (or go to
-**Advanced → Printing → Cards**).
+From the [member profile](fiche.md), click **Print card (62 mm)**:
+the Brother QL roll PDF opens in a new tab.
+
+For an A4 sheet (several cards), go to **Advanced → Printing →
+Cards**.
 
 ## Print several cards at once
 

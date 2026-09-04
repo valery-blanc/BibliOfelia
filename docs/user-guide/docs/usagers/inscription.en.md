@@ -20,10 +20,14 @@ Two paths to open the enrollment form:
 - **Category** — Adults, Children, Teens… (configured by the
   administrator). The category sets the default loan duration and the
   maximum number of simultaneous loans.
-- **Phone**, **email**, **address** (all optional)
+- **Phone**, **email** (optional — email is used for invoices and
+  reminders)
+- **Address** split into: street, extra line, postcode, city, state,
+  country (all optional)
 - **Enrollment date** — today by default
-- **Expiration date** — calculated automatically (enrollment + 1
-  year), editable
+- **Expiration date** — calculated automatically from the category's
+  validity (often 1 year), editable
+- **Comment** — under **Advanced options**, up to 500 characters
 
 !!! tip "Member photo (optional)"
     You can add a photo of the member's face. It will appear on the
@@ -67,6 +71,9 @@ Click **Save**. BibliOfelia automatically assigns:
 
 - A unique **card number** (starts with 291 — this is the card's
   barcode)
+- A **membership invoice** if the category has a fee (0 = free,
+  nothing is issued). See
+  [Fees and member categories](../caisse/tarifs.md).
 
 You can then move on to printing the card.
 

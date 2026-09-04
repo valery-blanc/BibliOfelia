@@ -36,6 +36,10 @@ Once the member is identified, BibliOfelia displays their name and
 category. If alerts exist (expired card, too many active loans), they
 appear in yellow just below the name — read them before proceeding.
 
+An **old card** (after a « Replace card ») is still recognised: the
+screen says so, and that is the moment to print the new one. See
+[Member card](../usagers/carte.md).
+
 ## Step 2 — Scan the book
 
 Enter the book(s) to lend the same way:
@@ -48,8 +52,10 @@ Enter the book(s) to lend the same way:
   device's camera.
 
 You can chain several books for the same member — each scan adds a
-line to the basket. To remove a book from the basket, click the cross
-on the right of its line.
+line to the basket. Each line shows the **title**, the **author** and
+**both codes** of the copy (Ofelia and, if any, the external code).
+To remove a book from the basket, click the cross on the right of
+its line.
 
 !!! warning "Common edge cases"
     - **Book already on loan**: a red message appears. Check it is

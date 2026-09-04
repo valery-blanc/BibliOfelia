@@ -38,12 +38,20 @@ Depending on the page, the camera works differently:
 
 ## What the camera reads
 
-The camera only recognises **book and card barcodes** (EAN-13 format, 13
-digits). This is intentional: it makes reading far more reliable and avoids
-false reads. Recognised codes:
+The camera reads the usual **linear barcodes**:
 
-- **ISBNs** on the back of books (starting with 978 or 979);
-- **Ofelia codes** on labels and member cards (starting with 290 or 291).
+- **EAN-13** (ISBN 978/979, Ofelia codes 290/291, ISSN 977, and any
+  other EAN-13 with a valid check digit);
+- **EAN-8**, **UPC-A**, **UPC-E**;
+- **Code128**, **Code39**, **Code93**, **Codabar**, **ITF** — the
+  usual case of **external codes** printed on a library label.
+
+**2D** codes (QR, DataMatrix) stay excluded: a book label is a
+barcode, and enabling them would read any poster in the frame.
+
+A code read twice in a row identically is kept (a net against false
+reads, especially on Code39). The USB scanner and the keyboard accept
+the same formats.
 
 ## The camera won't open?
 

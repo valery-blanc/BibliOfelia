@@ -133,8 +133,9 @@ Reste hors sprint :
 
 ```
 [x] Déploiement Box (Canaima) — fait le 2026-09-04
-[ ] Guide utilisateur : 7 nouveaux écrans + captures prêt/retour
+[x] Guide utilisateur FEAT-091 — 7 écrans ×4 langues + captures, OK Val 2026-09-04
 [ ] Unité systemd d'extinction (keebee/ofeliabox, FEAT-086)
+[ ] SMTP Grand-Saconnex (Avancé → Paramètres → Email)
 ```
 
 ---

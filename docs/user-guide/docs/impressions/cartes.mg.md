@@ -8,6 +8,10 @@ BibliOfelia. Azonao atontana iray na maro miaraka.
 **Mandroso → Fanontana →
 [Karatra](/bibliofelia/mg/printing/cards/){ target="_blank" }**.
 
+Ho an'ny karatra ruban 62 mm **iray**, ny lalana haingana indrindra
+dia ny bokotra **Hanonta ny karatra (62 mm)** eo amin'ny
+[takelakan'ny mpianatra](../usagers/fiche.md).
+
 ![Pejy fisafidianana karatra hatontana](../assets/screenshots/mg/impressions/cards-picker.png)
 
 ## Safidio ireo karatra hatontana

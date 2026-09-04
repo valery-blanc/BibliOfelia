@@ -21,6 +21,15 @@ Las tarjetas [**Préstamo**](/bibliofelia/es/loans/lend/){ target="_blank" } y
 están accesibles desde la barra de navegación en cada página: son las
 acciones más frecuentes, siempre a un clic de distancia.
 
+Otras dos tarjetas, al mismo nivel:
+
+- [**Caja**](/bibliofelia/es/finance/){ target="_blank" } — saldo del
+  cajón, facturas, cobros (véase
+  [Caja y facturas](../caisse/caisse.md))
+- [**Cierre**](/bibliofelia/es/closing/){ target="_blank" } — fin de
+  servicio: actividades, caja del día, correos, copia, apagado de la
+  Box (véase [Cierre del día](../caisse/bouclement.md))
+
 ## Los contadores
 
 Bajo las tarjetas, seis números resumen la actividad del momento:

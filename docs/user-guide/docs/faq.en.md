@@ -105,8 +105,9 @@ profile](usagers/fiche.md), find the loan under **Active loans** and
 click **Lost**. The loan and the copy move to status *Lost*; the
 member keeps their history and can keep borrowing. For a book returned
 too damaged: register the return, then on the [copy
-page](catalogue/exemplaires.md) click **Discard**. BibliOfelia handles
-neither fines nor billing: replacement is up to your internal rules.
+page](catalogue/exemplaires.md) click **Discard**. To bill the
+replacement, open the member profile and click **Fine** (free amount
+and reason). See [Cash desk and invoices](caisse/caisse.md).
 
 ### How do I permanently delete a record from the catalog? { #supprimer-notice }
 
@@ -132,8 +133,30 @@ Track overdues with the **Overdue loans** counter on the dashboard and
 (phone shown on their profile); (2) to block their borrowing,
 temporarily **deactivate** the member from their profile and reactivate
 when the books come back; (3) for an overdue of several months, mark
-the loan **Lost**. BibliOfelia generates no reminder letters: phone,
-SMS or a notice board remain the most effective in a small library.
+the loan **Lost**. You can also add a **manual fine** from the
+profile. BibliOfelia only emails a reminder for an overdue
+**invoice** (once); for a late book without an invoice, phone or SMS
+remain the most effective.
+
+## Cash desk and email
+
+### The membership fee is wrong after a category change
+
+Changing category **realigns** still-open, unpaid membership
+invoices. A fee already paid is not refunded. See
+[Fees](caisse/tarifs.md).
+
+### The screen talks about the Box but we are hosted (Grand-Saconnex…)
+
+On a hosted instance, closing mentions the Box only by mistake. It
+should instead say whether **SMTP** is configured. **Advanced →
+Settings → Email**.
+
+### Can I shut the server down from closing?
+
+Only on the **Ofelia Box**, and only if the shutdown system service
+is installed. On a hosted instance the step does not appear. See
+[End-of-day closing](caisse/bouclement.md).
 
 ## A question not listed?
 

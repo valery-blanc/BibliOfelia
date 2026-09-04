@@ -15,7 +15,9 @@ Depuis la barre de navigation en haut, cliquez sur la tuile
 Scannez les livres rendus l'un après l'autre. Chaque scan :
 
 1. Marque le prêt comme **Retourné**
-2. Affiche brièvement le nom du membre et le titre confirmés
+2. Affiche **qui rapporte le livre** (photo, nom, prénom, âge s'ils
+   existent), le titre, les codes de l'exemplaire, et la mention
+   **Retour effectué**
 3. Vide le champ pour le livre suivant
 
 Vous pouvez enchaîner toute une pile de retours en quelques secondes.

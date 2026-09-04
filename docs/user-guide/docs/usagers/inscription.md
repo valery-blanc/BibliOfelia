@@ -20,10 +20,14 @@ Deux chemins pour ouvrir le formulaire d'inscription :
 - **Catégorie** — Adultes, Enfants, Adolescents… (configurée par
   l'administrateur). La catégorie détermine la durée de prêt par
   défaut et le nombre maximum de prêts simultanés.
-- **Téléphone**, **email**, **adresse** (tous facultatifs)
+- **Téléphone**, **email** (facultatifs — l'email sert aux factures et
+  relances)
+- **Adresse** découpée : rue, complément, code postal, localité, état,
+  pays (tous facultatifs)
 - **Date d'inscription** — date du jour par défaut
-- **Date d'expiration** — calculée automatiquement (inscription + 1
-  an), modifiable
+- **Date d'expiration** — calculée automatiquement selon la validité
+  de la catégorie (souvent 1 an), modifiable
+- **Commentaire** — dans **Options avancées**, jusqu'à 500 caractères
 
 !!! tip "Photo du membre (facultatif)"
     Vous pouvez ajouter une photo du visage du membre. Elle apparaîtra
@@ -69,6 +73,9 @@ Cliquez sur **Enregistrer**. BibliOfelia attribue automatiquement :
 
 - Un **numéro de carte** unique (commence par 291 — c'est le code-barres
   de la carte)
+- Une **facture de cotisation** si la catégorie a un montant (0 =
+  gratuit, rien n'est émis). Voir
+  [Tarifs et Catégories d'usagers](../caisse/tarifs.md).
 
 Vous pouvez ensuite passer à l'impression de la carte.
 

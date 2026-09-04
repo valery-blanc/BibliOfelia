@@ -8,6 +8,9 @@ one or several at a time.
 **Advanced → Printing →
 [Cards](/bibliofelia/en/printing/cards/){ target="_blank" }**.
 
+For **one** 62 mm roll card, the fastest path is the **Print card
+(62 mm)** button on the [member profile](../usagers/fiche.md).
+
 ![Card selection page](../assets/screenshots/en/impressions/cards-picker.png)
 
 ## Choose the cards to print

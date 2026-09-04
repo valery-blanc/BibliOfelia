@@ -21,6 +21,15 @@ Les tuiles [**Prêt**](/bibliofelia/fr/loans/lend/){ target="_blank" } et
 accessibles depuis la barre de navigation tout en haut de chaque page : ce
 sont les gestes les plus fréquents, toujours à portée de clic.
 
+Deux autres tuiles, au même rang :
+
+- [**Caisse**](/bibliofelia/fr/finance/){ target="_blank" } — solde du
+  tiroir, factures, encaissements (voir
+  [Caisse et factures](../caisse/caisse.md))
+- [**Bouclement**](/bibliofelia/fr/closing/){ target="_blank" } — fin de
+  service : activités, caisse du jour, emails, sauvegarde, extinction
+  de la Box (voir [Bouclement](../caisse/bouclement.md))
+
 ## Les compteurs
 
 Sous les tuiles, six chiffres résument l'activité du moment :

@@ -111,8 +111,9 @@ fampindramana sy ny kopia dia mandeha amin'ny toetra *Very*; ny
 mpianatra dia mitazona ny tantarany ary afaka manohy mampindrana. Ho
 an'ny boky naverina simba loatra: soraty ny famerenana, dia eo amin'ny
 [takelakan'ny kopia](catalogue/exemplaires.md) tsindrio **Foanana**.
-Ny BibliOfelia dia tsy mitantana sazy na facturation: anjaranao ny
-fanoloana araka ny fitsipikao anatiny.
+Raha te-hametraka faktiora fanoloana, sokafy ny takelakan'ny
+mpianatra dia tsindrio **Sazy** (vola sy antony malalaka). Jereo
+[Caisse sy faktiora](caisse/caisse.md).
 
 ### Ahoana no fanafoanana notice tanteraka amin'ny boky? { #supprimer-notice }
 
@@ -141,9 +142,29 @@ tabilao sy **Tatitra → Fampindramana tara**. Arakaraka ny halehibe:
 raha hisakana ny fampindramana, **hampijanona** vonjimaika ny
 mpianatra avy amin'ny takelany dia hampandeha indray rehefa miverina
 ny boky; (3) ho an'ny tara volana maro, marika ny fampindramana ho
-**Very**. Ny BibliOfelia dia tsy mamorona taratasy fampandrenesana: ny
-telefonina, SMS na fanambarana no mahomby indrindra amin'ny tranomboky
-kely.
+**Very**. Azonao atao koa ny mametraka **sazy tanana** avy amin'ny
+takelaka. Ny BibliOfelia dia mandefa fampahatsiahivana mailaka ho
+an'ny **faktiora** tara ihany (indray mandeha); ho an'ny boky tara
+tsy misy faktiora, ny telefaonina na SMS no mahomby indrindra.
+
+## Momba ny caisse sy ny mailaka
+
+### Diso ny saram-pianarana aorian'ny fanovana sokajy
+
+Ny fanovana sokajy dia **mampifanaraka** ny faktiora saram-pianarana
+mbola misokatra, tsy naloa. Ny vola efa naloa dia tsy averina. Jereo
+[Saran'ny](caisse/tarifs.md).
+
+### Milaza ny Box ny pejy nefa an-tserasera izahay (Grand-Saconnex…)
+
+Amin'ny instance voarindra, ny famaranana dia tokony hilaza raha
+voamboatra ny **SMTP**. **Avancé → Paramètres → Email**.
+
+### Afaka vonoiko ny serveur avy amin'ny bouclement ve?
+
+Amin'ny **Ofelia Box** ihany, ary raha voapetraka ny service
+d'extinction. Amin'ny instance voarindra dia tsy miseho ny dingana.
+Jereo [Famaranana](caisse/bouclement.md).
 
 ## Fanontaniana tsy voasoratra?
 

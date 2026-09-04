@@ -22,10 +22,19 @@ Any ambony, ny lohateny dia mampiseho:
 - **Sokajy** sy **laharan'ny karatra**
 - **Insigne toetra**: Mavitrika, Tsy mavitrika na Karatra tapitra
 
+Eo ambanin'ny bokotra, ny boaty **Kaonty** dia milaza haingana raha
+**tsy trosa** ny mpianatra, raha misy vola **aloha**, na raha **tara**
+(nanomboka oviana). Ny antsipiriany: saram-pianarana, animation, sazy.
+Jereo [Caisse sy faktiora](../caisse/caisse.md).
+
 Etsy ambany, takelaka famintinana misy:
 
 - Laharan'ny karatra, sokajy, daty fisoratana, daty fahataperana,
-  telefonina, mailaka
+  telefonina, mailaka, adiresy (lalana, kaody paositra, tanàna,
+  firenena)
+
+**Fanamarihana** (hatramin'ny litera 500) dia miseho raha voasoratra
+ao amin'ny **Hanova → Options avancées**.
 
 Ary ny fizarana **Fampindramana mihazo** mametra ireo boky
 nampindramin'ny olona ankehitriny miaraka amin'ny lohateny sy ny
@@ -38,10 +47,15 @@ Ny bokotra eo ambanin'ny anarana dia manome alalana ny asa:
 - **Hanova** — manova ny vaovao fifandraisana, sary, sokajy
 - **Tantara** — mijery ny fampindramana taloha rehetra
 - **Hanavao ny karatra** — manemotra ny daty fahataperana
-  ([antsipirihany](renouvellement.md))
+  ([antsipirihany](renouvellement.md)). Mivolom-boninkazo ny bokotra
+  raha mbola manan-kery mihoatra ny 30 andro ny karatra.
 - **Hanolo ny karatra** — manome laharan-karatra vaovao (karatra
   very, nangalarina na simba)
+- **Hanonta ny karatra (62 mm)** — manokatra ny PDF ruban Brother QL
+  amin'ny onglet vaovao, tsy mila Avancé → Fanontana
 - **Hampijanona** — mametraka kaonty fa tsy mamafa
+- **Kaonty sy faktiora** / **Sazy** / **Saran'ny animation** — jereo
+  [Caisse](../caisse/caisse.md)
 
 ## Jereo ny tantara
 

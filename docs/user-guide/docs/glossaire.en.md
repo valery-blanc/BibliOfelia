@@ -137,6 +137,36 @@ The Android companion app for BibliOfelia. Turns a phone into a
 scanner for barcodes. See [Activate
 OfeliaScan](ofeliascan/activer.md).
 
+### Fine
+
+Amount billed **by hand** from a member profile (reason + amount).
+BibliOfelia never auto-calculates an overdue fine. See
+[Cash desk and invoices](caisse/caisse.md).
+
+### Event
+
+A session with an audience (story time, workshop). Members present
+are counted (scan or last 4 digits of the card) and, separately,
+non-members. See [Activities and events](caisse/activites.md).
+
+### Closing
+
+End of the day's service: activities, till, sends, backup, and on
+the Box only shutdown. See
+[End-of-day closing](caisse/bouclement.md).
+
+### Cash desk
+
+Register of cash in and out, distinct from bank transfers. Till
+balance, invoices, email queue. See
+[Cash desk and invoices](caisse/caisse.md).
+
+### Membership fee
+
+Annual amount carried by the **member category**, billed
+automatically at enrollment and at each renewal. 0 = free. See
+[Fees and member categories](caisse/tarifs.md).
+
 ### Loan
 
 The borrowing of a book by a member, with a return date. See

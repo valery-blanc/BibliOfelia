@@ -21,6 +21,15 @@ sy [**Famerenana**](/bibliofelia/mg/loans/return/){ target="_blank" } koa dia
 azo idirana amin'ny tsipika fitetezana eo amboniny pejy tsirairay: izy ireo
 no asa matetika indrindra, mety amin'ny click iray ihany.
 
+Karatra roa hafa, amin'ny ambaratonga mitovy:
+
+- [**Caisse**](/bibliofelia/mg/finance/){ target="_blank" } — saldo,
+  faktiora, fandoavana (jereo
+  [Caisse sy faktiora](../caisse/caisse.md))
+- [**Bouclement**](/bibliofelia/mg/closing/){ target="_blank" } —
+  faran'ny tolotra: asa, caisse anio, mailaka, backup, famonoana ny
+  Box (jereo [Famaranana ny andro](../caisse/bouclement.md))
+
 ## Ireo kaonty
 
 Eo ambanin'ny karatra, isa enina no mamintina ny asa amin'izao

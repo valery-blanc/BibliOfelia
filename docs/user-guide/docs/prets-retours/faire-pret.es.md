@@ -41,6 +41,10 @@ categoría. Si hay alertas (tarjeta expirada, demasiados préstamos
 activos), aparecen en amarillo justo bajo el nombre — léalas antes
 de continuar.
 
+Una **tarjeta antigua** (tras un « Reemplazar la tarjeta ») sigue
+reconocida: la pantalla lo señala, y es el momento de imprimir la
+nueva. Véase [Tarjeta de miembro](../usagers/carte.md).
+
 ## Paso 2 — Escanear el libro
 
 Introduzca el o los libros a prestar de la misma forma:
@@ -54,8 +58,10 @@ Introduzca el o los libros a prestar de la misma forma:
   para abrir la cámara de su dispositivo.
 
 Puede encadenar varios libros para un mismo miembro — cada escaneo
-añade una línea al carrito. Para retirar un libro del carrito, haga
-clic en la cruz a la derecha de su línea.
+añade una línea al carrito. Cada línea muestra el **título**, el
+**autor** y **los dos códigos** del ejemplar (Ofelia y, si hay, el
+código externo). Para retirar un libro del carrito, haga clic en la
+cruz a la derecha de su línea.
 
 !!! warning "Casos particulares a conocer"
     - **El libro ya está prestado**: aparece un mensaje rojo.

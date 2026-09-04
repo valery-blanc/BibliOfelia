@@ -15,8 +15,9 @@ Avy amin'ny tsipika fitetezana ambony, click amin'ny karatra
 Jereo ireo boky averina iray manarakaraka. Scan tsirairay dia:
 
 1. Misy marika fa **Voaverina** ny fampindramana
-2. Mampiseho vetivety ny anaran'ny mpianatra sy ny lohateny
-   voamarina
+2. Mampiseho **izay mamerina ny boky** (sary, anarana, anaran-drazana,
+   taona raha misy), ny lohateny, ny kaody an'ny kopia, ary ny teny
+   **Famerenana vita**
 3. Manaisotra ny toerana ho an'ny boky manaraka
 
 Azonao atao ny mampifandimby antontana boky famerenana ao anatin'ny

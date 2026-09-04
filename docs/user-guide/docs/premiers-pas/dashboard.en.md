@@ -21,6 +21,15 @@ The [**Lend**](/bibliofelia/en/loans/lend/){ target="_blank" } and
 reachable from the top navigation bar on every page: they are the most
 frequent actions, always one click away.
 
+Two more tiles at the same level:
+
+- [**Cash desk**](/bibliofelia/en/finance/){ target="_blank" } — till
+  balance, invoices, payments (see
+  [Cash desk and invoices](../caisse/caisse.md))
+- [**Closing**](/bibliofelia/en/closing/){ target="_blank" } — end of
+  service: activities, today's till, emails, backup, Box shutdown
+  (see [End-of-day closing](../caisse/bouclement.md))
+
 ## The counters
 
 Below the tiles, six numbers summarize the current activity:

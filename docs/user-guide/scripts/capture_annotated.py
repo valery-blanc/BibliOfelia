@@ -76,19 +76,38 @@ def capture_annotated(
 
 
 def main() -> int:
+    import argparse
+    import os
+
+    parser = argparse.ArgumentParser()
+    parser.add_argument("--base-url", default=os.environ.get("CAPTURE_BASE_URL", BASE_URL))
+    parser.add_argument("--username", default=os.environ.get("CAPTURE_USER", USERNAME))
+    parser.add_argument("--password", default=os.environ.get("CAPTURE_PASSWORD", PASSWORD))
+    args = parser.parse_args()
+
     out_dir = ROOT / "docs" / "assets" / "screenshots" / "fr"
+
+    def do_login(page: Page) -> None:
+        page.goto(f"{args.base_url}/fr/accounts/login/")
+        page.wait_for_load_state("networkidle")
+        page.fill('input[name="username"]', args.username)
+        page.fill('input[name="password"]', args.password)
+        page.click('button[type="submit"]')
+        page.wait_for_load_state("networkidle")
 
     with sync_playwright() as p:
         browser = p.chromium.launch(headless=True)
-        ctx = browser.new_context(viewport=VIEWPORT, locale="fr-FR")
+        ctx = browser.new_context(
+            viewport=VIEWPORT, locale="fr-FR", ignore_https_errors=True
+        )
         page = ctx.new_page()
-        login(page, BASE_URL)
+        do_login(page)
 
         # /loans/lend/ — 4 points cles numerotes
         capture_annotated(
             page,
             out_dir / "prets-retours" / "lend-annotated.png",
-            url=f"{BASE_URL}/fr/loans/lend/",
+            url=f"{args.base_url}/fr/loans/lend/",
             selectors_labels=[
                 ('input[name="card"]', "1"),
                 ('button.js-scan-handoff[data-scan-kind="card"]', "2"),

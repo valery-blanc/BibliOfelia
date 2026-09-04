@@ -15,7 +15,9 @@ From the top navigation bar, click the
 Scan the returned books one after another. Each scan:
 
 1. Marks the loan as **Returned**
-2. Briefly displays the confirmed member name and title
+2. Shows **who is bringing the book back** (photo, first name, last
+   name, age when they exist), the title, the copy codes, and the
+   mention **Return done**
 3. Clears the field for the next book
 
 You can chain a whole pile of returns in seconds.

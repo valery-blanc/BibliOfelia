@@ -38,6 +38,10 @@ Une fois le membre identifié, BibliOfelia affiche son nom et sa catégorie.
 Si des alertes existent (carte expirée, trop de prêts en cours), elles
 apparaissent en jaune juste sous le nom — lisez-les avant de poursuivre.
 
+Une **ancienne carte** (après un « Remplacer la carte ») est encore
+reconnue : l'écran le signale, et c'est le moment d'imprimer la
+nouvelle. Voir [Carte de membre](../usagers/carte.md).
+
 ## Étape 2 — Scanner le livre
 
 Saisissez le ou les livres à prêter de la même façon :
@@ -50,8 +54,10 @@ Saisissez le ou les livres à prêter de la même façon :
   ouvrir la caméra de votre appareil.
 
 Vous pouvez enchaîner plusieurs livres pour un même membre — chaque scan
-ajoute une ligne au panier. Pour retirer un livre du panier, cliquez sur la
-croix à droite de sa ligne.
+ajoute une ligne au panier. Chaque ligne montre le **titre**, l'**auteur**
+et **les deux codes** de l'exemplaire (Ofelia et, s'il y en a un, le
+code externe). Pour retirer un livre du panier, cliquez sur la croix
+à droite de sa ligne.
 
 !!! warning "Cas particuliers à connaître"
     - **Le livre est déjà prêté** : un message rouge s'affiche.

@@ -112,8 +112,9 @@ cliquez sur **Perdu**. Le prêt et l'exemplaire passent au statut
 *Perdu* ; le membre garde son historique et peut continuer
 d'emprunter. Pour un livre rendu trop abîmé : enregistrez le retour,
 puis sur la [fiche de l'exemplaire](catalogue/exemplaires.md) cliquez
-sur **Mettre au rebut**. BibliOfelia ne gère ni amende ni facturation :
-le remplacement relève de vos règles internes.
+sur **Mettre au rebut**. Pour facturer le remplacement, ouvrez la
+fiche du membre et cliquez sur **Amende** (montant et motif libres).
+Voir [Caisse et factures](caisse/caisse.md).
 
 ### Comment supprimer définitivement une notice du catalogue ? { #supprimer-notice }
 
@@ -140,9 +141,30 @@ bord et **Rapports → Prêts en retard**. Selon la gravité : (1) appelez
 le membre (téléphone visible sur sa fiche) ; (2) pour bloquer ses
 emprunts, **désactivez** temporairement le membre depuis sa fiche et
 réactivez-le au retour des livres ; (3) pour un retard de plusieurs
-mois, marquez le prêt **Perdu**. BibliOfelia ne génère pas de lettre de
-relance : téléphone, SMS ou affichage restent les plus efficaces dans
-une petite bibliothèque.
+mois, marquez le prêt **Perdu**. Vous pouvez aussi poser une **amende
+manuelle** depuis la fiche. BibliOfelia n'envoie une relance email que
+pour une **facture** échue (une seule fois) ; pour un livre en retard
+sans facture, téléphone ou SMS restent les plus efficaces.
+
+## Sur la caisse et les emails
+
+### La cotisation n'est pas la bonne après un changement de catégorie
+
+Changer la catégorie **réaligne** les factures de cotisation encore
+ouvertes, sans paiement. Une cotisation déjà réglée n'est pas
+remboursée. Voir [Tarifs](caisse/tarifs.md).
+
+### L'écran parle de la Box alors que nous sommes en ligne (Grand-Saconnex…)
+
+Sur une instance hébergée, le bouclement n'évoque la Box que s'il
+reste un vieux cache — en principe il dit plutôt si le **SMTP** est
+configuré. **Avancé → Paramètres → Email**.
+
+### Puis-je éteindre le serveur depuis le bouclement ?
+
+Seulement sur la **Ofelia Box**, et seulement si le service système
+d'extinction est installé. Sur une instance hébergée, l'étape
+n'apparaît pas. Voir [Bouclement](caisse/bouclement.md).
 
 ## Une question qui n'est pas listée ?
 

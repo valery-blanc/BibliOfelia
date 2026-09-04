@@ -8,6 +8,10 @@ imprimir una sola o varias a la vez.
 **Avanzado → Impresión →
 [Tarjetas](/bibliofelia/es/printing/cards/){ target="_blank" }**.
 
+Para **una** tarjeta de cinta 62 mm, lo más rápido es el botón
+**Imprimir la tarjeta (62 mm)** en la
+[ficha del miembro](../usagers/fiche.md).
+
 ![Página de selección de tarjetas a imprimir](../assets/screenshots/es/impressions/cards-picker.png)
 
 ## Elegir las tarjetas a imprimir

@@ -15,14 +15,19 @@ You can also filter the member list by expiration date from
 
 From the [member profile](fiche.md), click **Renew card**.
 
-The expiration date is pushed back by a standard duration (1 year by
-default) starting today. The card number does not change — the member
-can keep using their physical card without a new print.
+The button is only active if the card **expires within 30 days**, is
+already expired, or has no date. While it is still valid for more
+than a month, the button is **greyed out** (a tooltip shows until
+when). That stops a double-click stacking years — and membership
+invoices.
 
-!!! tip "Early renewal"
-    You can renew a card before it expires. The new expiration date is
-    calculated from today, **not** from the previous date — meaning
-    you do not lose the unused days.
+When renewal goes through, the new expiration starts from the later
+of the two dates (today or the current expiry): unused days are
+**kept**. The card number does not change — the member keeps using
+their physical card.
+
+If the category has a membership fee, an **invoice** is issued at
+the same time. See [Cash desk and invoices](../caisse/caisse.md).
 
 ## Expired card: what happens?
 

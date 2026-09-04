@@ -18,14 +18,17 @@ desde **Miembros → Filtros**.
 Desde la [ficha del miembro](fiche.md), haga clic en **Renovar la
 tarjeta**.
 
-La fecha de expiración se pospone por una duración estándar (1 año
-por defecto) a contar desde hoy. El número de tarjeta no cambia — el
-miembro puede seguir usando su tarjeta física sin nueva impresión.
+El botón solo está activo si la tarjeta **caduca en 30 días o
+menos**, si ya caducó, o si no tiene fecha. Mientras siga válida más
+de un mes, el botón está **gris** (un recuadro indica hasta cuándo).
+Así se evita apilar años — y facturas de cuota — con un doble clic.
 
-!!! tip "Renovación anticipada"
-    Puede renovar una tarjeta antes de su expiración. La nueva fecha
-    de expiración se calcula a partir de hoy, **no** de la fecha
-    anterior — es decir que no pierde los días no utilizados.
+Cuando la renovación pasa, la nueva expiración parte de la más tardía
+de las dos fechas (hoy o el vencimiento actual): los días no usados
+se **conservan**. El número de tarjeta no cambia.
+
+Si la categoría tiene una cuota, se emite una **factura** al mismo
+tiempo. Véase [Caja y facturas](../caisse/caisse.md).
 
 ## Tarjeta expirada: ¿qué pasa?
 

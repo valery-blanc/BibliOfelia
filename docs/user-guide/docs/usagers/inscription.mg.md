@@ -20,10 +20,15 @@ Lalana roa hanokarana ny formulaire fisoratana:
 - **Sokajy** — Olon-dehibe, Ankizy, Tanora… (apetraky ny
   mpitantana). Ny sokajy dia mametra ny faharetan'ny fampindramana
   sy ny isan-kalehibe an'ny fampindramana miaraka.
-- **Telefonina**, **mailaka**, **adiresy** (rehetra tsy voatery)
+- **Telefonina**, **mailaka** (tsy voatery — ny mailaka dia
+  an'ny faktiora sy fampahatsiahivana)
+- **Adiresy** voazarazara: lalana, fanampiny, kaody paositra, tanàna,
+  fanjakana, firenena (rehetra tsy voatery)
 - **Daty fisoratana** — anio araka ny default
-- **Daty fahataperana** — kajiana automatika (fisoratana + 1 taona),
-  azo ovaina
+- **Daty fahataperana** — kajiana automatika araka ny faharetan'ny
+  sokajy (matetika 1 taona), azo ovaina
+- **Fanamarihana** — ao amin'ny **Options avancées**, hatramin'ny
+  litera 500
 
 !!! tip "Sary mpianatra (tsy voatery)"
     Azonao ampiana sary an'ny tarehin'ny mpianatra. Hiseho amin'ny
@@ -68,6 +73,9 @@ Click amin'ny **Tehirizo**. Ny BibliOfelia dia manome automatika:
 
 - **Laharan'ny karatra** miavaka (manomboka amin'ny 291 — io no
   code-barre an'ny karatra)
+- **Faktiora saram-pianarana** raha manana vola ny sokajy (0 =
+  maimaim-poana, tsy misy faktiora). Jereo
+  [Saran'ny sokajy mpianatra](../caisse/tarifs.md).
 
 Azonao avy eo atao ny fanontana ny karatra.
 

@@ -18,15 +18,18 @@ avy amin'ny **Mpianatra → Fitana**.
 Avy amin'ny [takelakan'ny mpianatra](fiche.md), click amin'ny
 **Hanavao ny karatra**.
 
-Ny daty fahataperana dia averina amin'ny faharetana standard
-(1 taona araka ny default) manomboka anio. Ny laharan-karatra dia
-tsy miova — ny mpianatra dia afaka manohy mampiasa ny karatra
-ara-batana raha tsy misy fanontana vaovao.
+Mavitrika ny bokotra raha **tapitra ao anatin'ny 30 andro** ny
+karatra, raha efa tapitra, na tsy manana daty. Raha mbola manan-kery
+mihoatra ny iray volana, **mivolom-boninkazo** ny bokotra (misy
+infobulle milaza ny daty). Izany no manakana ny taona — sy ny
+faktiora saram-pianarana — tsy hiangona amin'ny click maromaro.
 
-!!! tip "Fanavaozana mialoha"
-    Azonao avaozina karatra alohan'ny fahataperany. Ny daty
-    fahataperana vaovao dia kajiana manomboka anio, **fa tsy** avy
-    amin'ny daty taloha — izany hoe tsy very ny andro tsy nampiasaina.
+Rehefa mandeha ny fanavaozana, ny fahataperana vaovao dia avy amin'ny
+daty tara indrindra (anio na ny fahataperana ankehitriny): ny andro
+tsy nampiasaina dia **voatahiry**. Tsy miova ny laharan-karatra.
+
+Raha manana saram-pianarana ny sokajy, misy **faktiora** miaraka.
+Jereo [Caisse sy faktiora](../caisse/caisse.md).
 
 ## Karatra tapitra: inona no mitranga?
 

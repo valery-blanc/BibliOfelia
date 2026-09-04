@@ -21,9 +21,18 @@ At the top, the header shows:
 - **Category** and **card number**
 - **Status badge**: Active, Inactive or Card expired
 
+Just under the buttons, the **Account** box says at a glance whether
+the member is **up to date**, has an amount **due**, or is
+**overdue** (since when). The breakdown is by kind: membership, event,
+fine. See [Cash desk and invoices](../caisse/caisse.md).
+
 Below, a summary card with:
 
-- Card number, category, enrollment date, expiration date, phone, email
+- Card number, category, enrollment date, expiration date, phone,
+  email, address (street, postcode, city, country)
+
+A **Comment** (up to 500 characters) appears if it was entered under
+**Edit → Advanced options**.
 
 And the **Active loans** section listing currently borrowed books with
 their title and return date.
@@ -35,10 +44,15 @@ The buttons under the name give access to operations:
 - **Edit** — change contact info, photo, category
 - **History** — see all past loans
 - **Renew card** — push back the expiration date
-  ([details](renouvellement.md))
+  ([details](renouvellement.md)). The button is greyed out while the
+  card is still valid for more than 30 days.
 - **Replace card** — assign a new card number (lost, stolen or
   damaged card)
+- **Print card (62 mm)** — opens the Brother QL roll PDF in a new
+  tab, without going through Advanced → Printing
 - **Deactivate** — freeze the account without deleting it
+- **Account and invoices** / **Fine** / **Event fee** — see
+  [Cash desk](../caisse/caisse.md)
 
 ## View history
 

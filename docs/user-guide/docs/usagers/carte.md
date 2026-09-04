@@ -5,8 +5,11 @@ elle qui permet de l'identifier rapidement lors d'un prêt.
 
 ## Imprimer une carte unique
 
-Depuis la [fiche du membre](fiche.md), cliquez sur **Imprimer la carte**
-(ou allez dans **Avancé → Impressions → Cartes**).
+Depuis la [fiche du membre](fiche.md), cliquez sur **Imprimer la carte
+(62 mm)** : le PDF ruban Brother QL s'ouvre dans un nouvel onglet.
+
+Pour une planche A4 (plusieurs cartes), allez dans **Avancé →
+Impressions → Cartes**.
 
 ## Imprimer plusieurs cartes en une fois
 

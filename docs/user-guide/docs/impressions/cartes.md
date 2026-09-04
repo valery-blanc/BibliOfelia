@@ -8,6 +8,9 @@ pouvez en imprimer une seule ou plusieurs d'un coup.
 **Avancé → Impressions →
 [Cartes](/bibliofelia/fr/printing/cards/){ target="_blank" }**.
 
+Pour **une** carte au format ruban 62 mm, le plus rapide est le bouton
+**Imprimer la carte (62 mm)** sur la [fiche du membre](../usagers/fiche.md).
+
 ![Page de sélection des cartes à imprimer](../assets/screenshots/fr/impressions/cards-picker.png)
 
 ## Choisir les cartes à imprimer

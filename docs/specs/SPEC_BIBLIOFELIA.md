@@ -17,6 +17,12 @@ depuis l'accueil. — Le **formulaire de création d'animation** reçoit le cham
 de présences et son bouton de scan, qui n'existaient que sur l'écran de détail.
 Cf. §6.14, §6.17.
 
+Modif : 2026-09-04 — **FEAT-091** : le **guide utilisateur** (MkDocs,
+FR/EN/ES/MG) documente la caisse, les tarifs et catégories d'usagers,
+les activités/animations, le bouclement, le bouton carte 62 mm, le
+scan caméra multi-format et la fenêtre de renouvellement 30 jours.
+Captures des nouveaux écrans encore à faire. Cf. `docs/user-guide/`.
+
 Modif : 2026-09-04 — **FEAT-090** : la fiche usager a un bouton **« Imprimer
 la carte (62 mm) »** qui ouvre le PDF ruban Brother QL (FEAT-062) dans un
 nouvel onglet, sans passer par Avancé → Impression. Cf. §6.2, §6.7.

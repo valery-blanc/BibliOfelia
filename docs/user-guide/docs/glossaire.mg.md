@@ -144,6 +144,37 @@ Ny aplikasiona Android namana an'ny BibliOfelia. Manova ny finday
 ho scanner ho an'ny code-barre. Jereo [Hampandeha
 OfeliaScan](ofeliascan/activer.md).
 
+### Sazy
+
+Vola faktiorina **tanana** avy amin'ny takelakan'ny mpianatra (antony
++ vola). Tsy kajy ho azy mihitsy ny sazy tara. Jereo
+[Caisse sy faktiora](caisse/caisse.md).
+
+### Animation
+
+Fivoriana miaraka amin'ny olona (ora tantara, atelier). Isaina ny
+mpianatra tonga (scan na isa 4 farany amin'ny karatra) ary, manokana,
+ny tsy mpianatra. Jereo
+[Asa sy animation](caisse/activites.md).
+
+### Bouclement
+
+Faran'ny tolotra anio: asa, caisse, fandefasana, backup, ary amin'ny
+Box ihany ny famonoana. Jereo
+[Famaranana ny andro](caisse/bouclement.md).
+
+### Caisse
+
+Lisitry ny fidirana sy fivoahan'ny vola an-tanana, tsy mitovy amin'ny
+virement. Saldo, faktiora, filaharan'ny mailaka. Jereo
+[Caisse sy faktiora](caisse/caisse.md).
+
+### Saram-pianarana
+
+Vola isan-taona entin'ny **sokajy mpianatra**, faktiorina ho azy
+amin'ny fisoratana sy amin'ny fanavaozana. 0 = maimaim-poana. Jereo
+[Saran'ny sokajy mpianatra](caisse/tarifs.md).
+
 ### Fampindramana
 
 Ny fampindramana boky amin'ny mpianatra, miaraka amin'ny daty

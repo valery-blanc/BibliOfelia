@@ -17,16 +17,19 @@ depuis **Membres → Filtres**.
 Depuis la [fiche du membre](fiche.md), cliquez sur **Renouveler la
 carte**.
 
-La date d'expiration est repoussée d'une durée standard (1 an par
-défaut) à compter d'aujourd'hui. Le numéro de carte ne change pas — le
-membre peut continuer d'utiliser sa carte physique sans nouvelle
-impression.
+Le bouton n'est actif que si la carte **expire dans 30 jours ou
+moins**, si elle est déjà expirée, ou si elle n'a pas de date. Tant
+qu'elle est encore valable plus d'un mois, le bouton est **grisé**
+(une infobulle donne la date). Cela évite d'empiler des années — et
+des factures de cotisation — d'un double-clic.
 
-!!! tip "Renouvellement anticipé"
-    Vous pouvez renouveler une carte avant son expiration. La nouvelle
-    date d'expiration est calculée à partir d'aujourd'hui, **pas** de
-    l'ancienne date — c'est-à-dire que vous ne perdez pas les jours
-    non utilisés.
+Quand le renouvellement passe, la nouvelle expiration part de la plus
+tardive des deux dates (aujourd'hui ou l'échéance actuelle) : les
+jours non utilisés sont **conservés**. Le numéro de carte ne change
+pas — le membre continue d'utiliser sa carte physique.
+
+Si la catégorie a une cotisation, une **facture** est émise en même
+temps. Voir [Caisse et factures](../caisse/caisse.md).
 
 ## Carte expirée : que se passe-t-il ?
 

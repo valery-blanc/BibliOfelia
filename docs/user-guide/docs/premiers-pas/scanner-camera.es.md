@@ -40,13 +40,21 @@ Según la página, la cámara funciona de forma distinta:
 
 ## Qué lee la cámara
 
-La cámara solo reconoce **códigos de barras de libros y de tarjetas**
-(formato EAN-13, 13 cifras). Es intencionado: hace la lectura mucho más
-fiable y evita lecturas falsas. Se reconocen:
+La cámara lee los **códigos de barras lineales** habituales:
 
-- los **ISBN** del dorso de los libros (que empiezan por 978 o 979);
-- los **códigos Ofelia** de las etiquetas y de las tarjetas de socio (que
-  empiezan por 290 o 291).
+- **EAN-13** (ISBN 978/979, códigos Ofelia 290/291, ISSN 977, y
+  cualquier otro EAN-13 con dígito de control válido);
+- **EAN-8**, **UPC-A**, **UPC-E**;
+- **Code128**, **Code39**, **Code93**, **Codabar**, **ITF** — el caso
+  de los **códigos externos** impresos en una etiqueta de biblioteca.
+
+Los códigos **2D** (QR, DataMatrix) siguen excluidos: una etiqueta de
+libro es un código de barras, y activarlos leería cualquier cartel
+en el encuadre.
+
+Un código leído dos veces seguidas idéntico se retiene (red contra
+lecturas falsas, sobre todo en Code39). El lector USB y el teclado
+aceptan los mismos formatos.
 
 ## ¿La cámara no se abre?
 

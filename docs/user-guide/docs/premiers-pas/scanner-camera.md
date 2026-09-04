@@ -41,13 +41,21 @@ Selon la page, la caméra fonctionne différemment :
 
 ## Ce que la caméra lit
 
-La caméra ne reconnaît que les **codes-barres de livres et de cartes**
-(format EAN-13, 13 chiffres). C'est volontaire : cela rend la lecture
-beaucoup plus fiable et évite les fausses lectures. Sont reconnus :
+La caméra lit les **codes-barres linéaires** courants :
 
-- les **ISBN** au dos des livres (commençant par 978 ou 979) ;
-- les **codes Ofelia** des étiquettes et des cartes de membre (commençant
-  par 290 ou 291).
+- **EAN-13** (ISBN 978/979, codes Ofelia 290/291, ISSN 977, et tout
+  autre EAN-13 à clé valide) ;
+- **EAN-8**, **UPC-A**, **UPC-E** ;
+- **Code128**, **Code39**, **Code93**, **Codabar**, **ITF** — le cas
+  des **codes externes** imprimés sur une étiquette de bibliothèque.
+
+Les codes **2D** (QR, DataMatrix) restent exclus : une étiquette de
+livre est un code à barres, et les activer ferait lire n'importe
+quelle affiche dans le champ.
+
+Un code lu deux fois de suite identique est retenu (filet contre les
+fausses lectures, surtout sur Code39). La douchette USB et le clavier
+acceptent les mêmes formats.
 
 ## La caméra ne s'ouvre pas ?
 

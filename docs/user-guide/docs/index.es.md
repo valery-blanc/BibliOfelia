@@ -6,7 +6,7 @@ Guía de usuario para bibliotecarios.
 
 Esta guía acompaña a los bibliotecarios que usan BibliOfelia a
 diario: registrar préstamos, inscribir miembros, gestionar el
-catálogo, imprimir tarjetas y etiquetas.
+catálogo y la caja, imprimir tarjetas y etiquetas.
 
 ## Por dónde empezar
 
@@ -20,11 +20,12 @@ catálogo, imprimir tarjetas y etiquetas.
 1. **Primeros pasos** — inicio, iniciar sesión, panel, modos de entrada, escaneo
 2. **Catálogo** — libros, ejemplares, búsqueda, operaciones en lote, inventario
 3. **Miembros** — inscripción, ficha, tarjeta de miembro
-4. **Préstamos** — préstamos, devoluciones, renovaciones, consulta, reservas
-5. **Impresión** — tarjetas de miembros + etiquetas de libros
-6. **Informes** — KPIs y exportaciones CSV
-7. **FAQ** — preguntas frecuentes y casos difíciles (libro perdido, tarjeta perdida, atraso)
-8. **Glosario**
+4. **Caja** — facturas, tarifas, actividades, cierre del día
+5. **Préstamos** — préstamos, devoluciones, renovaciones, consulta, reservas
+6. **Impresión** — tarjetas de miembros + etiquetas de libros
+7. **Informes** — KPIs y exportaciones CSV
+8. **FAQ** — preguntas frecuentes y casos difíciles (libro perdido, tarjeta perdida, atraso)
+9. **Glosario**
 
 !!! tip "Esta guía está disponible en 4 idiomas"
     Use el selector en la parte superior derecha para cambiar entre

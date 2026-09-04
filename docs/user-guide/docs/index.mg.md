@@ -12,8 +12,8 @@ Torolàlana ho an'ny mpitantana tranomboky.
 
 Ity torolàlana ity dia natao ho an'ireo mpitantana tranomboky izay
 mampiasa ny BibliOfelia isan'andro: fandraketana fampindramana,
-fisoratana anaran'ny mpianatra, fitantanana ny boky, fanontana
-karatra sy etikety.
+fisoratana anaran'ny mpianatra, fitantanana ny boky sy ny caisse,
+fanontana karatra sy etikety.
 
 ## Aiza no hanombohana?
 
@@ -28,11 +28,12 @@ karatra sy etikety.
 1. **Voalohany** — fandraisana, fidirana, tabilao, fomba fampidirana, scan
 2. **Boky** — boky, kopia, fikarohana, asa marobe, récolement
 3. **Mpianatra** — fisoratana, takelaka, karatra
-4. **Fampindramana** — fampindramana, famerenana, fanavaozana, famandrihana
-5. **Fanontana** — karatra sy etikety
-6. **Tatitra** — KPI sy fanondranana CSV
-7. **Fanontaniana** — fanontaniana matetika sy tranga sarotra (very, simba, tara)
-8. **Voambolana**
+4. **Caisse** — faktiora, saran'ny, asa, famaranana ny andro
+5. **Fampindramana** — fampindramana, famerenana, fanavaozana, famandrihana
+6. **Fanontana** — karatra sy etikety
+7. **Tatitra** — KPI sy fanondranana CSV
+8. **Fanontaniana** — fanontaniana matetika sy tranga sarotra (very, simba, tara)
+9. **Voambolana**
 
 !!! tip "Misy amin'ny fiteny 4 ity torolàlana ity"
     Ampiasao ny mpisafidy any ambony havanana mba hifindra

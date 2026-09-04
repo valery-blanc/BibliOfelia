@@ -44,6 +44,10 @@ anarany sy ny sokajiny. Raha misy fampitandremana (karatra tapitra,
 fampindramana be loatra), miseho amin'ny vola eo ambanin'ny anarana
 izany — vakio alohan'ny manohy.
 
+Ny **karatra taloha** (aorian'ny « Hanolo ny karatra ») dia mbola
+fantatra: ny pejy milaza izany, ary izao no fotoana hanontana ny
+vaovao. Jereo [Karatra mpianatra](../usagers/carte.md).
+
 ## Dingana 2 — Hijery ny boky
 
 Ampidiro ireo boky hampindramina amin'ny fomba mitovy:
@@ -57,9 +61,11 @@ Ampidiro ireo boky hampindramina amin'ny fomba mitovy:
   mba hanokatra ny fakantsarin'ny fitaovanao.
 
 Azonao atao ny mampifandimby boky maro ho an'ny mpianatra iray —
-scan tsirairay no manampy filaharana iray ao amin'ny panier. Mba
-hanesorana boky avy amin'ny panier, click amin'ny tapa-davy eo
-ankavanan'ny filaharany.
+scan tsirairay no manampy filaharana iray ao amin'ny panier. Ny
+filaharana tsirairay dia mampiseho ny **lohateny**, ny **mpanoratra**
+sy **ny kaody roa** an'ny kopia (Ofelia sy, raha misy, ny code
+externe). Mba hanesorana boky avy amin'ny panier, click amin'ny
+tapa-davy eo ankavanan'ny filaharany.
 
 !!! warning "Toe-javatra manokana"
     - **Efa nampindramin'ny olona ny boky**: hafatra mena no miseho.

@@ -87,6 +87,11 @@ plugins:
             Étiquettes de livres: Book labels
             KPIs du dashboard: Dashboard KPIs
             Exports CSV: CSV exports
+            Caisse: Cash desk
+            Caisse et factures: Cash desk and invoices
+            Tarifs et Catégories d'usagers: Fees and member categories
+            Activités et animations: Activities and events
+            Bouclement de la journée: End-of-day closing
         - locale: es
           name: Español
           build: true
@@ -132,6 +137,11 @@ plugins:
             Étiquettes de livres: Etiquetas de libros
             KPIs du dashboard: KPIs del panel
             Exports CSV: Exportaciones CSV
+            Caisse: Caja
+            Caisse et factures: Caja y facturas
+            Tarifs et Catégories d'usagers: Tarifas y categorías de usuarios
+            Activités et animations: Actividades y animaciones
+            Bouclement de la journée: Cierre del día
         - locale: mg
           name: Malagasy
           build: true
@@ -177,6 +187,11 @@ plugins:
             Étiquettes de livres: Etikety boky
             KPIs du dashboard: KPI tabilao
             Exports CSV: Fanondranana CSV
+            Caisse: Caisse
+            Caisse et factures: Caisse sy faktiora
+            Tarifs et Catégories d'usagers: Saran'ny sokajy mpianatra
+            Activités et animations: Asa sy animation
+            Bouclement de la journée: Famaranana ny andro
 
 markdown_extensions:
   - admonition
@@ -220,6 +235,11 @@ nav:
       - Fiche membre: usagers/fiche.md
       - Carte de membre: usagers/carte.md
       - Renouvellement et expiration: usagers/renouvellement.md
+  - Caisse:
+      - Caisse et factures: caisse/caisse.md
+      - Tarifs et Catégories d'usagers: caisse/tarifs.md
+      - Activités et animations: caisse/activites.md
+      - Bouclement de la journée: caisse/bouclement.md
   - Prêts:
       - Faire un prêt: prets-retours/faire-pret.md
       - Enregistrer un retour: prets-retours/retour.md

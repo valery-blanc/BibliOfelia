@@ -6,7 +6,11 @@ Es ella la que permite identificarlo rápidamente durante un préstamo.
 ## Imprimir una sola tarjeta
 
 Desde la [ficha del miembro](fiche.md), haga clic en **Imprimir la
-tarjeta** (o vaya a **Avanzado → Impresión → Tarjetas**).
+tarjeta (62 mm)**: el PDF de cinta Brother QL se abre en una
+pestaña nueva.
+
+Para una plancha A4 (varias tarjetas), vaya a **Avanzado → Impresión
+→ Tarjetas**.
 
 ## Imprimir varias tarjetas a la vez
 

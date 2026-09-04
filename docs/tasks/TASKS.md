@@ -6,8 +6,9 @@ Mise à jour : 2026-05-26 (Sprint 12 **CLOS** — FEAT-038 (cartes membres : fon
 
 ## ⏭️ REPRISE — état au 04/09/2026
 
-**Sprints 31 et 32 CLOS**, validés par Val le 2026-09-04 (« c'est ok pour ce
-qu'on a fait jusque là »). Commit unique groupé code + docs + TASKS.md.
+**Sprints 31 et 32 CLOS**, validés par Val le 2026-09-04. **FEAT-091**
+(guide utilisateur caisse/bouclement + captures) validé le même jour
+(« c'est ok »).
 
 - **Sprint 31** : FEAT-083 (coordonnées usager), FEAT-084 (caisse/factures),
   FEAT-085 (activités/animations), FEAT-086 (bouclement), FEAT-087 (scan
@@ -25,7 +26,6 @@ BUG-042/043/FEAT-090). Gate i18n : `python scripts/i18n_check.py` = **0**.
 `finance/0001`, `closing/0001`, `members/0007` appliquées).
 
 ### ⏳ Ouvert, hors de ce commit
-- Guide utilisateur : 7 nouveaux écrans + captures prêt/retour (FEAT-080/081)
 - Unité systemd d'extinction dans keebee/ofeliabox (FEAT-086)
 - SMTP Grand-Saconnex : pas encore configuré (Avancé → Paramètres → Email)
 
@@ -148,7 +148,8 @@ conteneur `bibliofelia-docs` rebâti pour le guide.
   le sont. Un bibliothécaire qui lit le code interne à l'écran et le tape dans la
   recherche n'obtient rien — alors que la fenêtre « Mettre à jour des exemplaires »,
   elle, l'accepte. Correctif d'une ligne, groupé avec la décision (1) ci-dessus.
-- **Guide utilisateur prêt/retour** : captures périmées depuis FEAT-080/081.
+- **Guide utilisateur prêt/retour** : **texte** à jour (FEAT-091) ;
+  captures encore périmées depuis FEAT-080/081.
 - **Sprint 26** : quatre « Test fonctionnel Val » jamais confirmés explicitement.
 - **Catégorie `TEST`** restée sur la Box (`migrate_categories` ne supprime jamais). Vérifié le 23/08 : elle porte le nom « tests » et **0 notice** — sa suppression est donc sans risque, elle n'attend qu'un feu vert.
 
@@ -2072,11 +2073,10 @@ v0.1.0-dev, on peut la passer à 1.0 (et pas de mention de dev) ».
       session** : les deux nouvelles fenêtres documentées en FR + EN + ES + MG, et le
       conteneur `bibliofelia-docs` rebâti. Vérifié sur le **contenu servi**, pas sur le
       succès du build (`grep OFELIA_CODE_UNKNOWN` dans l'`index.html` publié)
-- [ ] Guide utilisateur : écrans **prêt et retour** (FEAT-080/081). Les pages
-      `prets-retours/*` décrivent des écrans qui ont changé d'aspect (panier avec les
-      deux codes, journal de retour avec la fiche de l'usager) et les **captures sont
-      donc périmées**. À reprendre en FR + EN + ES + MG. *Motif du report : arrivé en
-      fin de session, après la validation de Val*
+- [x] Guide utilisateur : **texte** prêt et retour (FEAT-080/081) mis à jour
+      en FR + EN + ES + MG (FEAT-091, 2026-09-04). Les **captures** restent
+      périmées (panier avec les deux codes, journal de retour avec la fiche
+      de l'usager).
 - [x] Déploiement complet : Fez (`sanjuan`, `grand-saconnex`), secours **Avignon**
       (source + image à jour de FEAT-081) et **la Box**
 - [x] **Test fonctionnel Val — OK 2026-08-23**, en trois temps : « ok ca fonctionne »
@@ -2391,13 +2391,37 @@ Le champ n'existait que sur l'écran de **détail**, atteint après enregistreme
 - [x] Lien depuis `README.md`
 
 ### Reste à faire après ce sprint
-- [ ] Guide utilisateur : les **7 nouveaux écrans** (bouclement, activités,
-      animations, statistiques, caisse, factures, tarifs) à documenter en
-      FR + EN + ES + MG, avec captures — le réglage de devise (FEAT-088)
-      mérite une capture à lui seul
-- [ ] Guide utilisateur : écrans **prêt et retour** (FEAT-080/081), captures
-      périmées — report du Sprint 30
+- [x] Guide utilisateur : les **7 nouveaux écrans** (bouclement, activités,
+      animations, statistiques, caisse, factures, tarifs) documentés en
+      FR + EN + ES + MG (FEAT-091, 2026-09-04). Texte prêt/retour mis à
+      jour (FEAT-080/081).
+- [x] Guide utilisateur : **captures** des nouveaux écrans + prêt/retour
+      (FEAT-080/081) — Playwright depuis Tulear contre Sanjuan
+      (2026-09-04). Devise (FEAT-088) : pas de capture dédiée (le
+      champ est dans Avancé → Paramètres).
 - [ ] Unité systemd d'extinction dans keebee/ofeliabox (cf. FEAT-086)
+
+## Sprint 32 suite — Guide utilisateur (FEAT-091)
+
+> 2026-09-04. Demande Val : mettre à jour le guide (+ traductions).
+> Question WOL Box : **non** (voir réponse dans la session ; Pi 5
+> n'est pas une cible WOL, malgré `ethtool Supports Wake-on: ag`).
+
+- [x] 4 pages neuves `docs/user-guide/docs/caisse/` ×4 langues
+- [x] MAJ accueil, dashboard, fiche, inscription, renouvellement
+      (fenêtre 30 j), carte 62 mm, scan caméra multi-format, prêt
+      (ancienne carte + deux codes), retour (qui rapporte), FAQ
+      (amendes existent), glossaire
+- [x] `mkdocs.yml` nav + `nav_translations` EN/ES/MG
+- [x] `mkdocs build --strict`
+- [x] Déployé Box (`/bibliofelia/docs/`, HTTP 200 FR/EN/ES/MG) + Fez
+      `docs.bibliofelia.org` + image Avignon
+- [x] Captures Playwright depuis Tulear contre Sanjuan (FR/EN/ES/MG) :
+      dashboard, caisse, tarifs, activités, animations, stats,
+      bouclement, prêt (+ annoté), retour, inscription. Compte
+      temporaire `lea` créé puis supprimé.
+- [x] Test fonctionnel Val sur le guide déployé — OK 2026-09-04 (« c'est ok »)
+- [x] Commit (après OK Val)
 
 ## Sprint 32 — Tarifs et Catégories d'usagers (FEAT-089)
 

@@ -141,6 +141,37 @@ L'application Android compagnon de BibliOfelia. Elle transforme un
 téléphone en scanner pour les codes-barres. Voir
 [Activer OfeliaScan](ofeliascan/activer.md).
 
+### Amende
+
+Montant facturé **à la main** depuis la fiche d'un usager (motif +
+montant). BibliOfelia ne calcule aucune amende de retard tout seul.
+Voir [Caisse et factures](caisse/caisse.md).
+
+### Animation
+
+Séance avec du public (heure du conte, atelier). On y compte les
+membres présents (scan ou 4 derniers chiffres de la carte) et, à
+part, les non-membres. Voir
+[Activités et animations](caisse/activites.md).
+
+### Bouclement
+
+Fin de service du jour : activités, caisse, envois, sauvegarde, et
+sur la Box seulement l'extinction. Voir
+[Bouclement de la journée](caisse/bouclement.md).
+
+### Caisse
+
+Registre des entrées et sorties d'espèces, distinct des virements.
+Solde du tiroir, factures, file d'emails. Voir
+[Caisse et factures](caisse/caisse.md).
+
+### Cotisation
+
+Montant annuel porté par la **catégorie d'usager**, facturé
+automatiquement à l'inscription et à chaque renouvellement. 0 =
+gratuit. Voir [Tarifs et Catégories d'usagers](caisse/tarifs.md).
+
 ### Prêt
 
 L'emprunt d'un livre par un membre, avec une date de retour. Voir

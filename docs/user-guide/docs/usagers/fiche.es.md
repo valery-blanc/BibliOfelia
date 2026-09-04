@@ -22,10 +22,19 @@ Arriba, la cabecera muestra:
 - **Categoría** y **número de tarjeta**
 - **Insignia de estado**: Activo, Inactivo o Tarjeta expirada
 
+Justo bajo los botones, el recuadro **Cuenta** dice de un vistazo si
+el usuario está **al día**, si tiene un importe **a pagar**, o si
+está **atrasado** (desde cuándo). El detalle se reparte: cuota,
+animación, multa. Véase [Caja y facturas](../caisse/caisse.md).
+
 Más abajo, una tarjeta resumen con:
 
 - Número de tarjeta, categoría, fecha de inscripción, fecha de
-  expiración, teléfono, correo
+  expiración, teléfono, correo, dirección (calle, código postal,
+  localidad, país)
+
+Un **Comentario** (hasta 500 caracteres) aparece si se rellenó en
+**Modificar → Opciones avanzadas**.
 
 Y la sección **Préstamos activos** que lista los libros actualmente
 prestados con su título y fecha de devolución.
@@ -38,10 +47,15 @@ Los botones bajo el nombre dan acceso a las operaciones:
   categoría
 - **Historial** — ver todos los préstamos pasados
 - **Renovar la tarjeta** — posponer la fecha de expiración
-  ([detalles](renouvellement.md))
+  ([detalles](renouvellement.md)). El botón está gris mientras la
+  tarjeta sigue válida más de 30 días.
 - **Reemplazar la tarjeta** — asignar un nuevo número de tarjeta
   (tarjeta perdida, robada o dañada)
+- **Imprimir la tarjeta (62 mm)** — abre el PDF de cinta Brother QL
+  en una pestaña nueva, sin pasar por Avanzado → Impresión
 - **Desactivar** — congelar la cuenta sin eliminarla
+- **Cuenta y facturas** / **Multa** / **Gastos de animación** — véase
+  [Caja](../caisse/caisse.md)
 
 ## Ver el historial
 

@@ -112,6 +112,14 @@ PAGES: list[tuple[str, str, str, bool]] = [
     ("rapports", "overdue-list", "/reports/overdue/", True),
     ("rapports", "reservations-pickup", "/reports/reservations-pickup/", True),
     ("rapports", "inactive", "/reports/inactive/", True),
+    # Caisse / journée (Sprint 31-32)
+    ("caisse", "cash", "/finance/", True),
+    ("caisse", "tarifs", "/finance/tariffs/", True),
+    ("caisse", "invoices", "/finance/invoices/", True),
+    ("caisse", "activites", "/closing/activities/", True),
+    ("caisse", "animations", "/closing/animations/", True),
+    ("caisse", "stats", "/closing/stats/", True),
+    ("caisse", "bouclement", "/closing/", True),
 ]
 
 
@@ -125,10 +133,14 @@ def capture(page: Page, out_dir: Path, group: str, name: str, full_page: bool) -
 def main(argv: list[str] | None = None) -> int:
     parser = argparse.ArgumentParser(description="Capture screenshots BibliOfelia")
     parser.add_argument("--base-url", default=BASE_URL)
+    parser.add_argument("--username", default=USERNAME)
+    parser.add_argument("--password", default=PASSWORD)
     parser.add_argument("--lang", default="fr", choices=["fr", "en", "es", "mg"])
     parser.add_argument("--only", default=None,
                         help="Liste de noms separes par , pour filtrer")
     parser.add_argument("--headed", action="store_true")
+    parser.add_argument("--skip-login-page", action="store_true",
+                        help="Ne pas recapturer l ecran de connexion")
     args = parser.parse_args(argv)
 
     only = set(args.only.split(",")) if args.only else None
@@ -136,22 +148,31 @@ def main(argv: list[str] | None = None) -> int:
     print(f"Capture vers {out_dir}")
     print(f"  base URL : {args.base_url}    lang : {args.lang}")
 
+    def do_login(page: Page) -> None:
+        page.goto(f"{args.base_url}/{args.lang}/accounts/login/")
+        page.wait_for_load_state("networkidle")
+        page.fill('input[name="username"]', args.username)
+        page.fill('input[name="password"]', args.password)
+        page.click('button[type="submit"]')
+        page.wait_for_load_state("networkidle")
+
     with sync_playwright() as p:
         browser = p.chromium.launch(headless=not args.headed)
         ctx = browser.new_context(
             viewport=VIEWPORT,
             locale=f"{args.lang}-{args.lang.upper()}",
+            ignore_https_errors=True,
         )
         page = ctx.new_page()
 
         # Pre-auth pages
         page.goto(f"{args.base_url}/{args.lang}/accounts/login/")
         page.wait_for_load_state("networkidle")
-        if not only or "login" in only:
+        if not args.skip_login_page and (not only or "login" in only):
             capture(page, out_dir, "premiers-pas", "login", full_page=False)
 
         # Login + bascule de langue
-        login(page, args.base_url)
+        do_login(page)
         switch_language(page, args.base_url, args.lang)
 
         # Pages standard

@@ -142,6 +142,37 @@ La aplicación Android compañera de BibliOfelia. Permite escanear
 los códigos de barras con un teléfono. Vea [Activar
 OfeliaScan](ofeliascan/activer.md).
 
+### Multa
+
+Importe facturado **a mano** desde la ficha de un usuario (motivo +
+importe). BibliOfelia no calcula sola ninguna multa de atraso. Véase
+[Caja y facturas](caisse/caisse.md).
+
+### Animación
+
+Sesión con público (hora del cuento, taller). Se cuentan los
+miembros presentes (escaneo o 4 últimos dígitos de la tarjeta) y, a
+parte, los no miembros. Véase
+[Actividades y animaciones](caisse/activites.md).
+
+### Cierre
+
+Fin de servicio del día: actividades, caja, envíos, copia, y en la
+Box solamente el apagado. Véase
+[Cierre del día](caisse/bouclement.md).
+
+### Caja
+
+Registro de entradas y salidas en efectivo, distinto de las
+transferencias. Saldo del cajón, facturas, cola de correos. Véase
+[Caja y facturas](caisse/caisse.md).
+
+### Cuota
+
+Importe anual de la **categoría de usuario**, facturado
+automáticamente al inscribir y en cada renovación. 0 = gratis. Véase
+[Tarifas y categorías de usuarios](caisse/tarifs.md).
+
 ### Préstamo
 
 El préstamo de un libro por un miembro, con una fecha de

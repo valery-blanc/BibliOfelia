@@ -109,8 +109,9 @@ activos** y haga clic en **Perdido**. El préstamo y el ejemplar pasan
 al estado *Perdido*; el miembro conserva su historial y puede seguir
 prestando. Para un libro devuelto demasiado dañado: registre la
 devolución, luego en la [ficha del ejemplar](catalogue/exemplaires.md)
-haga clic en **Descartar**. BibliOfelia no gestiona ni multas ni
-facturación: el reemplazo depende de sus reglas internas.
+haga clic en **Descartar**. Para facturar el reemplazo, abra la
+ficha del miembro y pulse **Multa** (importe y motivo libres). Véase
+[Caja y facturas](caisse/caisse.md).
 
 ### ¿Cómo eliminar definitivamente un registro del catálogo? { #supprimer-notice }
 
@@ -137,9 +138,30 @@ Siga los atrasos con el contador **Préstamos vencidos** del panel y
 miembro (teléfono visible en su ficha); (2) para bloquear sus
 préstamos, **desactive** temporalmente al miembro desde su ficha y
 reactívelo cuando devuelva los libros; (3) para un atraso de varios
-meses, marque el préstamo como **Perdido**. BibliOfelia no genera
-cartas de aviso: el teléfono, el SMS o un tablero siguen siendo lo más
-eficaz en una biblioteca pequeña.
+meses, marque el préstamo como **Perdido**. También puede poner una
+**multa manual** desde la ficha. BibliOfelia solo envía un
+recordatorio por correo para una **factura** vencida (una sola vez);
+para un libro atrasado sin factura, el teléfono o el SMS siguen
+siendo lo más eficaz.
+
+## Sobre la caja y el correo
+
+### La cuota no es la correcta tras un cambio de categoría
+
+Cambiar de categoría **realinea** las facturas de cuota aún abiertas,
+sin pago. Una cuota ya cobrada no se reembolsa. Véase
+[Tarifas](caisse/tarifs.md).
+
+### La pantalla habla de la Box y estamos en línea (Grand-Saconnex…)
+
+En una instancia alojada, el cierre no debería hablar de la Box sino
+de si el **SMTP** está configurado. **Avanzado → Ajustes → Email**.
+
+### ¿Puedo apagar el servidor desde el cierre?
+
+Solo en la **Ofelia Box**, y solo si el servicio de apagado está
+instalado. En una instancia alojada el paso no aparece. Véase
+[Cierre](caisse/bouclement.md).
 
 ## ¿Una pregunta que no aparece?
 

@@ -42,13 +42,21 @@ Arakaraka ny pejy, dia samy hafa ny fiasan'ny fakantsary:
 
 ## Inona no vakian'ny fakantsary
 
-Tsy mahafantatra afa-tsy ny **code-barres an'ny boky sy karatra** (endrika
-EAN-13, isa 13) ny fakantsary. Natao an-tsitrapo izany: mahatonga ny famakiana
-ho azo antoka kokoa ary manakana ny famakiana diso. Fantatra:
+Mamaky ny **code-barres linéaire** mahazatra ny fakantsary:
 
-- ny **ISBN** eo ambadiky ny boky (manomboka amin'ny 978 na 979);
-- ny **code Ofelia** eo amin'ny etiquette sy ny karatra mpikambana (manomboka
-  amin'ny 290 na 291).
+- **EAN-13** (ISBN 978/979, code Ofelia 290/291, ISSN 977, ary EAN-13
+  hafa manana clé marina);
+- **EAN-8**, **UPC-A**, **UPC-E**;
+- **Code128**, **Code39**, **Code93**, **Codabar**, **ITF** — ny
+  **code externe** vita pirinty amin'ny etikety tranomboky.
+
+Ny code **2D** (QR, DataMatrix) dia mbola tsy ekena: etikety boky dia
+code-barres, ary raha alefa izy ireo dia vakiana ny sary rehetra ao
+amin'ny sary.
+
+Ny kaody vakiana indroa mitovy dia raisina (fiarovana amin'ny
+famakiana diso, indrindra Code39). Ny douchette USB sy ny clavier dia
+manaiky ny endrika mitovy.
 
 ## Tsy misokatra ny fakantsary?
 

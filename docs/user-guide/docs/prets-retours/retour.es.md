@@ -15,7 +15,9 @@ Desde la barra de navegación de arriba, haga clic en la tarjeta
 Escanee los libros devueltos uno tras otro. Cada escaneo:
 
 1. Marca el préstamo como **Devuelto**
-2. Muestra brevemente el nombre del miembro y el título confirmados
+2. Muestra **quién devuelve el libro** (foto, nombre, apellido, edad
+   si existen), el título, los códigos del ejemplar, y la mención
+   **Devolución efectuada**
 3. Vacía el campo para el siguiente libro
 
 Puede encadenar toda una pila de devoluciones en segundos.
