@@ -1,0 +1,219 @@
+{% extends "base.html" %}
+{% load i18n biblio_icons money %}
+
+{% block title %}{% trans "Bouclement" %}{% endblock %}
+
+{% block tile_strip %}{% include "partials/_tile_strip.html" with active="closing" %}{% endblock %}
+
+{% block content %}
+<header class="pagehead">
+    <div class="pagehead-icon" style="--ph-bg:var(--burgundy);--ph-fg:#fff">
+        {% icon "clipboard-list" size="28px" %}
+    </div>
+    <div class="pagehead-text">
+        <h1 class="pagehead-title">{% trans "Bouclement" %}</h1>
+        <div class="pagehead-sub">{% blocktrans with d=today %}Fin de service du {{ d }}{% endblocktrans %}</div>
+    </div>
+</header>
+
+{% comment %}
+FEAT-086 : cinq étapes, dans l'ordre. Ce n'est pas un verrou — un employé qui
+finit à midi boucle, un autre reboucle le soir.
+{% endcomment %}
+
+{# ── 1. Activités et animations ── #}
+<h2 class="section-title">
+    <span>{% trans "1. Vos activités et animations du jour" %}</span>
+    {% if closing.activities_done %}
+    <span class="badge" style="background:var(--forest-light);color:var(--forest)">{% trans "Saisi" %}</span>
+    {% else %}
+    <span class="badge" style="background:var(--amber-light);color:#946906">{% trans "À faire" %}</span>
+    {% endif %}
+</h2>
+<div class="card">
+    {% if my_activities or my_animations %}
+    <ul style="margin:0 0 12px 18px">
+        {% for entry in my_activities %}
+        <li>{{ entry.activity_type }} — {{ entry.duration_display }}{% if entry.note %} <span class="muted">· {{ entry.note }}</span>{% endif %}</li>
+        {% endfor %}
+        {% for session in my_animations %}
+        <li>
+            <a href="{% url 'closing:animation_detail' session.pk %}" class="cell-link">{{ session.animation_type }}</a>
+            — {{ session.duration_display }} ·
+            {% blocktrans with m=session.member_count n=session.non_member_count %}{{ m }} membre(s), {{ n }} non-membre(s){% endblocktrans %}
+        </li>
+        {% endfor %}
+    </ul>
+    {% else %}
+    <p class="muted">{% trans "Vous n'avez rien saisi aujourd'hui." %}</p>
+    {% endif %}
+    <div style="display:flex;gap:8px;flex-wrap:wrap">
+        <a href="{% url 'closing:activity_list' %}" class="btn btn--primary">
+            {% icon "activity" size="16px" %} {% trans "Saisir une activité" %}
+        </a>
+        <a href="{% url 'closing:animation_list' %}" class="btn btn--ghost">
+            {% icon "users" size="16px" %} {% trans "Saisir une animation" %}
+        </a>
+    </div>
+</div>
+
+{# ── 2. Caisse ── #}
+<h2 class="section-title" style="margin-top:28px">{% trans "2. Mouvements de caisse du jour" %}</h2>
+<div class="card">
+    <div class="kpis" style="margin:0">
+        <div class="kpi" style="--kpi-color:var(--olive)">
+            <div class="kpi-num">{{ cash.total_in|money }}</div>
+            <div class="kpi-label">{% trans "Entrées" %}</div>
+        </div>
+        <div class="kpi" style="--kpi-color:var(--orange)">
+            <div class="kpi-num">{{ cash.total_out|money }}</div>
+            <div class="kpi-label">{% trans "Sorties" %}</div>
+        </div>
+        <div class="kpi" style="--kpi-color:var(--forest)">
+            <div class="kpi-num">{{ cash.balance|money }}</div>
+            <div class="kpi-label">{% trans "Solde du jour" %}</div>
+        </div>
+    </div>
+    {% if cash.movements %}
+    <div class="table-wrap" style="margin-top:12px">
+        <table class="table">
+            <tbody>
+            {% for m in cash.movements %}
+                <tr>
+                    <td>{{ m.label }}</td>
+                    <td class="muted">{{ m.get_direction_display }}</td>
+                    <td style="text-align:right;font-variant-numeric:tabular-nums">{{ m.amount|money }}</td>
+                </tr>
+            {% endfor %}
+            </tbody>
+        </table>
+    </div>
+    {% else %}
+    <p class="muted" style="margin-top:12px">{% trans "Aucun mouvement aujourd'hui." %}</p>
+    {% endif %}
+    <a href="{% url 'finance:cash_index' %}" class="btn btn--ghost" style="margin-top:12px">
+        {% icon "wallet" size="16px" %} {% trans "Ouvrir la caisse" %}
+    </a>
+</div>
+
+{# ── 3. Factures et relances ── #}
+<h2 class="section-title" style="margin-top:28px">
+    <span>{% trans "3. Factures et relances à envoyer" %}</span>
+    {% if is_box %}
+        {% if is_online %}
+        <span class="badge" style="background:var(--forest-light);color:var(--forest)">{% trans "En ligne" %}</span>
+        {% else %}
+        <span class="badge" style="background:var(--cream-dark);color:var(--ink-soft)">{% trans "Hors ligne" %}</span>
+        {% endif %}
+    {% elif not smtp_configured %}
+    <span class="badge" style="background:var(--amber-light);color:#946906">{% trans "Email non configuré" %}</span>
+    {% endif %}
+</h2>
+<div class="card">
+    {% if invoices_to_send %}
+    <div style="font-weight:600;margin-bottom:6px">{% trans "Factures jamais envoyées" %}</div>
+    <ul style="margin:0 0 12px 18px">
+        {% for invoice in invoices_to_send %}
+        <li>
+            <a href="{% url 'finance:invoice_detail' invoice.pk %}" class="cell-link">{{ invoice.number }}</a>
+            — {{ invoice.member.full_name }} · {{ invoice.total_amount|money }} → {{ invoice.member.email }}
+        </li>
+        {% endfor %}
+    </ul>
+    {% endif %}
+    {% if reminders_to_send %}
+    <div style="font-weight:600;margin-bottom:6px">{% trans "Relances dues" %}</div>
+    <ul style="margin:0 0 12px 18px">
+        {% for invoice in reminders_to_send %}
+        <li>
+            <a href="{% url 'finance:invoice_detail' invoice.pk %}" class="cell-link">{{ invoice.number }}</a>
+            — {{ invoice.member.full_name }} ·
+            {% blocktrans with d=invoice.days_overdue %}échue depuis {{ d }} jour(s){% endblocktrans %}
+            · {{ invoice.balance|money }}
+        </li>
+        {% endfor %}
+    </ul>
+    {% endif %}
+    {% if not invoices_to_send and not reminders_to_send %}
+    <p class="muted">{% trans "Rien à envoyer aujourd'hui." %}</p>
+    {% endif %}
+
+    {% if pending_emails %}
+    <div role="alert" class="msg msg-warning">
+        {% blocktrans count n=pending_emails %}{{ n }} email attend encore dans la file.{% plural %}{{ n }} emails attendent encore dans la file.{% endblocktrans %}
+        <a href="{% url 'finance:outbox_list' %}" class="cell-link">{% trans "Voir la file" %}</a>
+    </div>
+    {% endif %}
+
+    {% if is_box and not is_online %}
+    <p class="muted text-sm">
+        {% trans "La Box n'est pas en ligne : les emails restent en file jusqu'à ce qu'elle le soit. En attendant, prévenez les personnes par téléphone (liste ci-dessus)." %}
+    </p>
+    {% elif not smtp_configured %}
+    <p class="muted text-sm">
+        {% trans "L'envoi par email n'est pas configuré. Renseignez le serveur SMTP dans Avancé → Paramètres → Email, puis renvoyez." %}
+    </p>
+    {% endif %}
+
+    <form method="post" style="margin-top:12px">
+        {% csrf_token %}
+        <input type="hidden" name="step" value="emails">
+        <button type="submit" class="btn btn--primary">
+            {% icon "send" size="16px" %}
+            {% if is_box and not is_online %}{% trans "Mettre en file d'attente" %}{% else %}{% trans "Envoyer maintenant" %}{% endif %}
+        </button>
+    </form>
+</div>
+
+{# ── 4. Sauvegardes ── #}
+<h2 class="section-title" style="margin-top:28px">
+    <span>{% trans "4. Sauvegardes" %}</span>
+    {% if closing.backup_status == "ok" %}
+    <span class="badge" style="background:var(--forest-light);color:var(--forest)">{% trans "Faite" %}</span>
+    {% elif closing.backup_status %}
+    <span class="badge badge--late">{% trans "Échec" %}</span>
+    {% endif %}
+</h2>
+<div class="card">
+    {% if closing.backup_detail %}
+    <p class="muted text-sm" style="word-break:break-all">{{ closing.backup_detail }}</p>
+    {% endif %}
+    <form method="post">
+        {% csrf_token %}
+        <input type="hidden" name="step" value="backup">
+        <button type="submit" class="btn btn--primary">
+            {% icon "database" size="16px" %} {% trans "Lancer la sauvegarde" %}
+        </button>
+    </form>
+</div>
+
+{# ── 5. Extinction ── #}
+{% if is_box %}
+<h2 class="section-title" style="margin-top:28px">{% trans "5. Éteindre la Box" %}</h2>
+<div class="card" style="border-left:4px solid var(--orange)">
+    {% if closing.shutdown_requested %}
+    <p><b>{% trans "Demande d'extinction enregistrée." %}</b></p>
+    {% endif %}
+    <p class="muted text-sm">
+        {% trans "BibliOfelia tourne dans un conteneur et ne peut pas éteindre la Box elle-même : elle dépose une demande que le service système de la Box surveille. Si ce service n'est pas installé, la demande est enregistrée mais la Box ne s'éteindra pas." %}
+        {% if shutdown_flag %}<br><code>{{ shutdown_flag }}</code>{% endif %}
+    </p>
+    {% if user.is_superadmin %}
+    <form method="post"
+          onsubmit="return confirm('{% trans "Demander l extinction de la Box ? Toutes les applications seront arretees." %}')">
+        {% csrf_token %}
+        <input type="hidden" name="step" value="shutdown">
+        <button type="submit" class="btn btn--ghost" style="color:#B83232">
+            {% icon "power" size="16px" %} {% trans "Demander l'extinction" %}
+        </button>
+    </form>
+    {% else %}
+    <p class="muted text-sm">{% trans "Seul un administrateur peut éteindre la Box." %}</p>
+    {% endif %}
+</div>
+{% endif %}
+
+<p class="muted text-sm" style="margin-top:24px">
+    <a href="{% url 'closing:stats' %}" class="cell-link">{% trans "Statistiques d'activité" %}</a>
+</p>
+{% endblock %}

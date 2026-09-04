@@ -1,0 +1,37 @@
+{% extends "base.html" %}
+{% load i18n biblio_icons %}
+
+{% block title %}{% trans "Modifier un tarif" %}{% endblock %}
+
+{% block tile_strip %}{% include "partials/_tile_strip.html" with active="advanced" %}{% endblock %}
+
+{% block content %}
+<header class="pagehead">
+    <div class="pagehead-icon" style="--ph-bg:var(--forest);--ph-fg:#fff">
+        {% icon "wallet" size="28px" %}
+    </div>
+    <div class="pagehead-text">
+        <h1 class="pagehead-title">{% trans "Modifier un tarif" %}</h1>
+        <div class="pagehead-sub">{{ tariff.label }}</div>
+    </div>
+</header>
+
+<div class="card">
+    <form method="post">
+        {% csrf_token %}
+        <div class="grid-2">
+            {% include "partials/_field.html" with field=form.kind %}
+            {% include "partials/_field.html" with field=form.label %}
+            {% include "partials/_field.html" with field=form.amount %}
+            {% include "partials/_field.html" with field=form.order %}
+        </div>
+        {% include "partials/_field.html" with field=form.is_active %}
+        <div class="form-actions">
+            <button type="submit" class="btn btn--primary">
+                {% icon "check" size="16px" %} {% trans "Enregistrer" %}
+            </button>
+            <a href="{% url 'finance:tariff_list' %}" class="btn btn--ghost">{% trans "Annuler" %}</a>
+        </div>
+    </form>
+</div>
+{% endblock %}

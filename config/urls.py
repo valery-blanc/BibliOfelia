@@ -38,6 +38,8 @@ urlpatterns += i18n_patterns(
     path("inventory/", include("apps.inventory.urls", namespace="inventory")),
     path("printing/", include("apps.printing.urls", namespace="printing")),
     path("reports/", include("apps.reports.urls", namespace="reports")),
+    path("finance/", include("apps.finance.urls", namespace="finance")),
+    path("closing/", include("apps.closing.urls", namespace="closing")),
     prefix_default_language=True,
 )
 

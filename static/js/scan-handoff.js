@@ -15,6 +15,7 @@
  *
  * Attributs déclaratifs (hérités de FEAT-023) :
  *   data-scan-target       : sélecteur CSS du <input> à pré-remplir
+ *   data-scan-append       : "true" pour empiler les codes au lieu d'écraser
  *   data-scan-autosubmit   : "true" pour soumettre le form
  *   data-scan-dispatch-url : URL de redirection (?q= ajouté → core:search
  *                            aiguille ensuite vers notice / fiche membre)
@@ -98,7 +99,19 @@
             var form = btn.closest("form");
             var target = form ? form.querySelector(targetSel) : document.querySelector(targetSel);
             if (target) {
-                target.value = res.value;
+                if (btn.dataset.scanAppend === "true") {
+                    // FEAT-085 : champ multi-codes (présences d'une animation).
+                    // On empile au lieu d'écraser, sinon chaque scan effacerait
+                    // le précédent — et on ne compte pas deux fois la même
+                    // carte scannée par mégarde.
+                    var already = target.value.split(/[\s,;]+/).filter(Boolean);
+                    if (already.indexOf(res.value) === -1) {
+                        already.push(res.value);
+                    }
+                    target.value = already.join(" ");
+                } else {
+                    target.value = res.value;
+                }
                 target.dispatchEvent(new Event("input", { bubbles: true }));
                 if (autoSubmit && form) {
                     if (typeof form.requestSubmit === "function") form.requestSubmit();

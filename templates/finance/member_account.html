@@ -1,0 +1,79 @@
+{% extends "base.html" %}
+{% load i18n biblio_icons money %}
+
+{% block title %}{% trans "Compte" %} — {{ member.full_name }}{% endblock %}
+
+{% block tile_strip %}{% include "partials/_tile_strip.html" with active="members" %}{% endblock %}
+
+{% block content %}
+<header class="pagehead">
+    <div class="pagehead-icon" style="--ph-bg:var(--sky);--ph-fg:var(--ink)">
+        {% icon "wallet" size="28px" %}
+    </div>
+    <div class="pagehead-text">
+        <h1 class="pagehead-title">{% trans "Compte" %}</h1>
+        <div class="pagehead-sub">
+            <a href="{% url 'members:detail' member.pk %}" class="cell-link">{{ member.full_name }}</a>
+            · {{ member.card_number }}
+        </div>
+    </div>
+</header>
+
+{% include "finance/_account_box.html" with account=account member=member %}
+
+{% if user.is_librarian %}
+<div style="display:flex;gap:8px;flex-wrap:wrap;margin:18px 0">
+    <a href="{% url 'finance:invoice_create' member.pk %}" class="btn btn--primary">
+        {% icon "plus" size="16px" %} {% trans "Nouvelle facture" %}
+    </a>
+    <a href="{% url 'finance:fee_create' member.pk 'fine' %}" class="btn btn--ghost">
+        {% icon "triangle-alert" size="16px" %} {% trans "Amende" %}
+    </a>
+    <a href="{% url 'finance:fee_create' member.pk 'activity' %}" class="btn btn--ghost">
+        {% icon "users" size="16px" %} {% trans "Frais d'animation" %}
+    </a>
+</div>
+{% endif %}
+
+<h2 class="section-title" style="margin-top:28px">{% trans "Toutes les factures" %}</h2>
+{% if invoices %}
+<div class="table-wrap">
+    <table class="table">
+        <thead>
+            <tr>
+                <th>{% trans "N°" %}</th>
+                <th>{% trans "Émise le" %}</th>
+                <th>{% trans "Échéance" %}</th>
+                <th style="text-align:right">{% trans "Total" %}</th>
+                <th style="text-align:right">{% trans "Solde" %}</th>
+                <th>{% trans "Statut" %}</th>
+            </tr>
+        </thead>
+        <tbody>
+        {% for invoice in invoices %}
+            <tr>
+                <td><a href="{% url 'finance:invoice_detail' invoice.pk %}" class="cell-link">{{ invoice.number }}</a></td>
+                <td>{{ invoice.issue_date }}</td>
+                <td>{{ invoice.due_date }}</td>
+                <td style="text-align:right;font-variant-numeric:tabular-nums">{{ invoice.total_amount|money_plain }}</td>
+                <td style="text-align:right;font-variant-numeric:tabular-nums">{{ invoice.balance|money_plain }}</td>
+                <td>
+                    {% if invoice.status == "paid" %}
+                    <span class="badge" style="background:var(--forest-light);color:var(--forest)">{% trans "Réglée" %}</span>
+                    {% elif invoice.status == "cancelled" %}
+                    <span class="badge">{% trans "Annulée" %}</span>
+                    {% elif invoice.is_overdue %}
+                    <span class="badge badge--late">{% trans "En retard" %}</span>
+                    {% else %}
+                    <span class="badge" style="background:var(--amber-light);color:#946906">{% trans "À régler" %}</span>
+                    {% endif %}
+                </td>
+            </tr>
+        {% endfor %}
+        </tbody>
+    </table>
+</div>
+{% else %}
+<p class="muted">{% trans "Aucune facture pour cet usager." %}</p>
+{% endif %}
+{% endblock %}

@@ -2,12 +2,15 @@
 from __future__ import annotations
 
 from datetime import date, timedelta
+from decimal import Decimal
 
 import pytest
 
 from apps.core.ean import validate_ean13
 from apps.members.models import Member, MemberCategory, MemberStatus
 from apps.members.services import (
+    CardStillValid,
+    can_renew,
     is_expiring_soon,
     mark_expired_members,
     renew_card,
@@ -50,9 +53,41 @@ def test_renew_card_extends_expiration(category):
     member = _member(category, expiration_date=date.today() - timedelta(days=5))
     member.status = MemberStatus.EXPIRED
     member.save()
-    new_date = renew_card(member)
+    # BUG-041 : `renew_card` renvoie désormais (date, facture de cotisation).
+    new_date, invoice = renew_card(member)
     assert new_date > date.today()
     assert member.status == MemberStatus.ACTIVE
+    # Catégorie de test sans cotisation → aucune facture émise (FEAT-084).
+    assert invoice is None
+
+
+def test_renew_card_refuses_a_card_still_valid(category):
+    """BUG-041 : trois clics ne doivent pas ajouter trois ans."""
+    member = _member(category, expiration_date=date.today() + timedelta(days=200))
+    assert can_renew(member) is False
+    with pytest.raises(CardStillValid):
+        renew_card(member)
+    member.refresh_from_db()
+    assert member.expiration_date == date.today() + timedelta(days=200)
+
+
+def test_renew_card_allowed_near_expiry(category):
+    member = _member(category, expiration_date=date.today() + timedelta(days=10))
+    assert can_renew(member) is True
+    new_date, _invoice = renew_card(member)
+    assert new_date > date.today() + timedelta(days=10)
+
+
+def test_renew_card_emits_membership_invoice(category):
+    """FEAT-084 : la cotisation est facturée à chaque renouvellement."""
+    category.membership_fee = Decimal("25.00")
+    category.save(update_fields=["membership_fee"])
+    member = _member(category, expiration_date=date.today() - timedelta(days=1))
+    _new_date, invoice = renew_card(member)
+    assert invoice is not None
+    assert invoice.total_amount == Decimal("25.00")
+    assert invoice.lines.count() == 1
+    assert invoice.lines.first().kind == "membership"
 
 
 def test_mark_expired_members(category):

@@ -5,6 +5,7 @@ MemberCategory, Member. card_number = EAN13 préfixe 291.
 from __future__ import annotations
 
 from datetime import date
+from decimal import Decimal
 from dateutil.relativedelta import relativedelta
 
 from django.db import models, transaction
@@ -35,6 +36,16 @@ class MemberCategory(models.Model):
         help_text=_("Liste de codes DocumentType ; vide = tous autorisés."),
     )
     card_validity_months = models.PositiveIntegerField(default=12)
+    # FEAT-084 : cotisation annuelle facturée à l'inscription puis à chaque
+    # renouvellement de carte. Un montant nul n'émet aucune facture — une
+    # bibliothèque gratuite ne doit pas crouler sous des factures à zéro.
+    membership_fee = models.DecimalField(
+        max_digits=10,
+        decimal_places=2,
+        default=Decimal("0"),
+        verbose_name=_("cotisation annuelle"),
+        help_text=_("0 = pas de cotisation pour cette catégorie."),
+    )
 
     class Meta:
         verbose_name = _("catégorie d'usager")
@@ -68,7 +79,30 @@ class Member(models.Model):
     contact_phone = models.CharField(
         max_length=40, blank=True, verbose_name=_("téléphone")
     )
-    address = models.TextField(blank=True, verbose_name=_("adresse"))
+    # FEAT-083 : l'email n'est pas un confort — c'est lui qui reçoit les
+    # factures et les relances (FEAT-084). Sans lui, le bouclement n'a rien
+    # à envoyer.
+    email = models.EmailField(blank=True, verbose_name=_("email"))
+    # FEAT-083 : adresse découpée. L'ancien champ libre `address` ne permettait
+    # pas de mettre en page une facture A4.
+    address_street = models.CharField(
+        max_length=200, blank=True, verbose_name=_("rue et n°")
+    )
+    address_extra = models.CharField(
+        max_length=200, blank=True, verbose_name=_("complément d'adresse")
+    )
+    address_postal_code = models.CharField(
+        max_length=20, blank=True, verbose_name=_("code postal")
+    )
+    address_city = models.CharField(
+        max_length=100, blank=True, verbose_name=_("localité")
+    )
+    address_state = models.CharField(
+        max_length=100, blank=True, verbose_name=_("état / province")
+    )
+    address_country = models.CharField(
+        max_length=100, blank=True, verbose_name=_("pays")
+    )
     registration_date = models.DateField(
         default=date.today, verbose_name=_("date d'inscription")
     )
@@ -81,7 +115,13 @@ class Member(models.Model):
         default=MemberStatus.ACTIVE,
         verbose_name=_("statut"),
     )
-    notes = models.TextField(blank=True, verbose_name=_("notes"))
+    # FEAT-083 : Val demandait « un champ commentaire libre optionnel (500
+    # caractères) ». Ce champ existait déjà sous le nom `notes` ; il est
+    # relibellé plutôt que doublé — deux zones de texte libre côte à côte sur
+    # le même écran ne se remplissent jamais toutes les deux. La limite est
+    # posée dans le formulaire, pas en base : les notes existantes plus
+    # longues restent lisibles.
+    notes = models.TextField(blank=True, verbose_name=_("commentaire"))
     preferred_language = models.CharField(
         max_length=10,
         blank=True,
@@ -151,6 +191,32 @@ class Member(models.Model):
             - self.birth_date.year
             - ((today.month, today.day) < (self.birth_date.month, self.birth_date.day))
         )
+
+    @property
+    def address_lines(self) -> list[str]:
+        """FEAT-083 : adresse en lignes prêtes à afficher, vides écartées.
+
+        Sert au gabarit de la fiche et au bloc destinataire de la facture PDF
+        (FEAT-084) : les deux doivent écrire la même adresse.
+        """
+        city_line = " ".join(
+            part for part in (self.address_postal_code, self.address_city) if part
+        )
+        return [
+            line
+            for line in (
+                self.address_street,
+                self.address_extra,
+                city_line,
+                self.address_state,
+                self.address_country,
+            )
+            if line
+        ]
+
+    @property
+    def postal_address(self) -> str:
+        return ", ".join(self.address_lines)
 
     @property
     def is_active(self) -> bool:

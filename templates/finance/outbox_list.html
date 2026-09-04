@@ -1,0 +1,77 @@
+{% extends "base.html" %}
+{% load i18n biblio_icons %}
+
+{% block title %}{% trans "File d'emails" %}{% endblock %}
+
+{% block tile_strip %}{% include "partials/_tile_strip.html" with active="finance" %}{% endblock %}
+
+{% block content %}
+<header class="pagehead">
+    <div class="pagehead-icon" style="--ph-bg:var(--sky);--ph-fg:var(--ink)">
+        {% icon "mail" size="28px" %}
+    </div>
+    <div class="pagehead-text">
+        <h1 class="pagehead-title">{% trans "File d'emails" %}</h1>
+        <div class="pagehead-sub">
+            {% if is_box and is_online %}{% trans "La Box est en ligne." %}
+            {% elif is_box %}{% trans "La Box n'est pas en ligne : prévenez les personnes par téléphone, ou renvoyez quand elle le sera." %}
+            {% elif not smtp_configured %}{% trans "L'envoi par email n'est pas configuré (Avancé → Paramètres → Email)." %}
+            {% else %}{% trans "Les emails en attente partent tout de suite." %}{% endif %}
+        </div>
+    </div>
+</header>
+
+{% if pending and user.is_superadmin %}
+<form method="post" action="{% url 'finance:outbox_flush' %}" style="margin-bottom:18px">
+    {% csrf_token %}
+    <input type="hidden" name="next" value="outbox">
+    <button type="submit" class="btn btn--primary">
+        {% icon "send" size="16px" %}
+        {% blocktrans count n=pending %}Envoyer {{ n }} email en attente{% plural %}Envoyer les {{ n }} emails en attente{% endblocktrans %}
+    </button>
+</form>
+{% endif %}
+
+{% if emails %}
+<div class="table-wrap">
+    <table class="table">
+        <thead>
+            <tr>
+                <th>{% trans "Créé le" %}</th>
+                <th>{% trans "Nature" %}</th>
+                <th>{% trans "Destinataire" %}</th>
+                <th>{% trans "Objet" %}</th>
+                <th>{% trans "Statut" %}</th>
+                <th>{% trans "Erreur" %}</th>
+            </tr>
+        </thead>
+        <tbody>
+        {% for email in emails %}
+            <tr>
+                <td>{{ email.created_at|date:"SHORT_DATETIME_FORMAT" }}</td>
+                <td class="muted">{{ email.get_kind_display }}</td>
+                <td>{{ email.to_address }}</td>
+                <td>
+                    {% if email.invoice %}
+                    <a href="{% url 'finance:invoice_detail' email.invoice.pk %}" class="cell-link">{{ email.subject }}</a>
+                    {% else %}{{ email.subject }}{% endif %}
+                </td>
+                <td>
+                    {% if email.status == "sent" %}
+                    <span class="badge" style="background:var(--forest-light);color:var(--forest)">{{ email.get_status_display }}</span>
+                    {% elif email.status == "failed" %}
+                    <span class="badge badge--late">{{ email.get_status_display }}</span>
+                    {% else %}
+                    <span class="badge" style="background:var(--amber-light);color:#946906">{{ email.get_status_display }}</span>
+                    {% endif %}
+                </td>
+                <td class="muted text-sm">{{ email.error|truncatechars:60|default:"—" }}</td>
+            </tr>
+        {% endfor %}
+        </tbody>
+    </table>
+</div>
+{% else %}
+<p class="muted">{% trans "Aucun email en file." %}</p>
+{% endif %}
+{% endblock %}

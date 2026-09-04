@@ -1,0 +1,42 @@
+{% load i18n %}
+{% comment %}
+FEAT-088 : moteur de recherche de devise (demande Val, 2026-09-01).
+
+**Un seul champ**, celui que l'on tape, et c'est lui qui part au serveur. Un
+champ visible doublé d'un champ caché aurait paru plus riche, mais sans
+JavaScript le champ caché ne serait jamais rempli : le réglage deviendrait
+impossible à changer. Ici, choisir un résultat écrit le code dans le champ —
+ce qu'on voit est exactement ce qui sera enregistré.
+
+Le serveur accepte aussi une saisie libre qui ne désigne qu'une seule devise
+(« bolívar », « Suisse ») : cf. `CurrencyField.clean`.
+{% endcomment %}
+<div class="currency-search"
+     data-currency-search
+     data-url="{{ widget.search_url }}"
+     data-min-length="{{ widget.min_length }}">
+
+    <input type="text"
+           name="{{ widget.name }}"
+           id="{{ widget.attrs.id }}"
+           class="currency-search-input"
+           autocomplete="off"
+           role="combobox"
+           aria-expanded="false"
+           aria-autocomplete="list"
+           aria-controls="{{ widget.attrs.id }}-results"
+           placeholder="{% trans 'CHF, Suisse, bolívar…' %}"
+           value="{{ widget.value|default:'' }}"
+           data-currency-input>
+
+    <div class="currency-results" id="{{ widget.attrs.id }}-results"
+         role="listbox" hidden data-currency-results></div>
+
+    <div class="currency-current muted text-sm" data-currency-current>
+        {% if widget.current %}
+        {% blocktrans with code=widget.current.code name=widget.current.name countries=widget.current.countries %}Sélectionnée : <b>{{ code }}</b> — {{ name }} ({{ countries }}){% endblocktrans %}
+        {% else %}
+        {% trans "Aucune devise sélectionnée." %}
+        {% endif %}
+    </div>
+</div>

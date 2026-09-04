@@ -19,12 +19,20 @@ from django.views.decorators.http import require_POST
 from apps.accounts.models import Role
 from apps.accounts.permissions import require_role
 from apps.catalog.models import ItemStatus
+from apps.finance.money import format_amount
+from apps.finance.services import (
+    create_membership_invoice,
+    member_account,
+    reconcile_membership_invoices,
+)
 from apps.loans.models import LoanStatus, ReservationStatus
 
 from .forms import MemberFamilyFormSet, MemberForm
 from .models import Member, MemberCategory, MemberStatus
 from .notifications import member_alerts
 from .services import (
+    CardStillValid,
+    can_renew,
     days_until_expiration,
     is_expiring_soon,
     renew_card,
@@ -35,6 +43,39 @@ READ_ROLES = (Role.LIBRARIAN, Role.SUPERADMIN, Role.READONLY)
 WRITE_ROLES = (Role.LIBRARIAN, Role.SUPERADMIN)
 
 _ACTIVE_LOAN_STATUSES = (LoanStatus.ACTIVE, LoanStatus.OVERDUE)
+
+
+def _membership_change_messages(request, result: dict) -> None:
+    """Retours de `reconcile_membership_invoices` après un changement de catégorie."""
+    cancelled = result.get("cancelled") or []
+    created = result.get("created")
+    if cancelled and created:
+        messages.info(
+            request,
+            _("Cotisation recalculée : facture %(old)s annulée, %(new)s émise (%(amount)s).")
+            % {
+                "old": cancelled[0].number,
+                "new": created.number,
+                "amount": format_amount(created.total_amount),
+            },
+        )
+        return
+    if cancelled:
+        messages.info(
+            request,
+            _("Facture de cotisation %(num)s annulée : la nouvelle catégorie n'en a pas.")
+            % {"num": cancelled[0].number},
+        )
+        return
+    if created is not None:
+        messages.info(
+            request,
+            _("Facture de cotisation %(num)s émise (%(amount)s).")
+            % {
+                "num": created.number,
+                "amount": format_amount(created.total_amount),
+            },
+        )
 
 
 @require_role(*READ_ROLES)
@@ -93,6 +134,11 @@ def member_detail(request, pk):
             "days_left": days_until_expiration(member),
             "expiring_soon": is_expiring_soon(member),
             "alerts": member_alerts(member),
+            # BUG-041 : le gabarit grise le bouton quand la carte est encore
+            # valable pour plus de 30 jours.
+            "can_renew": can_renew(member),
+            # FEAT-084 : encadré « Compte » (à jour / à régler / en retard).
+            "account": member_account(member),
         },
     )
 
@@ -135,6 +181,18 @@ def member_create(request):
                 request,
                 _("Usager inscrit — carte n° %(card)s.") % {"card": member.card_number},
             )
+            # FEAT-084 : cotisation facturée à l'inscription, du montant porté
+            # par la catégorie. Une catégorie gratuite n'émet rien.
+            invoice = create_membership_invoice(member, user=request.user)
+            if invoice is not None:
+                messages.info(
+                    request,
+                    _("Facture de cotisation %(num)s émise (%(amount)s).")
+                    % {
+                        "num": invoice.number,
+                        "amount": format_amount(invoice.total_amount),
+                    },
+                )
             return redirect("members:detail", pk=member.pk)
     else:
         form = MemberForm()
@@ -149,6 +207,9 @@ def member_create(request):
 @require_role(*WRITE_ROLES)
 def member_edit(request, pk):
     member = get_object_or_404(Member, pk=pk)
+    # Avant `is_valid()` : ModelForm._post_clean écrit déjà la nouvelle
+    # catégorie sur l'instance, et on perdrait l'ancienne.
+    old_category_id = member.category_id
     if request.method == "POST":
         form = MemberForm(request.POST, request.FILES, instance=member)
         family = MemberFamilyFormSet(request.POST, instance=member)
@@ -156,6 +217,14 @@ def member_edit(request, pk):
             form.save()
             family.save()
             messages.success(request, _("Fiche usager mise à jour."))
+            # BUG-042 : la cotisation suit la catégorie. Sans ça, passer
+            # d'Adulte (20 CHF) à Employé (0) laisse la facture d'Adulte
+            # ouverte, et l'encadré Compte affiche encore « Cotisation 20 CHF ».
+            if member.category_id != old_category_id:
+                result = reconcile_membership_invoices(
+                    member, user=request.user
+                )
+                _membership_change_messages(request, result)
             return redirect("members:detail", pk=member.pk)
     else:
         form = MemberForm(instance=member)
@@ -198,11 +267,26 @@ def member_replace_card(request, pk):
 @require_role(*WRITE_ROLES)
 def member_renew(request, pk):
     member = get_object_or_404(Member, pk=pk)
-    new_date = renew_card(member)
+    try:
+        new_date, invoice = renew_card(member, user=request.user)
+    except CardStillValid as exc:
+        # BUG-041 : le bouton est grisé, mais un POST direct ne doit pas non
+        # plus empiler les années.
+        messages.warning(
+            request,
+            _("Carte déjà valable jusqu'au %(date)s : rien à renouveler.")
+            % {"date": exc.expiration_date},
+        )
+        return redirect("members:detail", pk=member.pk)
     messages.success(
         request,
         _("Carte renouvelée jusqu'au %(date)s.") % {"date": new_date},
     )
+    if invoice is not None:
+        messages.info(
+            request,
+            _("Facture de cotisation %(num)s émise.") % {"num": invoice.number},
+        )
     return redirect("members:detail", pk=member.pk)
 
 

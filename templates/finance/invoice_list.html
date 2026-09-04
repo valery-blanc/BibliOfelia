@@ -1,0 +1,97 @@
+{% extends "base.html" %}
+{% load i18n biblio_icons money %}
+
+{% block title %}{% trans "Factures" %}{% endblock %}
+
+{% block tile_strip %}{% include "partials/_tile_strip.html" with active="finance" %}{% endblock %}
+
+{% block content %}
+<header class="pagehead">
+    <div class="pagehead-icon" style="--ph-bg:var(--burgundy);--ph-fg:#fff">
+        {% icon "receipt" size="28px" %}
+    </div>
+    <div class="pagehead-text">
+        <h1 class="pagehead-title">{% trans "Factures" %}</h1>
+        <div class="pagehead-sub">{% blocktrans with t=total_outstanding|money %}Total dû par les usagers : {{ t }}{% endblocktrans %}</div>
+    </div>
+</header>
+
+<div class="card">
+    <form method="get" class="grid-3" style="align-items:end">
+        <div class="field">
+            <label for="q">{% trans "Recherche" %}</label>
+            <input type="search" id="q" name="q" value="{{ q }}"
+                   placeholder="{% trans 'N° de facture, nom, n° de carte…' %}">
+        </div>
+        <div class="field">
+            <label for="status">{% trans "Statut" %}</label>
+            <select id="status" name="status">
+                <option value="">{% trans "Tous" %}</option>
+                <option value="overdue" {% if status == "overdue" %}selected{% endif %}>{% trans "En retard" %}</option>
+                {% for value, label in statuses %}
+                <option value="{{ value }}" {% if status == value %}selected{% endif %}>{{ label }}</option>
+                {% endfor %}
+            </select>
+        </div>
+        <div class="field">
+            <button type="submit" class="btn btn--primary">
+                {% icon "filter" size="16px" %} {% trans "Filtrer" %}
+            </button>
+        </div>
+    </form>
+</div>
+
+{% if page_obj.object_list %}
+<div class="table-wrap" style="margin-top:18px">
+    <table class="table">
+        <thead>
+            <tr>
+                <th>{% trans "N°" %}</th>
+                <th>{% trans "Usager" %}</th>
+                <th>{% trans "Émise le" %}</th>
+                <th>{% trans "Échéance" %}</th>
+                <th style="text-align:right">{% trans "Total" %}</th>
+                <th style="text-align:right">{% trans "Solde" %}</th>
+                <th>{% trans "Statut" %}</th>
+            </tr>
+        </thead>
+        <tbody>
+        {% for invoice in page_obj.object_list %}
+            <tr>
+                <td><a href="{% url 'finance:invoice_detail' invoice.pk %}" class="cell-link">{{ invoice.number }}</a></td>
+                <td><a href="{% url 'members:detail' invoice.member.pk %}" class="cell-link">{{ invoice.member.full_name }}</a></td>
+                <td>{{ invoice.issue_date }}</td>
+                <td>{{ invoice.due_date }}</td>
+                <td style="text-align:right;font-variant-numeric:tabular-nums">{{ invoice.total_amount|money_plain }}</td>
+                <td style="text-align:right;font-variant-numeric:tabular-nums">{{ invoice.balance|money_plain }}</td>
+                <td>
+                    {% if invoice.status == "paid" %}
+                    <span class="badge" style="background:var(--forest-light);color:var(--forest)">{% trans "Réglée" %}</span>
+                    {% elif invoice.status == "cancelled" %}
+                    <span class="badge">{% trans "Annulée" %}</span>
+                    {% elif invoice.is_overdue %}
+                    <span class="badge badge--late">{% trans "En retard" %}</span>
+                    {% else %}
+                    <span class="badge" style="background:var(--amber-light);color:#946906">{% trans "À régler" %}</span>
+                    {% endif %}
+                </td>
+            </tr>
+        {% endfor %}
+        </tbody>
+    </table>
+</div>
+{% if page_obj.paginator.num_pages > 1 %}
+<nav class="pager">
+    {% if page_obj.has_previous %}
+    <a href="?q={{ q|urlencode }}&status={{ status }}&page={{ page_obj.previous_page_number }}" class="btn btn--ghost btn--sm">{% trans "Précédent" %}</a>
+    {% endif %}
+    <span class="pager-info">{{ page_obj.number }} / {{ page_obj.paginator.num_pages }}</span>
+    {% if page_obj.has_next %}
+    <a href="?q={{ q|urlencode }}&status={{ status }}&page={{ page_obj.next_page_number }}" class="btn btn--ghost btn--sm">{% trans "Suivant" %}</a>
+    {% endif %}
+</nav>
+{% endif %}
+{% else %}
+<p class="muted" style="margin-top:18px">{% trans "Aucune facture." %}</p>
+{% endif %}
+{% endblock %}

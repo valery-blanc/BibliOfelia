@@ -4,6 +4,7 @@ Logiciel de gestion de bibliothèque pour petites bibliothèques communautaires 
 
 Spec complète : [`docs/specs/SPEC_BIBLIOFELIA.md`](docs/specs/SPEC_BIBLIOFELIA.md)
 Avancement : [`docs/tasks/TASKS.md`](docs/tasks/TASKS.md)
+Reprise du projet (humain ou agent) : [`docs/HANDOFF.md`](docs/HANDOFF.md)
 
 ## Stack
 

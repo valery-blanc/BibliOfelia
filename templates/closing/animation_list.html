@@ -1,0 +1,93 @@
+{% extends "base.html" %}
+{% load i18n biblio_icons %}
+
+{% block title %}{% trans "Animations" %}{% endblock %}
+
+{% block tile_strip %}{% include "partials/_tile_strip.html" with active="closing" %}{% endblock %}
+
+{% block content %}
+<header class="pagehead">
+    <div class="pagehead-icon" style="--ph-bg:var(--blush);--ph-fg:var(--ink)">
+        {% icon "users" size="28px" %}
+    </div>
+    <div class="pagehead-text">
+        <h1 class="pagehead-title">{% trans "Animations" %}</h1>
+        <div class="pagehead-sub">{% trans "Ce que vous avez présenté, et qui était là." %}</div>
+    </div>
+</header>
+
+<div class="card">
+    <form method="post">
+        {% csrf_token %}
+        {% include "partials/_field.html" with field=form.animation_type %}
+        {% include "partials/_field.html" with field=form.new_animation %}
+        <div class="grid-2">
+            {% include "partials/_field.html" with field=form.hours %}
+            {% include "partials/_field.html" with field=form.minutes_part %}
+        </div>
+        {% include "partials/_field.html" with field=form.occurred_on %}
+        <div class="grid-2">
+            {% include "partials/_field.html" with field=form.non_member_adults %}
+            {% include "partials/_field.html" with field=form.non_member_children %}
+        </div>
+        {% include "partials/_field.html" with field=form.note %}
+
+        {% comment %}
+        FEAT-085 (2026-09-01) : champ des présents dès la création, avec bouton
+        de scan. Le bouton est `type="button"` et « Enregistrer » reste visible
+        à côté (BUG-014) — un submit caché ne se déclenche pas de façon fiable
+        après une lecture caméra.
+        {% endcomment %}
+        <div class="field">
+            <label for="{{ form.attendee_codes.id_for_label }}">{{ form.attendee_codes.label }}</label>
+            <div style="display:flex;gap:8px;align-items:flex-start;flex-wrap:wrap">
+                <div style="flex:1;min-width:200px">{{ form.attendee_codes }}</div>
+                <button type="button" class="btn btn--ghost js-scan-handoff"
+                        data-scan-kind="member"
+                        data-scan-target="#{{ form.attendee_codes.id_for_label }}"
+                        data-scan-append="true">
+                    {% icon "scan-barcode" size="16px" %} {% trans "Scanner" %}
+                </button>
+            </div>
+            <small class="help-hint">{{ form.attendee_codes.help_text }}</small>
+            {% for error in form.attendee_codes.errors %}<small class="field-error">{{ error }}</small>{% endfor %}
+        </div>
+
+        {% for error in form.non_field_errors %}
+        <small class="field-error">{{ error }}</small>
+        {% endfor %}
+        <div class="form-actions">
+            <button type="submit" class="btn btn--primary">
+                {% icon "check" size="16px" %} {% trans "Enregistrer et ajouter les présents" %}
+            </button>
+            <a href="{% url 'closing:day_closing' %}" class="btn btn--ghost">{% trans "Retour au bouclement" %}</a>
+        </div>
+    </form>
+    <p class="muted text-sm" style="margin-top:10px">
+        {% trans "Les non-membres sont simplement comptés. Les membres présents s'ajoutent après enregistrement, en scannant leur carte ou en tapant les 4 derniers chiffres de leur numéro." %}
+    </p>
+</div>
+
+<h2 class="section-title" style="margin-top:28px">{% trans "Dernières animations" %}</h2>
+{% if sessions %}
+<div class="list">
+    {% for session in sessions %}
+    <a href="{% url 'closing:animation_detail' session.pk %}" class="list-row">
+        <div class="lrow-icon" style="--lr-bg:var(--blush-light);--lr-fg:var(--ink)">
+            {% icon "users" size="18px" %}
+        </div>
+        <div class="lrow-body">
+            <div class="lrow-title">{{ session.animation_type }}</div>
+            <div class="lrow-sub">
+                {{ session.occurred_on }} · {{ session.presenter }} · {{ session.duration_display }} ·
+                {% blocktrans with m=session.member_count n=session.non_member_count %}{{ m }} membre(s), {{ n }} non-membre(s){% endblocktrans %}
+            </div>
+        </div>
+        <div class="lrow-end">{% icon "chevron-right" size="18px" %}</div>
+    </a>
+    {% endfor %}
+</div>
+{% else %}
+<p class="muted">{% trans "Aucune animation enregistrée." %}</p>
+{% endif %}
+{% endblock %}

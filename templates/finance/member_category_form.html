@@ -1,0 +1,51 @@
+{% extends "base.html" %}
+{% load i18n biblio_icons %}
+
+{% block title %}{{ form_title }}{% endblock %}
+
+{% block tile_strip %}{% include "partials/_tile_strip.html" with active="advanced" %}{% endblock %}
+
+{% block content %}
+<nav class="breadcrumb">
+    <a href="{% url 'core:advanced' %}">{% trans "Avancé" %}</a> /
+    <a href="{% url 'finance:tariff_list' %}">{% trans "Tarifs et Catégories d'usagers" %}</a> /
+    <strong>{% if category %}{{ category.code }}{% else %}{% trans "Nouvelle" %}{% endif %}</strong>
+</nav>
+
+<header class="pagehead">
+    <div class="pagehead-icon" style="--ph-bg:var(--forest);--ph-fg:#fff">
+        {% icon "users" size="28px" %}
+    </div>
+    <div class="pagehead-text">
+        <h1 class="pagehead-title">{{ form_title }}</h1>
+        {% if category %}<div class="pagehead-sub">{{ category.code }} · {{ category.name }}</div>{% endif %}
+    </div>
+</header>
+
+<div class="card">
+    <form method="post">
+        {% csrf_token %}
+        {% if form.non_field_errors %}<div class="msg msg-error">{{ form.non_field_errors }}</div>{% endif %}
+        {% include "partials/_field.html" with field=form.code %}
+        <div class="grid-2">
+            {% include "partials/_field.html" with field=form.name_fr %}
+            {% include "partials/_field.html" with field=form.name_en %}
+            {% include "partials/_field.html" with field=form.name_es %}
+            {% include "partials/_field.html" with field=form.name_mg %}
+        </div>
+        <div class="grid-2">
+            {% include "partials/_field.html" with field=form.membership_fee %}
+            {% include "partials/_field.html" with field=form.card_validity_months %}
+            {% include "partials/_field.html" with field=form.max_concurrent_loans %}
+            {% include "partials/_field.html" with field=form.default_loan_duration_days %}
+        </div>
+        {% include "partials/_field.html" with field=form.allowed_document_types %}
+        <div class="form-actions">
+            <button type="submit" class="btn btn--primary">
+                {% icon "check" size="16px" %} {% trans "Enregistrer" %}
+            </button>
+            <a href="{% url 'finance:tariff_list' %}" class="btn btn--ghost">{% trans "Annuler" %}</a>
+        </div>
+    </form>
+</div>
+{% endblock %}

@@ -49,6 +49,25 @@
             <span class="badge badge--late" style="padding:1px 7px;font-size:10px;">{{ nav_counts.reservations_ready }}</span>
             {% endif %}
         </a>
+
+        {% comment %}
+        FEAT-086 : le bouclement rejoint les sections principales.
+        FEAT-084 : la caisse aussi — elle n'était atteignable que depuis
+        l'accueil, alors qu'on y revient depuis n'importe quel écran.
+        {% endcomment %}
+        <a href="{% url 'finance:cash_index' %}"
+           class="chip chip--amber{% if active == 'finance' %} is-active{% endif %}"
+           aria-current="{% if active == 'finance' %}page{% endif %}">
+            <span class="chip-dot">{% icon "wallet" size="14px" %}</span>
+            {% trans "Caisse" %}
+        </a>
+
+        <a href="{% url 'closing:day_closing' %}"
+           class="chip chip--olive{% if active == 'closing' %} is-active{% endif %}"
+           aria-current="{% if active == 'closing' %}page{% endif %}">
+            <span class="chip-dot">{% icon "clipboard-list" size="14px" %}</span>
+            {% trans "Bouclement" %}
+        </a>
         {% endif %}
 
         <a href="{% url 'core:advanced' %}"

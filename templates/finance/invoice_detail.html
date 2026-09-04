@@ -1,0 +1,179 @@
+{% extends "base.html" %}
+{% load i18n biblio_icons money %}
+
+{% block title %}{{ invoice.number }}{% endblock %}
+
+{% block tile_strip %}{% include "partials/_tile_strip.html" with active="finance" %}{% endblock %}
+
+{% block content %}
+<header class="pagehead">
+    <div class="pagehead-icon" style="--ph-bg:var(--burgundy);--ph-fg:#fff">
+        {% icon "receipt" size="28px" %}
+    </div>
+    <div class="pagehead-text">
+        <h1 class="pagehead-title">{{ invoice.number }}</h1>
+        <div class="pagehead-sub">
+            <a href="{% url 'members:detail' invoice.member.pk %}" class="cell-link">{{ invoice.member.full_name }}</a>
+            · {{ invoice.member.card_number }}
+        </div>
+    </div>
+</header>
+
+<div style="display:flex;gap:8px;flex-wrap:wrap;margin-bottom:18px">
+    <a href="{% url 'finance:invoice_pdf' invoice.pk %}" class="btn btn--ghost" target="_blank" rel="noopener">
+        {% icon "printer" size="16px" %} {% trans "Facture PDF" %}
+    </a>
+    {% if user.is_librarian %}
+    <form method="post" action="{% url 'finance:invoice_email' invoice.pk %}" style="margin:0">
+        {% csrf_token %}
+        <button type="submit" class="btn btn--ghost"{% if not invoice.member.email %} disabled title="{% trans 'Cet usager n’a pas d’adresse email.' %}"{% endif %}>
+            {% icon "mail" size="16px" %} {% trans "Envoyer par email" %}
+        </button>
+    </form>
+    {% if invoice.status != "cancelled" and not invoice.payments.exists %}
+    <form method="post" action="{% url 'finance:invoice_cancel' invoice.pk %}" style="margin:0"
+          onsubmit="return confirm('{% trans "Annuler cette facture ? Elle restera visible, numérotée, mais ne sera plus due." %}')">
+        {% csrf_token %}
+        <button type="submit" class="btn btn--ghost" style="color:#B83232">
+            {% icon "ban" size="16px" %} {% trans "Annuler la facture" %}
+        </button>
+    </form>
+    {% endif %}
+    {% endif %}
+    <a href="{% url 'finance:member_account' invoice.member.pk %}" class="btn btn--ghost">
+        {% icon "wallet" size="16px" %} {% trans "Compte de l'usager" %}
+    </a>
+</div>
+
+<div class="card">
+    <dl class="record-meta">
+        <div><dt>{% trans "Statut" %}</dt><dd>
+            {% if invoice.status == "paid" %}
+            <span class="badge" style="background:var(--forest-light);color:var(--forest)">{% trans "Réglée" %}</span>
+            {% elif invoice.status == "cancelled" %}
+            <span class="badge">{% trans "Annulée" %}</span>
+            {% elif invoice.is_overdue %}
+            <span class="badge badge--late">{% blocktrans with d=invoice.days_overdue %}En retard de {{ d }} jour(s){% endblocktrans %}</span>
+            {% else %}
+            <span class="badge" style="background:var(--amber-light);color:#946906">{% trans "À régler" %}</span>
+            {% endif %}
+        </dd></div>
+        <div><dt>{% trans "Émise le" %}</dt><dd>{{ invoice.issue_date }}</dd></div>
+        <div><dt>{% trans "Échéance" %}</dt><dd>{{ invoice.due_date }}</dd></div>
+        <div><dt>{% trans "Total" %}</dt><dd>{{ invoice.total_amount|money }}</dd></div>
+        <div><dt>{% trans "Déjà réglé" %}</dt><dd>{{ invoice.amount_paid|money }}</dd></div>
+        <div><dt>{% trans "Reste à payer" %}</dt><dd><b>{{ invoice.balance|money }}</b></dd></div>
+        {% if invoice.emailed_at %}
+        <div><dt>{% trans "Envoyée le" %}</dt><dd>{{ invoice.emailed_at }}</dd></div>
+        {% endif %}
+        {% if invoice.reminder_sent_at %}
+        <div><dt>{% trans "Relancée le" %}</dt><dd>{{ invoice.reminder_sent_at }}</dd></div>
+        {% endif %}
+    </dl>
+    {% if invoice.note %}
+    <div class="muted text-sm" style="margin-top:10px;white-space:pre-wrap">{{ invoice.note }}</div>
+    {% endif %}
+</div>
+
+<h2 class="section-title" style="margin-top:28px">{% trans "Détail" %}</h2>
+<div class="table-wrap">
+    <table class="table">
+        <thead>
+            <tr>
+                <th>{% trans "Nature" %}</th>
+                <th>{% trans "Désignation" %}</th>
+                <th style="text-align:right">{% trans "Qté" %}</th>
+                <th style="text-align:right">{% trans "P.U." %}</th>
+                <th style="text-align:right">{% trans "Total" %}</th>
+            </tr>
+        </thead>
+        <tbody>
+        {% for line in invoice.lines.all %}
+            <tr>
+                <td class="muted">{{ line.get_kind_display }}</td>
+                <td>{{ line.label }}</td>
+                <td style="text-align:right">{{ line.quantity }}</td>
+                <td style="text-align:right;font-variant-numeric:tabular-nums">{{ line.amount|money_plain }}</td>
+                <td style="text-align:right;font-variant-numeric:tabular-nums">{{ line.line_total|money_plain }}</td>
+            </tr>
+        {% endfor %}
+        </tbody>
+    </table>
+</div>
+
+<h2 class="section-title" style="margin-top:28px">{% trans "Encaissements" %}</h2>
+{% if invoice.payments.all %}
+<div class="table-wrap">
+    <table class="table">
+        <thead>
+            <tr>
+                <th>{% trans "Date" %}</th>
+                <th>{% trans "Mode" %}</th>
+                <th style="text-align:right">{% trans "Montant" %}</th>
+                <th>{% trans "Encaissé par" %}</th>
+                <th>{% trans "Note" %}</th>
+            </tr>
+        </thead>
+        <tbody>
+        {% for payment in invoice.payments.all %}
+            <tr>
+                <td>{{ payment.paid_on }}</td>
+                <td>{{ payment.get_method_display }}</td>
+                <td style="text-align:right;font-variant-numeric:tabular-nums">{{ payment.amount|money }}</td>
+                <td class="muted">{{ payment.received_by|default:"—" }}</td>
+                <td class="muted">{{ payment.note|default:"—" }}</td>
+            </tr>
+        {% endfor %}
+        </tbody>
+    </table>
+</div>
+{% else %}
+<p class="muted">{% trans "Aucun encaissement pour l'instant." %}</p>
+{% endif %}
+
+{% if user.is_librarian and invoice.status == "open" %}
+<h2 class="section-title" style="margin-top:28px">{% trans "Encaisser" %}</h2>
+<div class="card">
+    <form method="post" action="{% url 'finance:invoice_pay' invoice.pk %}">
+        {% csrf_token %}
+        <div class="grid-2">
+            {% include "partials/_field.html" with field=payment_form.amount %}
+            {% include "partials/_field.html" with field=payment_form.method %}
+        </div>
+        <div class="grid-2">
+            {% include "partials/_field.html" with field=payment_form.paid_on %}
+            {% include "partials/_field.html" with field=payment_form.note %}
+        </div>
+        <div class="form-actions">
+            <button type="submit" class="btn btn--primary">
+                {% icon "check" size="16px" %} {% trans "Enregistrer l'encaissement" %}
+            </button>
+        </div>
+    </form>
+    <p class="muted text-sm" style="margin-top:8px">
+        {% trans "Un règlement en espèces crée automatiquement une entrée de caisse." %}
+    </p>
+</div>
+{% endif %}
+
+{% if emails %}
+<h2 class="section-title" style="margin-top:28px">{% trans "Emails" %}</h2>
+<div class="list">
+    {% for email in emails %}
+    <div class="list-row">
+        <div class="lrow-icon" style="--lr-bg:var(--sky-light);--lr-fg:var(--sky-dark)">
+            {% icon "mail" size="18px" %}
+        </div>
+        <div class="lrow-body">
+            <div class="lrow-title">{{ email.get_kind_display }} — {{ email.to_address }}</div>
+            <div class="lrow-sub">
+                {{ email.get_status_display }}
+                {% if email.sent_at %}· {{ email.sent_at }}{% endif %}
+                {% if email.error %}· {{ email.error|truncatechars:80 }}{% endif %}
+            </div>
+        </div>
+    </div>
+    {% endfor %}
+</div>
+{% endif %}
+{% endblock %}

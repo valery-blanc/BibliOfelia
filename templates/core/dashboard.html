@@ -93,6 +93,30 @@
     </a>
     {% endif %}
 
+    {% if user.is_librarian %}
+    {% comment %}
+    FEAT-086 : le bouclement est une section principale, au même rang que le
+    catalogue et les membres — c'est par là que passe la fin de service.
+    {% endcomment %}
+    <a href="{% url 'closing:day_closing' %}" class="tile tile--olive">
+        <div class="tile-icon">{% icon "clipboard-list" size="28px" %}</div>
+        <div class="tile-text">
+            <div class="tile-title">{% trans "Bouclement" %}</div>
+            <div class="tile-desc">{% trans "Activités, caisse, sauvegardes et fin de journée" %}</div>
+        </div>
+        <div class="tile-chev">{% icon "chevron-right" size="22px" %}</div>
+    </a>
+
+    <a href="{% url 'finance:cash_index' %}" class="tile tile--amber">
+        <div class="tile-icon">{% icon "wallet" size="28px" %}</div>
+        <div class="tile-text">
+            <div class="tile-title">{% trans "Caisse" %}</div>
+            <div class="tile-desc">{% trans "Cotisations, amendes, factures et paiements" %}</div>
+        </div>
+        <div class="tile-chev">{% icon "chevron-right" size="22px" %}</div>
+    </a>
+    {% endif %}
+
     <a href="{% url 'core:advanced' %}" class="tile tile--forest">
         <div class="tile-icon tile-icon--illus">{% illus "advanced" %}</div>
         <div class="tile-text">

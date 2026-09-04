@@ -52,15 +52,24 @@
         return check === (code.charCodeAt(12) - 48);
     }
 
-    // Un code n'est accepté QUE si c'est un EAN-13 à clé valide ET préfixe
-    // plausible : 290/291 = codes Ofelia (exemplaire / carte membre),
-    // 978/979 = ISBN. Tout le reste (autre format/préfixe, clé KO) est rejeté.
-    // FEAT-052 : `allowIssn` (catalogage uniquement) ajoute le préfixe 977
-    // (périodiques). Les flux prêt/retour/adhésion gardent le filtre par défaut.
+    // FEAT-087 : tout format que le lecteur sait décoder est accepté (décision
+    // Val, 2026-08-31). Le filtre précédent n'acceptait qu'un EAN-13 à préfixe
+    // 290/291/977/978/979 — il rejetait donc les **codes externes** (FEAT-063)
+    // imprimés en Code128 ou Code39, très courants sur les étiquettes de
+    // bibliothèque, ainsi que les EAN-13 d'un autre préfixe.
+    //
+    // Un seul garde-fou reste, et il est ciblé : quand la lecture *ressemble*
+    // à un EAN-13 (13 chiffres), sa clé de contrôle doit tomber juste. C'est
+    // ce qui attrape les confusions 1↔7 / 1↔0 du décodeur logiciel. Un Code39
+    // ou un Code128 n'a pas de clé — c'est le consensus de deux lectures
+    // identiques (`handleRead`) qui joue ce rôle pour eux.
+    //
+    // `allowIssn` n'a plus d'effet sur le filtre ; il est conservé pour ne pas
+    // toucher aux appels existants.
     function isAcceptableCode(v, allowIssn) {
-        if (!/^\d{13}$/.test(v) || !isValidEan13(v)) return false;
-        var prefixes = allowIssn ? /^(290|291|977|978|979)/ : /^(290|291|978|979)/;
-        return prefixes.test(v);
+        if (!v || v.length < 3) return false;
+        if (/^\d{13}$/.test(v)) return isValidEan13(v);
+        return true;
     }
 
     function getI18n() {
@@ -254,9 +263,17 @@
         if (!Html5Qrcode) {
             return closeModal(state).then(function () { opts.onUnavailable("lib-not-loaded"); });
         }
+        // FEAT-087 : tous les formats linéaires que html5-qrcode sait lire. On
+        // exclut QR / DataMatrix / Aztec : une étiquette de bibliothèque est un
+        // code-barres à barres, et ouvrir aux codes 2D ferait lire n'importe
+        // quelle affiche présente dans le champ.
         var formats;
         if (window.Html5QrcodeSupportedFormats) {
-            formats = [window.Html5QrcodeSupportedFormats.EAN_13]; // EAN-13 uniquement
+            var F = window.Html5QrcodeSupportedFormats;
+            formats = [
+                F.EAN_13, F.EAN_8, F.UPC_A, F.UPC_E, F.UPC_EAN_EXTENSION,
+                F.CODE_128, F.CODE_39, F.CODE_93, F.CODABAR, F.ITF
+            ].filter(function (f) { return f !== undefined; });
         }
         var scanner = new Html5Qrcode("scan-camera-viewfinder", {
             verbose: false,
@@ -341,7 +358,14 @@
                 // hauteur) : un seul code-barres y tient (cf. qrbox côté html5).
                 area: { top: "37%", right: "0%", left: "0%", bottom: "37%" }
             },
-            decoder: { readers: ["ean_reader"] }, // EAN-13 uniquement
+            // FEAT-087 : mêmes formats que le moteur 1. Plus de lecteurs = décodage
+            // plus lent ; c'est le prix pour lire un code externe Code128.
+            decoder: {
+                readers: [
+                    "ean_reader", "ean_8_reader", "upc_reader", "upc_e_reader",
+                    "code_128_reader", "code_39_reader", "codabar_reader", "i2of5_reader"
+                ]
+            },
             locator: { patchSize: "medium", halfSample: true },
             locate: true,
             numOfWorkers: 0, // décodage sur le thread principal (robuste hors-ligne)

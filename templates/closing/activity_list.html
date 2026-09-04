@@ -1,0 +1,89 @@
+{% extends "base.html" %}
+{% load i18n biblio_icons %}
+
+{% block title %}{% trans "Mes activités" %}{% endblock %}
+
+{% block tile_strip %}{% include "partials/_tile_strip.html" with active="closing" %}{% endblock %}
+
+{% block content %}
+<header class="pagehead">
+    <div class="pagehead-icon" style="--ph-bg:var(--olive);--ph-fg:var(--ink)">
+        {% icon "activity" size="28px" %}
+    </div>
+    <div class="pagehead-text">
+        <h1 class="pagehead-title">{% trans "Mes activités" %}</h1>
+        <div class="pagehead-sub">{% trans "Ce que vous avez fait et le temps que vous y avez passé." %}</div>
+    </div>
+</header>
+
+{% if not has_types %}
+<div role="alert" class="msg msg-warning">
+    {% trans "Aucune nature d'activité n'est définie." %}
+    {% if user.is_superadmin %}
+    <a href="{% url 'closing:type_list' %}" class="cell-link">{% trans "En créer" %}</a>
+    {% else %}
+    {% trans "Demandez à un administrateur d'en créer." %}
+    {% endif %}
+</div>
+{% endif %}
+
+<div class="card">
+    <form method="post">
+        {% csrf_token %}
+        {% include "partials/_field.html" with field=form.activity_type %}
+        <div class="grid-2">
+            {% include "partials/_field.html" with field=form.hours %}
+            {% include "partials/_field.html" with field=form.minutes_part %}
+        </div>
+        {% include "partials/_field.html" with field=form.occurred_on %}
+        {% include "partials/_field.html" with field=form.note %}
+        {% for error in form.non_field_errors %}
+        <small class="field-error">{{ error }}</small>
+        {% endfor %}
+        <div class="form-actions">
+            <button type="submit" class="btn btn--primary">
+                {% icon "check" size="16px" %} {% trans "Enregistrer" %}
+            </button>
+            <a href="{% url 'closing:day_closing' %}" class="btn btn--ghost">{% trans "Retour au bouclement" %}</a>
+        </div>
+    </form>
+</div>
+
+<h2 class="section-title" style="margin-top:28px">{% trans "Mes dernières saisies" %}</h2>
+{% if entries %}
+<div class="table-wrap">
+    <table class="table">
+        <thead>
+            <tr>
+                <th>{% trans "Date" %}</th>
+                <th>{% trans "Activité" %}</th>
+                <th>{% trans "Temps" %}</th>
+                <th>{% trans "Note" %}</th>
+                <th></th>
+            </tr>
+        </thead>
+        <tbody>
+        {% for entry in entries %}
+            <tr>
+                <td>{{ entry.occurred_on }}{% if entry.occurred_on != today %} <span class="muted">({% trans "rattrapage" %})</span>{% endif %}</td>
+                <td>{{ entry.activity_type }}</td>
+                <td>{{ entry.duration_display }}</td>
+                <td class="muted">{{ entry.note|default:"—" }}</td>
+                <td style="text-align:right">
+                    <form method="post" action="{% url 'closing:activity_delete' entry.pk %}" style="margin:0"
+                          onsubmit="return confirm('{% trans "Retirer cette saisie ?" %}')">
+                        {% csrf_token %}
+                        <button type="submit" class="btn btn--ghost btn--sm" style="color:#B83232">
+                            {% icon "trash-2" size="14px" %}
+                        </button>
+                    </form>
+                </td>
+            </tr>
+        {% endfor %}
+        </tbody>
+    </table>
+</div>
+{% else %}
+<p class="muted">{% trans "Aucune saisie pour l'instant." %}</p>
+{% endif %}
+{% endblock %}

@@ -1,0 +1,81 @@
+{% extends "base.html" %}
+{% load i18n biblio_icons money %}
+
+{% block title %}{% trans "Nouvelle facture" %}{% endblock %}
+
+{% block tile_strip %}{% include "partials/_tile_strip.html" with active="members" %}{% endblock %}
+
+{% block content %}
+<header class="pagehead">
+    <div class="pagehead-icon" style="--ph-bg:var(--burgundy);--ph-fg:#fff">
+        {% icon "receipt" size="28px" %}
+    </div>
+    <div class="pagehead-text">
+        <h1 class="pagehead-title">{% trans "Nouvelle facture" %}</h1>
+        <div class="pagehead-sub">
+            <a href="{% url 'members:detail' member.pk %}" class="cell-link">{{ member.full_name }}</a>
+            · {{ member.card_number }}
+        </div>
+    </div>
+</header>
+
+<form method="post">
+    {% csrf_token %}
+    <div class="card">
+        <div class="grid-2">
+            {% include "partials/_field.html" with field=form.issue_date %}
+            {% include "partials/_field.html" with field=form.due_date %}
+        </div>
+        {% include "partials/_field.html" with field=form.note %}
+    </div>
+
+    <h2 class="section-title" style="margin-top:24px">{% trans "Lignes" %}</h2>
+    {% if formset.non_form_errors %}
+    {% for error in formset.non_form_errors %}
+    <div role="alert" class="msg msg-error">{{ error }}</div>
+    {% endfor %}
+    {% endif %}
+    {{ formset.management_form }}
+    <div class="card">
+        {% for line in formset.forms %}
+        <div class="grid-2" style="border-bottom:1px solid var(--line);padding-bottom:10px;margin-bottom:10px">
+            {% include "partials/_field.html" with field=line.kind %}
+            {% include "partials/_field.html" with field=line.label %}
+            {% include "partials/_field.html" with field=line.amount %}
+            {% include "partials/_field.html" with field=line.quantity %}
+            <div style="display:none">{{ line.id }}{{ line.DELETE }}</div>
+        </div>
+        {% endfor %}
+        <p class="muted text-sm">
+            {% trans "Laissez une ligne vide si vous n'en avez pas besoin. Le montant est libre : rien n'est calculé automatiquement." %}
+        </p>
+    </div>
+
+    {% if tariffs %}
+    <h2 class="section-title" style="margin-top:24px">{% trans "Tarifs de la bibliothèque" %}</h2>
+    <div class="card">
+        <table class="table">
+            <tbody>
+            {% for tariff in tariffs %}
+                <tr>
+                    <td class="muted">{{ tariff.get_kind_display }}</td>
+                    <td>{{ tariff.label }}</td>
+                    <td style="text-align:right;font-variant-numeric:tabular-nums">{{ tariff.amount|money }}</td>
+                </tr>
+            {% endfor %}
+            </tbody>
+        </table>
+        <p class="muted text-sm" style="margin-top:8px">
+            {% trans "Rappel des montants usuels — à recopier dans les lignes ci-dessus." %}
+        </p>
+    </div>
+    {% endif %}
+
+    <div class="form-actions">
+        <button type="submit" class="btn btn--primary">
+            {% icon "check" size="16px" %} {% trans "Créer la facture" %}
+        </button>
+        <a href="{% url 'members:detail' member.pk %}" class="btn btn--ghost">{% trans "Annuler" %}</a>
+    </div>
+</form>
+{% endblock %}

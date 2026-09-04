@@ -1,0 +1,48 @@
+{% extends "base.html" %}
+{% load i18n biblio_icons %}
+
+{% block title %}{% trans "Supprimer la catégorie d'usager" %}{% endblock %}
+
+{% block tile_strip %}{% include "partials/_tile_strip.html" with active="advanced" %}{% endblock %}
+
+{% block content %}
+<nav class="breadcrumb">
+    <a href="{% url 'core:advanced' %}">{% trans "Avancé" %}</a> /
+    <a href="{% url 'finance:tariff_list' %}">{% trans "Tarifs et Catégories d'usagers" %}</a> /
+    <strong>{% trans "Supprimer" %}</strong>
+</nav>
+
+<header class="pagehead">
+    <div class="pagehead-icon" style="--ph-bg:var(--blush);--ph-fg:#B83232">
+        {% icon "trash-2" size="28px" %}
+    </div>
+    <div class="pagehead-text">
+        <h1 class="pagehead-title">{% trans "Supprimer la catégorie d'usager" %}</h1>
+        <div class="pagehead-sub">{{ category.code }} · {{ category.name }}</div>
+    </div>
+</header>
+
+<div class="card">
+    {% if category.member_count %}
+    <p>
+        {% blocktrans count counter=category.member_count %}{{ counter }} usager est encore dans cette catégorie. Réaffectez-le avant de supprimer.{% plural %}{{ counter }} usagers sont encore dans cette catégorie. Réaffectez-les avant de supprimer.{% endblocktrans %}
+    </p>
+    <p class="muted">{% trans "La fiche d'un usager tient à sa catégorie : la supprimer casserait ces fiches." %}</p>
+    <div class="form-actions" style="border:0;padding:0;margin-top:18px">
+        <a href="{% url 'finance:tariff_list' %}" class="btn btn--ghost">{% trans "Retour" %}</a>
+        <a href="{% url 'finance:member_category_edit' category.pk %}" class="btn btn--primary">{% trans "Modifier la catégorie" %}</a>
+    </div>
+    {% else %}
+    <p>{% trans "Cette catégorie n'a aucun usager : elle peut être supprimée." %}</p>
+    <form method="post" style="margin-top:18px">
+        {% csrf_token %}
+        <div class="form-actions" style="border:0;padding:0;margin:0">
+            <button type="submit" class="btn btn--primary" style="background:#B83232;border-color:#B83232">
+                {% icon "trash-2" size="16px" %} {% trans "Supprimer définitivement" %}
+            </button>
+            <a href="{% url 'finance:tariff_list' %}" class="btn btn--ghost">{% trans "Annuler" %}</a>
+        </div>
+    </form>
+    {% endif %}
+</div>
+{% endblock %}

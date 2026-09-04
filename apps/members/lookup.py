@@ -46,3 +46,29 @@ def is_replaced_card(member: Member, raw: str) -> bool:
     """
     code = normalize_code(raw)
     return bool(code) and member.card_number != code
+
+
+def find_members_by_code(raw: str, queryset=None) -> list[Member]:
+    """FEAT-085 : carte complète **ou** 4 derniers chiffres du numéro.
+
+    Renvoie une liste, jamais un usager arbitraire : quatre chiffres ne sont pas
+    un identifiant, plusieurs cartes peuvent finir pareil. L'écran de saisie des
+    présences affiche alors le choix — deviner ferait compter la mauvaise
+    personne dans les statistiques de l'année.
+
+    L'ordre importe : un numéro complet reconnu par `find_member` (carte
+    courante puis ancienne carte, FEAT-081) rend un résultat unique et
+    court-circuite la recherche par suffixe.
+    """
+    code = normalize_code(raw)
+    if not code:
+        return []
+    exact = find_member(code, queryset=queryset)
+    if exact is not None:
+        return [exact]
+    if not (code.isdigit() and 3 <= len(code) <= 6):
+        return []
+    qs = Member.objects.all() if queryset is None else queryset
+    return list(
+        qs.filter(card_number__endswith=code).order_by("last_name", "first_name")[:20]
+    )

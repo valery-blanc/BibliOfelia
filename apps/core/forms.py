@@ -7,6 +7,7 @@ from __future__ import annotations
 
 from django import forms
 from django.conf import settings
+from django.urls import reverse
 from django.utils.translation import gettext_lazy as _
 
 from .models import Setting
@@ -86,6 +87,9 @@ class LibraryIdentityForm(forms.Form):
         help_text=_("Visible par OfeliaScan lors de l'appairage."),
     )
     address = forms.CharField(label=_("Adresse"), widget=forms.Textarea(attrs={"rows": 3}), required=False)
+    # FEAT-083 : sert à pré-remplir le pays des nouveaux usagers, et FEAT-084 à
+    # imprimer l'en-tête des factures.
+    country = forms.CharField(label=_("Pays"), required=False, max_length=100)
     email = forms.EmailField(label=_("Contact (email)"), required=False)
     phone = forms.CharField(label=_("Téléphone"), required=False, max_length=40)
 
@@ -96,6 +100,7 @@ class LibraryIdentityForm(forms.Form):
             self.fields["name"].initial = Setting.get("library_name", data.get("name", ""))
             self.fields["box_name"].initial = Setting.get("box_name", data.get("box_name", ""))
             self.fields["address"].initial = data.get("address", "")
+            self.fields["country"].initial = data.get("country", "")
             self.fields["email"].initial = data.get("email", "")
             self.fields["phone"].initial = data.get("phone", "")
 
@@ -107,6 +112,7 @@ class LibraryIdentityForm(forms.Form):
             "name": data["name"],
             "box_name": data["box_name"],
             "address": data.get("address", ""),
+            "country": data.get("country", ""),
             "email": data.get("email", ""),
             "phone": data.get("phone", ""),
         }, "Identité bibliothèque")
@@ -148,6 +154,174 @@ class LanguagesForm(forms.Form):
             "enabled": self.cleaned_data["enabled"],
             "default": self.cleaned_data["default"],
         }, "Langues actives (effectif au prochain redémarrage)")
+
+
+class CurrencySearchWidget(forms.TextInput):
+    """FEAT-088 — champ de recherche de devise, à la place d'une liste déroulante.
+
+    Le `<input>` visible reçoit ce que tape l'utilisateur ; un `<input hidden>`
+    porte le **code** réellement soumis. Sans ce doublon, un libellé traduit
+    partirait au serveur et la valeur enregistrée dépendrait de la langue de
+    l'écran.
+    """
+
+    template_name = "core/admin/_currency_search.html"
+
+    def __init__(self, attrs=None):
+        merged = {"autocomplete": "off", "class": "currency-search-input"}
+        merged.update(attrs or {})
+        super().__init__(attrs=merged)
+
+    def get_context(self, name, value, attrs):
+        from apps.finance import currencies
+
+        context = super().get_context(name, value, attrs)
+        current = currencies.describe(value) if value else None
+        context["widget"]["current"] = current
+        context["widget"]["search_url"] = reverse("finance:currency_search")
+        context["widget"]["min_length"] = currencies.MIN_QUERY_LENGTH
+        return context
+
+
+class CurrencyField(forms.CharField):
+    """Code ISO 4217 d'une devise **en circulation**."""
+
+    widget = CurrencySearchWidget
+
+    def clean(self, value):
+        from apps.finance import currencies
+
+        raw = (super().clean(value) or "").strip()
+        if not raw:
+            raise forms.ValidationError(_("Choisissez une devise."))
+        code = raw.upper()
+        if currencies.is_valid(code):
+            return code
+        # Saisie libre non résolue (« bolívar », « Suisse ») : on l'accepte si
+        # elle ne désigne qu'une seule devise. Sans ça, une recherche exacte
+        # tapée puis validée au clavier — sans passer par la liste — serait
+        # rejetée alors qu'elle est sans ambiguïté.
+        matches = currencies.search(raw, limit=2)
+        if len(matches) == 1:
+            return matches[0].code
+        if len(matches) > 1:
+            raise forms.ValidationError(
+                _("« %(q)s » correspond à plusieurs devises : précisez.")
+                % {"q": raw}
+            )
+        raise forms.ValidationError(
+            _("« %(q)s » ne correspond à aucune devise en circulation.")
+            % {"q": raw}
+        )
+
+
+class FinanceConfigForm(forms.Form):
+    """FEAT-084 / FEAT-088 — devise, décimales, délai d'échéance.
+
+    Réglé **par instance** (demande Val, 2026-08-31) : `canaima` facture en
+    bolívar, `grand-saconnex` en franc suisse. Le stockage garde toujours deux
+    décimales ; ce réglage ne touche que l'affichage et les factures.
+    """
+
+    KEY = "finance_config"
+
+    currency = CurrencyField(
+        label=_("Devise"),
+        help_text=_(
+            "Tapez au moins deux lettres : trigramme (CHF, VES…) ou nom de pays."
+        ),
+    )
+    decimals = forms.IntegerField(
+        label=_("Décimales affichées"), min_value=0, max_value=3, required=False,
+        help_text=_("Vide = valeur usuelle de la devise choisie."),
+    )
+    payment_terms_days = forms.IntegerField(
+        label=_("Délai de paiement (jours)"), min_value=0, max_value=365,
+        help_text=_("Échéance par défaut d'une facture, à compter de son émission."),
+    )
+
+    def __init__(self, *args, **kwargs):
+        super().__init__(*args, **kwargs)
+        from apps.finance.currencies import DEFAULT_CURRENCY, precision
+
+        if not self.is_bound:
+            data = Setting.get(self.KEY, {}) or {}
+            currency = data.get("currency") or DEFAULT_CURRENCY
+            self.fields["currency"].initial = currency
+            self.fields["decimals"].initial = data.get("decimals", precision(currency))
+            self.fields["payment_terms_days"].initial = data.get(
+                "payment_terms_days", 30
+            )
+
+    def save(self) -> None:
+        from apps.finance.currencies import precision
+
+        data = self.cleaned_data
+        currency = data["currency"]
+        decimals = data.get("decimals")
+        if decimals is None:
+            decimals = precision(currency)
+        Setting.set(self.KEY, {
+            "currency": currency,
+            "decimals": int(decimals),
+            "payment_terms_days": int(data["payment_terms_days"]),
+        }, "Caisse : devise, décimales, échéance")
+
+
+class EmailConfigForm(forms.Form):
+    """FEAT-084 — relais SMTP pour les factures et les relances.
+
+    Le mot de passe est stocké tel quel dans `Setting` : la Box n'a pas de
+    coffre, et c'est déjà le cas de la clé Google Books. Le champ est en
+    `PasswordInput` avec `render_value` pour rester modifiable sans être
+    retapé — mais il reste lisible par un administrateur.
+    """
+
+    KEY = "email_config"
+
+    enabled = forms.BooleanField(label=_("Envoi d'emails activé"), required=False)
+    host = forms.CharField(label=_("Serveur SMTP"), required=False, max_length=200)
+    port = forms.IntegerField(label=_("Port"), required=False, min_value=1, max_value=65535)
+    user = forms.CharField(label=_("Identifiant"), required=False, max_length=200)
+    password = forms.CharField(
+        label=_("Mot de passe"), required=False, max_length=200,
+        widget=forms.PasswordInput(render_value=True),
+    )
+    use_tls = forms.BooleanField(label=_("Chiffrement TLS"), required=False)
+    from_address = forms.EmailField(label=_("Adresse d'expéditeur"), required=False)
+
+    def __init__(self, *args, **kwargs):
+        super().__init__(*args, **kwargs)
+        if not self.is_bound:
+            data = Setting.get(self.KEY, {}) or {}
+            self.fields["enabled"].initial = bool(data.get("enabled"))
+            self.fields["host"].initial = data.get("host", "")
+            self.fields["port"].initial = data.get("port", 587)
+            self.fields["user"].initial = data.get("user", "")
+            self.fields["password"].initial = data.get("password", "")
+            self.fields["use_tls"].initial = bool(data.get("use_tls", True))
+            self.fields["from_address"].initial = data.get("from_address", "")
+
+    def clean(self):
+        cleaned = super().clean()
+        if cleaned.get("enabled") and not cleaned.get("host"):
+            self.add_error(
+                "host",
+                _("Indiquez un serveur SMTP, ou désactivez l'envoi d'emails."),
+            )
+        return cleaned
+
+    def save(self) -> None:
+        data = self.cleaned_data
+        Setting.set(self.KEY, {
+            "enabled": bool(data.get("enabled")),
+            "host": data.get("host", ""),
+            "port": int(data.get("port") or 587),
+            "user": data.get("user", ""),
+            "password": data.get("password", ""),
+            "use_tls": bool(data.get("use_tls")),
+            "from_address": data.get("from_address", ""),
+        }, "Relais SMTP (factures et relances)")
 
 
 class TimezoneForm(forms.Form):

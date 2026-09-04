@@ -21,6 +21,8 @@ from apps.accounts.permissions import require_role
 
 from .forms import (
     BackupConfigForm,
+    EmailConfigForm,
+    FinanceConfigForm,
     ItemLabelFormatForm,
     LanguagesForm,
     LibraryIdentityForm,
@@ -40,6 +42,10 @@ FORMS = {
     "languages": (gettext_lazy("Langues"), LanguagesForm),
     # FEAT-077 : l'accueil affiche l'heure de la Box ; encore faut-il le bon fuseau.
     "timezone": (gettext_lazy("Fuseau horaire"), TimezoneForm),
+    # FEAT-084 : devise réglée par instance, au même endroit que le fuseau —
+    # `canaima` en bolívar, `grand-saconnex` en franc suisse.
+    "finance": (gettext_lazy("Caisse — devise et échéances"), FinanceConfigForm),
+    "email": (gettext_lazy("Email (SMTP)"), EmailConfigForm),
     "loans": (gettext_lazy("Durées prêts & réservations"), LoanReservationDefaultsForm),
     # BUG-021 : sections d'impression restaurées (FEAT-047 les avait retirées à
     # tort — c'était le seul endroit pour régler la taille des étiquettes).

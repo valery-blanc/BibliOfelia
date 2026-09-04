@@ -220,6 +220,37 @@
     </span>
 </h2>
 <div class="stack-sm adv-section">
+    {% comment %}FEAT-084 / FEAT-089 : tarifs + catégories d'usagers. FEAT-085 : activités.{% endcomment %}
+    <a href="{% url 'finance:tariff_list' %}" class="list-row">
+        <div class="lrow-icon" style="--lr-bg:var(--forest-light);--lr-fg:var(--forest)">
+            {% icon "wallet" size="18px" %}
+        </div>
+        <div class="lrow-body">
+            <div class="lrow-title" style="color:var(--burgundy)">{% trans "Tarifs et Catégories d'usagers" %}</div>
+            <div class="lrow-sub">{% trans "Catégories d'usagers, cotisation, montants proposés pour les animations et les amendes." %}</div>
+        </div>
+        <div class="lrow-end">{% icon "chevron-right" size="18px" %}</div>
+    </a>
+    <a href="{% url 'closing:type_list' %}" class="list-row">
+        <div class="lrow-icon" style="--lr-bg:var(--forest-light);--lr-fg:var(--forest)">
+            {% icon "clipboard-list" size="18px" %}
+        </div>
+        <div class="lrow-body">
+            <div class="lrow-title" style="color:var(--burgundy)">{% trans "Activités et animations" %}</div>
+            <div class="lrow-sub">{% trans "Les listes dans lesquelles les employés choisissent au bouclement." %}</div>
+        </div>
+        <div class="lrow-end">{% icon "chevron-right" size="18px" %}</div>
+    </a>
+    <a href="{% url 'finance:outbox_list' %}" class="list-row">
+        <div class="lrow-icon" style="--lr-bg:var(--forest-light);--lr-fg:var(--forest)">
+            {% icon "mail" size="18px" %}
+        </div>
+        <div class="lrow-body">
+            <div class="lrow-title" style="color:var(--burgundy)">{% trans "File d'emails" %}</div>
+            <div class="lrow-sub">{% trans "Factures et relances en attente d'envoi quand la Box est hors ligne." %}</div>
+        </div>
+        <div class="lrow-end">{% icon "chevron-right" size="18px" %}</div>
+    </a>
     <a href="{% url 'core:settings_index' %}" class="list-row">
         <div class="lrow-icon" style="--lr-bg:var(--forest-light);--lr-fg:var(--forest)">
             {% icon "settings" size="18px" %}

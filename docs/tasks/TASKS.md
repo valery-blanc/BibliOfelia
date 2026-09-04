@@ -4,6 +4,30 @@ Source de vérité de l'avancement v1. Une case `[x]` = livrable terminé et dé
 
 Mise à jour : 2026-05-26 (Sprint 12 **CLOS** — FEAT-038 (cartes membres : fond crème, logo OFELIA filigrane, photo HG, langue BG, bloc droite), FEAT-039 (étiquettes 70×42 mm, titre wrap 2 lignes, auteurs 2 lignes, logo Ofelia), split paramétrage `labels` → `printing_cards` + `printing_labels`. BUG-013 v2 (sélecteur de langue qui perdait `/bibliofelia/` à chaque déploiement : wrapper `apps/core/i18n_views.py:set_language` force `FORCE_SCRIPT_NAME` + échange code langue même sur URL non résolue). **Gate i18n pérenne** : `scripts/i18n_check.py` exit != 0 si chaîne manquante ; documenté dans CLAUDE.md comme obligatoire avant tout commit ; 207 entrées EN/ES/MG appliquées (Sprints 10-12 incl. FORMS labels enrobés `gettext_lazy`). 304 tests verts (287 → 304). Sprint 11 **CLOS** — — BUG-014 (saisie clavier sur `/loans/lend/` + `/loans/return/` : bouton scan repassé `type="button"` + bouton « Valider » visible séparé pour la saisie clavier), FEAT-034 (UI réservations : liste d'attente PENDING sur fiche notice, expiration affichée sur exemplaires mis de côté, section « Réservations à relancer » sur page Retour, paramètres `default_loan_days`/`reservation_expiry_days`/`pickup_hold_days` exposés dans `/settings/loans/`), FEAT-035 (Setting `default_loan_days` global défaut 21, section « Relances à faire » bas du dashboard avec 10 prêts en retard), FEAT-036 (`Reservation.notified_at` + endpoint `POST /loans/reservations/<pk>/notify/`, page Réservations enrichie code Ofelia / dates avec heure / date limite retrait / police 16-17 px + cadre « Notifications à faire » entre tuiles et bannière scan sur dashboard), BUG-015 (DateInput format ISO `%Y-%m-%d` sur `MemberForm`, sinon locale FR remplit pas l'input HTML5), FEAT-037 (photo membre dans pagehead fiche + miniature sur form, expiration_date = registration_date + 1 an auto JS au change + initial `today + 1 an` à la création). 287 tests verts (266 → 287, +21). Migration `loans/0002_reservation_notified_at`. 5 vagues de déploiement Pi. 2 nouvelles entrées MEMORY (DateInput ISO format, bouton scan type=button + Valider visible). — Sprint 10 **CLOS end-to-end** — FEAT-032 + FEAT-033 validés Val 2026-05-24 sur la Pi, **+ OfeliaScan mobile mis à jour le 2026-05-24** : test prod 18:26 → session récolement scope=A1 reçue d'OfeliaScan avec 16 scans, 16 exemplaires relocate de J1 → A1 automatiquement. Bout-en-bout fonctionnel : catalogage OfeliaScan envoie `location_code`, picker récolement OfeliaScan envoie `scope_type=location` + `scope_location_code`, BibliOfelia déplace les items au scan. FEAT-032 : UI librarian /catalog/locations/ + endpoint GET /api/v1/locations testés OK. FEAT-033 : relocate auto vérifiée via UI web ET via OfeliaScan mobile. Commit `9d4fe83` + push + déploiement Pi (rebuild Docker + migration `0003`). 266 tests verts. — Sprint 8 **CLOS** — FEAT-025 **validé Val 2026-05-23** : refonte design global, 23 templates métiers harmonisés sur le design system OFELIA. Lot A pilote validé en premier (record_detail, member_detail, reports/index, settings_index), puis Lots B+C+D livrés d'un bloc. Helpers CSS ajoutés (`.req`, `.help-hint`, `.field-error`, `.form-control`, `details.advanced-section`, `.isbn-row`, `.form-actions`), `_field.html` migré `.form-row` → `.field`. Découverte d'infra : templates **embarqués au build Docker**, pas bind-mountés → rebuild obligatoire pour tout changement de template (documenté dans FEAT-025). — Sprint 7 **CLOS** — FEAT-024 **validé Val 2026-05-23** : scanner caméra navigateur sur Android Firefox HTTPS OK, fallback OfeliaScan automatique en HTTP LAN, Chrome Android sans Play Store via `S.browser_fallback_url`, bouton Annuler pendant polling. Décision UX : caméra-d'abord automatique, pas de toggle utilisateur. Décision infra : pas de cert auto-signé. 3 commits Pi `d7c8e8f` → `9d2af81` → `e9993a5`. FEAT-023 **validé Val 2026-05-23** : banner dashboard → OfeliaScan ouvre → scan livre → retour BibliOfelia → fiche notice affichée, bout-en-bout fonctionnel. Modèle `ScanHandoff` + endpoints `/api/v1/scan-handoff[/{token}]` + JS `scan-handoff.js` + 4 boutons « Scanner » câblés. BUG-010 entrypoint Dockerfile + BUG-011 CSRF cookie HttpOnly + Chrome Android `intent://` URL résolus. Sprints 3/5/6 clos. Reste pour Sprint 7 : Android-side OfeliaScan déjà fonctionnelle côté Val (intent filter + activity scan-one + POST callback) — implémentation Android terminée hors repo. Prochain sprint : FEAT-024 scanner caméra navigateur (HTTPS).)
 
+## ⏭️ REPRISE — état au 04/09/2026
+
+**Sprints 31 et 32 CLOS**, validés par Val le 2026-09-04 (« c'est ok pour ce
+qu'on a fait jusque là »). Commit unique groupé code + docs + TASKS.md.
+
+- **Sprint 31** : FEAT-083 (coordonnées usager), FEAT-084 (caisse/factures),
+  FEAT-085 (activités/animations), FEAT-086 (bouclement), FEAT-087 (scan
+  caméra multi-format), FEAT-088 (recherche de devise), BUG-041 (renouvellement
+  de carte).
+- **Sprint 32** : FEAT-089 (tarifs + catégories d'usagers), BUG-042 (cotisation
+  au changement de catégorie), BUG-043 (emails : instance hébergée ≠ Box),
+  FEAT-090 (imprimer la carte 62 mm depuis la fiche).
+
+**Tests : 881+ passed** (750 → 872 Sprint 31, puis +9 FEAT-089 et les tests
+BUG-042/043/FEAT-090). Gate i18n : `python scripts/i18n_check.py` = **0**.
+
+**Déploiement** : Fez `grand-saconnex` et `sanjuan` (healthy), secours Avignon
+(source + image). **Box (Canaima)** : à déployer après ce push (ci-dessous).
+
+### ⏳ Ouvert, hors de ce commit
+- Guide utilisateur : 7 nouveaux écrans + captures prêt/retour (FEAT-080/081)
+- Unité systemd d'extinction dans keebee/ofeliabox (FEAT-086)
+- SMTP Grand-Saconnex : pas encore configuré (Avancé → Paramètres → Email)
+
 ## ⏭️ REPRISE — état au 27/08/2026
 
 **Aucun développement BibliOfelia dans cette session** — travail d'**infrastructure du
@@ -1663,11 +1687,12 @@ Signalés par Val 2026-05-30 (navigation espagnole).
 - [x] Déploiement final : Box, grand-saconnex, sanjuan, `docs.bibliofelia.org`, secours Avignon
 
 ### Reste ouvert (hors Sprint 28)
-- [ ] Sprint 26 — 4 « Test fonctionnel Val » jamais confirmés explicitement (BUG-025 import
-      Excel sans ISBN, BUG-026 commentaires multi-lignes, FEAT-061 guide sur smartphone). Le
-      code est déployé et committé (`cddb518`) depuis le 2026-08-18 : il ne manque que la
+- [x] Sprint 26 — les 4 « Test fonctionnel Val » (BUG-025 import Excel sans ISBN,
+      BUG-026 commentaires multi-lignes, FEAT-061 guide sur smartphone) sont
+      **validés par Val le 2026-08-31** : « sprint 26 : on valide ». Le code était
+      déployé et committé (`cddb518`) depuis le 2026-08-18 ; il ne manquait que la
       confirmation
-- [ ] Catégorie `TEST` restée sur la Box : `migrate_categories` ne supprime jamais une
+- [ ] Catégorie `TEST` restée sur la Box — **Val fera le ménage plus tard** (2026-08-31) : `migrate_categories` ne supprime jamais une
       catégorie qu'elle n'a pas su reclasser. À retirer à la main si elle ne sert plus.
       **Vérifiée le 2026-08-22** : toujours là (pk=17), **0 notice rattachée** — donc
       supprimable sans risque, mais c'est une donnée de production : sur demande de Val
@@ -1845,7 +1870,8 @@ session qui avait livré le correctif n'avait créé ni fiche ni entrée ici.
 
 ⚠️ **À retenir** : « No such file or directory » sur un script qui **existe** =
 presque toujours un CRLF dans le shebang. Le message désigne l'**interpréteur**
-(`/bin/sh`), jamais le script. Vérifier : `head -1 <script> | od -c`.
+(`/bin/sh
+`), jamais le script. Vérifier : `head -1 <script> | od -c`.
 
 ℹ️ **BUG-039** (la restauration réinstallait du code périmé) est le défaut jumeau
 de la même nuit, mais il vit dans `RESTAURER-OFELIA.sh` — dépôt **ofeliabox**,
@@ -2076,9 +2102,350 @@ Demande du 2026-08-23, en marge du sprint. Résultat :
       courant sur les étiquettes de bibliothèque — or les deux moteurs sont
       configurés **EAN-13 uniquement** (`Html5QrcodeSupportedFormats.EAN_13`,
       Quagga `ean_reader`). **Décision Val requise**, cf. ci-dessous
-- [ ] (a) Ouvrir le filtre de préfixe à tout EAN-13 à clé valide — petit
-      changement, garde-fous checksum + consensus conservés, léger risque de
-      lecture parasite d'un code-barres produit voisin
-- [ ] (b) Activer les lecteurs Code39/Code128 — couvre le gros des étiquettes de
-      bibliothèque, mais décodage plus lent et Code39 sans somme de contrôle →
-      plus de fausses lectures. À ne faire que si Val le demande
+- [x] (a) + (b) **Tranché par Val le 2026-08-31** : « ouvrir à tout type de code
+      barre que le lecteur accepte ». Traité en **FEAT-087** (Sprint 31)
+
+## Sprint 31 — Coordonnées, caisse, activités et bouclement
+
+> Ouvert 2026-08-31 (`temp.txt`). Arbitrages Val : (1) **les quatre features
+> d'un coup** — elles s'emboîtent, le bouclement a besoin des animations et de
+> la caisse ; (2) **amendes manuelles uniquement**, motif dans une liste
+> administrable, montant libre ; (3) **cotisation par catégorie d'usager**,
+> facture émise automatiquement à l'inscription et au renouvellement ;
+> (4) **extinction seulement sur la Box** (fichier-drapeau + unité systemd à
+> ajouter côté keebee), l'étape disparaît sur les instances hébergées ;
+> (5) **devise réglable par instance** au même endroit que le fuseau horaire —
+> `canaima` en bolívar (VES), `grand-saconnex` en CHF, `sanjuan` à choisir.
+>
+> Deux chantiers se sont greffés en cours de sprint, sur décisions de Val du
+> même jour : **FEAT-087** (scan caméra ouvert à tous les formats) et
+> **BUG-041** (renouvellement de carte cumulatif).
+
+### FEAT-083 — Coordonnées complètes de l'usager
+- [x] Lire et valider la spec
+- [x] `docs/specs/FEAT-083-coordonnees-usager.md`
+- [x] `Member` : `email` + adresse découpée (`address_street`, `address_extra`,
+      `address_postal_code`, `address_city`, `address_state`, `address_country`)
+- [x] **Localité ajoutée d'office** : `temp.txt` citait « code postal, état
+      (optionnel), pays » sans la ville. Un code postal seul n'adresse pas une
+      enveloppe — écart assumé et documenté dans la spec
+- [x] Migration `members/0007` : ajout des champs, **puis** recopie de l'ancien
+      `address` (1re ligne → rue, reste → complément), **puis** suppression.
+      `RunPython` avec son inverse — une migration sans retour en arrière est
+      une impasse sur une instance de production
+- [x] `notes` **réutilisé** comme « Commentaire », plafonné à 500 caractères
+      par le formulaire. Deux zones de texte libre côte à côte sur le même
+      écran ne se remplissent jamais toutes les deux
+- [x] La limite vit dans le formulaire, **pas dans le modèle** : les notes plus
+      longues déjà saisies restent valides (test dédié)
+- [x] `Member.address_lines` / `postal_address` — le gabarit de la fiche **et**
+      le bloc destinataire du PDF passent par la même propriété
+- [x] `library_identity` gagne un champ **pays**, qui pré-remplit le pays des
+      nouveaux usagers et l'en-tête des factures
+- [x] `apps/members/tests/test_contact_fields.py` — 8 tests
+
+### FEAT-084 — Caisse, cotisations, amendes et factures
+- [x] Lire et valider la spec
+- [x] `docs/specs/FEAT-084-caisse-factures.md`
+- [x] App `apps/finance` : `Tariff`, `Invoice`, `InvoiceLine`, `Payment`,
+      `CashMovement`, `OutboundEmail` + `MemberCategory.membership_fee`
+- [x] **Numérotation** `F-<année>-<seq 4>` depuis `Setting["invoice_seq_<année>"]`.
+      SQLite ne sait pas verrouiller une ligne (`select_for_update` y lève
+      `NotSupportedError`) : c'est la contrainte d'unicité qui arbitre, et
+      `Invoice.save()` réessaie cinq fois
+- [x] Une facture numérotée **s'annule, ne se supprime pas** ; une facture déjà
+      encaissée ne peut plus être annulée
+- [x] `total_amount` / `amount_paid` **stockés** et recalculés — le total dû de
+      la bibliothèque doit s'agréger en une requête
+- [x] `apps/finance/money.py` : **devise par instance**, décimales déduites de
+      la devise, séparateur de milliers en espace fine insécable (U+202F).
+      Le stockage garde deux décimales quelle que soit la devise
+- [x] Filtre de gabarit `|money` / `|money_plain` — aucun symbole monétaire en
+      dur dans un gabarit
+- [x] Encadré « Compte » sur la fiche usager : à jour / N à régler / **en retard
+      depuis la plus ancienne échéance**, ventilé par nature sur les **lignes**
+      (une facture peut porter une cotisation et une amende)
+- [x] Encaissement : espèces par défaut, paiement partiel accepté, montant
+      supérieur au solde refusé
+- [x] Un règlement **en espèces** crée une entrée de caisse ; un **virement non**
+      — sinon le comptage physique du tiroir ne tomberait jamais juste
+- [x] Facture **A4 PDF** à la charte OFELIA (logo + bordeaux `#6B2138` réutilisés,
+      rien de réinventé) ; testée aussi sur une fiche **sans adresse**
+- [x] File d'emails `OutboundEmail` : **tout** email y passe, même en ligne —
+      un envoi raté doit laisser une trace consultable, pas une exception
+- [x] `is_online()` teste la **joignabilité du relais SMTP**, pas « Internet » :
+      une Box qui voit Internet mais pas son relais n'enverra rien. Résultat
+      gardé 60 s (l'écran de bouclement le consulte plusieurs fois)
+- [x] **Une seule relance par facture** (`reminder_sent_at`), et seulement plus
+      d'un jour après l'échéance — prévenir, pas harceler
+- [x] Écrans : caisse, liste et détail des factures, encaissement, mouvement
+      manuel, amende/frais rapide, référentiel des tarifs, file d'emails
+- [x] Réglages `finance` (devise, décimales, échéance) et `email` (SMTP) dans
+      `FORMS`, à côté du fuseau horaire comme demandé
+- [x] Cotisation émise à l'**inscription** (`member_create`) et au
+      **renouvellement** (`renew_card`) ; catégorie gratuite → aucune facture
+- [x] `apps/finance/tests/` — 47 tests (facturation, caisse, devise, écrans,
+      PDF, file d'emails, rôles)
+
+### FEAT-085 — Activités et animations
+- [x] Lire et valider la spec
+- [x] `docs/specs/FEAT-085-activites-animations.md`
+- [x] App `apps/closing` : `ActivityType`, `ActivityEntry`, `AnimationType`,
+      `AnimationSession`, `AnimationAttendance`
+- [x] Durées **en minutes** en base, saisie en heures + minutes à l'écran
+- [x] `presenter` / `user` en **PROTECT** : un employé supprimé emporterait les
+      statistiques de l'année
+- [x] Une nature **désactivée** disparaît du formulaire mais reste comptée dans
+      les statistiques — désactiver ne doit pas réécrire l'histoire (test dédié)
+- [x] `AnimationType.get_or_create_by_label()` **insensible à la casse** : sinon
+      « Heure du conte » et « heure du conte » compteraient séparément
+- [x] L'animateur peut créer un intitulé depuis son propre formulaire — seul
+      référentiel qu'un bibliothécaire enrichit lui-même
+- [x] `find_members_by_code()` dans `apps/members/lookup.py` — carte complète
+      (via `find_member`, donc **ancienne carte comprise**, FEAT-081) **ou** 4
+      derniers chiffres. Rend une **liste** : quatre chiffres ne sont pas un
+      identifiant, l'écran affiche le choix plutôt que de deviner
+- [x] Non-membres comptés (adultes / enfants) ; présences dédoublonnées
+      (`unique_together`)
+- [x] Saisie **rétroactive** autorisée, bornée à aujourd'hui
+- [x] Statistiques mois/année + export CSV, et la phrase de bilan que Val veut
+      pouvoir écrire à un bailleur
+- [x] **Piège de jointure évité** : agréger les présences dans le même
+      `aggregate()` que `Sum("non_member_adults")` aurait multiplié les
+      non-membres par le nombre de présents. Requête séparée + test qui le
+      verrouille (1 session, 3 présents, 4 adultes → 4, pas 12)
+- [x] `apps/closing/tests/test_activities.py` — 23 tests
+
+### FEAT-086 — Bouclement de la journée
+- [x] Lire et valider la spec
+- [x] `docs/specs/FEAT-086-bouclement-journee.md`
+- [x] `DayClosing` (unique par jour **et par employé**) + écran en cinq étapes
+- [x] Chaque étape est un **POST distinct** (`step=emails|backup|shutdown`) —
+      pas un formulaire monolithique qu'on rejoue par mégarde
+- [x] Étape emails : envoi si en ligne, file d'attente sinon, avec la mention
+      explicite demandée par Val
+- [x] Étape sauvegardes : `run_backup(force_daily=True)`, résultat tracé
+- [x] Étape extinction : **fichier-drapeau**, visible seulement sur la Box
+      (`Setting["is_box"]`), réservé au rôle `SUPERADMIN`
+- [x] Drapeau **encodé puis écrit en binaire** : `open(…, "w")` tronque avant
+      d'encoder, et un drapeau vide pourrait quand même être interprété
+- [x] Tuile « Bouclement » sur l'accueil + chip dans la barre de sections
+- [x] Le gabarit **dit** que la Box ne s'éteindra pas tant que l'unité systemd
+      n'est pas installée, plutôt que d'annoncer un arrêt qui n'arrivera pas
+- [x] `apps/closing/tests/test_day_closing.py` — 12 tests
+- [!] **Hors dépôt** : unité `ofelia-shutdown.path` + `ofelia-shutdown.service`
+      à ajouter dans keebee/ofeliabox. Sans elle, le bouton écrit son fichier et
+      la Box ne s'éteint pas
+
+### FEAT-087 — Scan caméra ouvert à tous les formats
+> Décision Val du 2026-08-31 sur les items (a) et (b) laissés ouverts par
+> l'audit du 2026-08-23 : « ouvrir à tout type de code barre que le lecteur
+> accepte ».
+- [x] `docs/specs/FEAT-087-scan-camera-multiformat.md`
+- [x] `isAcceptableCode()` — le filtre de préfixe 290/291/977/978/979 disparaît
+- [x] `formatsToSupport` (html5-qrcode) : 10 formats linéaires, **filtrés sur les
+      constantes réellement exposées** par la version embarquée — une constante
+      absente rendrait la liste invalide
+- [x] `decoder.readers` (Quagga) : 8 lecteurs au lieu d'`ean_reader` seul
+- [x] Codes **2D exclus** (QR, DataMatrix, Aztec) : une étiquette de
+      bibliothèque est un code à barres, et les activer ferait lire n'importe
+      quelle affiche dans le champ
+- [x] Garde-fous conservés : clé de contrôle sur 13 chiffres, **consensus de
+      deux lectures** (seul filet pour Code39, sans somme de contrôle), bande de
+      décodage centrale
+- [ ] **Test caméra réel** par Val — un code externe Code128 lu à la caméra.
+      Impossible à vérifier autrement qu'avec une vraie étiquette et un vrai
+      téléphone
+
+### BUG-041 — « Renouveler la carte » empilait les années
+> Signalé par Val le 2026-08-31 : « si on clique plusieurs fois ça ne devrait
+> pas rajouter plusieurs années de validité. Bouton à griser quand la carte est
+> encore valide. »
+- [x] `docs/bugs/BUG-041-renouvellement-carte-cumulatif.md`
+- [x] Cause : l'ancrage `max(today, expiration_date)` est **juste** — ce qui
+      manquait, c'est la condition d'entrée
+- [x] `can_renew()` : vrai à 30 jours ou moins de l'échéance
+      (`EXPIRY_WARNING_DAYS`, la fenêtre déjà utilisée par l'avertissement
+      d'expiration), si déjà expirée, ou sans date
+- [x] `renew_card()` lève `CardStillValid` sinon — **le serveur refuse**, pas
+      seulement l'interface : sans quoi la garde ne serait qu'un décor
+- [x] Bouton `disabled` + infobulle donnant la date de validité
+- [x] Enjeu aggravé par FEAT-084 : trois clics auraient produit trois factures
+- [x] 3 tests (refus, autorisation près de l'échéance, facture émise)
+
+### Retours de test Val — 2026-09-01
+
+Trois manques signalés en testant le sprint sur `grand-saconnex`.
+
+#### 1. La caisse manquait dans la barre de sections
+- [x] Chip **Caisse** dans `_tile_strip.html`, à côté de Bouclement : elle
+      n'était atteignable que depuis l'accueil, alors qu'on y revient depuis
+      n'importe quel écran
+- [x] Les 4 écrans de caisse passent de `active="closing"` à `active="finance"`
+      — sans quoi le mauvais chip se serait allumé
+- [x] 2 tests : présence du lien sur 4 écrans, chip actif sur les 4 écrans de caisse
+
+#### 2. Pas de champ de présences sur le formulaire d'animation
+Le champ n'existait que sur l'écran de **détail**, atteint après enregistrement.
+- [x] `AnimationSessionForm.attendee_codes` — champ texte, plusieurs cartes
+      séparées par un espace ou une virgule. Champ texte plutôt que widget
+      maison : la saisie doit marcher **sans JavaScript**
+- [x] Bouton de scan `type="button"` avec **`data-scan-append="true"`**, nouvel
+      attribut de `scan-handoff.js` : il empile les codes au lieu d'écraser le
+      précédent, et ne compte pas deux fois la même carte
+- [x] `_add_attendees_from_codes()` — un code inconnu ou **ambigu** n'échoue pas
+      l'enregistrement : il est nommé dans un avertissement et se reprend sur
+      l'écran de détail. Une présence mal attribuée fausserait les statistiques
+      sans que personne ne s'en aperçoive
+- [x] 6 tests (code simple, plusieurs codes, doublon, code inconnu, code
+      ambigu, présence du champ et du bouton)
+
+#### 3. FEAT-088 — moteur de recherche de devise
+> « Plutôt qu'une liste déroulante, fais un moteur de recherche… Le moteur
+> attend la 2ᵉ lettre. On pourra donc taper soit une partie ou tout le
+> trigramme, soit une partie ou tout le nom du pays. N'oublie pas de gérer les
+> langues. »
+- [x] `docs/specs/FEAT-088-recherche-devise.md`
+- [x] `Babel==2.16.0` ajouté : noms de devises **et de pays** localisés depuis
+      le CLDR embarqué. Une table maison aurait ajouté 153 devises × leurs pays
+      × 4 langues à nos `.po`, à traduire et à maintenir à la main
+- [x] `apps/finance/currencies.py` — catalogue mis en cache par langue,
+      recherche exact → préfixe → contenu, insensible aux accents et à la casse
+- [x] **153 devises en circulation** seulement : les 306 codes ISO 4217 de Babel
+      comprennent le franc français et le mark
+- [x] Déclenchement à la **2ᵉ lettre** ; sous ce seuil, les devises des
+      instances existantes plutôt que rien
+- [x] `GET /finance/currencies/` (JSON), **SUPERADMIN** comme l'écran hôte
+- [x] `CurrencySearchWidget` + `CurrencyField` ; `CURRENCIES` et
+      `currency_choices()` retirés de `money.py`
+- [x] **Un seul champ**, celui qu'on tape, et c'est lui qui part au serveur :
+      un champ caché doublant le champ visible ne serait jamais rempli sans
+      JavaScript, et le réglage deviendrait immuable
+- [x] Le serveur accepte une saisie libre **non ambiguë** (« Suisse ») et refuse
+      explicitement une saisie ambiguë (« franc ») — une recherche validée au
+      clavier sans passer par la liste ne doit pas être rejetée pour rien
+- [x] `static/js/currency-search.js` — sans dépendance, anti-rebond 180 ms,
+      navigation clavier, et **réponses hors délai ignorées** (le serveur répond
+      dans le désordre quand on tape vite)
+- [x] **Piège `FORM_RENDERER`** : le renderer de formulaires de Django utilise
+      un moteur **isolé** qui ne voit pas `templates/` — le widget levait
+      `TemplateDoesNotExist` et la page rendait un **500**. Corrigé par
+      `TemplatesSetting` + `django.forms` dans `INSTALLED_APPS`. Réglage
+      **global** : vérifié par la suite complète
+- [x] 26 tests, dont la recherche par pays dans les **4 langues**
+      (`suisse` / `switzerland` / `suiza` / `soisa` → `CHF`)
+
+#### Qualité et redéploiement
+- [x] `pytest` : **872 passed** (832 → 872, +40)
+- [x] `ruff` : 0 avertissement sur `apps/finance` et `apps/closing`
+- [x] Gate i18n : 11 chaînes de plus (dont 1 pluriel) → **363 chaînes +
+      4 pluriels × EN/ES/MG**, `i18n_check.py` = **0**
+- [x] Les 3 corrections vérifiées **en production** sur `grand-saconnex`, et le
+      rendu des 2 écrans touchés contrôlé dans les 4 langues
+- [x] Redéployé : `grand-saconnex`, `sanjuan`, et le secours **Avignon**
+- [x] **Test fonctionnel Val** (2026-09-04)
+
+### Qualité
+- [x] `pytest` sur Fez (image `--target dev`) : **872 passed** (750 → 872, +122
+      en comptant les retours de test du 2026-09-01), 0 régression
+- [x] `makemigrations --check --dry-run` : *No changes detected*
+- [x] `ruff` : 0 avertissement sur `apps/finance` et `apps/closing`
+- [x] Gate i18n : `makemessages -a --no-obsolete` (conteneur Fez) +
+      `scripts/translations_sprint31.py` (**363 chaînes + 4 pluriels × EN/ES/MG**)
+      → `python scripts/i18n_check.py` = **0**
+- [x] `compilemessages` OK, tests rejoués **avec les `.mo` compilés** (872 passed)
+- [x] Rendu vérifié dans les **4 langues** sur 7 écrans : 0 page en défaut,
+      aucun gabarit brut, aucun `{#` ni `FEAT-08x` visible à l'écran
+- [x] 6 icônes Lucide ajoutées (`wallet`, `mail`, `send`, `power`, `receipt`,
+      `clock`) — contrainte hors-ligne, aucun CDN
+
+### Déploiement
+- [x] Fez (nœud actif) : image `ofelia/bibliofelia:avignon` reconstruite,
+      `grand-saconnex` et `sanjuan` **healthy**, migrations `finance/0001`,
+      `closing/0001` et `members/0007` appliquées
+- [x] Référentiels de test posés sur les deux instances (natures d'activité,
+      types d'animation, tarifs, cotisation à 20 CHF)
+- [x] **Avignon** (secours) : source + image à jour — un secours au code périmé
+      annulerait le déploiement à la première bascule
+- [x] 17 écrans en **HTTP 200** sur `grand-saconnex`, PDF de facture compris
+- [x] Redéployé le 2026-09-01 après les retours de test (cf. plus haut)
+- [x] **Test fonctionnel Val** (2026-09-04)
+- [x] Commit unique groupé + push origin/main
+- [ ] Déploiement Box (Canaima) — après ce push
+
+### Document de passation (2026-09-03)
+
+> Ajouté en fin de sprint sur demande de Val, et **inclus dans le commit
+> groupé du Sprint 31**.
+
+- [x] `docs/HANDOFF.md` — ce qu'un autre agent doit lire pour reprendre le
+      projet, en 4 niveaux, avec l'ordre de lecture
+- [x] Recensement de ce qui est **versionné** et de ce qui ne l'est pas : la
+      mémoire du projet (50 fichiers, 272 Ko) et le `CLAUDE.md` global ne sont
+      dans aucun dépôt — un clone seul ne transmet pas le contexte
+- [x] `temp.txt` / `temp2.txt` déclarés **à ne pas lire par défaut** : gitignorés,
+      souvent vides ou périmés, réservés à `/vb-impl-tempspec` sur demande de Val
+- [x] Avertissement `git stash` / `clean` / `reset --hard` tant que le sprint
+      n'est pas committé (`apps/finance/` et `apps/closing/` non suivis)
+- [x] Lien depuis `README.md`
+
+### Reste à faire après ce sprint
+- [ ] Guide utilisateur : les **7 nouveaux écrans** (bouclement, activités,
+      animations, statistiques, caisse, factures, tarifs) à documenter en
+      FR + EN + ES + MG, avec captures — le réglage de devise (FEAT-088)
+      mérite une capture à lui seul
+- [ ] Guide utilisateur : écrans **prêt et retour** (FEAT-080/081), captures
+      périmées — report du Sprint 30
+- [ ] Unité systemd d'extinction dans keebee/ofeliabox (cf. FEAT-086)
+
+## Sprint 32 — Tarifs et Catégories d'usagers (FEAT-089)
+
+> Ouvert 2026-09-03. Demande Val : centraliser la gestion des catégories
+> d'usagers (`/admin/members/membercategory/`) et des tarifs
+> (`/finance/tariffs/`) sur **une seule page**, renommée « Tarifs et
+> Catégories d'usagers ».
+
+### FEAT-089 — Un écran pour les deux référentiels
+- [x] `docs/specs/FEAT-089-tarifs-et-categories-usagers.md`
+- [x] `MemberCategoryForm` : code, noms FR/EN/ES/MG, cotisation, validité,
+      prêts max, durée de prêt, types de documents autorisés
+- [x] Page `/finance/tariffs/` : titre renommé, table des catégories
+      éditable (plus le renvoi vers l'admin)
+- [x] Création / édition / suppression (PROTECT si des usagers y tiennent)
+- [x] Lien Avancé → Administration aligné
+- [x] Tests — **881 passed** (872 → 881, +9)
+- [x] Gate i18n (`scripts/translations_sprint32.py`) — `i18n_check.py` = 0
+- [x] SPEC §5.2 / §6.6 / §6.13
+- [x] Déploiement Fez (`grand-saconnex` / `sanjuan` healthy) + secours Avignon
+      (source + image)
+### BUG-042 — Changer de catégorie ne recalculait pas la cotisation
+- [x] `docs/bugs/BUG-042-changement-categorie-cotisation.md`
+- [x] `reconcile_membership_invoices()` : annule les factures de cotisation
+      ouvertes sans paiement ; réémet si la nouvelle catégorie a un montant
+- [x] Appel depuis `member_edit` (l'ancienne catégorie est lue **avant**
+      `is_valid()`, sinon ModelForm l'écrase)
+- [x] Tests (changement vers gratuit, vers un autre tarif, facture déjà
+      réglée intacte, amende intacte, POST d'édition)
+- [x] SPEC §6.13
+- [x] Réaligner la fiche `/members/1/` Grand-Saconnex : facture `F-2026-0001`
+      (Valéry Blanc, 20 CHF) annulée
+
+### BUG-043 — Emails du bouclement : instance hébergée ≠ Box
+- [x] `docs/bugs/BUG-043-emails-bouclement-instance-hebergée.md`
+- [x] `can_send_email()` : hébergé + SMTP configuré → on envoie ; Box →
+      `is_online()`
+- [x] Copy : « Box / Hors ligne / Mettre en file » seulement si `is_box` ;
+      sinon « Envoyer maintenant » ; SMTP manquant dit clairement
+- [x] File d'emails : bouton Envoyer reste sur la file (`next=outbox`)
+- [x] Hors ligne sur la Box : mention téléphone
+- [x] Tests
+- [x] Déploiement Fez + Avignon
+
+### FEAT-090 — Imprimer la carte depuis la fiche usager
+- [x] `docs/specs/FEAT-090-imprimer-carte-depuis-fiche.md`
+- [x] Bouton sur `member_detail.html` → `printing:cards_roll_pdf?ids=`
+- [x] Tests (présent pour bibliothécaire, absent en lecture seule)
+- [x] SPEC §6.2 / §6.7
+- [x] i18n + déploiement Fez + Avignon
+- [x] **Test fonctionnel Val** (2026-09-04)
+- [x] Commit unique groupé Sprints 31+32 + push origin/main

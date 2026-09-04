@@ -1,0 +1,121 @@
+{% extends "base.html" %}
+{% load i18n biblio_icons %}
+
+{% block title %}{% trans "Activités et animations" %}{% endblock %}
+
+{% block tile_strip %}{% include "partials/_tile_strip.html" with active="advanced" %}{% endblock %}
+
+{% block content %}
+<header class="pagehead">
+    <div class="pagehead-icon" style="--ph-bg:var(--olive);--ph-fg:var(--ink)">
+        {% icon "clipboard-list" size="28px" %}
+    </div>
+    <div class="pagehead-text">
+        <h1 class="pagehead-title">{% trans "Activités et animations" %}</h1>
+        <div class="pagehead-sub">{% trans "Les listes dans lesquelles les employés choisissent." %}</div>
+    </div>
+</header>
+
+<h2 class="section-title">{% trans "Natures d'activité" %}</h2>
+<div class="table-wrap">
+    <table class="table">
+        <thead>
+            <tr>
+                <th>{% trans "Libellé" %}</th>
+                <th>{% trans "Ordre" %}</th>
+                <th>{% trans "Actif" %}</th>
+                <th></th>
+            </tr>
+        </thead>
+        <tbody>
+        {% for item in activity_types %}
+            <tr>
+                <td>{{ item.label }}</td>
+                <td class="muted">{{ item.order }}</td>
+                <td>{% if item.is_active %}{% icon "check" size="16px" %}{% else %}<span class="muted">—</span>{% endif %}</td>
+                <td style="text-align:right">
+                    <form method="post" action="{% url 'closing:type_toggle' 'activity' item.pk %}" style="margin:0">
+                        {% csrf_token %}
+                        <button type="submit" class="btn btn--ghost btn--sm">
+                            {% if item.is_active %}{% trans "Désactiver" %}{% else %}{% trans "Activer" %}{% endif %}
+                        </button>
+                    </form>
+                </td>
+            </tr>
+        {% empty %}
+            <tr><td colspan="4" class="muted">{% trans "Aucune nature d'activité." %}</td></tr>
+        {% endfor %}
+        </tbody>
+    </table>
+</div>
+<p class="muted text-sm">
+    {% trans "Une nature désactivée disparaît du formulaire, mais les saisies passées restent comptées dans les statistiques." %}
+</p>
+
+<div class="card" style="margin-top:12px">
+    <form method="post">
+        {% csrf_token %}
+        <input type="hidden" name="which" value="activity">
+        <div class="grid-2">
+            {% include "partials/_field.html" with field=activity_form.label %}
+            {% include "partials/_field.html" with field=activity_form.order %}
+        </div>
+        {% include "partials/_field.html" with field=activity_form.is_active %}
+        <div class="form-actions">
+            <button type="submit" class="btn btn--primary">
+                {% icon "plus" size="16px" %} {% trans "Ajouter une nature d'activité" %}
+            </button>
+        </div>
+    </form>
+</div>
+
+<h2 class="section-title" style="margin-top:28px">{% trans "Types d'animation" %}</h2>
+<div class="table-wrap">
+    <table class="table">
+        <thead>
+            <tr>
+                <th>{% trans "Intitulé" %}</th>
+                <th>{% trans "Créé par" %}</th>
+                <th>{% trans "Actif" %}</th>
+                <th></th>
+            </tr>
+        </thead>
+        <tbody>
+        {% for item in animation_types %}
+            <tr>
+                <td>{{ item.label }}</td>
+                <td class="muted">{{ item.created_by|default:"—" }}</td>
+                <td>{% if item.is_active %}{% icon "check" size="16px" %}{% else %}<span class="muted">—</span>{% endif %}</td>
+                <td style="text-align:right">
+                    <form method="post" action="{% url 'closing:type_toggle' 'animation' item.pk %}" style="margin:0">
+                        {% csrf_token %}
+                        <button type="submit" class="btn btn--ghost btn--sm">
+                            {% if item.is_active %}{% trans "Désactiver" %}{% else %}{% trans "Activer" %}{% endif %}
+                        </button>
+                    </form>
+                </td>
+            </tr>
+        {% empty %}
+            <tr><td colspan="4" class="muted">{% trans "Aucun type d'animation." %}</td></tr>
+        {% endfor %}
+        </tbody>
+    </table>
+</div>
+<p class="muted text-sm">
+    {% trans "Un animateur peut aussi créer un intitulé depuis son formulaire de saisie — une animation s'invente le jour même." %}
+</p>
+
+<div class="card" style="margin-top:12px">
+    <form method="post">
+        {% csrf_token %}
+        <input type="hidden" name="which" value="animation">
+        {% include "partials/_field.html" with field=animation_form.label %}
+        {% include "partials/_field.html" with field=animation_form.is_active %}
+        <div class="form-actions">
+            <button type="submit" class="btn btn--primary">
+                {% icon "plus" size="16px" %} {% trans "Ajouter un type d'animation" %}
+            </button>
+        </div>
+    </form>
+</div>
+{% endblock %}

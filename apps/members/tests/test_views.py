@@ -2,6 +2,7 @@
 from __future__ import annotations
 
 from datetime import date
+from decimal import Decimal
 
 import pytest
 
@@ -129,6 +130,50 @@ def test_member_detail_accessible(client, readonly, member):
     resp = client.get(f"/fr/members/{member.pk}/")
     assert resp.status_code == 200
     assert b"Curie" in resp.content
+    assert "cards-roll.pdf" not in resp.content.decode()
+
+
+def test_member_detail_offers_the_62mm_card_print(client, librarian, member):
+    """FEAT-090 : imprimer la carte ruban depuis la fiche, sans le picker."""
+    client.force_login(librarian)
+    resp = client.get(f"/fr/members/{member.pk}/")
+    body = resp.content.decode()
+    assert "Imprimer la carte (62 mm)" in body
+    assert f"/fr/printing/cards-roll.pdf?ids={member.pk}" in body
+
+
+def test_editing_category_cancels_unpaid_membership_invoice(
+    client, librarian, member, category
+):
+    """BUG-042 : passer à une catégorie gratuite annule la cotisation ouverte."""
+    from apps.finance.models import InvoiceStatus
+    from apps.finance.services import create_membership_invoice
+
+    category.membership_fee = Decimal("20.00")
+    category.save(update_fields=["membership_fee"])
+    invoice = create_membership_invoice(member, user=librarian)
+    assert invoice is not None
+    free = MemberCategory.objects.create(code="EMPLOYE", name="Employé")
+    client.force_login(librarian)
+    resp = client.post(
+        f"/fr/members/{member.pk}/edit/",
+        {
+            "first_name": member.first_name,
+            "last_name": member.last_name,
+            "category": free.pk,
+            "registration_date": (member.registration_date or date.today()).isoformat(),
+            **CHILDREN_MGMT,
+        },
+    )
+    assert resp.status_code == 302
+    invoice.refresh_from_db()
+    member.refresh_from_db()
+    assert member.category_id == free.pk
+    assert invoice.status == InvoiceStatus.CANCELLED
+    detail = client.get(f"/fr/members/{member.pk}/")
+    body = detail.content.decode()
+    assert "À jour sur ses paiements" in body
+    assert "Cotisation" not in body
 
 
 def test_member_history_page(client, librarian, member):

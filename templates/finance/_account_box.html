@@ -1,0 +1,74 @@
+{% load i18n biblio_icons money %}
+{% comment %}
+FEAT-084 : encadré « Compte » de la fiche usager. Trois états seulement —
+à jour, à régler, en retard — parce que c'est la question que se pose le
+bibliothécaire au comptoir : est-ce que cette personne doit quelque chose ?
+Inclus avec `account` (MemberAccount) et `member`.
+{% endcomment %}
+{% if account.is_overdue %}
+<div class="card" style="border-left:4px solid #B83232">
+    <div style="display:flex;align-items:center;gap:10px">
+        {% icon "triangle-alert" size="20px" %}
+        <div>
+            <div style="font-weight:700;color:#B83232">
+                {% blocktrans with amount=account.overdue_due|money d=account.overdue_since %}En retard de paiement : {{ amount }} depuis le {{ d }}{% endblocktrans %}
+            </div>
+            <div class="muted text-sm">
+                {% blocktrans with total=account.total_due|money %}Total dû : {{ total }}{% endblocktrans %}
+            </div>
+        </div>
+    </div>
+{% elif account.total_due %}
+<div class="card" style="border-left:4px solid var(--amber)">
+    <div style="display:flex;align-items:center;gap:10px">
+        {% icon "wallet" size="20px" %}
+        <div>
+            <div style="font-weight:700">
+                {% blocktrans with amount=account.total_due|money %}{{ amount }} à régler{% endblocktrans %}
+            </div>
+            {% if account.next_due_date %}
+            <div class="muted text-sm">
+                {% blocktrans with d=account.next_due_date %}Prochaine échéance le {{ d }}{% endblocktrans %}
+            </div>
+            {% endif %}
+        </div>
+    </div>
+{% else %}
+<div class="card" style="border-left:4px solid var(--forest)">
+    <div style="display:flex;align-items:center;gap:10px">
+        {% icon "circle-check" size="20px" %}
+        <div style="font-weight:700;color:var(--forest)">{% trans "À jour sur ses paiements" %}</div>
+    </div>
+{% endif %}
+
+{% if account.by_kind %}
+<div class="table-wrap" style="margin-top:12px">
+    <table class="table">
+        <tbody>
+        {% for kind, amount in account.by_kind.items %}
+            <tr>
+                <td class="muted">
+                    {% if kind == "membership" %}{% trans "Cotisation" %}
+                    {% elif kind == "activity" %}{% trans "Animation" %}
+                    {% elif kind == "fine" %}{% trans "Amende" %}
+                    {% else %}{% trans "Autre" %}{% endif %}
+                </td>
+                <td style="text-align:right;font-variant-numeric:tabular-nums">{{ amount|money }}</td>
+            </tr>
+        {% endfor %}
+        </tbody>
+    </table>
+</div>
+{% endif %}
+
+{% if account.open_invoices %}
+<div style="margin-top:10px">
+    {% for invoice in account.open_invoices %}
+    <a href="{% url 'finance:invoice_detail' invoice.pk %}" class="cell-link text-sm" style="display:block">
+        {{ invoice.number }} — {{ invoice.balance|money }}
+        {% if invoice.is_overdue %}<span class="badge badge--late">{% blocktrans with d=invoice.days_overdue %}{{ d }} j de retard{% endblocktrans %}</span>{% endif %}
+    </a>
+    {% endfor %}
+</div>
+{% endif %}
+</div>

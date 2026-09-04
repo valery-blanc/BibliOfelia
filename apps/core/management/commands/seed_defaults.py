@@ -122,6 +122,13 @@ class Command(BaseCommand):
         "pickup_hold_days": (5, "Délai de garde après mise à dispo"),
         "overdue_grace_days": (0, "Tolérance retard avant notification"),
         "backup_usb_path": ("/backup", "Chemin de la clé USB de sauvegarde"),
+        # FEAT-086 : vrai seulement sur la Ofelia Box. Sur une instance
+        # hébergée, l'étape « éteindre » du bouclement disparaît.
+        "is_box": (False, "L'instance tourne sur la Ofelia Box"),
+        "finance_config": (
+            {"currency": "CHF", "decimals": 2, "payment_terms_days": 30},
+            "Caisse : devise, décimales, échéance (FEAT-084)",
+        ),
         "cloud_backup_enabled": (False, "Sauvegarde cloud activée"),
         "printer_label_format": (
             {"width_mm": 50, "height_mm": 25},

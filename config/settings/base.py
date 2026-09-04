@@ -31,6 +31,9 @@ env = environ.Env(
     AVAHI_SERVICE_PATH=(str, "/etc/avahi/services/bibliofelia.service"),
     MDNS_SERVICE_PORT=(int, 80),
     BACKUP_USB_PATH=(str, "/backup"),
+    # FEAT-086 : fichier-drapeau d'extinction, surveillé côté hôte par une
+    # unité systemd de la Box (dépôt keebee/ofeliabox).
+    BOX_SHUTDOWN_FLAG=(str, "/data/shutdown.request"),
     TZ=(str, "UTC"),
     SECURE_COOKIES=(bool, True),
 )
@@ -52,6 +55,9 @@ INSTALLED_APPS = [
     "django.contrib.sessions",
     "django.contrib.messages",
     "django.contrib.staticfiles",
+    # FEAT-088 : requis par FORM_RENDERER = TemplatesSetting (cf. plus bas) —
+    # sans lui, les templates de widgets fournis par Django sont introuvables.
+    "django.forms",
     "django.contrib.humanize",
     # tiers
     "rest_framework",
@@ -72,6 +78,8 @@ INSTALLED_APPS = [
     "apps.inventory",
     "apps.printing",
     "apps.reports",
+    "apps.finance",
+    "apps.closing",
     "apps.setup",
     "apps.api",
     "apps.tasks",
@@ -96,6 +104,15 @@ MIDDLEWARE = [
     # réglage est global, mais on veut la session et les messages déjà en place).
     "apps.core.middleware.TimezoneMiddleware",
 ]
+
+# FEAT-088 : le widget de recherche de devise a son propre template
+# (`core/admin/_currency_search.html`). Le renderer de formulaires par défaut
+# (`DjangoTemplates`) utilise un moteur **isolé** qui ne voit pas `templates/`
+# et lèverait `TemplateDoesNotExist`. `TemplatesSetting` lui fait utiliser la
+# configuration TEMPLATES ci-dessous ; `django.forms` doit alors figurer dans
+# INSTALLED_APPS pour que les templates de widgets fournis par Django restent
+# trouvables via APP_DIRS.
+FORM_RENDERER = "django.forms.renderers.TemplatesSetting"
 
 ROOT_URLCONF = "config.urls"
 
@@ -125,6 +142,7 @@ WSGI_APPLICATION = "config.wsgi.application"
 ASGI_APPLICATION = "config.asgi.application"
 
 DATABASE_PATH = env("DATABASE_PATH")
+BOX_SHUTDOWN_FLAG = env("BOX_SHUTDOWN_FLAG")
 Path(DATABASE_PATH).parent.mkdir(parents=True, exist_ok=True)
 
 DATABASES = {

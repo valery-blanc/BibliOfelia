@@ -4,7 +4,44 @@ Spécification détaillée du logiciel de gestion de bibliothèque BibliOfelia, 
 
 Version : 1.0 (cible v1) — **`BIBLIOFELIA_VERSION = "1.0"`** depuis le 2026-08-23 (FEAT-082, était `0.1.0-dev`)
 Statut : draft pour Spec-Driven Development
-Dernière modif spec : 2026-08-26 — **BUG-040** : le dépôt impose désormais les **fins de ligne LF** (`.gitattributes`). Le poste de développement est sous Windows avec `core.autocrlf = true` et `git archive` applique les filtres de conversion : les sources exportées vers la Box partaient en CRLF, et un `` dans un shebang rendait `entrypoint.sh` introuvable pour le noyau (« No such file or directory » sur un fichier qui existe, BibliOfelia en boucle de redémarrage, code 127). Cf. §11.1.
+Dernière modif spec : 2026-08-31 — **Sprint 31** : **FEAT-083** — la fiche usager gagne des **coordonnées complètes** (email, adresse découpée en rue, complément, code postal, localité, état et pays) ; l'ancien champ libre `address` disparaît, recopié par migration. Le champ `notes` est relibellé **« Commentaire »** et plafonné à 500 caractères par le formulaire. — **FEAT-084** — **caisse, cotisations, amendes et factures** : nouvelle application `apps/finance` (`Tariff`, `Invoice`, `InvoiceLine`, `Payment`, `CashMovement`, `OutboundEmail`), encadré « Compte » sur la fiche usager (à jour / à régler / en retard depuis le …, ventilé par nature), facture **A4 PDF** à la charte OFELIA, envoi email **par file d'attente** qui survit à une Box hors ligne, écran « Caisse » hors bouclement. **Cotisation par catégorie d'usager**, facturée automatiquement à l'inscription et à chaque renouvellement ; **amendes manuelles uniquement** (arbitrages Val). **Devise réglée par instance** dans Avancé → Paramètres. — **FEAT-085** — **activités et animations** : nouvelle application `apps/closing`, référentiels administrables, saisie du temps passé, présences retrouvées **au scan ou par les 4 derniers chiffres** du numéro de carte, non-membres comptés, saisie rétroactive, statistiques mois/année + CSV. — **FEAT-086** — **bouclement de la journée** en cinq étapes (activités, caisse, envois, sauvegardes, extinction) ; l'étape d'extinction n'apparaît que **sur la Box** et passe par un **fichier-drapeau** que l'hôte doit surveiller. — **FEAT-087** — le **scan caméra accepte tous les formats linéaires** (Code128, Code39, Codabar, ITF, UPC…) et non plus les seuls EAN-13 à préfixe Ofelia/ISBN : un code externe imprimé en Code128 était jusqu'ici lisible à la douchette mais **pas** à la caméra. — **BUG-041** — « Renouveler la carte » **empilait les années** à chaque clic ; le bouton est grisé et le serveur refuse tant que la carte est valable plus de 30 jours. Cf. §5.2, §6.2, §6.13, §6.14, §6.15.
+
+Modif du même jour : 2026-09-01 — retours de test de Val sur le Sprint 31.
+**FEAT-088** — le réglage de devise passe d'une liste de six devises codées en
+dur à un **moteur de recherche** sur les 153 devises en circulation, par
+trigramme, nom de devise ou **nom de pays**, déclenché à la 2ᵉ lettre et servi
+dans les quatre langues (données CLDR de `Babel`, hors de nos `.po`). Entraîne
+`FORM_RENDERER = TemplatesSetting` pour toute l'application. — La **caisse
+gagne son chip** dans la barre de sections : elle n'était atteignable que
+depuis l'accueil. — Le **formulaire de création d'animation** reçoit le champ
+de présences et son bouton de scan, qui n'existaient que sur l'écran de détail.
+Cf. §6.14, §6.17.
+
+Modif : 2026-09-04 — **FEAT-090** : la fiche usager a un bouton **« Imprimer
+la carte (62 mm) »** qui ouvre le PDF ruban Brother QL (FEAT-062) dans un
+nouvel onglet, sans passer par Avancé → Impression. Cf. §6.2, §6.7.
+
+Modif : 2026-09-03 — **BUG-043** : l'étape 3 du bouclement et la file
+d'emails ne parlent de la Box **que sur la Box**. Sur une instance hébergée
+le bouton envoie immédiatement ; si le SMTP n'est pas configuré, on le dit.
+Hors ligne sur la Box : file d'attente + prévenir par téléphone. Cf. §6.15.
+
+Modif : 2026-09-03 — **BUG-042** : changer la catégorie d'un usager **réaligne
+la cotisation**. Les factures de cotisation ouvertes, sans paiement, sont
+annulées ; si la nouvelle catégorie a un montant, une nouvelle facture est
+émise. Sans ça, passer d'Adulte (20 CHF) à Employé (0) laissait « Cotisation
+20 CHF » sur la fiche. Une cotisation déjà réglée n'est pas remboursée.
+Cf. §6.13.
+
+Modif : 2026-09-03 — **FEAT-089** : la gestion des **catégories d'usagers**
+quitte `/admin/members/membercategory/` et rejoint l'écran des tarifs,
+renommé **« Tarifs et Catégories d'usagers »** (`/finance/tariffs/`).
+Création, édition, suppression (refusée tant qu'un usager y tient), cotisation
+et noms dans les 4 langues se font au même endroit que les amendes et les
+frais d'animation. `/admin/` reste un filet de debug. Cf. §5.2, §6.6, §6.13.
+
+Modif précédente : 2026-08-26 — **BUG-040** : le dépôt impose désormais les **fins de ligne LF** (`.gitattributes`). Le poste de développement est sous Windows avec `core.autocrlf = true` et `git archive` applique les filtres de conversion : les sources exportées vers la Box partaient en CRLF, et un `
+` dans un shebang rendait `entrypoint.sh` introuvable pour le noyau (« No such file or directory » sur un fichier qui existe, BibliOfelia en boucle de redémarrage, code 127). Cf. §11.1.
 
 Modif précédente : 2026-08-23 — **Sprint 30** : **FEAT-078** — **export Excel de tout le catalogue** depuis l'écran Catalogage Excel, **une ligne par exemplaire**, avec exactement les colonnes que l'import sait relire plus les codes qui identifient l'exemplaire (`OFELIA_CODE`, `INTERNAL_ID`). Téléchargement **synchrone** (aucun appel réseau, c'est une lecture de base) et `openpyxl` en mode `write_only`. — **FEAT-079** — **mise à jour d'exemplaires existants** à partir d'un `.xlsx` : même formulaire que l'import mais **ne crée jamais rien**, une ligne dont l'exemplaire est introuvable est signalée et laissée de côté. Clé de ligne : **code Ofelia et/ou code externe**, et si les deux sont présents **le code Ofelia identifie l'exemplaire, auquel le code externe de la ligne est appliqué** — c'est ainsi qu'on attribue des codes externes en masse. Nouveau mode `ExcelJobMode.UPDATE` + compteurs `updated` / `unchanged` (migration `catalog/0020`). Corollaire de l'export : `TYPE`, `CONDITION`, `CATEGORY` et `TAGS` se relisent désormais dans **toutes** les langues de l'instance, le fichier étant écrit dans la langue du bibliothécaire alors que le job tourne dans le worker, en français. — **FEAT-080** — les écrans de **prêt** et de **retour** identifient désormais complètement ce qui vient d'être scanné : le panier de prêt affiche titre + auteur + **les deux codes** de l'exemplaire (Ofelia et externe), et le journal de retour y ajoute **qui rapporte le livre** (photo, nom, prénom, âge quand ils existent) et une mention explicite « Retour effectué ». `ReturnResult` transporte le prêt soldé et `Member` gagne une propriété `age` (aucune migration). — **FEAT-081** — une **ancienne carte d'usager** (`replaces_card_number`) est désormais reconnue par les **trois** écrans qui résolvent un numéro de carte (accueil, liste des usagers, prêt) et non plus par le seul prêt, via un résolveur partagé `apps/members/lookup.py::find_member` — pendant de `find_item` pour les exemplaires. Le passage par l'ancienne carte est **signalé** à l'écran, et le remplacement d'une carte rappelle qu'il faut **réimprimer** la nouvelle : sans quoi le décalage entre la base et la carte en poche se découvre au comptoir, des jours plus tard. — **FEAT-082** — la version du logiciel passe de `0.1.0-dev` à **`1.0`**, et le **pied de page** cesse de la coder en dur : il lit `settings.BIBLIOFELIA_VERSION` comme `/pairing/info`, `/health`, le service Avahi et les rapports. Les deux pouvaient auparavant annoncer des versions différentes du même logiciel. Cf. §5.2, §6.2, §6.3, §6.12, §10.2.
 
@@ -407,6 +444,12 @@ fois.
 - `default_loan_duration_days` (entier)
 - `allowed_document_types` (M2M ou JSON liste enum)
 - `card_validity_months` (entier, ex. 12)
+- `membership_fee` (Decimal 10,2, défaut 0) — **FEAT-084**, cotisation facturée à l'inscription et au renouvellement ; 0 = gratuit
+
+**FEAT-089** : création / édition / suppression depuis Avancé → **Tarifs et
+Catégories d'usagers** (`/finance/tariffs/`, SUPERADMIN), plus depuis
+`/admin/members/membercategory/` (filet de debug). Une catégorie qui a encore
+des usagers ne se supprime pas (`Member.category` est en PROTECT).
 
 Seed :
 - Enfant (< 14 ans) : 3 prêts, 21 jours
@@ -422,11 +465,14 @@ Seed :
 - `birth_date` (date, nullable)
 - `category` (FK MemberCategory)
 - `contact_phone` (string, nullable)
-- `address` (texte, nullable)
+- `email` (EmailField, nullable) — **FEAT-083**, reçoit factures et relances (§6.13)
+- `address_street`, `address_extra` (string 200 car., nullable) — **FEAT-083**
+- `address_postal_code` (string 20 car.), `address_city` (string 100 car.) — **FEAT-083**
+- `address_state`, `address_country` (string 100 car., nullable) — **FEAT-083**
 - `registration_date` (date)
 - `expiration_date` (date, calculée à l'inscription, ajustable)
 - `status` (enum : active, suspended, expired, closed)
-- `notes` (texte)
+- `notes` (texte) — relibellé **« Commentaire »** et plafonné à 500 car. par le formulaire (FEAT-083)
 - `preferred_language` (string ISO 639-1, default = langue de la box) — dans quelle langue **écrire** à l'usager
 - `spoken_languages` (JSON, liste de codes) — langues que l'usager **parle** (FEAT-065)
 - `spoken_languages_other` (string 200 car.) — langues hors liste, séparées par des virgules, non vérifiées
@@ -834,6 +880,14 @@ personne sur le terrain.
 - Génération de `card_number`
 - Aperçu de la carte (PDF) avec bouton "Imprimer"
 
+#### Fiche usager — impression ruban (FEAT-090)
+
+Bouton **« Imprimer la carte (62 mm) »** parmi les actions bibliothécaire :
+ouvre `printing:cards_roll_pdf?ids=<pk>` dans un nouvel onglet, le PDF
+62 × 89 mm déjà produit par FEAT-062. Invisible au rôle lecture seule.
+Le picker Avancé → Impression → Cartes membres reste pour imprimer plusieurs
+cartes d'un coup.
+
 #### Carte membre
 - PDF A4 avec 8 cartes pré-découpées ou format individuel
 - Contient : nom, n° de carte, EAN13 du n° de carte, date d'expiration, langue de l'usager, nom de la bibliothèque, photo (si présente)
@@ -843,6 +897,45 @@ personne sur le terrain.
 #### Historique de prêt
 - Vue dédiée par usager : prêts en cours, historique complet, livres lus dans la bibliothèque
 - Statistiques personnelles (nombre de prêts par catégorie)
+
+#### Coordonnées (FEAT-083)
+
+La fiche porte, tous facultatifs : **email**, **téléphone**, **rue et n°**,
+**complément d'adresse**, **code postal**, **localité**, **état / province** et
+**pays**. Le pays est pré-rempli à la création depuis `library_identity.country`.
+
+L'ancien champ libre `Member.address` a disparu : la migration
+`members/0007` en recopie la première ligne dans `address_street` et le reste
+dans `address_extra`, puis le supprime. Elle est réversible.
+
+L'email n'est pas un confort : c'est lui qui reçoit **les factures et les
+relances** (§6.13). Une facture destinée à un usager sans email n'est jamais
+mise en file, et le bouton « Envoyer par email » de la facture est désactivé.
+
+`Member.address_lines` rend l'adresse en lignes non vides ; le gabarit de la
+fiche et le bloc destinataire de la facture PDF passent tous deux par elle,
+pour qu'ils écrivent la même adresse.
+
+Le champ `notes` est relibellé **« Commentaire »** et plafonné à
+**500 caractères** — par le formulaire, pas par le modèle : les commentaires
+plus longs déjà saisis restent valides et lisibles.
+
+#### Renouvellement de carte (BUG-041)
+
+`renew_card()` ancre la nouvelle échéance sur l'ancienne quand celle-ci n'est
+pas encore passée — renouveler une carte qui expire dans un mois donne treize
+mois, pas douze. Ce qui manquait, c'est la **condition d'entrée** : jusqu'au
+Sprint 31, trois clics ajoutaient trois ans, sans avertissement.
+
+Désormais : `can_renew(member)` n'est vrai que si la carte expire dans
+**30 jours ou moins** (`EXPIRY_WARNING_DAYS`, la même fenêtre que
+l'avertissement d'expiration), est déjà expirée, ou n'a pas de date. Sinon
+`renew_card()` lève `CardStillValid`. Le bouton de la fiche est **grisé**, avec
+une infobulle donnant la date de validité — et **le serveur refuse aussi un POST
+direct**, sans quoi la garde ne serait qu'un décor.
+
+Le renouvellement émet la **facture de cotisation** de la catégorie (§6.13) :
+sans cette garde, trois clics auraient produit trois factures.
 
 #### Compte collectif
 - Création d'un Member type "collectif" (école, famille) via `MemberCategory`
@@ -1210,7 +1303,7 @@ Insight : pendant un récolement scopé sur une `Location` X, si un exemplaire e
 > Implémentation Sprint 4 (FEAT-011) :
 > - **Dashboard** (`core:dashboard`) : KPI + tendance prêts 30j (sparkline) + Top 10 mois/année + activité (usagers actifs, croissance fonds) + état système (version, disque libre, dernière sauvegarde alerte > 24 h, ZeroTier).
 > - **Rapports** (`apps/reports/`) : index `reports:index` ; listes imprimables `reports:overdue`, `reports:reservations_pickup`, `reports:inactive` (CSS `@media print`) ; export CSV `reports:loans_csv` (période paramétrable) ; PDF annuel `reports:annual_pdf` (ReportLab).
-> - **Paramètres** (`/admin/settings/`, superadmin uniquement) : identité (nom, box_name mDNS, adresse, contact), langues (activées + défaut), durées prêts & réservations, sauvegardes (cf. §8 / FEAT-014), + lien Diagnostic. Catégories/Tags/Locations/MemberCategory restent éditées via `/admin/` Django pour l'instant (lien depuis l'index).
+> - **Paramètres** (`/admin/settings/`, superadmin uniquement) : identité (nom, box_name mDNS, adresse, contact), langues (activées + défaut), durées prêts & réservations, sauvegardes (cf. §8 / FEAT-014), + lien Diagnostic. Catégories de notices, langues, emplacements et provenances ont leur écran librarian (Avancé). **FEAT-089** : les **catégories d'usagers** se gèrent avec les tarifs (`/finance/tariffs/`), plus dans `/admin/`. Tags : encore `/admin/` (lien depuis l'index).
 >   - **FEAT-047 (Sprint 18)** : sections retirées des Paramètres — *Impressions cartes/étiquettes* (`printing_cards`/`printing_labels` : impression sous Avancé→Impression, format = valeurs seed désormais), *ZeroTier* (géré au niveau de la box keebee), *Sources de métadonnées* (`sources` : choix des sources sous Avancé→Enrichissement), et lien *Comptes utilisateurs* (doublon de Avancé→Administration). Les forms restent dans `apps/core/forms.py` (MetadataSourcesForm toujours utilisée par l'enrichissement) mais ne sont plus dans le dict `FORMS`.
 > - **Gestion comptes** (`/accounts/users/`) : CRUD + reset mot de passe (avec génération aléatoire 16 chars).
 > - **Diagnostic** (`core:diagnostics`) : versions, dernière sauvegarde, file django-q2.
@@ -1397,7 +1490,8 @@ n'est plus lue par une douchette. Réglage `two_color` décoché → tout en noi
 
 **Déclenchement** — bouton « Ruban 62 mm (Brother QL) » sur `printing:labels` et
 `printing:cards` (masqué si `roll_printer_format.enabled` est faux), qui ouvre
-le PDF directement dans un nouvel onglet. Une page intermédiaire à
+le PDF directement dans un nouvel onglet. **FEAT-090** : la fiche usager a le
+même PDF en un clic (« Imprimer la carte (62 mm) »), sans passer par le picker. Une page intermédiaire à
 auto-impression a existé puis été retirée à la demande de Val : le visualiseur
 PDF et le dialogue d'impression restent de toute façon obligatoires (aucune
 page web ne peut lancer une impression sans validation de l'utilisateur).
@@ -2180,6 +2274,330 @@ dans `sources.SEARCHES`. La passe 2 ne trace pas la source du candidat fusionné
 
 **Modèle `ExcelCatalogJob`** : voir §5.2.
 
+### 6.13 Caisse, cotisations, amendes et factures (FEAT-084)
+
+Application `apps/finance`. Jusqu'au Sprint 31, BibliOfelia ne connaissait aucun
+montant : ni cotisation, ni amende, ni caisse.
+
+#### Arbitrages Val (2026-08-31)
+
+| Question | Décision |
+|---|---|
+| Naissance des amendes | **Manuelles uniquement.** Motif choisi dans une liste administrable, montant libre. Aucun calcul, aucune amende de retard générée dans le dos d'un employé |
+| Cotisation | **Montant porté par `MemberCategory.membership_fee`**, facturé **automatiquement** à l'inscription et à chaque renouvellement de carte. Un montant nul n'émet rien. **BUG-042** : un **changement de catégorie** aligne les factures de cotisation ouvertes (sans paiement) sur le nouveau montant — Adulte 20 CHF → Employé 0 annule la facture, elle n'apparaît plus dans l'encadré Compte. Une cotisation déjà réglée n'est pas remboursée |
+| Devise | **Réglage par instance**, au même endroit que le fuseau horaire (Avancé → Paramètres → « Caisse — devise et échéances »). `canaima` → bolívar (VES), `grand-saconnex` → CHF, `sanjuan` → à choisir |
+
+#### Modèle
+
+```
+Tariff(kind, label, amount, is_active, order)
+Invoice(number, member, issue_date, due_date, status, total_amount,
+        amount_paid, note, created_by, emailed_at, reminder_sent_at)
+InvoiceLine(invoice, kind, label, amount, quantity)
+Payment(invoice, amount, method, paid_on, note, received_by)
+CashMovement(occurred_on, direction, amount, label, payment, created_by)
+OutboundEmail(kind, to_address, subject, body, invoice, status, error,
+              attempts, created_at, sent_at)
+```
+
+`kind` ∈ {`membership`, `activity`, `fine`, `other`} : c'est lui qui produit le
+détail « cotisation / animation / amende » de l'encadré Compte.
+
+`Invoice.number` = `F-<année>-<séquence sur 4>`, alloué depuis
+`Setting["invoice_seq_<année>"]`. SQLite ne sait pas verrouiller une ligne
+(`select_for_update` y lève `NotSupportedError`) : c'est la **contrainte
+d'unicité** qui arbitre deux créations concurrentes, et `Invoice.save()`
+réessaie jusqu'à cinq fois.
+
+Une facture numérotée **ne se supprime pas** : elle s'**annule**
+(`status="cancelled"`, solde forcé à zéro). Une numérotation trouée n'est plus
+un registre de caisse. Une facture déjà encaissée ne peut plus être annulée.
+
+`total_amount` et `amount_paid` sont **stockés** et recalculés par
+`Invoice.recompute()` : le total dû de toute la bibliothèque doit s'agréger en
+une requête, pas en parcourant les lignes de chaque facture.
+
+Montants en `DecimalField(max_digits=10, decimal_places=2)`. Le stockage garde
+**toujours** deux décimales quelle que soit la devise ; seul l'affichage
+arrondit (`apps/finance/money.py`, filtre de gabarit `|money`). Passer une
+instance de MGA à EUR ne doit pas détruire des centimes déjà saisis.
+
+#### Encadré « Compte » sur la fiche usager
+
+Trois états, et trois seulement — c'est la question que se pose le
+bibliothécaire au comptoir :
+
+- **À jour sur ses paiements** — aucune facture ouverte ;
+- **N à régler** — factures ouvertes, aucune échue ; l'échéance la plus proche
+  est indiquée ;
+- **En retard : N depuis le JJ/MM/AAAA** — la date est celle de la **plus
+  ancienne** échéance impayée.
+
+Le détail suit, ventilé par nature, sur les **lignes** et non sur les factures :
+une même facture peut porter une cotisation et une amende.
+
+#### Encaissement
+
+Montant pré-rempli au solde, mode **espèces par défaut**, date, note. Un
+règlement **en espèces** crée automatiquement une **entrée de caisse** — c'est
+ce qui fait tenir le registre. Un **virement n'entre pas dans la caisse**, sinon
+le comptage physique du tiroir ne tomberait jamais juste. Les paiements
+partiels sont acceptés ; la facture passe à « réglée » quand le solde atteint
+zéro. Un montant supérieur au solde est refusé.
+
+#### Facture A4 (`apps/finance/pdf.py`)
+
+Charte OFELIA réutilisée telle quelle : `static/img/ofelia-logo.png` et
+bordeaux `#6B2138` de `static/css/ofelia.css`. En-tête de la bibliothèque
+(`library_identity`, qui gagne un champ **pays**), bloc destinataire
+(`Member.address_lines`), tableau des lignes, total, solde, échéance, et la
+mention « Réglée » ou « Facture annulée » quand elle s'applique. Une fiche sans
+adresse ne casse pas la génération.
+
+#### Emails : file d'attente (demande explicite de Val)
+
+**Tout email passe par `OutboundEmail`**, y compris quand la Box est en ligne :
+c'est la seule façon de garantir qu'un envoi raté laisse une trace consultable
+plutôt qu'une exception dans un journal que personne ne lit.
+
+`is_online()` ne teste pas « Internet » mais **la joignabilité du relais SMTP
+configuré** — une Box qui voit Internet mais pas son relais n'enverra rien. Le
+résultat est gardé une minute : l'écran de bouclement le consulte plusieurs
+fois d'affilée.
+
+Hors ligne, `flush_outbox()` laisse tout en file (`skipped`) et l'écran le dit.
+Un administrateur vide la file à la demande depuis l'écran de la caisse.
+
+**Relances** : une facture non réglée **plus d'un jour** après son échéance
+entre dans la liste. `reminder_sent_at` garantit **une seule relance par
+facture** : le but est de prévenir, pas de harceler.
+
+Réglages SMTP : Avancé → Paramètres → « Email (SMTP) ». Le mot de passe est
+stocké tel quel dans `Setting` — la Box n'a pas de coffre, c'est déjà le cas de
+la clé Google Books.
+
+#### Écran « Caisse » (`/finance/`)
+
+Accessible **hors bouclement** : solde de caisse, entrées et sorties sur une
+période (la journée par défaut), total dû par les usagers, factures en retard,
+file d'emails en attente, et saisie manuelle d'un mouvement — entrée ou
+**sortie**, pour une dépense.
+
+Rôles : lecture `LIBRARIAN`/`SUPERADMIN`/`READONLY` ; écriture
+`LIBRARIAN`/`SUPERADMIN` ; référentiel des tarifs **et des catégories
+d'usagers** (FEAT-089) et vidage de la file `SUPERADMIN`.
+
+#### Tarifs et Catégories d'usagers (FEAT-089)
+
+Un seul écran Avancé → **Tarifs et Catégories d'usagers** (`/finance/tariffs/`) :
+
+1. **Catégories d'usagers** — code, nom, cotisation, validité de la carte,
+   prêts max, durée de prêt, nombre d'usagers. Création / édition / suppression.
+   Le formulaire pose les **4 langues** du nom (FR obligatoire, EN/ES/MG
+   facultatifs, repli modeltranslation vers le français), la cotisation
+   (0 = gratuit), et les types de documents autorisés (aucune case cochée =
+   tous autorisés, sémantique inchangée de `allowed_document_types` vide).
+2. **Autres tarifs** — amendes, animations, autres frais. Inchangé (FEAT-084).
+
+Jusqu'au Sprint 31, les catégories ne se modifiaient que dans
+`/admin/members/membercategory/`, et l'écran des tarifs n'affichait la
+cotisation qu'en lecture, avec un renvoi vers l'admin. `/admin/` reste un
+filet de debug, plus le chemin normal.
+
+Une catégorie encore attribuée à un usager **ne se supprime pas** : l'écran
+le dit, et le POST est refusé. `Member.category` est en PROTECT.
+
+---
+
+### 6.14 Activités et animations (FEAT-085)
+
+Application `apps/closing`. But affiché par Val : pouvoir écrire en fin d'année
+« la bibliothèque a organisé *x* animations auxquelles ont participé *y*
+membres et *z* non-membres, dont *t* adultes et *s* enfants » — la phrase que
+demande tout bailleur.
+
+```
+ActivityType(label, is_active, order)
+ActivityEntry(user, occurred_on, activity_type, minutes, note)
+AnimationType(label, is_active, created_by)
+AnimationSession(occurred_on, animation_type, presenter, minutes,
+                 non_member_adults, non_member_children, note)
+AnimationAttendance(session, member)          # unique_together
+```
+
+- **Durées en minutes.** La saisie se fait en heures + minutes ; une durée en
+  décimal invite aux arrondis, une durée en minutes se somme sans surprise.
+- `presenter` et `user` en **PROTECT** : un employé supprimé emporterait les
+  statistiques de l'année avec lui.
+- Une nature d'activité **désactivée** disparaît du formulaire mais reste dans
+  les saisies passées et dans les statistiques : désactiver une ligne ne doit
+  pas réécrire l'histoire.
+- `AnimationType.get_or_create_by_label()` cherche **insensiblement à la casse**
+  avant de créer, sinon « Heure du conte » et « heure du conte » compteraient
+  séparément. C'est le seul référentiel qu'un bibliothécaire enrichit lui-même,
+  depuis son propre formulaire — une animation s'invente le jour même.
+
+#### Présences
+
+Un membre présent se retrouve **au scan de sa carte** ou en tapant les **4
+derniers chiffres** de son numéro, via
+`apps/members/lookup.py::find_members_by_code()` — pendant de `find_member`
+(FEAT-081), conformément à la règle « un code résolu quelque part doit l'être
+partout ». La fonction rend une **liste** : quatre chiffres ne sont pas un
+identifiant, et quand plusieurs cartes finissent pareil l'écran **affiche le
+choix** au lieu d'en prendre une. Deviner ferait compter la mauvaise personne
+dans les statistiques, sans que personne ne s'en aperçoive.
+
+Les non-membres sont **simplement comptés** : *x* adultes, *y* enfants.
+
+Les présents se saisissent **dès le formulaire de création** (champ
+`attendee_codes` + bouton de scan `data-scan-append`, qui empile les codes au
+lieu d'écraser le précédent) **et** sur l'écran de détail, un par un. Le champ
+de création accepte plusieurs cartes séparées par un espace ou une virgule —
+un champ texte plutôt qu'un widget maison, pour que la saisie fonctionne sans
+JavaScript. Un code inconnu ou ambigu n'échoue pas l'enregistrement : il est
+**nommé dans un avertissement** et se reprend sur l'écran de détail.
+
+*Ajout du 2026-09-01, signalé par Val au test : « il manque un champ de saisie
+(+ bouton scan) pour ajouter des membres aux animations ». Le champ n'existait
+que sur l'écran de détail, atteint après enregistrement.*
+
+#### Saisie rétroactive
+
+La date est modifiable — un employé qui a oublié sa journée la rattrape plus
+tard — mais **bornée à aujourd'hui** : on ne saisit pas le travail de demain.
+
+#### Statistiques (`/closing/stats/`)
+
+Totaux de l'année et mois par mois, temps par nature d'activité, export CSV.
+
+*Piège évité* : agréger les présences dans le **même** `aggregate()` que
+`Sum("non_member_adults")` multiplierait les non-membres par le nombre de
+présents (fan-out de jointure). Les présences sont comptées par une requête
+séparée sur `AnimationAttendance`, et un test le verrouille.
+
+---
+
+### 6.15 Bouclement de la journée (FEAT-086)
+
+Nouvelle tuile **Bouclement** sur l'accueil et dans la barre de sections, au
+même rang que Catalogue et Membres. L'écran déroule **cinq étapes**, chacune
+avec son état :
+
+1. **Activités et animations** — renvoie aux formulaires de §6.14, pré-datés du
+   jour, et affiche ce que l'employé connecté a déjà saisi.
+2. **Mouvements de caisse du jour** — entrées, sorties, solde, détail.
+3. **Factures et relances à envoyer** — **BUG-043** : sur une **instance
+   hébergée** (Grand-Saconnex, Sanjuan) le bouton **envoie tout de suite**.
+   Aucune mention de « Box », pas de file d'attente hors-ligne : l'instance
+   est en ligne par construction. Si le SMTP n'est pas configuré, l'écran le
+   dit (Avancé → Paramètres → Email) au lieu de prétendre que « la Box n'est
+   pas en ligne ». Sur la **Box**, hors ligne : la liste s'affiche pour
+   prévenir les personnes **par téléphone**, les emails restent en file et
+   partent dès que la Box est de nouveau en ligne.
+4. **Sauvegardes** — `apps.tasks.backup.run_backup(force_daily=True)`, résultat
+   affiché.
+5. **Éteindre la Box** — voir ci-dessous.
+
+Le bouclement **n'est pas un verrou** : `DayClosing` est unique par
+`(closing_date, user)`, un employé qui finit à midi boucle et un autre reboucle
+le soir. Chaque action est un **POST distinct** (`step=emails|backup|shutdown`)
+— un bouclement n'est pas un formulaire monolithique qu'on rejoue par mégarde.
+
+#### Étape 5 — extinction (arbitrage Val)
+
+Un conteneur Docker ne peut pas éteindre son hôte. L'étape **n'apparaît que sur
+la Box** (`Setting["is_box"]`) ; sur `sanjuan` ou `grand-saconnex`, éteindre le
+serveur n'a aucun sens et l'étape disparaît. Elle exige le rôle `SUPERADMIN`.
+
+BibliOfelia écrit un **fichier-drapeau** (`settings.BOX_SHUTDOWN_FLAG`, par
+défaut `/data/shutdown.request`), encodé **puis** écrit en binaire — `open(…, "w")`
+tronque avant d'encoder, et un drapeau vide pourrait quand même être interprété
+par l'hôte.
+
+> ⚠️ **La moitié système est hors de ce dépôt.** L'unité `ofelia-shutdown.path`
+> et son `ofelia-shutdown.service` restent à ajouter dans `keebee` /
+> `ofeliabox`. Tant qu'elles ne sont pas déployées, le bouton écrit son fichier
+> et **la Box ne s'éteint pas** — le gabarit le dit explicitement, plutôt que
+> d'annoncer un arrêt qui n'arrivera pas.
+
+---
+
+### 6.16 Scan caméra multi-format (FEAT-087)
+
+Jusqu'au Sprint 31, `static/js/scan-camera.js` n'acceptait qu'un **EAN-13 à clé
+valide et préfixe 290/291/977/978/979**, et ses deux moteurs n'étaient
+configurés que pour l'EAN-13. Un **code externe** (FEAT-063) imprimé en Code128
+ou Code39 — le cas courant sur une étiquette de bibliothèque — était donc
+lisible à la douchette USB mais **pas à la caméra**.
+
+Décision Val (2026-08-31) : ouvrir à **tout format que le lecteur accepte**.
+
+- `formatsToSupport` (html5-qrcode) : EAN-13, EAN-8, UPC-A, UPC-E, Code128,
+  Code39, Code93, Codabar, ITF — filtré sur les constantes réellement exposées
+  par la version embarquée, une constante absente rendant la liste invalide.
+- `decoder.readers` (Quagga) : huit lecteurs au lieu d'un.
+- Les codes **2D** (QR, DataMatrix, Aztec) restent exclus : une étiquette de
+  bibliothèque est un code à barres, et les activer ferait lire n'importe quelle
+  affiche présente dans le champ.
+
+Garde-fous conservés : **clé de contrôle** quand la lecture ressemble à un
+EAN-13 (13 chiffres), **consensus de deux lectures identiques** — le seul filet
+pour Code39, qui n'a pas de somme de contrôle —, et la **bande de décodage**
+centrale. Contrepartie assumée : décodage plus lent côté Quagga, et davantage de
+fausses lectures possibles sur les formats sans clé.
+
+Aucun changement serveur : `find_item` et `find_member` acceptaient déjà tout.
+
+---
+
+### 6.17 Moteur de recherche de devise (FEAT-088)
+
+Retour de test de Val (2026-09-01) : la première version du réglage de caisse
+n'offrait que **six devises codées en dur** — celles des instances connues. Une
+septième bibliothèque aurait exigé une modification du code.
+
+Le réglage Avancé → Paramètres → « Caisse — devise et échéances » présente
+désormais un **champ de recherche** parmi les **153 devises en circulation** :
+
+- déclenché à la **2ᵉ lettre** — sur un trigramme, une seule lettre remonterait
+  la moitié de la liste ;
+- portant sur le **code** (`CHF`), le **nom de la devise** et le **nom du pays**,
+  en partie comme en entier, **sans accents ni casse** ;
+- classé exact → préfixe → contenu, pour que `ARS` ne se noie pas sous les
+  devises dont un pays contient « ars » ;
+- proposant, sous deux caractères, les devises des instances existantes plutôt
+  que rien.
+
+Les libellés viennent du **CLDR embarqué dans Babel** (`Babel==2.16.0`), pas de
+nos `.po` : 153 devises × leurs pays × 4 langues resteraient sinon à traduire à
+la main et à maintenir. Aucune requête réseau — la contrainte hors-ligne tient.
+Trou assumé : le CLDR malgache ne nomme pas toutes les devises, on garde alors
+le code.
+
+Seules les devises **vivantes** (`tender=True`) sont proposées : les 306 codes
+ISO 4217 de Babel comprennent le franc français et le mark.
+
+**Sans JavaScript, le réglage marche toujours** : le champ est un
+`<input type="text">` ordinaire qui part au serveur tel quel, le script n'ajoute
+que la liste. C'est pourquoi il n'y a pas de champ caché doublant le champ
+visible — il ne serait jamais rempli, et le réglage deviendrait immuable.
+Choisir un résultat écrit le **code** dans le champ.
+
+Le serveur accepte aussi une saisie libre **non ambiguë** (« Suisse ») et refuse
+explicitement une saisie ambiguë (« franc »).
+
+`GET /finance/currencies/?q=` (JSON) est réservé à `SUPERADMIN`, comme l'écran
+qui l'héberge.
+
+> **Effet de bord global** : le widget a son propre template, et le renderer de
+> formulaires de Django utilise un moteur **isolé** qui ne voit pas
+> `templates/`. D'où `FORM_RENDERER = "django.forms.renderers.TemplatesSetting"`
+> et `django.forms` dans `INSTALLED_APPS`. Tous les formulaires de
+> l'application passent désormais par ce renderer.
+
+---
+
 ### 7.1 Modes de fonctionnement
 
 | Mode | Disponibilité internet | Comportement |
@@ -2389,8 +2807,10 @@ Pour respecter le principe d'ergonomie pour usagers peu formés sans frustrer le
 Le dépôt impose **LF** pour tous les fichiers texte. Ce n'est pas une coquetterie
 de style : le poste de développement est sous Windows avec `core.autocrlf = true`,
 et **`git archive` applique les filtres de conversion**. Sans `.gitattributes`, les
-sources exportées vers la Box partent en **CRLF** — et un `` dans un shebang rend
-le script introuvable pour le noyau Linux, qui cherche alors `/bin/sh` :
+sources exportées vers la Box partent en **CRLF** — et un `
+` dans un shebang rend
+le script introuvable pour le noyau Linux, qui cherche alors `/bin/sh
+` :
 
 ```
 [FATAL tini] exec /app/scripts/entrypoint.sh failed: No such file or directory

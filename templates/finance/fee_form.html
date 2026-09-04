@@ -1,0 +1,39 @@
+{% extends "base.html" %}
+{% load i18n biblio_icons %}
+
+{% block title %}{{ title }}{% endblock %}
+
+{% block tile_strip %}{% include "partials/_tile_strip.html" with active="members" %}{% endblock %}
+
+{% block content %}
+<header class="pagehead">
+    <div class="pagehead-icon" style="--ph-bg:var(--orange);--ph-fg:#fff">
+        {% icon "receipt" size="28px" %}
+    </div>
+    <div class="pagehead-text">
+        <h1 class="pagehead-title">{{ title }}</h1>
+        <div class="pagehead-sub">
+            <a href="{% url 'members:detail' member.pk %}" class="cell-link">{{ member.full_name }}</a>
+            · {{ member.card_number }}
+        </div>
+    </div>
+</header>
+
+<div class="card">
+    <form method="post">
+        {% csrf_token %}
+        {% include "partials/_field.html" with field=form.tariff %}
+        {% include "partials/_field.html" with field=form.label %}
+        {% include "partials/_field.html" with field=form.amount %}
+        <div class="form-actions">
+            <button type="submit" class="btn btn--primary">
+                {% icon "check" size="16px" %} {% trans "Créer la facture" %}
+            </button>
+            <a href="{% url 'members:detail' member.pk %}" class="btn btn--ghost">{% trans "Annuler" %}</a>
+        </div>
+    </form>
+    <p class="muted text-sm" style="margin-top:10px">
+        {% trans "Le motif propose un montant, mais celui-ci reste modifiable. Aucun montant n'est calculé automatiquement." %}
+    </p>
+</div>
+{% endblock %}

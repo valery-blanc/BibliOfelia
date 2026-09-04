@@ -1,0 +1,135 @@
+{% extends "base.html" %}
+{% load i18n biblio_icons money %}
+
+{% block title %}{% trans "Tarifs et Catégories d'usagers" %}{% endblock %}
+
+{% block tile_strip %}{% include "partials/_tile_strip.html" with active="advanced" %}{% endblock %}
+
+{% block content %}
+<nav class="breadcrumb">
+    <a href="{% url 'core:advanced' %}">{% trans "Avancé" %}</a> /
+    <strong>{% trans "Tarifs et Catégories d'usagers" %}</strong>
+</nav>
+
+<header class="pagehead">
+    <div class="pagehead-icon" style="--ph-bg:var(--forest);--ph-fg:#fff">
+        {% icon "wallet" size="28px" %}
+    </div>
+    <div class="pagehead-text">
+        <h1 class="pagehead-title">{% trans "Tarifs et Catégories d'usagers" %}</h1>
+        <div class="pagehead-sub">{% trans "Catégories d'usagers (cotisation, prêts, validité de la carte) et montants proposés pour les animations et les amendes." %}</div>
+    </div>
+</header>
+
+<h2 class="section-title">{% trans "Catégories d'usagers" %}</h2>
+<div class="table-wrap">
+    <table class="table">
+        <thead>
+            <tr>
+                <th>{% trans "Code" %}</th>
+                <th>{% trans "Catégorie" %}</th>
+                <th>{% trans "Validité" %}</th>
+                <th style="text-align:right">{% trans "Prêts max" %}</th>
+                <th style="text-align:right">{% trans "Durée de prêt" %}</th>
+                <th style="text-align:right">{% trans "Cotisation annuelle" %}</th>
+                <th style="text-align:right">{% trans "Usagers" %}</th>
+                <th></th>
+            </tr>
+        </thead>
+        <tbody>
+        {% for category in categories %}
+            <tr>
+                <td><span class="cell-title">{{ category.code }}</span></td>
+                <td>{{ category.name }}</td>
+                <td class="muted">{% blocktrans with n=category.card_validity_months %}{{ n }} mois{% endblocktrans %}</td>
+                <td style="text-align:right;font-variant-numeric:tabular-nums">{{ category.max_concurrent_loans }}</td>
+                <td style="text-align:right;font-variant-numeric:tabular-nums">{% blocktrans with n=category.default_loan_duration_days %}{{ n }} j{% endblocktrans %}</td>
+                <td style="text-align:right;font-variant-numeric:tabular-nums">
+                    {% if category.membership_fee %}{{ category.membership_fee|money }}
+                    {% else %}<span class="muted">{% trans "gratuit" %}</span>{% endif %}
+                </td>
+                <td style="text-align:right;font-variant-numeric:tabular-nums">{{ category.member_count }}</td>
+                <td style="text-align:right;white-space:nowrap">
+                    <a href="{% url 'finance:member_category_edit' category.pk %}" class="btn btn--ghost btn--sm">
+                        {% icon "pencil" size="14px" %}
+                    </a>
+                    <a href="{% url 'finance:member_category_delete' category.pk %}" class="btn btn--ghost btn--sm" style="color:#B83232">
+                        {% icon "trash-2" size="14px" %}
+                    </a>
+                </td>
+            </tr>
+        {% empty %}
+            <tr><td colspan="8" class="muted" style="text-align:center;padding:24px">{% trans "Aucune catégorie d'usager." %}</td></tr>
+        {% endfor %}
+        </tbody>
+    </table>
+</div>
+<p class="muted text-sm">
+    {% trans "La cotisation est facturée automatiquement à l'inscription et à chaque renouvellement de carte. Un montant à 0 n'émet aucune facture." %}
+</p>
+<div class="form-actions" style="border:0;padding-top:0">
+    <a href="{% url 'finance:member_category_create' %}" class="btn btn--primary">
+        {% icon "plus" size="16px" %} {% trans "Nouvelle catégorie" %}
+    </a>
+</div>
+
+<h2 class="section-title" style="margin-top:28px">{% trans "Autres tarifs" %}</h2>
+{% if tariffs %}
+<div class="table-wrap">
+    <table class="table">
+        <thead>
+            <tr>
+                <th>{% trans "Nature" %}</th>
+                <th>{% trans "Libellé" %}</th>
+                <th style="text-align:right">{% trans "Montant" %}</th>
+                <th>{% trans "Actif" %}</th>
+                <th></th>
+            </tr>
+        </thead>
+        <tbody>
+        {% for tariff in tariffs %}
+            <tr>
+                <td class="muted">{{ tariff.get_kind_display }}</td>
+                <td>{{ tariff.label }}</td>
+                <td style="text-align:right;font-variant-numeric:tabular-nums">{{ tariff.amount|money }}</td>
+                <td>{% if tariff.is_active %}{% icon "check" size="16px" %}{% else %}<span class="muted">—</span>{% endif %}</td>
+                <td style="text-align:right;white-space:nowrap">
+                    <a href="{% url 'finance:tariff_edit' tariff.pk %}" class="btn btn--ghost btn--sm">
+                        {% icon "pencil" size="14px" %}
+                    </a>
+                    <form method="post" action="{% url 'finance:tariff_delete' tariff.pk %}" style="display:inline"
+                          onsubmit="return confirm('{% trans "Supprimer ce tarif ?" %}')">
+                        {% csrf_token %}
+                        <button type="submit" class="btn btn--ghost btn--sm" style="color:#B83232">
+                            {% icon "trash-2" size="14px" %}
+                        </button>
+                    </form>
+                </td>
+            </tr>
+        {% endfor %}
+        </tbody>
+    </table>
+</div>
+{% else %}
+<p class="muted">{% trans "Aucun tarif enregistré." %}</p>
+{% endif %}
+
+<h2 class="section-title" style="margin-top:28px">{% trans "Ajouter un tarif" %}</h2>
+<div class="card">
+    <form method="post">
+        {% csrf_token %}
+        <div class="grid-2">
+            {% include "partials/_field.html" with field=form.kind %}
+            {% include "partials/_field.html" with field=form.label %}
+            {% include "partials/_field.html" with field=form.amount %}
+            {% include "partials/_field.html" with field=form.order %}
+        </div>
+        {% include "partials/_field.html" with field=form.is_active %}
+        <div class="form-actions">
+            <button type="submit" class="btn btn--primary">
+                {% icon "plus" size="16px" %} {% trans "Ajouter" %}
+            </button>
+        </div>
+    </form>
+</div>
+{% endblock %}

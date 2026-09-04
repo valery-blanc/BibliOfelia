@@ -1,0 +1,128 @@
+{% extends "base.html" %}
+{% load i18n biblio_icons %}
+
+{% block title %}{{ session.animation_type }}{% endblock %}
+
+{% block tile_strip %}{% include "partials/_tile_strip.html" with active="closing" %}{% endblock %}
+
+{% block content %}
+<header class="pagehead">
+    <div class="pagehead-icon" style="--ph-bg:var(--blush);--ph-fg:var(--ink)">
+        {% icon "users" size="28px" %}
+    </div>
+    <div class="pagehead-text">
+        <h1 class="pagehead-title">{{ session.animation_type }}</h1>
+        <div class="pagehead-sub">
+            {{ session.occurred_on }} · {{ session.presenter }} · {{ session.duration_display }}
+        </div>
+    </div>
+</header>
+
+<div class="card">
+    <dl class="record-meta">
+        <div><dt>{% trans "Membres présents" %}</dt><dd>{{ session.member_count }}</dd></div>
+        <div><dt>{% trans "Non-membres adultes" %}</dt><dd>{{ session.non_member_adults }}</dd></div>
+        <div><dt>{% trans "Non-membres enfants" %}</dt><dd>{{ session.non_member_children }}</dd></div>
+        <div><dt>{% trans "Total" %}</dt><dd><b>{{ session.total_attendance }}</b></dd></div>
+    </dl>
+    {% if session.note %}
+    <div class="muted text-sm" style="margin-top:8px">{{ session.note }}</div>
+    {% endif %}
+</div>
+
+{% if user.is_librarian %}
+<h2 class="section-title" style="margin-top:28px">{% trans "Ajouter une personne présente" %}</h2>
+<div class="card">
+    {% comment %}
+    FEAT-085 : le bouton de scan est `type="button"` et le bouton d'envoi est
+    visible à côté (BUG-014) — un submit caché ne se déclenche pas de façon
+    fiable après une lecture caméra.
+    {% endcomment %}
+    <form method="post" action="{% url 'closing:animation_add_attendee' session.pk %}">
+        {% csrf_token %}
+        <div class="field">
+            <label for="code">{% trans "N° de carte ou 4 derniers chiffres" %}</label>
+            <input type="text" id="code" name="code" value="{{ query }}" autofocus
+                   autocomplete="off" inputmode="numeric"
+                   placeholder="{% trans '0017 ou 2910000000017' %}">
+        </div>
+        <div style="display:flex;gap:8px;flex-wrap:wrap">
+            <button type="submit" class="btn btn--primary">
+                {% icon "check" size="16px" %} {% trans "Valider" %}
+            </button>
+            <button type="button" class="btn btn--ghost js-scan-handoff"
+                    data-scan-kind="member" data-scan-target="#code">
+                {% icon "scan-barcode" size="16px" %} {% trans "Scanner" %}
+            </button>
+        </div>
+    </form>
+
+    {% if candidates %}
+    <div role="alert" class="msg msg-warning" style="margin-top:12px">
+        {% blocktrans with q=query %}Plusieurs usagers correspondent à « {{ q }} ». Choisissez la bonne personne.{% endblocktrans %}
+    </div>
+    <div class="list">
+        {% for candidate in candidates %}
+        <form method="post" action="{% url 'closing:animation_add_attendee' session.pk %}" style="margin:0">
+            {% csrf_token %}
+            <input type="hidden" name="member_pk" value="{{ candidate.pk }}">
+            <button type="submit" class="list-row" style="width:100%;text-align:left;background:none;border:0;cursor:pointer">
+                <div class="lrow-icon" style="--lr-bg:var(--sky-light);--lr-fg:var(--sky-dark)">
+                    {% icon "user" size="18px" %}
+                </div>
+                <div class="lrow-body">
+                    <div class="lrow-title">{{ candidate.full_name }}</div>
+                    <div class="lrow-sub">{{ candidate.card_number }}{% if candidate.age is not None %} · {% blocktrans with n=candidate.age %}{{ n }} ans{% endblocktrans %}{% endif %}</div>
+                </div>
+            </button>
+        </form>
+        {% endfor %}
+    </div>
+    {% endif %}
+</div>
+{% endif %}
+
+<h2 class="section-title" style="margin-top:28px">
+    {% trans "Membres présents" %} <small>({{ attendances|length }})</small>
+</h2>
+{% if attendances %}
+<div class="list">
+    {% for attendance in attendances %}
+    <div class="list-row">
+        <div class="lrow-icon" style="--lr-bg:var(--sky-light);--lr-fg:var(--sky-dark)">
+            {% icon "user" size="18px" %}
+        </div>
+        <div class="lrow-body">
+            <div class="lrow-title">
+                <a href="{% url 'members:detail' attendance.member.pk %}" class="cell-link">{{ attendance.member.full_name }}</a>
+            </div>
+            <div class="lrow-sub">{{ attendance.member.card_number }}</div>
+        </div>
+        {% if user.is_librarian %}
+        <form method="post" action="{% url 'closing:animation_remove_attendee' session.pk attendance.pk %}" style="margin:0">
+            {% csrf_token %}
+            <button type="submit" class="btn btn--ghost btn--sm" style="color:#B83232">
+                {% icon "x" size="14px" %}
+            </button>
+        </form>
+        {% endif %}
+    </div>
+    {% endfor %}
+</div>
+{% else %}
+<p class="muted">{% trans "Personne n'a encore été noté(e) présent(e)." %}</p>
+{% endif %}
+
+{% if user.is_librarian %}
+<div style="display:flex;gap:8px;flex-wrap:wrap;margin-top:24px">
+    <a href="{% url 'closing:animation_list' %}" class="btn btn--ghost">{% trans "Toutes les animations" %}</a>
+    <form method="post" action="{% url 'closing:animation_delete' session.pk %}" style="margin:0"
+          onsubmit="return confirm('{% trans "Supprimer cette animation et toutes ses presences ?" %}')">
+        {% csrf_token %}
+        <button type="submit" class="btn btn--ghost" style="color:#B83232">
+            {% icon "trash-2" size="16px" %} {% trans "Supprimer" %}
+        </button>
+    </form>
+</div>
+{% endif %}
+{% endblock %}

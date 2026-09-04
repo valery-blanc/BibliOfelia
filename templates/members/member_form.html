@@ -119,8 +119,26 @@
     <details class="advanced-section" {% if user.always_show_advanced %}open{% endif %}>
         <summary>{% trans "Options avancées" %}</summary>
         {% include "partials/_field.html" with field=form.birth_date %}
+
+        {% comment %}
+        FEAT-083 : bloc « Coordonnées ». L'email est en tête parce que c'est lui
+        qui reçoit les factures (FEAT-084) — une fiche sans email ne peut rien
+        recevoir au bouclement.
+        {% endcomment %}
+        <h3 class="section-title" style="margin-top:18px;font-size:1rem">{% trans "Coordonnées" %}</h3>
+        {% include "partials/_field.html" with field=form.email %}
         {% include "partials/_field.html" with field=form.contact_phone %}
-        {% include "partials/_field.html" with field=form.address %}
+        {% include "partials/_field.html" with field=form.address_street %}
+        {% include "partials/_field.html" with field=form.address_extra %}
+        <div class="grid-2">
+            {% include "partials/_field.html" with field=form.address_postal_code %}
+            {% include "partials/_field.html" with field=form.address_city %}
+        </div>
+        <div class="grid-2">
+            {% include "partials/_field.html" with field=form.address_state %}
+            {% include "partials/_field.html" with field=form.address_country %}
+        </div>
+
         {% include "partials/_field.html" with field=form.registration_date %}
         {% include "partials/_field.html" with field=form.expiration_date %}
         {% if form.instance.photo %}

@@ -1,0 +1,168 @@
+{% extends "base.html" %}
+{% load i18n biblio_icons money %}
+
+{% block title %}{% trans "Caisse" %}{% endblock %}
+
+{% block tile_strip %}{% include "partials/_tile_strip.html" with active="finance" %}{% endblock %}
+
+{% block content %}
+<header class="pagehead">
+    <div class="pagehead-icon" style="--ph-bg:var(--forest);--ph-fg:#fff">
+        {% icon "wallet" size="28px" %}
+    </div>
+    <div class="pagehead-text">
+        <h1 class="pagehead-title">{% trans "Caisse" %}</h1>
+        <div class="pagehead-sub">{% trans "Entrées, sorties et paiements dus." %}</div>
+    </div>
+</header>
+
+<div class="kpis">
+    <div class="kpi" style="--kpi-color:var(--forest)">
+        <div class="kpi-num">{{ cash_balance|money }}</div>
+        <div class="kpi-label">{% trans "Solde de caisse" %}</div>
+    </div>
+    <div class="kpi" style="--kpi-color:var(--olive)">
+        <div class="kpi-num">{{ summary.total_in|money }}</div>
+        <div class="kpi-label">{% trans "Entrées sur la période" %}</div>
+    </div>
+    <div class="kpi" style="--kpi-color:var(--orange)">
+        <div class="kpi-num">{{ summary.total_out|money }}</div>
+        <div class="kpi-label">{% trans "Sorties sur la période" %}</div>
+    </div>
+    <div class="kpi" style="--kpi-color:var(--burgundy)">
+        <div class="kpi-num">{{ total_outstanding|money }}</div>
+        <div class="kpi-label">{% trans "Dû par les usagers" %}</div>
+    </div>
+</div>
+
+<div class="card" style="margin-top:18px">
+    <form method="get" class="grid-3" style="align-items:end">
+        <div class="field">
+            <label for="start">{% trans "Du" %}</label>
+            <input type="date" id="start" name="start" value="{{ start|date:'Y-m-d' }}">
+        </div>
+        <div class="field">
+            <label for="end">{% trans "Au" %}</label>
+            <input type="date" id="end" name="end" value="{{ end|date:'Y-m-d' }}">
+        </div>
+        <div class="field">
+            <button type="submit" class="btn btn--primary">
+                {% icon "search" size="16px" %} {% trans "Afficher" %}
+            </button>
+        </div>
+    </form>
+</div>
+
+{% comment %}
+FEAT-084 : la file d'emails est affichée ici et pas seulement au bouclement.
+Une Box hors ligne accumule des envois ; il faut pouvoir les voir et les
+relancer sans attendre la fin de journée.
+{% endcomment %}
+{% if pending_emails %}
+<div class="alert-box" style="margin-top:18px">
+    <div class="alert-box-header">
+        <div class="alert-box-icon">{% icon "mail" size="20px" %}</div>
+        <div>
+            <div class="alert-box-title">{% blocktrans count n=pending_emails %}{{ n }} email en attente d'envoi{% plural %}{{ n }} emails en attente d'envoi{% endblocktrans %}</div>
+            <div class="alert-box-sub">
+                {% if is_box and is_online %}{% trans "La Box est en ligne : ils peuvent partir maintenant." %}
+                {% elif is_box %}{% trans "La Box n'est pas en ligne. Prévenez les personnes par téléphone, ou renvoyez quand elle le sera." %}
+                {% elif not smtp_configured %}{% trans "L'envoi par email n'est pas configuré (Avancé → Paramètres → Email)." %}
+                {% else %}{% trans "Ils peuvent partir maintenant." %}{% endif %}
+            </div>
+        </div>
+        {% if user.is_superadmin %}
+        <form method="post" action="{% url 'finance:outbox_flush' %}" style="margin:0 0 0 auto">
+            {% csrf_token %}
+            <input type="hidden" name="next" value="cash">
+            <button type="submit" class="btn btn--primary btn--sm">
+                {% icon "send" size="14px" %} {% trans "Envoyer maintenant" %}
+            </button>
+        </form>
+        {% endif %}
+    </div>
+</div>
+{% endif %}
+
+<h2 class="section-title" style="margin-top:28px">
+    <span>{% trans "Mouvements de la période" %} <small>({{ summary.movements|length }})</small></span>
+    <a href="{% url 'finance:invoice_list' %}" class="cell-link text-sm">{% trans "Toutes les factures" %}</a>
+</h2>
+
+{% if summary.movements %}
+<div class="table-wrap">
+    <table class="table">
+        <thead>
+            <tr>
+                <th>{% trans "Date" %}</th>
+                <th>{% trans "Libellé" %}</th>
+                <th>{% trans "Sens" %}</th>
+                <th style="text-align:right">{% trans "Montant" %}</th>
+                <th>{% trans "Saisi par" %}</th>
+            </tr>
+        </thead>
+        <tbody>
+        {% for m in summary.movements %}
+            <tr>
+                <td>{{ m.occurred_on }}</td>
+                <td>
+                    {% if m.payment %}
+                    <a href="{% url 'finance:invoice_detail' m.payment.invoice.pk %}" class="cell-link">{{ m.label }}</a>
+                    {% else %}{{ m.label }}{% endif %}
+                </td>
+                <td>
+                    {% if m.direction == "in" %}
+                    <span class="badge" style="background:var(--forest-light);color:var(--forest)">{% trans "Entrée" %}</span>
+                    {% else %}
+                    <span class="badge" style="background:var(--blush-light);color:#B83232">{% trans "Sortie" %}</span>
+                    {% endif %}
+                </td>
+                <td style="text-align:right;font-variant-numeric:tabular-nums">{{ m.amount|money }}</td>
+                <td class="muted">{{ m.created_by|default:"—" }}</td>
+            </tr>
+        {% endfor %}
+        </tbody>
+    </table>
+</div>
+{% else %}
+<p class="muted">{% trans "Aucun mouvement sur cette période." %}</p>
+{% endif %}
+
+{% if user.is_librarian %}
+<h2 class="section-title" style="margin-top:28px">{% trans "Saisir un mouvement" %}</h2>
+<div class="card">
+    <form method="post" action="{% url 'finance:cash_movement_create' %}">
+        {% csrf_token %}
+        <div class="grid-2">
+            {% include "partials/_field.html" with field=movement_form.direction %}
+            {% include "partials/_field.html" with field=movement_form.amount %}
+        </div>
+        {% include "partials/_field.html" with field=movement_form.label %}
+        {% include "partials/_field.html" with field=movement_form.occurred_on %}
+        <div class="form-actions">
+            <button type="submit" class="btn btn--primary">
+                {% icon "check" size="16px" %} {% trans "Enregistrer" %}
+            </button>
+        </div>
+    </form>
+</div>
+{% endif %}
+
+{% if overdue_invoices %}
+<h2 class="section-title" style="margin-top:28px">{% trans "Factures en retard" %}</h2>
+<div class="list">
+    {% for invoice in overdue_invoices %}
+    <a href="{% url 'finance:invoice_detail' invoice.pk %}" class="list-row">
+        <div class="lrow-icon" style="--lr-bg:var(--blush-light);--lr-fg:#B83232">
+            {% icon "triangle-alert" size="18px" %}
+        </div>
+        <div class="lrow-body">
+            <div class="lrow-title">{{ invoice.number }} — {{ invoice.member.full_name }}</div>
+            <div class="lrow-sub">{% blocktrans with d=invoice.days_overdue %}Échue depuis {{ d }} jour(s){% endblocktrans %} · {{ invoice.balance|money }}</div>
+        </div>
+        <div class="lrow-end">{% icon "chevron-right" size="18px" %}</div>
+    </a>
+    {% endfor %}
+</div>
+{% endif %}
+{% endblock %}

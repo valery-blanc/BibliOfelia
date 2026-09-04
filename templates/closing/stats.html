@@ -1,0 +1,122 @@
+{% extends "base.html" %}
+{% load i18n biblio_icons %}
+
+{% block title %}{% trans "Statistiques d'activité" %}{% endblock %}
+
+{% block tile_strip %}{% include "partials/_tile_strip.html" with active="closing" %}{% endblock %}
+
+{% block content %}
+<header class="pagehead">
+    <div class="pagehead-icon" style="--ph-bg:var(--forest);--ph-fg:#fff">
+        {% icon "chart-bar" size="28px" %}
+    </div>
+    <div class="pagehead-text">
+        <h1 class="pagehead-title">{% trans "Statistiques d'activité" %}</h1>
+        <div class="pagehead-sub">{% trans "Animations, participants et temps passé." %}</div>
+    </div>
+</header>
+
+<div class="card">
+    <form method="get" style="display:flex;gap:8px;align-items:end;flex-wrap:wrap">
+        <div class="field" style="margin-bottom:0">
+            <label for="year">{% trans "Année" %}</label>
+            <select id="year" name="year">
+                {% for y in years %}
+                <option value="{{ y }}" {% if y == year %}selected{% endif %}>{{ y }}</option>
+                {% endfor %}
+            </select>
+        </div>
+        <button type="submit" class="btn btn--primary">{% trans "Afficher" %}</button>
+        <a href="{% url 'closing:stats_csv' %}?year={{ year }}" class="btn btn--ghost">
+            {% icon "file-spreadsheet" size="16px" %} {% trans "Export CSV" %}
+        </a>
+    </form>
+</div>
+
+{% comment %}
+FEAT-085 : c'est la phrase que Val veut pouvoir écrire à un bailleur en fin
+d'année. Elle est composée à partir des mêmes chiffres que le tableau.
+{% endcomment %}
+<div class="alert-box" style="margin-top:18px">
+    <div class="alert-box-header">
+        <div class="alert-box-icon">{% icon "chart-bar" size="20px" %}</div>
+        <div>
+            <div class="alert-box-title">{{ year }}</div>
+            <div class="alert-box-sub">
+                {% blocktrans with s=animation.sessions m=animation.member_attendance a=animation.non_member_adults c=animation.non_member_children %}La bibliothèque a organisé {{ s }} animation(s), auxquelles ont participé {{ m }} membre(s) et, parmi les non-membres, {{ a }} adulte(s) et {{ c }} enfant(s).{% endblocktrans %}
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="kpis" style="margin-top:18px">
+    <div class="kpi" style="--kpi-color:var(--blush)">
+        <div class="kpi-num">{{ animation.sessions }}</div>
+        <div class="kpi-label">{% trans "Animations" %}</div>
+    </div>
+    <div class="kpi" style="--kpi-color:var(--sky)">
+        <div class="kpi-num">{{ animation.member_attendance }}</div>
+        <div class="kpi-label">{% trans "Participations de membres" %}</div>
+    </div>
+    <div class="kpi" style="--kpi-color:var(--amber)">
+        <div class="kpi-num">{{ animation.non_members }}</div>
+        <div class="kpi-label">{% trans "Non-membres" %}</div>
+    </div>
+    <div class="kpi" style="--kpi-color:var(--forest)">
+        <div class="kpi-num">{{ animation.hours }}</div>
+        <div class="kpi-label">{% trans "Heures d'animation" %}</div>
+    </div>
+</div>
+
+<h2 class="section-title" style="margin-top:28px">{% trans "Mois par mois" %}</h2>
+<div class="table-wrap">
+    <table class="table">
+        <thead>
+            <tr>
+                <th>{% trans "Mois" %}</th>
+                <th style="text-align:right">{% trans "Animations" %}</th>
+                <th style="text-align:right">{% trans "Membres" %}</th>
+                <th style="text-align:right">{% trans "Non-membres" %}</th>
+                <th style="text-align:right">{% trans "Minutes d'activité" %}</th>
+            </tr>
+        </thead>
+        <tbody>
+        {% for row in months %}
+            <tr>
+                <td>{{ row.month }}</td>
+                <td style="text-align:right">{{ row.sessions }}</td>
+                <td style="text-align:right">{{ row.member_attendance }}</td>
+                <td style="text-align:right">{{ row.non_members }}</td>
+                <td style="text-align:right">{{ row.activity_minutes }}</td>
+            </tr>
+        {% endfor %}
+        </tbody>
+    </table>
+</div>
+
+<h2 class="section-title" style="margin-top:28px">{% trans "Temps par nature d'activité" %}</h2>
+{% if activities %}
+<div class="table-wrap">
+    <table class="table">
+        <thead>
+            <tr>
+                <th>{% trans "Activité" %}</th>
+                <th style="text-align:right">{% trans "Saisies" %}</th>
+                <th style="text-align:right">{% trans "Heures" %}</th>
+            </tr>
+        </thead>
+        <tbody>
+        {% for row in activities %}
+            <tr>
+                <td>{{ row.label }}</td>
+                <td style="text-align:right">{{ row.entries }}</td>
+                <td style="text-align:right">{{ row.hours }}</td>
+            </tr>
+        {% endfor %}
+        </tbody>
+    </table>
+</div>
+{% else %}
+<p class="muted">{% trans "Aucune activité saisie sur cette année." %}</p>
+{% endif %}
+{% endblock %}

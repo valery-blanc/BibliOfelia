@@ -13,6 +13,10 @@ croniter==3.0.4
 
 # i18n et données
 django-modeltranslation==0.19.11
+# FEAT-088 : noms de devises et de pays localisés (données CLDR embarquées).
+# Choisie plutôt qu'une table maison : 153 devises × 4 langues resteraient
+# sinon à traduire à la main dans nos .po, et à maintenir.
+Babel==2.16.0
 
 # Sécurité
 django-axes==7.0.1
