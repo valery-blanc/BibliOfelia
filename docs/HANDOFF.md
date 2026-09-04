@@ -132,7 +132,7 @@ BUG-041 → BUG-043.
 Reste hors sprint :
 
 ```
-[ ] Déploiement Box (Canaima) — après le push de cette clôture
+[x] Déploiement Box (Canaima) — fait le 2026-09-04
 [ ] Guide utilisateur : 7 nouveaux écrans + captures prêt/retour
 [ ] Unité systemd d'extinction (keebee/ofeliabox, FEAT-086)
 ```

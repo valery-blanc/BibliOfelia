@@ -21,7 +21,8 @@ qu'on a fait jusque là »). Commit unique groupé code + docs + TASKS.md.
 BUG-042/043/FEAT-090). Gate i18n : `python scripts/i18n_check.py` = **0**.
 
 **Déploiement** : Fez `grand-saconnex` et `sanjuan` (healthy), secours Avignon
-(source + image). **Box (Canaima)** : à déployer après ce push (ci-dessous).
+(source + image), **Box Canaima** (`edubox-bibliofelia` healthy, migrations
+`finance/0001`, `closing/0001`, `members/0007` appliquées).
 
 ### ⏳ Ouvert, hors de ce commit
 - Guide utilisateur : 7 nouveaux écrans + captures prêt/retour (FEAT-080/081)
@@ -2370,8 +2371,8 @@ Le champ n'existait que sur l'écran de **détail**, atteint après enregistreme
 - [x] 17 écrans en **HTTP 200** sur `grand-saconnex`, PDF de facture compris
 - [x] Redéployé le 2026-09-01 après les retours de test (cf. plus haut)
 - [x] **Test fonctionnel Val** (2026-09-04)
-- [x] Commit unique groupé + push origin/main
-- [ ] Déploiement Box (Canaima) — après ce push
+- [x] Commit unique groupé + push origin/main (`d99421f`)
+- [x] Déploiement Box (Canaima) — `edubox-bibliofelia` healthy, migrations appliquées
 
 ### Document de passation (2026-09-03)
 
