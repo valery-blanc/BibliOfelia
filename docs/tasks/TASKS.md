@@ -29,6 +29,13 @@ BUG-042/043/FEAT-090). Gate i18n : `python scripts/i18n_check.py` = **0**.
 - Unité systemd d'extinction dans keebee/ofeliabox (FEAT-086)
 - SMTP Grand-Saconnex : pas encore configuré (Avancé → Paramètres → Email)
 
+### Règle agents (2026-09-05)
+
+- [x] `CLAUDE.md` : Grok lit la mémoire Claude au démarrage de session
+      (`C:\Users\Val\.claude\projects\C--WORK-BibliOfelia\memory\MEMORY.md`).
+      Val utilise Claude et Grok indifféremment. HANDOFF + fiche mémoire
+      alignés.
+
 ## ⏭️ REPRISE — état au 27/08/2026
 
 **Aucun développement BibliOfelia dans cette session** — travail d'**infrastructure du

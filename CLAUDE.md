@@ -1,6 +1,7 @@
 # CLAUDE.md — BibliOfelia
 
-Guidance Claude Code pour ce repo.
+Guidance pour tout agent qui travaille sur ce repo (**Claude Code ou Grok**).
+Dans ce fichier, « Claude » désigne l'agent de session, pas un produit.
 
 ## Projet
 
@@ -52,11 +53,37 @@ Pour toute tâche impliquant > 3 fichiers ou > 3 étapes :
 3. Mettre à jour la checklist APRÈS chaque sous-étape terminée
 4. Si la session est interrompue, la checklist est la source de vérité pour reprendre
 
+### Mémoire partagée Claude / Grok (OBLIGATOIRE)
+
+Val utilise **Claude Code et Grok indifféremment** sur ce projet. Il n'y a
+**qu'une** mémoire : celle de Claude Code, hors git.
+
+Dossier : `C:\Users\Val\.claude\projects\C--WORK-BibliOfelia\memory\`
+Index : `C:\Users\Val\.claude\projects\C--WORK-BibliOfelia\memory\MEMORY.md`
+
+- **Claude Code** charge `MEMORY.md` tout seul au démarrage.
+- **Grok ne le fait pas.** `/memory on` est un **autre** store
+  (`~\.grok\memory\`), off par défaut, et **par session**. Ne pas s'en
+  servir pour BibliOfelia : les décisions y seraient invisibles à Claude.
+
+Au début de **chaque** session Grok, et après `/clear`, **avant tout
+autre travail** :
+
+1. Lire `MEMORY.md` **en entier**.
+2. Lire les fiches liées pertinentes (sprint en cours, Box, i18n,
+   déploiement) listées dans cet index.
+3. Enchaîner ensuite la checklist « Resuming Work » ci-dessous.
+
+Toute décision non triviale se **écrit** dans ces fichiers (nouvelle
+fiche + ligne dans `MEMORY.md`), jamais dans `~\.grok\memory\`.
+
 ### Resuming Work
 
 Au début d'une nouvelle session ou après `/clear`, TOUJOURS :
 1. Lire `docs/tasks/TASKS.md` pour vérifier l'avancement
-2. Lire `MEMORY.md` (et les mémoires liées) pour les décisions structurantes
+2. Lire `C:\Users\Val\.claude\projects\C--WORK-BibliOfelia\memory\MEMORY.md`
+   (et les mémoires liées) pour les décisions structurantes — **Grok :
+   cette lecture n'est pas optionnelle, voir § Mémoire partagée**
 3. Lire la section pertinente de `docs/specs/SPEC_BIBLIOFELIA.md` selon le sprint en cours
 4. Identifier le premier item non coché de TASKS.md
 5. Annoncer à Val : sprint en cours + premier item à traiter + attendre son `go` avant de coder
@@ -64,7 +91,8 @@ Au début d'une nouvelle session ou après `/clear`, TOUJOURS :
 Prompt-type de reprise à coller après `/clear` :
 
 ```
-On reprend BibliOfelia. Lis MEMORY.md, docs/tasks/TASKS.md, et la section
+On reprend BibliOfelia. Lis C:\Users\Val\.claude\projects\C--WORK-BibliOfelia\memory\MEMORY.md
+(en entier, fiches liées du sprint), docs/tasks/TASKS.md, et la section
 Workflow de CLAUDE.md. Annonce-moi le sprint en cours et le premier item non
 coché, puis attends mon go pour démarrer.
 ```

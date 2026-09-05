@@ -39,8 +39,10 @@ Tous versionnés sur GitHub.
 
 **Mémoire** — `C:\Users\Val\.claude\projects\C--WORK-BibliOfelia\memory\`
 
-- `MEMORY.md` — l'index, **à lire en entier** (c'est le seul fichier chargé
-  automatiquement à chaque session)
+- `MEMORY.md` — l'index, **à lire en entier**. Claude Code le charge
+  tout seul ; **Grok doit le lire à la main** au démarrage (règle dans
+  `CLAUDE.md`, § Mémoire partagée). Ne pas utiliser `~\.grok\memory\`
+  pour ce projet.
 - les 20 `feedback_*.md` — les règles de travail que Val a posées et le
   raisonnement derrière : gate i18n, `/admin/` jamais pour les bibliothécaires,
   tester sur cible déployée (le dev local est cassé), pièges gabarits Django +
