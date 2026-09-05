@@ -119,8 +119,9 @@ designate another book by mistake.
 
 ### A member lost their card — what do I do? { #carte-perdue }
 
-Open the [member profile](usagers/fiche.md) and click **Replace
-card**: BibliOfelia assigns a new number, retires the old one for good
+Open the [member profile](usagers/fiche.md), click **Edit**, then
+**Replace card** (next to the card number): BibliOfelia assigns a new
+number, retires the old one for good
 and keeps the whole history. The old card no longer works (any scan
 returns an error) — destroy it if it reappears. While waiting for the
 new card, the member can borrow by being looked up by name. Reprint

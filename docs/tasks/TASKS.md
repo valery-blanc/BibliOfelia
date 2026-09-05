@@ -4,7 +4,12 @@ Source de vérité de l'avancement v1. Une case `[x]` = livrable terminé et dé
 
 Mise à jour : 2026-05-26 (Sprint 12 **CLOS** — FEAT-038 (cartes membres : fond crème, logo OFELIA filigrane, photo HG, langue BG, bloc droite), FEAT-039 (étiquettes 70×42 mm, titre wrap 2 lignes, auteurs 2 lignes, logo Ofelia), split paramétrage `labels` → `printing_cards` + `printing_labels`. BUG-013 v2 (sélecteur de langue qui perdait `/bibliofelia/` à chaque déploiement : wrapper `apps/core/i18n_views.py:set_language` force `FORCE_SCRIPT_NAME` + échange code langue même sur URL non résolue). **Gate i18n pérenne** : `scripts/i18n_check.py` exit != 0 si chaîne manquante ; documenté dans CLAUDE.md comme obligatoire avant tout commit ; 207 entrées EN/ES/MG appliquées (Sprints 10-12 incl. FORMS labels enrobés `gettext_lazy`). 304 tests verts (287 → 304). Sprint 11 **CLOS** — — BUG-014 (saisie clavier sur `/loans/lend/` + `/loans/return/` : bouton scan repassé `type="button"` + bouton « Valider » visible séparé pour la saisie clavier), FEAT-034 (UI réservations : liste d'attente PENDING sur fiche notice, expiration affichée sur exemplaires mis de côté, section « Réservations à relancer » sur page Retour, paramètres `default_loan_days`/`reservation_expiry_days`/`pickup_hold_days` exposés dans `/settings/loans/`), FEAT-035 (Setting `default_loan_days` global défaut 21, section « Relances à faire » bas du dashboard avec 10 prêts en retard), FEAT-036 (`Reservation.notified_at` + endpoint `POST /loans/reservations/<pk>/notify/`, page Réservations enrichie code Ofelia / dates avec heure / date limite retrait / police 16-17 px + cadre « Notifications à faire » entre tuiles et bannière scan sur dashboard), BUG-015 (DateInput format ISO `%Y-%m-%d` sur `MemberForm`, sinon locale FR remplit pas l'input HTML5), FEAT-037 (photo membre dans pagehead fiche + miniature sur form, expiration_date = registration_date + 1 an auto JS au change + initial `today + 1 an` à la création). 287 tests verts (266 → 287, +21). Migration `loans/0002_reservation_notified_at`. 5 vagues de déploiement Pi. 2 nouvelles entrées MEMORY (DateInput ISO format, bouton scan type=button + Valider visible). — Sprint 10 **CLOS end-to-end** — FEAT-032 + FEAT-033 validés Val 2026-05-24 sur la Pi, **+ OfeliaScan mobile mis à jour le 2026-05-24** : test prod 18:26 → session récolement scope=A1 reçue d'OfeliaScan avec 16 scans, 16 exemplaires relocate de J1 → A1 automatiquement. Bout-en-bout fonctionnel : catalogage OfeliaScan envoie `location_code`, picker récolement OfeliaScan envoie `scope_type=location` + `scope_location_code`, BibliOfelia déplace les items au scan. FEAT-032 : UI librarian /catalog/locations/ + endpoint GET /api/v1/locations testés OK. FEAT-033 : relocate auto vérifiée via UI web ET via OfeliaScan mobile. Commit `9d4fe83` + push + déploiement Pi (rebuild Docker + migration `0003`). 266 tests verts. — Sprint 8 **CLOS** — FEAT-025 **validé Val 2026-05-23** : refonte design global, 23 templates métiers harmonisés sur le design system OFELIA. Lot A pilote validé en premier (record_detail, member_detail, reports/index, settings_index), puis Lots B+C+D livrés d'un bloc. Helpers CSS ajoutés (`.req`, `.help-hint`, `.field-error`, `.form-control`, `details.advanced-section`, `.isbn-row`, `.form-actions`), `_field.html` migré `.form-row` → `.field`. Découverte d'infra : templates **embarqués au build Docker**, pas bind-mountés → rebuild obligatoire pour tout changement de template (documenté dans FEAT-025). — Sprint 7 **CLOS** — FEAT-024 **validé Val 2026-05-23** : scanner caméra navigateur sur Android Firefox HTTPS OK, fallback OfeliaScan automatique en HTTP LAN, Chrome Android sans Play Store via `S.browser_fallback_url`, bouton Annuler pendant polling. Décision UX : caméra-d'abord automatique, pas de toggle utilisateur. Décision infra : pas de cert auto-signé. 3 commits Pi `d7c8e8f` → `9d2af81` → `e9993a5`. FEAT-023 **validé Val 2026-05-23** : banner dashboard → OfeliaScan ouvre → scan livre → retour BibliOfelia → fiche notice affichée, bout-en-bout fonctionnel. Modèle `ScanHandoff` + endpoints `/api/v1/scan-handoff[/{token}]` + JS `scan-handoff.js` + 4 boutons « Scanner » câblés. BUG-010 entrypoint Dockerfile + BUG-011 CSRF cookie HttpOnly + Chrome Android `intent://` URL résolus. Sprints 3/5/6 clos. Reste pour Sprint 7 : Android-side OfeliaScan déjà fonctionnelle côté Val (intent filter + activity scan-one + POST callback) — implémentation Android terminée hors repo. Prochain sprint : FEAT-024 scanner caméra navigateur (HTTPS).)
 
-## ⏭️ REPRISE — état au 04/09/2026
+## ⏭️ REPRISE — état au 05/09/2026
+
+**Sprint 33 CLOS**, validé par Val le 2026-09-05 (« c'est tout bon »).
+**FEAT-092** (Remplacer / Renouveler sur Modifier) + **BUG-044**
+(`find_item` résout `OFL-…`). Sexe usager et catégorie TEST Box : clos
+sans changement. Tests : **894 passed**. Gate i18n = 0.
 
 **Sprints 31 et 32 CLOS**, validés par Val le 2026-09-04. **FEAT-091**
 (guide utilisateur caisse/bouclement + captures) validé le même jour
@@ -28,6 +33,25 @@ BUG-042/043/FEAT-090). Gate i18n : `python scripts/i18n_check.py` = **0**.
 ### ⏳ Ouvert, hors de ce commit
 - Unité systemd d'extinction dans keebee/ofeliabox (FEAT-086)
 - SMTP Grand-Saconnex : pas encore configuré (Avancé → Paramètres → Email)
+
+## Sprint 33 — Carte sur l'édition + code interne OFL (2026-09-05)
+
+Arbitrages Val :
+
+- [x] **Sexe de l'usager** — **clos** : on n'ajoute pas le champ
+- [x] **Catégorie TEST** sur la Box — **clos** : laissée en l'état (0 notice)
+- [x] **FEAT-092** : Remplacer / Renouveler la carte déplacés sur
+      `/members/<pk>/edit/` (n° en lecture seule + warning, renouveler
+      à côté de l'expiration, Options avancées ouvertes).
+      **Retour Val** : Renouveler n'est plus grisé ; pose aujourd'hui
+      + 1 an et affiche « Nouvelle date d'expiration : jj/mm/aaaa ».
+      `can_renew` et `CardStillValid` **supprimés** (renouveler
+      plusieurs fois ne change rien).
+- [x] **BUG-044** : `find_item` résout `OFL-…` (avec ou sans tirets)
+- [x] Guide utilisateur (fiche, renouvellement, carte, FAQ, glossaire ×4)
+- [x] Tests + i18n — **894 passed**, `i18n_check.py` = 0
+- [x] Test fonctionnel Val — OK 2026-09-05
+- [x] Commit (après OK Val)
 
 ### Règle agents (2026-09-05)
 
@@ -96,9 +120,9 @@ un correctif livré par une session, jamais réconcilié par la suivante. Créé
 - **Les 4 « Test fonctionnel Val » du Sprint 26** restent non cochés depuis le 28/08 —
   motif inchangé : jamais confirmés explicitement par Val, et personne d'autre ne peut
   cocher un test fonctionnel à sa place.
-- **Les 3 items `[!]` du Sprint 30** (sexe non affiché, bouton « Remplacer la carte »,
-  scan caméra qui rejette le code externe) attendent **un arbitrage de Val**, pas un
-  correctif : les toucher à l'aveugle serait une décision produit prise à sa place.
+- **Les 3 items `[!]` du Sprint 30** sont **clos** (Sprint 33, 2026-09-05) : pas de
+  champ sexe ; Remplacer/Renouveler déplacés sur Modifier (FEAT-092) ; scan caméra
+  multi-format déjà livré en FEAT-087. Catégorie TEST Box laissée en l'état.
 - **Captures d'écran du guide utilisateur** : inchangées, aucun écran n'a bougé.
 
 ## ⏭️ REPRISE — état au 23/08/2026 *(supplanté par le bloc du 27/08 ci-dessus)*
@@ -143,22 +167,15 @@ conteneur `bibliofelia-docs` rebâti pour le guide.
 
 ### ⏳ Ouvert, avec son motif
 
-- **Trois décisions rendues à Val**, aucune n'est un bug à corriger à l'aveugle :
-  1. **Scan caméra et code externe** — `static/js/scan-camera.js` n'accepte qu'un EAN-13
-     de préfixe 290/291/978/979. Un code externe alphanumérique (Code39/Code128) est donc
-     refusé à la caméra, alors qu'il passe au clavier et à la douchette USB. Deux niveaux
-     d'ouverture proposés, avec leurs risques — cf. Sprint 30.
-  2. **Sexe de l'usager** — `Member` n'a pas ce champ ; l'ajouter = migration + donnée
-     personnelle de plus.
-  3. **Bouton « Remplacer la carte »** — trop facile à déclencher (cf. FEAT-081).
-- **Code interne `OFL-…` non résolu par `find_item`** : seuls l'EAN13 et le code externe
-  le sont. Un bibliothécaire qui lit le code interne à l'écran et le tape dans la
-  recherche n'obtient rien — alors que la fenêtre « Mettre à jour des exemplaires »,
-  elle, l'accepte. Correctif d'une ligne, groupé avec la décision (1) ci-dessus.
+- **Trois décisions Sprint 30 — closes au Sprint 33 (2026-09-05)** :
+  1. **Scan caméra et code externe** — livré FEAT-087 (tous les formats linéaires).
+  2. **Sexe de l'usager** — **pas de champ**, clos.
+  3. **Bouton « Remplacer la carte »** — déplacé sur Modifier, FEAT-092.
+- **Code interne `OFL-…`** — **BUG-044**, `find_item` le résout (recherche, prêt, Excel).
 - **Guide utilisateur prêt/retour** : **texte** à jour (FEAT-091) ;
   captures encore périmées depuis FEAT-080/081.
 - **Sprint 26** : quatre « Test fonctionnel Val » jamais confirmés explicitement.
-- **Catégorie `TEST`** restée sur la Box (`migrate_categories` ne supprime jamais). Vérifié le 23/08 : elle porte le nom « tests » et **0 notice** — sa suppression est donc sans risque, elle n'attend qu'un feu vert.
+- **Catégorie `TEST`** sur la Box — **clos** (Sprint 33) : laissée en l'état (0 notice).
 
 ### 🧯 Ce qui a été RÉFUTÉ — ne pas le rebâtir
 
@@ -2039,10 +2056,9 @@ ni la liste des usagers. **Enquête** sur `grand-saconnex` (un seul usager) :
 - [x] `docs/specs/FEAT-081-ancienne-carte-usager.md` + SPEC §6.2
 - [x] `pytest` : **747 passed** (734 → 747, +13) ; gate i18n = 0
 - [x] Déployé Fez ; résolution vérifiée en direct sur `grand-saconnex`
-- [!] **Bouton « Remplacer la carte » non touché** : voisin de « Renouveler la
-      carte », deux boutons fantômes identiques dont l'un prolonge la validité et
-      l'autre invalide le numéro ; son `confirm()` se valide sans lire. Candidat
-      à durcissement (libellé, message nommant le numéro désactivé) → **décision Val**
+- [x] **Bouton « Remplacer la carte »** — trop facile à déclencher : **FEAT-092**
+      (Sprint 33) : déplacé sur Modifier avec avertissement à confirmer ;
+      Renouveler à côté de l'expiration ; Options avancées ouvertes.
 
 ### FEAT-082 — Version 1.0
 
@@ -2481,3 +2497,7 @@ Le champ n'existait que sur l'écran de **détail**, atteint après enregistreme
 - [x] i18n + déploiement Fez + Avignon
 - [x] **Test fonctionnel Val** (2026-09-04)
 - [x] Commit unique groupé Sprints 31+32 + push origin/main
+
+## Sprint 33 — détail
+
+Voir le bloc **Sprint 33** en tête de fichier (reprise).

@@ -40,8 +40,9 @@ Manana endrika **OFL-AAAAMMDD-NNNN**:
 
 Ity code ity dia miseho ao amin'ny BibliOfelia amin'ny takelakan'ny
 kopia. Ahafahana mahafantatra haingana hoe rahoviana no nampidirina
-ny boky. **Tsy jerena, tsy atontana** amin'ny etikety: mba
-hahamora ny fitantanana eo amin'ny écran ihany.
+ny boky. Tsy atontana amin'ny etikety, fa **azonao soratana** ao
+amin'ny fikarohana, fampindramana na famerenana — misy na tsy misy
+tsipika.
 
 ### ISBN-13 (eo amin'ny couverture an'ny boky, voatonta ny editora)
 

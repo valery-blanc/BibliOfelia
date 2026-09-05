@@ -42,13 +42,11 @@ empruntés avec leur titre et leur date de retour.
 
 Les boutons sous le nom donnent accès aux opérations :
 
-- **Modifier** — changer les coordonnées, la photo, la catégorie
+- **Modifier** — changer les coordonnées, la photo, la catégorie.
+  C'est aussi là qu'on **renouvelle** ou **remplace** la carte (n° en
+  haut du formulaire, date d'expiration dans Options avancées, ouvertes
+  par défaut). Voir [renouvellement](renouvellement.md).
 - **Historique** — voir tous les prêts passés
-- **Renouveler la carte** — repousser la date d'expiration
-  ([détails](renouvellement.md)). Le bouton est grisé tant que la
-  carte est encore valable plus de 30 jours.
-- **Remplacer la carte** — attribuer un nouveau numéro de carte (carte
-  perdue, volée ou abîmée)
 - **Imprimer la carte (62 mm)** — ouvre le PDF ruban Brother QL dans
   un nouvel onglet, sans passer par Avancé → Impressions
 - **Désactiver** — geler le compte sans le supprimer

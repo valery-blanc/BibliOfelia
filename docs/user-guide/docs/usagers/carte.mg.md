@@ -53,9 +53,9 @@ Raha very ny karatry ny mpianatra, tsy maintsy manome **laharana
 vaovao** ianao (fa tsy mamerina ny taloha) mba hanafoanana ny
 karatra very:
 
-1. Sokafy ny takelaky ny mpianatra
-2. Click amin'ny **Hanolo ny karatra**
-3. Marino
+1. Sokafy ny takelaky ny mpianatra, dia **Hanova**
+2. Tsindrio **Hanolo ny karatra** (eo akaikin'ny laharana)
+3. Hamafiso ny fampandrenesana
 
 Laharana vaovao no nomena ary ny taloha dia "voapetraka": tsy ho
 omena mpianatra hafa mihitsy intsony (jereo [Ohatra: karatra

@@ -41,13 +41,11 @@ their title and return date.
 
 The buttons under the name give access to operations:
 
-- **Edit** — change contact info, photo, category
+- **Edit** — change contact info, photo, category. This is also
+  where you **renew** or **replace** the card (number at the top of
+  the form, expiration date under Advanced options, which open by
+  default). See [renewal](renouvellement.md).
 - **History** — see all past loans
-- **Renew card** — push back the expiration date
-  ([details](renouvellement.md)). The button is greyed out while the
-  card is still valid for more than 30 days.
-- **Replace card** — assign a new card number (lost, stolen or
-  damaged card)
 - **Print card (62 mm)** — opens the Brother QL roll PDF in a new
   tab, without going through Advanced → Printing
 - **Deactivate** — freeze the account without deleting it

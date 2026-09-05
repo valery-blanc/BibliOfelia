@@ -125,8 +125,9 @@ mihodinkodina dia tsy hahafantatra boky hafa tsy nahy mihitsy.
 
 ### Very ny karatry ny mpianatra, inona no atao? { #carte-perdue }
 
-Sokafy ny [takelakan'ny mpianatra](usagers/fiche.md) dia tsindrio
-**Hanolo ny karatra**: ny BibliOfelia dia manome laharana vaovao,
+Sokafy ny [takelakan'ny mpianatra](usagers/fiche.md), tsindrio
+**Hanova**, dia **Hanolo ny karatra** (eo akaikin'ny laharana):
+ny BibliOfelia dia manome laharana vaovao,
 mametraka ny taloha ankilany mandrakizay ary mitazona ny tantara
 manontolo. Ny karatra taloha dia tsy miasa intsony (ny scan rehetra
 dia mamerina hadisoana) — simbao izy raha miseho indray. Mandritra ny

@@ -190,9 +190,19 @@ def test_member_list_search_by_name(client, librarian, member):
 
 
 def test_renew_card_view(client, librarian, member):
+    from html import unescape
+
+    from dateutil.relativedelta import relativedelta
+
     client.force_login(librarian)
-    resp = client.post(f"/fr/members/{member.pk}/renew/")
-    assert resp.status_code == 302
+    resp = client.post(f"/fr/members/{member.pk}/renew/", follow=True)
+    assert resp.redirect_chain[-1][0].endswith(f"/members/{member.pk}/edit/")
+    member.refresh_from_db()
+    expected = date.today() + relativedelta(months=12)
+    assert member.expiration_date == expected
+    body = unescape(resp.content.decode())
+    assert "Nouvelle date d'expiration" in body
+    assert expected.strftime("%d/%m/%Y") in body
 
 
 def test_replace_card_view(client, librarian, member):
@@ -203,3 +213,17 @@ def test_replace_card_view(client, librarian, member):
     member.refresh_from_db()
     assert member.card_number != old
     assert member.replaces_card_number == old
+
+
+def test_replace_and_renew_live_on_edit_not_detail(client, librarian, member):
+    """FEAT-092 : trop facile à déclencher depuis la fiche — déplacés sur Modifier."""
+    client.force_login(librarian)
+    detail = client.get(f"/fr/members/{member.pk}/").content.decode()
+    edit = client.get(f"/fr/members/{member.pk}/edit/").content.decode()
+    assert "Remplacer la carte" not in detail
+    assert "Renouveler la carte" not in detail
+    assert "Remplacer la carte" in edit
+    assert "Renouveler la carte" in edit
+    assert member.card_number in edit
+    assert "advanced-section" in edit and " open>" in edit
+    assert "invalidé" in edit

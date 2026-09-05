@@ -130,6 +130,15 @@ def test_ofelia_code_wins_over_external_code(record, item):
     assert find_item(item.ean13) == item
 
 
+def test_find_item_by_internal_id(item):
+    """BUG-044 : le code interne OFL-… doit résoudre comme à la MAJ Excel."""
+    assert item.internal_id.startswith("OFL-")
+    assert find_item(item.internal_id) == item
+    assert find_item(item.internal_id.lower()) == item
+    compact = item.internal_id.replace("-", "")
+    assert find_item(compact) == item
+
+
 # ── Saisie dans le formulaire d'exemplaire ─────────────────────────────────
 
 

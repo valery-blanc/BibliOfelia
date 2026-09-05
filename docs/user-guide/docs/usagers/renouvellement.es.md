@@ -15,17 +15,14 @@ desde **Miembros → Filtros**.
 
 ## Renovar una tarjeta
 
-Desde la [ficha del miembro](fiche.md), haga clic en **Renovar la
-tarjeta**.
+Desde la [ficha del miembro](fiche.md), haga clic en **Modificar**.
+El botón **Renovar la tarjeta** está junto a la fecha de expiración
+(Opciones avanzadas, abiertas por defecto).
 
-El botón solo está activo si la tarjeta **caduca en 30 días o
-menos**, si ya caducó, o si no tiene fecha. Mientras siga válida más
-de un mes, el botón está **gris** (un recuadro indica hasta cuándo).
-Así se evita apilar años — y facturas de cuota — con un doble clic.
-
-Cuando la renovación pasa, la nueva expiración parte de la más tardía
-de las dos fechas (hoy o el vencimiento actual): los días no usados
-se **conservan**. El número de tarjeta no cambia.
+El clic pone la fecha de expiración a **hoy + 1 año** (duración de
+la categoría). Un mensaje arriba muestra
+« Nueva fecha de vencimiento: dd/mm/aaaa ». Un segundo clic el mismo
+día no cambia nada. El número de tarjeta no cambia.
 
 Si la categoría tiene una cuota, se emite una **factura** al mismo
 tiempo. Véase [Caja y facturas](../caisse/caisse.md).

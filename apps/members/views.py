@@ -31,8 +31,6 @@ from .forms import MemberFamilyFormSet, MemberForm
 from .models import Member, MemberCategory, MemberStatus
 from .notifications import member_alerts
 from .services import (
-    CardStillValid,
-    can_renew,
     days_until_expiration,
     is_expiring_soon,
     renew_card,
@@ -134,9 +132,6 @@ def member_detail(request, pk):
             "days_left": days_until_expiration(member),
             "expiring_soon": is_expiring_soon(member),
             "alerts": member_alerts(member),
-            # BUG-041 : le gabarit grise le bouton quand la carte est encore
-            # valable pour plus de 30 jours.
-            "can_renew": can_renew(member),
             # FEAT-084 : encadré « Compte » (à jour / à régler / en retard).
             "account": member_account(member),
         },
@@ -267,27 +262,18 @@ def member_replace_card(request, pk):
 @require_role(*WRITE_ROLES)
 def member_renew(request, pk):
     member = get_object_or_404(Member, pk=pk)
-    try:
-        new_date, invoice = renew_card(member, user=request.user)
-    except CardStillValid as exc:
-        # BUG-041 : le bouton est grisé, mais un POST direct ne doit pas non
-        # plus empiler les années.
-        messages.warning(
-            request,
-            _("Carte déjà valable jusqu'au %(date)s : rien à renouveler.")
-            % {"date": exc.expiration_date},
-        )
-        return redirect("members:detail", pk=member.pk)
+    new_date, invoice = renew_card(member, user=request.user)
     messages.success(
         request,
-        _("Carte renouvelée jusqu'au %(date)s.") % {"date": new_date},
+        _("Nouvelle date d'expiration : %(date)s")
+        % {"date": new_date.strftime("%d/%m/%Y")},
     )
     if invoice is not None:
         messages.info(
             request,
             _("Facture de cotisation %(num)s émise.") % {"num": invoice.number},
         )
-    return redirect("members:detail", pk=member.pk)
+    return redirect("members:edit", pk=member.pk)
 
 
 @require_POST

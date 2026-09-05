@@ -126,8 +126,9 @@ encore ne pourra jamais désigner un autre livre par erreur.
 
 ### Un membre a perdu sa carte, que faire ? { #carte-perdue }
 
-Ouvrez la [fiche du membre](usagers/fiche.md) et cliquez sur
-**Remplacer la carte** : BibliOfelia attribue un nouveau numéro, met
+Ouvrez la [fiche du membre](usagers/fiche.md), cliquez sur
+**Modifier**, puis **Remplacer la carte** (à côté du n° de carte) :
+BibliOfelia attribue un nouveau numéro, met
 l'ancien de côté pour de bon et conserve tout l'historique. L'ancienne
 carte ne fonctionne plus (tout scan renvoie une erreur), détruisez-la
 si elle réapparaît. En attendant la nouvelle carte, le membre peut

@@ -48,25 +48,6 @@
     <a href="{% url 'members:history' member.pk %}" class="btn btn--ghost">
         {% icon "book-open" size="16px" %} {% trans "Historique" %}
     </a>
-    {% comment %}
-    BUG-041 : le bouton ancrait la nouvelle échéance sur l'ancienne — trois
-    clics ajoutaient trois ans. Il est grisé tant que la carte reste valable
-    plus de 30 jours, et le serveur refuse aussi un POST direct.
-    {% endcomment %}
-    <form method="post" action="{% url 'members:renew' member.pk %}" style="margin:0">
-        {% csrf_token %}
-        <button type="submit" class="btn btn--ghost"{% if not can_renew %} disabled
-                title="{% blocktrans with d=member.expiration_date %}Carte valable jusqu'au {{ d }} — renouvellement inutile.{% endblocktrans %}"{% endif %}>
-            {% icon "refresh-cw" size="16px" %} {% trans "Renouveler la carte" %}
-        </button>
-    </form>
-    <form method="post" action="{% url 'members:replace_card' member.pk %}" style="margin:0"
-          onsubmit="return confirm('{% trans "Émettre une nouvelle carte ? L'ancien numéro sera désactivé." %}')">
-        {% csrf_token %}
-        <button type="submit" class="btn btn--ghost">
-            {% icon "credit-card" size="16px" %} {% trans "Remplacer la carte" %}
-        </button>
-    </form>
     {% comment %}FEAT-090 : le PDF ruban 62 mm (FEAT-062) sans passer par le picker.{% endcomment %}
     <a href="{% url 'printing:cards_roll_pdf' %}?ids={{ member.pk }}" target="_blank" rel="noopener" class="btn btn--ghost">
         {% icon "printer" size="16px" %} {% trans "Imprimer la carte (62 mm)" %}

@@ -14,19 +14,15 @@ depuis **Membres → Filtres**.
 
 ## Renouveler une carte
 
-Depuis la [fiche du membre](fiche.md), cliquez sur **Renouveler la
-carte**.
+Depuis la [fiche du membre](fiche.md), cliquez sur **Modifier**. Le
+bouton **Renouveler la carte** est à côté de la date d'expiration
+(panneau Options avancées, ouvert par défaut).
 
-Le bouton n'est actif que si la carte **expire dans 30 jours ou
-moins**, si elle est déjà expirée, ou si elle n'a pas de date. Tant
-qu'elle est encore valable plus d'un mois, le bouton est **grisé**
-(une infobulle donne la date). Cela évite d'empiler des années — et
-des factures de cotisation — d'un double-clic.
-
-Quand le renouvellement passe, la nouvelle expiration part de la plus
-tardive des deux dates (aujourd'hui ou l'échéance actuelle) : les
-jours non utilisés sont **conservés**. Le numéro de carte ne change
-pas — le membre continue d'utiliser sa carte physique.
+Le clic pose la date d'expiration à **aujourd'hui + 1 an** (durée de
+la catégorie). Un message en haut de la page affiche
+« Nouvelle date d'expiration : jj/mm/aaaa ». Un second clic le même
+jour ne change rien. Le numéro de carte ne change pas — le membre
+continue d'utiliser sa carte physique.
 
 Si la catégorie a une cotisation, une **facture** est émise en même
 temps. Voir [Caisse et factures](../caisse/caisse.md).

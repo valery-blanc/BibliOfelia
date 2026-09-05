@@ -17,6 +17,15 @@ depuis l'accueil. — Le **formulaire de création d'animation** reçoit le cham
 de présences et son bouton de scan, qui n'existaient que sur l'écran de détail.
 Cf. §6.14, §6.17.
 
+Modif : 2026-09-05 — **FEAT-092** : **Remplacer la carte** et **Renouveler
+la carte** quittent la fiche usager et rejoignent **Modifier** : n° de
+carte en lecture seule + remplacer (avertissement à confirmer),
+renouveler à côté de la date d'expiration, Options avancées ouvertes.
+**BUG-044** : `find_item` résout aussi le code interne `OFL-…` (avec ou
+sans tirets), comme l'import Excel. Arbitrages Val : **pas de champ
+sexe** sur l'usager ; catégorie `TEST` sur la Box **laissée en l'état**
+(0 notice, ménage plus tard). Cf. §5.2, §6.2.
+
 Modif : 2026-09-04 — **FEAT-091** : le **guide utilisateur** (MkDocs,
 FR/EN/ES/MG) documente la caisse, les tarifs et catégories d'usagers,
 les activités/animations, le bouclement, le bouton carte 62 mm, le
@@ -435,7 +444,9 @@ et points retirés, minuscules passées en majuscules, de sorte que
 seul, mais reste facultatif.
 
 Ordre de résolution d'un code saisi (`apps/catalog/lookup.py:find_item`) :
-code Ofelia (290…) d'abord, puis code externe. Le code maison garde donc la
+code Ofelia (290…) d'abord, puis code externe, puis **code interne**
+`OFL-YYYYMMDD-NNNN` (**BUG-044** — avec ou sans tirets : un bibliothécaire
+recopie souvent le code affiché à l'écran). Le code maison garde donc la
 priorité — un code externe qui aurait la forme d'un EAN13 Ofelia ne peut pas
 détourner le scan d'une étiquette de la bibliothèque. Au récolement, le pointage
 est stocké sous le **code Ofelia** de l'exemplaire retrouvé, quelle que soit
@@ -926,22 +937,35 @@ Le champ `notes` est relibellé **« Commentaire »** et plafonné à
 **500 caractères** — par le formulaire, pas par le modèle : les commentaires
 plus longs déjà saisis restent valides et lisibles.
 
-#### Renouvellement de carte (BUG-041)
+#### Remplacer / renouveler — depuis Modifier (FEAT-092)
 
-`renew_card()` ancre la nouvelle échéance sur l'ancienne quand celle-ci n'est
-pas encore passée — renouveler une carte qui expire dans un mois donne treize
-mois, pas douze. Ce qui manquait, c'est la **condition d'entrée** : jusqu'au
-Sprint 31, trois clics ajoutaient trois ans, sans avertissement.
+Les boutons **Remplacer la carte** et **Renouveler la carte** ne sont
+plus sur la fiche usager (trop faciles à déclencher au comptoir). Ils
+sont sur `/members/<pk>/edit/` :
 
-Désormais : `can_renew(member)` n'est vrai que si la carte expire dans
-**30 jours ou moins** (`EXPIRY_WARNING_DAYS`, la même fenêtre que
-l'avertissement d'expiration), est déjà expirée, ou n'a pas de date. Sinon
-`renew_card()` lève `CardStillValid`. Le bouton de la fiche est **grisé**, avec
-une infobulle donnant la date de validité — et **le serveur refuse aussi un POST
-direct**, sans quoi la garde ne serait qu'un décor.
+- n° de carte en lecture seule en tête de formulaire, **Remplacer** à
+  côté ; le clic demande confirmation
+  (« Attention le numéro de carte va être invalidé et remplacé. Il
+  faudra ré-imprimer une nouvelle carte pour l'usager ») ;
+- **Renouveler** à côté de la date d'expiration : pose
+  aujourd'hui + durée de la catégorie (12 mois par défaut), message
+  « Nouvelle date d'expiration : jj/mm/aaaa », reste sur Modifier.
+  Un second clic le même jour ne change rien (plus de garde 30 jours) ;
+- **Options avancées** ouvertes par défaut sur cette page.
 
-Le renouvellement émet la **facture de cotisation** de la catégorie (§6.13) :
-sans cette garde, trois clics auraient produit trois factures.
+La fiche garde Modifier, Historique, Imprimer 62 mm, Désactiver,
+Supprimer.
+
+#### Renouvellement de carte (BUG-041, FEAT-092)
+
+`renew_card()` pose `expiration_date` à **aujourd'hui + durée de la
+catégorie** (12 mois par défaut). Ancrer sur l'ancienne date empilait
+les années ; ancrer sur aujourd'hui rend un second clic le même jour
+inoffensif. Le bouton, sur **Modifier**, n'est plus grisé.
+`can_renew` et `CardStillValid` n'existent plus.
+
+Message : « Nouvelle date d'expiration : jj/mm/aaaa ». La **facture de
+cotisation** (§6.13) n'est émise que si la date change vraiment.
 
 #### Compte collectif
 - Création d'un Member type "collectif" (école, famille) via `MemberCategory`

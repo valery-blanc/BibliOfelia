@@ -123,8 +123,9 @@ aún circule nunca podrá designar otro libro por error.
 
 ### Un miembro perdió su tarjeta, ¿qué hago? { #carte-perdue }
 
-Abra la [ficha del miembro](usagers/fiche.md) y haga clic en
-**Reemplazar la tarjeta**: BibliOfelia asigna un nuevo número, retira
+Abra la [ficha del miembro](usagers/fiche.md), haga clic en
+**Modificar**, luego **Reemplazar la tarjeta** (junto al n.º de
+tarjeta): BibliOfelia asigna un nuevo número, retira
 el antiguo definitivamente y conserva todo el historial. La tarjeta
 antigua ya no funciona (cualquier escaneo devuelve un error) —
 destrúyala si reaparece. Mientras espera la nueva tarjeta, el miembro

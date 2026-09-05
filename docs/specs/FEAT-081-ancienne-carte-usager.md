@@ -85,14 +85,12 @@ ticket.
 
 Aucune migration : `replaces_card_number` existe déjà.
 
-## Ce qui n'a pas été fait
+## Ce qui n'a pas été fait *(clos Sprint 33)*
 
-**Le bouton « Remplacer la carte » n'a pas été touché.** Il est voisin de
-« Renouveler la carte » — deux boutons fantômes identiques dont l'un prolonge la
-validité et l'autre invalide le numéro — et son `confirm()` est facile à
-valider sans lire. C'est un candidat sérieux à un durcissement (libellé plus
-explicite, message de confirmation nommant le numéro qui va être désactivé),
-mais c'est un changement d'UX à arbitrer, pas un correctif : **décision Val**.
+Le bouton « Remplacer la carte » n'avait pas été touché ici. **FEAT-092**
+l'a déplacé, avec « Renouveler la carte », sur **Modifier**
+(`/members/<pk>/edit/`) : n° en lecture seule + avertissement à
+confirmer, renouveler à côté de l'expiration.
 
 ## Tests
 

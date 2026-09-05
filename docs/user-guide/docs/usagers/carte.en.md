@@ -49,9 +49,9 @@ The background is cream, consistent with the OFELIA brand.
 If a member loses their card, you must assign a **new number** (not
 reprint the old one) to invalidate the lost card:
 
-1. Open the member's profile
-2. Click **Replace card**
-3. Confirm
+1. Open the member's profile, then **Edit**
+2. Click **Replace card** (next to the card number)
+3. Confirm the warning
 
 A new number is assigned and the old one is "retired": it will never
 be reassigned to another member (see [Common cases: lost

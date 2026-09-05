@@ -44,13 +44,10 @@ prestados con su título y fecha de devolución.
 Los botones bajo el nombre dan acceso a las operaciones:
 
 - **Modificar** — cambiar los datos de contacto, la foto, la
-  categoría
+  categoría. Ahí se **renueva** o **reemplaza** la tarjeta (número
+  arriba del formulario, fecha de expiración en Opciones avanzadas,
+  abiertas por defecto). Véase [renovación](renouvellement.md).
 - **Historial** — ver todos los préstamos pasados
-- **Renovar la tarjeta** — posponer la fecha de expiración
-  ([detalles](renouvellement.md)). El botón está gris mientras la
-  tarjeta sigue válida más de 30 días.
-- **Reemplazar la tarjeta** — asignar un nuevo número de tarjeta
-  (tarjeta perdida, robada o dañada)
 - **Imprimir la tarjeta (62 mm)** — abre el PDF de cinta Brother QL
   en una pestaña nueva, sin pasar por Avanzado → Impresión
 - **Desactivar** — congelar la cuenta sin eliminarla

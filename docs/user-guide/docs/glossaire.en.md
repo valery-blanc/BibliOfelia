@@ -37,8 +37,9 @@ Alongside the Ofelia code, each book also has a more readable
 - `OFL-20260525-0014` → 14th book entered on 25 May 2026
 
 This code appears in BibliOfelia on the copy's record. It quickly
-tells when a book was registered. **It is not scanned, not printed**
-on the label: it's just to make management easier on screen.
+tells when a book was registered. It is not printed on the label, but
+you **can type it** in search, lending or return — with or without
+the hyphens.
 
 ### ISBN-13 (on the book cover, printed by the publisher)
 

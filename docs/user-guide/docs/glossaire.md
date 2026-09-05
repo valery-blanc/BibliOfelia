@@ -38,9 +38,9 @@ lisible pour le bibliothécaire. Il a la forme **OFL-AAAAMMJJ-NNNN** :
 - `OFL-20260525-0014` → 14e livre saisi le 25 mai 2026
 
 Ce code apparaît dans BibliOfelia sur la fiche de l'exemplaire. Il
-permet de repérer rapidement quand un livre a été enregistré. **On
-ne le scanne pas, on ne l'imprime pas** sur l'étiquette : c'est juste
-pour faciliter la gestion à l'écran.
+permet de repérer rapidement quand un livre a été enregistré. On ne
+l'imprime pas sur l'étiquette, mais on **peut le taper** dans la
+recherche, au prêt ou au retour — avec ou sans les tirets.
 
 ### ISBN-13 (sur la couverture du livre, imprimé par l'éditeur)
 

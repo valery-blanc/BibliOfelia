@@ -15,9 +15,35 @@
     </div>
 </header>
 
+{% if member %}
+{% trans "Attention le numéro de carte va être invalidé et remplacé. Il faudra ré-imprimer une nouvelle carte pour l'usager" as replace_confirm %}
+<form id="replace-card-form" method="post" action="{% url 'members:replace_card' member.pk %}"
+      style="display:none"
+      onsubmit="return confirm('{{ replace_confirm|escapejs }}');">
+    {% csrf_token %}
+</form>
+<form id="renew-card-form" method="post" action="{% url 'members:renew' member.pk %}"
+      style="display:none">
+    {% csrf_token %}
+</form>
+{% endif %}
+
 <form method="post" enctype="multipart/form-data" class="card">
     {% csrf_token %}
     {% if form.non_field_errors %}<div class="msg msg-error">{{ form.non_field_errors }}</div>{% endif %}
+
+    {% if member %}
+    <div class="field">
+        <label>{% trans "N° de carte" %}</label>
+        <div style="display:flex;gap:8px;flex-wrap:wrap;align-items:center">
+            <input type="text" value="{{ member.card_number }}" readonly
+                   aria-readonly="true" style="flex:1;min-width:12rem">
+            <button type="submit" form="replace-card-form" class="btn btn--ghost">
+                {% icon "credit-card" size="16px" %} {% trans "Remplacer la carte" %}
+            </button>
+        </div>
+    </div>
+    {% endif %}
 
     {% include "partials/_field.html" with field=form.first_name %}
     {% include "partials/_field.html" with field=form.last_name %}
@@ -116,7 +142,7 @@
         </div>
     </template>
 
-    <details class="advanced-section" {% if user.always_show_advanced %}open{% endif %}>
+    <details class="advanced-section"{% if member or user.always_show_advanced %} open{% endif %}>
         <summary>{% trans "Options avancées" %}</summary>
         {% include "partials/_field.html" with field=form.birth_date %}
 
@@ -140,7 +166,21 @@
         </div>
 
         {% include "partials/_field.html" with field=form.registration_date %}
-        {% include "partials/_field.html" with field=form.expiration_date %}
+        <div class="field">
+            <label for="{{ form.expiration_date.id_for_label }}">
+                {{ form.expiration_date.label }}{% if form.expiration_date.field.required %} <span class="req" aria-hidden="true">*</span>{% endif %}
+            </label>
+            <div style="display:flex;gap:8px;flex-wrap:wrap;align-items:center">
+                {{ form.expiration_date }}
+                {% if member %}
+                <button type="submit" form="renew-card-form" class="btn btn--ghost">
+                    {% icon "refresh-cw" size="16px" %} {% trans "Renouveler la carte" %}
+                </button>
+                {% endif %}
+            </div>
+            {% if form.expiration_date.help_text %}<small class="help-hint">{{ form.expiration_date.help_text }}</small>{% endif %}
+            {% for error in form.expiration_date.errors %}<small class="field-error">{{ error }}</small>{% endfor %}
+        </div>
         {% if form.instance.photo %}
         <div class="field">
             <label>{% trans "Photo actuelle" %}</label>

@@ -15,18 +15,15 @@ avy amin'ny **Mpianatra → Fitana**.
 
 ## Hanavao karatra
 
-Avy amin'ny [takelakan'ny mpianatra](fiche.md), click amin'ny
-**Hanavao ny karatra**.
+Avy amin'ny [takelakan'ny mpianatra](fiche.md), tsindrio **Hanova**.
+Ny bokotra **Hanavao ny karatra** dia eo akaikin'ny daty
+fahataperana (Options avancées, misokatra ho azy).
 
-Mavitrika ny bokotra raha **tapitra ao anatin'ny 30 andro** ny
-karatra, raha efa tapitra, na tsy manana daty. Raha mbola manan-kery
-mihoatra ny iray volana, **mivolom-boninkazo** ny bokotra (misy
-infobulle milaza ny daty). Izany no manakana ny taona — sy ny
-faktiora saram-pianarana — tsy hiangona amin'ny click maromaro.
-
-Rehefa mandeha ny fanavaozana, ny fahataperana vaovao dia avy amin'ny
-daty tara indrindra (anio na ny fahataperana ankehitriny): ny andro
-tsy nampiasaina dia **voatahiry**. Tsy miova ny laharan-karatra.
+Ny tsindry dia mametraka ny daty fahataperana ho **anio + 1 taona**
+(faharetan'ny sokajy). Misy hafatra eo an-tampony:
+« Daty fahataperana vaovao: dd/mm/yyyy ». Ny tsindry faharoa
+amin'io andro io tsy manova na inona na inona. Tsy miova ny
+laharan-karatra.
 
 Raha manana saram-pianarana ny sokajy, misy **faktiora** miaraka.
 Jereo [Caisse sy faktiora](../caisse/caisse.md).

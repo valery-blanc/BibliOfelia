@@ -13,17 +13,14 @@ You can also filter the member list by expiration date from
 
 ## Renew a card
 
-From the [member profile](fiche.md), click **Renew card**.
+From the [member profile](fiche.md), click **Edit**. The **Renew
+card** button is next to the expiration date (Advanced options,
+open by default).
 
-The button is only active if the card **expires within 30 days**, is
-already expired, or has no date. While it is still valid for more
-than a month, the button is **greyed out** (a tooltip shows until
-when). That stops a double-click stacking years — and membership
-invoices.
-
-When renewal goes through, the new expiration starts from the later
-of the two dates (today or the current expiry): unused days are
-**kept**. The card number does not change — the member keeps using
+The click sets the expiry to **today + 1 year** (the category's
+validity). A message at the top of the page shows
+“New expiry date: dd/mm/yyyy”. A second click the same day does
+nothing. The card number does not change — the member keeps using
 their physical card.
 
 If the category has a membership fee, an **invoice** is issued at

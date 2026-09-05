@@ -52,9 +52,9 @@ El fondo es crema para coherencia con la marca OFELIA.
 Si un miembro pierde su tarjeta, debe asignar un **nuevo número**
 (no reimprimir el antiguo) para invalidar la tarjeta perdida:
 
-1. Abra la ficha del miembro
-2. Haga clic en **Reemplazar la tarjeta**
-3. Confirme
+1. Abra la ficha del miembro, luego **Modificar**
+2. Haga clic en **Reemplazar la tarjeta** (junto al n.º de tarjeta)
+3. Confirme el aviso
 
 Se asigna un nuevo número y el antiguo se "retira": nunca será
 reasignado a otro miembro (vea [Casos frecuentes: tarjeta

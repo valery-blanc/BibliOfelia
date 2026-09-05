@@ -50,9 +50,9 @@ Le fond est crème pour cohérence avec la charte OFELIA.
 Si un membre perd sa carte, vous devez attribuer un **nouveau numéro**
 (et pas réimprimer l'ancien) pour invalider la carte perdue :
 
-1. Ouvrez la fiche du membre
-2. Cliquez sur **Remplacer la carte**
-3. Confirmez
+1. Ouvrez la fiche du membre, puis **Modifier**
+2. Cliquez sur **Remplacer la carte** (à côté du n° de carte)
+3. Confirmez l'avertissement
 
 Un nouveau numéro est attribué et l'ancien est "tombé" : il ne sera
 jamais réattribué à un autre membre (voir [Cas courants : carte

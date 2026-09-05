@@ -39,14 +39,15 @@ factures.
 
 ## Correctif
 
-- `can_renew(member)` — vrai si la carte expire dans 30 jours ou moins
-  (`EXPIRY_WARNING_DAYS`, la même fenêtre que l'avertissement d'expiration
-  déjà affiché), si elle est déjà expirée, ou si elle n'a pas de date.
-- `renew_card()` lève `CardStillValid` sinon. **Le serveur refuse**, pas
-  seulement l'interface : un POST direct ne doit pas non plus empiler.
-- Le bouton de la fiche est `disabled` avec une infobulle donnant la date de
-  validité — l'employé voit *pourquoi* il ne peut pas cliquer.
-- `renew_card()` renvoie désormais `(date, facture)` et émet la cotisation.
+D'abord (Sprint 31) : bouton grisé si la carte est valable plus de
+30 jours, `CardStillValid` côté serveur.
+
+**FEAT-092 (Sprint 33, retour Val)** : le bouton a rejoint **Modifier**
+et doit **toujours** fonctionner. `renew_card()` pose
+aujourd'hui + durée de la catégorie. Un second clic le même jour ne
+change pas la date et n'émet pas de seconde facture — plus besoin de
+griser. `can_renew` et `CardStillValid` sont **supprimés**.
+Message : « Nouvelle date d'expiration : jj/mm/aaaa ».
 
 ## Section de spec impactée
 

@@ -44,13 +44,11 @@ daty famerenana.
 
 Ny bokotra eo ambanin'ny anarana dia manome alalana ny asa:
 
-- **Hanova** — manova ny vaovao fifandraisana, sary, sokajy
+- **Hanova** — manova ny vaovao fifandraisana, sary, sokajy. Ao koa
+  no **hanavaozana** na **hanoloana** ny karatra (laharana eo an-tampon'ny
+  formulaire, daty fahataperana ao amin'ny Options avancées, misokatra
+  ho azy). Jereo [fanavaozana](renouvellement.md).
 - **Tantara** — mijery ny fampindramana taloha rehetra
-- **Hanavao ny karatra** — manemotra ny daty fahataperana
-  ([antsipirihany](renouvellement.md)). Mivolom-boninkazo ny bokotra
-  raha mbola manan-kery mihoatra ny 30 andro ny karatra.
-- **Hanolo ny karatra** — manome laharan-karatra vaovao (karatra
-  very, nangalarina na simba)
 - **Hanonta ny karatra (62 mm)** — manokatra ny PDF ruban Brother QL
   amin'ny onglet vaovao, tsy mila Avancé → Fanontana
 - **Hampijanona** — mametraka kaonty fa tsy mamafa

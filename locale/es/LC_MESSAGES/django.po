@@ -6,7 +6,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: BibliOfelia 1.0\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2026-09-04 08:00+0000\n"
+"POT-Creation-Date: 2026-09-05 09:06+0000\n"
 "PO-Revision-Date: 2026-05-22 00:00+0000\n"
 "Last-Translator: Claude Code\n"
 "Language-Team: Español\n"
@@ -473,7 +473,7 @@ msgid "En réparation"
 msgstr "En reparación"
 
 #: apps/catalog/models.py:56 apps/loans/models.py:15
-#: templates/members/member_detail.html:204
+#: templates/members/member_detail.html:184
 msgid "Perdu"
 msgstr "Perdido"
 
@@ -1443,7 +1443,7 @@ msgid "Visible par OfeliaScan lors de l'appairage."
 msgstr "Visible para OfeliaScan al emparejar."
 
 #: apps/core/forms.py:89 apps/setup/forms.py:31
-#: templates/members/member_detail.html:125
+#: templates/members/member_detail.html:105
 msgid "Adresse"
 msgstr "Dirección"
 
@@ -1455,7 +1455,7 @@ msgstr "País"
 msgid "Contact (email)"
 msgstr "Contacto (email)"
 
-#: apps/core/forms.py:94 templates/members/member_detail.html:120
+#: apps/core/forms.py:94 templates/members/member_detail.html:100
 #: templates/reports/reservations_pickup.html:35
 msgid "Téléphone"
 msgstr "Teléfono"
@@ -1805,7 +1805,7 @@ msgstr "Cuota"
 
 #: apps/finance/models.py:29 templates/finance/_account_box.html:53
 #: templates/finance/member_account.html:30
-#: templates/members/member_detail.html:106
+#: templates/members/member_detail.html:86
 msgid "Amende"
 msgstr "Multa"
 
@@ -2156,8 +2156,12 @@ msgid ""
 msgid_plural ""
 "%(n)s emails restent en file : l'envoi n'est pas configuré (Avancé → "
 "Paramètres → Email)."
-msgstr[0] "%(n)s correo sigue en cola: el envío no está configurado (Avanzado → Ajustes → Email)."
-msgstr[1] "%(n)s correos siguen en cola: el envío no está configurado (Avanzado → Ajustes → Email)."
+msgstr[0] ""
+"%(n)s correo sigue en cola: el envío no está configurado (Avanzado → Ajustes "
+"→ Email)."
+msgstr[1] ""
+"%(n)s correos siguen en cola: el envío no está configurado (Avanzado → "
+"Ajustes → Email)."
 
 #: apps/finance/services.py:600
 #, python-format
@@ -2167,8 +2171,12 @@ msgid ""
 msgid_plural ""
 "%(n)s emails restent en file : la Box n'est pas en ligne. Prévenez les "
 "personnes par téléphone, ou renvoyez quand la Box le sera."
-msgstr[0] "%(n)s correo sigue en cola: la Box no está en línea. Avise por teléfono, o vuelva a enviar cuando la Box lo esté."
-msgstr[1] "%(n)s correos siguen en cola: la Box no está en línea. Avise por teléfono, o vuelva a enviar cuando la Box lo esté."
+msgstr[0] ""
+"%(n)s correo sigue en cola: la Box no está en línea. Avise por teléfono, o "
+"vuelva a enviar cuando la Box lo esté."
+msgstr[1] ""
+"%(n)s correos siguen en cola: la Box no está en línea. Avise por teléfono, o "
+"vuelva a enviar cuando la Box lo esté."
 
 #: apps/finance/services.py:614
 #, python-format
@@ -2228,7 +2236,7 @@ msgid "Nouvelle amende"
 msgstr "Nueva multa"
 
 #: apps/finance/views.py:368 templates/finance/member_account.html:33
-#: templates/members/member_detail.html:109
+#: templates/members/member_detail.html:89
 msgid "Frais d'animation"
 msgstr "Cuota de actividad"
 
@@ -2540,14 +2548,14 @@ msgstr "Reserva registrada."
 msgid "Réservation annulée."
 msgstr "Reserva cancelada."
 
-#: apps/members/forms.py:44 templates/members/member_detail.html:128
-#: templates/members/member_form.html:29 templates/members/member_form.html:70
-#: templates/members/member_form.html:108
+#: apps/members/forms.py:44 templates/members/member_detail.html:108
+#: templates/members/member_form.html:55 templates/members/member_form.html:96
+#: templates/members/member_form.html:134
 msgid "Langues parlées"
 msgstr "Idiomas hablados"
 
 #: apps/members/forms.py:80 apps/members/forms.py:146
-#: templates/members/member_form.html:73 templates/members/member_form.html:111
+#: templates/members/member_form.html:99 templates/members/member_form.html:137
 msgid "Autres langues"
 msgstr "Otros idiomas"
 
@@ -2575,8 +2583,8 @@ msgstr "Por defecto: hoy."
 msgid "Langue de la bibliothèque"
 msgstr "Idioma de la biblioteca"
 
-#: apps/members/forms.py:132 templates/members/member_form.html:57
-#: templates/members/member_form.html:96
+#: apps/members/forms.py:132 templates/members/member_form.html:83
+#: templates/members/member_form.html:122
 msgid "Adulte ou enfant"
 msgstr "Adulto o niño"
 
@@ -2584,22 +2592,22 @@ msgstr "Adulto o niño"
 msgid "Enfant"
 msgstr "Niño"
 
-#: apps/members/forms.py:134 templates/members/member_detail.html:155
+#: apps/members/forms.py:134 templates/members/member_detail.html:135
 msgid "Adulte"
 msgstr "Adulto"
 
-#: apps/members/forms.py:143 templates/members/member_form.html:53
-#: templates/members/member_form.html:92
+#: apps/members/forms.py:143 templates/members/member_form.html:79
+#: templates/members/member_form.html:118
 msgid "Sexe"
 msgstr "Sexo"
 
 #: apps/members/forms.py:144 apps/setup/forms.py:53
-#: templates/members/member_form.html:48 templates/members/member_form.html:88
+#: templates/members/member_form.html:74 templates/members/member_form.html:114
 msgid "Prénom"
 msgstr "Nombre"
 
-#: apps/members/forms.py:145 templates/members/member_form.html:61
-#: templates/members/member_form.html:100
+#: apps/members/forms.py:145 templates/members/member_form.html:87
+#: templates/members/member_form.html:126
 msgid "Année de naissance"
 msgstr "Año de nacimiento"
 
@@ -2829,50 +2837,51 @@ msgstr "Tarjeta caducada hace %(n)s días."
 msgid "Carte expirante dans %(n)s jours."
 msgstr "Tarjeta caduca en %(n)s días."
 
-#: apps/members/views.py:55
+#: apps/members/views.py:53
 #, python-format
 msgid ""
 "Cotisation recalculée : facture %(old)s annulée, %(new)s émise (%(amount)s)."
-msgstr "Cuota recalculada: factura %(old)s anulada, %(new)s emitida (%(amount)s)."
+msgstr ""
+"Cuota recalculada: factura %(old)s anulada, %(new)s emitida (%(amount)s)."
 
-#: apps/members/views.py:66
+#: apps/members/views.py:64
 #, python-format
 msgid ""
 "Facture de cotisation %(num)s annulée : la nouvelle catégorie n'en a pas."
 msgstr "Factura de cuota %(num)s anulada: la nueva categoría no tiene."
 
-#: apps/members/views.py:73 apps/members/views.py:190
+#: apps/members/views.py:71 apps/members/views.py:185
 #, python-format
 msgid "Facture de cotisation %(num)s émise (%(amount)s)."
 msgstr "Factura de cuota %(num)s emitida (%(amount)s)."
 
-#: apps/members/views.py:154
+#: apps/members/views.py:149
 msgid "Sans catégorie"
 msgstr "Sin categoría"
 
-#: apps/members/views.py:182
+#: apps/members/views.py:177
 #, python-format
 msgid "Usager inscrit — carte n° %(card)s."
 msgstr "Usuario inscrito — tarjeta n.º %(card)s."
 
-#: apps/members/views.py:203
+#: apps/members/views.py:198
 msgid "Nouvel usager"
 msgstr "Nuevo usuario"
 
-#: apps/members/views.py:219
+#: apps/members/views.py:214
 msgid "Fiche usager mise à jour."
 msgstr "Ficha de usuario actualizada."
 
-#: apps/members/views.py:239
+#: apps/members/views.py:234
 msgid "Modifier l'usager"
 msgstr "Editar usuario"
 
-#: apps/members/views.py:251
+#: apps/members/views.py:246
 #, python-format
 msgid "Nouvelle carte émise : n° %(card)s."
 msgstr "Nueva tarjeta emitida: n.º %(card)s."
 
-#: apps/members/views.py:259
+#: apps/members/views.py:254
 #, python-format
 msgid ""
 "La carte n° %(old)s est désormais l'ancienne : imprimez la nouvelle carte et "
@@ -2883,36 +2892,31 @@ msgstr ""
 "entréguesela al usuario. Mientras tanto, la antigua sigue reconociéndose al "
 "escanear, y se avisa de ello."
 
-#: apps/members/views.py:277
+#: apps/members/views.py:268
 #, python-format
-msgid "Carte déjà valable jusqu'au %(date)s : rien à renouveler."
-msgstr "El carné ya es válido hasta el %(date)s: no hay nada que renovar."
+msgid "Nouvelle date d'expiration : %(date)s"
+msgstr "Nueva fecha de vencimiento: %(date)s"
 
-#: apps/members/views.py:283
-#, python-format
-msgid "Carte renouvelée jusqu'au %(date)s."
-msgstr "Tarjeta renovada hasta el %(date)s."
-
-#: apps/members/views.py:288
+#: apps/members/views.py:274
 #, python-format
 msgid "Facture de cotisation %(num)s émise."
 msgstr "Factura de cuota %(num)s emitida."
 
-#: apps/members/views.py:300
+#: apps/members/views.py:286
 msgid "Usager désactivé."
 msgstr "Usuario desactivado."
 
-#: apps/members/views.py:306
+#: apps/members/views.py:292
 msgid "Usager réactivé."
 msgstr "Usuario reactivado."
 
-#: apps/members/views.py:349
+#: apps/members/views.py:335
 #, python-format
 msgid "Usager %(n)s supprimé."
 msgstr "Usuario %(n)s eliminado."
 
-#: apps/printing/services.py:322 templates/members/member_detail.html:145
-#: templates/members/member_form.html:36
+#: apps/printing/services.py:322 templates/members/member_detail.html:125
+#: templates/members/member_form.html:62
 msgid "Famille"
 msgstr "Familia"
 
@@ -3040,7 +3044,7 @@ msgstr "Top 10 obras prestadas"
 #: templates/catalog/record_list.html:176
 #: templates/catalog/record_list.html:245 templates/core/dashboard.html:348
 #: templates/inventory/session_report.html:114 templates/loans/return.html:199
-#: templates/members/member_detail.html:178
+#: templates/members/member_detail.html:158
 #: templates/members/member_history.html:30
 #: templates/members/member_history.html:62
 #: templates/printing/_picker_base.html:54
@@ -3078,7 +3082,7 @@ msgstr "Idioma"
 msgid "Visible par OfeliaScan."
 msgstr "Visible para OfeliaScan."
 
-#: apps/setup/forms.py:55 templates/members/member_detail.html:123
+#: apps/setup/forms.py:55 templates/members/member_detail.html:103
 msgid "Email"
 msgstr "Email"
 
@@ -3278,7 +3282,7 @@ msgstr "Ajustes"
 #: templates/catalog/record_detail.html:156
 #: templates/closing/animation_detail.html:124
 #: templates/finance/member_category_confirm_delete.html:12
-#: templates/members/member_detail.html:90
+#: templates/members/member_detail.html:70
 msgid "Supprimer"
 msgstr "Eliminar"
 
@@ -3342,8 +3346,8 @@ msgstr "Eliminar definitivamente"
 #: templates/loans/reservation_form.html:27
 #: templates/loans/reservations.html:82 templates/loans/reservations.html:123
 #: templates/members/member_confirm_delete.html:63
-#: templates/members/member_form.html:161
-#: templates/members/member_form.html:163
+#: templates/members/member_form.html:201
+#: templates/members/member_form.html:203
 msgid "Annuler"
 msgstr "Cancelar"
 
@@ -3376,7 +3380,7 @@ msgstr "Mi cuenta"
 #: templates/finance/cash_index.html:144
 #: templates/finance/member_category_form.html:45
 #: templates/finance/tariff_form.html:31 templates/loans/consultation.html:27
-#: templates/members/member_form.html:158
+#: templates/members/member_form.html:198
 msgid "Enregistrer"
 msgstr "Guardar"
 
@@ -3516,7 +3520,7 @@ msgstr "Eliminar los ejemplares seleccionados"
 #: templates/catalog/scan_session.html:153
 #: templates/catalog/scan_session.html:187
 #: templates/finance/tariff_list.html:30
-#: templates/members/member_detail.html:117
+#: templates/members/member_detail.html:97
 #: templates/printing/cards_picker.html:37
 #: templates/printing/spine_labels_picker.html:26
 msgid "Catégorie"
@@ -3543,7 +3547,7 @@ msgid "Récupérer"
 msgstr "Obtener"
 
 #: templates/catalog/_record_form.html:50
-#: templates/members/member_form.html:120
+#: templates/members/member_form.html:146
 msgid "Options avancées"
 msgstr "Opciones avanzadas"
 
@@ -4288,7 +4292,7 @@ msgstr "Quitar el idioma"
 #: templates/catalog/language_confirm_delete.html:12
 #: templates/catalog/language_list.html:56
 #: templates/catalog/scan_session.html:218
-#: templates/members/member_form.html:66 templates/members/member_form.html:104
+#: templates/members/member_form.html:92 templates/members/member_form.html:130
 msgid "Retirer"
 msgstr "Eliminar"
 
@@ -4610,7 +4614,7 @@ msgstr "Fichas a eliminar"
 
 #: templates/catalog/record_bulk_delete.html:48
 #: templates/core/dashboard.html:173 templates/loans/lend.html:96
-#: templates/members/member_detail.html:170
+#: templates/members/member_detail.html:150
 #: templates/members/member_history.html:24
 msgid "Prêts en cours"
 msgstr "Préstamos activos"
@@ -5138,7 +5142,7 @@ msgid ""
 msgstr "Varios usuarios coinciden con «%(q)s». Elija la persona correcta."
 
 #: templates/closing/animation_detail.html:76
-#: templates/members/member_detail.html:156
+#: templates/members/member_detail.html:136
 #, python-format
 msgid "%(n)s ans"
 msgstr "%(n)s años"
@@ -5289,13 +5293,17 @@ msgstr "Ver la cola"
 msgid ""
 "La Box n'est pas en ligne : les emails restent en file jusqu'à ce qu'elle le "
 "soit. En attendant, prévenez les personnes par téléphone (liste ci-dessus)."
-msgstr "La Box no está en línea: los correos quedan en cola hasta que lo esté. Mientras tanto, avise a las personas por teléfono (lista de arriba)."
+msgstr ""
+"La Box no está en línea: los correos quedan en cola hasta que lo esté. "
+"Mientras tanto, avise a las personas por teléfono (lista de arriba)."
 
 #: templates/closing/day_closing.html:154
 msgid ""
 "L'envoi par email n'est pas configuré. Renseignez le serveur SMTP dans "
 "Avancé → Paramètres → Email, puis renvoyez."
-msgstr "El envío por correo no está configurado. Indique el servidor SMTP en Avanzado → Ajustes → Email y vuelva a enviar."
+msgstr ""
+"El envío por correo no está configurado. Indique el servidor SMTP en "
+"Avanzado → Ajustes → Email y vuelva a enviar."
 
 #: templates/closing/day_closing.html:163
 msgid "Mettre en file d'attente"
@@ -5426,7 +5434,7 @@ msgid "Ordre"
 msgstr "Orden"
 
 #: templates/closing/type_list.html:40 templates/closing/type_list.html:93
-#: templates/members/member_detail.html:80
+#: templates/members/member_detail.html:60
 msgid "Désactiver"
 msgstr "Desactivar"
 
@@ -6059,7 +6067,8 @@ msgstr "Tarifas y categorías de usuarios"
 msgid ""
 "Catégories d'usagers, cotisation, montants proposés pour les animations et "
 "les amendes."
-msgstr "Categorías de usuarios, cuota, importes propuestos para actividades y multas."
+msgstr ""
+"Categorías de usuarios, cuota, importes propuestos para actividades y multas."
 
 #: templates/core/advanced.html:241
 msgid "Les listes dans lesquelles les employés choisissent au bouclement."
@@ -6327,7 +6336,7 @@ msgstr "Recordatorios por enviar"
 #: templates/core/dashboard.html:350 templates/finance/invoice_detail.html:62
 #: templates/finance/invoice_list.html:52
 #: templates/finance/member_account.html:46 templates/loans/return.html:201
-#: templates/members/member_detail.html:179
+#: templates/members/member_detail.html:159
 #: templates/members/member_history.html:32
 #: templates/reports/overdue_list.html:36
 msgid "Échéance"
@@ -6459,7 +6468,9 @@ msgstr "La Box está en línea: pueden salir ahora."
 msgid ""
 "La Box n'est pas en ligne. Prévenez les personnes par téléphone, ou renvoyez "
 "quand elle le sera."
-msgstr "La Box no está en línea. Avise por teléfono, o vuelva a enviar cuando lo esté."
+msgstr ""
+"La Box no está en línea. Avise por teléfono, o vuelva a enviar cuando lo "
+"esté."
 
 #: templates/finance/cash_index.html:70 templates/finance/outbox_list.html:18
 msgid "L'envoi par email n'est pas configuré (Avancé → Paramètres → Email)."
@@ -6687,14 +6698,18 @@ msgid ""
 msgid_plural ""
 "%(counter)s usagers sont encore dans cette catégorie. Réaffectez-les avant "
 "de supprimer."
-msgstr[0] "%(counter)s usuario sigue en esta categoría. Reasígnelo antes de eliminar."
-msgstr[1] "%(counter)s usuarios siguen en esta categoría. Reasígnelos antes de eliminar."
+msgstr[0] ""
+"%(counter)s usuario sigue en esta categoría. Reasígnelo antes de eliminar."
+msgstr[1] ""
+"%(counter)s usuarios siguen en esta categoría. Reasígnelos antes de eliminar."
 
 #: templates/finance/member_category_confirm_delete.html:30
 msgid ""
 "La fiche d'un usager tient à sa catégorie : la supprimer casserait ces "
 "fiches."
-msgstr "La ficha de un usuario está ligada a su categoría: eliminarla rompería esas fichas."
+msgstr ""
+"La ficha de un usuario está ligada a su categoría: eliminarla rompería esas "
+"fichas."
 
 #: templates/finance/member_category_confirm_delete.html:36
 msgid "Cette catégorie n'a aucun usager : elle peut être supprimée."
@@ -6708,7 +6723,9 @@ msgstr "La Box está en línea."
 msgid ""
 "La Box n'est pas en ligne : prévenez les personnes par téléphone, ou "
 "renvoyez quand elle le sera."
-msgstr "La Box no está en línea: avise por teléfono, o vuelva a enviar cuando lo esté."
+msgstr ""
+"La Box no está en línea: avise por teléfono, o vuelva a enviar cuando lo "
+"esté."
 
 #: templates/finance/outbox_list.html:19
 msgid "Les emails en attente partent tout de suite."
@@ -6741,7 +6758,9 @@ msgstr "Modificar una tarifa"
 msgid ""
 "Catégories d'usagers (cotisation, prêts, validité de la carte) et montants "
 "proposés pour les animations et les amendes."
-msgstr "Categorías de usuarios (cuota, préstamos, validez de la tarjeta) y importes propuestos para actividades y multas."
+msgstr ""
+"Categorías de usuarios (cuota, préstamos, validez de la tarjeta) y importes "
+"propuestos para actividades y multas."
 
 #: templates/finance/tariff_list.html:24
 msgid "Catégories d'usagers"
@@ -6785,7 +6804,9 @@ msgstr "Ninguna categoría de usuario."
 msgid ""
 "La cotisation est facturée automatiquement à l'inscription et à chaque "
 "renouvellement de carte. Un montant à 0 n'émet aucune facture."
-msgstr "La cuota se factura automáticamente al inscribirse y en cada renovación de tarjeta. Un importe de 0 no emite factura."
+msgstr ""
+"La cuota se factura automáticamente al inscribirse y en cada renovación de "
+"tarjeta. Un importe de 0 no emite factura."
 
 #: templates/finance/tariff_list.html:76
 msgid "Autres tarifs"
@@ -7212,64 +7233,58 @@ msgid "Aucun impact : usager sans prêt, réservation ni personne rattachée."
 msgstr ""
 "Sin impacto: usuario sin préstamos, sin reservas y sin nadie a su cargo."
 
-#: templates/members/member_detail.html:60
-#, python-format
-msgid "Carte valable jusqu'au %(d)s — renouvellement inutile."
-msgstr "Carné válido hasta el %(d)s: no hace falta renovarlo."
-
-#: templates/members/member_detail.html:61
-msgid "Renouveler la carte"
-msgstr "Renovar la tarjeta"
-
-#: templates/members/member_detail.html:65
-msgid "Émettre une nouvelle carte ? L'ancien numéro sera désactivé."
-msgstr "¿Emitir una nueva tarjeta? El número anterior se desactivará."
-
-#: templates/members/member_detail.html:68
-msgid "Remplacer la carte"
-msgstr "Reemplazar la tarjeta"
-
-#: templates/members/member_detail.html:74
+#: templates/members/member_detail.html:54
 msgid "Imprimer la carte (62 mm)"
 msgstr "Imprimir la tarjeta (62 mm)"
 
-#: templates/members/member_detail.html:84
+#: templates/members/member_detail.html:64
 msgid "Réactiver"
 msgstr "Reactivar"
 
-#: templates/members/member_detail.html:103
+#: templates/members/member_detail.html:83
 msgid "Compte et factures"
 msgstr "Cuenta y facturas"
 
-#: templates/members/member_detail.html:116
+#: templates/members/member_detail.html:96
+#: templates/members/member_form.html:37
 msgid "N° de carte"
 msgstr "N.º de tarjeta"
 
-#: templates/members/member_detail.html:118
+#: templates/members/member_detail.html:98
 msgid "Inscrit le"
 msgstr "Inscrito el"
 
-#: templates/members/member_detail.html:119
+#: templates/members/member_detail.html:99
 msgid "Expire le"
 msgstr "Caduca el"
 
-#: templates/members/member_detail.html:131
+#: templates/members/member_detail.html:111
 msgid "Ancienne carte"
 msgstr "Tarjeta anterior"
 
-#: templates/members/member_detail.html:138
+#: templates/members/member_detail.html:118
 msgid "Commentaire"
 msgstr "Comentario"
 
-#: templates/members/member_detail.html:200
+#: templates/members/member_detail.html:180
 msgid "Renouveler"
 msgstr "Renovar"
 
-#: templates/members/member_detail.html:216
+#: templates/members/member_detail.html:196
 msgid "Aucun prêt en cours."
 msgstr "Ningún préstamo en curso."
 
-#: templates/members/member_form.html:38
+#: templates/members/member_form.html:19
+msgid ""
+"Attention le numéro de carte va être invalidé et remplacé. Il faudra ré-"
+"imprimer une nouvelle carte pour l'usager"
+msgstr "Atención: el número de tarjeta se invalidará y se reemplazará. Habrá que reimprimir una nueva tarjeta para el usuario."
+
+#: templates/members/member_form.html:42
+msgid "Remplacer la carte"
+msgstr "Reemplazar la tarjeta"
+
+#: templates/members/member_form.html:64
 msgid ""
 "Les personnes qui partagent cette carte. Elles n'ont pas de carte à leur "
 "nom : ces informations servent à leur proposer les bons livres."
@@ -7277,15 +7292,19 @@ msgstr ""
 "Las personas que comparten este carné. No tienen carné propio: esta "
 "información solo sirve para proponerles los libros adecuados."
 
-#: templates/members/member_form.html:82
+#: templates/members/member_form.html:108
 msgid "Ajouter une personne"
 msgstr "Añadir una persona"
 
-#: templates/members/member_form.html:129
+#: templates/members/member_form.html:155
 msgid "Coordonnées"
 msgstr "Datos de contacto"
 
-#: templates/members/member_form.html:147
+#: templates/members/member_form.html:178
+msgid "Renouveler la carte"
+msgstr "Renovar la tarjeta"
+
+#: templates/members/member_form.html:187
 msgid "Photo actuelle"
 msgstr "Foto actual"
 

@@ -914,16 +914,9 @@ def _find_item_by_ofelia_code(raw: str):
     en clair juste à côté. L'export écrit les deux ; un fichier repris à la
     main peut ne contenir que l'un ou l'autre, on essaie donc les deux.
     """
-    from .models import Item
+    from .lookup import find_item
 
-    value = (raw or "").strip()
-    if not value:
-        return None
-    code = normalize_external_code(value)
-    return (
-        Item.objects.filter(ean13=code).first()
-        or Item.objects.filter(internal_id__iexact=value).first()
-    )
+    return find_item(raw)
 
 
 def _apply_item_update(item, overrides, location_value, isbn_value, locations):

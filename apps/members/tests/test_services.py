@@ -9,8 +9,6 @@ import pytest
 from apps.core.ean import validate_ean13
 from apps.members.models import Member, MemberCategory, MemberStatus
 from apps.members.services import (
-    CardStillValid,
-    can_renew,
     is_expiring_soon,
     mark_expired_members,
     renew_card,
@@ -61,21 +59,27 @@ def test_renew_card_extends_expiration(category):
     assert invoice is None
 
 
-def test_renew_card_refuses_a_card_still_valid(category):
-    """BUG-041 : trois clics ne doivent pas ajouter trois ans."""
+def test_renew_card_sets_today_plus_validity(category):
+    """FEAT-092 : toujours aujourd'hui + durée, même si la carte est encore valable."""
+    from dateutil.relativedelta import relativedelta
+
     member = _member(category, expiration_date=date.today() + timedelta(days=200))
-    assert can_renew(member) is False
-    with pytest.raises(CardStillValid):
-        renew_card(member)
-    member.refresh_from_db()
-    assert member.expiration_date == date.today() + timedelta(days=200)
-
-
-def test_renew_card_allowed_near_expiry(category):
-    member = _member(category, expiration_date=date.today() + timedelta(days=10))
-    assert can_renew(member) is True
     new_date, _invoice = renew_card(member)
-    assert new_date > date.today() + timedelta(days=10)
+    assert new_date == date.today() + relativedelta(months=12)
+    member.refresh_from_db()
+    assert member.expiration_date == new_date
+
+
+def test_renew_card_second_click_same_day_does_not_stack(category):
+    """BUG-041 : un second clic le même jour ne change pas la date ni n'émet de facture."""
+    category.membership_fee = Decimal("25.00")
+    category.save(update_fields=["membership_fee"])
+    member = _member(category, expiration_date=date.today() - timedelta(days=1))
+    first, invoice1 = renew_card(member)
+    second, invoice2 = renew_card(member)
+    assert first == second
+    assert invoice1 is not None
+    assert invoice2 is None
 
 
 def test_renew_card_emits_membership_invoice(category):

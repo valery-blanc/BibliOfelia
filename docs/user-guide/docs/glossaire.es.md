@@ -38,9 +38,9 @@ interno** más legible para el bibliotecario. Tiene la forma
 - `OFL-20260525-0014` → 14º libro registrado el 25 de mayo de 2026
 
 Este código aparece en BibliOfelia en la ficha del ejemplar.
-Permite identificar rápidamente cuándo se registró un libro. **No
-se escanea, no se imprime** en la etiqueta: es solo para facilitar
-la gestión en pantalla.
+Permite identificar rápidamente cuándo se registró un libro. No se
+imprime en la etiqueta, pero **se puede teclear** en la búsqueda, el
+préstamo o la devolución — con o sin guiones.
 
 ### ISBN-13 (en la cubierta del libro, impreso por el editor)
 

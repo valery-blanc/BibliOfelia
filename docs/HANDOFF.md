@@ -125,7 +125,9 @@ git clone git@github.com:valery-blanc/claude_skills.git ~/.claude/skills
 
 ---
 
-## 3. État du dépôt au 2026-09-04
+## 3. État du dépôt au 2026-09-05
+
+**Sprint 33 commité** (validé Val 2026-09-05) : FEAT-092, BUG-044.
 
 **Sprints 31 et 32 sont commités** (validés Val 2026-09-04) : `apps/finance/`,
 `apps/closing/`, migration `members/0007`, specs FEAT-083 → FEAT-090,
@@ -136,6 +138,7 @@ Reste hors sprint :
 ```
 [x] Déploiement Box (Canaima) — fait le 2026-09-04
 [x] Guide utilisateur FEAT-091 — 7 écrans ×4 langues + captures, OK Val 2026-09-04
+[x] Sprint 33 (FEAT-092 / BUG-044) — OK Val 2026-09-05
 [ ] Unité systemd d'extinction (keebee/ofeliabox, FEAT-086)
 [ ] SMTP Grand-Saconnex (Avancé → Paramètres → Email)
 ```
