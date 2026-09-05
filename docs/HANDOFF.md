@@ -1,7 +1,7 @@
 # HANDOFF — reprise du projet par un autre agent
 
 > Document de passation. À lire **avant** toute action sur BibliOfelia.
-> Dernière mise à jour : 2026-09-04 (Sprints 31 et 32 commités).
+> Dernière mise à jour : 2026-09-05 (Sprint 33 commité, `7b2c464`).
 
 ## 0. Avertissement — trois des quatre sources sont hors dépôt
 

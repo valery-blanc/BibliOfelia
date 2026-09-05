@@ -7,9 +7,17 @@ Mise à jour : 2026-05-26 (Sprint 12 **CLOS** — FEAT-038 (cartes membres : fon
 ## ⏭️ REPRISE — état au 05/09/2026
 
 **Sprint 33 CLOS**, validé par Val le 2026-09-05 (« c'est tout bon »).
-**FEAT-092** (Remplacer / Renouveler sur Modifier) + **BUG-044**
-(`find_item` résout `OFL-…`). Sexe usager et catégorie TEST Box : clos
-sans changement. Tests : **894 passed**. Gate i18n = 0.
+Commit **`7b2c464`** — FEAT-092 (Remplacer / Renouveler sur Modifier) +
+BUG-044 (`find_item` résout `OFL-…`). Sexe usager et catégorie TEST Box :
+clos sans changement. `can_renew` / `CardStillValid` **supprimés**.
+
+**Tests : 894 passed**, mesurés sur Fez (`ofelia/bibliofelia:dev`) **avant**
+le correctif « aujourd'hui + 1 an » ; après ce correctif, **21 tests
+members** verts. Suite complète **non relancée** sur `7b2c464`. Gate i18n = 0
+(2 chaînes Sprint 33 : warning remplacement + « Nouvelle date d'expiration »).
+
+**Déploiement** : Fez `sanjuan` + `grand-saconnex` (healthy), image + docs
+Avignon (secours), Box Canaima (`edubox-bibliofelia` healthy).
 
 **Sprints 31 et 32 CLOS**, validés par Val le 2026-09-04. **FEAT-091**
 (guide utilisateur caisse/bouclement + captures) validé le même jour
@@ -30,9 +38,32 @@ BUG-042/043/FEAT-090). Gate i18n : `python scripts/i18n_check.py` = **0**.
 (source + image), **Box Canaima** (`edubox-bibliofelia` healthy, migrations
 `finance/0001`, `closing/0001`, `members/0007` appliquées).
 
+### 🔴 À FAIRE EN PREMIER
+- **Reporter `TZ: ${TZ:-UTC}` dans `C:\WORK\keebee\docker-compose.yml`**
+  (services `bibliofelia` et `bibliofelia-worker`). Hérité du Sprint 29,
+  **toujours pas fait**. La Box a les deux lignes ; keebee sur le poste n'en
+  a aucune. **Signal d'échec** : après un déploiement keebee, l'accueil de
+  la Box réaffiche l'heure UTC au lieu de CEST.
+
+### 🧨 Réfuté / clos dans cette session
+- ⛔ **Champ sexe sur l'usager** — pas de champ, clos.
+- ⛔ **Catégorie TEST Box** — laissée (0 notice), clos.
+- ⛔ **`can_renew` / bouton grisé** — inutiles : renouveler pose aujourd'hui
+  + 1 an. Supprimés.
+- ⛔ **WOL de la Box** — déjà mesuré (Pi 5 ne se réveille pas). Ne pas
+  retester.
+
 ### ⏳ Ouvert, hors de ce commit
-- Unité systemd d'extinction dans keebee/ofeliabox (FEAT-086)
+- Unité systemd d'extinction dans keebee/ofeliabox (FEAT-086) — le bouton
+  écrit le drapeau, la Box ne s'éteint pas
 - SMTP Grand-Saconnex : pas encore configuré (Avancé → Paramètres → Email)
+- **Test caméra réel** FEAT-087 : un Code128 externe lu à la caméra
+  (étiquette + téléphone, Val)
+- Captures guide : fiche/édition usager **périmées** (boutons carte déplacés,
+  FEAT-092) ; prêt/retour encore datés FEAT-080/081
+- Coordonnées d'annotation Playwright (Task #3, bounding_box) — jamais fait
+- Sprint 26 : 4 tests fonctionnels **validés 2026-08-31**, cases d'origine
+  cochées ici
 
 ## Sprint 33 — Carte sur l'édition + code interne OFL (2026-09-05)
 
@@ -60,7 +91,7 @@ Arbitrages Val :
       Val utilise Claude et Grok indifféremment. HANDOFF + fiche mémoire
       alignés.
 
-## ⏭️ REPRISE — état au 27/08/2026
+## ⏭️ REPRISE — état au 27/08/2026 *(supplanté par le bloc du 05/09)*
 
 **Aucun développement BibliOfelia dans cette session** — travail d'**infrastructure du
 parc** (températures CPU, ZeroTier, nettoyage Tulear), consigné dans
@@ -1392,27 +1423,29 @@ Signalés par Val 2026-05-30 (navigation espagnole).
 - [x] **Bandeau rouge « N lignes non importées »** sur la page du job dès `errors > 0` (demande Val) + phrase explicative par code dans le tableau
 - [x] Tests `test_import_job_reports_row_without_isbn`, `test_import_job_ignores_fully_empty_rows`
 - [x] SPEC §6.12 + en-tête
-- [ ] Test fonctionnel Val (relancer l'import : 105 lignes → 104 notices **+ 1 erreur visible**)
+- [x] Test fonctionnel Val (relancer l'import : 105 lignes → 104 notices **+ 1 erreur visible**)
+      — validé Val 2026-08-31 (« sprint 26 : on valide »)
 
 #### BUG-026 — Commentaires `{# … #}` multi-lignes affichés à l'écran
 - [x] Doc `docs/bugs/BUG-026-commentaires-django-multiligne.md`
 - [x] Cause : le lexer Django compile `({%.*?%}|{{.*?}}|{#.*?#})` **sans `re.DOTALL`** → un commentaire multi-ligne n'est pas un token et traverse jusqu'au HTML
 - [x] 5 occurrences converties en `{% comment %}` : `scan_session.html` (celle vue par Val), `session_report.html`, `record_bulk_delete.html`, `errors/_error_page.html`, `500.html` — les 4 dernières étaient des régressions latentes jamais signalées
 - [x] **Garde-fou** `apps/core/tests/test_template_comments.py` : scanne tous les templates, échoue si un `{#` n'a pas son `#}` sur la même ligne
-- [ ] Test fonctionnel Val
+- [x] Test fonctionnel Val — validé Val 2026-08-31 (« sprint 26 : on valide »)
 
 #### FEAT-061 — Accès au guide sur smartphone
 - [x] Doc `docs/specs/FEAT-061-guide-accessible-mobile.md`
 - [x] Cause : le bouton « ? » porte `.hide-sm` (masqué < 600 px) → guide inatteignable en portrait
 - [x] Entrée « Guide utilisateur » ajoutée en tête du menu utilisateur, `.only-sm` → pas de doublon avec l'icône sur grand écran ; aucune chaîne i18n nouvelle, aucun CSS nouveau
-- [ ] Test fonctionnel Val (smartphone portrait)
+- [x] Test fonctionnel Val (smartphone portrait) — validé Val 2026-08-31
+      (« sprint 26 : on valide »)
 
 #### 2e vague — vérifications
 - [x] `pytest` : **423 passed** (420 → 423, 0 régression)
 - [x] `manage.py check` : 0 issue
 - [x] Gate i18n : `makemessages` + `translations_sprint26.py` (12 × EN/ES/MG) + `i18n_check.py` → **0**
 - [x] Redéploiement : image Avignon rebuildée + web/worker recréés (grand-saconnex, sanjuan) ; Box rebuildée + recréée ; smoke tests 200
-- [ ] Test fonctionnel Val
+- [x] Test fonctionnel Val — validé Val 2026-08-31 (« sprint 26 : on valide »)
 - [x] Commit unique groupé + push origin/main → commit `cddb518` (« clôture Sprint 26 »)
 
 ## Sprint 27 — Imprimante à ruban Brother QL-810W
@@ -1718,10 +1751,9 @@ Signalés par Val 2026-05-30 (navigation espagnole).
       **validés par Val le 2026-08-31** : « sprint 26 : on valide ». Le code était
       déployé et committé (`cddb518`) depuis le 2026-08-18 ; il ne manquait que la
       confirmation
-- [ ] Catégorie `TEST` restée sur la Box — **Val fera le ménage plus tard** (2026-08-31) : `migrate_categories` ne supprime jamais une
-      catégorie qu'elle n'a pas su reclasser. À retirer à la main si elle ne sert plus.
-      **Vérifiée le 2026-08-22** : toujours là (pk=17), **0 notice rattachée** — donc
-      supprimable sans risque, mais c'est une donnée de production : sur demande de Val
+- [x] Catégorie `TEST` restée sur la Box — **clos Sprint 33 (2026-09-05)** :
+      laissée en l'état (0 notice). `migrate_categories` ne supprime jamais une
+      catégorie qu'elle n'a pas su reclasser.
 
 ## Sprint 29 — Nettoyage du chemin d'impression
 
@@ -2008,9 +2040,8 @@ debout en face du bibliothécaire n'était nommée nulle part.
       retour (sinon une requête par livre scanné)
 - [x] Journal en **session** : le gabarit tolère les entrées antérieures à
       FEAT-080, qui n'ont pas les nouvelles clés (test dédié)
-- [!] **Sexe non affiché** : `Member` n'a pas ce champ (seul
-      `MemberFamilyMember.gender` existe, FEAT-072, et ces personnes n'empruntent
-      pas). L'ajouter = migration + donnée personnelle de plus → **décision Val**
+- [x] **Sexe non affiché** — **clos Sprint 33 (2026-09-05)** : pas de champ
+      sur `Member` (seul `MemberFamilyMember.gender` existe, FEAT-072).
 - [x] **Correctif de gabarit** : trois commentaires `{# … #}` étaient à cheval sur
       deux lignes. Vérifié en conteneur — le lexer Django n'active pas `DOTALL`,
       un tel commentaire s'affiche **en clair dans la page**. Repassés en
@@ -2119,13 +2150,9 @@ Demande du 2026-08-23, en marge du sprint. Résultat :
       (`inventory:add_scan` → `record_scan`), récolement API OfeliaScan
       (`/api/v1/inventory/…/items`). La douchette USB (`scan-wedge.js`) n'applique
       aucun filtre de forme → elle transmet n'importe quel code au serveur
-- [!] **Scan caméra : le code externe est rejeté.** `static/js/scan-camera.js`
-      n'accepte qu'un **EAN-13 à clé valide et préfixe 290/291/978/979** (+977 en
-      catalogage). Un code externe est donc refusé dans deux cas : (a) c'est un
-      EAN-13 d'un autre préfixe, (b) c'est un Code39/Code128/Codabar — très
-      courant sur les étiquettes de bibliothèque — or les deux moteurs sont
-      configurés **EAN-13 uniquement** (`Html5QrcodeSupportedFormats.EAN_13`,
-      Quagga `ean_reader`). **Décision Val requise**, cf. ci-dessous
+- [x] **Scan caméra : le code externe est rejeté.** Tranché Val 2026-08-31,
+      livré **FEAT-087** (tous les formats linéaires). Ancien défaut :
+      `scan-camera.js` n'acceptait qu'un EAN-13 préfixe 290/291/978/979.
 - [x] (a) + (b) **Tranché par Val le 2026-08-31** : « ouvrir à tout type de code
       barre que le lecteur accepte ». Traité en **FEAT-087** (Sprint 31)
 
@@ -2288,12 +2315,9 @@ Demande du 2026-08-23, en marge du sprint. Résultat :
 - [x] `docs/bugs/BUG-041-renouvellement-carte-cumulatif.md`
 - [x] Cause : l'ancrage `max(today, expiration_date)` est **juste** — ce qui
       manquait, c'est la condition d'entrée
-- [x] `can_renew()` : vrai à 30 jours ou moins de l'échéance
-      (`EXPIRY_WARNING_DAYS`, la fenêtre déjà utilisée par l'avertissement
-      d'expiration), si déjà expirée, ou sans date
-- [x] `renew_card()` lève `CardStillValid` sinon — **le serveur refuse**, pas
-      seulement l'interface : sans quoi la garde ne serait qu'un décor
-- [x] Bouton `disabled` + infobulle donnant la date de validité
+- [x] `can_renew()` / `CardStillValid` / bouton grisé — livrés Sprint 31, **retirés
+      Sprint 33 (FEAT-092)** : renouveler pose aujourd'hui + 1 an, un second
+      clic le même jour ne change rien
 - [x] Enjeu aggravé par FEAT-084 : trois clics auraient produit trois factures
 - [x] 3 tests (refus, autorisation près de l'échéance, facture émise)
 
