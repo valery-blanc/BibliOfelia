@@ -1,28 +1,34 @@
-"""Vues des rapports (§6.6).
+"""Vues des rapports. SPEC §6.6, FEAT-093.
 
-- Index : liste des rapports disponibles
-- Liste des retards (imprimable)
-- Liste des inactifs (membres + livres)
-- Export CSV prêts par période
-- Export CSV catalogue complet, prêts/réservations en cours, inactifs (FEAT-040)
-- Rapport annuel PDF
+Trois vues génériques — écran, PDF, Excel — qui résolvent un `slug` dans le
+registre `builders.REPORTS`. C'est ce qui garantit qu'un écran a toujours ses
+deux exports et qu'un export montre toujours ce que l'écran montre.
+
+Les exports CSV de données brutes (FEAT-040) restent à côté : ce sont des
+fichiers de reprise pour un tableur, pas des rapports.
 """
 from __future__ import annotations
 
 import csv
 from datetime import date
 
-from django.http import HttpResponse
-from django.shortcuts import render
+from django.http import Http404, HttpResponse
+from django.shortcuts import redirect, render
 from django.utils.translation import gettext as _
 
 from apps.accounts.models import Role
 from apps.accounts.permissions import require_role
 from apps.loans.models import ReservationStatus
 
-from . import services
-from .forms import PeriodForm, YearForm
-from .pdf import render_annual_pdf
+from . import builders, periods, services
+from .excel import render_report_xlsx
+from .pdf import render_report_pdf
+
+READ_ROLES = (Role.LIBRARIAN, Role.SUPERADMIN, Role.READONLY)
+
+# Paramètres à recopier dans les liens d'export : sans eux, le PDF ne
+# reproduirait pas l'écran qu'on vient de regarder.
+CARRIED_PARAMS = ("p", "start", "end", "threshold", "days", "category", "member_category")
 
 
 def _csv_response(filename: str) -> HttpResponse:
@@ -31,62 +37,125 @@ def _csv_response(filename: str) -> HttpResponse:
     return resp
 
 
-@require_role(Role.LIBRARIAN, Role.SUPERADMIN, Role.READONLY)
+def _carried_query(params) -> str:
+    from urllib.parse import urlencode
+
+    return urlencode({k: params[k] for k in CARRIED_PARAMS if params.get(k)})
+
+
+def _build(slug: str, request):
+    """Résout le rapport et le construit. Renvoie `(spec, page, avertissement)`."""
+    spec = builders.get(slug)
+    if spec is None:
+        raise Http404(_("Ce rapport n'existe pas."))
+    warning = ""
+    period = None
+    if spec.needs_period:
+        period, warning = periods.parse(request.GET)
+    page = spec.builder(period, request.GET)
+    page.query = _carried_query(request.GET)
+    return spec, page, warning
+
+
+@require_role(*READ_ROLES)
 def reports_index(request):
-    return render(
-        request,
-        "reports/index.html",
-        {
-            "period_form": PeriodForm(),
-            "year_form": YearForm(),
-        },
+    """Le hub : d'abord ce qu'on fait, ensuite ce qu'on montre."""
+    work = [
+        {"spec": spec, "count": spec.counter() if spec.counter else None}
+        for spec in builders.in_group(builders.GROUP_WORK)
+    ]
+    return render(request, "reports/index.html", {
+        "work": work,
+        "stats": builders.in_group(builders.GROUP_STATS),
+    })
+
+
+@require_role(*READ_ROLES)
+def report_view(request, slug):
+    spec, page, warning = _build(slug, request)
+    # Les réglages propres à l'écran (catégorie, seuil) doivent survivre à un
+    # changement de période : sinon choisir « 2025 » remet le filtre à zéro.
+    filter_params = {
+        key: request.GET[key]
+        for key in CARRIED_PARAMS
+        if key not in ("p", "start", "end") and request.GET.get(key)
+    }
+    from urllib.parse import urlencode
+
+    return render(request, "reports/page.html", {
+        "spec": spec,
+        "page": page,
+        "warning": warning,
+        "shortcuts": periods.shortcuts() if spec.needs_period else [],
+        "filter_params": filter_params,
+        "filter_query": ("&" + urlencode(filter_params)) if filter_params else "",
+    })
+
+
+def _requested_block(page, request):
+    """Le sous-rapport visé par `?block=`, ou None pour l'écran entier.
+
+    Une clé inconnue (lien périmé, tableau renommé) renvoie l'écran complet
+    plutôt qu'un 404 : l'utilisateur obtient plus que ce qu'il demandait, jamais
+    une erreur.
+    """
+    key = (request.GET.get("block") or "").strip()
+    return page.block(key) if key else None
+
+
+@require_role(*READ_ROLES)
+def report_pdf(request, slug):
+    _spec, page, _warning = _build(slug, request)
+    block = _requested_block(page, request)
+    resp = HttpResponse(render_report_pdf(page, block), content_type="application/pdf")
+    resp["Content-Disposition"] = f'attachment; filename="{page.filename("pdf", block)}"'
+    return resp
+
+
+@require_role(*READ_ROLES)
+def report_xlsx(request, slug):
+    _spec, page, _warning = _build(slug, request)
+    block = _requested_block(page, request)
+    resp = HttpResponse(
+        render_report_xlsx(page, block),
+        content_type=(
+            "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet"
+        ),
     )
+    resp["Content-Disposition"] = f'attachment; filename="{page.filename("xlsx", block)}"'
+    return resp
 
 
-@require_role(Role.LIBRARIAN, Role.SUPERADMIN, Role.READONLY)
+# ─── Anciennes adresses : conservées pour ne pas casser les liens du guide ──
+
+
 def overdue_list(request):
-    threshold = int(request.GET.get("threshold", 7))
-    loans = services.overdue_loans(threshold_days=threshold)
-    return render(
-        request,
-        "reports/overdue_list.html",
-        {"loans": loans, "threshold": threshold, "today": date.today()},
-    )
+    return redirect("reports:view", slug="overdue")
 
 
-@require_role(Role.LIBRARIAN, Role.SUPERADMIN, Role.READONLY)
 def reservations_pickup_list(request):
-    reservations = services.reservations_ready_for_pickup()
-    return render(
-        request,
-        "reports/reservations_pickup.html",
-        {"reservations": reservations, "today": date.today()},
-    )
+    return redirect("reports:view", slug="pickup")
 
 
-@require_role(Role.LIBRARIAN, Role.SUPERADMIN, Role.READONLY)
 def inactive_list(request):
-    days = int(request.GET.get("days", 365))
-    members = services.inactive_members(days=days)
-    items = services.inactive_items(days=days)
-    return render(
-        request,
-        "reports/inactive_list.html",
-        {"members": members, "items": items, "days": days},
-    )
+    return redirect("reports:view", slug="inactive")
+
+
+def annual_pdf(request):
+    """Le rapport annuel d'avant FEAT-093 : la vue d'ensemble sur l'année."""
+    year = request.GET.get("year") or date.today().year
+    return redirect(f"/reports/overview.pdf?p=custom&start={year}-01-01&end={year}-12-31")
+
+
+# ─── Exports CSV de données brutes (FEAT-040), inchangés ───────────────────
 
 
 @require_role(Role.LIBRARIAN, Role.SUPERADMIN)
 def loans_csv(request):
-    form = PeriodForm(request.GET or None)
-    if not form.is_valid():
-        return render(request, "reports/period_error.html", {"form": form}, status=400)
-    start = form.cleaned_data["start"]
-    end = form.cleaned_data["end"]
-    loans = services.loans_period(start, end)
-    resp = HttpResponse(content_type="text/csv; charset=utf-8")
-    resp["Content-Disposition"] = (
-        f'attachment; filename="loans_{start.isoformat()}_{end.isoformat()}.csv"'
+    period, _warning = periods.parse(request.GET)
+    loans = services.loans_period(period.start, period.end)
+    resp = _csv_response(
+        f"loans_{period.start.isoformat()}_{period.end.isoformat()}.csv"
     )
     writer = csv.writer(resp)
     writer.writerow([
@@ -108,9 +177,6 @@ def loans_csv(request):
             f"{loan.member.last_name} {loan.member.first_name}".strip(),
         ])
     return resp
-
-
-# ─── FEAT-040 : exports CSV ────────────────────────────────────────────────
 
 
 @require_role(Role.LIBRARIAN, Role.SUPERADMIN)
@@ -252,20 +318,4 @@ def inactive_items_csv(request):
             it.record.title,
             last,
         ])
-    return resp
-
-
-@require_role(Role.LIBRARIAN, Role.SUPERADMIN)
-def annual_pdf(request):
-    from apps.core.models import Setting
-
-    form = YearForm(request.GET or None)
-    if not form.is_valid():
-        return render(request, "reports/period_error.html", {"form": form}, status=400)
-    year = form.cleaned_data["year"]
-    report = services.annual_report(year)
-    library_name = Setting.get("library_name", "BibliOfelia")
-    pdf = render_annual_pdf(report, library_name=library_name)
-    resp = HttpResponse(pdf, content_type="application/pdf")
-    resp["Content-Disposition"] = f'attachment; filename="annual_{year}.pdf"'
     return resp

@@ -8,6 +8,7 @@ from datetime import date
 from decimal import Decimal
 from dateutil.relativedelta import relativedelta
 
+from django.conf import settings
 from django.db import models, transaction
 from django.utils.translation import gettext_lazy as _
 
@@ -303,3 +304,53 @@ class MemberFamilyMember(models.Model):
         from .languages import display
 
         return display(self.languages, self.languages_other)
+
+
+class CardRenewal(models.Model):
+    """Trace d'un renouvellement de carte. FEAT-093.
+
+    `Member.expiration_date` est écrasée à chaque renouvellement (FEAT-092) :
+    une fois la nouvelle date posée, plus rien ne dit qu'il y a eu
+    renouvellement, ni quand. « Combien de réinscriptions cette année ? » — la
+    question que pose tout comité d'association — n'était donc pas calculable.
+
+    Les deux contournements possibles ont été écartés : déduire la
+    réinscription de `expiration_date` moins la validité ment dès qu'une date a
+    été corrigée à la main, et la déduire des factures de cotisation ignore les
+    catégories gratuites, qui n'émettent aucune facture.
+
+    L'historique antérieur à la mise en service de cette table est perdu par
+    construction : le rapport des usagers affiche depuis quand il compte plutôt
+    qu'un zéro trompeur.
+    """
+
+    member = models.ForeignKey(
+        Member,
+        related_name="card_renewals",
+        on_delete=models.CASCADE,
+        verbose_name=_("usager"),
+    )
+    renewed_on = models.DateField(default=date.today, verbose_name=_("renouvelée le"))
+    previous_expiration = models.DateField(
+        null=True, blank=True, verbose_name=_("ancienne expiration")
+    )
+    new_expiration = models.DateField(verbose_name=_("nouvelle expiration"))
+    user = models.ForeignKey(
+        settings.AUTH_USER_MODEL,
+        null=True,
+        blank=True,
+        related_name="card_renewals",
+        on_delete=models.SET_NULL,
+        verbose_name=_("enregistrée par"),
+    )
+
+    class Meta:
+        verbose_name = _("renouvellement de carte")
+        verbose_name_plural = _("renouvellements de carte")
+        ordering = ["-renewed_on", "-id"]
+        indexes = [
+            models.Index(fields=["renewed_on"], name="card_renewal_date_idx"),
+        ]
+
+    def __str__(self) -> str:
+        return f"{self.member} — {self.renewed_on}"

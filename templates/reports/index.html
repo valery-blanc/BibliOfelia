@@ -8,101 +8,65 @@
 {% block content %}
 <header class="pagehead">
     <div class="pagehead-icon" style="--ph-bg:var(--forest);--ph-fg:#fff">
-        {% icon "file-text" size="28px" %}
+        {% icon "chart-bar" size="28px" %}
     </div>
     <div class="pagehead-text">
         <h1 class="pagehead-title">{% trans "Rapports" %}</h1>
-        <div class="pagehead-sub">{% trans "Listes imprimables, exports CSV et rapport annuel PDF." %}</div>
+        <div class="pagehead-sub">{% trans "Les listes du jour, et les chiffres de la bibliothèque." %}</div>
     </div>
 </header>
 
-<h2 class="section-title">{% trans "Listes imprimables" %}</h2>
-<div class="list">
-    <a href="{% url 'reports:overdue' %}" class="list-row">
-        <div class="lrow-icon" style="--lr-bg:var(--blush-light);--lr-fg:#B83232">
-            {% icon "triangle-alert" size="18px" %}
+{% comment %}
+Deux familles volontairement inégales : en haut ce qui se fait aujourd'hui,
+avec un verbe et un chiffre ; en dessous, plus calme, ce qui se montre au
+comité. Un bénévole qui ouvre cet écran cherche presque toujours la première.
+
+Chaque entrée porte la couleur de son sujet, comme la page Avancé : le rouge
+alerte pour les retards, l'ambre pour ce qui attend, le vert pour le fonds.
+{% endcomment %}
+<h2 class="section-title">
+    <span style="display:inline-flex;align-items:center;gap:10px">
+        <span class="stitle-badge" style="background:var(--blush-light);color:#B83232;width:32px;height:32px;border-radius:10px;display:inline-flex;align-items:center;justify-content:center">
+            {% icon "clipboard-list" size="16px" %}
+        </span>
+        {% trans "À faire aujourd'hui" %}
+    </span>
+</h2>
+<div class="report-actions">
+    {% for entry in work %}
+    <a href="{% url 'reports:view' slug=entry.spec.slug %}" class="report-action"
+       style="--lr-bg:{{ entry.spec.tint_bg }};--lr-fg:{{ entry.spec.tint_fg }}">
+        <div class="report-action-icon">{% icon entry.spec.icon size="22px" %}</div>
+        <div class="report-action-body">
+            <div class="report-action-title">{{ entry.spec.action_label }}</div>
+            <div class="report-action-sub">{{ entry.spec.description }}</div>
         </div>
-        <div class="lrow-body">
-            <div class="lrow-title">{% trans "Liste des retards" %}</div>
-            <div class="lrow-sub">{% trans "Retards de plus de 7 jours par défaut" %}</div>
-        </div>
-        <div class="lrow-end">{% icon "chevron-right" size="18px" %}</div>
+        {% if entry.count is not None %}
+        <div class="report-action-count{% if entry.count %} report-action-count--on{% endif %}">{{ entry.count }}</div>
+        {% endif %}
     </a>
-    <a href="{% url 'reports:reservations_pickup' %}" class="list-row">
-        <div class="lrow-icon" style="--lr-bg:var(--amber-light);--lr-fg:#946906">
-            {% icon "bookmark-check" size="18px" %}
-        </div>
-        <div class="lrow-body">
-            <div class="lrow-title">{% trans "Réservations à retirer" %}</div>
-            <div class="lrow-sub">{% trans "Liste de relance pour les usagers" %}</div>
-        </div>
-        <div class="lrow-end">{% icon "chevron-right" size="18px" %}</div>
-    </a>
-    <a href="{% url 'reports:inactive' %}" class="list-row">
-        <div class="lrow-icon" style="--lr-bg:var(--cream-dark);--lr-fg:var(--ink-soft)">
-            {% icon "archive" size="18px" %}
-        </div>
-        <div class="lrow-body">
-            <div class="lrow-title">{% trans "Inactifs" %}</div>
-            <div class="lrow-sub">{% trans "Usagers et exemplaires inactifs" %}</div>
-        </div>
-        <div class="lrow-end">{% icon "chevron-right" size="18px" %}</div>
-    </a>
+    {% endfor %}
 </div>
 
-<h2 class="section-title" style="margin-top:28px">{% trans "Exports CSV" %}</h2>
-<div class="list">
-    <a href="{% url 'reports:catalog_csv' %}" class="list-row">
-        <div class="lrow-icon" style="--lr-bg:var(--amber-light);--lr-fg:#946906">
-            {% icon "file-text" size="18px" %}
-        </div>
-        <div class="lrow-body">
-            <div class="lrow-title">{% trans "Catalogue complet (CSV)" %}</div>
-            <div class="lrow-sub">{% trans "Une ligne par exemplaire, toutes les métadonnées de la notice." %}</div>
-        </div>
-        <div class="lrow-end">{% icon "chevron-right" size="18px" %}</div>
+<h2 class="section-title" style="margin-top:28px">
+    <span style="display:inline-flex;align-items:center;gap:10px">
+        <span class="stitle-badge" style="background:var(--forest-light);color:var(--forest);width:32px;height:32px;border-radius:10px;display:inline-flex;align-items:center;justify-content:center">
+            {% icon "chart-bar" size="16px" %}
+        </span>
+        {% trans "Les chiffres de la bibliothèque" %}
+    </span>
+</h2>
+<p class="muted" style="margin-top:-6px">
+    {% trans "Chaque écran s'imprime en PDF et s'enregistre en Excel, en entier ou tableau par tableau." %}
+</p>
+<div class="report-grid">
+    {% for spec in stats %}
+    <a href="{% url 'reports:view' slug=spec.slug %}" class="report-card"
+       style="--lr-bg:{{ spec.tint_bg }};--lr-fg:{{ spec.tint_fg }}">
+        <div class="report-card-icon">{% icon spec.icon size="20px" %}</div>
+        <div class="report-card-title">{{ spec.title }}</div>
+        <div class="report-card-sub">{{ spec.description }}</div>
     </a>
-    <a href="{% url 'reports:active_loans_reservations_csv' %}" class="list-row">
-        <div class="lrow-icon" style="--lr-bg:var(--blush-light);--lr-fg:#B83232">
-            {% icon "file-text" size="18px" %}
-        </div>
-        <div class="lrow-body">
-            <div class="lrow-title">{% trans "Prêts et réservations en cours (CSV)" %}</div>
-            <div class="lrow-sub">{% trans "Tous les prêts actifs / en retard et toutes les réservations en attente ou prêtes au retrait." %}</div>
-        </div>
-        <div class="lrow-end">{% icon "chevron-right" size="18px" %}</div>
-    </a>
-</div>
-
-<h2 class="section-title" style="margin-top:28px">{% trans "Export CSV des prêts (par période)" %}</h2>
-<div class="card">
-    <form method="get" action="{% url 'reports:loans_csv' %}">
-        <div class="grid-2">
-            <div class="field">
-                <label for="{{ period_form.start.id_for_label }}">{{ period_form.start.label }}</label>
-                {{ period_form.start }}
-            </div>
-            <div class="field">
-                <label for="{{ period_form.end.id_for_label }}">{{ period_form.end.label }}</label>
-                {{ period_form.end }}
-            </div>
-        </div>
-        <button type="submit" class="btn btn--primary">
-            {% icon "file-text" size="16px" %} {% trans "Télécharger CSV" %}
-        </button>
-    </form>
-</div>
-
-<h2 class="section-title" style="margin-top:28px">{% trans "Rapport annuel d'activité (PDF)" %}</h2>
-<div class="card">
-    <form method="get" action="{% url 'reports:annual_pdf' %}">
-        <div class="field">
-            <label for="{{ year_form.year.id_for_label }}">{{ year_form.year.label }}</label>
-            {{ year_form.year }}
-        </div>
-        <button type="submit" class="btn btn--primary">
-            {% icon "file-text" size="16px" %} {% trans "Générer le PDF" %}
-        </button>
-    </form>
+    {% endfor %}
 </div>
 {% endblock %}

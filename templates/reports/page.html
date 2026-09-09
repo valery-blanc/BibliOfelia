@@ -1,0 +1,166 @@
+{% extends "base.html" %}
+{% load i18n biblio_icons report_tags %}
+
+{% block title %}{{ page.title }}{% endblock %}
+
+{% block tile_strip %}{% include "partials/_tile_strip.html" with active="advanced" %}{% endblock %}
+
+{% block content %}
+<header class="pagehead">
+    <div class="pagehead-icon" style="--ph-bg:var(--forest);--ph-fg:#fff">
+        {% icon spec.icon size="28px" %}
+    </div>
+    <div class="pagehead-text">
+        <h1 class="pagehead-title">{{ page.title }}</h1>
+        <div class="pagehead-sub">
+            {{ page.subtitle }}
+            {% if page.period %}<br><strong>{{ page.period.label }}</strong>{% endif %}
+        </div>
+    </div>
+</header>
+
+<div class="report-exports">
+    <a class="btn btn--primary" href="{% url 'reports:pdf' slug=page.slug %}{% if page.query %}?{{ page.query }}{% endif %}">
+        {% icon "printer" size="16px" %} {% trans "Imprimer (PDF)" %}
+    </a>
+    <a class="btn btn--ghost" href="{% url 'reports:xlsx' slug=page.slug %}{% if page.query %}?{{ page.query }}{% endif %}">
+        {% icon "file-spreadsheet" size="16px" %} {% trans "Fichier Excel" %}
+    </a>
+</div>
+
+{% if warning %}
+<div class="alert-box" style="margin-top:14px">
+    <div class="alert-box-header">
+        <div class="alert-box-icon">{% icon "circle-alert" size="20px" %}</div>
+        <div><div class="alert-box-sub">{{ warning }}</div></div>
+    </div>
+</div>
+{% endif %}
+
+{% if spec.needs_period %}{% include "reports/_period.html" %}{% endif %}
+{% include "reports/_filters.html" %}
+
+{% if page.note %}<p class="muted report-note">{{ page.note }}</p>{% endif %}
+
+{% if page.kpis %}
+<div class="kpis report-kpis">
+    {% for kpi in page.kpis %}
+    <div class="kpi" style="--kpi-color:var(--{{ kpi.color }})">
+        <div class="kpi-num">{{ kpi.value }}</div>
+        <div class="kpi-label">{{ kpi.label }}</div>
+        {% if kpi.hint %}<div class="kpi-meta">{{ kpi.hint }}</div>{% endif %}
+    </div>
+    {% endfor %}
+</div>
+{% endif %}
+
+{% if page.blocks|length > 1 %}
+{% comment %}
+Le menu des sous-rapports. Sur un écran à sept tableaux, on perd le fil au
+troisième défilement ; il donne aussi, d'un coup d'œil, la liste de ce que la
+page contient. Ce sont des boutons, comme les périodes : même geste, même
+apparence.
+{% endcomment %}
+<nav class="report-toc" aria-label="{% trans 'Sommaire' %}">
+    <span class="report-toc-label">{% trans "Aller à :" %}</span>
+    {% for block in page.blocks %}
+    <a class="chip-btn" href="#{{ block.key }}">{{ block.title }}</a>
+    {% endfor %}
+</nav>
+{% endif %}
+
+{% for block in page.blocks %}
+<section class="report-block" id="{{ block.key }}">
+    <h2 class="section-title">
+        {{ block.title }}
+        {% if block|is_table and block.rows %}<small>{{ block.rows|length }}</small>{% endif %}
+    </h2>
+
+    {% comment %}
+    Chaque sous-rapport a ses propres exports : un bénévole qui veut imprimer la
+    seule liste des impayés n'a pas à sortir les huit tableaux de l'écran.
+    {% endcomment %}
+    <div class="block-exports">
+        <a href="{% url 'reports:pdf' slug=page.slug %}?block={{ block.key }}{% if page.query %}&{{ page.query }}{% endif %}"
+           title="{% trans 'Imprimer ce tableau seul' %}">
+            {% icon "printer" size="14px" %} {% trans "PDF" %}
+        </a>
+        <a href="{% url 'reports:xlsx' slug=page.slug %}?block={{ block.key }}{% if page.query %}&{{ page.query }}{% endif %}"
+           title="{% trans 'Enregistrer ce tableau seul' %}">
+            {% icon "file-spreadsheet" size="14px" %} {% trans "Excel" %}
+        </a>
+    </div>
+
+    {% if block|is_chart %}
+        {% if block.is_empty %}
+            <p class="muted">{% trans "Aucun chiffre à montrer pour cette période." %}</p>
+        {% else %}
+            <div class="card chart-card">
+                <div class="chart-scroll">{{ block|chart_svg }}</div>
+            </div>
+        {% endif %}
+        {% if block.note %}<p class="muted report-note">{{ block.note }}</p>{% endif %}
+    {% else %}
+        {% if block.is_empty %}
+            <p class="muted">{{ block.empty_text|default:_("Rien à afficher pour cette période.") }}</p>
+        {% else %}
+        {% comment %}
+        Tableau et graphe des mêmes données : côte à côte sur grand écran,
+        empilés en dessous de 900 px. Au-delà de quatre colonnes le tableau
+        prend toute la largeur (`--wide`) et son graphe passe dessous, sinon ses
+        colonnes deviennent illisibles — même règle que le PDF.
+
+        Le graphe n'est tracé en version compacte que s'il est **réellement**
+        posé sur une demi-page. Sur un bloc `--wide`, il occupe toute la largeur
+        et le dessin compact y serait étiré, ses libellés grossis jusqu'à
+        déborder du cadre.
+        {% endcomment %}
+        <div class="block-pair{% if block.chart and not block.chart.is_empty %} block-pair--split{% endif %}{% if block.columns|length > 4 %} block-pair--wide{% endif %}">
+            <div class="table-wrap">
+                <table class="table">
+                    <thead>
+                        <tr>
+                            {% for column in block.columns %}
+                            <th{% if column.align == "right" %} style="text-align:right"{% endif %}>{{ column.label }}</th>
+                            {% endfor %}
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {% for row in block.rows %}
+                        <tr>
+                            {% for cell in row|cells:block.columns %}
+                            <td{% if cell.align == "right" %} style="text-align:right"{% endif %}>{{ cell.value }}</td>
+                            {% endfor %}
+                        </tr>
+                        {% endfor %}
+                    </tbody>
+                    {% if block.total_row %}
+                    <tfoot>
+                        <tr>
+                            {% for cell in block.total_row|cells:block.columns %}
+                            <th{% if cell.align == "right" %} style="text-align:right"{% endif %}>{{ cell.value }}</th>
+                            {% endfor %}
+                        </tr>
+                    </tfoot>
+                    {% endif %}
+                </table>
+            </div>
+            {% if block.chart and not block.chart.is_empty %}
+            <div class="card chart-card block-pair-chart">
+                <div class="chart-scroll">
+                    {% if block.columns|length > 4 %}{{ block.chart|chart_svg }}
+                    {% else %}{{ block.chart|chart_svg:"compact" }}{% endif %}
+                </div>
+            </div>
+            {% endif %}
+        </div>
+        {% endif %}
+        {% if block.note %}<p class="muted report-note">{{ block.note }}</p>{% endif %}
+    {% endif %}
+</section>
+{% endfor %}
+
+{% if page.slug == "collection" or page.slug == "loans" %}
+{% include "reports/_raw_csv.html" %}
+{% endif %}
+{% endblock %}

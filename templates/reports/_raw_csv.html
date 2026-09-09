@@ -1,0 +1,51 @@
+{% load i18n biblio_icons %}
+{% comment %}
+FEAT-093 (retour Val) — les exports CSV de données brutes ont rejoint l'écran
+qui montre les mêmes données : le catalogue sous « Le fonds », les prêts et
+réservations sous « Les prêts ». Ils ne sont plus un menu du hub.
+
+Ils restent distincts des exports PDF/Excel d'un sous-rapport : ceux-là
+reproduisent l'écran, ceux-ci sortent **toutes** les colonnes de la base pour
+la reprise dans un tableur.
+{% endcomment %}
+<section class="report-block">
+    <h2 class="section-title">{% trans "Sortir toutes les colonnes (CSV)" %}</h2>
+    <p class="muted report-note">
+        {% trans "Fichiers destinés à un tableur, avec toutes les colonnes de la base — bien plus que ce que les tableaux ci-dessus affichent. Ils ne sont ni mis en page ni commentés." %}
+    </p>
+    <div class="list">
+        {% if page.slug == "collection" %}
+        <a href="{% url 'reports:catalog_csv' %}" class="list-row">
+            <div class="lrow-icon" style="--lr-bg:var(--amber-light);--lr-fg:#946906">
+                {% icon "file-spreadsheet" size="18px" %}
+            </div>
+            <div class="lrow-body">
+                <div class="lrow-title">{% trans "Catalogue complet (CSV)" %}</div>
+                <div class="lrow-sub">{% trans "Une ligne par exemplaire : ISBN, éditeur, année, tags, résumé, provenance…" %}</div>
+            </div>
+            <div class="lrow-end">{% icon "chevron-right" size="18px" %}</div>
+        </a>
+        {% else %}
+        <a href="{% url 'reports:active_loans_reservations_csv' %}" class="list-row">
+            <div class="lrow-icon" style="--lr-bg:var(--blush-light);--lr-fg:#B83232">
+                {% icon "file-spreadsheet" size="18px" %}
+            </div>
+            <div class="lrow-body">
+                <div class="lrow-title">{% trans "Prêts et réservations en cours (CSV)" %}</div>
+                <div class="lrow-sub">{% trans "La situation d'aujourd'hui, prêts et réservations dans un même fichier." %}</div>
+            </div>
+            <div class="lrow-end">{% icon "chevron-right" size="18px" %}</div>
+        </a>
+        <a href="{% url 'reports:loans_csv' %}{% if page.query %}?{{ page.query }}{% endif %}" class="list-row">
+            <div class="lrow-icon" style="--lr-bg:var(--sky-light);--lr-fg:#3C6E99">
+                {% icon "file-spreadsheet" size="18px" %}
+            </div>
+            <div class="lrow-body">
+                <div class="lrow-title">{% trans "Les prêts de la période (CSV)" %}</div>
+                <div class="lrow-sub">{% trans "Tous les prêts de la période affichée en haut de l'écran." %}</div>
+            </div>
+            <div class="lrow-end">{% icon "chevron-right" size="18px" %}</div>
+        </a>
+        {% endif %}
+    </div>
+</section>

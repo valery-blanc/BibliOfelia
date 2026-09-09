@@ -85,6 +85,7 @@ plugins:
             Retrait et expiration: Pickup and expiration
             Cartes de membres: Member cards
             Étiquettes de livres: Book labels
+            Tous les rapports: All reports
             KPIs du dashboard: Dashboard KPIs
             Exports CSV: CSV exports
             Caisse: Cash desk
@@ -135,6 +136,7 @@ plugins:
             Retrait et expiration: Recogida y expiración
             Cartes de membres: Tarjetas de miembros
             Étiquettes de livres: Etiquetas de libros
+            Tous les rapports: Todos los informes
             KPIs du dashboard: KPIs del panel
             Exports CSV: Exportaciones CSV
             Caisse: Caja
@@ -185,6 +187,7 @@ plugins:
             Retrait et expiration: Fakana sy fahataperana
             Cartes de membres: Karatra mpianatra
             Étiquettes de livres: Etikety boky
+            Tous les rapports: Ny tatitra rehetra
             KPIs du dashboard: KPI tabilao
             Exports CSV: Fanondranana CSV
             Caisse: Caisse
@@ -252,6 +255,7 @@ nav:
       - Cartes de membres: impressions/cartes.md
       - Étiquettes de livres: impressions/etiquettes.md
   - Rapports:
+      - Tous les rapports: rapports/liste.md
       - KPIs du dashboard: rapports/kpis.md
       - Exports CSV: rapports/exports.md
   - FAQ: faq.md

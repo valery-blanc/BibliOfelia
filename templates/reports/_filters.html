@@ -1,0 +1,78 @@
+{% load i18n biblio_icons %}
+{% comment %}
+FEAT-093 — les réglages propres à un écran.
+
+Les seuils sont des **boutons**, pas un champ à taper : « 7 / 14 / 30 jours »
+se choisit d'un doigt, et personne ne peut y écrire une valeur absurde. Le
+filtre par rayon reste une liste déroulante, parce qu'il y a trop de rayons
+pour en faire des boutons.
+{% endcomment %}
+{% if page.filters %}
+<div class="card report-filters">
+
+    {% if page.filters.thresholds and page.slug == "overdue" %}
+    <div class="filter-group">
+        <div class="filter-label">{% trans "Retard d'au moins" %}</div>
+        <div class="btn-row">
+            {% for value in page.filters.thresholds %}
+            <a class="chip-btn{% if value == page.filters.threshold %} chip-btn--on{% endif %}"
+               href="?threshold={{ value }}">
+                {% if value %}{% blocktrans %}{{ value }} jours{% endblocktrans %}{% else %}{% trans "Tous" %}{% endif %}
+            </a>
+            {% endfor %}
+        </div>
+    </div>
+    {% endif %}
+
+    {% if page.filters.thresholds and page.slug == "inactive" %}
+    <div class="filter-group">
+        <div class="filter-label">{% trans "Sans aucun prêt depuis" %}</div>
+        <div class="btn-row">
+            {% for value in page.filters.thresholds %}
+            <a class="chip-btn{% if value == page.filters.days %} chip-btn--on{% endif %}"
+               href="?days={{ value }}{% if page.filters.category %}&category={{ page.filters.category }}{% endif %}{% if page.filters.member_category %}&member_category={{ page.filters.member_category }}{% endif %}">
+                {% blocktrans %}{{ value }} jours{% endblocktrans %}
+            </a>
+            {% endfor %}
+        </div>
+    </div>
+    {% endif %}
+
+    {% if page.filters.categories %}
+    <form method="get" class="filter-group filter-form">
+        {% if page.period and page.period.key != "custom" %}
+        <input type="hidden" name="p" value="{{ page.period.key }}">
+        {% elif page.period %}
+        <input type="hidden" name="p" value="custom">
+        <input type="hidden" name="start" value="{{ page.period.start|date:'Y-m-d' }}">
+        <input type="hidden" name="end" value="{{ page.period.end|date:'Y-m-d' }}">
+        {% endif %}
+        {% if page.filters.days %}<input type="hidden" name="days" value="{{ page.filters.days }}">{% endif %}
+        <div class="field">
+            <label for="filter-category">{% trans "Montrer seulement le rayon" %}</label>
+            <select id="filter-category" name="category">
+                <option value="">{% trans "Tous les rayons" %}</option>
+                {% for category in page.filters.categories %}
+                <option value="{{ category.code }}"{% if category.code == page.filters.category %} selected{% endif %}>{{ category.name }}</option>
+                {% endfor %}
+            </select>
+        </div>
+        {% if page.filters.member_categories %}
+        <div class="field">
+            <label for="filter-member-category">{% trans "Catégorie d'usager" %}</label>
+            <select id="filter-member-category" name="member_category">
+                <option value="">{% trans "Toutes les catégories" %}</option>
+                {% for category in page.filters.member_categories %}
+                <option value="{{ category.code }}"{% if category.code == page.filters.member_category %} selected{% endif %}>{{ category.name }}</option>
+                {% endfor %}
+            </select>
+        </div>
+        {% endif %}
+        <button type="submit" class="btn btn--ghost">
+            {% icon "filter" size="16px" %} {% trans "Appliquer" %}
+        </button>
+    </form>
+    {% endif %}
+
+</div>
+{% endif %}

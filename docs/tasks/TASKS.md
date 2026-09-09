@@ -4,7 +4,98 @@ Source de vérité de l'avancement v1. Une case `[x]` = livrable terminé et dé
 
 Mise à jour : 2026-05-26 (Sprint 12 **CLOS** — FEAT-038 (cartes membres : fond crème, logo OFELIA filigrane, photo HG, langue BG, bloc droite), FEAT-039 (étiquettes 70×42 mm, titre wrap 2 lignes, auteurs 2 lignes, logo Ofelia), split paramétrage `labels` → `printing_cards` + `printing_labels`. BUG-013 v2 (sélecteur de langue qui perdait `/bibliofelia/` à chaque déploiement : wrapper `apps/core/i18n_views.py:set_language` force `FORCE_SCRIPT_NAME` + échange code langue même sur URL non résolue). **Gate i18n pérenne** : `scripts/i18n_check.py` exit != 0 si chaîne manquante ; documenté dans CLAUDE.md comme obligatoire avant tout commit ; 207 entrées EN/ES/MG appliquées (Sprints 10-12 incl. FORMS labels enrobés `gettext_lazy`). 304 tests verts (287 → 304). Sprint 11 **CLOS** — — BUG-014 (saisie clavier sur `/loans/lend/` + `/loans/return/` : bouton scan repassé `type="button"` + bouton « Valider » visible séparé pour la saisie clavier), FEAT-034 (UI réservations : liste d'attente PENDING sur fiche notice, expiration affichée sur exemplaires mis de côté, section « Réservations à relancer » sur page Retour, paramètres `default_loan_days`/`reservation_expiry_days`/`pickup_hold_days` exposés dans `/settings/loans/`), FEAT-035 (Setting `default_loan_days` global défaut 21, section « Relances à faire » bas du dashboard avec 10 prêts en retard), FEAT-036 (`Reservation.notified_at` + endpoint `POST /loans/reservations/<pk>/notify/`, page Réservations enrichie code Ofelia / dates avec heure / date limite retrait / police 16-17 px + cadre « Notifications à faire » entre tuiles et bannière scan sur dashboard), BUG-015 (DateInput format ISO `%Y-%m-%d` sur `MemberForm`, sinon locale FR remplit pas l'input HTML5), FEAT-037 (photo membre dans pagehead fiche + miniature sur form, expiration_date = registration_date + 1 an auto JS au change + initial `today + 1 an` à la création). 287 tests verts (266 → 287, +21). Migration `loans/0002_reservation_notified_at`. 5 vagues de déploiement Pi. 2 nouvelles entrées MEMORY (DateInput ISO format, bouton scan type=button + Valider visible). — Sprint 10 **CLOS end-to-end** — FEAT-032 + FEAT-033 validés Val 2026-05-24 sur la Pi, **+ OfeliaScan mobile mis à jour le 2026-05-24** : test prod 18:26 → session récolement scope=A1 reçue d'OfeliaScan avec 16 scans, 16 exemplaires relocate de J1 → A1 automatiquement. Bout-en-bout fonctionnel : catalogage OfeliaScan envoie `location_code`, picker récolement OfeliaScan envoie `scope_type=location` + `scope_location_code`, BibliOfelia déplace les items au scan. FEAT-032 : UI librarian /catalog/locations/ + endpoint GET /api/v1/locations testés OK. FEAT-033 : relocate auto vérifiée via UI web ET via OfeliaScan mobile. Commit `9d4fe83` + push + déploiement Pi (rebuild Docker + migration `0003`). 266 tests verts. — Sprint 8 **CLOS** — FEAT-025 **validé Val 2026-05-23** : refonte design global, 23 templates métiers harmonisés sur le design system OFELIA. Lot A pilote validé en premier (record_detail, member_detail, reports/index, settings_index), puis Lots B+C+D livrés d'un bloc. Helpers CSS ajoutés (`.req`, `.help-hint`, `.field-error`, `.form-control`, `details.advanced-section`, `.isbn-row`, `.form-actions`), `_field.html` migré `.form-row` → `.field`. Découverte d'infra : templates **embarqués au build Docker**, pas bind-mountés → rebuild obligatoire pour tout changement de template (documenté dans FEAT-025). — Sprint 7 **CLOS** — FEAT-024 **validé Val 2026-05-23** : scanner caméra navigateur sur Android Firefox HTTPS OK, fallback OfeliaScan automatique en HTTP LAN, Chrome Android sans Play Store via `S.browser_fallback_url`, bouton Annuler pendant polling. Décision UX : caméra-d'abord automatique, pas de toggle utilisateur. Décision infra : pas de cert auto-signé. 3 commits Pi `d7c8e8f` → `9d2af81` → `e9993a5`. FEAT-023 **validé Val 2026-05-23** : banner dashboard → OfeliaScan ouvre → scan livre → retour BibliOfelia → fiche notice affichée, bout-en-bout fonctionnel. Modèle `ScanHandoff` + endpoints `/api/v1/scan-handoff[/{token}]` + JS `scan-handoff.js` + 4 boutons « Scanner » câblés. BUG-010 entrypoint Dockerfile + BUG-011 CSRF cookie HttpOnly + Chrome Android `intent://` URL résolus. Sprints 3/5/6 clos. Reste pour Sprint 7 : Android-side OfeliaScan déjà fonctionnelle côté Val (intent filter + activity scan-one + POST callback) — implémentation Android terminée hors repo. Prochain sprint : FEAT-024 scanner caméra navigateur (HTTPS).)
 
-## ⏭️ REPRISE — état au 05/09/2026
+## ⏭️ REPRISE — état au 10/09/2026
+
+**Sprint 34 CLOS**, validé par Val le 2026-09-10 (« c'est ok »).
+**FEAT-093 — refonte complète des rapports** : dix écrans, cinquante
+sous-rapports, chacun exportable en PDF et en Excel, et le guide utilisateur
+qui les liste tous.
+
+**Tests : 1020 passed**, mesurés sur l'arbre de travail devenu le commit de
+clôture, **avant** les trois dernières retouches de documentation (exemples de
+recherche du guide, correctif nginx, fiches). Ces retouches ne touchent aucun
+code exécutable ; `apps/reports` **133 passed** a été rejoué après elles.
+Gate i18n : `python scripts/i18n_check.py` = **0** — 346 chaînes EN/ES/MG
+(`scripts/translations_sprint34.py`).
+
+**Déploiement** : Fez `sanjuan` + `grand-saconnex` (healthy), image de secours
+sur Avignon, Box Canaima (`edubox-bibliofelia` healthy, migration
+`members/0008_cardrenewal` appliquée). Guide republié sur
+`docs.bibliofelia.org` **et** sur la Box, 200 dans les quatre langues.
+
+### 🔴 À FAIRE EN PREMIER
+
+- **Committer `C:\WORK\keebee`** — le correctif nginx du cache du guide
+  (`nginx/conf.d/ofelia-locations.inc`) y est **modifié et non committé**.
+  ⚠️ Ne stager **que** ce fichier : le dépôt keebee porte d'autres travaux non
+  suivis (`ZeroTier-–-Networks.png`, `docs/bugs/BUG-028-*`).
+  **Signal d'échec** : après un déploiement keebee, la recherche du guide
+  redevient muette pendant 24 h après chaque mise à jour de la doc.
+
+- **Reporter `TZ: ${TZ:-UTC}` dans `C:\WORK\keebee\docker-compose.yml`**
+  (services `bibliofelia` et `bibliofelia-worker`). Hérité du Sprint 29,
+  **toujours pas fait**. **Signal d'échec** : après un déploiement keebee,
+  l'accueil de la Box réaffiche l'heure UTC au lieu de CEST.
+
+- ⚠️ **La copie nginx de la Box diverge du dépôt keebee** — 204 lignes contre
+  236. Le bloc du guide y a été patché **en place**, jamais écrasé par la
+  version du dépôt : on ignore ce que contiennent les 32 lignes d'écart.
+  **Ne pas** régler cela par un `cp` du dépôt vers la Box sans avoir d'abord
+  lu le diff complet. Sauvegarde du fichier d'origine :
+  `/tmp/ofelia-locations.inc.bak` sur la Box (volatile, un redémarrage l'efface).
+
+### 🧨 Réfuté / clos dans cette session — ne pas le rebâtir
+
+- ⛔ **Étiquettes écrites DANS les tranches des camemberts** — essayé, réfuté
+  par Val : un texte blanc sur une part claire, ou débordant sur le fond blanc,
+  devient invisible. Toutes les étiquettes sont **à l'extérieur**, reliées par
+  un trait.
+- ⛔ **Camembert sur « Les rayons »** — remplacé par un **double histogramme**
+  (livres / prêts), demande de Val : le camembert ne montrait que le fonds.
+- ⛔ **Graphe sous « Le bilan en un tableau »** — supprimé à la demande de Val :
+  quatorze grandeurs hétérogènes ne se lisent pas sur un axe commun.
+- ⛔ **« Réindexer la recherche du guide »** — il n'y a rien à réindexer :
+  `mkdocs` reconstruit l'index à chaque build. Le défaut était un `expires 1d`
+  nginx qui périmait l'index dans le navigateur.
+- ⛔ **Sous-`location` nginx avec `alias` + expression régulière** pour épargner
+  les assets du `no-cache` — écartée : nginx ne réassemble pas le chemin sans
+  capture, on aurait troqué un défaut visible contre un défaut discret.
+- ⛔ **La formule littérale de « période précédente » de `temp.txt`**
+  (`start - (end - start)` → `start`) — elle faisait **chevaucher** les deux
+  périodes d'un jour. Le bloc s'arrête à la veille du début.
+- ⛔ **`bibliofelia.css` pour les styles de l'application** — cette feuille
+  n'est chargée que par le wizard d'installation. Tout ce que voit un
+  bibliothécaire s'habille dans **`ofelia.css`**.
+
+### ⏳ Ouvert, avec son motif
+
+- **Captures du guide pour les rapports : toutes périmées.** Les dix écrans
+  sont neufs, la capture `reports-index.png` montre l'ancien hub. Non refaites
+  faute de données de démonstration sur la Box (ni animation, ni saisie de
+  temps, ni facture) : une capture d'écran vide serait pire qu'une capture
+  périmée.
+- **Captures fiche / édition usager** encore datées d'avant FEAT-092 (boutons
+  de carte déplacés) — hérité du Sprint 33.
+- **Coordonnées d'annotation Playwright** (`bounding_box`, Sprint 15, Task 3) —
+  jamais fait, les annotations restent codées en dur.
+- **Unité systemd d'extinction** dans keebee/ofeliabox (FEAT-086) : le bouton
+  de bouclement écrit le drapeau, la Box ne s'éteint pas.
+- **SMTP Grand-Saconnex** pas configuré (Avancé → Paramètres → Email).
+- **Test caméra réel** (FEAT-087) : un Code128 externe lu à la caméra, par Val.
+- **`attendance` / `team` / `money` jamais vus avec des données** sur une cible
+  réelle. Vérifiés sur un jeu de démonstration en transaction annulée : les
+  graphes s'y construisent. La Box n'a rien à y montrer tant que personne n'y
+  saisit d'animation, de temps de travail ou de facture.
+
+### 🔁 À rejouer si un rapport change
+
+`python scripts/build_reports_guide.py` régénère la page « Tous les rapports »
+du guide. **L'ancre d'un sous-rapport est l'empreinte de son titre traduit** :
+elle ne se recopie pas à la main et diffère dans les quatre langues. Un test
+(`test_the_guide_page_lists_every_report_and_sub_report`) échoue si le guide et
+les écrans divergent — c'est le rappel, pas une option.
+
+## ⏭️ REPRISE — état au 05/09/2026 *(supplanté par le bloc du 10/09)*
 
 **Sprint 33 CLOS**, validé par Val le 2026-09-05 (« c'est tout bon »).
 Commit **`7b2c464`** — FEAT-092 (Remplacer / Renouveler sur Modifier) +
@@ -90,6 +181,194 @@ Arbitrages Val :
       (`C:\Users\Val\.claude\projects\C--WORK-BibliOfelia\memory\MEMORY.md`).
       Val utilise Claude et Grok indifféremment. HANDOFF + fiche mémoire
       alignés.
+
+## Sprint 34 — Refonte complète des rapports (FEAT-093)
+
+> Ouvert 2026-09-09 (`temp.txt`). Demande Val : **on revoit tous les rapports**
+> — les existants, ceux du logiciel de ludothèque (`docs/specs/Ecrans_ludotheque.pdf`)
+> et une liste de chiffres nouveaux. Public : bénévoles peu à l'aise avec
+> l'informatique, comité de l'association, donateurs. Écrans simples, titres
+> explicites, gros boutons de période, graphes simples, **et chaque écran
+> exporte en PDF et en Excel ce qu'il affiche** — pas d'export sans écran,
+> pas d'écran sans les deux exports. Charte OFELIA partout, y compris PDF.
+
+### Préparation
+- [x] Lire et valider la spec (`temp.txt` + PDF ludothèque dépouillé, 21 pages)
+- [x] Inventaire exhaustif des données (existant + PDF + demandes Val + ajouts)
+- [x] Avis consultatif Grok — données manquantes
+- [x] `docs/specs/FEAT-093-refonte-rapports.md`
+- [x] Avis consultatif Grok — ergonomie des écrans, spec mise à jour
+
+### Socle technique (une seule fois, réutilisé par les 10 écrans)
+- [x] `apps/reports/pages.py` — `ReportPage` / `Kpi` / `Chart` / `Table` / `Period`
+- [x] `apps/reports/periods.py` — 4 boutons raccourcis + saisie libre
+- [x] `apps/reports/charts.py` — histogramme et camembert en **SVG serveur**
+      (pas de JS, pas de CDN, imprimable)
+- [x] `apps/reports/pdf.py` — `render_report_pdf(page)` générique, charte OFELIA
+- [x] `apps/reports/excel.py` — `render_report_xlsx(page)` générique
+- [x] `templates/reports/_page.html` + `_period.html` + `_chart.html`
+- [x] Hub `/reports/` refondu (groupes « Tous les jours » / « Comprendre »)
+
+### Écrans (chacun = HTML + PDF + Excel)
+- [x] `overview` — Vue d'ensemble (le bilan, page donateurs)
+- [x] `collection` — Le fonds
+- [x] `loans` — Les prêts (+ les plus / les moins empruntés)
+- [x] `members` — Les usagers
+- [x] `attendance` — La fréquentation et les animations
+- [x] `team` — Le travail de l'équipe
+- [x] `money` — L'argent
+- [x] `overdue` — Les retards (liste de travail, refondue)
+- [x] `pickup` — Les réservations à retirer (liste de travail, refondue)
+- [x] `inactive` — Les inactifs (+ tri par catégorie, demandé par Val)
+
+### Modèle
+- [x] `members.CardRenewal` — sans trace des renouvellements, « réinscriptions
+      sur la période » n'est pas calculable (`expiration_date` est écrasée).
+      « Membres perdus », lui, se déduit de `expiration_date` seule.
+- [x] Migration + écriture depuis le bouton Renouveler (FEAT-092)
+
+### Clôture
+- [x] Tests — **937 passed** (894 → 937, +43)
+- [x] Gate i18n — `scripts/translations_sprint34.py`, **312 chaînes** EN/ES/MG, `i18n_check.py` = **0**
+- [x] SPEC §6.6 réécrite + §5.2 (`CardRenewal`)
+- [x] Déploiement — Fez `sanjuan` + `grand-saconnex` (healthy), secours Avignon
+      (source + image), Box Canaima (`edubox-bibliofelia` healthy, migration
+      `members/0008` appliquée). 30 points de contrôle HTML/PDF/Excel à 200
+      sur Sanjuan **et** sur la Box.
+- [x] Test fonctionnel Val — OK 2026-09-10 (« c'est tout bon », puis « c'est ok »)
+- [x] Commit (après OK Val)
+
+### Corrections après essai de Val (`temp2.txt`, 2026-09-09)
+- [x] Camemberts : étiquettes « nom valeur (part %) » **dans les tranches**,
+      à l'écran, dans le PDF et dans le fichier Excel ; petites parts reliées
+      par un trait à une étiquette extérieure
+- [x] Périodes et seuils : de vrais boutons (`.chip-btn`), couleur distincte
+      pour l'actif, fonctionnement inchangé
+- [x] Hub `/reports/` : icônes en couleur (une teinte par écran, déclarée
+      dans le registre) — les fonds étaient déjà blancs, ici et sur Avancé
+- [x] Les 3 menus « données brutes » rapatriés : catalogue sous *Le fonds*,
+      prêts et réservations sous *Les prêts*, avec écran + PDF + Excel ;
+      les CSV toutes colonnes restent au bas de ces deux écrans
+- [x] Sommaire des sous-rapports en tête de chaque écran
+- [x] **Export PDF et Excel par sous-rapport** (`?block=<clé>`), clé dérivée
+      du titre et non de la position
+- [x] Tableau + graphe des mêmes données côte à côte (écran et PDF),
+      pleine largeur au-delà de 4 colonnes
+- [x] `overview` « Le bilan en un tableau » : une seule période + histogramme
+- [x] `members` : courbes 3 séries sur « Qui arrive, qui reste, qui part »,
+      camembert sur « D'où viennent les usagers »
+- [x] `attendance` : un graphe sur chaque tableau
+- [x] `team` : « heures » et « temps » par nature fusionnés en un
+      sous-rapport, tableau + **camembert**
+- [x] Tests — **980 passed** (937 → 980, +43), fichier
+      `test_report_corrections.py`
+- [x] Gate i18n — **340 chaînes** EN/ES/MG, `i18n_check.py` = **0**
+- [x] Déploiement Fez `sanjuan` + Box Canaima ; étiquettes vérifiées dans le
+      SVG **et** dans le texte du PDF produit
+- [x] Test fonctionnel Val — OK 2026-09-10 (« c'est tout bon », puis « c'est ok »)
+- [x] Commit (après OK Val)
+
+### Charte OFELIA dans le PDF (retours de Val, 2026-09-09)
+- [x] **Polices du site dans le PDF** — `scripts/build_pdf_fonts.py` convertit
+      les woff2 en TTF (fusion des sous-ensembles, graisse figée, alias de
+      l'espace fine U+202F) ; `static/fonts/pdf/` versionné, repli Helvetica
+- [x] **Logo blanc en grand** (70 mm) fourni par Val, `ofelia-logo-white.png`
+- [x] **Titre du rapport en grand** (24 pt, Bricolage Grotesque)
+- [x] Hauteur du bandeau **calculée** — le titre ne chevauche plus le logo
+- [x] **Icône de calendrier** à côté de la période
+- [x] **En-têtes de tableau en blanc** sur le bordeaux (le style du
+      `Paragraph` l'emportait sur le `TEXTCOLOR` de la table)
+- [x] Largeurs de colonne **mesurées** sur le texte réel, plus de proportions
+      fixes ; libellés d'axe raccourcis en gardant l'année
+- [x] Tests — **993 passed** (980 → 993, +13),
+      `test_report_pdf_charter.py`
+- [x] Déploiement Fez (`sanjuan`, `grand-saconnex`) + Box ; PDF rendus en
+      image et relus à l'œil
+
+### Second retour de Val (`temp2.txt` annoté, 2026-09-09)
+- [x] ⚠️ **Cause des cinq « pas fait »** : tout le CSS des rapports était dans
+      `bibliofelia.css`, que **`base.html` ne charge pas** (seul le wizard
+      d'installation la référence). Bloc déplacé dans `ofelia.css` ; un test
+      vérifie désormais que chaque classe des gabarits est habillée par la
+      feuille effectivement chargée
+- [x] Camemberts : **toutes** les étiquettes à l'extérieur, reliées par un
+      trait — le texte blanc dans la tranche était illisible
+- [x] Marge élargie : « Adolescent (14-17 ans) 20 (91 %) » n'est plus tronqué
+- [x] **Géométrie compacte** pour les graphes appariés — un SVG réduit d'un
+      tiers avait un texte illisible
+- [x] Courbes : **toutes** les séries tracées, même à zéro (la légende en
+      annonçait trois, le dessin n'en montrait qu'une)
+- [x] `overview` : le graphe du bilan reprend **toutes** les lignes du tableau,
+      sauf l'argent encaissé (un montant ne se compare pas à un nombre de livres)
+- [x] « Cartes perdues » → **« Usagers perdus »** (compteur, colonne, courbe)
+- [x] `attendance` / `team` / `money` : **pas un défaut** — la Box n'a ni
+      animation, ni saisie de temps, ni facture. Vérifié sur un jeu de démo
+      dans une transaction annulée : les graphes sont bien là
+- [x] Tests — **1002 passed** (993 → 1002, +9), `test_report_layout.py`
+- [x] Gate i18n — **344 chaînes**, `i18n_check.py` = **0**
+- [x] Déploiement Fez + Avignon + Box ; contrôle **par capture navigateur**
+      (Playwright), plus seulement par lecture du HTML
+
+### Dernier retour de Val (2026-09-09) — le camembert des rayons
+- [x] Le gabarit envoyait le dessin **compact** à un tableau passé en pleine
+      largeur (5 colonnes) : étiré, ses libellés grossissaient et sortaient du
+      cadre. La géométrie suit désormais le même critère que la mise en page
+- [x] La marge des étiquettes se **mesure** sur le texte réellement écrit, au
+      corps réellement utilisé — plus de valeur posée au jugé
+- [x] `LEADER_REACH` ne comptait que 2 de ses 3 segments (8 points manquants) :
+      les trois sont nommés et additionnés
+- [x] Encodage : un `perl -pi` avait laissé un octet latin-1 dans un commentaire
+      de `charts.py` — l'audit i18n échouait à la lecture du fichier
+- [x] Tests — **1006 passed** (1002 → 1006, +4)
+- [x] Gate i18n = **0** ; déploiement Fez + Avignon + Box ; vérifié par capture
+
+### Deux dernières features avant commit (`temp.txt`, 2026-09-09)
+- [x] `collection` « Les rayons » : **double histogramme** livres / prêts à la
+      place du camembert, groupé et jamais empilé. Support ajouté aux **trois**
+      moteurs (SVG, reportlab, openpyxl `clustered`)
+- [x] `overview` « Le bilan » : colonne **période précédente** ; graphe supprimé
+- [x] Nouvelle règle de comparaison : période nommée → la même un an plus tôt ;
+      période libre → le bloc de même durée qui précède, **sans chevauchement**
+- [x] « 12 derniers mois » raméné à **365 jours** bornes comprises (366
+      auparavant), sans quoi l'exemple de Val tombait un jour à côté
+- [x] ⚠️ Le séparateur `→` sortait en **carré noir** dans le PDF (bloc des
+      flèches absent des sous-ensembles Google Fonts) → tiret demi-cadratin,
+      plus un test qui vérifie que **chaque** caractère composé par les rapports
+      existe dans les trois polices
+- [x] Tests — **1018 passed** (1006 → 1018, +12)
+- [x] Gate i18n = **0** (346 chaînes) ; déploiement Fez + Avignon + Box ;
+      écran et PDF vérifiés par capture
+
+### Guide utilisateur des rapports (2026-09-10)
+- [x] Page **« Tous les rapports »** × 4 langues : 10 écrans groupés en deux
+      familles, **50 sous-rapports**, un lien direct vers chaque ancre
+- [x] **Générée** par `scripts/build_reports_guide.py` — l'ancre est l'empreinte
+      du titre **traduit**, elle ne se recopie pas à la main
+- [x] Test de cohérence dans les deux sens : chaque sous-rapport figure au
+      guide, aucune ancre du guide ne pointe dans le vide
+- [x] `mkdocs.yml` : entrée de nav + `nav_translations` EN/ES/MG
+- [x] « Exports CSV » réécrite en **« Imprimer et enregistrer un rapport »**
+      (× 4 langues) : les CSV ne sont plus sur le hub
+- [x] `mkdocs build --strict` sans erreur
+- [x] Publié sur `docs.bibliofelia.org` **et** sur la Box, 200 dans les 4 langues
+- [x] **50 ancres suivies une à une** dans un navigateur connecté — 0 lien cassé
+- [x] Tests — **1020 passed** (1018 → 1020, +2)
+
+### Recherche du guide : cache d'un jour (2026-09-10)
+- [x] **Pas un problème d'index** : `mkdocs` le reconstruit à chaque build et il
+      était correct sur les deux serveurs
+- [x] Cause : `expires 1d` sur `location /bibliofelia/docs/` s'appliquait aussi
+      à `search_index.json` → index périmé 24 h dans le navigateur du lecteur,
+      **à chaque mise à jour du guide**
+- [x] Remplacé par `Cache-Control: no-cache` (l'ETag rend un 304 sans corps)
+- [x] ⚠️ Corrigé **dans keebee** (`nginx/conf.d/ofelia-locations.inc`) **et** sur
+      la Box — sinon le prochain déploiement keebee rétablissait le cache
+- [x] ⚠️ La copie de la Box **diverge** du dépôt keebee (204 lignes contre 236) :
+      patchée **en place**, jamais écrasée. Divergence non résolue, à examiner
+- [x] Exemples de recherche de la page corrigés (× 4 langues) : « impayés » et
+      « donateurs » n'existaient que dans ma phrase d'intro
+- [x] `nginx -t` OK, rechargement, guide toujours servi ; recherche vérifiée sur
+      navigateur neuf
 
 ## ⏭️ REPRISE — état au 27/08/2026 *(supplanté par le bloc du 05/09)*
 

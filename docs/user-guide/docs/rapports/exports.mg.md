@@ -1,65 +1,69 @@
-# Fanondranana CSV
+# Manonta sy mitahiry tatitra
 
-Mba handinihana ny angonao ao amin'ny tableur (LibreOffice Calc,
-Excel) na handefa azy amin'ny mpiara-miasa (kaomina, fikambanana,
-mpamatsy vola), ny BibliOfelia dia manolotra fanondranana amin'ny
-endrika **CSV**.
+Izay rehetra hita eo amin'ny efijery dia azo **atonta PDF** na **tehirizina
+Excel**. Tsy misy natokana ho an'ny iray na ny iray hafa : izay hitanao no
+azonao.
 
-## Aiza no ahitana ny fanondranana
+## Ny bokotra roa eo ambony
 
-**Mandroso → [Tatitra](/bibliofelia/mg/reports/){ target="_blank" }**.
+Eo ambonin'ny tatitra tsirairay, eo ankavia :
 
-![Pejy tatitra](../assets/screenshots/mg/rapports/reports-index.png)
+- **Atontay (PDF)** — ny tatitra manontolo, voalamina, misy ny mari-pamantarana
+  sy ny anaran'ny tranomboky. Io no antontan-taratasy atolotra mpanome vola na
+  arahina amin'ny fangatahana fanampiana.
+- **Rakitra Excel** — io tatitra io ihany, isa sy sary, anaty boky. Takila iray
+  isaky ny tabilao, ary ny sary apetraka eo akaikin'ny angona.
 
-## Ireo fanondranana azo
+Samy manaraka ny **vanim-potoana** sy ny **fandrindrana** aseho eo amin'ny
+efijery : raha « 2025 » no jerenao, dia 2025 no ao anaty rakitra.
 
-### Boky (CSV)
+## Tabilao iray, fa tsy ny efijery manontolo
 
-Lisitry ny notice rehetra misy: lohateny, mpanoratra, ISBN, sokajy,
-taona, fiteny, isan'ny kopia.
+Eo ambanin'ny lohatenin'ny tabilao tsirairay dia misy rohy kely roa : **PDF**
+sy **Excel**. Tsy mamoaka afa-tsy **io tabilao io**.
 
-Mahasoa ho an'ny: **inventaire isan-taona**, fizarana ny tahirinao
-amin'ny tranomboky hafa.
+Ilaina rehefa ny lisitry ny faktiora tsy voaloa ihany no tadiavinao, fa tsy ny
+tabilao valo eo amin'ny efijery « Ny vola ».
 
-### Fampindramana (CSV)
+!!! tip "Hitady tabilao"
+    Ny pejy [Ny tatitra rehetra](liste.md) dia mitanisa ny efijery rehetra sy
+    ny tabilao rehetra, misy rohy mivantana ho an'ny tsirairay.
 
-Tantaran'ny fampindramana amin'ny vanim-potoana. Azo fitanina araka
-ny daty, sokajy mpianatra, sokajy boky.
+## Hamoaka ny tsanganana rehetra (CSV)
 
-Mahasoa ho an'ny: **statistika fampiasana**, tatitra asa isan-taona.
+Ny efijery [Ny tahiry](/bibliofelia/mg/reports/collection/){ target="_blank" }
+sy [Ny fampindramana](/bibliofelia/mg/reports/loans/){ target="_blank" } dia
+manolotra rakitra **CSV** eo amin'ny farany ambany.
 
-### Mpianatra tsy mavitrika (CSV)
+Tsy tatitra ireo : tsy voalamina ary tsy misy fanazavana, fa mitondra ny
+tsanganana **rehetra** ao amin'ny banky angona — mihoatra lavitra noho izay
+asehon'ny tabilao.
 
-Lisitry ny mpianatra izay tsy nampindrana hatramin'ny N volana.
+| Rakitra | Izay ao anatiny |
+|---|---|
+| Katalaogy manontolo | Andalana iray isaky ny kopia : ISBN, mpanonta, taona, marika, famintinana, fiaviana, toerana… |
+| Fampindramana sy famandrihana am-perinasa | Ny toe-javatra androany, ao anaty rakitra iray |
+| Ny fampindramana amin'ny vanim-potoana | Ny fampindramana rehetra amin'ny vanim-potoana aseho eo ambony |
 
-Mahasoa ho an'ny: **fampandrenesana**, fanavaozana ny lisitra
-fizarana.
+Ilaina ho an'ny : **fanisana isan-taona**, fizarana ny tahirinao amin'ny
+tranomboky hafa, na kajy tsy ataon'ny BibliOfelia.
 
-### Kopia tsy mavitrika (CSV)
+## Ahoana no hanokafana rakitra CSV
 
-Lisitry ny kopia izay tsy nampindraina hatramin'ny N volana.
+1. Tsindrio ny rohy
+2. Misintona ny rakitra `.csv`
+3. Sokafy amin'ny LibreOffice Calc, Excel na Google Sheets
 
-Mahasoa ho an'ny: **désherbage** (mamoaka ao amin'ny boky ireo
-tsy mivoaka mihitsy), fandaminana ny rakitra.
+Ny tsanganana dia sarahin'ny **faingo**. Ny litera misy tsindrim-peo rehetra
+(à, é, è, ô, ï…) dia miseho tsara ao amin'ny LibreOffice Calc sy Google Sheets.
 
-## Ahoana ny ampiasana CSV
+!!! tip "Raha manokatra ny zavatra rehetra ao anaty tsanganana iray ny Excel"
+    Ny Excel frantsay dia miandry teboka aman-tsakana ho mpanasaraka. Ampiasao
+    ny **Angona → Avy amin'ny lahatsoratra/CSV** ary lazao hoe « faingo » ny
+    mpanasaraka — dia hiseho tsara ny tsanganana.
 
-1. Click amin'ny lien fanondranana
-2. Hidina ny rakitra `.csv`
-3. Sokafy ao amin'ny LibreOffice Calc, Excel na Google Sheets
+## Ary ny tatitra isan-taona ?
 
-Ny tsanganana dia sarahin'ny **faingo**. Ny litera misy accent
-rehetra (à, é, è, ô, ï…) dia miseho marina ao amin'ny LibreOffice
-Calc sy Google Sheets.
-
-!!! tip "Raha mamoha ny rehetra ao amin'ny tsanganana iray ny Excel"
-    Ny Excel frantsay dia miandry ny point-virgule ho mpanasaraka
-    araka ny default. Ampiasao **Angona → Avy amin'ny lahatsoratra/CSV**
-    dia ambarao "faingo" ho mpanasaraka — hiseho marina ny
-    tsanganana.
-
-## Ary tatitra isan-taona feno?
-
-Mba hamoronana tatitra isan-taona fintinana amin'ny PDF (hapetaka
-amin'ny rakitra fangataham-bola), ampiasao **Tatitra isan-taona
-PDF** avy amin'ny pejy iray.
+Ny [Topi-maso](/bibliofelia/mg/reports/overview/){ target="_blank" } izany,
+miaraka amin'ny vanim-potoana **2025** na **2026** : ny isa lehibe rehetra
+amin'ny pejy iray, ampitahaina amin'ny taona teo aloha. Atontay PDF.

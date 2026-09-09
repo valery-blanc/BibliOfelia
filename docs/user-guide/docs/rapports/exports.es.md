@@ -1,63 +1,68 @@
-# Exportaciones CSV
+# Imprimir y guardar un informe
 
-Para analizar sus datos en una hoja de cálculo (LibreOffice Calc,
-Excel) o transmitirlos a un colaborador (ayuntamiento, asociación,
-financiador), BibliOfelia ofrece exportaciones en formato **CSV**.
+Todo lo que aparece en pantalla puede **imprimirse en PDF** o **guardarse en
+Excel**. Nada está reservado a uno u otro: lo que ve es lo que obtiene.
 
-## Dónde encontrar las exportaciones
+## Los dos botones de arriba
 
-**Avanzado → [Informes](/bibliofelia/es/reports/){ target="_blank" }**.
+Arriba de cada informe, a la izquierda:
 
-![Página de informes](../assets/screenshots/es/rapports/reports-index.png)
+- **Imprimir (PDF)** — el informe entero, maquetado, con el logotipo y el
+  nombre de la biblioteca. Es el documento que se entrega a un donante o se
+  adjunta a una solicitud de subvención.
+- **Archivo Excel** — el mismo informe, cifras y gráficos, en un libro. Una
+  hoja por tabla, con el gráfico junto a sus datos.
 
-## Las exportaciones disponibles
+Ambos siguen el **período** y los **ajustes** mostrados en pantalla: si mira
+«2025», el archivo cubre 2025.
 
-### Catálogo (CSV)
+## Una sola tabla, no toda la pantalla
 
-Lista de todos los registros con: título, autores, ISBN, categoría,
-año, idioma, número de ejemplares.
+Bajo el título de cada tabla, dos enlaces pequeños: **PDF** y **Excel**.
+Exportan **solo esa tabla**.
 
-Útil para: **inventario anual**, compartir su fondo con otra
-biblioteca.
+Útil cuando quiere únicamente la lista de facturas impagadas sin sacar las
+ocho tablas de la pantalla «El dinero».
 
-### Préstamos (CSV)
+!!! tip "Encontrar una tabla"
+    La página [Todos los informes](liste.md) enumera todas las pantallas y
+    todas sus tablas, cada una con un enlace directo.
 
-Historial de los préstamos en un periodo. Filtrable por fecha,
-categoría de miembro, categoría de libro.
+## Exportar todas las columnas (CSV)
 
-Útil para: **estadísticas de uso**, informe de actividad anual.
+Las pantallas [El fondo](/bibliofelia/es/reports/collection/){ target="_blank" }
+y [Los préstamos](/bibliofelia/es/reports/loans/){ target="_blank" } ofrecen,
+al final, archivos **CSV**.
 
-### Miembros inactivos (CSV)
+No son informes: no están ni maquetados ni comentados, pero llevan **todas**
+las columnas de la base — mucho más de lo que muestra la tabla.
 
-Lista de los miembros que no han prestado desde hace N meses.
+| Archivo | Lo que contiene |
+|---|---|
+| Catálogo completo | Una fila por ejemplar: ISBN, editorial, año, etiquetas, resumen, procedencia, ubicación… |
+| Préstamos y reservas en curso | La situación de hoy, préstamos y reservas en un mismo archivo |
+| Los préstamos del período | Todos los préstamos del período mostrado arriba |
 
-Útil para: **operación de seguimiento**, actualización de la lista
-de difusión.
+Útil para: un **inventario anual**, compartir su fondo con otra biblioteca,
+o un cálculo que BibliOfelia no hace.
 
-### Ejemplares inactivos (CSV)
+## Cómo abrir un CSV
 
-Lista de los ejemplares que no se han prestado desde hace N meses.
-
-Útil para: **expurgo** (sacar del catálogo los libros que nunca
-salen), reorganización de los estantes.
-
-## Cómo usar un CSV
-
-1. Haga clic en el enlace de exportación
+1. Haga clic en el enlace
 2. El archivo `.csv` se descarga
 3. Ábralo en LibreOffice Calc, Excel o Google Sheets
 
-Las columnas están separadas por **comas**. Todos los caracteres
-acentuados (á, é, í, ó, ñ…) se muestran correctamente en
-LibreOffice Calc y Google Sheets.
+Las columnas están separadas por **comas**. Todos los caracteres acentuados
+(à, é, è, ô, ï…) se muestran correctamente en LibreOffice Calc y Google
+Sheets.
 
 !!! tip "Si Excel abre todo en una sola columna"
-    Excel francés/español espera por defecto el punto y coma como
-    separador. Use **Datos → Desde el texto/CSV** e indique "coma"
-    como separador — sus columnas aparecerán correctamente.
+    El Excel francés espera por defecto el punto y coma como separador. Use
+    **Datos → Desde texto/CSV** e indique «coma» como separador — sus
+    columnas aparecerán correctamente.
 
-## ¿Y un informe anual completo?
+## ¿Y el informe anual?
 
-Para generar un informe anual sintético en PDF (a adjuntar a un
-expediente de subvención), use **Informe anual PDF** desde la misma
-página.
+Es la [Visión de conjunto](/bibliofelia/es/reports/overview/){ target="_blank" }
+con el período **2025** o **2026**: todas las cifras importantes en una
+página, comparadas con el año anterior. Imprímala en PDF.

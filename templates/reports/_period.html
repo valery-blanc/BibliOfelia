@@ -1,0 +1,53 @@
+{% load i18n biblio_icons %}
+{% comment %}
+FEAT-093 — sélecteur de période.
+
+Les raccourcis sont des **boutons** (retour Val), celui de la période affichée
+dans une autre couleur. Techniquement ce sont des liens : un clic affiche la
+période, sans passer par un bouton Valider. Ils portent le libellé réel
+(« août 2026 »), pas « mois précédent » : un bénévole lit une date et sait de
+quoi on parle, là où « mois précédent » demande un calcul mental.
+
+« Valider » n'existe que pour la saisie libre, repliée par défaut : c'est le
+seul endroit où l'on tape quelque chose, et les champs date natifs sont ce que
+ce public manie le moins bien.
+{% endcomment %}
+<div class="card period-picker">
+    <div class="period-label">{% trans "Quelle période ?" %}</div>
+    <div class="btn-row">
+        <a class="chip-btn{% if page.period.key == 'custom' and not request.GET.start %} chip-btn--on{% endif %}"
+           href="?{{ filter_query|slice:"1:" }}">{% trans "12 derniers mois" %}</a>
+        {% for shortcut in shortcuts %}
+        <a class="chip-btn{% if page.period.key == shortcut.key %} chip-btn--on{% endif %}"
+           href="?p={{ shortcut.key }}{{ filter_query }}">{{ shortcut.label }}</a>
+        {% endfor %}
+        <a class="chip-btn{% if page.period.key == 'custom' and request.GET.start %} chip-btn--on{% endif %}"
+           href="#period-custom" onclick="document.getElementById('period-custom').open=true">
+            {% icon "calendar" size="14px" %} {% trans "Choisir d'autres dates" %}
+        </a>
+    </div>
+
+    <details class="period-custom" id="period-custom"{% if page.period.key == 'custom' and request.GET.start %} open{% endif %}>
+        <summary>{% trans "Entre deux dates" %}</summary>
+        <form method="get" class="period-form">
+            <input type="hidden" name="p" value="custom">
+            {% for key, value in filter_params.items %}
+            <input type="hidden" name="{{ key }}" value="{{ value }}">
+            {% endfor %}
+            <div class="period-form-row">
+                <div class="field">
+                    <label for="period-start">{% trans "Entre le" %}</label>
+                    <input type="date" id="period-start" name="start" value="{{ page.period.start|date:'Y-m-d' }}">
+                </div>
+                <div class="field">
+                    <label for="period-end">{% trans "et le" %}</label>
+                    <input type="date" id="period-end" name="end" value="{{ page.period.end|date:'Y-m-d' }}">
+                </div>
+            </div>
+            <button type="submit" class="btn btn--primary">
+                {% icon "check" size="16px" %} {% trans "Valider ces dates" %}
+            </button>
+            <p class="help-hint">{% trans "Les deux jours indiqués sont compris dans le calcul." %}</p>
+        </form>
+    </details>
+</div>

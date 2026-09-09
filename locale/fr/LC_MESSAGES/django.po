@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2026-09-05 09:06+0000\n"
+"POT-Creation-Date: 2026-09-09 21:40+0000\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -125,6 +125,10 @@ msgid "Auto-détection"
 msgstr ""
 
 #: apps/api/models.py:30 apps/catalog/models.py:23
+#: apps/reports/builders/loans.py:177 apps/reports/builders/loans.py:319
+#: apps/reports/builders/loans.py:346 apps/reports/builders/worklists.py:87
+#: apps/reports/builders/worklists.py:150
+#: apps/reports/builders/worklists.py:247
 msgid "Livre"
 msgstr ""
 
@@ -177,7 +181,9 @@ msgstr ""
 msgid "Code Ofelia externe"
 msgstr ""
 
-#: apps/catalog/forms.py:138 templates/catalog/record_detail.html:101
+#: apps/catalog/forms.py:138 apps/reports/builders/collection.py:259
+#: apps/reports/builders/collection.py:435
+#: templates/catalog/record_detail.html:101
 #: templates/catalog/record_list.html:146
 #: templates/catalog/scan_session.html:54
 #: templates/catalog/scan_session.html:160
@@ -187,7 +193,8 @@ msgstr ""
 msgid "Emplacement"
 msgstr ""
 
-#: apps/catalog/forms.py:139 templates/catalog/_item_results.html:22
+#: apps/catalog/forms.py:139 apps/reports/builders/collection.py:294
+#: templates/catalog/_item_results.html:22
 #: templates/catalog/_item_results.html:57
 #: templates/catalog/_item_results.html:126
 #: templates/catalog/item_bulk_delete.html:61
@@ -196,7 +203,8 @@ msgstr ""
 msgid "Provenance"
 msgstr ""
 
-#: apps/catalog/forms.py:140 templates/catalog/excel_catalog/index.html:69
+#: apps/catalog/forms.py:140 apps/reports/builders/collection.py:435
+#: templates/catalog/excel_catalog/index.html:69
 #: templates/catalog/record_detail.html:103
 #: templates/catalog/scan_session.html:167
 #: templates/catalog/scan_session.html:189
@@ -212,7 +220,7 @@ msgstr ""
 msgid "Source d'acquisition"
 msgstr ""
 
-#: apps/catalog/forms.py:143
+#: apps/catalog/forms.py:143 apps/reports/builders/collection.py:366
 msgid "Donateur"
 msgstr ""
 
@@ -281,7 +289,6 @@ msgstr ""
 #: templates/accounts/user_list.html:35 templates/catalog/category_list.html:35
 #: templates/catalog/language_list.html:34
 #: templates/printing/cards_picker.html:36
-#: templates/reports/inactive_list.html:44
 msgid "Nom"
 msgstr ""
 
@@ -393,7 +400,7 @@ msgid "CD audio"
 msgstr ""
 
 #: apps/catalog/models.py:28 apps/finance/models.py:30
-#: apps/finance/models.py:42 apps/members/models.py:245
+#: apps/finance/models.py:42 apps/members/models.py:246
 #: templates/finance/_account_box.html:54
 msgid "Autre"
 msgstr ""
@@ -454,7 +461,7 @@ msgstr ""
 msgid "Mis de côté"
 msgstr ""
 
-#: apps/catalog/models.py:55
+#: apps/catalog/models.py:55 apps/reports/builders/collection.py:59
 msgid "En réparation"
 msgstr ""
 
@@ -492,12 +499,12 @@ msgid "auteurs"
 msgstr ""
 
 #: apps/catalog/models.py:86 apps/catalog/models.py:127
-#: apps/catalog/models.py:191 apps/members/models.py:29
+#: apps/catalog/models.py:191 apps/members/models.py:30
 msgid "code"
 msgstr ""
 
 #: apps/catalog/models.py:87 apps/inventory/models.py:30
-#: apps/members/models.py:30 apps/members/models.py:69
+#: apps/members/models.py:31 apps/members/models.py:70
 msgid "nom"
 msgstr ""
 
@@ -510,7 +517,7 @@ msgid "catégorie parente"
 msgstr ""
 
 #: apps/catalog/models.py:105 apps/catalog/models.py:240
-#: apps/inventory/models.py:49 apps/members/models.py:77
+#: apps/inventory/models.py:49 apps/members/models.py:78
 msgid "catégorie"
 msgstr ""
 
@@ -991,7 +998,9 @@ msgstr ""
 msgid "Mise à jour lancée. Suivez l'avancement ici."
 msgstr ""
 
-#: apps/closing/forms.py:14 templates/closing/stats.html:105
+#: apps/closing/forms.py:14 apps/reports/builders/attendance.py:188
+#: apps/reports/builders/team.py:105 apps/reports/builders/team.py:149
+#: apps/reports/builders/team.py:183 templates/closing/stats.html:105
 msgid "Heures"
 msgstr ""
 
@@ -1012,6 +1021,8 @@ msgid "On ne saisit pas le travail de demain."
 msgstr ""
 
 #: apps/closing/forms.py:100 apps/finance/models.py:28
+#: apps/reports/builders/attendance.py:186
+#: apps/reports/builders/attendance.py:231
 #: templates/finance/_account_box.html:52
 msgid "Animation"
 msgstr ""
@@ -1149,7 +1160,9 @@ msgstr ""
 msgid "présence"
 msgstr ""
 
-#: apps/closing/models.py:181
+#: apps/closing/models.py:181 apps/reports/builders/attendance.py:108
+#: apps/reports/builders/attendance.py:129
+#: apps/reports/builders/attendance.py:181
 msgid "présences"
 msgstr ""
 
@@ -1236,7 +1249,8 @@ msgstr ""
 msgid "« %(label)s » désactivé — les saisies passées restent comptées."
 msgstr ""
 
-#: apps/closing/views.py:317 templates/closing/stats.html:76
+#: apps/closing/views.py:317 apps/reports/builders/members.py:206
+#: apps/reports/builders/team.py:182 templates/closing/stats.html:76
 msgid "Mois"
 msgstr ""
 
@@ -1246,8 +1260,8 @@ msgstr ""
 msgid "Animations"
 msgstr ""
 
-#: apps/closing/views.py:317 templates/closing/stats.html:63
-#: templates/closing/stats.html:79
+#: apps/closing/views.py:317 apps/reports/builders/attendance.py:187
+#: templates/closing/stats.html:63 templates/closing/stats.html:79
 msgid "Non-membres"
 msgstr ""
 
@@ -1430,8 +1444,10 @@ msgstr ""
 msgid "Contact (email)"
 msgstr ""
 
-#: apps/core/forms.py:94 templates/members/member_detail.html:100
-#: templates/reports/reservations_pickup.html:35
+#: apps/core/forms.py:94 apps/reports/builders/members.py:245
+#: apps/reports/builders/worklists.py:86 apps/reports/builders/worklists.py:149
+#: apps/reports/builders/worklists.py:237
+#: templates/members/member_detail.html:100
 msgid "Téléphone"
 msgstr ""
 
@@ -1739,7 +1755,7 @@ msgstr ""
 msgid "Le montant dépasse le solde de la facture (%(b)s)."
 msgstr ""
 
-#: apps/finance/forms.py:178
+#: apps/finance/forms.py:178 apps/reports/builders/money.py:255
 msgid "Motif"
 msgstr ""
 
@@ -1751,7 +1767,9 @@ msgstr ""
 msgid "Description"
 msgstr ""
 
-#: apps/finance/forms.py:183 templates/finance/cash_index.html:100
+#: apps/finance/forms.py:183 apps/reports/builders/money.py:154
+#: apps/reports/builders/money.py:193 apps/reports/builders/money.py:256
+#: templates/finance/cash_index.html:100
 #: templates/finance/invoice_detail.html:112
 #: templates/finance/tariff_list.html:84
 msgid "Montant"
@@ -1790,7 +1808,7 @@ msgstr ""
 msgid "Annulée"
 msgstr ""
 
-#: apps/finance/models.py:40
+#: apps/finance/models.py:40 apps/reports/builders/money.py:233
 msgid "Espèces"
 msgstr ""
 
@@ -1827,7 +1845,8 @@ msgstr ""
 msgid "n° de facture"
 msgstr ""
 
-#: apps/finance/models.py:90 apps/loans/models.py:85 apps/members/models.py:149
+#: apps/finance/models.py:90 apps/loans/models.py:85 apps/members/models.py:150
+#: apps/members/models.py:331
 msgid "usager"
 msgstr ""
 
@@ -1840,7 +1859,7 @@ msgid "échéance"
 msgstr ""
 
 #: apps/finance/models.py:98 apps/finance/models.py:335
-#: apps/members/models.py:116
+#: apps/members/models.py:117
 msgid "statut"
 msgstr ""
 
@@ -1890,6 +1909,7 @@ msgid "lignes de facture"
 msgstr ""
 
 #: apps/finance/models.py:233 apps/finance/models.py:269
+#: apps/reports/builders/money.py:139 apps/reports/builders/money.py:173
 msgid "montant"
 msgstr ""
 
@@ -2006,6 +2026,10 @@ msgid "P.U."
 msgstr ""
 
 #: apps/finance/pdf.py:132 apps/finance/pdf.py:159
+#: apps/reports/builders/attendance.py:192
+#: apps/reports/builders/collection.py:344 apps/reports/builders/loans.py:261
+#: apps/reports/builders/money.py:106 apps/reports/builders/money.py:156
+#: apps/reports/builders/team.py:108 apps/reports/builders/team.py:152
 #: templates/catalog/excel_catalog/detail.html:83
 #: templates/closing/animation_detail.html:26
 #: templates/core/admin/enrichment_detail.html:53
@@ -2334,7 +2358,9 @@ msgstr ""
 msgid "prêt"
 msgstr ""
 
-#: apps/loans/models.py:52
+#: apps/loans/models.py:52 apps/reports/builders/loans.py:121
+#: apps/reports/builders/loans.py:134 apps/reports/builders/loans.py:145
+#: apps/reports/builders/overview.py:174
 msgid "prêts"
 msgstr ""
 
@@ -2612,150 +2638,176 @@ msgstr ""
 msgid "Le montant ne peut pas être négatif."
 msgstr ""
 
-#: apps/members/models.py:22 templates/accounts/user_list.html:37
+#: apps/members/models.py:23 templates/accounts/user_list.html:37
 #: templates/accounts/user_list.html:49 templates/closing/type_list.html:26
 #: templates/closing/type_list.html:79 templates/finance/tariff_list.html:85
 msgid "Actif"
 msgstr ""
 
-#: apps/members/models.py:23
+#: apps/members/models.py:24
 msgid "Suspendu"
 msgstr ""
 
-#: apps/members/models.py:24
+#: apps/members/models.py:25
 msgid "Expiré"
 msgstr ""
 
-#: apps/members/models.py:25
+#: apps/members/models.py:26
 msgid "Clôturé"
 msgstr ""
 
-#: apps/members/models.py:36
+#: apps/members/models.py:37
 msgid "Liste de codes DocumentType ; vide = tous autorisés."
 msgstr ""
 
-#: apps/members/models.py:46
+#: apps/members/models.py:47
 msgid "cotisation annuelle"
 msgstr ""
 
-#: apps/members/models.py:47
+#: apps/members/models.py:48
 msgid "0 = pas de cotisation pour cette catégorie."
 msgstr ""
 
-#: apps/members/models.py:51
+#: apps/members/models.py:52
 msgid "catégorie d'usager"
 msgstr ""
 
-#: apps/members/models.py:52
+#: apps/members/models.py:53
 msgid "catégories d'usager"
 msgstr ""
 
-#: apps/members/models.py:66
+#: apps/members/models.py:67
 msgid "n° de carte"
 msgstr ""
 
-#: apps/members/models.py:68 apps/members/models.py:266
+#: apps/members/models.py:69 apps/members/models.py:267
 msgid "prénom"
 msgstr ""
 
-#: apps/members/models.py:71
+#: apps/members/models.py:72
 msgid "date de naissance"
 msgstr ""
 
-#: apps/members/models.py:80
+#: apps/members/models.py:81
 msgid "téléphone"
 msgstr ""
 
-#: apps/members/models.py:85
+#: apps/members/models.py:86
 msgid "email"
 msgstr ""
 
-#: apps/members/models.py:89
+#: apps/members/models.py:90
 msgid "rue et n°"
 msgstr ""
 
-#: apps/members/models.py:92
+#: apps/members/models.py:93
 msgid "complément d'adresse"
 msgstr ""
 
-#: apps/members/models.py:95
+#: apps/members/models.py:96
 msgid "code postal"
 msgstr ""
 
-#: apps/members/models.py:98
+#: apps/members/models.py:99
 msgid "localité"
 msgstr ""
 
-#: apps/members/models.py:101
+#: apps/members/models.py:102
 msgid "état / province"
 msgstr ""
 
-#: apps/members/models.py:104
+#: apps/members/models.py:105
 msgid "pays"
 msgstr ""
 
-#: apps/members/models.py:107
+#: apps/members/models.py:108
 msgid "date d'inscription"
 msgstr ""
 
-#: apps/members/models.py:110
+#: apps/members/models.py:111
 msgid "date d'expiration"
 msgstr ""
 
-#: apps/members/models.py:124
+#: apps/members/models.py:125
 msgid "commentaire"
 msgstr ""
 
-#: apps/members/models.py:129
+#: apps/members/models.py:130
 msgid "langue de correspondance"
 msgstr ""
 
-#: apps/members/models.py:136 apps/members/models.py:276
+#: apps/members/models.py:137 apps/members/models.py:277
 msgid "langues parlées"
 msgstr ""
 
-#: apps/members/models.py:139 apps/members/models.py:279
+#: apps/members/models.py:140 apps/members/models.py:280
 msgid "autres langues"
 msgstr ""
 
-#: apps/members/models.py:142
+#: apps/members/models.py:143
 msgid "ancienne carte"
 msgstr ""
 
-#: apps/members/models.py:145
+#: apps/members/models.py:146
 msgid "photo"
 msgstr ""
 
-#: apps/members/models.py:150
+#: apps/members/models.py:151 apps/reports/builders/members.py:149
+#: apps/reports/builders/members.py:158 apps/reports/builders/members.py:201
+#: apps/reports/builders/members.py:276
 msgid "usagers"
 msgstr ""
 
-#: apps/members/models.py:243
+#: apps/members/models.py:244
 msgid "Fille"
 msgstr ""
 
-#: apps/members/models.py:244
+#: apps/members/models.py:245
 msgid "Garçon"
 msgstr ""
 
-#: apps/members/models.py:268
+#: apps/members/models.py:269
 msgid "sexe"
 msgstr ""
 
-#: apps/members/models.py:270
+#: apps/members/models.py:271
 msgid "adulte"
 msgstr ""
 
-#: apps/members/models.py:272
+#: apps/members/models.py:273
 msgid "année de naissance"
 msgstr ""
 
-#: apps/members/models.py:283
+#: apps/members/models.py:284
 msgid "membre de la famille"
 msgstr ""
 
-#: apps/members/models.py:284
+#: apps/members/models.py:285
 msgid "membres de la famille"
+msgstr ""
+
+#: apps/members/models.py:333
+msgid "renouvelée le"
+msgstr ""
+
+#: apps/members/models.py:335
+msgid "ancienne expiration"
+msgstr ""
+
+#: apps/members/models.py:337
+msgid "nouvelle expiration"
+msgstr ""
+
+#: apps/members/models.py:344
+msgid "enregistrée par"
+msgstr ""
+
+#: apps/members/models.py:348
+msgid "renouvellement de carte"
+msgstr ""
+
+#: apps/members/models.py:349
+msgid "renouvellements de carte"
 msgstr ""
 
 #: apps/members/notifications.py:39
@@ -2795,7 +2847,8 @@ msgstr ""
 msgid "Facture de cotisation %(num)s émise (%(amount)s)."
 msgstr ""
 
-#: apps/members/views.py:149
+#: apps/members/views.py:149 apps/reports/builders/loans.py:142
+#: apps/reports/builders/members.py:157
 msgid "Sans catégorie"
 msgstr ""
 
@@ -2905,71 +2958,480 @@ msgid ""
 "l'abréviation de la catégorie avant d'imprimer."
 msgstr ""
 
-#: apps/reports/forms.py:12 templates/finance/cash_index.html:41
-msgid "Du"
+#: apps/reports/builders/__init__.py:44 apps/reports/builders/worklists.py:70
+msgid "Les retards"
 msgstr ""
 
-#: apps/reports/forms.py:15 templates/finance/cash_index.html:45
-msgid "Au"
+#: apps/reports/builders/__init__.py:45
+msgid "Les livres qui auraient dû être rendus, du plus ancien au plus récent."
 msgstr ""
 
-#: apps/reports/forms.py:29
-msgid "La date de début doit précéder la fin."
+#: apps/reports/builders/__init__.py:52
+msgid "Relancer les retards"
 msgstr ""
 
-#: apps/reports/forms.py:35 templates/catalog/record_detail.html:63
-#: templates/closing/stats.html:22
-msgid "Année"
+#: apps/reports/builders/__init__.py:57 apps/reports/builders/worklists.py:136
+msgid "Les réservations à retirer"
 msgstr ""
 
-#: apps/reports/pdf.py:37
+#: apps/reports/builders/__init__.py:58
+msgid "Les livres mis de côté et qui les attend."
+msgstr ""
+
+#: apps/reports/builders/__init__.py:65
+msgid "Prévenir les usagers"
+msgstr ""
+
+#: apps/reports/builders/__init__.py:70 apps/reports/builders/worklists.py:222
+msgid "Les inactifs"
+msgstr ""
+
+#: apps/reports/builders/__init__.py:71
+msgid "Les usagers et les livres sans mouvement depuis longtemps."
+msgstr ""
+
+#: apps/reports/builders/__init__.py:78
+msgid "Voir les inactifs"
+msgstr ""
+
+#: apps/reports/builders/__init__.py:84 apps/reports/builders/overview.py:73
+msgid "Vue d'ensemble"
+msgstr ""
+
+#: apps/reports/builders/__init__.py:85
+msgid "Tous les chiffres importants sur une page. À imprimer pour le comité."
+msgstr ""
+
+#: apps/reports/builders/__init__.py:94 apps/reports/builders/collection.py:114
+msgid "Le fonds"
+msgstr ""
+
+#: apps/reports/builders/__init__.py:95
+msgid "Combien de livres, de quelle sorte, dans quel état, d'où ils viennent."
+msgstr ""
+
+#: apps/reports/builders/__init__.py:104 apps/reports/builders/loans.py:76
+msgid "Les prêts"
+msgstr ""
+
+#: apps/reports/builders/__init__.py:105
+msgid "Combien de prêts, et les livres les plus et les moins empruntés."
+msgstr ""
+
+#: apps/reports/builders/__init__.py:114 apps/reports/builders/members.py:83
+msgid "Les usagers"
+msgstr ""
+
+#: apps/reports/builders/__init__.py:115
+msgid "Combien de personnes, qui elles sont, qui arrive et qui part."
+msgstr ""
+
+#: apps/reports/builders/__init__.py:124 apps/reports/builders/attendance.py:82
+msgid "La fréquentation"
+msgstr ""
+
+#: apps/reports/builders/__init__.py:125 apps/reports/builders/attendance.py:83
+msgid "Qui vient à la bibliothèque et aux animations, et de quel âge."
+msgstr ""
+
+#: apps/reports/builders/__init__.py:134 apps/reports/builders/team.py:66
+msgid "Le travail de l'équipe"
+msgstr ""
+
+#: apps/reports/builders/__init__.py:135
+msgid "Les heures faites, par nature de travail et par personne."
+msgstr ""
+
+#: apps/reports/builders/__init__.py:144 apps/reports/builders/money.py:82
+msgid "L'argent"
+msgstr ""
+
+#: apps/reports/builders/__init__.py:145 apps/reports/builders/money.py:83
+msgid "Ce qui a été facturé, ce qui a été encaissé, ce qui reste dû."
+msgstr ""
+
+#: apps/reports/builders/attendance.py:55
+msgid "Venues à la bibliothèque"
+msgstr ""
+
+#: apps/reports/builders/attendance.py:56
+msgid "présences enregistrées, membres et non-membres"
+msgstr ""
+
+#: apps/reports/builders/attendance.py:57
+msgid "Animations organisées"
+msgstr ""
+
+#: apps/reports/builders/attendance.py:58
+msgid "hors simple venue"
+msgstr ""
+
+#: apps/reports/builders/attendance.py:59
+msgid "Participations d'usagers"
+msgstr ""
+
+#: apps/reports/builders/attendance.py:60
+msgid "toutes séances confondues"
+msgstr ""
+
+#: apps/reports/builders/attendance.py:61
+#: apps/reports/builders/attendance.py:233
+#: templates/closing/animation_detail.html:24
+msgid "Non-membres adultes"
+msgstr ""
+
+#: apps/reports/builders/attendance.py:62
+#: apps/reports/builders/attendance.py:64
+msgid "venus sans être inscrits"
+msgstr ""
+
+#: apps/reports/builders/attendance.py:63
+#: apps/reports/builders/attendance.py:234
+#: templates/closing/animation_detail.html:25
+msgid "Non-membres enfants"
+msgstr ""
+
+#: apps/reports/builders/attendance.py:65 apps/reports/builders/team.py:48
+#: templates/closing/stats.html:67
+msgid "Heures d'animation"
+msgstr ""
+
+#: apps/reports/builders/attendance.py:66
+msgid "temps d'accueil et d'atelier"
+msgstr ""
+
+#: apps/reports/builders/attendance.py:67
+#: templates/members/member_history.html:93
+msgid "Consultations sur place"
+msgstr ""
+
+#: apps/reports/builders/attendance.py:68
+msgid "livres lus sans être empruntés"
+msgstr ""
+
+#: apps/reports/builders/attendance.py:88
 #, python-format
-msgid "Rapport annuel d'activité — %(year)s"
+msgid ""
+"« %(label)s » enregistre une simple venue à la bibliothèque : c'est "
+"l'animation principale, comptée à part des ateliers."
 msgstr ""
 
-#: apps/reports/pdf.py:41
-#, python-format
-msgid "Période : du %(s)s au %(e)s"
+#: apps/reports/builders/attendance.py:106
+msgid "L'âge des personnes présentes"
 msgstr ""
 
-#: apps/reports/pdf.py:50
-msgid "Prêts total"
+#: apps/reports/builders/attendance.py:109
+msgid ""
+"Seuls les usagers inscrits ont un âge connu ; les non-membres sont comptés à "
+"part."
 msgstr ""
 
-#: apps/reports/pdf.py:51
-msgid "Prêts retournés"
+#: apps/reports/builders/attendance.py:128
+msgid "La fréquentation mois par mois"
 msgstr ""
 
-#: apps/reports/pdf.py:52 templates/core/dashboard.html:177
-#: templates/loans/return.html:194
-msgid "Prêts en retard"
+#: apps/reports/builders/attendance.py:178
+msgid "Les présences par animation"
 msgstr ""
 
-#: apps/reports/pdf.py:53
-msgid "Prêts perdus"
+#: apps/reports/builders/attendance.py:184
+msgid "Ce qui a été organisé"
 msgstr ""
 
-#: apps/reports/pdf.py:54
-msgid "Usagers actifs sur la période"
+#: apps/reports/builders/attendance.py:186
+msgid "Séances"
 msgstr ""
 
-#: apps/reports/pdf.py:55
-msgid "Usagers inscrits (total)"
+#: apps/reports/builders/attendance.py:187
+msgid "Usagers présents"
 msgstr ""
 
-#: apps/reports/pdf.py:56
-msgid "Notices ajoutées"
+#: apps/reports/builders/attendance.py:195
+msgid "Aucune séance sur cette période."
 msgstr ""
 
-#: apps/reports/pdf.py:57
-msgid "Exemplaires ajoutés"
+#: apps/reports/builders/attendance.py:229
+msgid "Les présences par âge et par animation"
 msgstr ""
 
-#: apps/reports/pdf.py:73
-msgid "Top 10 ouvrages empruntés"
+#: apps/reports/builders/attendance.py:237
+msgid "Aucune présence enregistrée sur cette période."
 msgstr ""
 
-#: apps/reports/pdf.py:74 templates/catalog/_item_results.html:52
+#: apps/reports/builders/attendance.py:238
+msgid "L'âge est celui de la personne le jour de la séance."
+msgstr ""
+
+#: apps/reports/builders/collection.py:52
+msgid "Livres au total"
+msgstr ""
+
+#: apps/reports/builders/collection.py:52
+msgid "exemplaires du fonds"
+msgstr ""
+
+#: apps/reports/builders/collection.py:53
+msgid "Disponibles"
+msgstr ""
+
+#: apps/reports/builders/collection.py:54
+msgid "sur les rayons maintenant"
+msgstr ""
+
+#: apps/reports/builders/collection.py:55
+msgid "Sortis"
+msgstr ""
+
+#: apps/reports/builders/collection.py:56
+msgid "chez des usagers"
+msgstr ""
+
+#: apps/reports/builders/collection.py:57 apps/reports/builders/overview.py:236
+msgid "Titres différents"
+msgstr ""
+
+#: apps/reports/builders/collection.py:58
+msgid "un titre peut avoir plusieurs exemplaires"
+msgstr ""
+
+#: apps/reports/builders/collection.py:60
+msgid "hors circulation"
+msgstr ""
+
+#: apps/reports/builders/collection.py:61
+msgid "Perdus"
+msgstr ""
+
+#: apps/reports/builders/collection.py:62
+msgid "depuis le début"
+msgstr ""
+
+#: apps/reports/builders/collection.py:63
+msgid "Pilonnés"
+msgstr ""
+
+#: apps/reports/builders/collection.py:64
+msgid "retirés du fonds"
+msgstr ""
+
+#: apps/reports/builders/collection.py:65
+msgid "Rotation du fonds"
+msgstr ""
+
+#: apps/reports/builders/collection.py:66
+msgid "prêts par livre sur la période"
+msgstr ""
+
+#: apps/reports/builders/collection.py:74
+msgid "Les rayons : ce qu'on a et ce qui sort"
+msgstr ""
+
+#: apps/reports/builders/collection.py:76
+#: apps/reports/builders/collection.py:341
+#: apps/reports/builders/collection.py:395
+#: apps/reports/builders/collection.py:435 apps/reports/builders/loans.py:177
+#: apps/reports/builders/loans.py:201
+msgid "Rayon"
+msgstr ""
+
+#: apps/reports/builders/collection.py:77
+#: apps/reports/builders/collection.py:171
+#: apps/reports/builders/collection.py:259
+#: apps/reports/builders/collection.py:294
+#: apps/reports/builders/collection.py:315
+#: apps/reports/builders/collection.py:395 apps/reports/builders/loans.py:201
+msgid "Livres"
+msgstr ""
+
+#: apps/reports/builders/collection.py:78
+#: apps/reports/builders/collection.py:235
+msgid "Part du fonds"
+msgstr ""
+
+#: apps/reports/builders/collection.py:79
+#: apps/reports/builders/collection.py:172
+#: apps/reports/builders/collection.py:295
+msgid "Prêts sur la période"
+msgstr ""
+
+#: apps/reports/builders/collection.py:80
+msgid "Prêts par livre"
+msgstr ""
+
+#: apps/reports/builders/collection.py:83
+msgid "Aucun livre catalogué."
+msgstr ""
+
+#: apps/reports/builders/collection.py:85
+msgid ""
+"« Prêts par livre » compare les prêts de la période au nombre de livres en "
+"circulation du rayon : au-dessus de 1, chaque livre du rayon est sorti au "
+"moins une fois."
+msgstr ""
+
+#: apps/reports/builders/collection.py:94
+msgid "Par sorte de document"
+msgstr ""
+
+#: apps/reports/builders/collection.py:96
+msgid "Dans quel état"
+msgstr ""
+
+#: apps/reports/builders/collection.py:115
+msgid "Ce que la bibliothèque possède, et ce qui est entré ou sorti."
+msgstr ""
+
+#: apps/reports/builders/collection.py:146
+#: apps/reports/builders/collection.py:334
+#: apps/reports/builders/collection.py:390 apps/reports/builders/loans.py:131
+#: apps/reports/builders/loans.py:196 apps/reports/builders/overview.py:213
+msgid "Sans rayon"
+msgstr ""
+
+#: apps/reports/builders/collection.py:168
+msgid "Les livres et les prêts par rayon"
+msgstr ""
+
+#: apps/reports/builders/collection.py:189
+#: apps/reports/builders/overview.py:197 apps/reports/builders/overview.py:214
+msgid "livres"
+msgstr ""
+
+#: apps/reports/builders/collection.py:231
+msgid "Les langues : le fonds et le public"
+msgstr ""
+
+#: apps/reports/builders/collection.py:233 apps/reports/builders/members.py:311
+#: apps/setup/forms.py:20 apps/setup/views.py:28
+#: templates/accounts/login.html:27 templates/accounts/login.html:29
+#: templates/base.html:65 templates/base.html:67
+#: templates/catalog/record_detail.html:64
+#: templates/catalog/scan_session.html:52
+#: templates/catalog/scan_session.html:186
+msgid "Langue"
+msgstr ""
+
+#: apps/reports/builders/collection.py:234
+msgid "Titres"
+msgstr ""
+
+#: apps/reports/builders/collection.py:236
+msgid "Usagers qui la parlent"
+msgstr ""
+
+#: apps/reports/builders/collection.py:237
+msgid "Part du public"
+msgstr ""
+
+#: apps/reports/builders/collection.py:240 apps/reports/builders/members.py:313
+msgid "Aucune langue renseignée."
+msgstr ""
+
+#: apps/reports/builders/collection.py:251
+msgid "Sans emplacement"
+msgstr ""
+
+#: apps/reports/builders/collection.py:258
+msgid "Où sont les livres"
+msgstr ""
+
+#: apps/reports/builders/collection.py:260
+#: apps/reports/builders/collection.py:315 apps/reports/builders/loans.py:229
+#: apps/reports/builders/members.py:282 apps/reports/builders/members.py:311
+#: apps/reports/builders/money.py:154 apps/reports/builders/money.py:193
+#: apps/reports/builders/team.py:105 apps/reports/builders/team.py:149
+msgid "Part"
+msgstr ""
+
+#: apps/reports/builders/collection.py:262
+msgid "Aucun emplacement renseigné."
+msgstr ""
+
+#: apps/reports/builders/collection.py:288
+msgid "Fonds de la bibliothèque"
+msgstr ""
+
+#: apps/reports/builders/collection.py:293
+msgid "D'où viennent les livres"
+msgstr ""
+
+#: apps/reports/builders/collection.py:297
+msgid "Aucune provenance renseignée."
+msgstr ""
+
+#: apps/reports/builders/collection.py:314
+msgid "Comment ils sont arrivés"
+msgstr ""
+
+#: apps/reports/builders/collection.py:315
+msgid "Origine"
+msgstr ""
+
+#: apps/reports/builders/collection.py:317
+msgid "Aucune origine renseignée."
+msgstr ""
+
+#: apps/reports/builders/collection.py:340
+msgid "Les livres entrés pendant la période"
+msgstr ""
+
+#: apps/reports/builders/collection.py:341
+msgid "Titres nouveaux"
+msgstr ""
+
+#: apps/reports/builders/collection.py:342
+#: templates/catalog/location_list.html:37
+#: templates/catalog/provenance_list.html:37
+#: templates/catalog/record_bulk_assign_location.html:38
+#: templates/catalog/record_bulk_delete.html:47
+#: templates/catalog/record_detail.html:85 templates/core/dashboard.html:193
+msgid "Exemplaires"
+msgstr ""
+
+#: apps/reports/builders/collection.py:345
+msgid "Aucun livre catalogué pendant cette période."
+msgstr ""
+
+#: apps/reports/builders/collection.py:365
+msgid "Les dons reçus pendant la période"
+msgstr ""
+
+#: apps/reports/builders/collection.py:366
+msgid "Livres donnés"
+msgstr ""
+
+#: apps/reports/builders/collection.py:368
+msgid "Aucun don enregistré pendant cette période."
+msgstr ""
+
+#: apps/reports/builders/collection.py:394
+msgid "Les livres qui n'ont jamais servi"
+msgstr ""
+
+#: apps/reports/builders/collection.py:397
+msgid ""
+"Tous les livres en rayon depuis plus d'un an sont sortis au moins une fois."
+msgstr ""
+
+#: apps/reports/builders/collection.py:399
+msgid ""
+"Comptés : les livres en rayon depuis plus d'un an et jamais empruntés. Les "
+"nouveautés, les livres perdus, pilonnés ou en réparation sont écartés."
+msgstr ""
+
+#: apps/reports/builders/collection.py:432
+msgid "Le catalogue complet"
+msgstr ""
+
+#: apps/reports/builders/collection.py:434 apps/reports/builders/loans.py:320
+#: apps/reports/builders/loans.py:347 apps/reports/builders/worklists.py:88
+#: apps/reports/builders/worklists.py:151
+#: apps/reports/builders/worklists.py:248
+msgid "N° du livre"
+msgstr ""
+
+#: apps/reports/builders/collection.py:434
+#: templates/catalog/_item_results.html:52
 #: templates/catalog/_item_results.html:121
 #: templates/catalog/item_bulk_assign_provenance.html:36
 #: templates/catalog/item_bulk_delete.html:58
@@ -2983,34 +3445,939 @@ msgstr ""
 #: templates/members/member_history.html:30
 #: templates/members/member_history.html:62
 #: templates/printing/_picker_base.html:54
-#: templates/reports/inactive_list.html:71
-#: templates/reports/overdue_list.html:38
-#: templates/reports/reservations_pickup.html:36
 msgid "Titre"
 msgstr ""
 
-#: apps/reports/pdf.py:74
+#: apps/reports/builders/collection.py:434
+msgid "Auteurs"
+msgstr ""
+
+#: apps/reports/builders/collection.py:436 apps/reports/builders/loans.py:320
+#: apps/reports/builders/loans.py:348
+msgid "Situation"
+msgstr ""
+
+#: apps/reports/builders/collection.py:439
+msgid "Aucun exemplaire au catalogue."
+msgstr ""
+
+#: apps/reports/builders/collection.py:441
+msgid ""
+"Un exemplaire par ligne. Pour reprendre le catalogue dans un tableur avec "
+"toutes les colonnes (ISBN, éditeur, année, tags…), utilisez l'export CSV "
+"proposé sous ce tableau."
+msgstr ""
+
+#: apps/reports/builders/loans.py:47 apps/reports/builders/loans.py:177
+#: apps/reports/builders/loans.py:258 apps/reports/builders/members.py:340
+#: apps/reports/builders/overview.py:51 apps/reports/builders/overview.py:243
 msgid "Prêts"
 msgstr ""
 
-#: apps/reports/pdf.py:89
+#: apps/reports/builders/loans.py:47
+msgid "pendant la période"
+msgstr ""
+
+#: apps/reports/builders/loans.py:48 apps/reports/builders/loans.py:258
+msgid "Retours"
+msgstr ""
+
+#: apps/reports/builders/loans.py:48
+msgid "livres déjà rendus"
+msgstr ""
+
+#: apps/reports/builders/loans.py:49
+msgid "En retard aujourd'hui"
+msgstr ""
+
+#: apps/reports/builders/loans.py:50 apps/reports/builders/overview.py:41
+msgid "à relancer"
+msgstr ""
+
+#: apps/reports/builders/loans.py:51
+msgid "Rendus en retard"
+msgstr ""
+
+#: apps/reports/builders/loans.py:52
+msgid "des livres rendus, sur la période"
+msgstr ""
+
+#: apps/reports/builders/loans.py:53
+msgid "Durée d'un prêt"
+msgstr ""
+
+#: apps/reports/builders/loans.py:55
+msgid "la moitié des prêts durent moins que cela"
+msgstr ""
+
+#: apps/reports/builders/loans.py:56
+msgid "Renouvellements"
+msgstr ""
+
+#: apps/reports/builders/loans.py:57
+msgid "prolongations accordées"
+msgstr ""
+
+#: apps/reports/builders/loans.py:77
+msgid "Combien de livres sont sortis, lesquels, et par qui."
+msgstr ""
+
+#: apps/reports/builders/loans.py:120 apps/reports/builders/overview.py:173
+msgid "Les prêts mois par mois"
+msgstr ""
+
+#: apps/reports/builders/loans.py:133
+msgid "Ce qui se prête, par rayon"
+msgstr ""
+
+#: apps/reports/builders/loans.py:144
+msgid "Qui emprunte, par catégorie d'usager"
+msgstr ""
+
+#: apps/reports/builders/loans.py:167
+msgid "Les livres les plus empruntés"
+msgstr ""
+
+#: apps/reports/builders/loans.py:168
+#, python-format
+msgid "Les %(n)s titres les plus sortis pendant la période."
+msgstr ""
+
+#: apps/reports/builders/loans.py:170
+msgid "Les livres les moins empruntés"
+msgstr ""
+
+#: apps/reports/builders/loans.py:172
+#, python-format
+msgid ""
+"Les %(n)s titres les moins sortis parmi ceux qui sont sortis au moins une "
+"fois. Les livres jamais empruntés sont comptés séparément."
+msgstr ""
+
+#: apps/reports/builders/loans.py:179 apps/reports/builders/loans.py:351
+msgid "Aucun prêt pendant cette période."
+msgstr ""
+
+#: apps/reports/builders/loans.py:200
+msgid "Les livres jamais empruntés"
+msgstr ""
+
+#: apps/reports/builders/loans.py:203
+msgid "Tous les livres du fonds sont sortis au moins une fois."
+msgstr ""
+
+#: apps/reports/builders/loans.py:204
+msgid "Depuis leur entrée au catalogue, pas seulement sur la période."
+msgstr ""
+
+#: apps/reports/builders/loans.py:227
+msgid "Les réservations de la période"
+msgstr ""
+
+#: apps/reports/builders/loans.py:228
+msgid "Ce qu'elles sont devenues"
+msgstr ""
+
+#: apps/reports/builders/loans.py:228
+msgid "Nombre"
+msgstr ""
+
+#: apps/reports/builders/loans.py:231
+msgid "Aucune réservation pendant cette période."
+msgstr ""
+
+#: apps/reports/builders/loans.py:257
+msgid "Jour par jour"
+msgstr ""
+
+#: apps/reports/builders/loans.py:258 apps/reports/builders/money.py:233
+#: apps/reports/builders/money.py:255
+msgid "Jour"
+msgstr ""
+
+#: apps/reports/builders/loans.py:265
+msgid "Aucun mouvement pendant cette période."
+msgstr ""
+
+#: apps/reports/builders/loans.py:266
+msgid ""
+"Seuls les jours où la bibliothèque a prêté ou reçu un livre sont listés."
+msgstr ""
+
+#: apps/reports/builders/loans.py:289 templates/core/dashboard.html:71
+#: templates/loans/lend.html:4 templates/loans/lend.html:30
+#: templates/partials/_tile_strip.html:33
+msgid "Prêt"
+msgstr ""
+
+#: apps/reports/builders/loans.py:309
+msgid "Réservation"
+msgstr ""
+
+#: apps/reports/builders/loans.py:317
+msgid "Prêts et réservations en cours"
+msgstr ""
+
+#: apps/reports/builders/loans.py:319 apps/reports/builders/money.py:154
+#: templates/finance/invoice_detail.html:83
+#: templates/finance/outbox_list.html:41 templates/finance/tariff_list.html:82
+msgid "Nature"
+msgstr ""
+
+#: apps/reports/builders/loans.py:319 apps/reports/builders/loans.py:346
+#: apps/reports/builders/members.py:245 apps/reports/builders/members.py:340
+#: apps/reports/builders/money.py:105 apps/reports/builders/worklists.py:85
+#: apps/reports/builders/worklists.py:148
+#: apps/reports/builders/worklists.py:234
+#: templates/finance/invoice_list.html:50
+msgid "Usager"
+msgstr ""
+
+#: apps/reports/builders/loans.py:321 templates/core/dashboard.html:350
+#: templates/finance/invoice_detail.html:62
+#: templates/finance/invoice_list.html:52
+#: templates/finance/member_account.html:46 templates/loans/return.html:201
+#: templates/members/member_detail.html:159
+#: templates/members/member_history.html:32
+msgid "Échéance"
+msgstr ""
+
+#: apps/reports/builders/loans.py:324
+msgid "Aucun prêt ni réservation en cours."
+msgstr ""
+
+#: apps/reports/builders/loans.py:325
+msgid ""
+"Situation d'aujourd'hui : ce tableau ne dépend pas de la période choisie."
+msgstr ""
+
+#: apps/reports/builders/loans.py:338
+msgid "pas rendu"
+msgstr ""
+
+#: apps/reports/builders/loans.py:344
+msgid "Le détail des prêts de la période"
+msgstr ""
+
+#: apps/reports/builders/loans.py:346 templates/members/member_history.html:31
+#: templates/members/member_history.html:63
+msgid "Prêté le"
+msgstr ""
+
+#: apps/reports/builders/loans.py:347 apps/reports/builders/worklists.py:89
+msgid "À rendre le"
+msgstr ""
+
+#: apps/reports/builders/loans.py:348
+msgid "Rendu le"
+msgstr ""
+
+#: apps/reports/builders/members.py:56 apps/reports/builders/overview.py:42
+#: apps/reports/builders/overview.py:240
+msgid "Usagers inscrits"
+msgstr ""
+
+#: apps/reports/builders/members.py:56
+msgid "depuis l'ouverture"
+msgstr ""
+
+#: apps/reports/builders/members.py:57
+msgid "Cartes valides"
+msgstr ""
+
+#: apps/reports/builders/members.py:57
+msgid "aujourd'hui"
+msgstr ""
+
+#: apps/reports/builders/members.py:58 apps/reports/builders/overview.py:241
+msgid "Familles"
+msgstr ""
+
+#: apps/reports/builders/members.py:59
+msgid "cartes avec plusieurs personnes"
+msgstr ""
+
+#: apps/reports/builders/members.py:60 apps/reports/builders/overview.py:44
+#: apps/reports/builders/overview.py:242
+msgid "Personnes touchées"
+msgstr ""
+
+#: apps/reports/builders/members.py:61 apps/reports/builders/overview.py:45
+msgid "titulaires et personnes de leur foyer"
+msgstr ""
+
+#: apps/reports/builders/members.py:62
+msgid "Usagers venus"
+msgstr ""
+
+#: apps/reports/builders/members.py:63
+msgid "ont emprunté ou participé sur la période"
+msgstr ""
+
+#: apps/reports/builders/members.py:64 apps/reports/builders/members.py:197
+#: apps/reports/builders/members.py:207
+msgid "Nouveaux"
+msgstr ""
+
+#: apps/reports/builders/members.py:64
+msgid "inscrits sur la période"
+msgstr ""
+
+#: apps/reports/builders/members.py:65 apps/reports/builders/members.py:198
+#: apps/reports/builders/members.py:208
+msgid "Réinscriptions"
+msgstr ""
+
+#: apps/reports/builders/members.py:67 apps/reports/builders/members.py:199
+#: apps/reports/builders/members.py:209
+msgid "Usagers perdus"
+msgstr ""
+
+#: apps/reports/builders/members.py:68
+msgid "carte périmée sur la période et non renouvelée"
+msgstr ""
+
+#: apps/reports/builders/members.py:84
+msgid "Combien de personnes la bibliothèque touche, et qui elles sont."
+msgstr ""
+
+#: apps/reports/builders/members.py:109
+#, python-format
+msgid "comptées depuis le %(d)s"
+msgstr ""
+
+#: apps/reports/builders/members.py:110
+msgid "cartes renouvelées sur la période"
+msgstr ""
+
+#: apps/reports/builders/members.py:133
+msgid ""
+"« Usagers venus » réunit les emprunteurs et les participants aux "
+"animations : quelqu'un qui a fait les deux n'est compté qu'une fois."
+msgstr ""
+
+#: apps/reports/builders/members.py:148
+msgid "L'âge des usagers"
+msgstr ""
+
+#: apps/reports/builders/members.py:156
+msgid "Les catégories d'usager"
+msgstr ""
+
+#: apps/reports/builders/members.py:194 apps/reports/builders/members.py:204
+msgid "Qui arrive, qui reste, qui part"
+msgstr ""
+
+#: apps/reports/builders/members.py:212 templates/finance/cash_index.html:128
+msgid "Aucun mouvement sur cette période."
+msgstr ""
+
+#: apps/reports/builders/members.py:243
+#, python-format
+msgid "Cartes à renouveler dans les %(n)s jours"
+msgstr ""
+
+#: apps/reports/builders/members.py:245 apps/reports/builders/members.py:340
+#: apps/reports/builders/worklists.py:235
+#: templates/members/member_detail.html:96
+#: templates/members/member_form.html:37
+msgid "N° de carte"
+msgstr ""
+
+#: apps/reports/builders/members.py:246 apps/reports/builders/worklists.py:236
+#: apps/reports/builders/worklists.py:249
+#: templates/catalog/_item_results.html:54
+#: templates/catalog/_item_results.html:123
+#: templates/catalog/record_detail.html:53
+#: templates/catalog/record_list.html:136
+#: templates/catalog/record_list.html:178
+#: templates/catalog/record_list.html:247
+#: templates/catalog/scan_session.html:53
+#: templates/catalog/scan_session.html:153
+#: templates/catalog/scan_session.html:187
+#: templates/finance/tariff_list.html:30
+#: templates/members/member_detail.html:97
+#: templates/printing/cards_picker.html:37
+#: templates/printing/spine_labels_picker.html:26
+msgid "Catégorie"
+msgstr ""
+
+#: apps/reports/builders/members.py:246 templates/members/member_detail.html:99
+msgid "Expire le"
+msgstr ""
+
+#: apps/reports/builders/members.py:249
+msgid "Aucune carte n'arrive à échéance ce mois-ci."
+msgstr ""
+
+#: apps/reports/builders/members.py:273 apps/reports/builders/members.py:279
+msgid "D'où viennent les usagers"
+msgstr ""
+
+#: apps/reports/builders/members.py:281
+msgid "Code postal"
+msgstr ""
+
+#: apps/reports/builders/members.py:281
+msgid "Localité"
+msgstr ""
+
+#: apps/reports/builders/members.py:282 apps/reports/builders/members.py:311
+#: templates/finance/tariff_list.html:35
+msgid "Usagers"
+msgstr ""
+
+#: apps/reports/builders/members.py:285
+msgid "Aucune localité renseignée."
+msgstr ""
+
+#: apps/reports/builders/members.py:286
+#, python-format
+msgid "%(n)s usagers n'ont pas de localité renseignée."
+msgstr ""
+
+#: apps/reports/builders/members.py:310
+msgid "Les langues parlées par les usagers"
+msgstr ""
+
+#: apps/reports/builders/members.py:314
+#, python-format
+msgid "%(n)s usagers n'ont aucune langue renseignée."
+msgstr ""
+
+#: apps/reports/builders/members.py:339
+msgid "Les usagers qui ont le plus emprunté"
+msgstr ""
+
+#: apps/reports/builders/members.py:342
+msgid "Aucun prêt sur cette période."
+msgstr ""
+
+#: apps/reports/builders/money.py:60
+msgid "Facturé"
+msgstr ""
+
+#: apps/reports/builders/money.py:60
+msgid "sur la période"
+msgstr ""
+
+#: apps/reports/builders/money.py:61
+msgid "Encaissé"
+msgstr ""
+
+#: apps/reports/builders/money.py:61
+msgid "paiements reçus sur la période"
+msgstr ""
+
+#: apps/reports/builders/money.py:62 apps/reports/builders/money.py:106
+msgid "Reste dû"
+msgstr ""
+
+#: apps/reports/builders/money.py:63
+msgid "toutes factures ouvertes confondues"
+msgstr ""
+
+#: apps/reports/builders/money.py:64
+msgid "Entrées de caisse"
+msgstr ""
+
+#: apps/reports/builders/money.py:64
+msgid "espèces reçues"
+msgstr ""
+
+#: apps/reports/builders/money.py:65
+msgid "Sorties de caisse"
+msgstr ""
+
+#: apps/reports/builders/money.py:65
+msgid "dépenses saisies"
+msgstr ""
+
+#: apps/reports/builders/money.py:66
+msgid "Solde de la caisse"
+msgstr ""
+
+#: apps/reports/builders/money.py:67
+msgid "entrées moins sorties sur la période"
+msgstr ""
+
+#: apps/reports/builders/money.py:103
+msgid "Les factures à encaisser"
+msgstr ""
+
+#: apps/reports/builders/money.py:105
+msgid "N° de facture"
+msgstr ""
+
+#: apps/reports/builders/money.py:105 templates/finance/invoice_detail.html:61
+#: templates/finance/invoice_list.html:51
+#: templates/finance/member_account.html:45
+msgid "Émise le"
+msgstr ""
+
+#: apps/reports/builders/money.py:107 apps/reports/builders/worklists.py:90
+msgid "Jours de retard"
+msgstr ""
+
+#: apps/reports/builders/money.py:110
+msgid "Aucune facture en attente de paiement."
+msgstr ""
+
+#: apps/reports/builders/money.py:111
+msgid "Toutes les factures ouvertes, y compris celles émises avant la période."
+msgstr ""
+
+#: apps/reports/builders/money.py:138
+msgid "D'où vient l'argent"
+msgstr ""
+
+#: apps/reports/builders/money.py:153
+msgid "Les recettes par nature"
+msgstr ""
+
+#: apps/reports/builders/money.py:157
+msgid "Aucune facture émise sur cette période."
+msgstr ""
+
+#: apps/reports/builders/money.py:172
+msgid "Les encaissements mois par mois"
+msgstr ""
+
+#: apps/reports/builders/money.py:190
+msgid "Comment les gens paient"
+msgstr ""
+
+#: apps/reports/builders/money.py:192
+msgid "Mode de paiement"
+msgstr ""
+
+#: apps/reports/builders/money.py:192
+msgid "Paiements"
+msgstr ""
+
+#: apps/reports/builders/money.py:196
+msgid "Aucun paiement sur cette période."
+msgstr ""
+
+#: apps/reports/builders/money.py:231
+msgid "La caisse jour par jour"
+msgstr ""
+
+#: apps/reports/builders/money.py:234
+msgid "Autres paiements"
+msgstr ""
+
+#: apps/reports/builders/money.py:234 templates/closing/day_closing.html:70
+msgid "Sorties"
+msgstr ""
+
+#: apps/reports/builders/money.py:235
+msgid "Solde espèces du jour"
+msgstr ""
+
+#: apps/reports/builders/money.py:238
+msgid "Aucun mouvement d'argent sur cette période."
+msgstr ""
+
+#: apps/reports/builders/money.py:253
+msgid "Le détail de la caisse"
+msgstr ""
+
+#: apps/reports/builders/money.py:255 templates/finance/cash_index.html:99
+msgid "Sens"
+msgstr ""
+
+#: apps/reports/builders/money.py:259
+msgid "Aucun mouvement de caisse sur cette période."
+msgstr ""
+
+#: apps/reports/builders/overview.py:36 apps/reports/builders/overview.py:238
+msgid "Livres sortis"
+msgstr ""
+
+#: apps/reports/builders/overview.py:37
+msgid "chez des usagers en ce moment"
+msgstr ""
+
+#: apps/reports/builders/overview.py:38 apps/reports/builders/overview.py:237
+msgid "Livres disponibles"
+msgstr ""
+
+#: apps/reports/builders/overview.py:39
+msgid "sur les rayons aujourd'hui"
+msgstr ""
+
+#: apps/reports/builders/overview.py:40 apps/reports/builders/overview.py:239
+#: apps/reports/builders/worklists.py:76
+msgid "Livres en retard"
+msgstr ""
+
+#: apps/reports/builders/overview.py:43
+#, python-format
+msgid "dont %(n)s familles"
+msgstr ""
+
+#: apps/reports/builders/overview.py:46 apps/reports/builders/overview.py:235
+msgid "Livres au catalogue"
+msgstr ""
+
+#: apps/reports/builders/overview.py:47
+#, python-format
+msgid "%(n)s titres différents"
+msgstr ""
+
+#: apps/reports/builders/overview.py:52
+msgid "Nouveaux livres"
+msgstr ""
+
+#: apps/reports/builders/overview.py:53 apps/reports/builders/overview.py:246
+msgid "Nouveaux usagers"
+msgstr ""
+
+#: apps/reports/builders/overview.py:55 apps/reports/builders/overview.py:248
+msgid "Présences aux animations"
+msgstr ""
+
+#: apps/reports/builders/overview.py:57 apps/reports/builders/overview.py:250
+#: apps/reports/builders/team.py:44
+msgid "Heures de travail"
+msgstr ""
+
+#: apps/reports/builders/overview.py:59 apps/reports/builders/overview.py:251
+msgid "Argent encaissé"
+msgstr ""
+
+#: apps/reports/builders/overview.py:60 apps/reports/builders/overview.py:99
+#, python-format
+msgid "%(label)s : %(v)s"
+msgstr ""
+
+#: apps/reports/builders/overview.py:74
+msgid "Les chiffres importants de la bibliothèque, sur une page."
+msgstr ""
+
+#: apps/reports/builders/overview.py:78
+msgid ""
+"Les six premiers chiffres décrivent aujourd'hui ; les six suivants, la "
+"période choisie."
+msgstr ""
+
+#: apps/reports/builders/overview.py:196
+msgid "Les livres sortis à la fin de chaque mois"
+msgstr ""
+
+#: apps/reports/builders/overview.py:198
+msgid "Nombre de livres qui n'étaient pas rentrés le dernier jour du mois."
+msgstr ""
+
+#: apps/reports/builders/overview.py:212
+msgid "Le fonds par rayon"
+msgstr ""
+
+#: apps/reports/builders/overview.py:244
+msgid "Livres entrés"
+msgstr ""
+
+#: apps/reports/builders/overview.py:254
+msgid "Le bilan en un tableau"
+msgstr ""
+
+#: apps/reports/builders/overview.py:256
+msgid "Ce qu'on compte"
+msgstr ""
+
+#: apps/reports/builders/overview.py:262
+msgid ""
+"Les huit premières lignes décrivent la situation d'aujourd'hui : elles ne "
+"dépendent pas de la période choisie et n'ont donc rien à comparer. Les "
+"suivantes portent sur la période."
+msgstr ""
+
+#: apps/reports/builders/team.py:45
+msgid "saisies sur la période"
+msgstr ""
+
+#: apps/reports/builders/team.py:46
+msgid "Personnes"
+msgstr ""
+
+#: apps/reports/builders/team.py:47
+msgid "ont travaillé sur la période"
+msgstr ""
+
+#: apps/reports/builders/team.py:49
+msgid "comptées séparément des activités"
+msgstr ""
+
+#: apps/reports/builders/team.py:50 apps/reports/builders/team.py:104
+#: apps/reports/builders/team.py:148 templates/closing/stats.html:104
+msgid "Saisies"
+msgstr ""
+
+#: apps/reports/builders/team.py:51
+msgid "lignes de temps enregistrées"
+msgstr ""
+
+#: apps/reports/builders/team.py:67
+msgid ""
+"Le temps donné à la bibliothèque, par nature de travail et par personne."
+msgstr ""
+
+#: apps/reports/builders/team.py:96 apps/reports/builders/team.py:102
+msgid "Le temps par nature de travail"
+msgstr ""
+
+#: apps/reports/builders/team.py:99 apps/reports/builders/team.py:126
+msgid "heures"
+msgstr ""
+
+#: apps/reports/builders/team.py:104 apps/reports/builders/team.py:183
+msgid "Nature du travail"
+msgstr ""
+
+#: apps/reports/builders/team.py:109 apps/reports/builders/team.py:153
+#: apps/reports/builders/team.py:186
+msgid "Aucun temps de travail saisi sur cette période."
+msgstr ""
+
+#: apps/reports/builders/team.py:125
+msgid "Les heures mois par mois"
+msgstr ""
+
+#: apps/reports/builders/team.py:146
+msgid "Le temps par personne"
+msgstr ""
+
+#: apps/reports/builders/team.py:148 apps/reports/builders/team.py:182
+msgid "Personne"
+msgstr ""
+
+#: apps/reports/builders/team.py:180
+msgid "Le détail mois par mois"
+msgstr ""
+
+#: apps/reports/builders/worklists.py:71
+#, python-format
+msgid "Livres non rendus dont l'échéance est passée de plus de %(n)s jours."
+msgstr ""
+
+#: apps/reports/builders/worklists.py:74
+msgid "Tous les livres non rendus dont l'échéance est passée."
+msgstr ""
+
+#: apps/reports/builders/worklists.py:77
+msgid "à relancer aujourd'hui"
+msgstr ""
+
+#: apps/reports/builders/worklists.py:78
+msgid "Le plus ancien"
+msgstr ""
+
+#: apps/reports/builders/worklists.py:79
+msgid "de retard"
+msgstr ""
+
+#: apps/reports/builders/worklists.py:83
+msgid "À rappeler"
+msgstr ""
+
+#: apps/reports/builders/worklists.py:93
+msgid "Aucun retard. Tout est rentré."
+msgstr ""
+
+#: apps/reports/builders/worklists.py:131
+msgid "Non"
+msgstr ""
+
+#: apps/reports/builders/worklists.py:131
+msgid "Oui"
+msgstr ""
+
+#: apps/reports/builders/worklists.py:137
+msgid "Livres mis de côté qui attendent leur usager."
+msgstr ""
+
+#: apps/reports/builders/worklists.py:139
+msgid "Livres mis de côté"
+msgstr ""
+
+#: apps/reports/builders/worklists.py:140
+msgid "à garder au comptoir"
+msgstr ""
+
+#: apps/reports/builders/worklists.py:141
+msgid "Usagers à prévenir"
+msgstr ""
+
+#: apps/reports/builders/worklists.py:142
+msgid "pas encore appelés"
+msgstr ""
+
+#: apps/reports/builders/worklists.py:146
+msgid "À prévenir et à remettre"
+msgstr ""
+
+#: apps/reports/builders/worklists.py:152 templates/loans/reservations.html:54
+msgid "Mis de côté le"
+msgstr ""
+
+#: apps/reports/builders/worklists.py:153 templates/loans/reservations.html:61
+msgid "À retirer avant le"
+msgstr ""
+
+#: apps/reports/builders/worklists.py:154
+msgid "Prévenu ?"
+msgstr ""
+
+#: apps/reports/builders/worklists.py:157
+msgid "Aucun livre en attente de retrait."
+msgstr ""
+
+#: apps/reports/builders/worklists.py:205
+#: apps/reports/builders/worklists.py:215
+msgid "jamais"
+msgstr ""
+
+#: apps/reports/builders/worklists.py:223
+#, python-format
+msgid "Usagers et livres sans aucun prêt depuis %(n)s jours."
+msgstr ""
+
+#: apps/reports/builders/worklists.py:225
+#: apps/reports/builders/worklists.py:232
+msgid "Usagers sans prêt"
+msgstr ""
+
+#: apps/reports/builders/worklists.py:226
+#: apps/reports/builders/worklists.py:228
+#, python-format
+msgid "depuis %(n)s jours"
+msgstr ""
+
+#: apps/reports/builders/worklists.py:227
+msgid "Livres jamais sortis"
+msgstr ""
+
+#: apps/reports/builders/worklists.py:238
+#: templates/members/member_detail.html:98
+msgid "Inscrit le"
+msgstr ""
+
+#: apps/reports/builders/worklists.py:239
+#: apps/reports/builders/worklists.py:251
+msgid "Dernier prêt"
+msgstr ""
+
+#: apps/reports/builders/worklists.py:242
+msgid "Tous les usagers ont emprunté récemment."
+msgstr ""
+
+#: apps/reports/builders/worklists.py:245
+msgid "Livres qui ne sortent pas"
+msgstr ""
+
+#: apps/reports/builders/worklists.py:250
+msgid "Acquis le"
+msgstr ""
+
+#: apps/reports/builders/worklists.py:254
+msgid "Tous les livres ont été empruntés récemment."
+msgstr ""
+
+#: apps/reports/charts.py:59
+msgid "Autres"
+msgstr ""
+
+#: apps/reports/excel.py:27
+msgid "Feuille"
+msgstr ""
+
+#: apps/reports/excel.py:60
+msgid "Résumé"
+msgstr ""
+
+#: apps/reports/excel.py:69
+msgid "Période"
+msgstr ""
+
+#: apps/reports/excel.py:70 templates/finance/cash_index.html:41
+msgid "Du"
+msgstr ""
+
+#: apps/reports/excel.py:70
+msgid "au"
+msgstr ""
+
+#: apps/reports/excel.py:76
+msgid "Chiffre"
+msgstr ""
+
+#: apps/reports/excel.py:76 apps/reports/excel.py:199
+msgid "Valeur"
+msgstr ""
+
+#: apps/reports/excel.py:76
+msgid "Précision"
+msgstr ""
+
+#: apps/reports/excel.py:159 apps/reports/excel.py:198
+#: templates/closing/type_list.html:24 templates/finance/cash_index.html:98
+#: templates/finance/tariff_list.html:83
+msgid "Libellé"
+msgstr ""
+
+#: apps/reports/format.py:61
+#, python-format
+msgid "%(n)s jours"
+msgstr ""
+
+#: apps/reports/format.py:61
+msgid "1 jour"
+msgstr ""
+
+#: apps/reports/format.py:86 apps/reports/format.py:90
+#: apps/reports/format.py:95
+msgid "âge inconnu"
+msgstr ""
+
+#: apps/reports/pdf.py:241
 #, python-format
 msgid "Édité par BibliOfelia le %(d)s."
 msgstr ""
 
-#: apps/reports/views.py:223 apps/reports/views.py:248
-#: templates/reports/inactive_list.html:55
-#: templates/reports/inactive_list.html:81
-msgid "Aucune activité"
+#: apps/reports/pdf.py:243
+#, python-format
+msgid "Page %(n)s"
 msgstr ""
 
-#: apps/setup/forms.py:20 apps/setup/views.py:28
-#: templates/accounts/login.html:27 templates/accounts/login.html:29
-#: templates/base.html:65 templates/base.html:67
-#: templates/catalog/record_detail.html:64
-#: templates/catalog/scan_session.html:52
-#: templates/catalog/scan_session.html:186
-msgid "Langue"
+#: apps/reports/pdf.py:348 apps/reports/pdf.py:501
+msgid "Rien à afficher."
+msgstr ""
+
+#: apps/reports/periods.py:49 templates/reports/_period.html:19
+msgid "12 derniers mois"
+msgstr ""
+
+#: apps/reports/periods.py:82
+#, python-format
+msgid "du %(start)s au %(end)s"
+msgstr ""
+
+#: apps/reports/periods.py:107
+msgid "Dates incomplètes : voici les 12 derniers mois."
+msgstr ""
+
+#: apps/reports/periods.py:110
+msgid ""
+"La date de début doit précéder la date de fin : voici les 12 derniers mois."
+msgstr ""
+
+#: apps/reports/views.py:50
+msgid "Ce rapport n'existe pas."
+msgstr ""
+
+#: apps/reports/views.py:289 apps/reports/views.py:314
+msgid "Aucune activité"
 msgstr ""
 
 #: apps/setup/forms.py:28
@@ -3440,29 +4807,12 @@ msgstr ""
 msgid "Supprimer les exemplaires sélectionnés"
 msgstr ""
 
-#: templates/catalog/_item_results.html:54
-#: templates/catalog/_item_results.html:123
-#: templates/catalog/record_detail.html:53
-#: templates/catalog/record_list.html:136
-#: templates/catalog/record_list.html:178
-#: templates/catalog/record_list.html:247
-#: templates/catalog/scan_session.html:53
-#: templates/catalog/scan_session.html:153
-#: templates/catalog/scan_session.html:187
-#: templates/finance/tariff_list.html:30
-#: templates/members/member_detail.html:97
-#: templates/printing/cards_picker.html:37
-#: templates/printing/spine_labels_picker.html:26
-msgid "Catégorie"
-msgstr ""
-
 #: templates/catalog/_item_results.html:55
 #: templates/catalog/_item_results.html:124
 #: templates/catalog/item_bulk_assign_provenance.html:37
 #: templates/catalog/item_bulk_delete.html:59
 #: templates/catalog/record_detail.html:99
 #: templates/printing/_picker_base.html:57
-#: templates/reports/inactive_list.html:70
 msgid "Code Ofelia"
 msgstr ""
 
@@ -3912,8 +5262,6 @@ msgid "Ligne"
 msgstr ""
 
 #: templates/catalog/excel_catalog/detail.html:128
-#: templates/reports/overdue_list.html:37
-#: templates/reports/reservations_pickup.html:37
 msgid "Exemplaire"
 msgstr ""
 
@@ -4056,6 +5404,7 @@ msgstr ""
 #: templates/catalog/item_bulk_assign_provenance.html:69
 #: templates/catalog/record_bulk_assign_category.html:67
 #: templates/catalog/record_bulk_assign_location.html:68
+#: templates/reports/_filters.html:72
 msgid "Appliquer"
 msgstr ""
 
@@ -4238,14 +5587,6 @@ msgstr ""
 
 #: templates/catalog/location_list.html:20
 msgid "Zones de rangement utilisées au catalogage et au récolement"
-msgstr ""
-
-#: templates/catalog/location_list.html:37
-#: templates/catalog/provenance_list.html:37
-#: templates/catalog/record_bulk_assign_location.html:38
-#: templates/catalog/record_bulk_delete.html:47
-#: templates/catalog/record_detail.html:85 templates/core/dashboard.html:193
-msgid "Exemplaires"
 msgstr ""
 
 #: templates/catalog/location_list.html:60
@@ -4485,6 +5826,10 @@ msgstr ""
 
 #: templates/catalog/record_detail.html:62
 msgid "Éditeur"
+msgstr ""
+
+#: templates/catalog/record_detail.html:63 templates/closing/stats.html:22
+msgid "Année"
 msgstr ""
 
 #: templates/catalog/record_detail.html:88
@@ -4891,14 +6236,6 @@ msgstr ""
 msgid "Aucune saisie pour l'instant."
 msgstr ""
 
-#: templates/closing/animation_detail.html:24
-msgid "Non-membres adultes"
-msgstr ""
-
-#: templates/closing/animation_detail.html:25
-msgid "Non-membres enfants"
-msgstr ""
-
 #: templates/closing/animation_detail.html:34
 msgid "Ajouter une personne présente"
 msgstr ""
@@ -5015,10 +6352,6 @@ msgstr ""
 
 #: templates/closing/day_closing.html:66
 msgid "Entrées"
-msgstr ""
-
-#: templates/closing/day_closing.html:70
-msgid "Sorties"
 msgstr ""
 
 #: templates/closing/day_closing.html:74
@@ -5159,10 +6492,6 @@ msgstr ""
 msgid "Participations de membres"
 msgstr ""
 
-#: templates/closing/stats.html:67
-msgid "Heures d'animation"
-msgstr ""
-
 #: templates/closing/stats.html:71
 msgid "Mois par mois"
 msgstr ""
@@ -5175,10 +6504,6 @@ msgstr ""
 
 #: templates/closing/stats.html:97
 msgid "Temps par nature d'activité"
-msgstr ""
-
-#: templates/closing/stats.html:104
-msgid "Saisies"
 msgstr ""
 
 #: templates/closing/stats.html:120
@@ -5196,11 +6521,6 @@ msgstr ""
 
 #: templates/closing/type_list.html:19
 msgid "Natures d'activité"
-msgstr ""
-
-#: templates/closing/type_list.html:24 templates/finance/cash_index.html:98
-#: templates/finance/tariff_list.html:83
-msgid "Libellé"
 msgstr ""
 
 #: templates/closing/type_list.html:25
@@ -5883,11 +7203,6 @@ msgstr ""
 msgid "Lecteurs inscrits, cartes et historique"
 msgstr ""
 
-#: templates/core/dashboard.html:71 templates/loans/lend.html:4
-#: templates/loans/lend.html:30 templates/partials/_tile_strip.html:33
-msgid "Prêt"
-msgstr ""
-
 #: templates/core/dashboard.html:72 templates/loans/lend.html:31
 msgid "Enregistrer un nouveau prêt"
 msgstr ""
@@ -5950,6 +7265,10 @@ msgstr ""
 
 #: templates/core/dashboard.html:162
 msgid "voir tout"
+msgstr ""
+
+#: templates/core/dashboard.html:177 templates/loans/return.html:194
+msgid "Prêts en retard"
 msgstr ""
 
 #: templates/core/dashboard.html:181
@@ -6038,15 +7357,6 @@ msgstr ""
 
 #: templates/core/dashboard.html:340
 msgid "Relances à faire"
-msgstr ""
-
-#: templates/core/dashboard.html:350 templates/finance/invoice_detail.html:62
-#: templates/finance/invoice_list.html:52
-#: templates/finance/member_account.html:46 templates/loans/return.html:201
-#: templates/members/member_detail.html:159
-#: templates/members/member_history.html:32
-#: templates/reports/overdue_list.html:36
-msgid "Échéance"
 msgstr ""
 
 #: templates/core/dashboard.html:351
@@ -6151,6 +7461,10 @@ msgstr ""
 msgid "Dû par les usagers"
 msgstr ""
 
+#: templates/finance/cash_index.html:45
+msgid "Au"
+msgstr ""
+
 #: templates/finance/cash_index.html:66
 #, python-format
 msgid "%(n)s email en attente d'envoi"
@@ -6185,16 +7499,8 @@ msgstr ""
 msgid "Toutes les factures"
 msgstr ""
 
-#: templates/finance/cash_index.html:99
-msgid "Sens"
-msgstr ""
-
 #: templates/finance/cash_index.html:101
 msgid "Saisi par"
-msgstr ""
-
-#: templates/finance/cash_index.html:128
-msgid "Aucun mouvement sur cette période."
 msgstr ""
 
 #: templates/finance/cash_index.html:132
@@ -6251,23 +7557,12 @@ msgstr ""
 msgid "En retard de %(d)s jour(s)"
 msgstr ""
 
-#: templates/finance/invoice_detail.html:61
-#: templates/finance/invoice_list.html:51
-#: templates/finance/member_account.html:45
-msgid "Émise le"
-msgstr ""
-
 #: templates/finance/invoice_detail.html:67
 msgid "Envoyée le"
 msgstr ""
 
 #: templates/finance/invoice_detail.html:70
 msgid "Relancée le"
-msgstr ""
-
-#: templates/finance/invoice_detail.html:83
-#: templates/finance/outbox_list.html:41 templates/finance/tariff_list.html:82
-msgid "Nature"
 msgstr ""
 
 #: templates/finance/invoice_detail.html:104
@@ -6334,26 +7629,18 @@ msgstr ""
 msgid "N° de facture, nom, n° de carte…"
 msgstr ""
 
-#: templates/finance/invoice_list.html:29
+#: templates/finance/invoice_list.html:29 templates/reports/_filters.html:20
 msgid "Tous"
 msgstr ""
 
 #: templates/finance/invoice_list.html:38 templates/members/member_list.html:78
 #: templates/printing/_picker_base.html:39
-#: templates/reports/inactive_list.html:25
-#: templates/reports/overdue_list.html:25
 msgid "Filtrer"
 msgstr ""
 
 #: templates/finance/invoice_list.html:49
 #: templates/finance/member_account.html:44
 msgid "N°"
-msgstr ""
-
-#: templates/finance/invoice_list.html:50
-#: templates/reports/overdue_list.html:39
-#: templates/reports/reservations_pickup.html:33
-msgid "Usager"
 msgstr ""
 
 #: templates/finance/invoice_list.html:54
@@ -6459,10 +7746,6 @@ msgstr ""
 msgid "Durée de prêt"
 msgstr ""
 
-#: templates/finance/tariff_list.html:35
-msgid "Usagers"
-msgstr ""
-
 #: templates/finance/tariff_list.html:44
 #, python-format
 msgid "%(n)s mois"
@@ -6559,10 +7842,7 @@ msgid "Déjà pointé"
 msgstr ""
 
 #: templates/inventory/session_report.html:35
-#: templates/loans/reservations.html:23 templates/reports/inactive_list.html:28
-#: templates/reports/overdue_list.html:28
-#: templates/reports/reservations_pickup.html:21
-#: templates/setup/completed.html:26
+#: templates/loans/reservations.html:23 templates/setup/completed.html:26
 msgid "Imprimer"
 msgstr ""
 
@@ -6755,20 +8035,11 @@ msgstr ""
 msgid "Prêtes à retirer"
 msgstr ""
 
-#: templates/loans/reservations.html:54
-msgid "Mis de côté le"
-msgstr ""
-
-#: templates/loans/reservations.html:61
-msgid "À retirer avant le"
-msgstr ""
-
 #: templates/loans/reservations.html:69
 msgid "Notifié"
 msgstr ""
 
 #: templates/loans/reservations.html:91
-#: templates/reports/reservations_pickup.html:51
 msgid "Aucune réservation prête."
 msgstr ""
 
@@ -6865,9 +8136,6 @@ msgstr ""
 #: templates/members/member_confirm_delete.html:15
 #: templates/members/member_detail.html:23
 #: templates/printing/cards_picker.html:35
-#: templates/reports/inactive_list.html:43
-#: templates/reports/overdue_list.html:40
-#: templates/reports/reservations_pickup.html:34
 msgid "Carte"
 msgstr ""
 
@@ -6912,19 +8180,6 @@ msgstr ""
 
 #: templates/members/member_detail.html:83
 msgid "Compte et factures"
-msgstr ""
-
-#: templates/members/member_detail.html:96
-#: templates/members/member_form.html:37
-msgid "N° de carte"
-msgstr ""
-
-#: templates/members/member_detail.html:98
-msgid "Inscrit le"
-msgstr ""
-
-#: templates/members/member_detail.html:99
-msgid "Expire le"
 msgstr ""
 
 #: templates/members/member_detail.html:111
@@ -6990,17 +8245,8 @@ msgstr[1] ""
 msgid "Fiche usager"
 msgstr ""
 
-#: templates/members/member_history.html:31
-#: templates/members/member_history.html:63
-msgid "Prêté le"
-msgstr ""
-
 #: templates/members/member_history.html:56
 msgid "Historique complet"
-msgstr ""
-
-#: templates/members/member_history.html:93
-msgid "Consultations sur place"
 msgstr ""
 
 #: templates/members/member_history.html:102
@@ -7054,7 +8300,6 @@ msgid "Derniers ajouts"
 msgstr ""
 
 #: templates/printing/_picker_base.html:53
-#: templates/reports/inactive_list.html:69
 msgid "ID interne"
 msgstr ""
 
@@ -7106,163 +8351,155 @@ msgstr ""
 msgid "aucune"
 msgstr ""
 
-#: templates/reports/inactive_list.html:4
-#: templates/reports/inactive_list.html:14 templates/reports/index.html:46
-msgid "Inactifs"
+#: templates/reports/_filters.html:15
+msgid "Retard d'au moins"
 msgstr ""
 
-#: templates/reports/inactive_list.html:15
-msgid "Usagers et exemplaires sans activité récente"
+#: templates/reports/_filters.html:20 templates/reports/_filters.html:34
+#, python-format
+msgid "%(value)s jours"
 msgstr ""
 
-#: templates/reports/inactive_list.html:21
-msgid "Seuil d'inactivité (jours)"
+#: templates/reports/_filters.html:29
+msgid "Sans aucun prêt depuis"
 msgstr ""
 
-#: templates/reports/inactive_list.html:31
-msgid "CSV usagers"
+#: templates/reports/_filters.html:52
+msgid "Montrer seulement le rayon"
 msgstr ""
 
-#: templates/reports/inactive_list.html:34
-msgid "CSV exemplaires"
+#: templates/reports/_filters.html:54
+msgid "Tous les rayons"
 msgstr ""
 
-#: templates/reports/inactive_list.html:38
-msgid "Usagers inactifs"
+#: templates/reports/_filters.html:62
+msgid "Catégorie d'usager"
 msgstr ""
 
-#: templates/reports/inactive_list.html:45
-msgid "Inscription"
+#: templates/reports/_filters.html:64
+msgid "Toutes les catégories"
 msgstr ""
 
-#: templates/reports/inactive_list.html:46
-#: templates/reports/inactive_list.html:72
-msgid "Dernière activité"
+#: templates/reports/_period.html:16
+msgid "Quelle période ?"
 msgstr ""
 
-#: templates/reports/inactive_list.html:58
-msgid "Aucun usager inactif sur la période."
+#: templates/reports/_period.html:26
+msgid "Choisir d'autres dates"
 msgstr ""
 
-#: templates/reports/inactive_list.html:64
-msgid "Exemplaires inactifs"
+#: templates/reports/_period.html:31
+msgid "Entre deux dates"
 msgstr ""
 
-#: templates/reports/inactive_list.html:84
-msgid "Aucun exemplaire inactif sur la période."
+#: templates/reports/_period.html:39
+msgid "Entre le"
 msgstr ""
 
-#: templates/reports/index.html:15
-msgid "Listes imprimables, exports CSV et rapport annuel PDF."
+#: templates/reports/_period.html:43
+msgid "et le"
 msgstr ""
 
-#: templates/reports/index.html:19
-msgid "Listes imprimables"
+#: templates/reports/_period.html:48
+msgid "Valider ces dates"
 msgstr ""
 
-#: templates/reports/index.html:26 templates/reports/overdue_list.html:14
-msgid "Liste des retards"
+#: templates/reports/_period.html:50
+msgid "Les deux jours indiqués sont compris dans le calcul."
 msgstr ""
 
-#: templates/reports/index.html:27
-msgid "Retards de plus de 7 jours par défaut"
+#: templates/reports/_raw_csv.html:12
+msgid "Sortir toutes les colonnes (CSV)"
 msgstr ""
 
-#: templates/reports/index.html:36 templates/reports/reservations_pickup.html:4
-#: templates/reports/reservations_pickup.html:14
-msgid "Réservations à retirer"
+#: templates/reports/_raw_csv.html:14
+msgid ""
+"Fichiers destinés à un tableur, avec toutes les colonnes de la base — bien "
+"plus que ce que les tableaux ci-dessus affichent. Ils ne sont ni mis en page "
+"ni commentés."
 msgstr ""
 
-#: templates/reports/index.html:37
-msgid "Liste de relance pour les usagers"
-msgstr ""
-
-#: templates/reports/index.html:47
-msgid "Usagers et exemplaires inactifs"
-msgstr ""
-
-#: templates/reports/index.html:53
-msgid "Exports CSV"
-msgstr ""
-
-#: templates/reports/index.html:60
+#: templates/reports/_raw_csv.html:23
 msgid "Catalogue complet (CSV)"
 msgstr ""
 
-#: templates/reports/index.html:61
-msgid "Une ligne par exemplaire, toutes les métadonnées de la notice."
+#: templates/reports/_raw_csv.html:24
+msgid ""
+"Une ligne par exemplaire : ISBN, éditeur, année, tags, résumé, provenance…"
 msgstr ""
 
-#: templates/reports/index.html:70
+#: templates/reports/_raw_csv.html:34
 msgid "Prêts et réservations en cours (CSV)"
 msgstr ""
 
-#: templates/reports/index.html:71
+#: templates/reports/_raw_csv.html:35
+msgid "La situation d'aujourd'hui, prêts et réservations dans un même fichier."
+msgstr ""
+
+#: templates/reports/_raw_csv.html:44
+msgid "Les prêts de la période (CSV)"
+msgstr ""
+
+#: templates/reports/_raw_csv.html:45
+msgid "Tous les prêts de la période affichée en haut de l'écran."
+msgstr ""
+
+#: templates/reports/index.html:15
+msgid "Les listes du jour, et les chiffres de la bibliothèque."
+msgstr ""
+
+#: templates/reports/index.html:32
+msgid "À faire aujourd'hui"
+msgstr ""
+
+#: templates/reports/index.html:56
+msgid "Les chiffres de la bibliothèque"
+msgstr ""
+
+#: templates/reports/index.html:60
 msgid ""
-"Tous les prêts actifs / en retard et toutes les réservations en attente ou "
-"prêtes au retrait."
+"Chaque écran s'imprime en PDF et s'enregistre en Excel, en entier ou tableau "
+"par tableau."
 msgstr ""
 
-#: templates/reports/index.html:77
-msgid "Export CSV des prêts (par période)"
+#: templates/reports/page.html:24
+msgid "Imprimer (PDF)"
 msgstr ""
 
-#: templates/reports/index.html:91
-msgid "Télécharger CSV"
+#: templates/reports/page.html:27
+msgid "Fichier Excel"
 msgstr ""
 
-#: templates/reports/index.html:96
-msgid "Rapport annuel d'activité (PDF)"
+#: templates/reports/page.html:64
+msgid "Sommaire"
 msgstr ""
 
-#: templates/reports/index.html:104
-msgid "Générer le PDF"
+#: templates/reports/page.html:65
+msgid "Aller à :"
 msgstr ""
 
-#: templates/reports/overdue_list.html:4
-msgid "Retards"
+#: templates/reports/page.html:86
+msgid "Imprimer ce tableau seul"
 msgstr ""
 
-#: templates/reports/overdue_list.html:15
-#, python-format
-msgid "%(count)s prêt en retard."
-msgid_plural "%(count)s prêts en retard."
-msgstr[0] ""
-msgstr[1] ""
-
-#: templates/reports/overdue_list.html:21
-msgid "Seuil (jours)"
+#: templates/reports/page.html:87
+msgid "PDF"
 msgstr ""
 
-#: templates/reports/overdue_list.html:41
-msgid "Jours"
+#: templates/reports/page.html:90
+msgid "Enregistrer ce tableau seul"
 msgstr ""
 
-#: templates/reports/overdue_list.html:55
-msgid "Aucun retard."
+#: templates/reports/page.html:91
+msgid "Excel"
 msgstr ""
 
-#: templates/reports/period_error.html:4 templates/reports/period_error.html:14
-msgid "Période invalide"
+#: templates/reports/page.html:97
+msgid "Aucun chiffre à montrer pour cette période."
 msgstr ""
 
-#: templates/reports/period_error.html:23
-msgid "Retour aux rapports"
-msgstr ""
-
-#: templates/reports/reservations_pickup.html:15
-#, python-format
-msgid "%(count)s réservation à retirer."
-msgid_plural "%(count)s réservations à retirer."
-msgstr[0] ""
-msgstr[1] ""
-
-#: templates/reports/reservations_pickup.html:24
-msgid "Gérer les réservations"
-msgstr ""
-
-#: templates/reports/reservations_pickup.html:32
-msgid "Disponible depuis"
+#: templates/reports/page.html:106
+msgid "Rien à afficher pour cette période."
 msgstr ""
 
 #: templates/setup/already_done.html:5 templates/setup/already_done.html:10

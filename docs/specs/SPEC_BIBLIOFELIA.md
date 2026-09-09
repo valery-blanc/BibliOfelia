@@ -4,6 +4,9 @@ Spécification détaillée du logiciel de gestion de bibliothèque BibliOfelia, 
 
 Version : 1.0 (cible v1) — **`BIBLIOFELIA_VERSION = "1.0"`** depuis le 2026-08-23 (FEAT-082, était `0.1.0-dev`)
 Statut : draft pour Spec-Driven Development
+Dernière modif spec : 2026-09-09 — **Sprint 34**, **FEAT-093** : **refonte complète des rapports**. Dix écrans (trois listes de travail, sept écrans de chiffres) bâtis sur un objet unique `ReportPage` rendu par trois moteurs — HTML, PDF à la charte OFELIA, Excel — de sorte qu'un écran a toujours ses deux exports et qu'un export montre toujours ce que l'écran montre. Sélecteur de période à quatre raccourcis nommés (« août 2026 ») appliqués au clic, graphes en **SVG écrit par le serveur** (aucune bibliothèque JS, contrainte hors-ligne), hub séparant « À faire aujourd'hui » des chiffres du comité. Nouveau modèle **`members.CardRenewal`** sans lequel « réinscriptions sur la période » n'était pas calculable. **Corrections du même jour** après essai de Val : étiquettes écrites **dans les tranches** des camemberts (écran, PDF et Excel), périodes et seuils en vrais boutons, hub en couleurs, exports CSV de données brutes rapatriés dans les écrans qui les montrent, sommaire des sous-rapports, **export PDF/Excel par sous-rapport**, tableau et graphe des mêmes données côte à côte, et une troisième forme de graphe (courbes). Cf. §5.2 et §6.6.
+
+Modif du lendemain : 2026-09-10 — **FEAT-093, suite**. Le guide utilisateur gagne la page **« Tous les rapports »** (× 4 langues), qui liste les dix écrans et leurs **cinquante sous-rapports** avec un lien direct vers chaque ancre ; elle est **générée** par `scripts/build_reports_guide.py`, l'ancre d'un sous-rapport étant l'empreinte de son titre **traduit**. « Exports CSV » devient « Imprimer et enregistrer un rapport ». Côté **keebee**, le bloc nginx `/bibliofelia/docs/` perd son `expires 1d` au profit de `Cache-Control: no-cache` : l'index de recherche du guide, servi sous un nom stable, restait périmé vingt-quatre heures dans le navigateur du lecteur après chaque mise à jour de la documentation. Cf. §6.6.
 Dernière modif spec : 2026-08-31 — **Sprint 31** : **FEAT-083** — la fiche usager gagne des **coordonnées complètes** (email, adresse découpée en rue, complément, code postal, localité, état et pays) ; l'ancien champ libre `address` disparaît, recopié par migration. Le champ `notes` est relibellé **« Commentaire »** et plafonné à 500 caractères par le formulaire. — **FEAT-084** — **caisse, cotisations, amendes et factures** : nouvelle application `apps/finance` (`Tariff`, `Invoice`, `InvoiceLine`, `Payment`, `CashMovement`, `OutboundEmail`), encadré « Compte » sur la fiche usager (à jour / à régler / en retard depuis le …, ventilé par nature), facture **A4 PDF** à la charte OFELIA, envoi email **par file d'attente** qui survit à une Box hors ligne, écran « Caisse » hors bouclement. **Cotisation par catégorie d'usager**, facturée automatiquement à l'inscription et à chaque renouvellement ; **amendes manuelles uniquement** (arbitrages Val). **Devise réglée par instance** dans Avancé → Paramètres. — **FEAT-085** — **activités et animations** : nouvelle application `apps/closing`, référentiels administrables, saisie du temps passé, présences retrouvées **au scan ou par les 4 derniers chiffres** du numéro de carte, non-membres comptés, saisie rétroactive, statistiques mois/année + CSV. — **FEAT-086** — **bouclement de la journée** en cinq étapes (activités, caisse, envois, sauvegardes, extinction) ; l'étape d'extinction n'apparaît que **sur la Box** et passe par un **fichier-drapeau** que l'hôte doit surveiller. — **FEAT-087** — le **scan caméra accepte tous les formats linéaires** (Code128, Code39, Codabar, ITF, UPC…) et non plus les seuls EAN-13 à préfixe Ofelia/ISBN : un code externe imprimé en Code128 était jusqu'ici lisible à la douchette mais **pas** à la caméra. — **BUG-041** — « Renouveler la carte » **empilait les années** à chaque clic ; le bouton est grisé et le serveur refuse tant que la carte est valable plus de 30 jours. Cf. §5.2, §6.2, §6.13, §6.14, §6.15.
 
 Modif du même jour : 2026-09-01 — retours de test de Val sur le Sprint 31.
@@ -526,6 +529,34 @@ date d'anniversaire.
 inconnu (import, ancienne saisie, langue retirée) est restitué tel quel plutôt
 qu'escamoté. « Persan » et « Farsi » sont deux entrées distinctes parce que la
 liste demandée les distingue.
+
+#### CardRenewal (FEAT-093)
+- `id` (PK)
+- `member` (FK Member, **CASCADE**)
+- `renewed_on` (date, défaut aujourd'hui)
+- `previous_expiration` (date, nullable)
+- `new_expiration` (date)
+- `user` (FK User, SET_NULL) — qui a renouvelé
+
+`Member.expiration_date` est **écrasée** à chaque renouvellement (FEAT-092) :
+une fois la nouvelle date posée, plus rien ne dit qu'il y a eu renouvellement,
+ni quand. « Combien de réinscriptions cette année ? » — la question que pose
+tout comité d'association — n'était donc pas calculable, et c'est ce que cette
+table répare.
+
+Les deux contournements possibles ont été écartés : déduire la réinscription de
+`expiration_date` moins la durée de validité ment dès qu'une date a été
+corrigée à la main, et la déduire des factures de cotisation ignore les
+catégories gratuites, qui n'émettent aucune facture.
+
+Écrite par `members.services.renew_card()`, et seulement si la date change
+réellement — un second clic le même jour ne crée pas de doublon. L'historique
+antérieur à la mise en service est perdu par construction : l'écran des usagers
+affiche « comptées depuis le … » plutôt qu'un zéro trompeur.
+
+**Membre perdu** n'a besoin d'aucune table : c'est une carte dont
+l'`expiration_date` tombe dans la période et reste dans le passé aujourd'hui
+(cf. §6.6).
 
 #### Loan
 - `id` (PK)
@@ -1355,38 +1386,214 @@ Insight : pendant un récolement scopé sur une `Location` X, si un exemplaire e
 - État système (espace disque, dernière sauvegarde, dernière sync, version)
 - **Relances à faire (FEAT-035)** : en bas du dashboard, liste des 10 prêts en retard les plus anciens avec titre, membre (lien fiche), date d'échéance et nombre de jours de retard. Lien « Voir tout » vers `/loans/return/` qui liste tous les retards. Visible des `librarian` / `superadmin` uniquement.
 
-#### Rapports
-- Rapport annuel d'activité (PDF) : prêts, membres, fonds, top, retards, perdus
-- Liste imprimable des retards
-- Liste imprimable des inactifs (membres et livres)
-- Export CSV/Excel des prêts par période
-- Rapport pour bailleur (template paramétrable)
+#### Rapports (refondus — FEAT-093, Sprint 34)
 
-##### Exports CSV (FEAT-040, Sprint 13)
+Dix écrans, tous bâtis sur le même objet et servis par trois moteurs de rendu,
+plus les exports CSV de données brutes qui les précédaient.
 
-- **Catalogue complet** (`reports:catalog_csv`) : 1 ligne par exemplaire avec
-  l'ensemble des champs de la notice (sauf image) + champs de l'exemplaire.
-  Colonnes : `item_internal_id, item_ean13, item_state, item_status,
-  item_location_code, item_acquisition_date, item_acquisition_source,
-  item_donor, record_id, record_title, record_subtitle, record_authors,
-  record_publisher, record_publication_year, record_language, record_isbn_13,
-  record_isbn_10, record_category, record_tags, record_document_type,
-  record_series_name, record_series_volume, record_summary`. Itère en
-  streaming (`iterator(chunk_size=500)`).
-- **Prêts et réservations en cours** (`reports:active_loans_reservations_csv`) :
-  2 sections concaténées dans un même CSV, discriminées par la colonne `kind`
-  (`loan` pour les prêts ACTIVE/OVERDUE, `reservation` pour les réservations
-  PENDING/READY_FOR_PICKUP). Colonnes communes : `kind, id, status,
-  created_at, member_card, member_name, record_title, item_internal_id,
-  due_or_expiry_date` (vide quand non applicable).
-- **Inactifs** (`reports:inactive_members_csv` + `reports:inactive_items_csv`) :
-  filtres `?days=` identiques à la page HTML ; colonne `last_activity` rendue
-  soit en `YYYY-MM-DD`, soit en chaîne traduite `Aucune activité`. Boutons
-  visibles à côté du bouton « Imprimer » sur `/reports/inactive/`.
+**Le hub `/reports/`** présente deux familles volontairement inégales : en haut
+les **listes de travail**, avec un verbe et le nombre en attente (« Relancer
+les retards (8) ») ; en dessous, plus calmes, les **écrans de chiffres**. Une
+troisième section, « Sortir les données brutes », regroupe les CSV — ce ne sont
+pas des rapports et l'écran le dit.
 
-Toutes les vues d'export utilisent le rôle `LIBRARIAN` + `SUPERADMIN`
-(cohérent avec `loans_csv`) ; `READONLY` peut continuer de lire la page HTML
-mais pas exporter.
+| Slug | Écran | Période | Contenu principal |
+|---|---|---|---|
+| `overdue` | Les retards | non | Usager, téléphone, livre, jours de retard. Seuil en boutons (0/7/14/30 j) |
+| `pickup` | Les réservations à retirer | non | Qui attend, depuis quand, jusqu'à quand, prévenu ou non |
+| `inactive` | Les inactifs | non | Usagers et livres sans mouvement ; seuil 180/365/730 j ; **filtre par catégorie** de livre et d'usager |
+| `overview` | Vue d'ensemble | oui | 6 compteurs du jour + 6 de la période, chacun comparé à la période équivalente précédente ; prêts mois par mois ; livres sortis en fin de mois ; fonds par rayon ; « le bilan en un tableau » |
+| `collection` | Le fonds | oui | Répartitions (rayon, type, état, langue, emplacement, provenance, origine), rotation par rayon, entrées et sorties, dons, stock dormant |
+| `loans` | Les prêts | oui | Volume, retards, durée médiane, renouvellements ; les plus et les moins empruntés ; jamais empruntés ; réservations ; jour par jour |
+| `members` | Les usagers | oui | Inscrits, familles, personnes touchées, usagers venus, nouveaux, réinscriptions, cartes perdues ; âges, catégories, localités, langues ; cartes à renouveler sous 30 j ; top emprunteurs |
+| `attendance` | La fréquentation | oui | Venues, animations, participations, non-membres, heures ; âges ; **tableau croisé âge × animation** |
+| `team` | Le travail de l'équipe | oui | Heures par nature, par personne, détail mois par mois |
+| `money` | L'argent | oui | Facturé, encaissé, reste dû, caisse ; factures à encaisser ; recettes par nature ; modes de paiement ; caisse jour par jour |
+
+**Adresses**
+
+```
+/reports/                          le hub
+/reports/<slug>/                   l'écran
+/reports/<slug>.pdf                le même contenu, imprimable
+/reports/<slug>.xlsx               le même contenu, dans un tableur
+/reports/<slug>.pdf?block=<clé>    un seul sous-rapport
+/reports/<slug>.xlsx?block=<clé>   un seul sous-rapport
+```
+
+Chaque bloc d'un écran est un **sous-rapport** : il figure au sommaire en tête
+de page et s'exporte seul, pour qu'on puisse imprimer la seule liste des
+impayés sans sortir les huit tableaux de l'écran. Sa clé vient de son **titre**,
+pas de sa position — un index changerait de sens dès qu'on réordonne un écran,
+et un lien partagé par courriel pointerait alors sur un autre tableau. Une clé
+inconnue rend l'écran entier plutôt qu'une erreur.
+
+Les paramètres de l'écran (`p`, `start`, `end`, `threshold`, `days`,
+`category`, `member_category`) sont recopiés dans les liens d'export : le
+fichier obtenu correspond au dernier écran vu. Rôles : `LIBRARIAN`,
+`SUPERADMIN` et `READONLY` — un membre du comité en lecture seule doit pouvoir
+sortir le PDF de la vue d'ensemble, qui lui est destiné. Les exports CSV bruts
+restent réservés à `LIBRARIAN` / `SUPERADMIN`.
+
+Les anciennes adresses `/reports/overdue/` et `/reports/inactive/` ont gardé
+leur slug et tombent sur le nouvel écran ; `/reports/reservations-pickup/`
+redirige vers `pickup`, et `/reports/annual.pdf?year=N` vers la vue d'ensemble
+sur l'année N.
+
+**Le sélecteur de période** (écrans de chiffres uniquement) : quatre raccourcis
+portant le **libellé réel** — « septembre 2026 », « 2026 », « août 2026 »,
+« 2025 » — plus « 12 derniers mois », qui est la période par défaut. Ce sont
+des **liens** : un clic affiche, sans bouton Valider. La saisie libre « Entre …
+et … » est repliée derrière « Choisir d'autres dates » ; c'est le seul endroit
+où l'on tape quelque chose, et le seul « Valider » de l'écran. Une date
+illisible ou une fin avant le début **ne produit pas de page d'erreur** : on
+retombe sur les 12 derniers mois avec un message.
+
+**Architecture** — la règle « pas d'écran sans ses deux exports, pas d'export
+sans écran » est tenue par la structure, pas par la discipline :
+
+```
+builders/<écran>.py  ──►  ReportPage  ──┬──► templates/reports/page.html  (HTML)
+                                        ├──► reports/pdf.py              (PDF)
+                                        └──► reports/excel.py            (Excel)
+```
+
+`ReportPage` (`apps/reports/pages.py`) porte un `slug`, un titre, une liste de
+`Kpi` et une liste ordonnée de `blocks` — chacun un `Chart` (`bar` ou `pie`) ou
+une `Table`. Ajouter un écran = écrire `build_…(period, params)` et l'inscrire
+dans `builders.REPORTS`. Le test `test_every_report_has_its_two_exports`
+parcourt ce registre et non une liste écrite à la main : un écran ajouté sans
+ses exports fait échouer la suite.
+
+**Les graphes** (`apps/reports/charts.py`) sont du **SVG écrit par le serveur** :
+pas de JavaScript, pas de bibliothèque, conformément à la contrainte hors-ligne.
+Trois formes seulement — histogramme (`bar`), camembert (`pie`) et courbes
+(`line`). La palette est celle de la charte OFELIA, reprise à l'identique par
+reportlab pour le PDF et par `openpyxl.chart` pour le tableur : le camembert du
+fichier Excel a les couleurs de celui de l'écran.
+
+**Chaque part d'un camembert porte son étiquette** — « Adultes Documentaire 35
+(34 %) » — posée **à l'extérieur** du disque et reliée à sa part par un trait
+terminé d'une pastille de couleur, à l'écran comme dans le PDF. Écrire dans la
+tranche ne tient pas : un texte blanc sur une part claire, ou débordant sur le
+fond blanc de la page, devient invisible. À l'extérieur, le texte est toujours
+en encre foncée sur fond blanc, ce qui reste lisible imprimé en noir et blanc,
+là où une légende par couleur ne sert plus à rien. Les étiquettes s'empilent de
+chaque côté pour ne pas se chevaucher, et au-delà de 8 parts la queue est
+regroupée sous « Autres ».
+
+Un **histogramme** porte une ou plusieurs séries. À plusieurs, les barres sont
+**groupées par catégorie** — les livres d'un rayon à côté de ses prêts — et
+jamais empilées : additionner des livres et des prêts ne veut rien dire. Le cas
+à une série n'est qu'un cas particulier du même tracé.
+
+⚠️ Tout caractère écrit dans un rapport doit exister dans les polices du PDF :
+ce sont des sous-ensembles Google Fonts, qui couvrent la ponctuation générale
+(« » — – … €) mais **pas** le bloc des flèches, et reportlab ne sait pas
+retomber sur une autre police — un glyphe absent sort en carré noir.
+
+**Deux géométries** par forme de graphe : pleine largeur, et **compacte** quand
+le graphe est posé à côté d'un tableau. Un SVG s'étire à son conteneur : le
+même dessin sur une demi-page est réduit d'un tiers et son texte devient
+illisible. La version compacte a un disque plus petit et moins de marge, donc
+un texte proportionnellement plus grand.
+
+**Toutes les séries d'une courbe sont tracées**, y compris celles restées à
+zéro : une courbe plate sur l'axe dit « on n'a perdu personne », et l'écarter
+laisserait une légende qui annonce trois courbes pour un dessin qui n'en montre
+qu'une.
+
+⚠️ La feuille de style des rapports vit dans **`static/css/ofelia.css`**, la
+seule que `base.html` charge. `bibliofelia.css` n'est référencée que par les
+deux gabarits du wizard d'installation : une règle écrite là n'atteint aucun
+écran de l'application.
+
+**Un tableau et le graphe des mêmes données sont un seul sous-rapport**
+(`Table.chart`) : côte à côte au-dessus de 900 px, empilés en dessous, et de
+même dans le PDF ; sur la même feuille dans le tableur. Un tableau de plus de
+quatre colonnes garde la pleine largeur — à moitié de page, ses colonnes
+deviendraient illisibles.
+
+**Le PDF** (`apps/reports/pdf.py`) est générique et reprend **toute** la charte,
+pas seulement ses couleurs : bandeau bordeaux `#6B2138`, **logo blanc**
+(`static/img/ofelia-logo-white.png`) sur 70 mm, titre du rapport en 24 pt, nom
+de la bibliothèque, période précédée d'une **icône de calendrier**, compteurs
+en cartouches, graphes, tableaux, pagination et mention « Édité par
+BibliOfelia le … ». La hauteur du bandeau se **calcule** à partir de son
+contenu — une valeur écrite à la main se désaccorde au premier changement de
+taille, et le titre vient chevaucher le logo.
+
+**Les polices sont celles du site** : Bricolage Grotesque pour les titres, DM
+Sans pour le texte. reportlab ne lisant pas le `.woff2`,
+`scripts/build_pdf_fonts.py` produit les `.ttf` équivalents dans
+`static/fonts/pdf/` — décompression, **fusion des sous-ensembles Unicode**
+(reportlab ne sait pas retomber sur une autre police : un glyphe absent
+devient un carré noir), **fixation de la graisse** (polices variables), et
+**alias de l'espace fine insécable U+202F**, séparateur de milliers absent de
+tous les sous-ensembles Google. Les `.ttf` sont versionnés ; en leur absence,
+le PDF retombe sur Helvetica avec un avertissement au journal.
+
+Les **en-têtes de tableau sont blancs** sur le fond bordeaux : le `TEXTCOLOR`
+de la table ne suffit pas, la couleur du style d'un `Paragraph` l'emporte. Les
+**largeurs de colonne se mesurent** sur le texte réel (en-tête et valeurs) au
+lieu de suivre des proportions fixes : une colonne n'est jamais plus étroite
+que son plus long mot, de sorte qu'un retour à la ligne tombe sur une espace et
+non au milieu d'un mot.
+
+**Le fichier Excel** ouvre sur un onglet « Résumé » (les compteurs), puis un
+onglet par sous-rapport, graphe Excel natif posé à côté de ses données.
+
+**Définitions fixées par cette refonte**
+
+- **Famille** — un titulaire ayant au moins une personne rattachée
+  (`MemberFamilyMember`). **Personnes touchées** = titulaires + rattachés.
+- **Usagers venus** — titulaires distincts ayant emprunté **ou** participé à
+  une animation sur la période ; qui a fait les deux n'est compté qu'une fois.
+  C'est le chiffre d'usage réel, à lire à côté de « personnes touchées », qui
+  ne compte que des inscrits.
+- **Nouvel usager** — `registration_date` dans la période.
+- **Réinscription** — un `members.CardRenewal` daté dans la période (cf. §5.2).
+- **Membre perdu** — `expiration_date` dans la période **et** toujours dans le
+  passé aujourd'hui ; une carte renouvelée a par construction une expiration
+  future, la soustraction suffit.
+- **Rotation d'un rayon** — prêts de la période ÷ exemplaires **en
+  circulation** (hors perdus, pilonnés, en réparation).
+- **Période de comparaison** (`periods.previous_equivalent`) — pour une période
+  **nommée**, la même un an plus tôt : septembre 2026 se compare à septembre
+  2025, 2026 à 2025. Une bibliothèque ne fait pas le même mois en pleine
+  rentrée et en plein été ; d'une année sur l'autre, si. Pour une période
+  **libre**, le bloc de même durée qui la précède, **sans chevauchement** — il
+  s'arrête la veille du début, sans quoi une journée serait comptée des deux
+  côtés. « 12 derniers mois » est une fenêtre de **365** jours bornes comprises
+  (le lendemain du même jour l'an dernier), et non `aujourd'hui − 365 jours`,
+  qui en ferait 366 et décalerait la comparaison d'un jour.
+- **Stock dormant** — exemplaires en rayon depuis plus d'un an, jamais
+  empruntés, hors circulation exclue. Le filtre d'ancienneté évite d'accuser un
+  rayon qu'on vient d'enrichir.
+- **Durée d'un prêt** — la **médiane**, pas la moyenne : un livre rendu au bout
+  de deux ans écrase une moyenne calculée sur trois cents prêts de trois
+  semaines.
+- **Tranches d'âge** — 0-5, 6-10, 11-15, 16-20, 21 et plus, plus « âge
+  inconnu », qui est **affiché** et non écarté : un graphe muet sur ses données
+  manquantes ment. L'âge d'un participant est celui qu'il avait **le jour de la
+  séance**.
+- **Animation « Bibliothèque »** — enregistre une simple venue ; c'est
+  l'animation principale, présentée à part des ateliers.
+
+**Guide utilisateur** : la page `Rapports → Tous les rapports` liste les dix
+écrans et **tous** leurs sous-rapports, chacun avec un lien direct vers son
+ancre. Elle est **générée** par `scripts/build_reports_guide.py` — l'ancre d'un
+sous-rapport est l'empreinte de son titre **traduit**, elle ne se recopie pas à
+la main et diffère dans les quatre langues. Rejouer le script après tout ajout,
+retrait ou renommage : un test vérifie la correspondance dans les deux sens.
+
+**Ce que la refonte ne fait pas** : le tableau de bord d'accueil reste un écran
+d'action et n'est pas touché ; l'écran « Statistiques d'activité » de
+`closing/` est absorbé par *Le travail de l'équipe* et *La fréquentation* ; il
+n'y a ni valeur d'achat du fonds ni carte prépayée (BibliOfelia ne les stocke
+pas) ; et **les heures de bénévolat ne sont jamais valorisées en argent** — un
+tarif horaire suisse appliqué à une bibliothèque malgache produit un chiffre
+qui ne veut rien dire localement.
 
 #### Paramètres
 - Identité de la bibliothèque (nom, adresse, logo)

@@ -48,10 +48,23 @@ def renew_card(member: Member, *, user=None, invoice: bool = True):
     months = member.category.card_validity_months or 12
     new_date = date.today() + relativedelta(months=months)
     date_changed = member.expiration_date != new_date
+    previous = member.expiration_date
     member.expiration_date = new_date
     if member.status == MemberStatus.EXPIRED:
         member.status = MemberStatus.ACTIVE
     member.save(update_fields=["expiration_date", "status"])
+    if date_changed:
+        # FEAT-093 : sans cette trace, « réinscriptions sur la période » n'est
+        # pas calculable — la date d'expiration est écrasée. Un second clic le
+        # même jour ne change pas la date et n'écrit donc pas de doublon.
+        from .models import CardRenewal
+
+        CardRenewal.objects.create(
+            member=member,
+            previous_expiration=previous,
+            new_expiration=new_date,
+            user=user,
+        )
     membership_invoice = None
     if invoice and date_changed:
         from apps.finance.services import create_membership_invoice

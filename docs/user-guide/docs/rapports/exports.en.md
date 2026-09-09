@@ -1,60 +1,67 @@
-# CSV exports
+# Printing and saving a report
 
-To analyze your data in a spreadsheet (LibreOffice Calc, Excel) or
-to send it to a partner (city hall, association, funder), BibliOfelia
-offers exports in **CSV** format.
+Everything shown on screen can be **printed to PDF** or **saved to Excel**.
+Nothing is reserved for one or the other: what you see is what you get.
 
-## Where to find exports
+## The two buttons at the top
 
-**Advanced → [Reports](/bibliofelia/en/reports/){ target="_blank" }**.
+At the top of every report, on the left:
 
-![Reports page](../assets/screenshots/en/rapports/reports-index.png)
+- **Print (PDF)** — the whole report, laid out, with the logo and the
+  library's name. This is the document to hand to a donor or attach to a
+  funding application.
+- **Excel file** — the same report, figures and charts, in a workbook. One
+  sheet per table, with the chart set beside its data.
 
-## Available exports
+Both follow the **period** and the **settings** shown on screen: if you are
+looking at "2025", the file covers 2025.
 
-### Catalog (CSV)
+## One table, not the whole screen
 
-List of all records with: title, authors, ISBN, category, year,
-language, number of copies.
+Under each table's title, two small links: **PDF** and **Excel**. They
+export **that table only**.
 
-Useful for: **annual inventory**, sharing your collection with another
-library.
+Useful when you want just the list of unpaid invoices without printing the
+eight tables of the "Money" screen.
 
-### Loans (CSV)
+!!! tip "Finding a table"
+    The [All reports](liste.md) page lists every screen and every table,
+    each with a direct link.
 
-Loan history over a period. Filterable by date, member category,
-book category.
+## Exporting every column (CSV)
 
-Useful for: **usage statistics**, annual activity report.
+The [The collection](/bibliofelia/en/reports/collection/){ target="_blank" }
+and [Loans](/bibliofelia/en/reports/loans/){ target="_blank" } screens offer
+**CSV** files at the very bottom.
 
-### Inactive members (CSV)
+These are not reports: they are neither laid out nor explained, but they
+carry **every** column in the database — far more than the table shows.
 
-List of members who haven't borrowed for N months.
+| File | What it holds |
+|---|---|
+| Whole catalogue | One row per copy: ISBN, publisher, year, tags, summary, source, location… |
+| Current loans and holds | Today's situation, loans and holds in a single file |
+| The period's loans | Every loan of the period shown at the top of the screen |
 
-Useful for: **follow-up campaign**, updating the mailing list.
+Useful for: an **annual inventory**, sharing your collection with another
+library, or a calculation BibliOfelia does not do.
 
-### Inactive copies (CSV)
+## How to open a CSV
 
-List of copies that haven't been borrowed for N months.
-
-Useful for: **weeding** (removing books that never circulate), aisle
-reorganization.
-
-## How to use a CSV
-
-1. Click the export link
+1. Click the link
 2. The `.csv` file downloads
 3. Open it in LibreOffice Calc, Excel or Google Sheets
 
-Columns are separated by **commas**. All accented characters (à, é,
-è, ô, ï…) display correctly in LibreOffice Calc and Google Sheets.
+Columns are separated by **commas**. All accented characters (à, é, è, ô,
+ï…) display correctly in LibreOffice Calc and Google Sheets.
 
 !!! tip "If Excel opens everything in a single column"
     French Excel expects semicolons as separators by default. Use
-    **Data → From Text/CSV** and specify "comma" as separator — your
+    **Data → From Text/CSV** and specify "comma" as the separator — your
     columns will appear correctly.
 
-## What about a full annual report?
+## What about the annual report?
 
-To generate a synthetic annual PDF report (to attach to a funding
-application), use **Annual PDF report** from the same page.
+It is the [Overview](/bibliofelia/en/reports/overview/){ target="_blank" }
+with the period set to **2025** or **2026**: every key figure on one page,
+compared with the previous year. Print it to PDF.
