@@ -39,15 +39,26 @@ def install_schedules() -> int:
     installed = 0
     now = timezone.now()
     for spec in SCHEDULES:
-        Schedule.objects.update_or_create(
+        defaults = {
+            "func": spec["func"],
+            "schedule_type": spec["schedule_type"],
+            "minutes": spec["minutes"],
+            "repeats": -1,
+        }
+        # `next_run` n'est posé qu'à la création, jamais réécrit : depuis que
+        # `setup_schedules` tourne à chaque démarrage du conteneur
+        # (`scripts/entrypoint.sh`), le réécrire repousserait l'échéance de deux
+        # minutes à chaque redémarrage — une Box qui redémarre souvent (coupures
+        # de courant) ne sauvegarderait jamais.
+        obj, created = Schedule.objects.get_or_create(
             name=spec["name"],
-            defaults={
-                "func": spec["func"],
-                "schedule_type": spec["schedule_type"],
-                "minutes": spec["minutes"],
-                "next_run": now + timedelta(minutes=2),
-                "repeats": -1,
-            },
+            defaults={**defaults, "next_run": now + timedelta(minutes=2)},
         )
+        if not created:
+            for field, value in defaults.items():
+                setattr(obj, field, value)
+            if obj.next_run is None:
+                obj.next_run = now + timedelta(minutes=2)
+            obj.save()
         installed += 1
     return installed

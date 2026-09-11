@@ -18,6 +18,7 @@ import os
 import shutil
 import sqlite3
 import subprocess
+from contextlib import closing
 from dataclasses import dataclass, field
 from datetime import date, datetime, timezone
 from pathlib import Path
@@ -67,16 +68,36 @@ def run_backup(force_daily: bool = False, force_cloud: bool = False) -> BackupRe
         out = hourly / f"bibliofelia-{ts}.sqlite3"
 
         # 1. Copie cohérente via sqlite3 .backup
-        with sqlite3.connect(str(src_db)) as src, sqlite3.connect(str(out)) as dst:
-            src.backup(dst)
-        # 2. Vérif intégrité
-        with sqlite3.connect(str(out)) as check:
+        #
+        # ⚠️ `with sqlite3.connect(...)` valide la transaction mais NE FERME PAS
+        # la connexion — contrairement à la plupart des gestionnaires de
+        # contexte. Les connexions restaient donc ouvertes, et l'archive gardait
+        # à côté d'elle un journal `-wal` non vide (140 Ko mesurés sur la Box le
+        # 2026-09-10). Or `_rotate` promeut l'archive vers daily/weekly/monthly
+        # par un `copy2` du **seul** fichier principal : les copies promues
+        # pouvaient donc être amputées de ce que contenait le journal.
+        with closing(sqlite3.connect(str(src_db))) as src:
+            with closing(sqlite3.connect(str(out))) as dst:
+                src.backup(dst)
+
+        # 2. Vérif intégrité, puis fusion du journal dans le fichier principal
+        with closing(sqlite3.connect(str(out))) as check:
             cur = check.execute("PRAGMA integrity_check;")
             row = cur.fetchone()
             integrity = (row[0] if row else "") or ""
             if integrity != "ok":
                 out.unlink(missing_ok=True)
+                _drop_wal_sidecars(out)
                 raise RuntimeError(f"integrity_check: {integrity!r}")
+            # TRUNCATE fusionne le journal et le vide : l'archive devient un
+            # fichier unique, autonome, que l'on peut copier ou envoyer ailleurs
+            # sans emporter de bagage.
+            check.execute("PRAGMA wal_checkpoint(TRUNCATE);")
+
+        # Les journaux vidés n'ont plus rien à dire : on ne les laisse pas
+        # traîner à côté des archives, où ils feraient croire à une sauvegarde
+        # incomplète.
+        _drop_wal_sidecars(out)
 
         result.db_path = str(out)
         result.size_bytes = out.stat().st_size
@@ -226,8 +247,29 @@ def restore_from_file(archive_path: str) -> None:
             tmp.unlink(missing_ok=True)
             raise RuntimeError(f"integrity_check sur l'archive: {row[0] if row else 'KO'}")
 
-    # Backup de la BD courante avant écrasement
+    # Backup de la BD courante avant écrasement. Copie *cohérente* : en mode WAL
+    # le fichier principal seul ne contient pas les transactions encore dans le
+    # journal — un `copy2` produirait un filet de sécurité incomplet.
     if target.exists():
         backup_now = target.with_suffix(f".pre-restore.{int(datetime.now().timestamp())}")
-        shutil.copy2(target, backup_now)
+        try:
+            with sqlite3.connect(str(target)) as cur, sqlite3.connect(str(backup_now)) as bak:
+                cur.backup(bak)
+        except sqlite3.Error as exc:
+            logger.warning("Copie cohérente impossible (%s) — repli sur copy2", exc)
+            shutil.copy2(target, backup_now)
     os.replace(tmp, target)
+    _drop_wal_sidecars(target)
+
+
+def _drop_wal_sidecars(db_path: Path) -> None:
+    """Supprime les journaux `-wal` / `-shm` de la base remplacée.
+
+    La base tourne en WAL (`config/settings/base.py`) : SQLite laisse à côté du
+    fichier principal un journal `-wal` et son index `-shm`. Remplacer le seul
+    fichier principal ne les efface pas, et à la réouverture SQLite rejoue le
+    journal d'AVANT la restauration par-dessus la base restaurée — corruption,
+    ou retour silencieux des enregistrements qu'on voulait justement annuler.
+    """
+    for suffix in ("-wal", "-shm"):
+        db_path.with_name(db_path.name + suffix).unlink(missing_ok=True)

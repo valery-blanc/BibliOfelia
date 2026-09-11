@@ -4,7 +4,11 @@ Spécification détaillée du logiciel de gestion de bibliothèque BibliOfelia, 
 
 Version : 1.0 (cible v1) — **`BIBLIOFELIA_VERSION = "1.0"`** depuis le 2026-08-23 (FEAT-082, était `0.1.0-dev`)
 Statut : draft pour Spec-Driven Development
-Dernière modif spec : 2026-09-09 — **Sprint 34**, **FEAT-093** : **refonte complète des rapports**. Dix écrans (trois listes de travail, sept écrans de chiffres) bâtis sur un objet unique `ReportPage` rendu par trois moteurs — HTML, PDF à la charte OFELIA, Excel — de sorte qu'un écran a toujours ses deux exports et qu'un export montre toujours ce que l'écran montre. Sélecteur de période à quatre raccourcis nommés (« août 2026 ») appliqués au clic, graphes en **SVG écrit par le serveur** (aucune bibliothèque JS, contrainte hors-ligne), hub séparant « À faire aujourd'hui » des chiffres du comité. Nouveau modèle **`members.CardRenewal`** sans lequel « réinscriptions sur la période » n'était pas calculable. **Corrections du même jour** après essai de Val : étiquettes écrites **dans les tranches** des camemberts (écran, PDF et Excel), périodes et seuils en vrais boutons, hub en couleurs, exports CSV de données brutes rapatriés dans les écrans qui les montrent, sommaire des sous-rapports, **export PDF/Excel par sous-rapport**, tableau et graphe des mêmes données côte à côte, et une troisième forme de graphe (courbes). Cf. §5.2 et §6.6.
+Dernière modif spec : 2026-09-10 (soir) — **suite de la revue croisée : déploiement, vérification sur la Box, tests**. Les correctifs BUG-045/046/047 sont déployés sur la Box et **vérifiés sur la machine** : les groupes Django sont passés de `[]` à quatre, `next_run` n'a **pas** été repoussé par le redémarrage, et `/health` renvoie enfin un horodatage au lieu de `null`. **BUG-048** est né de cette vérification : chaque archive de sauvegarde traînait un journal `-wal` **non vide** (140 Ko), parce que `with sqlite3.connect(...)` valide la transaction mais **ne ferme pas** la connexion — et `_rotate` promeut vers daily/weekly/monthly par une copie du seul fichier principal, donc les copies gardées 400 jours pouvaient être amputées. **34 tests neufs** couvrent désormais ces chemins, qui n'en avaient **aucun** ; chacun a été vérifié en échec sur le code d'avant, sans quoi il ne prouverait rien. Suite : **1053 tests** (contre 1020 au Sprint 34). Cf. §4.4, §8.1 et §8.3.
+
+Modif du même jour : 2026-09-10 — **revue croisée BibliOfelia ⇄ keebee** (dépôt d'assemblage `_review-ofelia`). Trois correctifs sur la chaîne qui protège les données de la Box, tous invisibles jusqu'au jour où l'on restaure. **BUG-045** — l'entrypoint de **prod** ne lançait ni `setup_roles` ni `setup_schedules`, contrairement à celui de dev : sur une Box neuve, les bibliothécaires s'authentifiaient **sans aucune permission** et **aucune sauvegarde horaire ne tournait**, sur la cible précisément conçue pour fonctionner sans maintenance. Corollaire : `install_schedules()` ne réécrit plus `next_run` sur une planification existante, sinon chaque redémarrage repousserait l'échéance. **BUG-046** — la restauration remplaçait le seul fichier `.sqlite3` en laissant les journaux `-wal` / `-shm` de l'ancienne base, que SQLite rejouait par-dessus la base restaurée ; et `scripts/restore.sh` faisait un `gunzip` **inconditionnel** alors que `run_backup` écrit des sauvegardes **non compressées** — la redirection tronquant la cible avant l'échec, la base vivante finissait vide. **BUG-047** — `/health` lisait la clé `last_backup_at`, que **rien n'écrit** (l'écrivain range un dict sous `last_backup`) : l'endpoint annonçait `null` en permanence, donc aucun moniteur externe ne pouvait alerter sur une sauvegarde absente. Cf. §4.4, §6.10 et §8.
+
+Modif précédente : 2026-09-09 — **Sprint 34**, **FEAT-093** : **refonte complète des rapports**. Dix écrans (trois listes de travail, sept écrans de chiffres) bâtis sur un objet unique `ReportPage` rendu par trois moteurs — HTML, PDF à la charte OFELIA, Excel — de sorte qu'un écran a toujours ses deux exports et qu'un export montre toujours ce que l'écran montre. Sélecteur de période à quatre raccourcis nommés (« août 2026 ») appliqués au clic, graphes en **SVG écrit par le serveur** (aucune bibliothèque JS, contrainte hors-ligne), hub séparant « À faire aujourd'hui » des chiffres du comité. Nouveau modèle **`members.CardRenewal`** sans lequel « réinscriptions sur la période » n'était pas calculable. **Corrections du même jour** après essai de Val : étiquettes écrites **dans les tranches** des camemberts (écran, PDF et Excel), périodes et seuils en vrais boutons, hub en couleurs, exports CSV de données brutes rapatriés dans les écrans qui les montrent, sommaire des sous-rapports, **export PDF/Excel par sous-rapport**, tableau et graphe des mêmes données côte à côte, et une troisième forme de graphe (courbes). Cf. §5.2 et §6.6.
 
 Modif du lendemain : 2026-09-10 — **FEAT-093, suite**. Le guide utilisateur gagne la page **« Tous les rapports »** (× 4 langues), qui liste les dix écrans et leurs **cinquante sous-rapports** avec un lien direct vers chaque ancre ; elle est **générée** par `scripts/build_reports_guide.py`, l'ancre d'un sous-rapport étant l'empreinte de son titre **traduit**. « Exports CSV » devient « Imprimer et enregistrer un rapport ». Côté **keebee**, le bloc nginx `/bibliofelia/docs/` perd son `expires 1d` au profit de `Cache-Control: no-cache` : l'index de recherche du guide, servi sous un nom stable, restait périmé vingt-quatre heures dans le navigateur du lecteur après chaque mise à jour de la documentation. Cf. §6.6.
 Dernière modif spec : 2026-08-31 — **Sprint 31** : **FEAT-083** — la fiche usager gagne des **coordonnées complètes** (email, adresse découpée en rue, complément, code postal, localité, état et pays) ; l'ancien champ libre `address` disparaît, recopié par migration. Le champ `notes` est relibellé **« Commentaire »** et plafonné à 500 caractères par le formulaire. — **FEAT-084** — **caisse, cotisations, amendes et factures** : nouvelle application `apps/finance` (`Tariff`, `Invoice`, `InvoiceLine`, `Payment`, `CashMovement`, `OutboundEmail`), encadré « Compte » sur la fiche usager (à jour / à régler / en retard depuis le …, ventilé par nature), facture **A4 PDF** à la charte OFELIA, envoi email **par file d'attente** qui survit à une Box hors ligne, écran « Caisse » hors bouclement. **Cotisation par catégorie d'usager**, facturée automatiquement à l'inscription et à chaque renouvellement ; **amendes manuelles uniquement** (arbitrages Val). **Devise réglée par instance** dans Avancé → Paramètres. — **FEAT-085** — **activités et animations** : nouvelle application `apps/closing`, référentiels administrables, saisie du temps passé, présences retrouvées **au scan ou par les 4 derniers chiffres** du numéro de carte, non-membres comptés, saisie rétroactive, statistiques mois/année + CSV. — **FEAT-086** — **bouclement de la journée** en cinq étapes (activités, caisse, envois, sauvegardes, extinction) ; l'étape d'extinction n'apparaît que **sur la Box** et passe par un **fichier-drapeau** que l'hôte doit surveiller. — **FEAT-087** — le **scan caméra accepte tous les formats linéaires** (Code128, Code39, Codabar, ITF, UPC…) et non plus les seuls EAN-13 à préfixe Ofelia/ISBN : un code externe imprimé en Code128 était jusqu'ici lisible à la douchette mais **pas** à la caméra. — **BUG-041** — « Renouveler la carte » **empilait les années** à chaque clic ; le bouton est grisé et le serveur refuse tant que la carte est valable plus de 30 jours. Cf. §5.2, §6.2, §6.13, §6.14, §6.15.
@@ -273,8 +277,29 @@ fait que Django reconstruit liens et redirections avec le préfixe (FEAT-020).
 1. Vérification de la connectivité à la base
 2. Exécution de `manage.py migrate`
 3. Création des objets par défaut si base vide (catégories, règles, langue)
-4. `compilemessages` (traductions) puis `collectstatic` (statique frais)
-5. Démarrage de gunicorn
+4. `manage.py setup_roles` — crée les `Group` Django portant le nom de chaque
+   `Role` et y attache les permissions de `apps/accounts/groups.py`
+5. `manage.py setup_schedules` — installe les trois planifications django-q2
+   (sauvegarde horaire, expiration des cartes, expiration des réservations)
+6. `compilemessages` (traductions) puis `collectstatic` (statique frais)
+7. Démarrage de gunicorn
+
+Toutes ces étapes sont **idempotentes** et toutes tournent en prod comme en dev.
+Les étapes 4 et 5 ne figuraient pas dans l'entrypoint de prod jusqu'au
+2026-09-10 (BUG-045) : sur une Box neuve, aucun groupe n'existait — et
+`apps/accounts/signals.py` passe son chemin **en silence** quand le groupe du
+rôle est introuvable, de sorte que les bibliothécaires étaient créés, connectés
+et sans aucune permission — tandis qu'aucune sauvegarde ne tournait jamais.
+
+`setup_schedules` s'exécutant désormais à chaque démarrage, `install_schedules()`
+ne pose `next_run` **qu'à la création** d'une planification (ou si elle est
+nulle) : le réécrire repousserait l'échéance de deux minutes à chaque
+redémarrage, et une Box sujette aux coupures de courant ne sauvegarderait
+jamais.
+
+Le worker `qcluster` ne passe pas par ce script — le `docker-compose.yml` de
+keebee lui donne un `entrypoint` explicite (`tini` + `qcluster`). Les deux
+commandes tournent donc une seule fois, dans le conteneur web.
 
 Aucune intervention manuelle requise pour les mises à jour mineures.
 
@@ -1922,7 +1947,7 @@ Les schémas JSON ci-dessous sont **figés** par `docs/specs/SPEC-CORR-001-contr
 
 #### Diagnostic
 
-- `GET /health` — auth requise. Réponse `200` : `{"status": "ok"|"degraded", "version"?, "disk_free_mb"?, "last_backup_at"?}`. Seul `status` est requis.
+- `GET /health` — auth requise. Réponse `200` : `{"status": "ok"|"degraded", "version"?, "disk_free_mb"?, "last_backup_at"?}`. Seul `status` est requis. ⚠️ `last_backup_at` est lu dans `Setting["last_backup"]["at"]` — le réglage est un **dict** écrit par `apps/tasks/backup.py::_persist`, jamais un réglage scalaire nommé `last_backup_at`. Lire la mauvaise clé renvoyait `null` en permanence et rendait toute alerte externe impossible (BUG-047) ; `apps/reports/services.py` lit la même donnée de la même façon.
 - `GET /sync/status` — queue des tâches en attente.
 
 #### Catalogue des emplacements (lecture seule) — FEAT-032
@@ -2866,7 +2891,7 @@ Job léger ping vers `8.8.8.8` ou serveur Ofelia toutes les 5 minutes. Statut ex
 > Implémentation Sprint 4 (FEAT-014) :
 > - `apps/tasks/backup.py:run_backup()` utilise l'API Python `sqlite3.Connection.backup()` (copie cohérente même sous WAL), vérifie `PRAGMA integrity_check`, gère la rotation 24h/7j/35j/400j, lance `rsync` ou `shutil.copytree` pour `media/`, et `rclone sync` si `backup_config.cloud_enabled`.
 > - `Setting.last_backup` (timestamp/statut/taille/error) → exploité par le dashboard pour alerter si > 24 h.
-> - `apps/tasks/scheduling.py:install_schedules()` enregistre 3 Schedule django-q2 (backup horaire, expire cartes quotidien, expire réservations quotidien). Installé au boot dev par `dev-entrypoint.sh` (commande `setup_schedules`).
+> - `apps/tasks/scheduling.py:install_schedules()` enregistre 3 Schedule django-q2 (backup horaire, expire cartes quotidien, expire réservations quotidien). Installé au boot par `dev-entrypoint.sh` **et par `entrypoint.sh` (prod)** — commande `setup_schedules`. ⚠️ **Sans elle, le worker tourne en bonne santé et n'a rien à exécuter : il n'y a aucune sauvegarde, et rien ne le signale** (BUG-045). `next_run` n'est posé qu'à la création d'une planification, sinon chaque redémarrage du conteneur repousserait l'échéance.
 > - Commandes : `manage.py run_backup [--force-daily|--force-cloud]`, `manage.py restore_backup <path> [--yes]`.
 > - UI : bouton « Sauvegarder maintenant » + upload de restauration dans `/admin/settings/backup/` (superadmin).
 > - Cohabitation avec `scripts/backup.sh` (container backup keebee) : mêmes dossiers cibles ; les deux peuvent tourner, la rotation est idempotente.
@@ -2874,6 +2899,15 @@ Job léger ping vers `8.8.8.8` ou serveur Ofelia toutes les 5 minutes. Statut ex
 
 
 ### 8.1 Sauvegarde locale
+
+**Une archive est un fichier unique et autonome** (BUG-048). `run_backup` ferme
+explicitement ses connexions (`contextlib.closing` — `with sqlite3.connect(...)`
+valide la transaction mais **ne ferme pas**, un piège de l'API), fusionne le
+journal par `PRAGMA wal_checkpoint(TRUNCATE)` et retire les fichiers `-wal` /
+`-shm` résiduels. Sans cela, chaque archive était accompagnée d'un journal non
+vide (140 Ko mesurés sur la Box) — et comme `_rotate` promeut vers
+`daily`/`weekly`/`monthly` par une copie du **seul** fichier principal, les
+copies conservées jusqu'à 400 jours pouvaient être amputées.
 
 - Toutes les heures : `sqlite3 db.sqlite3 ".backup"` vers la clé USB
 - Quotidiennement : rsync incrémental du dossier media (couvertures)
@@ -2896,6 +2930,28 @@ Job léger ping vers `8.8.8.8` ou serveur Ofelia toutes les 5 minutes. Statut ex
   - Restauration depuis cloud (si ZeroTier disponible)
   - Restauration depuis fichier uploadé via interface web (admin)
 - Procédure documentée dans le wizard d'installation
+
+**Deux règles non négociables, apprises par BUG-046 :**
+
+1. **Supprimer les journaux `-wal` / `-shm` après avoir remplacé le fichier
+   `.sqlite3`.** La base tourne en WAL : les transactions pas encore fusionnées
+   vivent dans un fichier voisin. Remplacer le seul fichier principal laisse ce
+   journal orphelin en place, et SQLite le **rejoue par-dessus la base
+   restaurée** à la réouverture — corruption, ou retour silencieux des
+   enregistrements qu'on voulait justement annuler. `restore_from_file` appelle
+   `_drop_wal_sidecars()` ; `scripts/restore.sh` fait le `rm -f` équivalent.
+   Pour la même raison, toute copie de sécurité d'une base vivante passe par
+   `sqlite3.Connection.backup()` ou `sqlite3 … ".backup"`, jamais par `cp`.
+
+2. **Détecter le format de l'archive, ne jamais le supposer.** `run_backup`
+   écrit des `.sqlite3` **non compressés** ; seul `scripts/backup.sh` gzippe.
+   Un `gunzip` inconditionnel échouait sur la sauvegarde la plus courante du
+   système — et comme la redirection shell tronque la cible **avant** que gunzip
+   ne s'exécute, il laissait la base vivante vide.
+
+Corollaire de forme : `scripts/restore.sh` extrait dans un fichier temporaire et
+vérifie son `PRAGMA integrity_check` **avant** de toucher à la base en place.
+Une archive illisible ne détruit plus rien.
 
 ### 8.4 Cycle de vie matériel
 

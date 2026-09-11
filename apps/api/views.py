@@ -131,12 +131,18 @@ class HealthView(APIView):
             free_mb = shutil.disk_usage(settings.DATABASE_PATH).free // (1024 * 1024)
         except OSError:
             free_mb = None
+        # La trace est écrite par `apps.tasks.backup._persist` sous la clé
+        # `last_backup`, sous forme de dict. Lire `last_backup_at` (clé que rien
+        # n'écrit) renvoyait toujours null : tout moniteur externe croyait que la
+        # Box n'avait jamais sauvegardé et ne pouvait pas alerter. Le nom du
+        # champ exposé ne change pas (contrat §6.10, consommé par OfeliaScan).
+        last_backup = Setting.get("last_backup", {}) or {}
         return Response(
             {
                 "status": "ok",
                 "version": settings.BIBLIOFELIA_VERSION,
                 "disk_free_mb": free_mb,
-                "last_backup_at": Setting.get("last_backup_at"),
+                "last_backup_at": last_backup.get("at"),
             }
         )
 

@@ -143,6 +143,45 @@ class TestHealth:
         assert resp.status_code == 200
         assert resp.json()["status"] == "ok"
 
+    def test_last_backup_at_reflete_la_derniere_sauvegarde(
+        self, client, user, tmp_path, settings
+    ):
+        """BUG-047 : `/health` lisait un réglage `last_backup_at` que **rien
+        n'écrit**, et annonçait donc `null` en permanence — y compris juste
+        après une sauvegarde réussie. Un moniteur externe en concluait que la
+        Box n'avait jamais sauvegardé, et ne pouvait jamais alerter.
+
+        Le test passe par le vrai écrivain (`run_backup`) plutôt que d'écrire le
+        réglage à la main : c'est la **concordance** entre celui qui écrit et
+        celui qui lit qui avait cédé, et deux clés inventées de part et d'autre
+        se seraient accordées à tort.
+        """
+        import sqlite3
+
+        from apps.tasks.backup import run_backup
+
+        # Une vraie sauvegarde réussie : `run_backup` ne lève jamais, il
+        # renvoie status="error". Sans base source ni destination inscriptible,
+        # le test passerait sur une sauvegarde en échec — et ne prouverait rien.
+        source = tmp_path / "bibliofelia.sqlite3"
+        sqlite3.connect(str(source)).close()
+        settings.DATABASE_PATH = str(source)
+        settings.BACKUP_USB_PATH = str(tmp_path / "backup")
+
+        _authenticate(client)
+        assert client.get("/api/v1/health").json()["last_backup_at"] is None
+
+        resultat = run_backup()
+        assert resultat.status == "ok", f"sauvegarde en échec : {resultat.error}"
+
+        renvoye = client.get("/api/v1/health").json()["last_backup_at"]
+        assert renvoye is not None, "aucune trace de sauvegarde exposée"
+        assert renvoye == resultat.at.isoformat()
+
+    def test_last_backup_at_absent_avant_toute_sauvegarde(self, client, user):
+        _authenticate(client)
+        assert client.get("/api/v1/health").json()["last_backup_at"] is None
+
 
 @pytest.mark.django_db
 class TestIsbnLookup:

@@ -25,6 +25,26 @@ sur Avignon, Box Canaima (`edubox-bibliofelia` healthy, migration
 
 ### 🔴 À FAIRE EN PREMIER
 
+- **Test fonctionnel de Val sur les correctifs de la revue croisée
+  (BUG-045 → BUG-048).** Code écrit, testé (34 tests neufs, **1053 au total**),
+  **déployé sur la Box et vérifié sur la machine** le 2026-09-10 au soir. Il ne
+  manque que ton passage à l'écran. ⚠️ Rien n'est committé : le workflow impose
+  ta confirmation d'abord.
+
+- 🔴 **La Box n'a aucune sauvegarde durable — mesuré, pas déduit.** Les deux
+  chemins sont hors service en même temps :
+  - `ofelia-backup.timer` échoue **toutes les nuits** depuis au moins le
+    2026-09-08 : `clé USB absente de /mnt/backup` (BUG-031, clé morte jamais
+    remplacée) ;
+  - les sauvegardes horaires de l'application écrivent dans `/backup`, **qui
+    n'est monté nulle part** — elles vivent dans le conteneur worker
+    ([[project_backup_ephemeral]], correctif différé hors Sprint 18).
+    Le rebuild de ce soir a donc **détruit** les archives accumulées.
+
+  Aucune de ces deux causes n'est nouvelle, mais elles ne s'étaient jamais
+  additionnées de façon aussi visible. À trancher : monter `/backup` sur l'hôte
+  (une ligne dans le compose keebee) et/ou remplacer la clé.
+
 - **Committer `C:\WORK\keebee`** — le correctif nginx du cache du guide
   (`nginx/conf.d/ofelia-locations.inc`) y est **modifié et non committé**.
   ⚠️ Ne stager **que** ce fichier : le dépôt keebee porte d'autres travaux non
@@ -43,6 +63,114 @@ sur Avignon, Box Canaima (`edubox-bibliofelia` healthy, migration
   **Ne pas** régler cela par un `cp` du dépôt vers la Box sans avoir d'abord
   lu le diff complet. Sauvegarde du fichier d'origine :
   `/tmp/ofelia-locations.inc.bak` sur la Box (volatile, un redémarrage l'efface).
+
+### Revue croisée BibliOfelia ⇄ keebee (2026-09-10)
+
+Constats issus du dépôt d'assemblage `_review-ofelia`. Périmètre : la chaîne qui
+protège les données de la Box. **Code écrit, testé, déployé sur la Box et
+vérifié sur la machine — non committé** (workflow : test de Val d'abord).
+
+**Tests : 1053 passed** sur Fez (`ofelia/bibliofelia:dev`), contre 1020 au
+Sprint 34 — **34 tests neufs** sur des chemins qui n'en avaient aucun.
+
+> 🔬 **Chaque test neuf a été vérifié en échec sur le code d'avant.** Un test
+> qui passe des deux côtés ne prouve rien — la leçon de
+> [[feedback_ne_pas_conclure_trop_vite]] (« un gate vert n'est une preuve que si
+> l'on sait ce qu'il couvre »). Scripts de vérification :
+> `verifier_tests.sh` et `verifier_wal_archive.sh` (scratchpad de session).
+> Résultat : **6 correctifs sur 6** rejettent bien le code d'avant.
+
+#### BUG-045 — Entrypoint de prod sans `setup_roles` ni `setup_schedules`
+- [x] `docs/bugs/BUG-045-entrypoint-prod-sans-roles-ni-planifications.md`
+- [x] `scripts/entrypoint.sh` : les deux commandes, avec `|| true`
+- [x] `apps/tasks/scheduling.py` : `next_run` posé à la création seulement
+      (sinon chaque redémarrage repousse l'échéance)
+- [x] SPEC §4.4 et §8
+- [x] Tests : `apps/tasks/tests/test_scheduling.py` (6) +
+      `test_entrypoint_prod.py` (10, dont un qui compare les deux entrypoints
+      commande par commande — c'est cette divergence qui avait échappé)
+- [x] **Déployé et vérifié sur la Box** (2026-09-10 21:15) :
+      - l'entrypoint affiche bien « rôles et permissions » puis « planifications » ;
+      - **groupes Django : `[]` → `['contributor_api', 'librarian', 'readonly',
+        'superadmin']`** — ils n'avaient donc **jamais** été créés sur cette Box ;
+      - les 3 planifications sont là, et **`next_run` n'a pas bougé au
+        redémarrage** (`19:42:28.924906` avant et après) : la correction du
+        `next_run` tient en production, pas seulement en test.
+- [ ] **Test fonctionnel Val**
+
+  > ⚠️ **Correction d'un constat de la revue.** Elle annonçait que sans
+  > `setup_roles` « tout écran protégé répond 403 ». C'est **faux pour ce
+  > code** : les vues passent par `require_role` / `HasRole`, qui lisent
+  > l'attribut `role` de l'utilisateur, jamais les permissions Django. Les
+  > `Group` ne servent qu'à `/admin/`, réservé au superadmin — lequel court-
+  > circuite `has_perm`. L'application fonctionnait donc normalement avec zéro
+  > groupe. Le correctif reste juste (la SPEC §9.2 les prévoit, et l'écart
+  > dev/prod est un piège), mais **la moitié « planifications » était la seule
+  > qui mordait**.
+
+#### BUG-046 — Restauration : journal WAL laissé en place, `gunzip` inconditionnel
+- [x] `docs/bugs/BUG-046-restauration-journal-wal-et-gunzip.md`
+- [x] `apps/tasks/backup.py` : `_drop_wal_sidecars()` après `os.replace` ;
+      copie de sécurité par `sqlite3 .backup` et non `copy2`
+- [x] `scripts/restore.sh` réécrit : format détecté (`gzip -t`), intégrité
+      vérifiée **avant** de toucher à la base vivante, journaux supprimés
+- [x] SPEC §8.3
+- [x] Tests : `test_backup_restore.py` (12) + `test_restore_script.py` (6, qui
+      **exécute réellement** `restore.sh` sur de vrais fichiers SQLite en WAL —
+      un mock aurait masqué le comportement du moteur, qui est la cause)
+- [x] Les deux formats couverts : archive non compressée (celle que produit
+      `run_backup`, la plus courante, et celle qui échouait) **et** `.gz`
+- [x] Cas destructeur couvert : archive corrompue → la base vivante est intacte
+- [ ] **Test fonctionnel Val**
+
+#### BUG-048 — Archives de sauvegarde non autonomes (trouvé en vérifiant)
+- [x] `docs/bugs/BUG-048-archives-de-sauvegarde-non-autonomes.md`
+- [x] Cause : `with sqlite3.connect(...)` **ne ferme pas** la connexion (piège
+      de l'API) → chaque archive gardait un `-wal` **non vide** de 140 Ko, et
+      `_rotate` promeut vers daily/weekly/monthly par une copie du **seul**
+      fichier principal — les copies gardées 400 jours pouvaient être amputées
+- [x] `contextlib.closing` + `PRAGMA wal_checkpoint(TRUNCATE)` + nettoyage
+- [x] Tests : `TestRunBackup` (3), dont « l'archive copiée **seule** ailleurs se
+      relit entièrement »
+- [x] **Vérifié sur la Box** : `run_backup` → un seul fichier dans
+      `hourly/`, contre trois avant
+- [ ] **Test fonctionnel Val**
+
+#### BUG-047 — `/health` renvoyait toujours `last_backup_at: null`
+- [x] `docs/bugs/BUG-047-health-last-backup-at-toujours-null.md`
+- [x] `apps/api/views.py` : lecture de `Setting["last_backup"]["at"]`
+- [x] SPEC §6.10 — le **nom du champ exposé ne change pas** (contrat OfeliaScan)
+- [x] Tests : 2 dans `apps/api/tests/test_api.py::TestHealth`, qui passent par
+      le **vrai écrivain** (`run_backup`) plutôt que d'écrire le réglage à la
+      main — c'est la concordance écrivain/lecteur qui avait cédé, et deux clés
+      inventées de part et d'autre se seraient accordées à tort
+- [x] **Vérifié sur la Box** : `/health` renvoie
+      `"last_backup_at": "2026-09-10T19:18:00.917642+00:00"` (`null` avant)
+- [ ] **Test fonctionnel Val**
+
+#### Côté keebee (dépôt séparé, fiches BUG-045 → BUG-048 de `C:\WORK\keebee`)
+- [x] `install.sh` écrit le `.env` au lieu de gabariter des marqueurs inexistants
+- [x] `.env.example` complété (6 → 18 lignes)
+- [x] `backup.sh` / `edubox-backup.sh` : instantané SQLite cohérent,
+      `--exclude` corrigés
+- [x] `restore.sh` : `bibliofelia/` et `mariadb/` traités, instantané remis en
+      place, **compte `healthcheck` MariaDB recréé** après le dump
+- [x] **BUG-048 keebee — secrets exposés par l'assistant** : `.env` mesuré en
+      **664** sur la Box (lisible par tout compte), et le mot de passe du Wi-Fi
+      écrit dans `wizard-state.json`, **servi publiquement en HTTP 200**
+- [x] `TZ: ${TZ:-UTC}` reporté dans le compose (dette du Sprint 29)
+- [ ] ⛔ **Déploiement BLOQUÉ** : le `setup/app.py` de la Box fait **1938
+      lignes**, celui de `master` **1100** — déployer écraserait le durcissement
+      d'août (c'est BUG-039). Voir `C:\WORK\keebee\docs\tasks\TASKS.md`.
+
+#### Constats signalés, volontairement NON corrigés
+- ⛔ `bibliofelia` absent du `depends_on` de `nginx-proxy` (keebee) — au tout
+  premier `up`, nginx peut démarrer avant que `collectstatic` ait peuplé le
+  volume `bibliofelia_static`, d'où des 404 sur les statiques jusqu'à un
+  redémarrage. **Non corrigé** : le `depends_on` contredirait le démarrage
+  ordonné FEAT-033, où nginx doit démarrer **avant** les applications, en
+  résolution DNS dynamique. À traiter dans `ofelia-boot.sh` si le cas se
+  présente.
 
 ### 🧨 Réfuté / clos dans cette session — ne pas le rebâtir
 
