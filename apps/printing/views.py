@@ -9,7 +9,8 @@ from django.utils.translation import gettext as _
 
 from apps.accounts.models import Role
 from apps.accounts.permissions import require_role
-from apps.catalog.models import Item
+from apps.catalog.location_filter import selected_location_ids
+from apps.catalog.models import Item, Location
 from apps.members.models import Member
 
 from .services import (
@@ -40,9 +41,9 @@ def _picker_context(request) -> dict:
         Item.objects.select_related("record", "record__category", "location")
         .order_by("-created_at")
     )
-    location = request.GET.get("location") or ""
-    if location:
-        qs = qs.filter(location__code=location)
+    location_ids = selected_location_ids(request.GET)
+    if location_ids:
+        qs = qs.filter(location_id__in=location_ids)
     # FEAT-046 : n'imprimer que les étiquettes d'un lot de catalogage donné.
     catalog_session = request.GET.get("catalog_session") or ""
     session_label = ""
@@ -60,9 +61,15 @@ def _picker_context(request) -> dict:
         qs = qs[:1000]
     else:
         qs = qs[:500]
+    items = list(qs)
     return {
-        "items": qs, "location": location, "pending": pending,
-        "catalog_session": catalog_session, "session_label": session_label,
+        "items": items,
+        "item_count": len(items),
+        "locations": Location.objects.all().order_by("code"),
+        "selected_locations": location_ids,
+        "pending": pending,
+        "catalog_session": catalog_session,
+        "session_label": session_label,
         "roll": _roll_settings(),
     }
 

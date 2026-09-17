@@ -79,6 +79,10 @@
     </button>
 </form>
 
+<div class="muted text-sm" style="margin:4px 4px 12px">
+    {% blocktrans count counter=page_obj.paginator.count %}{{ counter }} membre{% plural %}{{ counter }} membres{% endblocktrans %}
+</div>
+
 {% if page_obj %}
 <div class="list">
     {% for member in page_obj %}

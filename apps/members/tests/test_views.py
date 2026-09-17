@@ -187,6 +187,7 @@ def test_member_list_search_by_name(client, librarian, member):
     resp = client.get("/fr/members/", {"q": "curie"})
     assert resp.status_code == 200
     assert b"Curie" in resp.content
+    assert "1 membre" in resp.content.decode()
 
 
 def test_renew_card_view(client, librarian, member):

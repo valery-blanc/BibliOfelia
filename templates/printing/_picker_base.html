@@ -29,7 +29,7 @@
     {% if catalog_session %}<input type="hidden" name="catalog_session" value="{{ catalog_session }}">{% endif %}
     <div class="field" style="margin:0;flex:0 0 auto">
         <label>{% trans "Emplacement" %}</label>
-        <input type="text" name="location" value="{{ location }}" placeholder="A1" style="width:120px">
+        {% include "partials/_location_filter.html" %}
     </div>
     <label style="display:flex;align-items:center;gap:8px;font-size:14px;font-weight:600;color:var(--ink-soft);align-self:center;margin-top:18px">
         <input type="checkbox" name="pending" value="1" {% if pending %}checked{% endif %}>
@@ -39,6 +39,10 @@
         {% icon "filter" size="16px" %} {% trans "Filtrer" %}
     </button>
 </form>
+
+<div class="muted text-sm" style="margin:4px 4px 12px">
+    {% blocktrans count counter=item_count %}{{ counter }} exemplaire{% plural %}{{ counter }} exemplaires{% endblocktrans %}
+</div>
 
 <form method="get" action="{{ form_action }}" id="labelsForm">
     <div style="display:flex;gap:8px;flex-wrap:wrap;margin-bottom:14px">

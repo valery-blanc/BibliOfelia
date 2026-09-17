@@ -35,7 +35,8 @@ la lista de registros puede filtrarse por:
 - **Texto libre** (título, autor, editor)
 - **Clasificación** (Juventud Documental, Adultos Ficción…)
 - **Idioma**
-- **Ubicación**
+- **Ubicación** — uno o **varios** estantes (deje « Todas las ubicaciones »
+  para no filtrar)
 
 ![Lista del catálogo con filtros](../assets/screenshots/es/catalogue/record-list.png)
 

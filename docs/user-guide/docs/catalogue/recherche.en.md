@@ -34,7 +34,8 @@ record list can be filtered by:
 - **Free text** (title, author, publisher)
 - **Classification** (Youth Non-fiction, Adult Fiction…)
 - **Language**
-- **Location**
+- **Location** — one or **several** shelves (leave “All locations” to skip
+  this filter)
 
 ![Catalog with filters](../assets/screenshots/en/catalogue/record-list.png)
 

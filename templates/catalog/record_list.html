@@ -66,12 +66,7 @@
         <option value="{{ code }}" {% if selected.language == code %}selected{% endif %}>{{ name }}</option>
         {% endfor %}
     </select>
-    <select name="location" class="filter-select" style="width:auto;min-width:150px">
-        <option value="">{% trans "Tous emplacements" %}</option>
-        {% for loc in locations %}
-        <option value="{{ loc.pk }}" {% if selected.location == loc.pk|stringformat:'s' %}selected{% endif %}>{{ loc.code }}</option>
-        {% endfor %}
-    </select>
+    {% include "partials/_location_filter.html" %}
     <select name="provenance" class="filter-select" style="width:auto;min-width:150px">
         <option value="">{% trans "Toutes provenances" %}</option>
         {% for prov in provenances %}

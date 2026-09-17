@@ -4,7 +4,14 @@ Spécification détaillée du logiciel de gestion de bibliothèque BibliOfelia, 
 
 Version : 1.0 (cible v1) — **`BIBLIOFELIA_VERSION = "1.0"`** depuis le 2026-08-23 (FEAT-082, était `0.1.0-dev`)
 Statut : draft pour Spec-Driven Development
-Dernière modif spec : 2026-09-15 — **FEAT-094** : le vocabulaire visible du catalogue
+Dernière modif spec : 2026-09-17 — **FEAT-095** : les filtres de **recherche**
+d'emplacements (catalogue, étiquettes codes Ofelia, étiquettes de tranche)
+acceptent **plusieurs** rayons cochés dans la liste déroulante. « Tous
+emplacements » = pas de filtre. Les **affectations** restent un seul
+emplacement (catalogage, barre Affecter, fiche exemplaire, récolement). Cf. §6.1,
+§6.7.
+
+Modif précédente : 2026-09-15 — **FEAT-094** : le vocabulaire visible du catalogue
 passe de **catégorie** / **abréviation** à **classification** / **code de
 classification** (ex. « Jeunesse Documentaire » / « JE DOC »). Les catégories
 d'usagers, le modèle `Category`, les URLs `/catalog/categories/` et l'API
@@ -815,7 +822,7 @@ par `scan-cataloging.js` au premier scan `created`/`incremented` suivant (un sca
   fiche notice ou membre). Le wedge se retire quand le modal caméra est ouvert et
   ignore textarea/contenteditable/password et les combinaisons `Ctrl/Alt/Meta`
   (la frappe humaine, lente, n'est jamais captée).
-- Filtres dans la page catalogue (`catalog:record_list`) : catégorie, type de document, langue, **emplacement** (FEAT-051 — sélecteur `Location` ; une notice est retenue si **au moins un** de ses exemplaires est dans l'emplacement choisi : `records.filter(items__location_id=location).distinct()`), **tag** (recherche substring case-insensitive sur le nom — `science` matche « Science Fiction » et « science populaire »), recherche texte/ISBN/EAN13/**ISSN** dans la barre principale (route via `classify_query` : `isbn` → `Q(isbn_13=v) | Q(isbn_10=v)`, `item` → `items__ean13=v`, `issn` (EAN13 977 ou ISSN saisi `1828-552X`, FEAT-052) → `issn=v`, sinon FTS5).
+- Filtres dans la page catalogue (`catalog:record_list`) : catégorie, type de document, langue, **emplacement** (FEAT-051, **plusieurs rayons** depuis FEAT-095 — liste déroulante à cases ; une notice est retenue si **au moins un** de ses exemplaires est dans l'un des emplacements cochés : `items__location_id__in=…`. Vide = tous, y compris sans rayon), **tag** (recherche substring case-insensitive sur le nom — `science` matche « Science Fiction » et « science populaire »), recherche texte/ISBN/EAN13/**ISSN** dans la barre principale (route via `classify_query` : `isbn` → `Q(isbn_13=v) | Q(isbn_10=v)`, `item` → `items__ean13=v`, `issn` (EAN13 977 ou ISSN saisi `1828-552X`, FEAT-052) → `issn=v`, sinon FTS5).
 - Tri : pertinence, titre, auteur, date d'ajout
 - **Filtre provenance (FEAT-064)** : en mode notice, retient les notices ayant
   **au moins un** exemplaire de cette provenance ; en mode exemplaire, filtre
@@ -1702,11 +1709,12 @@ entrée dans le menu Avancé → Impression :
 | **Étiquettes codes Ofelia** | `printing:labels` | « PDF A4 », « Ruban 62 mm (Brother QL) » |
 | **Étiquettes de tranche** | `printing:spine_labels` | « PDF A4 », « Ruban 62 mm (Brother QL) » |
 
-La sélection d'exemplaires est **la même des deux côtés** : filtres emplacement
-et derniers ajouts, table, case « tout cocher », prise en charge de
-`?catalog_session=N` (FEAT-046). Elle vit dans `views._picker_context()` et dans
-le gabarit `printing/_picker_base.html` ; chaque écran n'override que ses
-boutons et ses colonnes de fin de ligne.
+La sélection d'exemplaires est **la même des deux côtés** : filtre emplacement
+(**plusieurs rayons** depuis FEAT-095, même widget que le catalogue ; l'ancien
+`?location=A1` par code reste lu), derniers ajouts, table, case « tout cocher »,
+prise en charge de `?catalog_session=N` (FEAT-046). Elle vit dans
+`views._picker_context()` et dans le gabarit `printing/_picker_base.html` ;
+chaque écran n'override que ses boutons et ses colonnes de fin de ligne.
 
 Le libellé « Générer PDF » devient « **PDF A4** » sur les écrans d'impression
 (étiquettes et cartes membres) : à côté d'un bouton « Ruban 62 mm », c'est le

@@ -207,6 +207,10 @@ def test_catalog_page_carries_the_dropdowns(client, librarian, records, cat_b, l
     assert reverse("catalog:record_bulk_assign") in body
     assert 'name="category"' in body and 'name="location"' in body
     assert "Ne pas modifier" in body
+    # FEAT-095 : l'affectation reste un select unique, le filtre de recherche
+    # est le widget à cases.
+    assert '<select name="location"' in body
+    assert "data-location-filter" in body
 
 
 def test_items_mode_carries_the_provenance_dropdown(client, librarian, records):

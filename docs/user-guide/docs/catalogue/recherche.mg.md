@@ -36,7 +36,8 @@ ny lisitry ny notice dia azo fantenanina araka:
 - **Soratra malalaka** (lohateny, mpanoratra, editora)
 - **Fanasokajiana** (Tanora Dokumentera, Olon-dehibe Angano…)
 - **Fiteny**
-- **Toerana**
+- **Toerana** — talantalana iray na **maromaro** (avelao « Toerana rehetra »
+  raha tsy hanivana)
 
 ![Lisitry ny boky misy fitana](../assets/screenshots/mg/catalogue/record-list.png)
 

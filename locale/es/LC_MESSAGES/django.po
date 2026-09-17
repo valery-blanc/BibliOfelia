@@ -6,7 +6,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: BibliOfelia 1.0\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2026-09-15 20:53+0000\n"
+"POT-Creation-Date: 2026-09-17 21:43+0000\n"
 "PO-Revision-Date: 2026-05-22 00:00+0000\n"
 "Last-Translator: Claude Code\n"
 "Language-Team: Español\n"
@@ -147,8 +147,8 @@ msgstr ""
 #: apps/catalog/forms.py:35 templates/catalog/_item_results.html:53
 #: templates/catalog/_item_results.html:122
 #: templates/catalog/record_detail.html:51
-#: templates/catalog/record_list.html:177
-#: templates/catalog/record_list.html:246
+#: templates/catalog/record_list.html:172
+#: templates/catalog/record_list.html:241
 msgid "Auteur(s)"
 msgstr "Autor(es)"
 
@@ -185,12 +185,12 @@ msgstr "Código Ofelia externo"
 #: apps/catalog/forms.py:138 apps/reports/builders/collection.py:259
 #: apps/reports/builders/collection.py:435
 #: templates/catalog/record_detail.html:101
-#: templates/catalog/record_list.html:146
+#: templates/catalog/record_list.html:141
 #: templates/catalog/scan_session.html:54
 #: templates/catalog/scan_session.html:160
 #: templates/catalog/scan_session.html:188
 #: templates/printing/_picker_base.html:31
-#: templates/printing/_picker_base.html:55
+#: templates/printing/_picker_base.html:59
 msgid "Emplacement"
 msgstr "Ubicación"
 
@@ -200,7 +200,7 @@ msgstr "Ubicación"
 #: templates/catalog/_item_results.html:126
 #: templates/catalog/item_bulk_delete.html:61
 #: templates/catalog/record_detail.html:102
-#: templates/printing/_picker_base.html:59
+#: templates/printing/_picker_base.html:63
 msgid "Provenance"
 msgstr "Procedencia"
 
@@ -315,13 +315,16 @@ msgstr "Duración del préstamo (días)"
 msgid ""
 "Identifiant unique. Pour les classifications Ofelia, identique au code de "
 "classification (JE DOC)."
-msgstr "Identificador único. En las clasificaciones Ofelia, idéntico al código de clasificación (JE DOC)."
+msgstr ""
+"Identificador único. En las clasificaciones Ofelia, idéntico al código de "
+"clasificación (JE DOC)."
 
 #: apps/catalog/forms.py:275
 msgid ""
 "Imprimé sur l'étiquette de tranche. Ex. « JE DOC » pour « Jeunesse "
 "Documentaire »."
-msgstr "Impreso en la etiqueta de lomo. Ej. « JE DOC » para « Juventud Documental »."
+msgstr ""
+"Impreso en la etiqueta de lomo. Ej. « JE DOC » para « Juventud Documental »."
 
 #: apps/catalog/forms.py:278
 msgid "Sous-classification de… (optionnel)."
@@ -760,230 +763,230 @@ msgstr "catalogación Excel"
 msgid "catalogages Excel"
 msgstr "catalogaciones Excel"
 
-#: apps/catalog/views.py:302
+#: apps/catalog/views.py:306
 msgid "Notice créée."
 msgstr "Registro creado."
 
-#: apps/catalog/views.py:307 apps/catalog/views.py:347
+#: apps/catalog/views.py:311 apps/catalog/views.py:351
 #: templates/catalog/record_list.html:29 templates/core/dashboard.html:219
 msgid "Nouvelle notice"
 msgstr "Nueva ficha"
 
-#: apps/catalog/views.py:319
+#: apps/catalog/views.py:323
 msgid "Notice mise à jour."
 msgstr "Registro actualizado."
 
-#: apps/catalog/views.py:324
+#: apps/catalog/views.py:328
 msgid "Modifier la notice"
 msgstr "Editar registro"
 
-#: apps/catalog/views.py:335
+#: apps/catalog/views.py:339
 msgid "Notice trouvée sur OpenLibrary."
 msgstr "Registro encontrado en OpenLibrary."
 
-#: apps/catalog/views.py:339
+#: apps/catalog/views.py:343
 msgid "Aucune réponse d'OpenLibrary — saisissez la notice à la main."
 msgstr "Sin respuesta de OpenLibrary — introduzca el registro manualmente."
 
-#: apps/catalog/views.py:361
+#: apps/catalog/views.py:365
 msgid "Suppression impossible : des exemplaires actifs sont rattachés."
 msgstr "No se puede eliminar: hay ejemplares activos asociados."
 
-#: apps/catalog/views.py:365
+#: apps/catalog/views.py:369
 msgid "Notice supprimée."
 msgstr "Registro eliminado."
 
-#: apps/catalog/views.py:398
+#: apps/catalog/views.py:402
 #, python-format
 msgid "%(n)s exemplaire(s) ajouté(s)."
 msgstr "%(n)s ejemplar(es) añadido(s)."
 
-#: apps/catalog/views.py:415
+#: apps/catalog/views.py:419
 msgid "Exemplaire mis à jour."
 msgstr "Ejemplar actualizado."
 
-#: apps/catalog/views.py:430
+#: apps/catalog/views.py:434
 msgid "Impossible : l'exemplaire est prêté ou réservé."
 msgstr "No es posible: el ejemplar está prestado o reservado."
 
-#: apps/catalog/views.py:434
+#: apps/catalog/views.py:438
 msgid "Exemplaire retiré du fonds."
 msgstr "Ejemplar retirado del fondo."
 
-#: apps/catalog/views.py:465
+#: apps/catalog/views.py:469
 msgid "Exemplaire supprimé."
 msgstr "Ejemplar eliminado."
 
-#: apps/catalog/views.py:556
+#: apps/catalog/views.py:560
 #, python-format
 msgid "%(n)s notice(s) → classification %(v)s"
 msgstr "%(n)s ficha(s) → clasificación %(v)s"
 
-#: apps/catalog/views.py:558
+#: apps/catalog/views.py:562
 #, python-format
 msgid "%(n)s notice(s) sans classification"
 msgstr "%(n)s ficha(s) sin clasificación"
 
-#: apps/catalog/views.py:566
+#: apps/catalog/views.py:570
 #, python-format
 msgid "%(n)s exemplaire(s) → emplacement %(v)s"
 msgstr "%(n)s ejemplar(es) → ubicación %(v)s"
 
-#: apps/catalog/views.py:568
+#: apps/catalog/views.py:572
 #, python-format
 msgid "%(n)s exemplaire(s) sans emplacement"
 msgstr "%(n)s ejemplar(es) sin ubicación"
 
-#: apps/catalog/views.py:573 apps/catalog/views.py:584
+#: apps/catalog/views.py:577 apps/catalog/views.py:588
 msgid "Rien à modifier : aucun menu n'a été changé."
 msgstr "Nada que modificar: no se ha tocado ningún menú."
 
-#: apps/catalog/views.py:591
+#: apps/catalog/views.py:595
 #, python-format
 msgid "%(n)s exemplaire(s) → provenance %(v)s"
 msgstr "%(n)s ejemplar(es) → procedencia %(v)s"
 
-#: apps/catalog/views.py:593
+#: apps/catalog/views.py:597
 #, python-format
 msgid "%(n)s exemplaire(s) sans provenance"
 msgstr "%(n)s ejemplar(es) sin procedencia"
 
-#: apps/catalog/views.py:646
+#: apps/catalog/views.py:650
 #, python-format
 msgid "%(n)s notice(s) supprimée(s)."
 msgstr "%(n)s ficha(s) eliminada(s)."
 
-#: apps/catalog/views.py:674
+#: apps/catalog/views.py:678
 msgid "Emplacement créé."
 msgstr "Ubicación creada."
 
-#: apps/catalog/views.py:684 templates/catalog/location_list.html:25
+#: apps/catalog/views.py:688 templates/catalog/location_list.html:25
 msgid "Nouvel emplacement"
 msgstr "Nueva ubicación"
 
-#: apps/catalog/views.py:696
+#: apps/catalog/views.py:700
 msgid "Emplacement mis à jour."
 msgstr "Ubicación actualizada."
 
-#: apps/catalog/views.py:706
+#: apps/catalog/views.py:710
 msgid "Modifier l'emplacement"
 msgstr "Editar ubicación"
 
-#: apps/catalog/views.py:723
+#: apps/catalog/views.py:727
 msgid "Emplacement supprimé."
 msgstr "Ubicación eliminada."
 
-#: apps/catalog/views.py:771
+#: apps/catalog/views.py:775
 msgid "Langue ajoutée."
 msgstr "Idioma añadido."
 
-#: apps/catalog/views.py:781 templates/catalog/language_list.html:25
+#: apps/catalog/views.py:785 templates/catalog/language_list.html:25
 msgid "Nouvelle langue"
 msgstr "Nuevo idioma"
 
-#: apps/catalog/views.py:793
+#: apps/catalog/views.py:797
 msgid "Langue mise à jour."
 msgstr "Idioma actualizado."
 
-#: apps/catalog/views.py:803
+#: apps/catalog/views.py:807
 msgid "Modifier la langue"
 msgstr "Editar el idioma"
 
-#: apps/catalog/views.py:820
+#: apps/catalog/views.py:824
 msgid "Langue retirée de la liste."
 msgstr "Idioma retirado de la lista."
 
-#: apps/catalog/views.py:856
+#: apps/catalog/views.py:860
 msgid "Classification créée."
 msgstr "Clasificación creada."
 
-#: apps/catalog/views.py:866 templates/catalog/category_list.html:25
+#: apps/catalog/views.py:870 templates/catalog/category_list.html:25
 msgid "Nouvelle classification"
 msgstr "Nueva clasificación"
 
-#: apps/catalog/views.py:878
+#: apps/catalog/views.py:882
 msgid "Classification mise à jour."
 msgstr "Clasificación actualizada."
 
-#: apps/catalog/views.py:888
+#: apps/catalog/views.py:892
 msgid "Modifier la classification"
 msgstr "Editar la clasificación"
 
-#: apps/catalog/views.py:903
+#: apps/catalog/views.py:907
 msgid "Classification supprimée."
 msgstr "Clasificación eliminada."
 
-#: apps/catalog/views.py:936
+#: apps/catalog/views.py:940
 msgid "Provenance créée."
 msgstr "Procedencia creada."
 
-#: apps/catalog/views.py:946
+#: apps/catalog/views.py:950
 #: templates/catalog/item_bulk_assign_provenance.html:59
 #: templates/catalog/provenance_list.html:25
 msgid "Nouvelle provenance"
 msgstr "Nueva procedencia"
 
-#: apps/catalog/views.py:958
+#: apps/catalog/views.py:962
 msgid "Provenance mise à jour."
 msgstr "Procedencia actualizada."
 
-#: apps/catalog/views.py:968
+#: apps/catalog/views.py:972
 msgid "Modifier la provenance"
 msgstr "Editar la procedencia"
 
-#: apps/catalog/views.py:989
+#: apps/catalog/views.py:993
 #, python-format
 msgid "Impossible : %(n)s exemplaire(s) portent encore cette provenance."
 msgstr "Imposible: %(n)s ejemplar(es) todavía tienen esta procedencia."
 
-#: apps/catalog/views.py:994
+#: apps/catalog/views.py:998
 msgid "Provenance supprimée."
 msgstr "Procedencia eliminada."
 
-#: apps/catalog/views.py:1085
+#: apps/catalog/views.py:1089
 #, python-format
 msgid "%(n)s exemplaire(s) supprimé(s)."
 msgstr "%(n)s ejemplar(es) eliminado(s)."
 
-#: apps/catalog/views.py:1129
+#: apps/catalog/views.py:1133
 msgid "Lot de catalogage démarré."
 msgstr "Lote de catalogación iniciado."
 
-#: apps/catalog/views.py:1202
+#: apps/catalog/views.py:1206
 #, python-format
 msgid "ISBN %(isbn)s · %(lang)s"
 msgstr "ISBN %(isbn)s · %(lang)s"
 
-#: apps/catalog/views.py:1226 apps/catalog/views.py:1331
+#: apps/catalog/views.py:1230 apps/catalog/views.py:1335
 msgid "Ce lot est déjà validé."
 msgstr "Este lote ya está validado."
 
-#: apps/catalog/views.py:1231
+#: apps/catalog/views.py:1235
 msgid "Déjà catalogué"
 msgstr "Ya catalogado"
 
-#: apps/catalog/views.py:1231
+#: apps/catalog/views.py:1235
 msgid "Carte membre — pas un livre"
 msgstr "Tarjeta de socio — no es un libro"
 
-#: apps/catalog/views.py:1234 apps/catalog/views.py:1241
+#: apps/catalog/views.py:1238 apps/catalog/views.py:1245
 msgid "Code invalide."
 msgstr "Código no válido."
 
-#: apps/catalog/views.py:1295
+#: apps/catalog/views.py:1299
 #, python-format
 msgid "exemplaire %(n)s"
 msgstr "ejemplar %(n)s"
 
-#: apps/catalog/views.py:1321
+#: apps/catalog/views.py:1325
 msgid "Ligne retirée."
 msgstr "Fila eliminada."
 
-#: apps/catalog/views.py:1355
+#: apps/catalog/views.py:1359
 msgid "Aucun livre scanné à envoyer."
 msgstr "Ningún libro escaneado para enviar."
 
-#: apps/catalog/views.py:1362
+#: apps/catalog/views.py:1366
 #, python-format
 msgid ""
 "%(rec)s notice(s) créée(s), %(match)s complétée(s), %(cop)s exemplaire(s) "
@@ -992,23 +995,23 @@ msgstr ""
 "%(rec)s ficha(s) creada(s), %(match)s completada(s), %(cop)s ejemplar(es) "
 "añadido(s)."
 
-#: apps/catalog/views.py:1371
+#: apps/catalog/views.py:1375
 msgid "Modifications enregistrées."
 msgstr "Cambios guardados."
 
-#: apps/catalog/views.py:1403
+#: apps/catalog/views.py:1407
 msgid "Aucun fichier sélectionné."
 msgstr "Ningún archivo seleccionado."
 
-#: apps/catalog/views.py:1426
+#: apps/catalog/views.py:1430
 msgid "Vérification lancée. Suivez l'avancement ici."
 msgstr "Verificación iniciada. Siga el avance aquí."
 
-#: apps/catalog/views.py:1436
+#: apps/catalog/views.py:1440
 msgid "Import lancé. Suivez l'avancement ici."
 msgstr "Importación iniciada. Siga el avance aquí."
 
-#: apps/catalog/views.py:1447
+#: apps/catalog/views.py:1451
 msgid "Mise à jour lancée. Suivez l'avancement ici."
 msgstr "Actualización iniciada. Siga el avance aquí."
 
@@ -1702,7 +1705,9 @@ msgstr "Duración predeterminada del préstamo (días)"
 msgid ""
 "Utilisée si ni la classification du document ni la catégorie de membre n'en "
 "définit une. Défaut : 21 jours (3 semaines)."
-msgstr "Se usa si ni la clasificación del documento ni la categoría de miembro definen una. Por defecto: 21 días (3 semanas)."
+msgstr ""
+"Se usa si ni la clasificación del documento ni la categoría de miembro "
+"definen una. Por defecto: 21 días (3 semanas)."
 
 #: apps/core/forms.py:582
 msgid "Validité d'une réservation en attente (jours)"
@@ -2986,39 +2991,41 @@ msgstr "Categoría: %(c)s"
 msgid "Valide jusqu'au %(d)s"
 msgstr "Válido hasta %(d)s"
 
-#: apps/printing/views.py:77 templates/core/advanced.html:43
+#: apps/printing/views.py:84 templates/core/advanced.html:43
 msgid "Étiquettes codes Ofelia"
 msgstr "Etiquetas códigos Ofelia"
 
-#: apps/printing/views.py:78
+#: apps/printing/views.py:85
 msgid "Sélectionnez les exemplaires à imprimer puis générez le PDF"
 msgstr "Seleccione los ejemplares a imprimir y genere el PDF"
 
-#: apps/printing/views.py:94 templates/core/advanced.html:53
+#: apps/printing/views.py:101 templates/core/advanced.html:53
 msgid "Étiquettes de tranche"
 msgstr "Etiquetas de lomo"
 
-#: apps/printing/views.py:95
+#: apps/printing/views.py:102
 msgid ""
 "Sélectionnez les exemplaires dont la cote doit être collée sur la tranche"
 msgstr "Seleccione los ejemplares cuya signatura debe pegarse en el lomo"
 
-#: apps/printing/views.py:104 apps/printing/views.py:131
-#: apps/printing/views.py:154
+#: apps/printing/views.py:111 apps/printing/views.py:138
+#: apps/printing/views.py:161
 #: templates/catalog/item_bulk_assign_provenance.html:26
 #: templates/catalog/item_bulk_delete.html:26
 msgid "Aucun exemplaire sélectionné."
 msgstr "Ningún ejemplar seleccionado."
 
-#: apps/printing/views.py:121 apps/printing/views.py:141
+#: apps/printing/views.py:128 apps/printing/views.py:148
 msgid "Aucun usager sélectionné."
 msgstr "Ningún usuario seleccionado."
 
-#: apps/printing/views.py:160
+#: apps/printing/views.py:167
 msgid ""
 "Aucun exemplaire sélectionné n'a de code de classification : renseignez le "
 "code de classification avant d'imprimer."
-msgstr "Ningún ejemplar seleccionado tiene código de clasificación: indique el código de clasificación antes de imprimir."
+msgstr ""
+"Ningún ejemplar seleccionado tiene código de clasificación: indique el "
+"código de clasificación antes de imprimir."
 
 #: apps/reports/builders/__init__.py:44 apps/reports/builders/worklists.py:70
 msgid "Les retards"
@@ -3375,7 +3382,7 @@ msgstr "Las lenguas: el fondo y el público"
 #: apps/reports/builders/collection.py:233 apps/reports/builders/members.py:311
 #: apps/setup/forms.py:20 apps/setup/views.py:28
 #: templates/accounts/login.html:27 templates/accounts/login.html:29
-#: templates/base.html:65 templates/base.html:67
+#: templates/base.html:66 templates/base.html:68
 #: templates/catalog/record_detail.html:64
 #: templates/catalog/scan_session.html:52
 #: templates/catalog/scan_session.html:186
@@ -3514,13 +3521,13 @@ msgstr "N.º del libro"
 #: templates/catalog/record_bulk_assign_category.html:36
 #: templates/catalog/record_bulk_assign_location.html:37
 #: templates/catalog/record_bulk_delete.html:46
-#: templates/catalog/record_list.html:176
-#: templates/catalog/record_list.html:245 templates/core/dashboard.html:348
+#: templates/catalog/record_list.html:171
+#: templates/catalog/record_list.html:240 templates/core/dashboard.html:348
 #: templates/inventory/session_report.html:114 templates/loans/return.html:199
 #: templates/members/member_detail.html:158
 #: templates/members/member_history.html:30
 #: templates/members/member_history.html:62
-#: templates/printing/_picker_base.html:54
+#: templates/printing/_picker_base.html:58
 msgid "Titre"
 msgstr "Título"
 
@@ -4362,9 +4369,9 @@ msgstr "Libros que no salen"
 #: templates/catalog/_item_results.html:54
 #: templates/catalog/_item_results.html:123
 #: templates/catalog/record_detail.html:53
-#: templates/catalog/record_list.html:136
-#: templates/catalog/record_list.html:178
-#: templates/catalog/record_list.html:247
+#: templates/catalog/record_list.html:131
+#: templates/catalog/record_list.html:173
+#: templates/catalog/record_list.html:242
 #: templates/catalog/scan_session.html:53
 #: templates/catalog/scan_session.html:153
 #: templates/catalog/scan_session.html:187
@@ -4591,7 +4598,7 @@ msgstr "Puede volver a la página anterior o regresar a la página de inicio."
 msgid "Connexion"
 msgstr "Iniciar sesión"
 
-#: templates/accounts/login.html:19 templates/base.html:51
+#: templates/accounts/login.html:19 templates/base.html:52
 msgid "Bibliothèque communautaire"
 msgstr "Biblioteca comunitaria"
 
@@ -4617,7 +4624,7 @@ msgstr "Nombre de usuario"
 msgid "Se connecter"
 msgstr "Conectarse"
 
-#: templates/accounts/login.html:128 templates/base.html:122
+#: templates/accounts/login.html:128 templates/base.html:123
 msgid "Ofelia Box"
 msgstr "Ofelia Box"
 
@@ -4765,7 +4772,7 @@ msgid "Nouveau"
 msgstr "Nuevo"
 
 #: templates/accounts/user_form.html:11 templates/accounts/user_form.html:22
-#: templates/base.html:94
+#: templates/base.html:95
 msgid "Mon compte"
 msgstr "Mi cuenta"
 
@@ -4868,15 +4875,15 @@ msgstr "No se pudo cargar el escáner."
 msgid "Impossible de démarrer la caméra."
 msgstr "No se puede iniciar la cámara."
 
-#: templates/base.html:74 templates/base.html:91
+#: templates/base.html:75 templates/base.html:92
 msgid "Guide utilisateur"
 msgstr "Guía del usuario"
 
-#: templates/base.html:78
+#: templates/base.html:79
 msgid "Menu utilisateur"
 msgstr "Menú de usuario"
 
-#: templates/base.html:99
+#: templates/base.html:100
 msgid "Déconnexion"
 msgstr "Cerrar sesión"
 
@@ -4885,24 +4892,24 @@ msgid "exemplaire(s) sélectionné(s)"
 msgstr "ejemplar(es) seleccionado(s)"
 
 #: templates/catalog/_item_results.html:15
-#: templates/catalog/record_list.html:129
+#: templates/catalog/record_list.html:124
 msgid "résultats de la recherche"
 msgstr "resultados de la búsqueda"
 
 #: templates/catalog/_item_results.html:24
-#: templates/catalog/record_list.html:138
-#: templates/catalog/record_list.html:148
+#: templates/catalog/record_list.html:133
+#: templates/catalog/record_list.html:143
 msgid "Ne pas modifier"
 msgstr "No modificar"
 
 #: templates/catalog/_item_results.html:25
-#: templates/catalog/record_list.html:139
-#: templates/catalog/record_list.html:149
+#: templates/catalog/record_list.html:134
+#: templates/catalog/record_list.html:144
 msgid "— (vider)"
 msgstr "— (vaciar)"
 
 #: templates/catalog/_item_results.html:33
-#: templates/catalog/record_list.html:157
+#: templates/catalog/record_list.html:152
 msgid "Affecter"
 msgstr "Aplicar"
 
@@ -4915,7 +4922,7 @@ msgstr "Eliminar los ejemplares seleccionados"
 #: templates/catalog/item_bulk_assign_provenance.html:37
 #: templates/catalog/item_bulk_delete.html:59
 #: templates/catalog/record_detail.html:99
-#: templates/printing/_picker_base.html:57
+#: templates/printing/_picker_base.html:61
 msgid "Code Ofelia"
 msgstr "Código Ofelia"
 
@@ -4994,7 +5001,8 @@ msgstr "Clasificaciones"
 msgid ""
 "Confirmez-vous la suppression de la classification <strong>%(code)s</"
 "strong> ?"
-msgstr "¿Confirma la eliminación de la clasificación <strong>%(code)s</strong>?"
+msgstr ""
+"¿Confirma la eliminación de la clasificación <strong>%(code)s</strong>?"
 
 #: templates/catalog/category_confirm_delete.html:28
 #: templates/catalog/item_bulk_delete.html:35
@@ -5015,14 +5023,17 @@ msgstr[1] "fichas quedarán sin clasificación (ninguna ficha se elimina)."
 msgid "sous-classification perdra son parent (deviendra racine)."
 msgid_plural "sous-classifications perdront leur parent (deviendront racine)."
 msgstr[0] "subclasificación perderá su padre (pasará a ser de primer nivel)."
-msgstr[1] "subclasificaciones perderán su padre (pasarán a ser de primer nivel)."
+msgstr[1] ""
+"subclasificaciones perderán su padre (pasarán a ser de primer nivel)."
 
 #: templates/catalog/category_confirm_delete.html:41
 #, python-format
 msgid ""
 "Le code de classification « %(abbr)s » disparaît : les étiquettes de tranche "
 "déjà collées restent, mais ne pourront plus être réimprimées."
-msgstr "El código de clasificación « %(abbr)s » desaparece: las etiquetas de lomo ya pegadas se quedan, pero ya no se podrán reimprimir."
+msgstr ""
+"El código de clasificación « %(abbr)s » desaparece: las etiquetas de lomo ya "
+"pegadas se quedan, pero ya no se podrán reimprimir."
 
 #: templates/catalog/category_form.html:12
 #: templates/catalog/language_form.html:12
@@ -5059,13 +5070,18 @@ msgid ""
 "C'est ce qui part sur l'étiquette de tranche, pour ranger le livre au bon "
 "rayon sans le sortir de l'étagère. Exemple : « JE DOC » pour « Jeunesse "
 "Documentaire »."
-msgstr "Esto es lo que va en la etiqueta de lomo, para colocar el libro en el estante correcto sin sacarlo. Ejemplo: « JE DOC » para « Juventud Documental »."
+msgstr ""
+"Esto es lo que va en la etiqueta de lomo, para colocar el libro en el "
+"estante correcto sin sacarlo. Ejemplo: « JE DOC » para « Juventud "
+"Documental »."
 
 #: templates/catalog/category_list.html:81
 msgid ""
 "Il vaut pour toutes les notices de la classification. Les étiquettes "
 "s'impriment depuis Impressions → Étiquettes."
-msgstr "Vale para todas las fichas de la clasificación. Las etiquetas se imprimen desde Impresión → Etiquetas."
+msgstr ""
+"Vale para todas las fichas de la clasificación. Las etiquetas se imprimen "
+"desde Impresión → Etiquetas."
 
 #: templates/catalog/excel_catalog/_export_form.html:5
 #, python-format
@@ -5182,7 +5198,9 @@ msgstr "opcional: código o nombre de una procedencia existente"
 msgid ""
 "optionnel : code de classification de la ligne CLASSIFICATION (alias "
 "CATEGORY_ABBR)"
-msgstr "opcional: código de clasificación de la fila CLASSIFICATION (alias CATEGORY_ABBR)"
+msgstr ""
+"opcional: código de clasificación de la fila CLASSIFICATION (alias "
+"CATEGORY_ABBR)"
 
 #: templates/catalog/excel_catalog/_import_form.html:25
 msgid ""
@@ -5246,7 +5264,13 @@ msgid ""
 "remplace la valeur existante ; <strong>une cellule vide laisse la valeur en "
 "place</strong> (le fichier ne sert donc pas à effacer un champ). Les anciens "
 "noms CATEGORY et CATEGORY_ABBR restent lus."
-msgstr "El resto de columnas de la importación se aceptan y son opcionales: TITLE, AUTHOR, CLASSIFICATION, CLASSIFICATION_CODE, TYPE, EDITOR, YEAR, LANGUAGE, TAGS, CONDITION, PROVENANCE, LOCATION e ISBN. Una celda rellena sustituye el valor existente; <strong>una celda vacía deja el valor en su sitio</strong> (el archivo no sirve para borrar un campo). Los nombres antiguos CATEGORY y CATEGORY_ABBR se siguen leyendo."
+msgstr ""
+"El resto de columnas de la importación se aceptan y son opcionales: TITLE, "
+"AUTHOR, CLASSIFICATION, CLASSIFICATION_CODE, TYPE, EDITOR, YEAR, LANGUAGE, "
+"TAGS, CONDITION, PROVENANCE, LOCATION e ISBN. Una celda rellena sustituye el "
+"valor existente; <strong>una celda vacía deja el valor en su sitio</strong> "
+"(el archivo no sirve para borrar un campo). Los nombres antiguos CATEGORY y "
+"CATEGORY_ABBR se siguen leyendo."
 
 #: templates/catalog/excel_catalog/_update_form.html:26
 msgid "Mettre à jour les exemplaires"
@@ -5626,7 +5650,7 @@ msgstr ""
 
 #: templates/catalog/item_bulk_delete.html:60
 #: templates/catalog/record_detail.html:100
-#: templates/printing/_picker_base.html:58
+#: templates/printing/_picker_base.html:62
 msgid "Code externe"
 msgstr "Código externo"
 
@@ -6150,73 +6174,70 @@ msgstr "Todos los tipos"
 msgid "Toutes langues"
 msgstr "Todos los idiomas"
 
-#: templates/catalog/record_list.html:70
-msgid "Tous emplacements"
-msgstr "Todas las ubicaciones"
-
-#: templates/catalog/record_list.html:76
+#: templates/catalog/record_list.html:71
 msgid "Toutes provenances"
 msgstr "Todas las procedencias"
 
-#: templates/catalog/record_list.html:84
+#: templates/catalog/record_list.html:79
 msgid "Tag…"
 msgstr "Etiqueta…"
 
-#: templates/catalog/record_list.html:98
+#: templates/catalog/record_list.html:93
 msgid "Rechercher des notices"
 msgstr "Buscar registros"
 
-#: templates/catalog/record_list.html:102
+#: templates/catalog/record_list.html:97
 msgid "Rechercher des exemplaires"
 msgstr "Buscar ejemplares"
 
-#: templates/catalog/record_list.html:109
+#: templates/catalog/record_list.html:104
+#: templates/printing/_picker_base.html:44
 #, python-format
 msgid "%(counter)s exemplaire"
 msgid_plural "%(counter)s exemplaires"
 msgstr[0] "%(counter)s ejemplar"
 msgstr[1] "%(counter)s ejemplares"
 
-#: templates/catalog/record_list.html:111
+#: templates/catalog/record_list.html:106
 #, python-format
 msgid "%(counter)s notice"
 msgid_plural "%(counter)s notices"
 msgstr[0] "%(counter)s registro"
 msgstr[1] "%(counter)s registros"
 
-#: templates/catalog/record_list.html:128
+#: templates/catalog/record_list.html:123
 msgid "notice(s) sélectionnée(s)"
 msgstr "ficha(s) seleccionada(s)"
 
-#: templates/catalog/record_list.html:162
+#: templates/catalog/record_list.html:157
 msgid "Supprimer les notices sélectionnées"
 msgstr "Eliminar los registros seleccionados"
 
-#: templates/catalog/record_list.html:179
-#: templates/catalog/record_list.html:248
+#: templates/catalog/record_list.html:174
+#: templates/catalog/record_list.html:243
 #: templates/catalog/scan_session.html:55
 #: templates/catalog/scan_session.html:190
 msgid "Ex."
 msgstr "Ejem."
 
-#: templates/catalog/record_list.html:221
-#: templates/catalog/record_list.html:280
+#: templates/catalog/record_list.html:216
+#: templates/catalog/record_list.html:275
 msgid "ex."
 msgstr "ej."
 
-#: templates/catalog/record_list.html:291
+#: templates/catalog/record_list.html:286
 #: templates/finance/invoice_list.html:86
-#: templates/members/member_list.html:118 templates/setup/step.html:31
+#: templates/members/member_list.html:122 templates/setup/step.html:31
 msgid "Précédent"
 msgstr "Anterior"
 
-#: templates/catalog/record_list.html:295
+#: templates/catalog/record_list.html:290
 #: templates/finance/invoice_list.html:90
-#: templates/members/member_list.html:122
+#: templates/members/member_list.html:126
 msgid "Suivant"
 msgstr "Siguiente"
 
-#: templates/catalog/record_list.html:302
+#: templates/catalog/record_list.html:297
 msgid "Aucune notice ne correspond."
 msgstr "Ningún registro coincide."
 
@@ -7222,7 +7243,9 @@ msgstr "Frecuencia local y destino en la nube (rclone)"
 msgid ""
 "Les classifications, tags et emplacements se gèrent depuis l'administration "
 "Django pour l'instant."
-msgstr "Las clasificaciones, etiquetas y ubicaciones se gestionan por ahora desde la administración Django."
+msgstr ""
+"Las clasificaciones, etiquetas y ubicaciones se gestionan por ahora desde la "
+"administración Django."
 
 #: templates/core/admin/settings_index.html:68
 msgid "Ouvrir l'admin"
@@ -7268,7 +7291,9 @@ msgstr ""
 msgid ""
 "Imprime le code de classification (« JE DOC ») à coller sur la tranche, pour "
 "ranger et retrouver un livre sans le sortir du rayon."
-msgstr "Imprime el código de clasificación (« JE DOC ») para pegarlo en el lomo, y colocar o encontrar un libro sin sacarlo del estante."
+msgstr ""
+"Imprime el código de clasificación (« JE DOC ») para pegarlo en el lomo, y "
+"colocar o encontrar un libro sin sacarlo del estante."
 
 #: templates/core/advanced.html:63 templates/printing/cards_picker.html:14
 msgid "Cartes membres"
@@ -7339,7 +7364,9 @@ msgstr ""
 msgid ""
 "Vérifier ou importer un fichier Excel d'inventaire (ISBN, titre, auteur, "
 "emplacement, classification)."
-msgstr "Comprobar o importar un archivo Excel de inventario (ISBN, título, autor, ubicación, clasificación)."
+msgstr ""
+"Comprobar o importar un archivo Excel de inventario (ISBN, título, autor, "
+"ubicación, clasificación)."
 
 #: templates/core/advanced.html:152
 msgid "Méta-données"
@@ -7373,7 +7400,9 @@ msgstr ""
 msgid ""
 "Classement des notices et code de classification imprimé sur la tranche des "
 "livres (« JE DOC »)."
-msgstr "Clasificación de las fichas y código de clasificación impreso en el lomo de los libros (« JE DOC »)."
+msgstr ""
+"Clasificación de las fichas y código de clasificación impreso en el lomo de "
+"los libros (« JE DOC »)."
 
 #: templates/core/advanced.html:195
 msgid ""
@@ -7471,7 +7500,9 @@ msgstr "Administración Django"
 msgid ""
 "Gestion fine : classifications, tags, emplacements, catégories d'usagers "
 "(réservé au support technique)."
-msgstr "Gestión fina: clasificaciones, etiquetas, ubicaciones, categorías de usuario (reservado al soporte técnico)."
+msgstr ""
+"Gestión fina: clasificaciones, etiquetas, ubicaciones, categorías de usuario "
+"(reservado al soporte técnico)."
 
 #: templates/core/dashboard.html:4 templates/errors/_error_page.html:34
 #: templates/partials/_tile_strip.html:11
@@ -8637,9 +8668,22 @@ msgstr "Todas las categorías"
 msgid "Tout statut"
 msgstr "Todos los estados"
 
-#: templates/members/member_list.html:129
+#: templates/members/member_list.html:83
+#, python-format
+msgid "%(counter)s membre"
+msgid_plural "%(counter)s membres"
+msgstr[0] "%(counter)s usuario"
+msgstr[1] "%(counter)s usuarios"
+
+#: templates/members/member_list.html:133
 msgid "Aucun membre ne correspond."
 msgstr "Ningún miembro coincide."
+
+#: templates/partials/_location_filter.html:4
+#: templates/partials/_location_filter.html:6
+#: templates/partials/_location_filter.html:12
+msgid "Tous emplacements"
+msgstr "Todas las ubicaciones"
 
 #: templates/partials/_tile_strip.html:4
 msgid "Sections"
@@ -8662,11 +8706,11 @@ msgstr "Ver todos los ejemplares"
 msgid "Derniers ajouts"
 msgstr "Últimas incorporaciones"
 
-#: templates/printing/_picker_base.html:53
+#: templates/printing/_picker_base.html:57
 msgid "ID interne"
 msgstr "ID interno"
 
-#: templates/printing/_picker_base.html:77
+#: templates/printing/_picker_base.html:81
 msgid "Aucun exemplaire."
 msgstr "Ningún ejemplar."
 

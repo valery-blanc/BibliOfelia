@@ -13,8 +13,8 @@ sur planches autocollantes.
 
 ## Choisir les exemplaires
 
-La liste affiche tous les exemplaires sans étiquette imprimée.
-Filtrez et cochez ceux à inclure dans le PDF.
+La liste affiche les exemplaires. Filtrez par **un ou plusieurs emplacements**
+(même liste déroulante que le catalogue) et cochez ceux à inclure dans le PDF.
 
 Vous pouvez aussi imprimer des étiquettes pour des exemplaires déjà
 imprimés (par exemple si une étiquette est abîmée) en désactivant le

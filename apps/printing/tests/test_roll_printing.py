@@ -240,6 +240,54 @@ def _picker_body(client, librarian) -> str:
     return client.get("/fr/printing/labels/").content.decode()
 
 
+def test_labels_picker_is_a_location_dropdown(client, librarian, items):
+    """FEAT-095 : plus un champ texte A1, une liste à cases comme le catalogue."""
+    body = _picker_body(client, librarian)
+    assert "data-location-filter" in body
+    assert 'placeholder="A1"' not in body
+    assert "2 exemplaires" in body
+
+
+def test_labels_picker_filters_several_locations(client, librarian):
+    a1 = Location.objects.create(code="A1")
+    a2 = Location.objects.create(code="A2")
+    rec = BibliographicRecord.objects.create(title="Deux rayons")
+    in_a1 = Item.objects.create(record=rec, location=a1)
+    in_a2 = Item.objects.create(record=rec, location=a2)
+    client.force_login(librarian)
+    body = client.get(
+        "/fr/printing/labels/", {"location": [str(a1.pk), str(a2.pk)]}
+    ).content.decode()
+    assert in_a1.internal_id in body
+    assert in_a2.internal_id in body
+    body_one = client.get(
+        "/fr/printing/labels/", {"location": [str(a1.pk)]}
+    ).content.decode()
+    assert in_a1.internal_id in body_one
+    assert in_a2.internal_id not in body_one
+
+
+def test_labels_picker_still_accepts_a_location_code(client, librarian):
+    """Signets antérieurs à FEAT-095 : ?location=A1."""
+    a1 = Location.objects.create(code="A1")
+    rec = BibliographicRecord.objects.create(title="Code")
+    item = Item.objects.create(record=rec, location=a1)
+    other = Item.objects.create(
+        record=BibliographicRecord.objects.create(title="Ailleurs"),
+        location=Location.objects.create(code="B1"),
+    )
+    client.force_login(librarian)
+    body = client.get("/fr/printing/labels/", {"location": "A1"}).content.decode()
+    assert item.internal_id in body
+    assert other.internal_id not in body
+
+
+def test_spine_picker_shares_the_location_filter(client, librarian):
+    client.force_login(librarian)
+    body = client.get("/fr/printing/spine-labels/").content.decode()
+    assert "data-location-filter" in body
+
+
 # ── FEAT-072 : colonne « Famille » sur la carte de membre ──────────────────
 
 

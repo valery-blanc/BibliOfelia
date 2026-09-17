@@ -163,6 +163,55 @@ def test_record_list_tag_filter_combines_with_other_filters(client, readonly):
     assert b"EN roman" not in resp.content
 
 
+def test_record_list_filter_several_locations(client, readonly):
+    """FEAT-095 : deux rayons cochés, union, hors les livres sans emplacement."""
+    a1 = Location.objects.create(code="A1")
+    a2 = Location.objects.create(code="A2")
+    b1 = Location.objects.create(code="B1")
+    rec_a = BibliographicRecord.objects.create(title="Livre A1")
+    rec_b = BibliographicRecord.objects.create(title="Livre A2")
+    rec_c = BibliographicRecord.objects.create(title="Livre B1")
+    rec_none = BibliographicRecord.objects.create(title="Sans rayon")
+    Item.objects.create(record=rec_a, location=a1)
+    Item.objects.create(record=rec_b, location=a2)
+    Item.objects.create(record=rec_c, location=b1)
+    Item.objects.create(record=rec_none)
+    client.force_login(readonly)
+    resp = client.get("/fr/catalog/", {"location": [str(a1.pk), str(a2.pk)]})
+    body = resp.content.decode()
+    assert resp.status_code == 200
+    assert "Livre A1" in body
+    assert "Livre A2" in body
+    assert "Livre B1" not in body
+    assert "Sans rayon" not in body
+    assert "data-location-filter" in body
+
+
+def test_record_list_no_location_filter_includes_unshelved(client, readonly):
+    """« Tous emplacements » garde aussi les exemplaires sans rayon."""
+    a1 = Location.objects.create(code="A1")
+    rec_a = BibliographicRecord.objects.create(title="Dans A1")
+    rec_none = BibliographicRecord.objects.create(title="Sans rayon")
+    Item.objects.create(record=rec_a, location=a1)
+    Item.objects.create(record=rec_none)
+    client.force_login(readonly)
+    body = client.get("/fr/catalog/").content.decode()
+    assert "Dans A1" in body
+    assert "Sans rayon" in body
+
+
+def test_record_list_items_mode_filters_several_locations(client, readonly):
+    a1 = Location.objects.create(code="A1")
+    a2 = Location.objects.create(code="A2")
+    rec = BibliographicRecord.objects.create(title="Meme notice")
+    Item.objects.create(record=rec, location=a1)
+    Item.objects.create(record=rec, location=a2)
+    client.force_login(readonly)
+    resp = client.get("/fr/catalog/", {"mode": "items", "location": [str(a1.pk)]})
+    assert resp.status_code == 200
+    assert resp.context["page_obj"].paginator.count == 1
+
+
 def test_record_create_forbidden_for_readonly(client, readonly):
     client.force_login(readonly)
     resp = client.get("/fr/catalog/new/")

@@ -1,0 +1,23 @@
+{% load i18n %}
+{# FEAT-095 : filtre de recherche, plusieurs emplacements. Pas une affectation. #}
+<details class="loc-filter" data-location-filter
+          data-all-label="{% trans 'Tous emplacements' %}">
+    <summary class="loc-filter-toggle">
+        <span data-loc-label>{% trans "Tous emplacements" %}</span>
+    </summary>
+    <div class="loc-filter-panel">
+        <label class="loc-filter-option">
+            <input type="checkbox" data-loc-all
+                   {% if not selected_locations %}checked{% endif %}>
+            {% trans "Tous emplacements" %}
+        </label>
+        {% for loc in locations %}
+        <label class="loc-filter-option">
+            <input type="checkbox" name="location" value="{{ loc.pk }}"
+                   data-loc-code="{{ loc.code }}"
+                   {% if loc.pk in selected_locations %}checked{% endif %}>
+            {{ loc.code }}
+        </label>
+        {% endfor %}
+    </div>
+</details>

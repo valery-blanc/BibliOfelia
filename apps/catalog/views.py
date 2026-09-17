@@ -32,6 +32,7 @@ from .forms import (
     ScanCatalogSessionForm,
 )
 from .languages import language_choices
+from .location_filter import selected_location_ids
 from .lookup import find_item
 from .models import (
     BibliographicRecord,
@@ -121,8 +122,9 @@ def filtered_records(params):
     # Emplacement et provenance qualifient l'exemplaire, pas la notice : en mode
     # notice on garde celles qui ont **au moins un** exemplaire qui correspond.
     if params.get("mode") != "items":
-        if params.get("location"):
-            records = records.filter(items__location_id=params["location"]).distinct()
+        location_ids = selected_location_ids(params)
+        if location_ids:
+            records = records.filter(items__location_id__in=location_ids).distinct()
         if params.get("provenance"):
             records = records.filter(
                 items__provenance_id=params["provenance"]
@@ -139,8 +141,9 @@ def filtered_items(params, records=None):
         .select_related("record", "record__category", "location", "provenance")
         .prefetch_related("record__authors")
     )
-    if params.get("location"):
-        items = items.filter(location_id=params["location"])
+    location_ids = selected_location_ids(params)
+    if location_ids:
+        items = items.filter(location_id__in=location_ids)
     if params.get("provenance"):
         items = items.filter(provenance_id=params["provenance"])
     return items
@@ -215,7 +218,8 @@ def record_list(request):
         "base_qs": base_qs,
         "total": paginator.count,
         "categories": Category.objects.all(),
-        "locations": Location.objects.all(),
+        "locations": Location.objects.all().order_by("code"),
+        "selected_locations": selected_location_ids(request.GET),
         "provenances": Provenance.objects.all(),
         "document_types": DocumentType.choices,
         # FEAT-070 : le filtre langue liste les langues du catalogue, pas les

@@ -13,8 +13,8 @@ etiquetas a imprimir en planchas autoadhesivas.
 
 ## Elegir los ejemplares
 
-La lista muestra todos los ejemplares sin etiqueta impresa. Filtre y
-marque los que incluir en el PDF.
+La lista muestra los ejemplares. Filtre por **una o varias ubicaciones**
+(la misma lista desplegable que el catálogo) y marque los que incluir en el PDF.
 
 También puede imprimir etiquetas para ejemplares ya impresos (por
 ejemplo si una etiqueta está dañada) desactivando el filtro "No

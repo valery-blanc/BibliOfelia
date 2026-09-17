@@ -13,8 +13,8 @@ etikety hatontana amin'ny taratasy miankina.
 
 ## Safidio ireo kopia
 
-Ny lisitra dia mampiseho ny kopia rehetra tsy mbola misy etikety
-voatonta. Mifitana sy marino izay tianao tafiditra ao amin'ny PDF.
+Ny lisitra dia mampiseho ny kopia. Sivao amin'ny **toerana iray na maromaro**
+(lisitra mitovy amin'ny katalaogy) ary marino izay tianao tafiditra ao amin'ny PDF.
 
 Azonao koa atao ny manonta etikety ho an'ny kopia efa voatonta
 (ohatra raha simba ny etikety) amin'ny famonoana ny fitana "Tsy

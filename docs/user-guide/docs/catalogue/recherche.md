@@ -34,7 +34,8 @@ la liste des notices peut être filtrée par :
 - **Texte libre** (titre, auteur, éditeur)
 - **Classification** (Jeunesse Documentaire, Adultes Fiction…)
 - **Langue**
-- **Localisation**
+- **Emplacement** — un ou **plusieurs** rayons (laissez « Tous emplacements »
+  pour ne pas filtrer)
 
 ![Liste du catalogue avec filtres](../assets/screenshots/fr/catalogue/record-list.png)
 

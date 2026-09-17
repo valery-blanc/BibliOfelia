@@ -12,8 +12,8 @@ generates the PDF of labels to print on sticky sheets.
 
 ## Choose the copies
 
-The list shows all copies without a printed label. Filter and tick
-those to include in the PDF.
+The list shows the copies. Filter by **one or several locations** (the same
+dropdown as the catalog) and tick those to include in the PDF.
 
 You can also print labels for already-printed copies (for example if
 a label is damaged) by disabling the "Not printed" filter.
