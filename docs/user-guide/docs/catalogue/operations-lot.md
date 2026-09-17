@@ -40,19 +40,19 @@ menus déroulants et un bouton **Affecter**.
 
 **En mode notices** (l'affichage par défaut), deux menus :
 
-- **Catégorie** — appliquée aux notices cochées
+- **Classification** — appliquée aux notices cochées
 - **Emplacement** — appliqué à **tous les exemplaires** de ces notices
 
 **En mode exemplaires** (case « Chercher les exemplaires » cochée), un menu :
 
 - **Provenance** — appliquée aux exemplaires cochés
 
-Chaque information se règle là où elle vit : la catégorie appartient au livre,
+Chaque information se règle là où elle vit : la classification appartient au livre,
 la provenance à l'exemplaire.
 
 !!! tip "« Ne pas modifier » est la valeur de départ"
     Un menu laissé sur **Ne pas modifier** ne touche à rien. Vous pouvez donc
-    changer la catégorie sans risquer de vider l'emplacement au passage.
+    changer la classification sans risquer de vider l'emplacement au passage.
     Pour retirer une affectation, choisissez **— (vider)**.
 
 Après l'affectation, vous revenez sur le catalogue **avec vos filtres
@@ -77,7 +77,7 @@ sélectionnées**.
 
 La case à cocher en haut de la colonne sélectionne (ou désélectionne)
 toutes les notices visibles sur la page. Si vous avez activé un filtre
-(par exemple "catégorie = Désuet"), vous ne sélectionnez que les
+(par exemple "classification = Désuet"), vous ne sélectionnez que les
 notices filtrées.
 
 !!! tip "Bien filtrer avant de tout cocher"

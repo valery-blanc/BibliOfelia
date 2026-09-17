@@ -39,7 +39,7 @@ Si no hay ISBN o no hay red, complete los campos a mano:
 - **Editor** — por ejemplo Gallimard, Hachette…
 - **Año de publicación**
 - **Idioma** — importante para bibliotecas multilingües
-- **Categoría** — Adultos, Juvenil, Documental… (configurada por el
+- **Clasificación** — Juventud Documental, Adultos Ficción… (configurada por el
   administrador)
 - **Resumen** (opcional) — breve descripción para ayudar a los
   lectores

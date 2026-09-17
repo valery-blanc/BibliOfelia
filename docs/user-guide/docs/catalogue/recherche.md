@@ -32,7 +32,7 @@ Depuis la page [**Catalogue**](/bibliofelia/fr/catalog/){ target="_blank" },
 la liste des notices peut être filtrée par :
 
 - **Texte libre** (titre, auteur, éditeur)
-- **Catégorie** (Adultes, Jeunesse, Documentaire…)
+- **Classification** (Jeunesse Documentaire, Adultes Fiction…)
 - **Langue**
 - **Localisation**
 

@@ -553,9 +553,9 @@ def record_bulk_assign(request):
                 category_id=category.pk if category else None
             )
             done.append(
-                _("%(n)s notice(s) → catégorie %(v)s") % {"n": n, "v": category.name}
+                _("%(n)s notice(s) → classification %(v)s") % {"n": n, "v": category.name}
                 if category
-                else _("%(n)s notice(s) sans catégorie") % {"n": n}
+                else _("%(n)s notice(s) sans classification") % {"n": n}
             )
         change_loc, location = _chosen(request, "location", Location)
         if change_loc:
@@ -853,7 +853,7 @@ def category_create(request):
         form = CategoryForm(request.POST)
         if form.is_valid():
             form.save()
-            messages.success(request, _("Catégorie créée."))
+            messages.success(request, _("Classification créée."))
             return redirect("catalog:category_list")
     else:
         form = CategoryForm()
@@ -863,7 +863,7 @@ def category_create(request):
         {
             "form": form,
             "form_action": reverse("catalog:category_create"),
-            "form_title": _("Nouvelle catégorie"),
+            "form_title": _("Nouvelle classification"),
         },
     )
 
@@ -875,7 +875,7 @@ def category_edit(request, pk):
         form = CategoryForm(request.POST, instance=category)
         if form.is_valid():
             form.save()
-            messages.success(request, _("Catégorie mise à jour."))
+            messages.success(request, _("Classification mise à jour."))
             return redirect("catalog:category_list")
     else:
         form = CategoryForm(instance=category)
@@ -885,7 +885,7 @@ def category_edit(request, pk):
         {
             "form": form,
             "form_action": reverse("catalog:category_edit", args=[pk]),
-            "form_title": _("Modifier la catégorie"),
+            "form_title": _("Modifier la classification"),
             "category": category,
         },
     )
@@ -900,7 +900,7 @@ def category_delete(request, pk):
     children_count = category.children.count()
     if request.method == "POST":
         category.delete()
-        messages.success(request, _("Catégorie supprimée."))
+        messages.success(request, _("Classification supprimée."))
         return redirect("catalog:category_list")
     return render(
         request,

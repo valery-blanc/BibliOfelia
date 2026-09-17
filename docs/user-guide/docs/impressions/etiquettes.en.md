@@ -79,7 +79,7 @@ bottom.
 
 ## Spine labels
 
-A spine label carries one thing only: the book's **category abbreviation**,
+A spine label carries one thing only: the book's **classification code**,
 in very large type. Stuck on the spine, it can be read a metre away from the
 shelf and lets you file a book without pulling it out.
 
@@ -96,10 +96,10 @@ The text is centred and its size adjusts on its own: `PER` fills the label,
 |--------------------------|
 ```
 
-!!! warning "The abbreviation has to be filled in first"
-    The abbreviation is set on the **category**, not on the book (see
-    [Categories](../catalogue/categories.md)). A copy whose category has no
-    abbreviation is skipped when printing; if none has one, BibliOfelia
+!!! warning "The classification code has to be filled in first"
+    The code is set on the **classification**, not on the book (see
+    [Classifications](../catalogue/categories.md)). A copy whose classification
+    has no code is skipped when printing; if none has one, BibliOfelia
     tells you instead of producing an empty PDF.
 
 ## See also

@@ -87,7 +87,7 @@ column is **optional**: add only the ones you have, in any order.
 |---|---|
 | `ISBN` | **required** |
 | `LOCATION` | the location code (otherwise the copy is created without a location) |
-| `CATEGORY` | the name of an existing category |
+| `CLASSIFICATION` | the name of an existing classification (the old name `CATEGORY` is still read) |
 | `TITLE` | the record title |
 | `AUTHOR` | the author(s), separated by **semicolons** |
 | `TYPE` | the document type (Book, Comic / manga, Magazine, Newspaper, Audio CD, Other) |
@@ -97,7 +97,7 @@ column is **optional**: add only the ones you have, in any order.
 | `TAGS` | keywords separated by **commas** |
 | `EXTERNAL_CODE` | another library's code already on the book |
 | `PROVENANCE` | the code or the name of an existing source |
-| `CATEGORY_ABBR` | the category abbreviation (shelf mark) |
+| `CLASSIFICATION_CODE` | the classification code (the old name `CATEGORY_ABBR` is still read) |
 | `CONDITION` | the copy condition (New, Good, Worn, Damaged) |
 
 In the
@@ -149,7 +149,7 @@ record.
 | `INTERNAL_ID` | the readable code printed next to the barcode (`OFL-…`) |
 | `EXTERNAL_CODE` | another library's code already on the book |
 | `ISBN`, `TITLE`, `AUTHOR`, `EDITOR`, `YEAR`, `LANGUAGE` | the record's details |
-| `CATEGORY`, `CATEGORY_ABBR`, `TYPE`, `TAGS` | the classification |
+| `CLASSIFICATION`, `CLASSIFICATION_CODE`, `TYPE`, `TAGS` | the filing |
 | `CONDITION`, `PROVENANCE`, `LOCATION` | the copy's details |
 
 !!! tip "This is the update file"
@@ -184,7 +184,7 @@ at least one of these two columns:
     `EXTERNAL_CODE` column with the code to put on it.
 
 Every other import column is accepted and **optional**: `TITLE`, `AUTHOR`,
-`CATEGORY`, `CATEGORY_ABBR`, `TYPE`, `EDITOR`, `YEAR`, `LANGUAGE`, `TAGS`,
+`CLASSIFICATION`, `CLASSIFICATION_CODE`, `TYPE`, `EDITOR`, `YEAR`, `LANGUAGE`, `TAGS`,
 `CONDITION`, `PROVENANCE`, `LOCATION` and `ISBN`.
 
 !!! warning "An empty cell erases nothing"

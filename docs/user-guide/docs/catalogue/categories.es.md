@@ -1,67 +1,69 @@
-# Categorías
+# Clasificaciones
 
-Las **categorías** clasifican los libros: Novelas, Álbumes ilustrados,
-Documentales… Cada registro recibe una, y es ella la que determina la
-duración del préstamo por defecto.
+Las **clasificaciones** ordenan los libros: Juventud Documental, Adultos
+Ficción, Infancia Álbum… Cada ficha recibe una, y es ella la que determina
+la duración del préstamo por defecto.
 
 Desde [**Avanzado**](/bibliofelia/es/advanced/){ target="_blank" }, abra
-**Categorías** para crearlas, modificarlas o eliminarlas.
+**Clasificaciones** para crearlas, modificarlas o eliminarlas.
 
 ## Los campos
 
-- **Código** — corto y sin espacios: `ENF-ALB`, `ADU-ROM`
-- **Nombre** — lo que ven los bibliotecarios y los lectores
-- **Abreviatura** — la **signatura** impresa en el lomo del libro (véase más
-  abajo)
-- **Categoría superior** — para colocar "Álbumes" bajo "Infancia"
-- **Duración del préstamo** — en días; déjelo vacío para la duración por
+- **Código** — identificador único. En las clasificaciones Ofelia coincide
+  con el código de clasificación (`JE DOC`)
+- **Nombre** — lo que ven bibliotecarios y lectores (p. ej. « Juventud
+  Documental »)
+- **Código de clasificación** — lo que se **imprime en el lomo** del libro
+  (véase más abajo)
+- **Clasificación superior** — para agrupar una clasificación bajo otra
+- **Duración del préstamo** — en días; déjelo vacío para el valor por
   defecto de la biblioteca
 
-## Las categorías incluidas
+## Las clasificaciones incluidas
 
-BibliOfelia viene con las **20 categorías oficiales Ofelia**: cinco franjas de
-edad cruzadas con cuatro tipos de documento.
+BibliOfelia llega con las **20 clasificaciones oficiales Ofelia**: cinco
+franjas de edad cruzadas con cuatro tipos de documento.
 
 | | Ficción | Documental | Álbum | Cómic |
 |---|---|---|---|---|
 | Adultos | `AD FIC` | `AD DOC` | `AD ALB` | `AD BD` |
-| Juvenil | `JE FIC` | `JE DOC` | `JE ALB` | `JE BD` |
+| Juventud | `JE FIC` | `JE DOC` | `JE ALB` | `JE BD` |
 | Adolescentes | `ADO FIC` | `ADO DOC` | `ADO ALB` | `ADO BD` |
-| Infantil | `EN FIC` | `EN DOC` | `EN ALB` | `EN BD` |
+| Niños | `EN FIC` | `EN DOC` | `EN ALB` | `EN BD` |
 | Primera infancia | `PE FIC` | `PE DOC` | `PE ALB` | `PE BD` |
 
-El **código sirve también de signatura**: lo que se escribe en el lomo del libro
-es lo que ve en el menú de categorías.
+El **código sirve también de código de clasificación**: lo escrito en el
+lomo es lo que ve en el menú.
 
-!!! info "El idioma no forma parte de la categoría"
-    Un libro en inglés colocado en ficción para adultos va en `AD FIC`, no en una
-    categoría «Inglés Adultos Ficción». El idioma se indica en la ficha del libro
-    y se recupera con el filtro **Idioma** del catálogo. Una categoría por idioma
-    multiplicaría las líneas sin aportar nada.
+!!! info "El idioma no forma parte de la clasificación"
+    Un libro en inglés colocado en ficción adulta va a `AD FIC`, no a una
+    clasificación « Inglés Adultos Ficción ». El idioma se indica en la ficha
+    del libro y se recupera con el filtro **Idioma** del catálogo. Una
+    clasificación por idioma multiplicaría las filas sin aportar nada.
 
-## La abreviatura, o signatura de estantería
+## El código de clasificación
 
 Es la versión corta del nombre, la que cabe en una etiqueta de lomo. Para
-"Novelas de ficción para adolescentes", se escribe `RO FI ADO`.
+« Juventud Documental » se escribe `JE DOC`.
 
-Vale para **todos** los registros de la categoría: se escribe una sola vez, y
-dos libros de la misma categoría nunca podrán mostrar dos signaturas
-distintas.
+Vale para **todas** las fichas de la clasificación: una sola captura, y dos
+libros de la misma clasificación no podrán mostrar nunca dos códigos
+distintos.
 
-En la instalación, las 16 categorías incluidas reciben una abreviatura de
-partida (`ENF ALB`, `ADU ROM`…). Puede sustituirlas por las suyas:
-BibliOfelia nunca sobrescribirá una signatura que usted haya escrito.
+En la instalación, las clasificaciones incluidas reciben un código de
+partida (`JE DOC`, `AD FIC`…). Puede sustituirlos por los suyos:
+BibliOfelia nunca reescribirá un código que usted haya tecleado.
 
-Cuando las abreviaturas estén listas, imprima las
+Una vez los códigos en su sitio, imprima las
 [etiquetas de lomo](../impressions/etiquettes.md).
 
-## Eliminar una categoría
+## Eliminar una clasificación
 
-**No se elimina ningún libro.** Los registros afectados simplemente se
-quedan sin categoría, y la pantalla de confirmación le dice cuántos son.
-Podrá asignarles otra con las [operaciones por lotes](operations-lot.md).
+**Ningún libro se elimina.** Las fichas afectadas quedan simplemente sin
+clasificación, y la pantalla de confirmación le dice cuántas son. Podrá
+asignarles otra con las [operaciones en lote](operations-lot.md).
 
-## Ver también
+## Véase también
 
-- [Operaciones por lotes](operations-lot.md)
+- [Operaciones en lote](operations-lot.md)
 - [Imprimir las etiquetas](../impressions/etiquettes.md)

@@ -37,7 +37,7 @@ If no ISBN or no network, fill in the fields by hand:
 - **Publisher** — e.g. Gallimard, Hachette…
 - **Year of publication**
 - **Language** — important for multilingual libraries
-- **Category** — Adults, Youth, Documentary… (configured by the
+- **Classification** — Youth Non-fiction, Adult Fiction… (configured by the
   administrator)
 - **Summary** (optional) — short blurb to help readers
 

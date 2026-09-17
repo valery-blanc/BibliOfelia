@@ -394,11 +394,24 @@ def test_exported_file_reimports_without_a_single_change(user, item):
 
 def test_exported_file_carries_every_update_column():
     """Garde-fou de cohérence : toute colonne d'export doit être relisable par
-    la mise à jour, sinon l'aller-retour perdrait silencieusement une donnée."""
-    from apps.catalog.excel_catalog import UPDATE_KEY_COLUMNS, UPDATE_OVERRIDE_COLUMNS
+    la mise à jour, sinon l'aller-retour perdrait silencieusement une donnée.
 
-    known = {c.lower() for c in UPDATE_KEY_COLUMNS + UPDATE_OVERRIDE_COLUMNS}
-    assert {c.lower() for c in EXPORT_COLUMNS} <= known
+    FEAT-094 : l'export écrit CLASSIFICATION / CLASSIFICATION_CODE, que
+    l'import relit via `_COLUMN_ALIASES` (canonical `category` /
+    `category_abbr`). Les alias comptent donc comme des colonnes connues.
+    """
+    from apps.catalog.excel_catalog import (
+        UPDATE_KEY_COLUMNS,
+        UPDATE_OVERRIDE_COLUMNS,
+        _COLUMN_ALIASES,
+        _norm,
+    )
+
+    known = {_norm(c) for c in UPDATE_KEY_COLUMNS + UPDATE_OVERRIDE_COLUMNS}
+    for canonical, aliases in _COLUMN_ALIASES.items():
+        known.add(_norm(canonical))
+        known.update(_norm(a) for a in aliases)
+    assert {_norm(c) for c in EXPORT_COLUMNS} <= known
 
 
 # ── Vue ────────────────────────────────────────────────────────────────────

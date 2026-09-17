@@ -576,7 +576,7 @@ class LoanReservationDefaultsForm(forms.Form):
     default_loan_days = forms.IntegerField(
         label=_("Durée par défaut d'un prêt (jours)"),
         min_value=1, max_value=365,
-        help_text=_("Utilisée si ni la catégorie de document ni la catégorie de membre n'en définit une. Défaut : 21 jours (3 semaines)."),
+        help_text=_("Utilisée si ni la classification du document ni la catégorie de membre n'en définit une. Défaut : 21 jours (3 semaines)."),
     )
     reservation_expiry_days = forms.IntegerField(
         label=_("Validité d'une réservation en attente (jours)"),

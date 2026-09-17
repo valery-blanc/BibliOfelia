@@ -92,7 +92,7 @@ celles dont vous disposez, dans n'importe quel ordre.
 |---|---|
 | `ISBN` | **obligatoire** |
 | `LOCATION` | le code d'emplacement (sinon l'exemplaire est créé sans emplacement) |
-| `CATEGORY` | le nom d'une catégorie existante |
+| `CLASSIFICATION` | le nom d'une classification existante (l'ancien nom `CATEGORY` est encore lu) |
 | `TITLE` | le titre de la fiche |
 | `AUTHOR` | le ou les auteurs, séparés par des **points-virgules** |
 | `TYPE` | le type de document (Livre, BD / manga, Revue, Journal, CD audio, Autre) |
@@ -103,7 +103,7 @@ celles dont vous disposez, dans n'importe quel ordre.
 | `CONDITION` | l'état de l'exemplaire (Neuf, Bon, Usé, Abîmé) |
 | `EXTERNAL_CODE` | le code d'une autre bibliothèque déjà posé sur le livre |
 | `PROVENANCE` | le code ou le nom d'une provenance existante |
-| `CATEGORY_ABBR` | l'abréviation de la catégorie (cote de rayon) |
+| `CLASSIFICATION_CODE` | le code de classification (l'ancien nom `CATEGORY_ABBR` est encore lu) |
 
 Dans l'encadré
 [**Importer dans BibliOfelia**](/bibliofelia/fr/catalog/excel-catalog/){ target="_blank" },
@@ -155,7 +155,7 @@ appartiennent à l'**exemplaire** et non à la fiche.
 | `INTERNAL_ID` | le code lisible imprimé à côté du code-barres (`OFL-…`) |
 | `EXTERNAL_CODE` | le code d'une autre bibliothèque posé sur le livre |
 | `ISBN`, `TITLE`, `AUTHOR`, `EDITOR`, `YEAR`, `LANGUAGE` | les informations de la fiche |
-| `CATEGORY`, `CATEGORY_ABBR`, `TYPE`, `TAGS` | le classement |
+| `CLASSIFICATION`, `CLASSIFICATION_CODE`, `TYPE`, `TAGS` | le classement |
 | `CONDITION`, `PROVENANCE`, `LOCATION` | les informations de l'exemplaire |
 
 !!! tip "C'est le fichier de la mise à jour"
@@ -191,7 +191,7 @@ donc contenir au moins une de ces deux colonnes :
     poser.
 
 Toutes les autres colonnes de l'import sont acceptées et **facultatives** :
-`TITLE`, `AUTHOR`, `CATEGORY`, `CATEGORY_ABBR`, `TYPE`, `EDITOR`, `YEAR`,
+`TITLE`, `AUTHOR`, `CLASSIFICATION`, `CLASSIFICATION_CODE`, `TYPE`, `EDITOR`, `YEAR`,
 `LANGUAGE`, `TAGS`, `CONDITION`, `PROVENANCE`, `LOCATION` et `ISBN`.
 
 !!! warning "Une cellule vide n'efface rien"

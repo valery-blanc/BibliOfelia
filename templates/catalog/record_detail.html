@@ -50,7 +50,7 @@
         {% endif %}
         <div><dt>{% trans "Auteur(s)" %}</dt><dd>{% for a in record.authors.all %}{{ a.full_name }}{% if not forloop.last %}, {% endif %}{% empty %}—{% endfor %}</dd></div>
         <div>
-            <dt>{% trans "Catégorie" %}</dt>
+            <dt>{% trans "Classification" %}</dt>
             <dd>
                 {{ record.category.name|default:"—" }}
                 {% if record.category.abbreviation %}

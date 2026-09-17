@@ -246,7 +246,7 @@ def build_inactive(period, params) -> ReportPage:
                 columns=[
                     Column(_("Livre")),
                     Column(_("N° du livre")),
-                    Column(_("Catégorie")),
+                    Column(_("Classification")),
                     Column(_("Acquis le")),
                     Column(_("Dernier prêt")),
                 ],

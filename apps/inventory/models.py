@@ -16,7 +16,7 @@ from django.utils.translation import gettext_lazy as _
 class InventoryScope(models.TextChoices):
     ALL = "all", _("Tout le fonds")
     LOCATION = "location", _("Un emplacement")
-    CATEGORY = "category", _("Une catégorie")
+    CATEGORY = "category", _("Une classification")
 
 
 class InventoryStatus(models.TextChoices):
@@ -46,7 +46,7 @@ class InventorySession(models.Model):
         null=True,
         blank=True,
         on_delete=models.SET_NULL,
-        verbose_name=_("catégorie"),
+        verbose_name=_("classification"),
     )
     status = models.CharField(
         max_length=10, choices=InventoryStatus.choices, default=InventoryStatus.OPEN

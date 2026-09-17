@@ -91,7 +91,7 @@ orden.
 |---|---|
 | `ISBN` | **obligatorio** |
 | `LOCATION` | el código de ubicación (de lo contrario el ejemplar se crea sin ubicación) |
-| `CATEGORY` | el nombre de una categoría existente |
+| `CLASSIFICATION` | el nombre de una clasificación existente (el nombre antiguo `CATEGORY` sigue leyéndose) |
 | `TITLE` | el título de la ficha |
 | `AUTHOR` | el o los autores, separados por **puntos y comas** |
 | `TYPE` | el tipo de documento (Libro, Cómic / manga, Revista, Periódico, CD de audio, Otro) |
@@ -101,7 +101,7 @@ orden.
 | `TAGS` | palabras clave separadas por **comas** |
 | `EXTERNAL_CODE` | el código de otra biblioteca ya puesto en el libro |
 | `PROVENANCE` | el código o el nombre de una procedencia existente |
-| `CATEGORY_ABBR` | la abreviatura de la categoría (signatura) |
+| `CLASSIFICATION_CODE` | el código de clasificación (el nombre antiguo `CATEGORY_ABBR` sigue leyéndose) |
 | `CONDITION` | el estado del ejemplar (Nuevo, Bueno, Desgastado, Dañado) |
 
 En el recuadro
@@ -155,7 +155,7 @@ ubicación, el estado, la procedencia y el código externo pertenecen al
 | `INTERNAL_ID` | el código legible impreso junto al código de barras (`OFL-…`) |
 | `EXTERNAL_CODE` | el código de otra biblioteca ya puesto en el libro |
 | `ISBN`, `TITLE`, `AUTHOR`, `EDITOR`, `YEAR`, `LANGUAGE` | los datos de la ficha |
-| `CATEGORY`, `CATEGORY_ABBR`, `TYPE`, `TAGS` | la clasificación |
+| `CLASSIFICATION`, `CLASSIFICATION_CODE`, `TYPE`, `TAGS` | la clasificación |
 | `CONDITION`, `PROVENANCE`, `LOCATION` | los datos del ejemplar |
 
 !!! tip "Es el archivo de la actualización"
@@ -190,7 +190,7 @@ por tanto, al menos una de estas dos columnas:
     trata y una columna `EXTERNAL_CODE` con el código que hay que poner.
 
 Se aceptan todas las demás columnas de la importación, y son **opcionales**:
-`TITLE`, `AUTHOR`, `CATEGORY`, `CATEGORY_ABBR`, `TYPE`, `EDITOR`, `YEAR`,
+`TITLE`, `AUTHOR`, `CLASSIFICATION`, `CLASSIFICATION_CODE`, `TYPE`, `EDITOR`, `YEAR`,
 `LANGUAGE`, `TAGS`, `CONDITION`, `PROVENANCE`, `LOCATION` e `ISBN`.
 
 !!! warning "Una celda vacía no borra nada"

@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: BibliOfelia 1.0\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2026-09-09 21:40+0000\n"
+"POT-Creation-Date: 2026-09-15 20:53+0000\n"
 "PO-Revision-Date: 2026-05-22 00:00+0000\n"
 "Last-Translator: Claude Code\n"
 "Language-Team: Malagasy\n"
@@ -137,7 +137,7 @@ msgstr "Boky"
 msgid "Carte membre"
 msgstr "Karatra mpikambana"
 
-#: apps/catalog/excel_catalog.py:400
+#: apps/catalog/excel_catalog.py:409
 msgid ""
 "Colonne d'identification manquante : le fichier doit porter une colonne "
 "OFELIA_CODE (ou INTERNAL_ID) et/ou EXTERNAL_CODE, sinon les exemplaires à "
@@ -228,7 +228,7 @@ msgstr "Loharanon'ny fahazoana"
 msgid "Donateur"
 msgstr "Mpanome"
 
-#: apps/catalog/forms.py:144 apps/catalog/forms.py:320
+#: apps/catalog/forms.py:144 apps/catalog/forms.py:324
 #: templates/catalog/provenance_list.html:36
 msgid "Notes"
 msgstr "Fanamarihana"
@@ -284,8 +284,8 @@ msgstr "Efa misy toerana manana io kaody io ho an'ity ray ity."
 msgid "Un emplacement ne peut pas être son propre parent."
 msgstr "Tsy afaka ho ray ny tenany ny toerana iray."
 
-#: apps/catalog/forms.py:262 apps/catalog/forms.py:294
-#: apps/catalog/forms.py:318 apps/members/forms.py:249
+#: apps/catalog/forms.py:263 apps/catalog/forms.py:298
+#: apps/catalog/forms.py:322 apps/members/forms.py:249
 #: templates/catalog/category_list.html:34
 #: templates/catalog/language_list.html:35
 #: templates/catalog/location_list.html:34
@@ -294,46 +294,47 @@ msgstr "Tsy afaka ho ray ny tenany ny toerana iray."
 msgid "Code"
 msgstr "Kaody"
 
-#: apps/catalog/forms.py:263 apps/catalog/forms.py:294 apps/setup/forms.py:54
+#: apps/catalog/forms.py:264 apps/catalog/forms.py:298 apps/setup/forms.py:54
 #: templates/accounts/user_list.html:35 templates/catalog/category_list.html:35
 #: templates/catalog/language_list.html:34
 #: templates/printing/cards_picker.html:36
 msgid "Nom"
 msgstr "Fanampin'anarana"
 
-#: apps/catalog/forms.py:264 templates/catalog/category_list.html:36
-msgid "Abréviation"
-msgstr "Fanafohezana"
+#: apps/catalog/forms.py:265 templates/catalog/category_list.html:36
+#: templates/printing/spine_labels_picker.html:27
+msgid "Code de classification"
+msgstr "Kaody fanasokajiana"
 
-#: apps/catalog/forms.py:265
-msgid "Catégorie parente"
-msgstr "Sokajy ambony"
+#: apps/catalog/forms.py:266
+msgid "Classification parente"
+msgstr "Fanasokajiana ambony"
 
-#: apps/catalog/forms.py:266 apps/members/forms.py:257
+#: apps/catalog/forms.py:267 apps/members/forms.py:257
 msgid "Durée de prêt (jours)"
 msgstr "Faharetan'ny fampindramana (andro)"
 
-#: apps/catalog/forms.py:269
-msgid "Court, sans espace : ENF-ALB, ADU-ROM…"
-msgstr "Fohy, tsy misy elanelana : ENF-ALB, ADU-ROM…"
-
 #: apps/catalog/forms.py:271
 msgid ""
-"Cote imprimée sur l'étiquette de tranche. Ex. « RO FI ADO » pour « Romans "
-"fiction pour adolescents »."
-msgstr ""
-"Kaody atao pirinty amin'ny etiketin'ny lamosin-boky. Oh. « RO FI ADO » ho "
-"an'ny « Tantara foronina ho an'ny tanora »."
-
-#: apps/catalog/forms.py:274
-msgid "Sous-catégorie de… (optionnel)."
-msgstr "Zana-tsokajin'ny… (safidy)."
+"Identifiant unique. Pour les classifications Ofelia, identique au code de "
+"classification (JE DOC)."
+msgstr "Famantarana tokana. Ho an'ny fanasokajiana Ofelia, mitovy amin'ny kaody fanasokajiana (JE DOC)."
 
 #: apps/catalog/forms.py:275
+msgid ""
+"Imprimé sur l'étiquette de tranche. Ex. « JE DOC » pour « Jeunesse "
+"Documentaire »."
+msgstr "Atonta amin'ny etikety sisiny. Ohatra « JE DOC » ho an'ny « Tanora Dokumentera »."
+
+#: apps/catalog/forms.py:278
+msgid "Sous-classification de… (optionnel)."
+msgstr "Zana-panasokajian'ny… (safidy)."
+
+#: apps/catalog/forms.py:279
 msgid "Vide = durée par défaut de la bibliothèque."
 msgstr "Foana = faharetana mahazatra amin'ny tranomboky."
 
-#: apps/catalog/forms.py:297
+#: apps/catalog/forms.py:301
 msgid ""
 "Abréviation internationale principale, sans variante régionale : fr, en, pt, "
 "de… (« fr » couvre le français de France, du Canada et de Suisse)."
@@ -342,54 +343,54 @@ msgstr ""
 "en, pt, de… (ny « fr » dia mahafaoka ny frantsay any Frantsa, Kanada ary "
 "Soisa)."
 
-#: apps/catalog/forms.py:301
+#: apps/catalog/forms.py:305
 msgid "Nom de la langue dans la langue de saisie courante."
 msgstr "Anaran'ny fiteny, amin'ny fiteny anoratanao."
 
-#: apps/catalog/forms.py:319 templates/catalog/provenance_list.html:35
+#: apps/catalog/forms.py:323 templates/catalog/provenance_list.html:35
 msgid "Nom complet"
 msgstr "Anarana feno"
 
-#: apps/catalog/forms.py:323
+#: apps/catalog/forms.py:327
 msgid "Court, sans espace : OFELIA, BM-GE, DON-DUPONT…"
 msgstr "Fohy, tsy misy elanelana : OFELIA, BM-GE, DON-DUPONT…"
 
-#: apps/catalog/forms.py:324
+#: apps/catalog/forms.py:328
 msgid ""
 "Nom lisible affiché dans les listes. Ex. « Prêt Bibliothèque de Genève »."
 msgstr ""
 "Anarana mora vakiana aseho anaty lisitra. Oh. « Nampindramin'ny Tranomboky "
 "Genève »."
 
-#: apps/catalog/forms.py:325
+#: apps/catalog/forms.py:329
 msgid "Contact, date de restitution prévue, conditions du dépôt…"
 msgstr "Fifandraisana, daty famerenana, fepetran'ny fametrahana…"
 
-#: apps/catalog/forms.py:341
+#: apps/catalog/forms.py:345
 msgid "Nom du lot (optionnel)"
 msgstr "Anaran'ny andiana (tsy voatery)"
 
-#: apps/catalog/forms.py:342
-msgid "Catégorie par défaut"
-msgstr "Sokajy lasitra"
+#: apps/catalog/forms.py:346
+msgid "Classification par défaut"
+msgstr "Fanasokajiana mahazatra"
 
-#: apps/catalog/forms.py:343
+#: apps/catalog/forms.py:347
 msgid "Emplacement par défaut"
 msgstr "Toerana lasitra"
 
-#: apps/catalog/forms.py:344
+#: apps/catalog/forms.py:348
 msgid "Provenance par défaut"
 msgstr "Fiaviana mahazatra"
 
-#: apps/catalog/forms.py:347
+#: apps/catalog/forms.py:351
 msgid "Appliquée aux nouvelles notices ; modifiable ligne par ligne."
 msgstr "Ampiharina amin'ny notice vaovao; azo ovaina isaky ny andalana."
 
-#: apps/catalog/forms.py:348
+#: apps/catalog/forms.py:352
 msgid "Appliqué aux nouveaux exemplaires ; modifiable ligne par ligne."
 msgstr "Ampiharina amin'ny kopia vaovao; azo ovaina isaky ny andalana."
 
-#: apps/catalog/forms.py:350
+#: apps/catalog/forms.py:354
 msgid ""
 "Appliquée à tous les exemplaires du lot. Ex. des livres prêtés par une autre "
 "bibliothèque, à retrouver le jour du retour."
@@ -527,21 +528,21 @@ msgid "nom"
 msgstr "anarana"
 
 #: apps/catalog/models.py:92
-msgid "abréviation"
-msgstr "fanafohezana"
+msgid "code de classification"
+msgstr "kaody fanasokajiana"
 
 #: apps/catalog/models.py:100
-msgid "catégorie parente"
-msgstr "sokajy ambony"
+msgid "classification parente"
+msgstr "fanasokajiana ambony"
 
 #: apps/catalog/models.py:105 apps/catalog/models.py:240
-#: apps/inventory/models.py:49 apps/members/models.py:78
-msgid "catégorie"
-msgstr "sokajy"
+#: apps/inventory/models.py:49
+msgid "classification"
+msgstr "fanasokajiana"
 
 #: apps/catalog/models.py:106
-msgid "catégories"
-msgstr "sokajy"
+msgid "classifications"
+msgstr "fanasokajiana"
 
 #: apps/catalog/models.py:115
 msgid "Hex ex: #ff8800"
@@ -820,13 +821,13 @@ msgstr "Voafafa ny kopia."
 
 #: apps/catalog/views.py:556
 #, python-format
-msgid "%(n)s notice(s) → catégorie %(v)s"
-msgstr "Rakitra %(n)s → sokajy %(v)s"
+msgid "%(n)s notice(s) → classification %(v)s"
+msgstr "Rakitra %(n)s → fanasokajiana %(v)s"
 
 #: apps/catalog/views.py:558
 #, python-format
-msgid "%(n)s notice(s) sans catégorie"
-msgstr "Rakitra %(n)s tsy misy sokajy"
+msgid "%(n)s notice(s) sans classification"
+msgstr "Rakitra %(n)s tsy misy fanasokajiana"
 
 #: apps/catalog/views.py:566
 #, python-format
@@ -898,27 +899,24 @@ msgid "Langue retirée de la liste."
 msgstr "Nesorina tao anaty lisitra ny fiteny."
 
 #: apps/catalog/views.py:856
-msgid "Catégorie créée."
-msgstr "Voaforona ny sokajy."
+msgid "Classification créée."
+msgstr "Voaforona ny fanasokajiana."
 
 #: apps/catalog/views.py:866 templates/catalog/category_list.html:25
-#: templates/catalog/record_bulk_assign_category.html:57
-#: templates/finance/tariff_list.html:72
-msgid "Nouvelle catégorie"
-msgstr "Sokajy vaovao"
+msgid "Nouvelle classification"
+msgstr "Fanasokajiana vaovao"
 
 #: apps/catalog/views.py:878
-msgid "Catégorie mise à jour."
-msgstr "Voaova ny sokajy."
+msgid "Classification mise à jour."
+msgstr "Nohavaozina ny fanasokajiana."
 
 #: apps/catalog/views.py:888
-#: templates/finance/member_category_confirm_delete.html:33
-msgid "Modifier la catégorie"
-msgstr "Hanova ny sokajy"
+msgid "Modifier la classification"
+msgstr "Hanova ny fanasokajiana"
 
 #: apps/catalog/views.py:903
-msgid "Catégorie supprimée."
-msgstr "Voafafa ny sokajy."
+msgid "Classification supprimée."
+msgstr "Nofafana ny fanasokajiana."
 
 #: apps/catalog/views.py:936
 msgid "Provenance créée."
@@ -1709,11 +1707,9 @@ msgstr "Faharetan'ny fampindramana mahazatra (andro)"
 
 #: apps/core/forms.py:579
 msgid ""
-"Utilisée si ni la catégorie de document ni la catégorie de membre n'en "
+"Utilisée si ni la classification du document ni la catégorie de membre n'en "
 "définit une. Défaut : 21 jours (3 semaines)."
-msgstr ""
-"Ampiasaina raha tsy mamaritra izany ny sokajin'ny boky na ny sokajin'ny "
-"mpikambana. Mahazatra : 21 andro (herinandro 3)."
+msgstr "Ampiasaina raha tsy ny fanasokajian'ny boky na ny sokajin'ny mpampiasa no mamaritra iray. Mahazatra : 21 andro (3 herinandro)."
 
 #: apps/core/forms.py:582
 msgid "Validité d'une réservation en attente (jours)"
@@ -2336,8 +2332,8 @@ msgid "Un emplacement"
 msgstr "Toerana iray"
 
 #: apps/inventory/models.py:19
-msgid "Une catégorie"
-msgstr "Sokajy iray"
+msgid "Une classification"
+msgstr "Fanasokajiana iray"
 
 #: apps/inventory/models.py:24
 msgid "Clôturée"
@@ -2759,6 +2755,10 @@ msgstr "anarana"
 msgid "date de naissance"
 msgstr "daty nahaterahana"
 
+#: apps/members/models.py:78
+msgid "catégorie"
+msgstr "sokajy"
+
 #: apps/members/models.py:81
 msgid "téléphone"
 msgstr "finday"
@@ -2922,10 +2922,9 @@ msgstr ""
 msgid "Facture de cotisation %(num)s émise (%(amount)s)."
 msgstr "Navoaka ny faktioran'ny saram-pikambanana %(num)s (%(amount)s)."
 
-#: apps/members/views.py:149 apps/reports/builders/loans.py:142
-#: apps/reports/builders/members.py:157
-msgid "Sans catégorie"
-msgstr "Tsy misy sokajy"
+#: apps/members/views.py:149
+msgid "Sans classification"
+msgstr "Tsy misy fanasokajiana"
 
 #: apps/members/views.py:177
 #, python-format
@@ -3032,11 +3031,9 @@ msgstr "Tsy misy mpampiasa nofidiana."
 
 #: apps/printing/views.py:160
 msgid ""
-"Aucun exemplaire sélectionné n'a de catégorie abrégée : renseignez "
-"l'abréviation de la catégorie avant d'imprimer."
-msgstr ""
-"Tsy misy amin'ireo kopia voafidy manana sokajy nafohezina : fenoy aloha ny "
-"fanafohezan'ny sokajy alohan'ny hanontana."
+"Aucun exemplaire sélectionné n'a de code de classification : renseignez le "
+"code de classification avant d'imprimer."
+msgstr "Tsy misy kopia voafidy manana kaody fanasokajiana : fenoy ny kaody fanasokajiana alohan'ny hanontana."
 
 #: apps/reports/builders/__init__.py:44 apps/reports/builders/worklists.py:70
 msgid "Les retards"
@@ -3096,7 +3093,8 @@ msgstr "Ny fampindramana"
 
 #: apps/reports/builders/__init__.py:105
 msgid "Combien de prêts, et les livres les plus et les moins empruntés."
-msgstr "Firy ny fampindramana, sy ny boky be indrindra sy kely indrindra nindramina."
+msgstr ""
+"Firy ny fampindramana, sy ny boky be indrindra sy kely indrindra nindramina."
 
 #: apps/reports/builders/__init__.py:114 apps/reports/builders/members.py:83
 msgid "Les usagers"
@@ -3194,7 +3192,9 @@ msgstr "boky novakiana nefa tsy nindramina"
 msgid ""
 "« %(label)s » enregistre une simple venue à la bibliothèque : c'est "
 "l'animation principale, comptée à part des ateliers."
-msgstr "« %(label)s » dia mandrakitra fitsidihana tsotra ny tranomboky : izy no hetsika fototra, isaina misaraka amin'ny atrikasa."
+msgstr ""
+"« %(label)s » dia mandrakitra fitsidihana tsotra ny tranomboky : izy no "
+"hetsika fototra, isaina misaraka amin'ny atrikasa."
 
 #: apps/reports/builders/attendance.py:106
 msgid "L'âge des personnes présentes"
@@ -3204,7 +3204,9 @@ msgstr "Ny taonan'ny olona tonga"
 msgid ""
 "Seuls les usagers inscrits ont un âge connu ; les non-membres sont comptés à "
 "part."
-msgstr "Ny mpampiasa voasoratra ihany no fantatra taona ; isaina misaraka ny tsy mpikambana."
+msgstr ""
+"Ny mpampiasa voasoratra ihany no fantatra taona ; isaina misaraka ny tsy "
+"mpikambana."
 
 #: apps/reports/builders/attendance.py:128
 msgid "La fréquentation mois par mois"
@@ -3347,7 +3349,10 @@ msgid ""
 "« Prêts par livre » compare les prêts de la période au nombre de livres en "
 "circulation du rayon : au-dessus de 1, chaque livre du rayon est sorti au "
 "moins une fois."
-msgstr "« Fampindramana isaky ny boky » dia mampitaha ny fampindramana tamin'ny vanim-potoana amin'ny isan'ny boky mandeha ao amin'ny sokajy : mihoatra ny 1, dia nivoaka indray mandeha farafahakeliny ny boky tsirairay."
+msgstr ""
+"« Fampindramana isaky ny boky » dia mampitaha ny fampindramana tamin'ny "
+"vanim-potoana amin'ny isan'ny boky mandeha ao amin'ny sokajy : mihoatra ny "
+"1, dia nivoaka indray mandeha farafahakeliny ny boky tsirairay."
 
 #: apps/reports/builders/collection.py:94
 msgid "Par sorte de document"
@@ -3491,13 +3496,17 @@ msgstr "Ny boky tsy mbola nampiasaina"
 #: apps/reports/builders/collection.py:397
 msgid ""
 "Tous les livres en rayon depuis plus d'un an sont sortis au moins une fois."
-msgstr "Ny boky rehetra eo amin'ny talantalana efa mihoatra ny herintaona dia nivoaka indray mandeha farafahakeliny."
+msgstr ""
+"Ny boky rehetra eo amin'ny talantalana efa mihoatra ny herintaona dia "
+"nivoaka indray mandeha farafahakeliny."
 
 #: apps/reports/builders/collection.py:399
 msgid ""
 "Comptés : les livres en rayon depuis plus d'un an et jamais empruntés. Les "
 "nouveautés, les livres perdus, pilonnés ou en réparation sont écartés."
-msgstr "Isaina : ny boky eo amin'ny talantalana efa mihoatra ny herintaona ary tsy mbola nindramina. Esorina ny vaovao sy ny boky very, nesorina na amboarina."
+msgstr ""
+"Isaina : ny boky eo amin'ny talantalana efa mihoatra ny herintaona ary tsy "
+"mbola nindramina. Esorina ny vaovao sy ny boky very, nesorina na amboarina."
 
 #: apps/reports/builders/collection.py:432
 msgid "Le catalogue complet"
@@ -3546,7 +3555,10 @@ msgid ""
 "Un exemplaire par ligne. Pour reprendre le catalogue dans un tableur avec "
 "toutes les colonnes (ISBN, éditeur, année, tags…), utilisez l'export CSV "
 "proposé sous ce tableau."
-msgstr "Kopia iray isaky ny andalana. Raha hampiasa ny katalaogy amin'ny tabilao misy ny tsanganana rehetra (ISBN, mpanonta, taona, marika…), ampiasao ny fanondranana CSV eo ambanin'ity tabilao ity."
+msgstr ""
+"Kopia iray isaky ny andalana. Raha hampiasa ny katalaogy amin'ny tabilao "
+"misy ny tsanganana rehetra (ISBN, mpanonta, taona, marika…), ampiasao ny "
+"fanondranana CSV eo ambanin'ity tabilao ity."
 
 #: apps/reports/builders/loans.py:47 apps/reports/builders/loans.py:177
 #: apps/reports/builders/loans.py:258 apps/reports/builders/members.py:340
@@ -3610,6 +3622,10 @@ msgstr "Ny fampindramana isam-bolana"
 msgid "Ce qui se prête, par rayon"
 msgstr "Izay indramina, araka ny sokajy"
 
+#: apps/reports/builders/loans.py:142 apps/reports/builders/members.py:157
+msgid "Sans catégorie"
+msgstr "Tsy misy sokajy"
+
 #: apps/reports/builders/loans.py:144
 msgid "Qui emprunte, par catégorie d'usager"
 msgstr "Iza no mindrana, araka ny sokajin'ny mpampiasa"
@@ -3632,7 +3648,9 @@ msgstr "Ny boky kely indrindra nindramina"
 msgid ""
 "Les %(n)s titres les moins sortis parmi ceux qui sont sortis au moins une "
 "fois. Les livres jamais empruntés sont comptés séparément."
-msgstr "Ny lohateny %(n)s nivoaka kely indrindra amin'ireo nivoaka indray mandeha farafahakeliny. Isaina misaraka ny boky tsy mbola nindramina."
+msgstr ""
+"Ny lohateny %(n)s nivoaka kely indrindra amin'ireo nivoaka indray mandeha "
+"farafahakeliny. Isaina misaraka ny boky tsy mbola nindramina."
 
 #: apps/reports/builders/loans.py:179 apps/reports/builders/loans.py:351
 msgid "Aucun prêt pendant cette période."
@@ -3644,11 +3662,14 @@ msgstr "Ny boky tsy mbola nindramina"
 
 #: apps/reports/builders/loans.py:203
 msgid "Tous les livres du fonds sont sortis au moins une fois."
-msgstr "Ny boky rehetra ao amin'ny tahiry dia nivoaka indray mandeha farafahakeliny."
+msgstr ""
+"Ny boky rehetra ao amin'ny tahiry dia nivoaka indray mandeha farafahakeliny."
 
 #: apps/reports/builders/loans.py:204
 msgid "Depuis leur entrée au catalogue, pas seulement sur la période."
-msgstr "Hatramin'ny nidirany tao amin'ny katalaogy, tsy amin'io vanim-potoana io ihany."
+msgstr ""
+"Hatramin'ny nidirany tao amin'ny katalaogy, tsy amin'io vanim-potoana io "
+"ihany."
 
 #: apps/reports/builders/loans.py:227
 msgid "Les réservations de la période"
@@ -3682,7 +3703,8 @@ msgstr "Tsy nisy hetsika tamin'io vanim-potoana io."
 #: apps/reports/builders/loans.py:266
 msgid ""
 "Seuls les jours où la bibliothèque a prêté ou reçu un livre sont listés."
-msgstr "Ny andro nampindraman'ny tranomboky na nandraisany boky ihany no voatanisa."
+msgstr ""
+"Ny andro nampindraman'ny tranomboky na nandraisany boky ihany no voatanisa."
 
 #: apps/reports/builders/loans.py:289 templates/core/dashboard.html:71
 #: templates/loans/lend.html:4 templates/loans/lend.html:30
@@ -3729,7 +3751,9 @@ msgstr "Tsy misy fampindramana na famandrihana."
 #: apps/reports/builders/loans.py:325
 msgid ""
 "Situation d'aujourd'hui : ce tableau ne dépend pas de la période choisie."
-msgstr "Toe-javatra androany : tsy miankina amin'ny vanim-potoana nofidina ity tabilao ity."
+msgstr ""
+"Toe-javatra androany : tsy miankina amin'ny vanim-potoana nofidina ity "
+"tabilao ity."
 
 #: apps/reports/builders/loans.py:338
 msgid "pas rendu"
@@ -3834,7 +3858,9 @@ msgstr "karatra nohavaozina nandritra ny vanim-potoana"
 msgid ""
 "« Usagers venus » réunit les emprunteurs et les participants aux "
 "animations : quelqu'un qui a fait les deux n'est compté qu'une fois."
-msgstr "« Mpampiasa tonga » dia mitambatra ny mpindrana sy ny mpandray anjara amin'ny hetsika : izay nanao ny roa dia isaina indray mandeha ihany."
+msgstr ""
+"« Mpampiasa tonga » dia mitambatra ny mpindrana sy ny mpandray anjara "
+"amin'ny hetsika : izay nanao ny roa dia isaina indray mandeha ihany."
 
 #: apps/reports/builders/members.py:148
 msgid "L'âge des usagers"
@@ -3865,20 +3891,9 @@ msgid "N° de carte"
 msgstr "Laharan'ny karatra"
 
 #: apps/reports/builders/members.py:246 apps/reports/builders/worklists.py:236
-#: apps/reports/builders/worklists.py:249
-#: templates/catalog/_item_results.html:54
-#: templates/catalog/_item_results.html:123
-#: templates/catalog/record_detail.html:53
-#: templates/catalog/record_list.html:136
-#: templates/catalog/record_list.html:178
-#: templates/catalog/record_list.html:247
-#: templates/catalog/scan_session.html:53
-#: templates/catalog/scan_session.html:153
-#: templates/catalog/scan_session.html:187
 #: templates/finance/tariff_list.html:30
 #: templates/members/member_detail.html:97
 #: templates/printing/cards_picker.html:37
-#: templates/printing/spine_labels_picker.html:26
 msgid "Catégorie"
 msgstr "Sokajy"
 
@@ -4005,7 +4020,9 @@ msgstr "Tsy misy faktiora miandry fandoavam-bola."
 
 #: apps/reports/builders/money.py:111
 msgid "Toutes les factures ouvertes, y compris celles émises avant la période."
-msgstr "Ny faktiora misokatra rehetra, anisan'izany ireo navoaka talohan'ny vanim-potoana."
+msgstr ""
+"Ny faktiora misokatra rehetra, anisan'izany ireo navoaka talohan'ny vanim-"
+"potoana."
 
 #: apps/reports/builders/money.py:138
 msgid "D'où vient l'argent"
@@ -4140,7 +4157,9 @@ msgstr "Ny isa lehibe momba ny tranomboky, amin'ny pejy iray."
 msgid ""
 "Les six premiers chiffres décrivent aujourd'hui ; les six suivants, la "
 "période choisie."
-msgstr "Ny isa enina voalohany dia mamaritra ny androany ; ny enina manaraka, ny vanim-potoana nofidina."
+msgstr ""
+"Ny isa enina voalohany dia mamaritra ny androany ; ny enina manaraka, ny "
+"vanim-potoana nofidina."
 
 #: apps/reports/builders/overview.py:196
 msgid "Les livres sortis à la fin de chaque mois"
@@ -4148,7 +4167,8 @@ msgstr "Ny boky nivoaka tamin'ny faran'ny volana tsirairay"
 
 #: apps/reports/builders/overview.py:198
 msgid "Nombre de livres qui n'étaient pas rentrés le dernier jour du mois."
-msgstr "Isan'ny boky mbola tsy tafaverina tamin'ny andro farany amin'ny volana."
+msgstr ""
+"Isan'ny boky mbola tsy tafaverina tamin'ny andro farany amin'ny volana."
 
 #: apps/reports/builders/overview.py:212
 msgid "Le fonds par rayon"
@@ -4171,7 +4191,10 @@ msgid ""
 "Les huit premières lignes décrivent la situation d'aujourd'hui : elles ne "
 "dépendent pas de la période choisie et n'ont donc rien à comparer. Les "
 "suivantes portent sur la période."
-msgstr "Ny andalana valo voalohany dia mamaritra ny toe-javatra androany : tsy miankina amin'ny vanim-potoana nofidina izy ka tsy misy azo ampitahaina. Ny manaraka dia mikasika ny vanim-potoana."
+msgstr ""
+"Ny andalana valo voalohany dia mamaritra ny toe-javatra androany : tsy "
+"miankina amin'ny vanim-potoana nofidina izy ka tsy misy azo ampitahaina. Ny "
+"manaraka dia mikasika ny vanim-potoana."
 
 #: apps/reports/builders/team.py:45
 msgid "saisies sur la période"
@@ -4201,7 +4224,8 @@ msgstr "andalan'ora voarakitra"
 #: apps/reports/builders/team.py:67
 msgid ""
 "Le temps donné à la bibliothèque, par nature de travail et par personne."
-msgstr "Ny fotoana nomena ny tranomboky, araka ny karazan'asa sy araka ny olona."
+msgstr ""
+"Ny fotoana nomena ny tranomboky, araka ny karazan'asa sy araka ny olona."
 
 #: apps/reports/builders/team.py:96 apps/reports/builders/team.py:102
 msgid "Le temps par nature de travail"
@@ -4356,6 +4380,20 @@ msgstr "Nindrana vao haingana ny mpampiasa rehetra."
 msgid "Livres qui ne sortent pas"
 msgstr "Boky tsy mivoaka"
 
+#: apps/reports/builders/worklists.py:249
+#: templates/catalog/_item_results.html:54
+#: templates/catalog/_item_results.html:123
+#: templates/catalog/record_detail.html:53
+#: templates/catalog/record_list.html:136
+#: templates/catalog/record_list.html:178
+#: templates/catalog/record_list.html:247
+#: templates/catalog/scan_session.html:53
+#: templates/catalog/scan_session.html:153
+#: templates/catalog/scan_session.html:187
+#: templates/printing/spine_labels_picker.html:26
+msgid "Classification"
+msgstr "Fanasokajiana"
+
 #: apps/reports/builders/worklists.py:250
 msgid "Acquis le"
 msgstr "Azo ny"
@@ -4450,7 +4488,9 @@ msgstr "Daty tsy feno : ireto ny volana 12 farany."
 #: apps/reports/periods.py:110
 msgid ""
 "La date de début doit précéder la date de fin : voici les 12 derniers mois."
-msgstr "Ny daty fanombohana dia tsy maintsy mialoha ny daty famaranana : ireto ny volana 12 farany."
+msgstr ""
+"Ny daty fanombohana dia tsy maintsy mialoha ny daty famaranana : ireto ny "
+"volana 12 farany."
 
 #: apps/reports/views.py:50
 msgid "Ce rapport n'existe pas."
@@ -4940,8 +4980,8 @@ msgstr "(pejy rehetra)"
 
 #: templates/catalog/category_confirm_delete.html:4
 #: templates/catalog/category_confirm_delete.html:20
-msgid "Supprimer la catégorie"
-msgstr "Hamafa ny sokajy"
+msgid "Supprimer la classification"
+msgstr "Hamafa ny fanasokajiana"
 
 #: templates/catalog/category_confirm_delete.html:10
 #: templates/catalog/category_form.html:10
@@ -4972,14 +5012,15 @@ msgstr "Mandroso"
 #: templates/catalog/category_list.html:4
 #: templates/catalog/category_list.html:11
 #: templates/catalog/category_list.html:19 templates/core/advanced.html:184
-msgid "Catégories"
-msgstr "Sokajy"
+msgid "Classifications"
+msgstr "Fanasokajiana"
 
 #: templates/catalog/category_confirm_delete.html:26
 #, python-format
 msgid ""
-"Confirmez-vous la suppression de la catégorie <strong>%(code)s</strong> ?"
-msgstr "Hamafa ny sokajy <strong>%(code)s</strong> tokoa ve ianao ?"
+"Confirmez-vous la suppression de la classification <strong>%(code)s</"
+"strong> ?"
+msgstr "Hamafa ny fanasokajiana <strong>%(code)s</strong> tokoa ve ianao ?"
 
 #: templates/catalog/category_confirm_delete.html:28
 #: templates/catalog/item_bulk_delete.html:35
@@ -4989,26 +5030,25 @@ msgid "Conséquences"
 msgstr "Vokany"
 
 #: templates/catalog/category_confirm_delete.html:32
-msgid "notice se retrouvera sans catégorie (aucune notice n'est supprimée)."
+msgid ""
+"notice se retrouvera sans classification (aucune notice n'est supprimée)."
 msgid_plural ""
-"notices se retrouveront sans catégorie (aucune notice n'est supprimée)."
-msgstr[0] "rakitra no ho tsy misy sokajy (tsy misy rakitra fafana)."
-msgstr[1] "rakitra no ho tsy misy sokajy (tsy misy rakitra fafana)."
+"notices se retrouveront sans classification (aucune notice n'est supprimée)."
+msgstr[0] "rakitra no tsy hanana fanasokajiana (tsy misy rakitra voafafa)."
+msgstr[1] "rakitra no tsy hanana fanasokajiana (tsy misy rakitra voafafa)."
 
 #: templates/catalog/category_confirm_delete.html:37
-msgid "sous-catégorie perdra son parent (deviendra racine)."
-msgid_plural "sous-catégories perdront leur parent (deviendront racine)."
-msgstr[0] "zana-tsokajy no ho very ny sokajy ambony (ho lasa fototra)."
-msgstr[1] "zana-tsokajy no ho very ny sokajy ambony (ho lasa fototra)."
+msgid "sous-classification perdra son parent (deviendra racine)."
+msgid_plural "sous-classifications perdront leur parent (deviendront racine)."
+msgstr[0] "zana-panasokajiana no very ray (lasa fototra)."
+msgstr[1] "zana-panasokajiana no very ray (lasa fototra)."
 
 #: templates/catalog/category_confirm_delete.html:41
 #, python-format
 msgid ""
-"L'abréviation « %(abbr)s » disparaît : les étiquettes de tranche déjà "
-"collées restent, mais ne pourront plus être réimprimées."
-msgstr ""
-"Manjavona ny fanafohezana « %(abbr)s » : mijanona ny etiketin-damosina efa "
-"napetaka, fa tsy ho azo atao pirinty indray."
+"Le code de classification « %(abbr)s » disparaît : les étiquettes de tranche "
+"déjà collées restent, mais ne pourront plus être réimprimées."
+msgstr "Laso ny kaody fanasokajiana « %(abbr)s » : mijanona ny etikety sisiny efa napetaka, fa tsy azo atonta indray intsony."
 
 #: templates/catalog/category_form.html:12
 #: templates/catalog/language_form.html:12
@@ -5032,31 +5072,25 @@ msgid "Notices"
 msgstr "Rakitra"
 
 #: templates/catalog/category_list.html:69
-msgid "Aucune catégorie définie."
-msgstr "Tsy misy sokajy voafaritra."
+msgid "Aucune classification définie."
+msgstr "Tsy misy fanasokajiana voafaritra."
 
 #: templates/catalog/category_list.html:76
-msgid "L'abréviation"
-msgstr "Ny fanafohezana"
+msgid "Le code de classification"
+msgstr "Ny kaody fanasokajiana"
 
 #: templates/catalog/category_list.html:78
 msgid ""
-"C'est la cote qui part sur l'étiquette de tranche, pour ranger le livre au "
-"bon rayon sans le sortir de l'étagère. Exemple : « RO FI ADO » pour « Romans "
-"fiction pour adolescents »."
-msgstr ""
-"Izy no kaody mankany amin'ny etiketin'ny lamosin-boky, mba hametrahana ny "
-"boky eo amin'ny toerana mety nefa tsy mila manaisotra azy amin'ny "
-"talantalana. Ohatra : « RO FI ADO » ho an'ny « Tantara foronina ho an'ny "
-"tanora »."
+"C'est ce qui part sur l'étiquette de tranche, pour ranger le livre au bon "
+"rayon sans le sortir de l'étagère. Exemple : « JE DOC » pour « Jeunesse "
+"Documentaire »."
+msgstr "Izany no alefa eo amin'ny etikety sisiny, hametrahana ny boky amin'ny talantalana marina nefa tsy esorina. Ohatra : « JE DOC » ho an'ny « Tanora Dokumentera »."
 
 #: templates/catalog/category_list.html:81
 msgid ""
-"Elle vaut pour toutes les notices de la catégorie. Les étiquettes "
+"Il vaut pour toutes les notices de la classification. Les étiquettes "
 "s'impriment depuis Impressions → Étiquettes."
-msgstr ""
-"Mihatra amin'ny rakitra rehetra ao amin'ilay sokajy izy. Ny etikety dia atao "
-"pirinty avy ao amin'ny Fanontana → Etikety."
+msgstr "Manan-kery ho an'ny rakitra rehetra amin'io fanasokajiana io. Atonta avy amin'ny Fanontana → Etikety ny etikety."
 
 #: templates/catalog/excel_catalog/_export_form.html:5
 #, python-format
@@ -5122,8 +5156,8 @@ msgstr ""
 "ny kopia)"
 
 #: templates/catalog/excel_catalog/_import_form.html:11
-msgid "optionnel : nom de catégorie existante"
-msgstr "tsy voatery: anaran'ny sokajy efa misy"
+msgid "optionnel : nom d'une classification existante (alias CATEGORY)"
+msgstr "safidy: anaran'ny fanasokajiana efa misy (alias CATEGORY)"
 
 #: templates/catalog/excel_catalog/_import_form.html:12
 msgid "optionnel : titre de la fiche"
@@ -5170,9 +5204,10 @@ msgid "optionnel : code ou nom d'une provenance existante"
 msgstr "safidy : kaody na anaran'ny fiaviana efa misy"
 
 #: templates/catalog/excel_catalog/_import_form.html:22
-msgid "optionnel : abréviation (cote) de la catégorie indiquée en CATEGORY"
-msgstr ""
-"safidy : fanafohezana (kaody) an'ny sokajy voatondro ao amin'ny CATEGORY"
+msgid ""
+"optionnel : code de classification de la ligne CLASSIFICATION (alias "
+"CATEGORY_ABBR)"
+msgstr "safidy: kaody fanasokajiana an'ny andalana CLASSIFICATION (alias CATEGORY_ABBR)"
 
 #: templates/catalog/excel_catalog/_import_form.html:25
 msgid ""
@@ -5231,16 +5266,12 @@ msgstr ""
 #: templates/catalog/excel_catalog/_update_form.html:21
 msgid ""
 "Toutes les autres colonnes de l'import sont acceptées et facultatives : "
-"TITLE, AUTHOR, CATEGORY, CATEGORY_ABBR, TYPE, EDITOR, YEAR, LANGUAGE, TAGS, "
-"CONDITION, PROVENANCE, LOCATION et ISBN. Une cellule remplie remplace la "
-"valeur existante ; <strong>une cellule vide laisse la valeur en place</"
-"strong> (le fichier ne sert donc pas à effacer un champ)."
-msgstr ""
-"Ekena ary tsy voatery ireo fariana hafa rehetra amin'ny fampidirana : TITLE, "
-"AUTHOR, CATEGORY, CATEGORY_ABBR, TYPE, EDITOR, YEAR, LANGUAGE, TAGS, "
-"CONDITION, PROVENANCE, LOCATION ary ISBN. Ny efitra feno dia manolo ny sanda "
-"misy ; <strong>ny efitra foana dia mamela ny sanda eo</strong> (tsy azo "
-"ampiasaina hamafana fariana àry ilay rakitra)."
+"TITLE, AUTHOR, CLASSIFICATION, CLASSIFICATION_CODE, TYPE, EDITOR, YEAR, "
+"LANGUAGE, TAGS, CONDITION, PROVENANCE, LOCATION et ISBN. Une cellule remplie "
+"remplace la valeur existante ; <strong>une cellule vide laisse la valeur en "
+"place</strong> (le fichier ne sert donc pas à effacer un champ). Les anciens "
+"noms CATEGORY et CATEGORY_ABBR restent lus."
+msgstr "Ny tsanganana hafa rehetra amin'ny fampidirana dia ekena ary tsy voatery: TITLE, AUTHOR, CLASSIFICATION, CLASSIFICATION_CODE, TYPE, EDITOR, YEAR, LANGUAGE, TAGS, CONDITION, PROVENANCE, LOCATION ary ISBN. Sela feno dia manolo ny sanda efa misy; <strong>sela foana dia avela ny sanda</strong> (tsy natao hamafana saha ny rakitra). Mbola vakiana ny anarana taloha CATEGORY sy CATEGORY_ABBR."
 
 #: templates/catalog/excel_catalog/_update_form.html:26
 msgid "Mettre à jour les exemplaires"
@@ -5927,6 +5958,11 @@ msgstr "Rakitra voakasika"
 msgid "Catégorie actuelle"
 msgstr "Sokajy ankehitriny"
 
+#: templates/catalog/record_bulk_assign_category.html:57
+#: templates/finance/tariff_list.html:72
+msgid "Nouvelle catégorie"
+msgstr "Sokajy vaovao"
+
 #: templates/catalog/record_bulk_assign_category.html:59
 msgid "— (vider la catégorie)"
 msgstr "— (mamafa ny sokajy)"
@@ -6132,9 +6168,9 @@ msgstr "Mikatalaogy amin'ny scan"
 msgid "Titre, auteur, ISBN…"
 msgstr "Lohateny, mpanoratra, ISBN…"
 
-#: templates/catalog/record_list.html:52 templates/members/member_list.html:66
-msgid "Toutes catégories"
-msgstr "Sokajy rehetra"
+#: templates/catalog/record_list.html:52
+msgid "Toutes les classifications"
+msgstr "Ny fanasokajiana rehetra"
 
 #: templates/catalog/record_list.html:58
 msgid "Tous types"
@@ -7218,10 +7254,9 @@ msgstr "Tetiandro an-toerana sy toerana rakitra (rclone)"
 
 #: templates/core/admin/settings_index.html:67
 msgid ""
-"Les catégories, tags et emplacements se gèrent depuis l'administration "
+"Les classifications, tags et emplacements se gèrent depuis l'administration "
 "Django pour l'instant."
-msgstr ""
-"Ny sokajy, marika ary toerana dia tantanana avy amin'ny admin Django aloha."
+msgstr "Ny fanasokajiana, marika ary toerana dia mbola tantanina avy amin'ny fitantanana Django amin'izao."
 
 #: templates/core/admin/settings_index.html:68
 msgid "Ouvrir l'admin"
@@ -7265,11 +7300,9 @@ msgstr ""
 
 #: templates/core/advanced.html:54
 msgid ""
-"Imprime la cote de la catégorie (« RO FI ADO ») à coller sur la tranche, "
-"pour ranger et retrouver un livre sans le sortir du rayon."
-msgstr ""
-"Manonta ny kaodin'ny sokajy (« RO FI ADO ») hapetaka amin'ny lamosina, mba "
-"handaminana sy hahitana boky nefa tsy misintona azy eo amin'ny talantalana."
+"Imprime le code de classification (« JE DOC ») à coller sur la tranche, pour "
+"ranger et retrouver un livre sans le sortir du rayon."
+msgstr "Manonta ny kaody fanasokajiana (« JE DOC ») hapetaka amin'ny sisiny, hametrahana sy hahitana boky nefa tsy esorina amin'ny talantalana."
 
 #: templates/core/advanced.html:63 templates/printing/cards_picker.html:14
 msgid "Cartes membres"
@@ -7339,10 +7372,8 @@ msgstr ""
 #: templates/core/advanced.html:140
 msgid ""
 "Vérifier ou importer un fichier Excel d'inventaire (ISBN, titre, auteur, "
-"emplacement, catégorie)."
-msgstr ""
-"Hamarino na afaro rakitra Excel an'ny fanisana (ISBN, lohateny, mpanoratra, "
-"toerana, sokajy)."
+"emplacement, classification)."
+msgstr "Hamarino na ampidiro rakitra Excel fanisana (ISBN, lohateny, mpanoratra, toerana, fanasokajiana)."
 
 #: templates/core/advanced.html:152
 msgid "Méta-données"
@@ -7374,11 +7405,9 @@ msgstr ""
 
 #: templates/core/advanced.html:185
 msgid ""
-"Classement des notices et abréviation imprimée sur la tranche des livres "
-"(« RO FI ADO »)."
-msgstr ""
-"Fanasokajiana ny rakitra sy ny fanafohezana atao pirinty amin'ny lamosin-"
-"boky (« RO FI ADO »)."
+"Classement des notices et code de classification imprimé sur la tranche des "
+"livres (« JE DOC »)."
+msgstr "Fanasokajiana ny rakitra sy kaody fanasokajiana atonta amin'ny sisin'ny boky (« JE DOC »)."
 
 #: templates/core/advanced.html:195
 msgid ""
@@ -7477,11 +7506,9 @@ msgstr "Fitantanana Django"
 
 #: templates/core/advanced.html:311
 msgid ""
-"Gestion fine : catégories, tags, emplacements, catégories d'usagers (réservé "
-"au support technique)."
-msgstr ""
-"Fitantanana madinika: sokajy, marika, toerana, sokajin'ny mpampiasa "
-"(natokana ho an'ny tohana ara-teknika)."
+"Gestion fine : classifications, tags, emplacements, catégories d'usagers "
+"(réservé au support technique)."
+msgstr "Fitantanana antsipiriany: fanasokajiana, marika, toerana, sokajin'ny mpampiasa (natokana ho an'ny fanohanana teknika)."
 
 #: templates/core/dashboard.html:4 templates/errors/_error_page.html:34
 #: templates/partials/_tile_strip.html:11
@@ -8032,6 +8059,10 @@ msgid ""
 msgstr ""
 "Mifamatotra amin'ny sokajiny ny taratasin'ny mpampiasa: ny famafana azy dia "
 "hanimba ireo taratasy ireo."
+
+#: templates/finance/member_category_confirm_delete.html:33
+msgid "Modifier la catégorie"
+msgstr "Hanova ny sokajy"
 
 #: templates/finance/member_category_confirm_delete.html:36
 msgid "Cette catégorie n'a aucun usager : elle peut être supprimée."
@@ -8628,8 +8659,8 @@ msgstr[0] "Antontan-taratasy %(n)s"
 msgstr[1] "Antontan-taratasy %(n)s"
 
 #: templates/members/member_history.html:112
-msgid "Statistiques par catégorie"
-msgstr "Antontan'isa isaky ny sokajy"
+msgid "Statistiques par classification"
+msgstr "Antontan'isa araka ny fanasokajiana"
 
 #: templates/members/member_list.html:36
 msgid "Actifs ce mois"
@@ -8642,6 +8673,10 @@ msgstr "Vaovao volana ity"
 #: templates/members/member_list.html:53
 msgid "Nom ou n° de carte…"
 msgstr "Anarana na laharan'ny karatra…"
+
+#: templates/members/member_list.html:66
+msgid "Toutes catégories"
+msgstr "Sokajy rehetra"
 
 #: templates/members/member_list.html:72
 msgid "Tout statut"
@@ -8719,10 +8754,6 @@ msgstr ""
 "ao amin'ny Kirakira → Fanontana — Riban mitohy izy raha te hanonta ny kaody "
 "amin'ny mpanonta marika."
 
-#: templates/printing/spine_labels_picker.html:27
-msgid "Cote imprimée"
-msgstr "Kaody atao pirinty"
-
 #: templates/printing/spine_labels_picker.html:36
 msgid "aucune"
 msgstr "tsy misy"
@@ -8793,7 +8824,10 @@ msgid ""
 "Fichiers destinés à un tableur, avec toutes les colonnes de la base — bien "
 "plus que ce que les tableaux ci-dessus affichent. Ils ne sont ni mis en page "
 "ni commentés."
-msgstr "Rakitra ho an'ny tabilao, misy ny tsanganana rehetra ao amin'ny banky angona — mihoatra lavitra noho izay asehon'ny tabilao etsy ambony. Tsy voalamina ary tsy misy fanazavana."
+msgstr ""
+"Rakitra ho an'ny tabilao, misy ny tsanganana rehetra ao amin'ny banky angona "
+"— mihoatra lavitra noho izay asehon'ny tabilao etsy ambony. Tsy voalamina "
+"ary tsy misy fanazavana."
 
 #: templates/reports/_raw_csv.html:23
 msgid "Catalogue complet (CSV)"
@@ -8802,7 +8836,9 @@ msgstr "Katalaogy feno (CSV)"
 #: templates/reports/_raw_csv.html:24
 msgid ""
 "Une ligne par exemplaire : ISBN, éditeur, année, tags, résumé, provenance…"
-msgstr "Andalana iray isaky ny kopia : ISBN, mpanonta, taona, marika, famintinana, fiaviana…"
+msgstr ""
+"Andalana iray isaky ny kopia : ISBN, mpanonta, taona, marika, famintinana, "
+"fiaviana…"
 
 #: templates/reports/_raw_csv.html:34
 msgid "Prêts et réservations en cours (CSV)"
@@ -8810,7 +8846,8 @@ msgstr "Fampindramana sy fanokanana mandeha (CSV)"
 
 #: templates/reports/_raw_csv.html:35
 msgid "La situation d'aujourd'hui, prêts et réservations dans un même fichier."
-msgstr "Ny toe-javatra androany, fampindramana sy famandrihana ao anaty rakitra iray."
+msgstr ""
+"Ny toe-javatra androany, fampindramana sy famandrihana ao anaty rakitra iray."
 
 #: templates/reports/_raw_csv.html:44
 msgid "Les prêts de la période (CSV)"
@@ -8836,7 +8873,9 @@ msgstr "Ny isan'ny tranomboky"
 msgid ""
 "Chaque écran s'imprime en PDF et s'enregistre en Excel, en entier ou tableau "
 "par tableau."
-msgstr "Ny efijery tsirairay dia atonta PDF ary tehirizina Excel, manontolo na isaky ny tabilao."
+msgstr ""
+"Ny efijery tsirairay dia atonta PDF ary tehirizina Excel, manontolo na isaky "
+"ny tabilao."
 
 #: templates/reports/page.html:24
 msgid "Imprimer (PDF)"

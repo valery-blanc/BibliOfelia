@@ -63,7 +63,7 @@ plugins:
             Ajouter un livre: Add a book
             Gérer les exemplaires: Manage copies
             Localisations: Locations
-            Catégories: Categories
+            Classifications: Classifications
             Provenances: Sources
             Langues: Languages
             Recherche: Search
@@ -114,7 +114,7 @@ plugins:
             Ajouter un livre: Añadir un libro
             Gérer les exemplaires: Gestionar los ejemplares
             Localisations: Ubicaciones
-            Catégories: Categorías
+            Classifications: Clasificaciones
             Provenances: Procedencias
             Langues: Idiomas
             Recherche: Búsqueda
@@ -165,7 +165,7 @@ plugins:
             Ajouter un livre: Manampy boky
             Gérer les exemplaires: Fitantanana kopia
             Localisations: Toerana
-            Catégories: Sokajy
+            Classifications: Fanasokajiana
             Provenances: Fiaviana
             Langues: Fiteny
             Recherche: Fikarohana
@@ -224,7 +224,7 @@ nav:
       - Ajouter un livre: catalogue/ajouter-livre.md
       - Gérer les exemplaires: catalogue/exemplaires.md
       - Localisations: catalogue/localisations.md
-      - Catégories: catalogue/categories.md
+      - Classifications: catalogue/categories.md
       - Provenances: catalogue/provenances.md
       - Langues: catalogue/langues.md
       - Recherche: catalogue/recherche.md

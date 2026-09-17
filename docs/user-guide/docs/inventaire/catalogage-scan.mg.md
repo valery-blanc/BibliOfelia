@@ -19,7 +19,7 @@ Ny **session** catalogage (antsoina koa hoe **lot**) dia ampiasaina hanampiana
    fotsiny ny lot, azonao ahitsy na foanana.
 2. **Jerenao ny lisitra** — ary indrindra, ampiharinao ny **fanovana faobe**:
    mariho ny andalana maromaro (na ny rehetra) ary omeo azy ireo, amin'ny tsindry
-   iray, ny **sokajy** mitovy, ny **toerana** mitovy ao amin'ny tranomboky na ny
+   iray, ny **fanasokajiana** mitovy, ny **toerana** mitovy ao amin'ny tranomboky na ny
    **toe-javatra** mitovy. Izay no tena tombontsoan'ny fandraketana miaraka ny
    boky mifanaraka.
 3. **Alefanao ny lot any amin'ny katalôgy**: voaforona tokoa ny notice sy ny
@@ -41,7 +41,7 @@ dia [**Lot vaovao**](/bibliofelia/mg/catalog/scan/new/){ target="_blank" }.
 Alohan'ny hi-scan, dia afaka mametraka **sanda default** ho an'ny lot
 manontolo ianao:
 
-- **catégorie** default (Olon-dehibe, Tanora…);
+- **fanasokajiana** default (Tanora Dokumentera, Olon-dehibe Angano…);
 - **toerana** default (ny etajera halehan'ireo boky ireo);
 - **anarana** mba hahitana ny lot any aoriana.
 
@@ -98,7 +98,7 @@ Rehefa tsindrianao **Vita**, dia miseho ny lisitry ny lot. Ho an'ny andalana
 tsirairay, dia hitanao ny boky hita (mpanoratra, lohateny, fiteny) ary azonao
 atao ny:
 
-- manova ny **catégorie**, ny **toerana** na ny **toetra** — isan-tsanjana, na
+- manova ny **fanasokajiana**, ny **toerana** na ny **toetra** — isan-tsanjana, na
   ho an'ny andalana maromaro miaraka amin'ny case sy ny bokotra **Mariho
   daholo**;
 - manitsy ny **isan'ny exemplaire**;

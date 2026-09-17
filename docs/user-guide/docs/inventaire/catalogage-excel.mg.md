@@ -95,7 +95,7 @@ izay anananao, na inona na inona filaharana.
 |---|---|
 | `ISBN` | **tsy maintsy** |
 | `LOCATION` | kaody toerana (raha tsy izany dia noforonina tsy misy toerana ny kopia) |
-| `CATEGORY` | anaran'ny sokajy efa misy |
+| `CLASSIFICATION` | anaran'ny fanasokajiana efa misy (mbola vakiana ny anarana taloha `CATEGORY`) |
 | `TITLE` | lohatenin'ny rakitra |
 | `AUTHOR` | mpanoratra, sarahina amin'ny **teboka sy faingo (;)** |
 | `TYPE` | karazana boky (Boky, BD / manga, Gazetiboky, Gazety, CD audio, Hafa) |
@@ -105,7 +105,7 @@ izay anananao, na inona na inona filaharana.
 | `TAGS` | teny fanalahidy sarahina amin'ny **faingo** |
 | `EXTERNAL_CODE` | ny kaodin'ny tranomboky hafa efa eo amin'ny boky |
 | `PROVENANCE` | ny kaody na ny anaran'ny fiaviana efa misy |
-| `CATEGORY_ABBR` | ny fanafohezan'ny sokajy (kaody talantalana) |
+| `CLASSIFICATION_CODE` | ny kaody fanasokajiana (mbola vakiana ny anarana taloha `CATEGORY_ABBR`) |
 | `CONDITION` | toetran'ny kopia (Vaovao, Tsara, Simba kely, Simba) |
 
 Ao amin'ny boaty
@@ -159,7 +159,7 @@ ivelany dia an'ny **kopia**, fa tsy an'ny raki-tsoratra.
 | `INTERNAL_ID` | ny kaody vakina voasoratra eo akaikin'ny kaody tsora-tsoratra (`OFL-…`) |
 | `EXTERNAL_CODE` | ny kaody avy amin'ny tranomboky hafa efa eo amin'ny boky |
 | `ISBN`, `TITLE`, `AUTHOR`, `EDITOR`, `YEAR`, `LANGUAGE` | ny mombamomba ny raki-tsoratra |
-| `CATEGORY`, `CATEGORY_ABBR`, `TYPE`, `TAGS` | ny fanasokajiana |
+| `CLASSIFICATION`, `CLASSIFICATION_CODE`, `TYPE`, `TAGS` | ny fanasokajiana |
 | `CONDITION`, `PROVENANCE`, `LOCATION` | ny mombamomba ny kopia |
 
 !!! tip "Izy no rakitra ampiasaina amin'ny fanavaozana"
@@ -194,7 +194,7 @@ maintsy misy farafahakeliny iray amin'ireto fariana roa ireto àry ny rakitra :
     inona, fariana `EXTERNAL_CODE` misy ny kaody hapetraka.
 
 Ekena ary **tsy voatery** ireo fariana hafa rehetra amin'ny fampidirana :
-`TITLE`, `AUTHOR`, `CATEGORY`, `CATEGORY_ABBR`, `TYPE`, `EDITOR`, `YEAR`,
+`TITLE`, `AUTHOR`, `CLASSIFICATION`, `CLASSIFICATION_CODE`, `TYPE`, `EDITOR`, `YEAR`,
 `LANGUAGE`, `TAGS`, `CONDITION`, `PROVENANCE`, `LOCATION` ary `ISBN`.
 
 !!! warning "Tsy mamafa na inona na inona ny efitra foana"

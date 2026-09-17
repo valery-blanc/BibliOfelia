@@ -1,71 +1,71 @@
-# Sokajy
+# Fanasokajiana
 
-Ny **sokajy** dia manasokajy ny boky : Tantara foronina, Boky misy sary, Boky
-fampianarana… Mahazo iray ny rakitra tsirairay, ary izy no mamaritra ny
-faharetan'ny fampindramana mahazatra.
+Ny **fanasokajiana** no mandamina ny boky : Tanora Dokumentera, Olon-dehibe
+Angano, Zaza Album… Mahazo iray ny rakitra tsirairay, ary izy no mamaritra
+ny faharetan'ny fampindramana mahazatra.
 
 Avy amin'ny [**Mandroso**](/bibliofelia/mg/advanced/){ target="_blank" },
-sokafy ny **Sokajy** raha te hamorona, hanova na hamafa azy ireo.
+sokafy ny **Fanasokajiana** raha te hamorona, hanova na hamafa azy ireo.
 
 ## Ireo saha
 
-- **Kaody** — fohy sy tsy misy elanelana : `ENF-ALB`, `ADU-ROM`
-- **Anarana** — izay hitan'ny mpiandry tranomboky sy ny mpamaky
-- **Fanafohezana** — ny **kaody talantalana** atao pirinty amin'ny lamosin'ny
-  boky (jereo etsy ambany)
-- **Sokajy ambony** — hametrahana ny « Boky misy sary » ao ambanin'ny
-  « Fahazazana »
-- **Faharetan'ny fampindramana** — an'andro ; avelao foana raha hampiasa ny
-  mahazatra amin'ny tranomboky
+- **Kaody** — famantarana tokana. Ho an'ny fanasokajiana Ofelia dia mitovy
+  amin'ny kaody fanasokajiana (`JE DOC`)
+- **Anarana** — izay hitan'ny mpitahiry boky sy ny mpamaky (ohatra
+  « Tanora Dokumentera »)
+- **Kaody fanasokajiana** — izay **atonta eo amin'ny sisin'ny boky** (jereo
+  etsy ambany)
+- **Fanasokajiana ambony** — hametraka fanasokajiana iray ao ambanin'ny iray
+  hafa
+- **Faharetan'ny fampindramana** — amin'ny andro ; avelao foana raha ny
+  mahazatry ny trano famakiam-boky no tiana
 
-## Ireo sokajy omena
+## Ireo fanasokajiana omena
 
-Tonga miaraka amin'ny **sokajy ofisialy Ofelia 20** ny BibliOfelia : sokajin-taona
-dimy ampifanandrifiana amin'ny karazan-tahirin-kevitra efatra.
+Tonga miaraka amin'ny **fanasokajiana ofisialy Ofelia 20** i BibliOfelia :
+sokajin-taona dimy atambatra amin'ny karazana boky efatra.
 
-| | Foronina | Fampianarana | Boky misy sary | Tantara an-tsary |
+| | Angano | Dokumentera | Album | Sary mihetsika |
 |---|---|---|---|---|
 | Olon-dehibe | `AD FIC` | `AD DOC` | `AD ALB` | `AD BD` |
 | Tanora | `JE FIC` | `JE DOC` | `JE ALB` | `JE BD` |
 | Zatovo | `ADO FIC` | `ADO DOC` | `ADO ALB` | `ADO BD` |
-| Ankizy | `EN FIC` | `EN DOC` | `EN ALB` | `EN BD` |
+| Zaza | `EN FIC` | `EN DOC` | `EN ALB` | `EN BD` |
 | Zaza madinika | `PE FIC` | `PE DOC` | `PE ALB` | `PE BD` |
 
-Ny **kaody koa no kaody talantalana** : izay voasoratra amin'ny lamosin'ny boky
-no hitanao ao amin'ny lisitry ny sokajy.
+Ny **kaody dia kaody fanasokajiana koa** : izay voasoratra eo amin'ny sisin'ny
+boky no hitanao ao amin'ny sakafo.
 
-!!! info "Tsy anisan'ny sokajy ny fiteny"
-    Ny boky amin'ny teny anglisy apetraka amin'ny foronina ho an'ny olon-dehibe
-    dia mankany amin'ny `AD FIC`, fa tsy amin'ny sokajy « Anglisy Olon-dehibe
-    Foronina ». Soratana eo amin'ny rakitry ny boky ny fiteny, ary hita indray
-    amin'ny sivana **Fiteny** ao amin'ny katalaogy. Ny sokajy isaky ny fiteny dia
-    mampitombo andalana fotsiny.
+!!! info "Tsy ao anatin'ny fanasokajiana ny fiteny"
+    Boky anglisy voasokajy ho angano ho an'ny olon-dehibe dia miditra ao amin'ny
+    `AD FIC`, fa tsy ao amin'ny fanasokajiana « Anglisy Olon-dehibe Angano ».
+    Ny fiteny dia soratana eo amin'ny takelaky ny boky ary hita amin'ny sivana
+    **Fiteny** amin'ny katalaogy. Fanasokajiana iray isaky ny fiteny dia
+    hampitombo ny andalana tsy misy tombony.
 
-## Ny fanafohezana, na kaody talantalana
+## Ny kaody fanasokajiana
 
-Izy no dikan-teny fohy amin'ilay anarana, ilay mety ho eo amin'ny etiketin'ny
-lamosina. Ho an'ny « Tantara foronina ho an'ny tanora » dia soratana hoe
-`RO FI ADO`.
+Izany no dikan'ny anarana fohy, izay mahafeno etikety sisiny. Ho an'ny
+« Tanora Dokumentera » dia `JE DOC` no soratana.
 
-Mihatra amin'ny rakitra **rehetra** ao amin'ilay sokajy izy : indray mandeha
-ihany no anoratana azy, ka tsy mety hisy boky roa mitovy sokajy nefa manana
-kaody roa samy hafa.
+Manan-kery ho an'ny rakitra **rehetra** amin'io fanasokajiana io izy : fampidirana
+iray ihany, ary boky roa mitovy fanasokajiana tsy haneho kaody roa samihafa
+mihitsy.
 
-Rehefa apetraka ny rindrambaiko dia mahazo fanafohezana fanombohana ny sokajy
-16 nomena (`ENF ALB`, `ADU ROM`…). Azonao soloina ny anao : tsy hosoloin'ny
-BibliOfelia mihitsy ny kaody nosoratanao.
+Amin'ny fametrahana, ny fanasokajiana omena dia mahazo kaody voalohany
+(`JE DOC`, `AD FIC`…). Afaka soloinao ny anao : tsy hanoratra indray i
+BibliOfelia ny kaody nosoratanao.
 
-Rehefa vita ny fanafohezana dia atontay ny
-[etiketin'ny lamosina](../impressions/etiquettes.md).
+Raha efa eo ny kaody, atontao ny
+[etikety sisiny](../impressions/etiquettes.md).
 
-## Famafana sokajy
+## Famafana fanasokajiana
 
-**Tsy misy boky fafana.** Ny rakitra voakasika dia mijanona tsy misy sokajy
-fotsiny, ary lazain'ny efijery fanamafisana hoe firy izy ireo. Azonao omena
-sokajy vaovao izy ireo amin'ny alalan'ny
-[asa an-tsokosoko](operations-lot.md).
+**Tsy misy boky voafafa.** Ny rakitra voakasika dia tsy manana fanasokajiana
+fotsiny, ary ny efijery fanamafisana dia milaza hoe firy izy ireo. Afaka
+omeo iray vaovao amin'ny [asa marobe](operations-lot.md).
 
 ## Jereo koa
 
-- [Asa an-tsokosoko](operations-lot.md)
-- [Fanontana ny etikety](../impressions/etiquettes.md)
+- [Asa marobe](operations-lot.md)
+- [Atontao ny etikety](../impressions/etiquettes.md)

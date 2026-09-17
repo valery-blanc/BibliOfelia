@@ -146,7 +146,7 @@ def member_history(request, pk):
     active = [loan for loan in loans if loan.status in _ACTIVE_LOAN_STATUSES]
     past = [loan for loan in loans if loan.status not in _ACTIVE_LOAN_STATUSES]
     by_category = Counter(
-        (loan.item.record.category.name if loan.item.record.category else _("Sans catégorie"))
+        (loan.item.record.category.name if loan.item.record.category else _("Sans classification"))
         for loan in loans
     )
     return render(

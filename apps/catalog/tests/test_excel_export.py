@@ -62,6 +62,10 @@ def test_export_headers_are_the_import_columns():
     headers, rows = _read(build_catalog_workbook())
     assert headers == EXPORT_COLUMNS
     assert rows == []
+    assert "CLASSIFICATION" in headers
+    assert "CLASSIFICATION_CODE" in headers
+    assert "CATEGORY" not in headers
+    assert "CATEGORY_ABBR" not in headers
 
 
 def test_export_one_row_per_item(catalogue):
@@ -82,8 +86,8 @@ def test_export_row_carries_every_field(catalogue):
     assert values["ISBN"] == "9782070612758"
     assert values["TITLE"] == "Le Petit Prince"
     assert values["AUTHOR"] == "Antoine de Saint-Exupéry"
-    assert values["CATEGORY"] == "Romans"
-    assert values["CATEGORY_ABBR"] == "RO FI"
+    assert values["CLASSIFICATION"] == "Romans"
+    assert values["CLASSIFICATION_CODE"] == "RO FI"
     assert values["TYPE"] == "Livre"
     assert values["EDITOR"] == "Gallimard"
     assert values["YEAR"] == 1943

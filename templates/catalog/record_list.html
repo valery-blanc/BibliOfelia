@@ -49,7 +49,7 @@
         {% icon "scan-barcode" size="16px" %}
     </button>
     <select name="category" class="filter-select" style="width:auto;min-width:160px">
-        <option value="">{% trans "Toutes catégories" %}</option>
+        <option value="">{% trans "Toutes les classifications" %}</option>
         {% for cat in categories %}
         <option value="{{ cat.pk }}" {% if selected.category == cat.pk|stringformat:'s' %}selected{% endif %}>{{ cat.name }}</option>
         {% endfor %}
@@ -132,7 +132,7 @@
         <input type="hidden" name="back_qs" value="{{ base_qs }}">
         <div class="bulk-assign">
             <div class="field">
-                <label>{% trans "Catégorie" %}</label>
+                <label>{% trans "Classification" %}</label>
                 <select name="category" class="filter-select">
                     <option value="keep">{% trans "Ne pas modifier" %}</option>
                     <option value="">{% trans "— (vider)" %}</option>
@@ -174,7 +174,7 @@
                     <th style="width:30px"></th>
                     <th>{% trans "Titre" %}</th>
                     <th>{% trans "Auteur(s)" %}</th>
-                    <th>{% trans "Catégorie" %}</th>
+                    <th>{% trans "Classification" %}</th>
                     <th style="text-align:right">{% trans "Ex." %}</th>
                 </tr>
             </thead>
@@ -243,7 +243,7 @@
             <tr>
                 <th>{% trans "Titre" %}</th>
                 <th>{% trans "Auteur(s)" %}</th>
-                <th>{% trans "Catégorie" %}</th>
+                <th>{% trans "Classification" %}</th>
                 <th style="text-align:right">{% trans "Ex." %}</th>
             </tr>
         </thead>

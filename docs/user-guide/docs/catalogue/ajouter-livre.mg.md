@@ -40,7 +40,7 @@ tanana:
 - **Editora** — ohatra Gallimard, Hachette…
 - **Taona namoahana**
 - **Fiteny** — manandanja ho an'ny tranomboky maro fiteny
-- **Sokajy** — Olon-dehibe, Tanora, Filazana… (apetraky ny
+- **Fanasokajiana** — Tanora Dokumentera, Olon-dehibe Angano… (apetraky ny
   mpitantana)
 - **Fintinana** (tsy voatery) — fanazavana fohy hanampiana ny mpamaky
 

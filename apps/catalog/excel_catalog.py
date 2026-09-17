@@ -83,7 +83,7 @@ IMPORT_OVERRIDE_COLUMNS = [
     "condition",  # → état de l'exemplaire (Item.state)
     "external_code",  # FEAT-063 → code Ofelia externe de l'exemplaire
     "provenance",     # FEAT-064 → provenance de l'exemplaire
-    "category_abbr",  # FEAT-067 → abréviation (cote) de la catégorie
+    "category_abbr",  # FEAT-067 / FEAT-094 → code de classification
 ]
 
 # FEAT-079 : colonnes qui identifient l'exemplaire à mettre à jour. Au moins
@@ -127,6 +127,11 @@ _COLUMN_ALIASES = {
         "internalid",
         "id_ofelia",
     ],
+    "category": [
+        "classification",
+        "categorie",
+        "classement",
+    ],
     "category_abbr": [
         "abbreviation",
         "abreviation",
@@ -134,6 +139,10 @@ _COLUMN_ALIASES = {
         "categorie abregee",
         "category_abbreviation",
         "cat_abbr",
+        "classification_code",
+        "code_de_classification",
+        "code de classification",
+        "classif_code",
     ],
 }
 
@@ -642,9 +651,10 @@ def _parse_row_overrides(
         else:
             warnings.append("CONDITION_UNKNOWN")
 
-    # FEAT-067 : la cote appartient à la catégorie, pas à la ligne — on la pose
-    # sur la Category résolue par la colonne CATEGORY. Sans catégorie résolue,
-    # elle n'a pas de cible : on le signale plutôt que de la perdre en silence.
+    # FEAT-067 / FEAT-094 : le code de classification appartient à la
+    # classification, pas à la ligne — on le pose sur la Category résolue par
+    # la colonne CLASSIFICATION (alias CATEGORY). Sans classification résolue,
+    # il n'a pas de cible : on le signale plutôt que de le perdre en silence.
     abbr = _cell("category_abbr")
     if abbr:
         if resolved_category is None:
@@ -771,7 +781,7 @@ def run_import_job(job: ExcelCatalogJob) -> None:
     headers = _header_map(ws)
     col_isbn = headers.get("isbn")
     col_loc = headers.get("location")
-    col_cat = headers.get("category")
+    col_cat = _resolve_column(headers, "category")
     # FEAT-053 : colonnes optionnelles d'affectation fiche/exemplaire.
     override_cols = {
         name: _resolve_column(headers, name) for name in IMPORT_OVERRIDE_COLUMNS

@@ -15,8 +15,8 @@ langue souhaitée. La page recharge immédiatement dans la nouvelle langue.
 ## Ce qui change avec la langue
 
 - L'interface (menus, boutons, messages) bascule entièrement
-- Les catégories standard (Adulte, Enfant, Roman, Documentaire…) sont
-  traduites
+- Les classifications (Jeunesse Documentaire, Adultes Fiction…) et les
+  catégories d'usagers (Adulte, Enfant…) sont traduites
 - Les noms de membres, les titres de livres, les notes restent dans la
   langue d'origine (ce sont vos données)
 

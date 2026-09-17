@@ -20,7 +20,7 @@ temps :
    travail, que vous pouvez corriger ou vider.
 2. **Vous vérifiez la liste** — et surtout, vous appliquez des **modifications
    par lot** : cochez plusieurs lignes (ou toutes) et affectez-leur en un seul
-   clic la même **catégorie**, le même **emplacement** dans la bibliothèque ou
+   clic la même **classification**, le même **emplacement** dans la bibliothèque ou
    le même **état**. C'est tout l'intérêt de cataloguer ensemble des livres qui
    vont ensemble.
 3. **Vous envoyez le lot au catalogue** : les notices et les exemplaires sont
@@ -41,7 +41,7 @@ puis sur [**Nouveau lot**](/bibliofelia/fr/catalog/scan/new/){ target="_blank" }
 Avant de scanner, vous pouvez fixer des **valeurs par défaut** pour tout
 le lot :
 
-- une **catégorie** par défaut (Adultes, Jeunesse…) ;
+- une **classification** par défaut (Jeunesse Documentaire, Adultes Fiction…) ;
 - un **emplacement** par défaut (le rayon où iront ces livres) ;
 - un **libellé** pour retrouver le lot plus tard.
 
@@ -97,7 +97,7 @@ Quand vous appuyez sur **Terminer**, la liste du lot s'affiche. Pour
 chaque ligne, vous voyez le livre trouvé (auteur, titre, langue) et vous
 pouvez :
 
-- changer la **catégorie**, l'**emplacement** ou l'**état** — à la ligne,
+- changer la **classification**, l'**emplacement** ou l'**état** — à la ligne,
   ou pour plusieurs lignes d'un coup grâce aux cases à cocher et au bouton
   **Tout cocher** ;
 - ajuster le **nombre d'exemplaires** ;

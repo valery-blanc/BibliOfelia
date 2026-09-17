@@ -18,7 +18,7 @@ Una **sesión** de catalogación (también llamada **lote**) sirve para añadir
    corregir o vaciar.
 2. **Comprueba la lista** — y sobre todo, aplica **modificaciones por lote**:
    marque varias líneas (o todas) y asígneles, con un solo clic, la misma
-   **categoría**, la misma **ubicación** en la biblioteca o el mismo **estado**.
+   **clasificación**, la misma **ubicación** en la biblioteca o el mismo **estado**.
    Ahí está todo el interés de catalogar juntos los libros que van juntos.
 3. **Envía el lote al catálogo**: las fichas y los ejemplares se crean de verdad,
    y puede imprimir de una vez las etiquetas **solo de ese lote**.
@@ -36,7 +36,7 @@ y luego [**Nuevo lote**](/bibliofelia/es/catalog/scan/new/){ target="_blank" }.
 
 Antes de escanear, puede fijar **valores por defecto** para todo el lote:
 
-- una **categoría** por defecto (Adultos, Infantil…);
+- una **clasificación** por defecto (Juventud Documental, Adultos Ficción…);
 - una **ubicación** por defecto (la estantería a la que irán estos libros);
 - una **etiqueta** para volver a encontrar el lote más tarde.
 
@@ -88,7 +88,7 @@ escanee ese código de barras 977 **en el mismo lote** que sus libros.
 Cuando pulse **Terminar**, aparece la lista del lote. Para cada línea, ve el
 libro encontrado (autor, título, idioma) y puede:
 
-- cambiar la **categoría**, la **ubicación** o el **estado** — por línea, o
+- cambiar la **clasificación**, la **ubicación** o el **estado** — por línea, o
   para varias líneas a la vez con las casillas y el botón **Marcar todo**;
 - ajustar el **número de ejemplares**;
 - **eliminar** una línea (icono de papelera) en caso de error de escaneo.

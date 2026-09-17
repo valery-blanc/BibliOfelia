@@ -6,7 +6,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: BibliOfelia 1.0\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2026-09-09 21:40+0000\n"
+"POT-Creation-Date: 2026-09-15 20:53+0000\n"
 "PO-Revision-Date: 2026-05-22 00:00+0000\n"
 "Last-Translator: Claude Code\n"
 "Language-Team: English\n"
@@ -134,7 +134,7 @@ msgstr "Book"
 msgid "Carte membre"
 msgstr "Member card"
 
-#: apps/catalog/excel_catalog.py:400
+#: apps/catalog/excel_catalog.py:409
 msgid ""
 "Colonne d'identification manquante : le fichier doit porter une colonne "
 "OFELIA_CODE (ou INTERNAL_ID) et/ou EXTERNAL_CODE, sinon les exemplaires à "
@@ -225,7 +225,7 @@ msgstr "Acquisition source"
 msgid "Donateur"
 msgstr "Donor"
 
-#: apps/catalog/forms.py:144 apps/catalog/forms.py:320
+#: apps/catalog/forms.py:144 apps/catalog/forms.py:324
 #: templates/catalog/provenance_list.html:36
 msgid "Notes"
 msgstr "Notes"
@@ -279,8 +279,8 @@ msgstr "A location with this code already exists for this parent."
 msgid "Un emplacement ne peut pas être son propre parent."
 msgstr "A location cannot be its own parent."
 
-#: apps/catalog/forms.py:262 apps/catalog/forms.py:294
-#: apps/catalog/forms.py:318 apps/members/forms.py:249
+#: apps/catalog/forms.py:263 apps/catalog/forms.py:298
+#: apps/catalog/forms.py:322 apps/members/forms.py:249
 #: templates/catalog/category_list.html:34
 #: templates/catalog/language_list.html:35
 #: templates/catalog/location_list.html:34
@@ -289,46 +289,47 @@ msgstr "A location cannot be its own parent."
 msgid "Code"
 msgstr "Code"
 
-#: apps/catalog/forms.py:263 apps/catalog/forms.py:294 apps/setup/forms.py:54
+#: apps/catalog/forms.py:264 apps/catalog/forms.py:298 apps/setup/forms.py:54
 #: templates/accounts/user_list.html:35 templates/catalog/category_list.html:35
 #: templates/catalog/language_list.html:34
 #: templates/printing/cards_picker.html:36
 msgid "Nom"
 msgstr "Last name"
 
-#: apps/catalog/forms.py:264 templates/catalog/category_list.html:36
-msgid "Abréviation"
-msgstr "Abbreviation"
+#: apps/catalog/forms.py:265 templates/catalog/category_list.html:36
+#: templates/printing/spine_labels_picker.html:27
+msgid "Code de classification"
+msgstr "Classification code"
 
-#: apps/catalog/forms.py:265
-msgid "Catégorie parente"
-msgstr "Parent category"
+#: apps/catalog/forms.py:266
+msgid "Classification parente"
+msgstr "Parent classification"
 
-#: apps/catalog/forms.py:266 apps/members/forms.py:257
+#: apps/catalog/forms.py:267 apps/members/forms.py:257
 msgid "Durée de prêt (jours)"
 msgstr "Loan period (days)"
 
-#: apps/catalog/forms.py:269
-msgid "Court, sans espace : ENF-ALB, ADU-ROM…"
-msgstr "Short, no spaces: ENF-ALB, ADU-ROM…"
-
 #: apps/catalog/forms.py:271
 msgid ""
-"Cote imprimée sur l'étiquette de tranche. Ex. « RO FI ADO » pour « Romans "
-"fiction pour adolescents »."
-msgstr ""
-"Shelf mark printed on the spine label. E.g. “RO FI ADO” for “Teen fiction "
-"novels”."
-
-#: apps/catalog/forms.py:274
-msgid "Sous-catégorie de… (optionnel)."
-msgstr "Sub-category of… (optional)."
+"Identifiant unique. Pour les classifications Ofelia, identique au code de "
+"classification (JE DOC)."
+msgstr "Unique identifier. For Ofelia classifications, the same as the classification code (JE DOC)."
 
 #: apps/catalog/forms.py:275
+msgid ""
+"Imprimé sur l'étiquette de tranche. Ex. « JE DOC » pour « Jeunesse "
+"Documentaire »."
+msgstr "Printed on the spine label. E.g. “JE DOC” for “Youth Non-fiction”."
+
+#: apps/catalog/forms.py:278
+msgid "Sous-classification de… (optionnel)."
+msgstr "Sub-classification of… (optional)."
+
+#: apps/catalog/forms.py:279
 msgid "Vide = durée par défaut de la bibliothèque."
 msgstr "Empty = the library's default period."
 
-#: apps/catalog/forms.py:297
+#: apps/catalog/forms.py:301
 msgid ""
 "Abréviation internationale principale, sans variante régionale : fr, en, pt, "
 "de… (« fr » couvre le français de France, du Canada et de Suisse)."
@@ -336,52 +337,52 @@ msgstr ""
 "Main international abbreviation, without regional variant: fr, en, pt, de… "
 "(“fr” covers French from France, Canada and Switzerland)."
 
-#: apps/catalog/forms.py:301
+#: apps/catalog/forms.py:305
 msgid "Nom de la langue dans la langue de saisie courante."
 msgstr "Name of the language, in the language you are typing in."
 
-#: apps/catalog/forms.py:319 templates/catalog/provenance_list.html:35
+#: apps/catalog/forms.py:323 templates/catalog/provenance_list.html:35
 msgid "Nom complet"
 msgstr "Full name"
 
-#: apps/catalog/forms.py:323
+#: apps/catalog/forms.py:327
 msgid "Court, sans espace : OFELIA, BM-GE, DON-DUPONT…"
 msgstr "Short, no spaces: OFELIA, BM-GE, DON-DUPONT…"
 
-#: apps/catalog/forms.py:324
+#: apps/catalog/forms.py:328
 msgid ""
 "Nom lisible affiché dans les listes. Ex. « Prêt Bibliothèque de Genève »."
 msgstr "Readable name shown in lists. E.g. “On loan from Geneva Library”."
 
-#: apps/catalog/forms.py:325
+#: apps/catalog/forms.py:329
 msgid "Contact, date de restitution prévue, conditions du dépôt…"
 msgstr "Contact, expected return date, terms of the deposit…"
 
-#: apps/catalog/forms.py:341
+#: apps/catalog/forms.py:345
 msgid "Nom du lot (optionnel)"
 msgstr "Batch name (optional)"
 
-#: apps/catalog/forms.py:342
-msgid "Catégorie par défaut"
-msgstr "Default category"
+#: apps/catalog/forms.py:346
+msgid "Classification par défaut"
+msgstr "Default classification"
 
-#: apps/catalog/forms.py:343
+#: apps/catalog/forms.py:347
 msgid "Emplacement par défaut"
 msgstr "Default location"
 
-#: apps/catalog/forms.py:344
+#: apps/catalog/forms.py:348
 msgid "Provenance par défaut"
 msgstr "Default source"
 
-#: apps/catalog/forms.py:347
+#: apps/catalog/forms.py:351
 msgid "Appliquée aux nouvelles notices ; modifiable ligne par ligne."
 msgstr "Applied to new records; editable row by row."
 
-#: apps/catalog/forms.py:348
+#: apps/catalog/forms.py:352
 msgid "Appliqué aux nouveaux exemplaires ; modifiable ligne par ligne."
 msgstr "Applied to new copies; editable row by row."
 
-#: apps/catalog/forms.py:350
+#: apps/catalog/forms.py:354
 msgid ""
 "Appliquée à tous les exemplaires du lot. Ex. des livres prêtés par une autre "
 "bibliothèque, à retrouver le jour du retour."
@@ -519,21 +520,21 @@ msgid "nom"
 msgstr "name"
 
 #: apps/catalog/models.py:92
-msgid "abréviation"
-msgstr "abbreviation"
+msgid "code de classification"
+msgstr "classification code"
 
 #: apps/catalog/models.py:100
-msgid "catégorie parente"
-msgstr "parent category"
+msgid "classification parente"
+msgstr "parent classification"
 
 #: apps/catalog/models.py:105 apps/catalog/models.py:240
-#: apps/inventory/models.py:49 apps/members/models.py:78
-msgid "catégorie"
-msgstr "category"
+#: apps/inventory/models.py:49
+msgid "classification"
+msgstr "classification"
 
 #: apps/catalog/models.py:106
-msgid "catégories"
-msgstr "categories"
+msgid "classifications"
+msgstr "classifications"
 
 #: apps/catalog/models.py:115
 msgid "Hex ex: #ff8800"
@@ -811,13 +812,13 @@ msgstr "Copy deleted."
 
 #: apps/catalog/views.py:556
 #, python-format
-msgid "%(n)s notice(s) → catégorie %(v)s"
-msgstr "%(n)s record(s) → category %(v)s"
+msgid "%(n)s notice(s) → classification %(v)s"
+msgstr "%(n)s record(s) → classification %(v)s"
 
 #: apps/catalog/views.py:558
 #, python-format
-msgid "%(n)s notice(s) sans catégorie"
-msgstr "%(n)s record(s) with no category"
+msgid "%(n)s notice(s) sans classification"
+msgstr "%(n)s record(s) with no classification"
 
 #: apps/catalog/views.py:566
 #, python-format
@@ -889,27 +890,24 @@ msgid "Langue retirée de la liste."
 msgstr "Language removed from the list."
 
 #: apps/catalog/views.py:856
-msgid "Catégorie créée."
-msgstr "Category created."
+msgid "Classification créée."
+msgstr "Classification created."
 
 #: apps/catalog/views.py:866 templates/catalog/category_list.html:25
-#: templates/catalog/record_bulk_assign_category.html:57
-#: templates/finance/tariff_list.html:72
-msgid "Nouvelle catégorie"
-msgstr "New category"
+msgid "Nouvelle classification"
+msgstr "New classification"
 
 #: apps/catalog/views.py:878
-msgid "Catégorie mise à jour."
-msgstr "Category updated."
+msgid "Classification mise à jour."
+msgstr "Classification updated."
 
 #: apps/catalog/views.py:888
-#: templates/finance/member_category_confirm_delete.html:33
-msgid "Modifier la catégorie"
-msgstr "Edit category"
+msgid "Modifier la classification"
+msgstr "Edit classification"
 
 #: apps/catalog/views.py:903
-msgid "Catégorie supprimée."
-msgstr "Category deleted."
+msgid "Classification supprimée."
+msgstr "Classification deleted."
 
 #: apps/catalog/views.py:936
 msgid "Provenance créée."
@@ -1691,11 +1689,9 @@ msgstr "Default loan duration (days)"
 
 #: apps/core/forms.py:579
 msgid ""
-"Utilisée si ni la catégorie de document ni la catégorie de membre n'en "
+"Utilisée si ni la classification du document ni la catégorie de membre n'en "
 "définit une. Défaut : 21 jours (3 semaines)."
-msgstr ""
-"Used if neither the document category nor the member category defines one. "
-"Default: 21 days (3 weeks)."
+msgstr "Used if neither the document classification nor the member category defines one. Default: 21 days (3 weeks)."
 
 #: apps/core/forms.py:582
 msgid "Validité d'une réservation en attente (jours)"
@@ -2314,8 +2310,8 @@ msgid "Un emplacement"
 msgstr "A location"
 
 #: apps/inventory/models.py:19
-msgid "Une catégorie"
-msgstr "A category"
+msgid "Une classification"
+msgstr "A classification"
 
 #: apps/inventory/models.py:24
 msgid "Clôturée"
@@ -2734,6 +2730,10 @@ msgstr "first name"
 msgid "date de naissance"
 msgstr "date of birth"
 
+#: apps/members/models.py:78
+msgid "catégorie"
+msgstr "category"
+
 #: apps/members/models.py:81
 msgid "téléphone"
 msgstr "phone"
@@ -2895,10 +2895,9 @@ msgstr "Membership invoice %(num)s cancelled: the new category has none."
 msgid "Facture de cotisation %(num)s émise (%(amount)s)."
 msgstr "Membership fee invoice %(num)s issued (%(amount)s)."
 
-#: apps/members/views.py:149 apps/reports/builders/loans.py:142
-#: apps/reports/builders/members.py:157
-msgid "Sans catégorie"
-msgstr "Uncategorized"
+#: apps/members/views.py:149
+msgid "Sans classification"
+msgstr "No classification"
 
 #: apps/members/views.py:177
 #, python-format
@@ -3005,11 +3004,9 @@ msgstr "No member selected."
 
 #: apps/printing/views.py:160
 msgid ""
-"Aucun exemplaire sélectionné n'a de catégorie abrégée : renseignez "
-"l'abréviation de la catégorie avant d'imprimer."
-msgstr ""
-"None of the selected copies has an abbreviated category: fill in the "
-"category abbreviation before printing."
+"Aucun exemplaire sélectionné n'a de code de classification : renseignez le "
+"code de classification avant d'imprimer."
+msgstr "None of the selected copies has a classification code: fill in the classification code before printing."
 
 #: apps/reports/builders/__init__.py:44 apps/reports/builders/worklists.py:70
 msgid "Les retards"
@@ -3167,7 +3164,9 @@ msgstr "books read without being borrowed"
 msgid ""
 "« %(label)s » enregistre une simple venue à la bibliothèque : c'est "
 "l'animation principale, comptée à part des ateliers."
-msgstr "“%(label)s” records a plain visit to the library: it is the main activity, counted separately from workshops."
+msgstr ""
+"“%(label)s” records a plain visit to the library: it is the main activity, "
+"counted separately from workshops."
 
 #: apps/reports/builders/attendance.py:106
 msgid "L'âge des personnes présentes"
@@ -3177,7 +3176,8 @@ msgstr "Ages of those present"
 msgid ""
 "Seuls les usagers inscrits ont un âge connu ; les non-membres sont comptés à "
 "part."
-msgstr "Only registered members have a known age; non-members are counted separately."
+msgstr ""
+"Only registered members have a known age; non-members are counted separately."
 
 #: apps/reports/builders/attendance.py:128
 msgid "La fréquentation mois par mois"
@@ -3320,7 +3320,10 @@ msgid ""
 "« Prêts par livre » compare les prêts de la période au nombre de livres en "
 "circulation du rayon : au-dessus de 1, chaque livre du rayon est sorti au "
 "moins une fois."
-msgstr "“Loans per book” compares the period's loans with the number of circulating books in the section: above 1, every book in the section went out at least once."
+msgstr ""
+"“Loans per book” compares the period's loans with the number of circulating "
+"books in the section: above 1, every book in the section went out at least "
+"once."
 
 #: apps/reports/builders/collection.py:94
 msgid "Par sorte de document"
@@ -3470,7 +3473,9 @@ msgstr "Every book on the shelves for over a year has gone out at least once."
 msgid ""
 "Comptés : les livres en rayon depuis plus d'un an et jamais empruntés. Les "
 "nouveautés, les livres perdus, pilonnés ou en réparation sont écartés."
-msgstr "Counted: books on the shelves for over a year and never borrowed. New arrivals and books lost, withdrawn or under repair are left out."
+msgstr ""
+"Counted: books on the shelves for over a year and never borrowed. New "
+"arrivals and books lost, withdrawn or under repair are left out."
 
 #: apps/reports/builders/collection.py:432
 msgid "Le catalogue complet"
@@ -3519,7 +3524,9 @@ msgid ""
 "Un exemplaire par ligne. Pour reprendre le catalogue dans un tableur avec "
 "toutes les colonnes (ISBN, éditeur, année, tags…), utilisez l'export CSV "
 "proposé sous ce tableau."
-msgstr "One copy per row. To open the catalogue in a spreadsheet with every column (ISBN, publisher, year, tags…), use the CSV export offered below this table."
+msgstr ""
+"One copy per row. To open the catalogue in a spreadsheet with every column "
+"(ISBN, publisher, year, tags…), use the CSV export offered below this table."
 
 #: apps/reports/builders/loans.py:47 apps/reports/builders/loans.py:177
 #: apps/reports/builders/loans.py:258 apps/reports/builders/members.py:340
@@ -3583,6 +3590,10 @@ msgstr "Loans month by month"
 msgid "Ce qui se prête, par rayon"
 msgstr "What gets borrowed, by section"
 
+#: apps/reports/builders/loans.py:142 apps/reports/builders/members.py:157
+msgid "Sans catégorie"
+msgstr "Uncategorized"
+
 #: apps/reports/builders/loans.py:144
 msgid "Qui emprunte, par catégorie d'usager"
 msgstr "Who borrows, by member category"
@@ -3605,7 +3616,9 @@ msgstr "The least borrowed books"
 msgid ""
 "Les %(n)s titres les moins sortis parmi ceux qui sont sortis au moins une "
 "fois. Les livres jamais empruntés sont comptés séparément."
-msgstr "The %(n)s titles that went out least among those that went out at least once. Books never borrowed are counted separately."
+msgstr ""
+"The %(n)s titles that went out least among those that went out at least "
+"once. Books never borrowed are counted separately."
 
 #: apps/reports/builders/loans.py:179 apps/reports/builders/loans.py:351
 msgid "Aucun prêt pendant cette période."
@@ -3807,7 +3820,9 @@ msgstr "cards renewed during the period"
 msgid ""
 "« Usagers venus » réunit les emprunteurs et les participants aux "
 "animations : quelqu'un qui a fait les deux n'est compté qu'une fois."
-msgstr "“Members who came” covers both borrowers and activity participants: someone who did both is counted only once."
+msgstr ""
+"“Members who came” covers both borrowers and activity participants: someone "
+"who did both is counted only once."
 
 #: apps/reports/builders/members.py:148
 msgid "L'âge des usagers"
@@ -3838,20 +3853,9 @@ msgid "N° de carte"
 msgstr "Card no."
 
 #: apps/reports/builders/members.py:246 apps/reports/builders/worklists.py:236
-#: apps/reports/builders/worklists.py:249
-#: templates/catalog/_item_results.html:54
-#: templates/catalog/_item_results.html:123
-#: templates/catalog/record_detail.html:53
-#: templates/catalog/record_list.html:136
-#: templates/catalog/record_list.html:178
-#: templates/catalog/record_list.html:247
-#: templates/catalog/scan_session.html:53
-#: templates/catalog/scan_session.html:153
-#: templates/catalog/scan_session.html:187
 #: templates/finance/tariff_list.html:30
 #: templates/members/member_detail.html:97
 #: templates/printing/cards_picker.html:37
-#: templates/printing/spine_labels_picker.html:26
 msgid "Catégorie"
 msgstr "Category"
 
@@ -4144,7 +4148,9 @@ msgid ""
 "Les huit premières lignes décrivent la situation d'aujourd'hui : elles ne "
 "dépendent pas de la période choisie et n'ont donc rien à comparer. Les "
 "suivantes portent sur la période."
-msgstr "The first eight rows describe today's situation: they do not depend on the chosen period and so have nothing to compare with. The rest cover the period."
+msgstr ""
+"The first eight rows describe today's situation: they do not depend on the "
+"chosen period and so have nothing to compare with. The rest cover the period."
 
 #: apps/reports/builders/team.py:45
 msgid "saisies sur la période"
@@ -4329,6 +4335,20 @@ msgstr "Every member has borrowed recently."
 msgid "Livres qui ne sortent pas"
 msgstr "Books that do not go out"
 
+#: apps/reports/builders/worklists.py:249
+#: templates/catalog/_item_results.html:54
+#: templates/catalog/_item_results.html:123
+#: templates/catalog/record_detail.html:53
+#: templates/catalog/record_list.html:136
+#: templates/catalog/record_list.html:178
+#: templates/catalog/record_list.html:247
+#: templates/catalog/scan_session.html:53
+#: templates/catalog/scan_session.html:153
+#: templates/catalog/scan_session.html:187
+#: templates/printing/spine_labels_picker.html:26
+msgid "Classification"
+msgstr "Classification"
+
 #: apps/reports/builders/worklists.py:250
 msgid "Acquis le"
 msgstr "Acquired on"
@@ -4423,7 +4443,8 @@ msgstr "Incomplete dates: here are the last 12 months."
 #: apps/reports/periods.py:110
 msgid ""
 "La date de début doit précéder la date de fin : voici les 12 derniers mois."
-msgstr "The start date must come before the end date: here are the last 12 months."
+msgstr ""
+"The start date must come before the end date: here are the last 12 months."
 
 #: apps/reports/views.py:50
 msgid "Ce rapport n'existe pas."
@@ -4908,8 +4929,8 @@ msgstr "(all pages)"
 
 #: templates/catalog/category_confirm_delete.html:4
 #: templates/catalog/category_confirm_delete.html:20
-msgid "Supprimer la catégorie"
-msgstr "Delete category"
+msgid "Supprimer la classification"
+msgstr "Delete classification"
 
 #: templates/catalog/category_confirm_delete.html:10
 #: templates/catalog/category_form.html:10
@@ -4940,14 +4961,15 @@ msgstr "Advanced"
 #: templates/catalog/category_list.html:4
 #: templates/catalog/category_list.html:11
 #: templates/catalog/category_list.html:19 templates/core/advanced.html:184
-msgid "Catégories"
-msgstr "Categories"
+msgid "Classifications"
+msgstr "Classifications"
 
 #: templates/catalog/category_confirm_delete.html:26
 #, python-format
 msgid ""
-"Confirmez-vous la suppression de la catégorie <strong>%(code)s</strong> ?"
-msgstr "Do you confirm the deletion of category <strong>%(code)s</strong>?"
+"Confirmez-vous la suppression de la classification <strong>%(code)s</"
+"strong> ?"
+msgstr "Do you confirm the deletion of classification <strong>%(code)s</strong>?"
 
 #: templates/catalog/category_confirm_delete.html:28
 #: templates/catalog/item_bulk_delete.html:35
@@ -4957,26 +4979,25 @@ msgid "Conséquences"
 msgstr "Consequences"
 
 #: templates/catalog/category_confirm_delete.html:32
-msgid "notice se retrouvera sans catégorie (aucune notice n'est supprimée)."
+msgid ""
+"notice se retrouvera sans classification (aucune notice n'est supprimée)."
 msgid_plural ""
-"notices se retrouveront sans catégorie (aucune notice n'est supprimée)."
-msgstr[0] "record will end up with no category (no record is deleted)."
-msgstr[1] "records will end up with no category (no record is deleted)."
+"notices se retrouveront sans classification (aucune notice n'est supprimée)."
+msgstr[0] "record will end up with no classification (no record is deleted)."
+msgstr[1] "records will end up with no classification (no record is deleted)."
 
 #: templates/catalog/category_confirm_delete.html:37
-msgid "sous-catégorie perdra son parent (deviendra racine)."
-msgid_plural "sous-catégories perdront leur parent (deviendront racine)."
-msgstr[0] "sub-category will lose its parent (it becomes a top-level one)."
-msgstr[1] "sub-categories will lose their parent (they become top-level ones)."
+msgid "sous-classification perdra son parent (deviendra racine)."
+msgid_plural "sous-classifications perdront leur parent (deviendront racine)."
+msgstr[0] "sub-classification will lose its parent (it becomes a top-level one)."
+msgstr[1] "sub-classifications will lose their parent (they become top-level ones)."
 
 #: templates/catalog/category_confirm_delete.html:41
 #, python-format
 msgid ""
-"L'abréviation « %(abbr)s » disparaît : les étiquettes de tranche déjà "
-"collées restent, mais ne pourront plus être réimprimées."
-msgstr ""
-"The abbreviation “%(abbr)s” disappears: spine labels already stuck on books "
-"stay, but they can no longer be reprinted."
+"Le code de classification « %(abbr)s » disparaît : les étiquettes de tranche "
+"déjà collées restent, mais ne pourront plus être réimprimées."
+msgstr "The classification code “%(abbr)s” disappears: spine labels already stuck on books stay, but they can no longer be reprinted."
 
 #: templates/catalog/category_form.html:12
 #: templates/catalog/language_form.html:12
@@ -5000,30 +5021,25 @@ msgid "Notices"
 msgstr "Records"
 
 #: templates/catalog/category_list.html:69
-msgid "Aucune catégorie définie."
-msgstr "No category defined yet."
+msgid "Aucune classification définie."
+msgstr "No classification defined yet."
 
 #: templates/catalog/category_list.html:76
-msgid "L'abréviation"
-msgstr "The abbreviation"
+msgid "Le code de classification"
+msgstr "The classification code"
 
 #: templates/catalog/category_list.html:78
 msgid ""
-"C'est la cote qui part sur l'étiquette de tranche, pour ranger le livre au "
-"bon rayon sans le sortir de l'étagère. Exemple : « RO FI ADO » pour « Romans "
-"fiction pour adolescents »."
-msgstr ""
-"This is the shelf mark that goes on the spine label, so a book can be "
-"shelved in the right place without pulling it off the shelf. Example: “RO FI "
-"ADO” for “Teen fiction novels”."
+"C'est ce qui part sur l'étiquette de tranche, pour ranger le livre au bon "
+"rayon sans le sortir de l'étagère. Exemple : « JE DOC » pour « Jeunesse "
+"Documentaire »."
+msgstr "This is what goes on the spine label, so you can file the book on the right shelf without pulling it out. Example: “JE DOC” for “Youth Non-fiction”."
 
 #: templates/catalog/category_list.html:81
 msgid ""
-"Elle vaut pour toutes les notices de la catégorie. Les étiquettes "
+"Il vaut pour toutes les notices de la classification. Les étiquettes "
 "s'impriment depuis Impressions → Étiquettes."
-msgstr ""
-"It applies to every record in the category. Labels are printed from Printing "
-"→ Labels."
+msgstr "It applies to every record in the classification. Labels are printed from Printing → Labels."
 
 #: templates/catalog/excel_catalog/_export_form.html:5
 #, python-format
@@ -5087,8 +5103,8 @@ msgstr ""
 "optional: location code (otherwise the copy is created without a location)"
 
 #: templates/catalog/excel_catalog/_import_form.html:11
-msgid "optionnel : nom de catégorie existante"
-msgstr "optional: name of an existing category"
+msgid "optionnel : nom d'une classification existante (alias CATEGORY)"
+msgstr "optional: name of an existing classification (alias CATEGORY)"
 
 #: templates/catalog/excel_catalog/_import_form.html:12
 msgid "optionnel : titre de la fiche"
@@ -5135,8 +5151,10 @@ msgid "optionnel : code ou nom d'une provenance existante"
 msgstr "optional: code or name of an existing source"
 
 #: templates/catalog/excel_catalog/_import_form.html:22
-msgid "optionnel : abréviation (cote) de la catégorie indiquée en CATEGORY"
-msgstr "optional: abbreviation (shelf mark) of the category given in CATEGORY"
+msgid ""
+"optionnel : code de classification de la ligne CLASSIFICATION (alias "
+"CATEGORY_ABBR)"
+msgstr "optional: classification code of the CLASSIFICATION row (alias CATEGORY_ABBR)"
 
 #: templates/catalog/excel_catalog/_import_form.html:25
 msgid ""
@@ -5194,16 +5212,12 @@ msgstr ""
 #: templates/catalog/excel_catalog/_update_form.html:21
 msgid ""
 "Toutes les autres colonnes de l'import sont acceptées et facultatives : "
-"TITLE, AUTHOR, CATEGORY, CATEGORY_ABBR, TYPE, EDITOR, YEAR, LANGUAGE, TAGS, "
-"CONDITION, PROVENANCE, LOCATION et ISBN. Une cellule remplie remplace la "
-"valeur existante ; <strong>une cellule vide laisse la valeur en place</"
-"strong> (le fichier ne sert donc pas à effacer un champ)."
-msgstr ""
-"Every other import column is accepted and optional: TITLE, AUTHOR, CATEGORY, "
-"CATEGORY_ABBR, TYPE, EDITOR, YEAR, LANGUAGE, TAGS, CONDITION, PROVENANCE, "
-"LOCATION and ISBN. A filled cell replaces the existing value; <strong>an "
-"empty cell leaves the value alone</strong> (so the file cannot be used to "
-"clear a field)."
+"TITLE, AUTHOR, CLASSIFICATION, CLASSIFICATION_CODE, TYPE, EDITOR, YEAR, "
+"LANGUAGE, TAGS, CONDITION, PROVENANCE, LOCATION et ISBN. Une cellule remplie "
+"remplace la valeur existante ; <strong>une cellule vide laisse la valeur en "
+"place</strong> (le fichier ne sert donc pas à effacer un champ). Les anciens "
+"noms CATEGORY et CATEGORY_ABBR restent lus."
+msgstr "Every other import column is accepted and optional: TITLE, AUTHOR, CLASSIFICATION, CLASSIFICATION_CODE, TYPE, EDITOR, YEAR, LANGUAGE, TAGS, CONDITION, PROVENANCE, LOCATION and ISBN. A filled cell replaces the existing value; <strong>an empty cell leaves the value in place</strong> (so the file is not used to clear a field). The old names CATEGORY and CATEGORY_ABBR are still read."
 
 #: templates/catalog/excel_catalog/_update_form.html:26
 msgid "Mettre à jour les exemplaires"
@@ -5870,6 +5884,11 @@ msgstr "Records affected"
 msgid "Catégorie actuelle"
 msgstr "Current category"
 
+#: templates/catalog/record_bulk_assign_category.html:57
+#: templates/finance/tariff_list.html:72
+msgid "Nouvelle catégorie"
+msgstr "New category"
+
 #: templates/catalog/record_bulk_assign_category.html:59
 msgid "— (vider la catégorie)"
 msgstr "— (clear category)"
@@ -6073,9 +6092,9 @@ msgstr "Catalog by scanning"
 msgid "Titre, auteur, ISBN…"
 msgstr "Title, author, ISBN…"
 
-#: templates/catalog/record_list.html:52 templates/members/member_list.html:66
-msgid "Toutes catégories"
-msgstr "All categories"
+#: templates/catalog/record_list.html:52
+msgid "Toutes les classifications"
+msgstr "All classifications"
 
 #: templates/catalog/record_list.html:58
 msgid "Tous types"
@@ -7146,9 +7165,9 @@ msgstr "Local frequency and cloud destination (rclone)"
 
 #: templates/core/admin/settings_index.html:67
 msgid ""
-"Les catégories, tags et emplacements se gèrent depuis l'administration "
+"Les classifications, tags et emplacements se gèrent depuis l'administration "
 "Django pour l'instant."
-msgstr "Categories, tags, and locations are managed via Django admin for now."
+msgstr "Classifications, tags and locations are still managed from the Django admin for now."
 
 #: templates/core/admin/settings_index.html:68
 msgid "Ouvrir l'admin"
@@ -7192,11 +7211,9 @@ msgstr ""
 
 #: templates/core/advanced.html:54
 msgid ""
-"Imprime la cote de la catégorie (« RO FI ADO ») à coller sur la tranche, "
-"pour ranger et retrouver un livre sans le sortir du rayon."
-msgstr ""
-"Prints the category shelf mark (“RO FI ADO”) to stick on the spine, so a "
-"book can be shelved and found again without pulling it out."
+"Imprime le code de classification (« JE DOC ») à coller sur la tranche, pour "
+"ranger et retrouver un livre sans le sortir du rayon."
+msgstr "Prints the classification code (“JE DOC”) to stick on the spine, so you can file and find a book without taking it off the shelf."
 
 #: templates/core/advanced.html:63 templates/printing/cards_picker.html:14
 msgid "Cartes membres"
@@ -7263,10 +7280,8 @@ msgstr ""
 #: templates/core/advanced.html:140
 msgid ""
 "Vérifier ou importer un fichier Excel d'inventaire (ISBN, titre, auteur, "
-"emplacement, catégorie)."
-msgstr ""
-"Check or import an Excel inventory file (ISBN, title, author, location, "
-"category)."
+"emplacement, classification)."
+msgstr "Check or import an Excel inventory file (ISBN, title, author, location, classification)."
 
 #: templates/core/advanced.html:152
 msgid "Méta-données"
@@ -7298,11 +7313,9 @@ msgstr ""
 
 #: templates/core/advanced.html:185
 msgid ""
-"Classement des notices et abréviation imprimée sur la tranche des livres "
-"(« RO FI ADO »)."
-msgstr ""
-"Classification of records and the abbreviation printed on book spines (“RO "
-"FI ADO”)."
+"Classement des notices et code de classification imprimé sur la tranche des "
+"livres (« JE DOC »)."
+msgstr "Filing of records and classification code printed on book spines (“JE DOC”)."
 
 #: templates/core/advanced.html:195
 msgid ""
@@ -7393,11 +7406,9 @@ msgstr "Django administration"
 
 #: templates/core/advanced.html:311
 msgid ""
-"Gestion fine : catégories, tags, emplacements, catégories d'usagers (réservé "
-"au support technique)."
-msgstr ""
-"Fine-grained management: categories, tags, locations, user categories "
-"(reserved for technical support)."
+"Gestion fine : classifications, tags, emplacements, catégories d'usagers "
+"(réservé au support technique)."
+msgstr "Fine-grained management: classifications, tags, locations, member categories (technical support only)."
 
 #: templates/core/dashboard.html:4 templates/errors/_error_page.html:34
 #: templates/partials/_tile_strip.html:11
@@ -7937,6 +7948,10 @@ msgid ""
 msgstr ""
 "A member record is tied to its category: deleting it would break those "
 "records."
+
+#: templates/finance/member_category_confirm_delete.html:33
+msgid "Modifier la catégorie"
+msgstr "Edit category"
 
 #: templates/finance/member_category_confirm_delete.html:36
 msgid "Cette catégorie n'a aucun usager : elle peut être supprimée."
@@ -8530,8 +8545,8 @@ msgstr[0] "%(n)s document"
 msgstr[1] "%(n)s documents"
 
 #: templates/members/member_history.html:112
-msgid "Statistiques par catégorie"
-msgstr "Statistics by category"
+msgid "Statistiques par classification"
+msgstr "Statistics by classification"
 
 #: templates/members/member_list.html:36
 msgid "Actifs ce mois"
@@ -8544,6 +8559,10 @@ msgstr "New this month"
 #: templates/members/member_list.html:53
 msgid "Nom ou n° de carte…"
 msgstr "Name or card number…"
+
+#: templates/members/member_list.html:66
+msgid "Toutes catégories"
+msgstr "All categories"
 
 #: templates/members/member_list.html:72
 msgid "Tout statut"
@@ -8621,10 +8640,6 @@ msgstr ""
 "Settings → Printing — Continuous tape to print shelf marks on the label "
 "printer."
 
-#: templates/printing/spine_labels_picker.html:27
-msgid "Cote imprimée"
-msgstr "Printed shelf mark"
-
 #: templates/printing/spine_labels_picker.html:36
 msgid "aucune"
 msgstr "none"
@@ -8695,7 +8710,9 @@ msgid ""
 "Fichiers destinés à un tableur, avec toutes les colonnes de la base — bien "
 "plus que ce que les tableaux ci-dessus affichent. Ils ne sont ni mis en page "
 "ni commentés."
-msgstr "Files meant for a spreadsheet, with every column in the database — far more than the tables above show. They are neither laid out nor explained."
+msgstr ""
+"Files meant for a spreadsheet, with every column in the database — far more "
+"than the tables above show. They are neither laid out nor explained."
 
 #: templates/reports/_raw_csv.html:23
 msgid "Catalogue complet (CSV)"
@@ -8738,7 +8755,8 @@ msgstr "The library's figures"
 msgid ""
 "Chaque écran s'imprime en PDF et s'enregistre en Excel, en entier ou tableau "
 "par tableau."
-msgstr "Every screen prints to PDF and saves to Excel, whole or table by table."
+msgstr ""
+"Every screen prints to PDF and saves to Excel, whole or table by table."
 
 #: templates/reports/page.html:24
 msgid "Imprimer (PDF)"

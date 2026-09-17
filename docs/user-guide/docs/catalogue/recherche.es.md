@@ -33,7 +33,7 @@ Desde la página [**Catálogo**](/bibliofelia/es/catalog/){ target="_blank" },
 la lista de registros puede filtrarse por:
 
 - **Texto libre** (título, autor, editor)
-- **Categoría** (Adultos, Juvenil, Documental…)
+- **Clasificación** (Juventud Documental, Adultos Ficción…)
 - **Idioma**
 - **Ubicación**
 

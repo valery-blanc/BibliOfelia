@@ -15,7 +15,8 @@ want. The page immediately reloads in the new language.
 ## What changes with the language
 
 - The interface (menus, buttons, messages) switches entirely
-- Standard categories (Adult, Child, Novel, Documentary…) are translated
+- Classifications (Youth Non-fiction, Adult Fiction…) and member categories
+  (Adult, Child…) are translated
 - Member names, book titles, notes stay in their original language
   (these are your data)
 

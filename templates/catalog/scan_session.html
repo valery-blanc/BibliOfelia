@@ -50,7 +50,7 @@
             <tr>
                 <th>{% trans "Auteur / Titre" %}</th>
                 <th>{% trans "Langue" %}</th>
-                <th>{% trans "Catégorie" %}</th>
+                <th>{% trans "Classification" %}</th>
                 <th>{% trans "Emplacement" %}</th>
                 <th>{% trans "Ex." %}</th>
                 <th></th>
@@ -149,7 +149,7 @@
         <div style="font-weight:700;margin-bottom:8px">{% trans "Modifier les lignes cochées" %}</div>
         <div style="display:flex;gap:12px;flex-wrap:wrap;align-items:flex-end">
             <div class="field" style="margin:0">
-                <label>{% trans "Catégorie" %}</label>
+                <label>{% trans "Classification" %}</label>
                 <select id="batch-category" class="form-control">
                     <option value="">{% trans "(ne pas changer)" %}</option>
                     {% for c in categories %}<option value="{{ c.pk }}" data-code="{{ c.code }}">{{ c.code }} — {{ c.name }}</option>{% endfor %}
@@ -183,7 +183,7 @@
                     <th style="width:34px"><input type="checkbox" id="check-all"></th>
                     <th>{% trans "Auteur / Titre" %}</th>
                     <th>{% trans "Langue" %}</th>
-                    <th>{% trans "Catégorie" %}</th>
+                    <th>{% trans "Classification" %}</th>
                     <th>{% trans "Emplacement" %}</th>
                     <th>{% trans "État" %}</th>
                     <th>{% trans "Ex." %}</th>

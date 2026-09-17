@@ -15,8 +15,8 @@ pejy dia averina amin'ny fiteny vaovao.
 ## Inona no miova rehefa miova fiteny
 
 - Ny interface (menu, bokotra, hafatra) dia miova tanteraka
-- Ireo sokajy standard (Olon-dehibe, Ankizy, Tantara, Filazana…) dia
-  voadika
+- Ny fanasokajiana (Tanora Dokumentera, Olon-dehibe Angano…) sy ny
+  sokajin'ny mpampiasa (Olon-dehibe, Ankizy…) dia voadika
 - Ny anaran'ny mpianatra, ny lohan'ny boky, ny notes dia mijanona
   amin'ny fiteny niaviany (ireo no angonao)
 

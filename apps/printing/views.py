@@ -157,8 +157,8 @@ def _printable_spine_items(request):
     if not printable:
         messages.error(
             request,
-            _("Aucun exemplaire sélectionné n'a de catégorie abrégée : "
-              "renseignez l'abréviation de la catégorie avant d'imprimer."),
+            _("Aucun exemplaire sélectionné n'a de code de classification : "
+              "renseignez le code de classification avant d'imprimer."),
         )
         return None, redirect("printing:spine_labels")
     return printable, None

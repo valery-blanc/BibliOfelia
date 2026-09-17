@@ -1,14 +1,14 @@
 {% extends "base.html" %}
 {% load i18n biblio_icons %}
 
-{% block title %}{% trans "Catégories" %}{% endblock %}
+{% block title %}{% trans "Classifications" %}{% endblock %}
 
 {% block tile_strip %}{% include "partials/_tile_strip.html" with active="advanced" %}{% endblock %}
 
 {% block content %}
 <nav class="breadcrumb">
     <a href="{% url 'core:advanced' %}">{% trans "Avancé" %}</a> /
-    <strong>{% trans "Catégories" %}</strong>
+    <strong>{% trans "Classifications" %}</strong>
 </nav>
 
 <header class="pagehead">
@@ -16,13 +16,13 @@
         {% icon "bookmark" size="28px" %}
     </div>
     <div class="pagehead-text">
-        <h1 class="pagehead-title">{% trans "Catégories" %}</h1>
+        <h1 class="pagehead-title">{% trans "Classifications" %}</h1>
         <div class="pagehead-sub">{% trans "Classement des notices et cote imprimée sur la tranche des livres" %}</div>
     </div>
     <div class="pagehead-action">
         <a href="{% url 'catalog:category_create' %}" class="btn btn--primary">
             {% icon "plus" size="16px" %}
-            <span class="hide-sm">{% trans "Nouvelle catégorie" %}</span>
+            <span class="hide-sm">{% trans "Nouvelle classification" %}</span>
         </a>
     </div>
 </header>
@@ -33,7 +33,7 @@
             <tr>
                 <th>{% trans "Code" %}</th>
                 <th>{% trans "Nom" %}</th>
-                <th>{% trans "Abréviation" %}</th>
+                <th>{% trans "Code de classification" %}</th>
                 <th>{% trans "Parent" %}</th>
                 <th style="text-align:right">{% trans "Notices" %}</th>
                 <th></th>
@@ -66,19 +66,19 @@
                 </td>
             </tr>
         {% empty %}
-            <tr><td colspan="6" class="muted" style="text-align:center;padding:24px">{% trans "Aucune catégorie définie." %}</td></tr>
+            <tr><td colspan="6" class="muted" style="text-align:center;padding:24px">{% trans "Aucune classification définie." %}</td></tr>
         {% endfor %}
         </tbody>
     </table>
 </div>
 
 <div class="card" style="margin-top:18px">
-    <h3>{% trans "L'abréviation" %}</h3>
+    <h3>{% trans "Le code de classification" %}</h3>
     <p class="muted">
-        {% trans "C'est la cote qui part sur l'étiquette de tranche, pour ranger le livre au bon rayon sans le sortir de l'étagère. Exemple : « RO FI ADO » pour « Romans fiction pour adolescents »." %}
+        {% trans "C'est ce qui part sur l'étiquette de tranche, pour ranger le livre au bon rayon sans le sortir de l'étagère. Exemple : « JE DOC » pour « Jeunesse Documentaire »." %}
     </p>
     <p class="muted">
-        {% trans "Elle vaut pour toutes les notices de la catégorie. Les étiquettes s'impriment depuis Impressions → Étiquettes." %}
+        {% trans "Il vaut pour toutes les notices de la classification. Les étiquettes s'impriment depuis Impressions → Étiquettes." %}
     </p>
 </div>
 {% endblock %}

@@ -24,7 +24,7 @@ Una **sesión** de catalogación (también llamada **lote**) sirve para añadir
    corregir o vaciar.
 2. **Comprueba la lista** — y sobre todo, aplica **modificaciones por lote**:
    marque varias líneas (o todas) y asígneles, con un solo clic, la misma
-   **categoría**, la misma **ubicación** en la biblioteca o el mismo **estado**.
+   **clasificación**, la misma **ubicación** en la biblioteca o el mismo **estado**.
    Ahí está todo el interés de catalogar juntos los libros que van juntos.
 3. **Envía el lote al catálogo**: las fichas y los ejemplares se crean de verdad,
    y puede imprimir de una vez las etiquetas **solo de ese lote**.
@@ -39,7 +39,7 @@ pulse
 [**Catalogado con el lector**](/bibliofelia/es/catalog/scan/new-douchette/){ target="_blank" }.
 
 Como en el catalogado por cámara, puede fijar **valores por defecto** para todo
-el lote (categoría, ubicación, etiqueta). Podrá **cambiarlos línea por línea**
+el lote (clasificación, ubicación, etiqueta). Podrá **cambiarlos línea por línea**
 después.
 
 ## Escanear los ISBN uno tras otro
@@ -70,7 +70,7 @@ Cuando haya terminado de escanear, pulse **Terminar y ver el lote**. Aparece la
 lista del lote. Para cada línea ve el libro encontrado (autor, título, idioma) y
 puede:
 
-- cambiar la **categoría**, la **ubicación** o el **estado** — por línea, o para
+- cambiar la **clasificación**, la **ubicación** o el **estado** — por línea, o para
   varias líneas a la vez con las casillas;
 - ajustar el **número de ejemplares**;
 - **eliminar** una línea (icono de papelera) en caso de error de escaneo.

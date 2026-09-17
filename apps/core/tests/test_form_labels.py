@@ -89,7 +89,7 @@ def test_the_record_form_is_french():
     assert labels["language"] == "Langue"
     assert labels["publisher"] == "Éditeur"
     assert labels["summary"] == "Résumé"
-    assert labels["category"] == "Catégorie"
+    assert labels["category"] == "Classification"
     assert labels["publication_year"] == "Année de publication"
 
 

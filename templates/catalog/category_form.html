@@ -8,7 +8,7 @@
 {% block content %}
 <nav class="breadcrumb">
     <a href="{% url 'core:advanced' %}">{% trans "Avancé" %}</a> /
-    <a href="{% url 'catalog:category_list' %}">{% trans "Catégories" %}</a> /
+    <a href="{% url 'catalog:category_list' %}">{% trans "Classifications" %}</a> /
     <strong>{% if category %}{{ category.code }}{% else %}{% trans "Nouvelle" %}{% endif %}</strong>
 </nav>
 

@@ -87,7 +87,7 @@ Ofelia y el código de estantería.
 
 ## Las etiquetas de lomo
 
-Una etiqueta de lomo lleva una sola cosa: la **abreviatura de la categoría**
+Una etiqueta de lomo lleva una sola cosa: el **código de clasificación**
 del libro, en letra muy grande. Pegada en el lomo, se lee a un metro de la
 estantería y permite colocar un libro sin sacarlo.
 
@@ -105,11 +105,11 @@ El texto va centrado y su tamaño se ajusta solo: `PER` llena la etiqueta,
 |--------------------------|
 ```
 
-!!! warning "Primero hay que rellenar la abreviatura"
-    La abreviatura se escribe en la **categoría**, no en el libro (véase
-    [Categorías](../catalogue/categories.md)). Un ejemplar cuya categoría no
-    tiene abreviatura se omite al imprimir; si ninguno la tiene, BibliOfelia
-    se lo dice en vez de generar un PDF vacío.
+!!! warning "Primero hay que rellenar el código de clasificación"
+    El código se escribe en la **clasificación**, no en el libro (véase
+    [Clasificaciones](../catalogue/categories.md)). Un ejemplar cuya
+    clasificación no tiene código se omite al imprimir; si ninguno lo tiene,
+    BibliOfelia se lo dice en vez de generar un PDF vacío.
 
 ## Ver también
 

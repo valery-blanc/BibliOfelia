@@ -25,7 +25,7 @@ Ny **session** catalogage (antsoina koa hoe **lot**) dia ampiasaina hanampiana
    fotsiny ny lot, azonao ahitsy na foanana.
 2. **Jerenao ny lisitra** — ary indrindra, ampiharinao ny **fanovana faobe**:
    mariho ny andalana maromaro (na ny rehetra) ary omeo azy ireo, amin'ny tsindry
-   iray, ny **sokajy** mitovy, ny **toerana** mitovy ao amin'ny tranomboky na ny
+   iray, ny **fanasokajiana** mitovy, ny **toerana** mitovy ao amin'ny tranomboky na ny
    **toe-javatra** mitovy. Izay no tena tombontsoan'ny fandraketana miaraka ny
    boky mifanaraka.
 3. **Alefanao ny lot any amin'ny katalôgy**: voaforona tokoa ny notice sy ny
@@ -43,7 +43,7 @@ Inventaire, tsindrio
 [**Catalogage par douchette**](/bibliofelia/mg/catalog/scan/new-douchette/){ target="_blank" }.
 
 Tahaka ny amin'ny catalogue fakantsary, azonao apetraka ny **sanda default** ho
-an'ny lot manontolo (sokajy, toerana, anarana). Azonao **ovaina andalana
+an'ny lot manontolo (fanasokajiana, toerana, anarana). Azonao **ovaina andalana
 tsirairay** izany aorian'izay.
 
 ## Scan ny ISBN mifandimby
@@ -74,7 +74,7 @@ Rehefa vita ny scan, tsindrio **Terminer et voir le lot**. Miseho ny lisitry ny
 lot. Ho an'ny andalana tsirairay dia hitanao ny boky hita (mpanoratra, lohateny,
 fiteny) ary azonao atao ny:
 
-- manova ny **sokajy**, ny **toerana** na ny **toetra** — isaky ny andalana, na
+- manova ny **fanasokajiana**, ny **toerana** na ny **toetra** — isaky ny andalana, na
   ho an'ny andalana maromaro miaraka amin'ny case à cocher;
 - mandamina ny **isan'ny exemplaire**;
 - **mamafa** andalana (kisary daba fako) raha misy hadisoana scan.

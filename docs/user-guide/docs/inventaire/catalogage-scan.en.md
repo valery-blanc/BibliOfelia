@@ -18,7 +18,7 @@ at once** to the catalogue. It works in three steps:
    can correct or empty.
 2. **You check the list** — and above all, you apply **batch changes**: tick
    several rows (or all of them) and assign them, in a single click, the same
-   **category**, the same **location** in the library or the same **condition**.
+   **classification**, the same **location** in the library or the same **condition**.
    That is the whole point of cataloguing together books that belong together.
 3. **You send the batch to the catalogue**: records and copies are created for
    real, and you can print the labels **for that batch only** in one go.
@@ -36,7 +36,7 @@ then [**New batch**](/bibliofelia/en/catalog/scan/new/){ target="_blank" }.
 
 Before scanning, you can set **default values** for the whole batch:
 
-- a default **category** (Adults, Youth…);
+- a default **classification** (Youth Non-fiction, Adult Fiction…);
 - a default **location** (the shelf these books will go to);
 - a **label** to find the batch again later.
 
@@ -89,7 +89,7 @@ batch** as your books.
 When you press **Finish**, the batch list appears. For each line, you see
 the book found (author, title, language) and you can:
 
-- change the **category**, **location** or **condition** — per line, or for
+- change the **classification**, **location** or **condition** — per line, or for
   several lines at once using the checkboxes and the **Select all** button;
 - adjust the **number of copies**;
 - **delete** a line (trash icon) in case of a scan error.

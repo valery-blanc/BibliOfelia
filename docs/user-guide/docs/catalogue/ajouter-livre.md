@@ -38,7 +38,7 @@ Si pas d'ISBN ou pas de réseau, remplissez les champs à la main :
 - **Éditeur** — par exemple Gallimard, Hachette…
 - **Année de publication**
 - **Langue** — important pour les bibliothèques multilingues
-- **Catégorie** — Adultes, Jeunesse, Documentaire… (configurée par
+- **Classification** — Jeunesse Documentaire, Adultes Fiction… (configurée par
   l'administrateur)
 - **Résumé** (facultatif) — court descriptif pour aider les lecteurs
 

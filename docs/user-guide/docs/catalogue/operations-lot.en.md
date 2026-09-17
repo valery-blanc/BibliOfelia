@@ -40,19 +40,19 @@ and an **Apply** button.
 
 **In record mode** (the default view), two menus:
 
-- **Category** — applied to the ticked records
+- **Classification** — applied to the ticked records
 - **Location** — applied to **every copy** of those records
 
 **In copy mode** (with "Search copies" ticked), one menu:
 
 - **Source** — applied to the ticked copies
 
-Each piece of information is set where it belongs: the category belongs to the
+Each piece of information is set where it belongs: the classification belongs to the
 book, the source to the copy.
 
 !!! tip "“Leave unchanged” is the starting value"
     A menu left on **Leave unchanged** touches nothing. So you can change the
-    category without accidentally clearing the location. To remove an
+    classification without accidentally clearing the location. To remove an
     assignment, choose **— (clear)**.
 
 After applying, you land back on the catalog **with your filters still on**:
@@ -76,7 +76,7 @@ records and click **Delete selected records**.
 
 The checkbox at the top of the column selects (or deselects) all
 records visible on the page. If you applied a filter (for example
-"category = Obsolete"), you only select the filtered records.
+"classification = Obsolete"), you only select the filtered records.
 
 !!! tip "Filter well before selecting all"
     For a bulk operation, the safest is to **filter first** to see

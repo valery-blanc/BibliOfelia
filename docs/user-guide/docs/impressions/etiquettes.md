@@ -88,8 +88,8 @@ code de rayon en bas.
 
 ## Les étiquettes de tranche
 
-Une étiquette de tranche ne porte qu'une chose : l'**abréviation de la
-catégorie** du livre, en très gros. Collée sur la tranche, elle se lit à un
+Une étiquette de tranche ne porte qu'une chose : le **code de classification**
+du livre, en très gros. Collée sur la tranche, elle se lit à un
 mètre du rayon et permet de ranger un livre sans le sortir de l'étagère.
 
 Sur la page **Étiquettes**, sélectionnez vos exemplaires puis cliquez sur
@@ -106,10 +106,10 @@ l'étiquette, `RO FI ADO` se répartit sur deux lignes.
 |--------------------------|
 ```
 
-!!! warning "Il faut d'abord renseigner l'abréviation"
-    L'abréviation se saisit sur la **catégorie**, pas sur le livre (voir
-    [Catégories](../catalogue/categories.md)). Un exemplaire dont la
-    catégorie n'a pas d'abréviation est ignoré à l'impression ; si aucun
+!!! warning "Il faut d'abord renseigner le code de classification"
+    Le code se saisit sur la **classification**, pas sur le livre (voir
+    [Classifications](../catalogue/categories.md)). Un exemplaire dont la
+    classification n'a pas de code est ignoré à l'impression ; si aucun
     n'en a, BibliOfelia vous le dit au lieu de sortir un PDF vide.
 
 ## Voir aussi

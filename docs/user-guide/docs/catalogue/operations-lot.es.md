@@ -41,19 +41,19 @@ desplegables y un botón **Aplicar**.
 
 **En modo registros** (la vista por defecto), dos menús:
 
-- **Categoría** — se aplica a los registros marcados
+- **Clasificación** — se aplica a los registros marcados
 - **Ubicación** — se aplica a **todos los ejemplares** de esos registros
 
 **En modo ejemplares** (con "Buscar los ejemplares" marcado), un menú:
 
 - **Procedencia** — se aplica a los ejemplares marcados
 
-Cada información se ajusta donde vive: la categoría pertenece al libro, la
+Cada información se ajusta donde vive: la clasificación pertenece al libro, la
 procedencia al ejemplar.
 
 !!! tip "«No modificar» es el valor de partida"
     Un menú que se queda en **No modificar** no toca nada. Así puede cambiar la
-    categoría sin vaciar la ubicación por descuido. Para quitar una asignación,
+    clasificación sin vaciar la ubicación por descuido. Para quitar una asignación,
     elija **— (vaciar)**.
 
 Después de aplicar, vuelve al catálogo **con sus filtros todavía activos**:
@@ -78,7 +78,7 @@ seleccionados**.
 
 La casilla en la cabecera de la columna selecciona (o desmarca)
 todos los registros visibles en la página. Si ha activado un filtro
-(por ejemplo "categoría = Obsoleto"), solo selecciona los registros
+(por ejemplo "clasificación = Obsoleto"), solo selecciona los registros
 filtrados.
 
 !!! tip "Filtrar bien antes de marcar todo"

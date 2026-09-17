@@ -198,3 +198,64 @@ def test_record_detail_shows_the_abbreviation(client, librarian, category):
         reverse("catalog:record_detail", args=[record.pk])
     ).content.decode()
     assert "RO FI ADO" in body
+
+
+# ── FEAT-094 : vocabulaire classification ──────────────────────────────────
+
+
+def test_record_detail_says_classification_not_category(client, librarian, category):
+    record = BibliographicRecord.objects.create(title="Fondation", category=category)
+    body = client.get(
+        reverse("catalog:record_detail", args=[record.pk])
+    ).content.decode()
+    assert "Classification" in body
+    assert ">Catégorie<" not in body
+
+
+def test_advanced_menu_says_classifications(client, librarian):
+    body = client.get(reverse("core:advanced")).content.decode()
+    assert "Classifications" in body
+    assert reverse("catalog:category_list") in body
+
+
+def test_category_list_says_classification_code(client, librarian, category):
+    body = client.get(reverse("catalog:category_list")).content.decode()
+    assert "Code de classification" in body
+    assert "Classifications" in body
+    assert "Abréviation" not in body
+
+
+def test_category_form_labels_use_the_new_words(client, librarian):
+    from django.utils import translation
+
+    from apps.catalog.forms import CategoryForm
+
+    with translation.override("fr"):
+        labels = {n: str(f.label) for n, f in CategoryForm().fields.items()}
+    assert labels["abbreviation"] == "Code de classification"
+    assert labels["parent"] == "Classification parente"
+
+
+def test_import_accepts_classification_headers(librarian):
+    cat = Category.objects.create(code="ROM", name="Romans")
+    job = _import_job(
+        librarian,
+        ["ISBN", "CLASSIFICATION", "CLASSIFICATION_CODE"],
+        [[VALID_ISBN, "Romans", "JE DOC"]],
+    )
+    run_import_job(job)
+    cat.refresh_from_db()
+    assert cat.abbreviation == "JE DOC"
+
+
+def test_old_category_headers_still_import(librarian):
+    """Un fichier Excel antérieur à FEAT-094 continue de se lire."""
+    cat = Category.objects.create(code="ROM", name="Romans")
+    job = _import_job(
+        librarian,
+        ["ISBN", "CATEGORY", "CATEGORY_ABBR"],
+        [[VALID_ISBN, "Romans", "RO FI"]],
+    )
+    run_import_job(job)
+    cat.refresh_from_db()
+    assert cat.abbreviation == "RO FI"

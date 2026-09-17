@@ -89,8 +89,8 @@ kaody Ofelia sy kaody talantalana eo ambany.
 
 ## Ny etiketin'ny lamosina
 
-Zavatra iray ihany no entin'ny etiketin'ny lamosina : ny **fanafohezan'ny
-sokajin'ny** boky, amin'ny litera lehibe be. Rehefa apetaka amin'ny lamosina
+Zavatra iray ihany no entin'ny etiketin'ny lamosina : ny **kaody fanasokajiana**
+ny boky, amin'ny litera lehibe be. Rehefa apetaka amin'ny lamosina
 izy dia vakiana eny amin'ny iray metatra miala amin'ny talantalana, ka afaka
 mametraka boky ianao nefa tsy manaisotra azy.
 
@@ -108,10 +108,10 @@ Eo afovoany ny soratra ary mifanaraka ho azy ny habeny : mameno ny etikety ny
 |--------------------------|
 ```
 
-!!! warning "Fenoina aloha ny fanafohezana"
-    Soratana eo amin'ny **sokajy** ny fanafohezana, fa tsy eo amin'ny boky
-    (jereo ny [Sokajy](../catalogue/categories.md)). Ny kopia izay tsy manana
-    fanafohezana ny sokajiny dia tsy tafiditra amin'ny fanontana ; raha tsy
+!!! warning "Fenoina aloha ny kaody fanasokajiana"
+    Soratana eo amin'ny **fanasokajiana** ny kaody, fa tsy eo amin'ny boky
+    (jereo ny [Fanasokajiana](../catalogue/categories.md)). Ny kopia izay tsy
+    manana kaody ny fanasokajiany dia tsy tafiditra amin'ny fanontana ; raha tsy
     misy manana mihitsy dia lazain'ny BibliOfelia aminao fa tsy manome PDF
     foana.
 

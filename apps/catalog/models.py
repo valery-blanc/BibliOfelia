@@ -89,7 +89,7 @@ class Category(models.Model):
     # fiction pour adolescents » → « RO FI ADO ». Non traduite : une cote est
     # physique, elle ne change pas avec la langue de l'interface.
     abbreviation = models.CharField(
-        max_length=20, blank=True, verbose_name=_("abréviation")
+        max_length=20, blank=True, verbose_name=_("code de classification")
     )
     parent = models.ForeignKey(
         "self",
@@ -97,13 +97,13 @@ class Category(models.Model):
         blank=True,
         related_name="children",
         on_delete=models.SET_NULL,
-        verbose_name=_("catégorie parente"),
+        verbose_name=_("classification parente"),
     )
     default_loan_duration_days = models.PositiveIntegerField(null=True, blank=True)
 
     class Meta:
-        verbose_name = _("catégorie")
-        verbose_name_plural = _("catégories")
+        verbose_name = _("classification")
+        verbose_name_plural = _("classifications")
         ordering = ["code"]
 
     def __str__(self) -> str:
@@ -237,7 +237,7 @@ class BibliographicRecord(models.Model):
         blank=True,
         related_name="records",
         on_delete=models.SET_NULL,
-        verbose_name=_("catégorie"),
+        verbose_name=_("classification"),
     )
     tags = models.ManyToManyField(
         Tag, blank=True, related_name="records", verbose_name=_("tags")

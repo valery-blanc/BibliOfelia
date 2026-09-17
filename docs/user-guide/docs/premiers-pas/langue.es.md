@@ -15,8 +15,8 @@ deseado. La página se recarga inmediatamente en el nuevo idioma.
 ## Lo que cambia con el idioma
 
 - La interfaz (menús, botones, mensajes) cambia completamente
-- Las categorías estándar (Adulto, Niño, Novela, Documental…) se
-  traducen
+- Las clasificaciones (Juventud Documental, Adultos Ficción…) y las
+  categorías de usuario (Adulto, Niño…) se traducen
 - Los nombres de miembros, títulos de libros, notas permanecen en
   su idioma original (son sus datos)
 

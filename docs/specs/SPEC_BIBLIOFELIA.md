@@ -4,7 +4,15 @@ Spécification détaillée du logiciel de gestion de bibliothèque BibliOfelia, 
 
 Version : 1.0 (cible v1) — **`BIBLIOFELIA_VERSION = "1.0"`** depuis le 2026-08-23 (FEAT-082, était `0.1.0-dev`)
 Statut : draft pour Spec-Driven Development
-Dernière modif spec : 2026-09-10 (soir) — **suite de la revue croisée : déploiement, vérification sur la Box, tests**. Les correctifs BUG-045/046/047 sont déployés sur la Box et **vérifiés sur la machine** : les groupes Django sont passés de `[]` à quatre, `next_run` n'a **pas** été repoussé par le redémarrage, et `/health` renvoie enfin un horodatage au lieu de `null`. **BUG-048** est né de cette vérification : chaque archive de sauvegarde traînait un journal `-wal` **non vide** (140 Ko), parce que `with sqlite3.connect(...)` valide la transaction mais **ne ferme pas** la connexion — et `_rotate` promeut vers daily/weekly/monthly par une copie du seul fichier principal, donc les copies gardées 400 jours pouvaient être amputées. **34 tests neufs** couvrent désormais ces chemins, qui n'en avaient **aucun** ; chacun a été vérifié en échec sur le code d'avant, sans quoi il ne prouverait rien. Suite : **1053 tests** (contre 1020 au Sprint 34). Cf. §4.4, §8.1 et §8.3.
+Dernière modif spec : 2026-09-15 — **FEAT-094** : le vocabulaire visible du catalogue
+passe de **catégorie** / **abréviation** à **classification** / **code de
+classification** (ex. « Jeunesse Documentaire » / « JE DOC »). Les catégories
+d'usagers, le modèle `Category`, les URLs `/catalog/categories/` et l'API
+OfeliaScan (`scope_type=category`) ne bougent pas. L'export Excel écrit
+`CLASSIFICATION` et `CLASSIFICATION_CODE` ; l'import relit encore `CATEGORY` /
+`CATEGORY_ABBR`. Cf. §5.2, §6.1, §6.7, §6.12.
+
+Modif précédente : 2026-09-10 (soir) — **suite de la revue croisée : déploiement, vérification sur la Box, tests**. Les correctifs BUG-045/046/047 sont déployés sur la Box et **vérifiés sur la machine** : les groupes Django sont passés de `[]` à quatre, `next_run` n'a **pas** été repoussé par le redémarrage, et `/health` renvoie enfin un horodatage au lieu de `null`. **BUG-048** est né de cette vérification : chaque archive de sauvegarde traînait un journal `-wal` **non vide** (140 Ko), parce que `with sqlite3.connect(...)` valide la transaction mais **ne ferme pas** la connexion — et `_rotate` promeut vers daily/weekly/monthly par une copie du seul fichier principal, donc les copies gardées 400 jours pouvaient être amputées. **34 tests neufs** couvrent désormais ces chemins, qui n'en avaient **aucun** ; chacun a été vérifié en échec sur le code d'avant, sans quoi il ne prouverait rien. Suite : **1053 tests** (contre 1020 au Sprint 34). Cf. §4.4, §8.1 et §8.3.
 
 Modif du même jour : 2026-09-10 — **revue croisée BibliOfelia ⇄ keebee** (dépôt d'assemblage `_review-ofelia`). Trois correctifs sur la chaîne qui protège les données de la Box, tous invisibles jusqu'au jour où l'on restaure. **BUG-045** — l'entrypoint de **prod** ne lançait ni `setup_roles` ni `setup_schedules`, contrairement à celui de dev : sur une Box neuve, les bibliothécaires s'authentifiaient **sans aucune permission** et **aucune sauvegarde horaire ne tournait**, sur la cible précisément conçue pour fonctionner sans maintenance. Corollaire : `install_schedules()` ne réécrit plus `next_run` sur une planification existante, sinon chaque redémarrage repousserait l'échéance. **BUG-046** — la restauration remplaçait le seul fichier `.sqlite3` en laissant les journaux `-wal` / `-shm` de l'ancienne base, que SQLite rejouait par-dessus la base restaurée ; et `scripts/restore.sh` faisait un `gunzip` **inconditionnel** alors que `run_backup` écrit des sauvegardes **non compressées** — la redirection tronquant la cible avant l'échec, la base vivante finissait vide. **BUG-047** — `/health` lisait la clé `last_backup_at`, que **rien n'écrit** (l'écrivain range un dict sous `last_backup`) : l'endpoint annonçait `null` en permanence, donc aucun moniteur externe ne pouvait alerter sur une sauvegarde absente. Cf. §4.4, §6.10 et §8.
 
@@ -342,12 +350,15 @@ Reservation ── FK ──► BibliographicRecord
 - `id` (PK)
 - `code` (string, ex. "ENF-ROM", "DOC-SCI")
 - `name` (traduit via modeltranslation : fr, en, es, mg)
-- `abbreviation` (string 20 car., **non traduite**) — cote imprimée sur la tranche du livre (FEAT-067). Depuis FEAT-071, **le code et la cote sont identiques** dans le seed : `AD FIC`, `EN ALB`…
+- `abbreviation` (string 20 car., **non traduite**) — **code de classification** imprimé sur la tranche du livre (FEAT-067, relibellé FEAT-094). Depuis FEAT-071, **le code et la cote sont identiques** dans le seed : `AD FIC`, `EN ALB`…
 - `parent` (FK self, nullable) — plus utilisé par le seed depuis FEAT-071 : une tranche d'âge n'est pas un rayon
 - `default_loan_duration_days` (entier, nullable, override des règles)
 
-**Catégories officielles Ofelia (FEAT-071)** — 5 tranches d'âge × 4 types de
-document, soit 20 catégories sans hiérarchie :
+**Classifications officielles Ofelia (FEAT-071, vocabulaire FEAT-094)** — 5
+tranches d'âge × 4 types de document, soit 20 classifications sans hiérarchie.
+À l'écran : **Classification** (le nom, ex. « Jeunesse Documentaire ») et
+**Code de classification** (la cote, ex. « JE DOC »). Le mot « catégorie » est
+réservé aux catégories d'usagers.
 
 | | Fiction | Documentaire | Album | Bande dessinée |
 |---|---|---|---|---|
@@ -897,16 +908,17 @@ Les emplacements (`catalog.Location` : `code`, `description`, `parent` FK self) 
 
 Pas de migration : modèle `Location` inchangé depuis FEAT-002 (Sprint 1).
 
-#### Gestion des catégories (FEAT-067)
+#### Gestion des classifications (FEAT-067, vocabulaire FEAT-094)
 
-Jusqu'ici les catégories n'existaient que dans le seed et dans `/admin/`, hors
-de portée des bibliothécaires : la cote de rayon n'aurait été saisissable par
-personne sur le terrain.
+Jusqu'ici les classifications n'existaient que dans le seed et dans `/admin/`,
+hors de portée des bibliothécaires : le code de classification n'aurait été
+saisissable par personne sur le terrain.
 
-- **Route** : `/catalog/categories/` (liste), `/new/`, `/<pk>/edit/`, `/<pk>/delete/`.
-- **Accès** : carte « Catégories » dans `templates/core/advanced.html`.
-- **Liste** : code / nom / abréviation / parent / nombre de notices (lien vers le
-  catalogue filtré) / Éditer + Supprimer.
+- **Route** : `/catalog/categories/` (liste), `/new/`, `/<pk>/edit/`, `/<pk>/delete/`
+  — l'URL ne change pas (FEAT-094 = libellés seulement).
+- **Accès** : carte « Classifications » dans `templates/core/advanced.html`.
+- **Liste** : code / nom / code de classification / parent / nombre de notices
+  (lien vers le catalogue filtré) / Éditer + Supprimer.
 - **Formulaire** : `CategoryForm` (`code` requis, `name` requis, `abbreviation`,
   `parent` — jamais soi-même —, `default_loan_duration_days`).
 - **Suppression** : aucune notice n'est supprimée. Les notices concernées perdent
@@ -1850,9 +1862,10 @@ découpée en lignes sur les espaces. Pour « Romans fiction pour adolescents »
   police *condensed* (ni les 14 Type1 standard, ni `fonts-dejavu-core`), la
   transformation du canvas est la seule solution exacte sans ajouter une police
   à l'image Docker — contrainte hors-ligne.
-- **FEAT-075 — écran dédié** : la table affiche **Catégorie** et **Cote
-  imprimée** à la place du code Ofelia, du code externe et de la provenance, de
-  sorte que l'absence d'abréviation (`aucune`) se voie avant l'impression.
+- **FEAT-075 — écran dédié** : la table affiche **Classification** et **Code
+  de classification** (FEAT-094 ; auparavant « Catégorie » et « Cote imprimée »)
+  à la place du code Ofelia, du code externe et de la provenance, de sorte que
+  l'absence de code (`aucune`) se voie avant l'impression.
 
 ### 6.8 Notifications offline
 
@@ -2360,7 +2373,8 @@ accents). En cas d'erreur → `messages.error`, pas de job créé.
 **Mode IMPORT** — fichier `.xlsx` avec colonne `ISBN` (seule obligatoire) et
 des colonnes **optionnelles** d'affectation de la fiche/exemplaire :
 - `LOCATION` — code d'emplacement (warning si inconnu).
-- `CATEGORY` — nom de catégorie existante (`name__iexact`, warning si inconnu).
+- `CLASSIFICATION` (alias `CATEGORY`) — nom d'une classification existante
+  (`name__iexact` ou code, warning `CATEGORY_UNKNOWN` si inconnu).
 - **`TITLE`** (FEAT-053) — titre de la fiche. Sur une notice **neuve**, il est
   posé directement (évite le placeholder `ISBN:…`) ; absent → placeholder
   conservé (comportement FEAT-050).
@@ -2385,13 +2399,17 @@ des colonnes **optionnelles** d'affectation de la fiche/exemplaire :
 - **`PROVENANCE`** (FEAT-064) → provenance de l'exemplaire, résolue par **code
   ou libellé** (alias d'en-tête `ORIGINE`). Inconnue → `PROVENANCE_UNKNOWN`,
   l'import continue sans elle.
-- **`CATEGORY_ABBR`** (FEAT-067) → abréviation (cote) de la catégorie résolue par
-  la colonne `CATEGORY`. Depuis FEAT-071, les catégories du seed ont déjà une
-  cote égale à leur code : cette colonne ne sert qu'aux catégories créées à la
-  main. Alias : `ABBREVIATION`, `ABREVIATION`,
-  `CATEGORIE_ABREGEE`, `CATEGORY_ABBREVIATION`, `CAT_ABBR`. Sans catégorie
-  résolue, la cote n'a pas de cible → `CATEGORY_ABBR_ORPHAN` (la ligne s'importe
-  quand même).
+- **`CLASSIFICATION`** (FEAT-094, alias `CATEGORY`) → nom (ou code) d'une
+  classification existante.
+- **`CLASSIFICATION_CODE`** (FEAT-094, alias `CATEGORY_ABBR`, FEAT-067) → code de
+  classification (cote) de la classification résolue par la colonne
+  `CLASSIFICATION` (alias `CATEGORY`). Depuis FEAT-071, les classifications du
+  seed ont déjà une cote égale à leur code : cette colonne ne sert qu'aux
+  classifications créées à la main. Alias : `ABBREVIATION`, `ABREVIATION`,
+  `CATEGORIE_ABREGEE`, `CATEGORY_ABBREVIATION`, `CAT_ABBR`,
+  `CODE_DE_CLASSIFICATION`. Sans classification résolue, le code n'a pas de
+  cible → `CATEGORY_ABBR_ORPHAN` (la ligne s'importe quand même ; le code
+  d'avertissement reste le nom historique).
 - **`CONDITION`** (FEAT-053) → **état de l'exemplaire** (`Item.state`) : code
   (`new`/`good`/`worn`/`damaged`) ou libellé FR (`Neuf`/`Bon`/`Usé`/`Abîmé`) —
   warning `CONDITION_UNKNOWN` si non reconnu.
@@ -2443,7 +2461,7 @@ Pipeline :
 
 Colonnes, dans cet ordre : `OFELIA_CODE` (`Item.ean13`), `INTERNAL_ID`
 (`Item.internal_id`), `EXTERNAL_CODE`, `ISBN` (13 sinon 10), `TITLE`, `AUTHOR`
-(joints par `; `), `CATEGORY`, `CATEGORY_ABBR`, `TYPE` (libellé traduit),
+(joints par `; `), `CLASSIFICATION`, `CLASSIFICATION_CODE`, `TYPE` (libellé traduit),
 `EDITOR`, `YEAR`, `LANGUAGE`, `TAGS` (joints par `, `), `CONDITION` (libellé
 traduit), `PROVENANCE` (code), `LOCATION` (code). Ce sont **exactement** les
 colonnes que l'import et la mise à jour savent relire, plus les deux codes
@@ -2490,7 +2508,7 @@ le fichier, sinon l'upload est refusé sans créer de job :
 | Ligne entièrement vide | ignorée en silence (openpyxl en compte après les données) |
 
 *Champs modifiables* : toutes les colonnes d'override de l'import (`TITLE`,
-`AUTHOR`, `CATEGORY`, `CATEGORY_ABBR`, `TYPE`, `EDITOR`, `YEAR`, `LANGUAGE`,
+`AUTHOR`, `CLASSIFICATION`, `CLASSIFICATION_CODE`, `TYPE`, `EDITOR`, `YEAR`, `LANGUAGE`,
 `TAGS`, `CONDITION`, `PROVENANCE`, `EXTERNAL_CODE`) **plus `LOCATION` et
 `ISBN`** — en import ISBN est la clé et LOCATION n'est posée qu'à la création,
 ici ce sont des champs comme les autres. **Sémantique identique à l'import** :
@@ -2513,7 +2531,7 @@ sauvegarde partielle toutes les 10 lignes ; `save(update_fields=…)` sur les
 seuls champs réellement modifiés.
 
 **Résolutions insensibles à la langue (FEAT-078/079)** — l'export écrit `TYPE`,
-`CONDITION` et `CATEGORY` dans la langue du bibliothécaire, alors que le job de
+`CONDITION` et `CLASSIFICATION` dans la langue du bibliothécaire, alors que le job de
 relecture tourne dans le **worker django-q2**, en français. Sans quoi un fichier
 exporté en espagnol reviendrait avec `TYPE_UNKNOWN` et `CATEGORY_UNKNOWN` sur
 chaque ligne. Trois helpers partagés par l'import **et** la mise à jour :

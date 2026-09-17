@@ -32,7 +32,7 @@ From the [**Catalog**](/bibliofelia/en/catalog/){ target="_blank" } page, the
 record list can be filtered by:
 
 - **Free text** (title, author, publisher)
-- **Category** (Adults, Youth, Documentary…)
+- **Classification** (Youth Non-fiction, Adult Fiction…)
 - **Language**
 - **Location**
 

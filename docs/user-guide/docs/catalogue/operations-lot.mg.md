@@ -39,7 +39,7 @@ misy lisitra midina sy bokotra **Ampiharo**.
 
 **Amin'ny fomba rakitra** (izay hita mahazatra), lisitra roa :
 
-- **Sokajy** — ampiharina amin'ny rakitra voamarika
+- **Fanasokajiana** — ampiharina amin'ny rakitra voamarika
 - **Toerana** — ampiharina amin'ny **kopia rehetra** an'ireo rakitra ireo
 
 **Amin'ny fomba kopia** (rehefa voamarika ny « Karohy ny kopia »), lisitra iray :
@@ -47,11 +47,11 @@ misy lisitra midina sy bokotra **Ampiharo**.
 - **Fiaviana** — ampiharina amin'ny kopia voamarika
 
 Amin'ny toerana misy azy no anamboarana ny fanazavana tsirairay : an'ny boky ny
-sokajy, an'ny kopia ny fiaviana.
+fanasokajiana, an'ny kopia ny fiaviana.
 
 !!! tip "« Aza ovana » no sanda voalohany"
     Ny lisitra navela amin'ny **Aza ovana** dia tsy manova na inona na inona. Ka
-    afaka manova ny sokajy ianao nefa tsy manafoana ny toerana tsy nahy. Raha te
+    afaka manova ny fanasokajiana ianao nefa tsy manafoana ny toerana tsy nahy. Raha te
     hanaisotra fanomezana dia fidio ny **— (fafao)**.
 
 Aorian'ny fampiharana dia miverina eo amin'ny katalaogy ianao **miaraka amin'ny
@@ -76,7 +76,7 @@ notice voafidy**.
 
 Ny case eo amin'ny tampon'ny tsanganana dia misafidy (na manaisotra
 ny safidy) ny notice rehetra hita amin'ny pejy. Raha namelona fitana
-ianao (ohatra "sokajy = Lany"), ireo notice voafantenana ihany no
+ianao (ohatra "fanasokajiana = Lany"), ireo notice voafantenana ihany no
 voafidy.
 
 !!! tip "Fitana tsara alohan'ny hifidianana ny rehetra"

@@ -25,7 +25,7 @@ temps :
    travail, que vous pouvez corriger ou vider.
 2. **Vous vérifiez la liste** — et surtout, vous appliquez des **modifications
    par lot** : cochez plusieurs lignes (ou toutes) et affectez-leur en un seul
-   clic la même **catégorie**, le même **emplacement** dans la bibliothèque ou
+   clic la même **classification**, le même **emplacement** dans la bibliothèque ou
    le même **état**. C'est tout l'intérêt de cataloguer ensemble des livres qui
    vont ensemble.
 3. **Vous envoyez le lot au catalogue** : les notices et les exemplaires sont
@@ -42,7 +42,7 @@ cliquez sur
 [**Catalogage par douchette**](/bibliofelia/fr/catalog/scan/new-douchette/){ target="_blank" }.
 
 Comme pour le catalogage caméra, vous pouvez fixer des **valeurs par défaut**
-pour tout le lot (catégorie, emplacement, libellé). Vous pourrez les
+pour tout le lot (classification, emplacement, libellé). Vous pourrez les
 **changer ligne par ligne** ensuite.
 
 ## Scanner les ISBN à la chaîne
@@ -73,7 +73,7 @@ Quand vous avez fini de scanner, cliquez sur **Terminer et voir le lot**. La
 liste du lot s'affiche. Pour chaque ligne, vous voyez le livre trouvé (auteur,
 titre, langue) et vous pouvez :
 
-- changer la **catégorie**, l'**emplacement** ou l'**état** — à la ligne, ou
+- changer la **classification**, l'**emplacement** ou l'**état** — à la ligne, ou
   pour plusieurs lignes d'un coup grâce aux cases à cocher ;
 - ajuster le **nombre d'exemplaires** ;
 - **supprimer** une ligne (icône corbeille) en cas d'erreur de scan.

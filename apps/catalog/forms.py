@@ -249,10 +249,11 @@ class LocationForm(forms.ModelForm):
 
 
 class CategoryForm(forms.ModelForm):
-    """FEAT-067 : création/édition d'une catégorie par un bibliothécaire.
+    """FEAT-067 / FEAT-094 : création/édition d'une classification.
 
-    Jusqu'ici les catégories n'existaient que dans le seed et dans /admin/ —
-    hors de portée des bibliothécaires, donc impossible d'y saisir la cote.
+    Jusqu'ici les classifications n'existaient que dans le seed et dans /admin/
+    — hors de portée des bibliothécaires, donc impossible d'y saisir le code
+    imprimé sur la tranche.
     """
 
     class Meta:
@@ -261,17 +262,20 @@ class CategoryForm(forms.ModelForm):
         labels = {
             "code": _("Code"),
             "name": _("Nom"),
-            "abbreviation": _("Abréviation"),
-            "parent": _("Catégorie parente"),
+            "abbreviation": _("Code de classification"),
+            "parent": _("Classification parente"),
             "default_loan_duration_days": _("Durée de prêt (jours)"),
         }
         help_texts = {
-            "code": _("Court, sans espace : ENF-ALB, ADU-ROM…"),
-            "abbreviation": _(
-                "Cote imprimée sur l'étiquette de tranche. Ex. « RO FI ADO » pour "
-                "« Romans fiction pour adolescents »."
+            "code": _(
+                "Identifiant unique. Pour les classifications Ofelia, identique "
+                "au code de classification (JE DOC)."
             ),
-            "parent": _("Sous-catégorie de… (optionnel)."),
+            "abbreviation": _(
+                "Imprimé sur l'étiquette de tranche. Ex. « JE DOC » pour "
+                "« Jeunesse Documentaire »."
+            ),
+            "parent": _("Sous-classification de… (optionnel)."),
             "default_loan_duration_days": _("Vide = durée par défaut de la bibliothèque."),
         }
 
@@ -339,7 +343,7 @@ class ScanCatalogSessionForm(forms.ModelForm):
         fields = ["label", "default_category", "default_location", "default_provenance"]
         labels = {
             "label": _("Nom du lot (optionnel)"),
-            "default_category": _("Catégorie par défaut"),
+            "default_category": _("Classification par défaut"),
             "default_location": _("Emplacement par défaut"),
             "default_provenance": _("Provenance par défaut"),
         }

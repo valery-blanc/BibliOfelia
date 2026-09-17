@@ -23,7 +23,7 @@ at once** to the catalogue. It works in three steps:
    can correct or empty.
 2. **You check the list** — and above all, you apply **batch changes**: tick
    several rows (or all of them) and assign them, in a single click, the same
-   **category**, the same **location** in the library or the same **condition**.
+   **classification**, the same **location** in the library or the same **condition**.
    That is the whole point of cataloguing together books that belong together.
 3. **You send the batch to the catalogue**: records and copies are created for
    real, and you can print the labels **for that batch only** in one go.
@@ -38,7 +38,7 @@ click
 [**Cataloguing with the scanner**](/bibliofelia/en/catalog/scan/new-douchette/){ target="_blank" }.
 
 As with camera cataloguing, you can set **default values** for the whole batch
-(category, location, label). You can **change them line by line** afterwards.
+(classification, location, label). You can **change them line by line** afterwards.
 
 ## Scan the ISBNs one after another
 
@@ -67,7 +67,7 @@ When you are done scanning, click **Finish and view the batch**. The batch list
 appears. For each line you see the book found (author, title, language) and you
 can:
 
-- change the **category**, **location** or **condition** — per line, or for
+- change the **classification**, **location** or **condition** — per line, or for
   several lines at once using the checkboxes;
 - adjust the **number of copies**;
 - **delete** a line (trash icon) in case of a scanning error.
