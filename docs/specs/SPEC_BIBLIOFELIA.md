@@ -4,7 +4,13 @@ Spécification détaillée du logiciel de gestion de bibliothèque BibliOfelia, 
 
 Version : 1.0 (cible v1) — **`BIBLIOFELIA_VERSION = "1.0"`** depuis le 2026-08-23 (FEAT-082, était `0.1.0-dev`)
 Statut : draft pour Spec-Driven Development
-Dernière modif spec : 2026-09-17 — **FEAT-095** : les filtres de **recherche**
+Dernière modif spec : 2026-09-18 — **FEAT-096** : bouton **Export Excel**
+sur la page Catalogue. Le fichier reprend la recherche courante (notices
+ou exemplaires, tous les filtres, toutes les pages) avec les colonnes
+affichées plus **Emplacement**. Ce n'est pas l'export d'inventaire
+FEAT-078. Cf. §6.1.
+
+Modif précédente : 2026-09-17 — **FEAT-095** : les filtres de **recherche**
 d'emplacements (catalogue, étiquettes codes Ofelia, étiquettes de tranche)
 acceptent **plusieurs** rayons cochés dans la liste déroulante. « Tous
 emplacements » = pas de filtre. Les **affectations** restent un seul
@@ -844,6 +850,18 @@ par `scan-cataloging.js` au premier scan `created`/`incremented` suivant (un sca
   bibliothèque **et** un exemplaire prêté par une autre — et donc le chemin
   prévu pour ne rendre que les seconds.
 - Pagination (25/page) : les liens Précédent/Suivant conservent **tous** les filtres actifs (FEAT-051). La vue expose `base_qs` = querystring courante privée de `page` (`request.GET.copy()` → `pop('page')` → `urlencode()`) ; le template construit `?{{ base_qs }}&page=N`. Avant FEAT-051, seuls `q` et `q_tag` étaient repris (les sélecteurs catégorie/type/langue/emplacement étaient perdus au changement de page).
+- **Export Excel de la liste (FEAT-096)** — bouton **Export Excel** à côté
+  du compteur de résultats, dès qu'il y a au moins une ligne. Le fichier
+  reprend le **mode** (notices / exemplaires) et **tous les filtres** de
+  `base_qs` ; la pagination est ignorée (toutes les pages de la recherche).
+  Colonnes = celles de l'écran, plus **Emplacement** (absent de la table).
+  En mode notice, les codes des exemplaires de la fiche sont joints
+  (`A1, B2`) ; en mode exemplaire, c'est le rayon de la ligne. En-têtes
+  traduits, pas les colonnes d'import de FEAT-078. Rôles : les mêmes que
+  la page (`librarian`, `superadmin`, `readonly`). Fichier
+  `catalogue-notices-AAAA-MM-JJ.xlsx` ou
+  `catalogue-exemplaires-AAAA-MM-JJ.xlsx`. Vue `catalog:catalog_list_export`
+  (`GET /catalog/export.xlsx`).
 
 #### Modification et suppression
 - Édition libre de notice et exemplaire pour bibliothécaires

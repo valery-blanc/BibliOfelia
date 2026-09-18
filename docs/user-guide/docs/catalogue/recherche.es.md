@@ -77,6 +77,24 @@ entero, por ejemplo el día en que hay que devolverlo.
     tendrá que volver a crear ejemplares. Véase
     [Procedencias](provenances.md).
 
+## Exportar la lista a Excel
+
+Junto al número de resultados, el botón **Exportar Excel** descarga un
+archivo de **toda la búsqueda en curso** — no solo las 25 filas de la
+página. Se conservan los filtros (clasificación, ubicación, procedencia…)
+y el modo (registros o ejemplares).
+
+Las columnas son las de la pantalla, más **Ubicación**:
+
+- **Registros** — Título, Autor(es), Clasificación, Ej., Ubicación
+  (los estantes de todos los ejemplares de la ficha, si hay varios)
+- **Ejemplares** — Título, Autor(es), Clasificación, Código Ofelia,
+  Código Ofelia externo, Procedencia, Ubicación
+
+Este archivo sirve para releer o ordenar la lista. Para exportar **todo**
+el catálogo con todas las columnas de importación, use
+[Catalogar desde Excel](../inventaire/catalogage-excel.md).
+
 ## Una búsqueda tolerante
 
 La búsqueda no es exigente: escribir "petit prince" también

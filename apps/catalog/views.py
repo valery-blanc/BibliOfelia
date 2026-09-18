@@ -8,7 +8,7 @@ from django.contrib import messages
 from django.core.paginator import Paginator
 from django.db import transaction
 from django.db.models import Count, Q
-from django.http import JsonResponse, QueryDict
+from django.http import HttpResponse, JsonResponse, QueryDict
 from django.shortcuts import get_object_or_404, redirect, render
 from django.urls import reverse
 from django.utils import timezone, translation
@@ -231,6 +231,28 @@ def record_list(request):
         },
     }
     return render(request, "catalog/record_list.html", context)
+
+
+@require_role(*READ_ROLES)
+def catalog_list_export(request):
+    """FEAT-096 : Excel de la recherche courante (notices ou exemplaires).
+
+    Mêmes filtres que `record_list`. La pagination est ignorée : le fichier
+    contient toutes les lignes de la recherche, plus la colonne emplacement.
+    """
+    from .list_export import build_list_workbook, list_export_filename
+
+    content = build_list_workbook(request.GET)
+    resp = HttpResponse(
+        content,
+        content_type=(
+            "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet"
+        ),
+    )
+    resp["Content-Disposition"] = (
+        f'attachment; filename="{list_export_filename(request.GET)}"'
+    )
+    return resp
 
 
 @require_role(*READ_ROLES)

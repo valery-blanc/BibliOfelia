@@ -98,11 +98,21 @@
     </div>
 </form>
 
-<div class="muted text-sm" style="margin:4px 4px 12px">
+<div class="muted text-sm" style="margin:4px 4px 12px;display:flex;align-items:center;justify-content:space-between;gap:8px;flex-wrap:wrap">
+    <span>
     {% if items_mode %}
     {% blocktrans count counter=total %}{{ counter }} exemplaire{% plural %}{{ counter }} exemplaires{% endblocktrans %}
     {% else %}
     {% blocktrans count counter=total %}{{ counter }} notice{% plural %}{{ counter }} notices{% endblocktrans %}
+    {% endif %}
+    </span>
+    {% if total %}
+    <a href="{% url 'catalog:catalog_list_export' %}{% if base_qs %}?{{ base_qs }}{% endif %}"
+       class="btn btn--ghost btn--sm"
+       title="{% trans 'Télécharge toutes les lignes de la recherche, pas seulement la page affichée.' %}">
+        {% icon "file-spreadsheet" size="16px" %}
+        {% trans "Export Excel" %}
+    </a>
     {% endif %}
 </div>
 

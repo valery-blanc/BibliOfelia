@@ -74,6 +74,24 @@ on the day it has to go back.
     records stay: if the partner library lends you the same titles next
     year, you only have to create copies again. See [Sources](provenances.md).
 
+## Export the list to Excel
+
+Next to the result count, the **Excel export** button downloads a file of
+**the whole current search** — not just the 25 rows on the page. Filters
+(classification, location, source…) and the mode (records or copies) are
+kept.
+
+The columns are those on screen, plus **Location**:
+
+- **Records** — Title, Author(s), Classification, Copies, Location
+  (every copy's shelf on the record, if there are several)
+- **Copies** — Title, Author(s), Classification, Ofelia code, External
+  Ofelia code, Source, Location
+
+This file is for reading or sorting the list. To export the **whole**
+catalogue with every import column, use
+[Catalogue from Excel](../inventaire/catalogage-excel.md).
+
 ## A forgiving search
 
 The search is not picky: typing "petit prince" also finds "Le Petit

@@ -77,6 +77,24 @@ par exemple le jour où il faut le rendre.
     n'y a plus qu'à recréer des exemplaires. Voir
     [Provenances](provenances.md).
 
+## Exporter la liste en Excel
+
+À côté du nombre de résultats, le bouton **Export Excel** télécharge un
+fichier de **toute la recherche en cours** — pas seulement les 25 lignes
+de la page. Les filtres (classification, emplacement, provenance…) et le
+mode (notices ou exemplaires) sont repris.
+
+Les colonnes sont celles de l'écran, plus **Emplacement** :
+
+- **Notices** — Titre, Auteur(s), Classification, Ex., Emplacement
+  (les rayons de tous les exemplaires de la fiche, s'il y en a plusieurs)
+- **Exemplaires** — Titre, Auteur(s), Classification, Code Ofelia,
+  Code Ofelia externe, Provenance, Emplacement
+
+Ce fichier sert à relire ou trier la liste. Pour exporter **tout** le
+catalogue avec toutes les colonnes d'import, utilisez
+[Cataloguer depuis Excel](../inventaire/catalogage-excel.md).
+
 ## Une recherche tolérante
 
 La recherche n'est pas pointilleuse : taper "petit prince" trouve aussi

@@ -86,6 +86,24 @@ manontolo — ohatra amin'ny andro tsy maintsy hamerenana azy.
     atao afa-tsy ny mamorona kopia vaovao. Jereo ny
     [Fiaviana](provenances.md).
 
+## Export Excel ny lisitra
+
+Eo akaikin'ny isan'ny valiny, ny bokotra **Export Excel** dia maka rakitra
+misy **ny fikarohana manontolo** — tsy ny andalana 25 amin'ny pejy ihany.
+Tadidina ny sivana (fanasokajiana, toerana, fiaviana…) sy ny fomba
+(rakitra na kopia).
+
+Ny tsanganana dia toy ny eo amin'ny efijery, miampy **Toerana**:
+
+- **Rakitra** — Lohateny, Mpanoratra, Fanasokajiana, Kop., Toerana
+  (ny talantalana rehetra amin'ny kopia, raha maromaro)
+- **Kopia** — Lohateny, Mpanoratra, Fanasokajiana, Kaody Ofelia,
+  Kaody Ofelia ivelany, Fiaviana, Toerana
+
+Io rakitra io dia hovakiana na halahatra ny lisitra. Raha hanondrana ny
+katalaogy **manontolo** miaraka amin'ny tsanganana fampidirana rehetra,
+ampiasao ny [Manasokajy avy amin'ny Excel](../inventaire/catalogage-excel.md).
+
 ## Fikarohana amin'ny code-barre
 
 Miaraka amin'ny [scanner](../premiers-pas/saisie.md) na ny [fakantsarin'ny

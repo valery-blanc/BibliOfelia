@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2026-09-17 21:43+0000\n"
+"POT-Creation-Date: 2026-09-18 05:39+0000\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -143,11 +143,12 @@ msgid ""
 "mettre à jour ne peuvent pas être retrouvés."
 msgstr ""
 
-#: apps/catalog/forms.py:35 templates/catalog/_item_results.html:53
+#: apps/catalog/forms.py:35 apps/catalog/list_export.py:71
+#: apps/catalog/list_export.py:81 templates/catalog/_item_results.html:53
 #: templates/catalog/_item_results.html:122
 #: templates/catalog/record_detail.html:51
-#: templates/catalog/record_list.html:172
-#: templates/catalog/record_list.html:241
+#: templates/catalog/record_list.html:182
+#: templates/catalog/record_list.html:251
 msgid "Auteur(s)"
 msgstr ""
 
@@ -176,15 +177,17 @@ msgstr ""
 msgid "ISSN invalide (8 caractères, ex. 1234-5679)."
 msgstr ""
 
-#: apps/catalog/forms.py:137 templates/catalog/_item_results.html:56
+#: apps/catalog/forms.py:137 apps/catalog/list_export.py:84
+#: templates/catalog/_item_results.html:56
 #: templates/catalog/_item_results.html:125
 msgid "Code Ofelia externe"
 msgstr ""
 
-#: apps/catalog/forms.py:138 apps/reports/builders/collection.py:259
+#: apps/catalog/forms.py:138 apps/catalog/list_export.py:74
+#: apps/catalog/list_export.py:86 apps/reports/builders/collection.py:259
 #: apps/reports/builders/collection.py:435
 #: templates/catalog/record_detail.html:101
-#: templates/catalog/record_list.html:141
+#: templates/catalog/record_list.html:151
 #: templates/catalog/scan_session.html:54
 #: templates/catalog/scan_session.html:160
 #: templates/catalog/scan_session.html:188
@@ -193,7 +196,8 @@ msgstr ""
 msgid "Emplacement"
 msgstr ""
 
-#: apps/catalog/forms.py:139 apps/reports/builders/collection.py:294
+#: apps/catalog/forms.py:139 apps/catalog/list_export.py:85
+#: apps/reports/builders/collection.py:294
 #: templates/catalog/_item_results.html:22
 #: templates/catalog/_item_results.html:57
 #: templates/catalog/_item_results.html:126
@@ -384,6 +388,70 @@ msgstr ""
 
 #: apps/catalog/languages.py:50
 msgid "— non précisée —"
+msgstr ""
+
+#: apps/catalog/list_export.py:70 apps/catalog/list_export.py:80
+#: apps/reports/builders/collection.py:434
+#: templates/catalog/_item_results.html:52
+#: templates/catalog/_item_results.html:121
+#: templates/catalog/item_bulk_assign_provenance.html:36
+#: templates/catalog/item_bulk_delete.html:58
+#: templates/catalog/record_bulk_assign_category.html:36
+#: templates/catalog/record_bulk_assign_location.html:37
+#: templates/catalog/record_bulk_delete.html:46
+#: templates/catalog/record_list.html:181
+#: templates/catalog/record_list.html:250 templates/core/dashboard.html:348
+#: templates/inventory/session_report.html:114 templates/loans/return.html:199
+#: templates/members/member_detail.html:158
+#: templates/members/member_history.html:30
+#: templates/members/member_history.html:62
+#: templates/printing/_picker_base.html:58
+msgid "Titre"
+msgstr ""
+
+#: apps/catalog/list_export.py:72 apps/catalog/list_export.py:82
+#: apps/reports/builders/worklists.py:249
+#: templates/catalog/_item_results.html:54
+#: templates/catalog/_item_results.html:123
+#: templates/catalog/record_detail.html:53
+#: templates/catalog/record_list.html:141
+#: templates/catalog/record_list.html:183
+#: templates/catalog/record_list.html:252
+#: templates/catalog/scan_session.html:53
+#: templates/catalog/scan_session.html:153
+#: templates/catalog/scan_session.html:187
+#: templates/printing/spine_labels_picker.html:26
+msgid "Classification"
+msgstr ""
+
+#: apps/catalog/list_export.py:73 templates/catalog/record_list.html:184
+#: templates/catalog/record_list.html:253
+#: templates/catalog/scan_session.html:55
+#: templates/catalog/scan_session.html:190
+msgid "Ex."
+msgstr ""
+
+#: apps/catalog/list_export.py:83 templates/catalog/_item_results.html:55
+#: templates/catalog/_item_results.html:124
+#: templates/catalog/item_bulk_assign_provenance.html:37
+#: templates/catalog/item_bulk_delete.html:59
+#: templates/catalog/record_detail.html:99
+#: templates/printing/_picker_base.html:61
+msgid "Code Ofelia"
+msgstr ""
+
+#: apps/catalog/list_export.py:145 apps/reports/builders/collection.py:342
+#: templates/catalog/location_list.html:37
+#: templates/catalog/provenance_list.html:37
+#: templates/catalog/record_bulk_assign_location.html:38
+#: templates/catalog/record_bulk_delete.html:47
+#: templates/catalog/record_detail.html:85 templates/core/dashboard.html:193
+msgid "Exemplaires"
+msgstr ""
+
+#: apps/catalog/list_export.py:151 templates/catalog/category_list.html:38
+#: templates/catalog/language_list.html:36 templates/core/dashboard.html:189
+msgid "Notices"
 msgstr ""
 
 #: apps/catalog/models.py:24
@@ -748,253 +816,253 @@ msgstr ""
 msgid "catalogages Excel"
 msgstr ""
 
-#: apps/catalog/views.py:306
+#: apps/catalog/views.py:328
 msgid "Notice créée."
 msgstr ""
 
-#: apps/catalog/views.py:311 apps/catalog/views.py:351
+#: apps/catalog/views.py:333 apps/catalog/views.py:373
 #: templates/catalog/record_list.html:29 templates/core/dashboard.html:219
 msgid "Nouvelle notice"
 msgstr ""
 
-#: apps/catalog/views.py:323
+#: apps/catalog/views.py:345
 msgid "Notice mise à jour."
 msgstr ""
 
-#: apps/catalog/views.py:328
+#: apps/catalog/views.py:350
 msgid "Modifier la notice"
 msgstr ""
 
-#: apps/catalog/views.py:339
+#: apps/catalog/views.py:361
 msgid "Notice trouvée sur OpenLibrary."
 msgstr ""
 
-#: apps/catalog/views.py:343
+#: apps/catalog/views.py:365
 msgid "Aucune réponse d'OpenLibrary — saisissez la notice à la main."
 msgstr ""
 
-#: apps/catalog/views.py:365
+#: apps/catalog/views.py:387
 msgid "Suppression impossible : des exemplaires actifs sont rattachés."
 msgstr ""
 
-#: apps/catalog/views.py:369
+#: apps/catalog/views.py:391
 msgid "Notice supprimée."
 msgstr ""
 
-#: apps/catalog/views.py:402
+#: apps/catalog/views.py:424
 #, python-format
 msgid "%(n)s exemplaire(s) ajouté(s)."
 msgstr ""
 
-#: apps/catalog/views.py:419
+#: apps/catalog/views.py:441
 msgid "Exemplaire mis à jour."
 msgstr ""
 
-#: apps/catalog/views.py:434
+#: apps/catalog/views.py:456
 msgid "Impossible : l'exemplaire est prêté ou réservé."
 msgstr ""
 
-#: apps/catalog/views.py:438
+#: apps/catalog/views.py:460
 msgid "Exemplaire retiré du fonds."
 msgstr ""
 
-#: apps/catalog/views.py:469
+#: apps/catalog/views.py:491
 msgid "Exemplaire supprimé."
 msgstr ""
 
-#: apps/catalog/views.py:560
+#: apps/catalog/views.py:582
 #, python-format
 msgid "%(n)s notice(s) → classification %(v)s"
 msgstr ""
 
-#: apps/catalog/views.py:562
+#: apps/catalog/views.py:584
 #, python-format
 msgid "%(n)s notice(s) sans classification"
 msgstr ""
 
-#: apps/catalog/views.py:570
+#: apps/catalog/views.py:592
 #, python-format
 msgid "%(n)s exemplaire(s) → emplacement %(v)s"
 msgstr ""
 
-#: apps/catalog/views.py:572
+#: apps/catalog/views.py:594
 #, python-format
 msgid "%(n)s exemplaire(s) sans emplacement"
 msgstr ""
 
-#: apps/catalog/views.py:577 apps/catalog/views.py:588
+#: apps/catalog/views.py:599 apps/catalog/views.py:610
 msgid "Rien à modifier : aucun menu n'a été changé."
 msgstr ""
 
-#: apps/catalog/views.py:595
+#: apps/catalog/views.py:617
 #, python-format
 msgid "%(n)s exemplaire(s) → provenance %(v)s"
 msgstr ""
 
-#: apps/catalog/views.py:597
+#: apps/catalog/views.py:619
 #, python-format
 msgid "%(n)s exemplaire(s) sans provenance"
 msgstr ""
 
-#: apps/catalog/views.py:650
+#: apps/catalog/views.py:672
 #, python-format
 msgid "%(n)s notice(s) supprimée(s)."
 msgstr ""
 
-#: apps/catalog/views.py:678
+#: apps/catalog/views.py:700
 msgid "Emplacement créé."
 msgstr ""
 
-#: apps/catalog/views.py:688 templates/catalog/location_list.html:25
+#: apps/catalog/views.py:710 templates/catalog/location_list.html:25
 msgid "Nouvel emplacement"
 msgstr ""
 
-#: apps/catalog/views.py:700
+#: apps/catalog/views.py:722
 msgid "Emplacement mis à jour."
 msgstr ""
 
-#: apps/catalog/views.py:710
+#: apps/catalog/views.py:732
 msgid "Modifier l'emplacement"
 msgstr ""
 
-#: apps/catalog/views.py:727
+#: apps/catalog/views.py:749
 msgid "Emplacement supprimé."
 msgstr ""
 
-#: apps/catalog/views.py:775
+#: apps/catalog/views.py:797
 msgid "Langue ajoutée."
 msgstr ""
 
-#: apps/catalog/views.py:785 templates/catalog/language_list.html:25
+#: apps/catalog/views.py:807 templates/catalog/language_list.html:25
 msgid "Nouvelle langue"
 msgstr ""
 
-#: apps/catalog/views.py:797
+#: apps/catalog/views.py:819
 msgid "Langue mise à jour."
 msgstr ""
 
-#: apps/catalog/views.py:807
+#: apps/catalog/views.py:829
 msgid "Modifier la langue"
 msgstr ""
 
-#: apps/catalog/views.py:824
+#: apps/catalog/views.py:846
 msgid "Langue retirée de la liste."
 msgstr ""
 
-#: apps/catalog/views.py:860
+#: apps/catalog/views.py:882
 msgid "Classification créée."
 msgstr ""
 
-#: apps/catalog/views.py:870 templates/catalog/category_list.html:25
+#: apps/catalog/views.py:892 templates/catalog/category_list.html:25
 msgid "Nouvelle classification"
 msgstr ""
 
-#: apps/catalog/views.py:882
+#: apps/catalog/views.py:904
 msgid "Classification mise à jour."
 msgstr ""
 
-#: apps/catalog/views.py:892
+#: apps/catalog/views.py:914
 msgid "Modifier la classification"
 msgstr ""
 
-#: apps/catalog/views.py:907
+#: apps/catalog/views.py:929
 msgid "Classification supprimée."
 msgstr ""
 
-#: apps/catalog/views.py:940
+#: apps/catalog/views.py:962
 msgid "Provenance créée."
 msgstr ""
 
-#: apps/catalog/views.py:950
+#: apps/catalog/views.py:972
 #: templates/catalog/item_bulk_assign_provenance.html:59
 #: templates/catalog/provenance_list.html:25
 msgid "Nouvelle provenance"
 msgstr ""
 
-#: apps/catalog/views.py:962
+#: apps/catalog/views.py:984
 msgid "Provenance mise à jour."
 msgstr ""
 
-#: apps/catalog/views.py:972
+#: apps/catalog/views.py:994
 msgid "Modifier la provenance"
 msgstr ""
 
-#: apps/catalog/views.py:993
+#: apps/catalog/views.py:1015
 #, python-format
 msgid "Impossible : %(n)s exemplaire(s) portent encore cette provenance."
 msgstr ""
 
-#: apps/catalog/views.py:998
+#: apps/catalog/views.py:1020
 msgid "Provenance supprimée."
 msgstr ""
 
-#: apps/catalog/views.py:1089
+#: apps/catalog/views.py:1111
 #, python-format
 msgid "%(n)s exemplaire(s) supprimé(s)."
 msgstr ""
 
-#: apps/catalog/views.py:1133
+#: apps/catalog/views.py:1155
 msgid "Lot de catalogage démarré."
 msgstr ""
 
-#: apps/catalog/views.py:1206
+#: apps/catalog/views.py:1228
 #, python-format
 msgid "ISBN %(isbn)s · %(lang)s"
 msgstr ""
 
-#: apps/catalog/views.py:1230 apps/catalog/views.py:1335
+#: apps/catalog/views.py:1252 apps/catalog/views.py:1357
 msgid "Ce lot est déjà validé."
 msgstr ""
 
-#: apps/catalog/views.py:1235
+#: apps/catalog/views.py:1257
 msgid "Déjà catalogué"
 msgstr ""
 
-#: apps/catalog/views.py:1235
+#: apps/catalog/views.py:1257
 msgid "Carte membre — pas un livre"
 msgstr ""
 
-#: apps/catalog/views.py:1238 apps/catalog/views.py:1245
+#: apps/catalog/views.py:1260 apps/catalog/views.py:1267
 msgid "Code invalide."
 msgstr ""
 
-#: apps/catalog/views.py:1299
+#: apps/catalog/views.py:1321
 #, python-format
 msgid "exemplaire %(n)s"
 msgstr ""
 
-#: apps/catalog/views.py:1325
+#: apps/catalog/views.py:1347
 msgid "Ligne retirée."
 msgstr ""
 
-#: apps/catalog/views.py:1359
+#: apps/catalog/views.py:1381
 msgid "Aucun livre scanné à envoyer."
 msgstr ""
 
-#: apps/catalog/views.py:1366
+#: apps/catalog/views.py:1388
 #, python-format
 msgid ""
 "%(rec)s notice(s) créée(s), %(match)s complétée(s), %(cop)s exemplaire(s) "
 "ajouté(s)."
 msgstr ""
 
-#: apps/catalog/views.py:1375
+#: apps/catalog/views.py:1397
 msgid "Modifications enregistrées."
 msgstr ""
 
-#: apps/catalog/views.py:1407
+#: apps/catalog/views.py:1429
 msgid "Aucun fichier sélectionné."
 msgstr ""
 
-#: apps/catalog/views.py:1430
+#: apps/catalog/views.py:1452
 msgid "Vérification lancée. Suivez l'avancement ici."
 msgstr ""
 
-#: apps/catalog/views.py:1440
+#: apps/catalog/views.py:1462
 msgid "Import lancé. Suivez l'avancement ici."
 msgstr ""
 
-#: apps/catalog/views.py:1451
+#: apps/catalog/views.py:1473
 msgid "Mise à jour lancée. Suivez l'avancement ici."
 msgstr ""
 
@@ -3382,15 +3450,6 @@ msgstr ""
 msgid "Titres nouveaux"
 msgstr ""
 
-#: apps/reports/builders/collection.py:342
-#: templates/catalog/location_list.html:37
-#: templates/catalog/provenance_list.html:37
-#: templates/catalog/record_bulk_assign_location.html:38
-#: templates/catalog/record_bulk_delete.html:47
-#: templates/catalog/record_detail.html:85 templates/core/dashboard.html:193
-msgid "Exemplaires"
-msgstr ""
-
 #: apps/reports/builders/collection.py:345
 msgid "Aucun livre catalogué pendant cette période."
 msgstr ""
@@ -3431,24 +3490,6 @@ msgstr ""
 #: apps/reports/builders/worklists.py:151
 #: apps/reports/builders/worklists.py:248
 msgid "N° du livre"
-msgstr ""
-
-#: apps/reports/builders/collection.py:434
-#: templates/catalog/_item_results.html:52
-#: templates/catalog/_item_results.html:121
-#: templates/catalog/item_bulk_assign_provenance.html:36
-#: templates/catalog/item_bulk_delete.html:58
-#: templates/catalog/record_bulk_assign_category.html:36
-#: templates/catalog/record_bulk_assign_location.html:37
-#: templates/catalog/record_bulk_delete.html:46
-#: templates/catalog/record_list.html:171
-#: templates/catalog/record_list.html:240 templates/core/dashboard.html:348
-#: templates/inventory/session_report.html:114 templates/loans/return.html:199
-#: templates/members/member_detail.html:158
-#: templates/members/member_history.html:30
-#: templates/members/member_history.html:62
-#: templates/printing/_picker_base.html:58
-msgid "Titre"
 msgstr ""
 
 #: apps/reports/builders/collection.py:434
@@ -4272,20 +4313,6 @@ msgstr ""
 msgid "Livres qui ne sortent pas"
 msgstr ""
 
-#: apps/reports/builders/worklists.py:249
-#: templates/catalog/_item_results.html:54
-#: templates/catalog/_item_results.html:123
-#: templates/catalog/record_detail.html:53
-#: templates/catalog/record_list.html:131
-#: templates/catalog/record_list.html:173
-#: templates/catalog/record_list.html:242
-#: templates/catalog/scan_session.html:53
-#: templates/catalog/scan_session.html:153
-#: templates/catalog/scan_session.html:187
-#: templates/printing/spine_labels_picker.html:26
-msgid "Classification"
-msgstr ""
-
 #: apps/reports/builders/worklists.py:250
 msgid "Acquis le"
 msgstr ""
@@ -4792,38 +4819,29 @@ msgid "exemplaire(s) sélectionné(s)"
 msgstr ""
 
 #: templates/catalog/_item_results.html:15
-#: templates/catalog/record_list.html:124
+#: templates/catalog/record_list.html:134
 msgid "résultats de la recherche"
 msgstr ""
 
 #: templates/catalog/_item_results.html:24
-#: templates/catalog/record_list.html:133
 #: templates/catalog/record_list.html:143
+#: templates/catalog/record_list.html:153
 msgid "Ne pas modifier"
 msgstr ""
 
 #: templates/catalog/_item_results.html:25
-#: templates/catalog/record_list.html:134
 #: templates/catalog/record_list.html:144
+#: templates/catalog/record_list.html:154
 msgid "— (vider)"
 msgstr ""
 
 #: templates/catalog/_item_results.html:33
-#: templates/catalog/record_list.html:152
+#: templates/catalog/record_list.html:162
 msgid "Affecter"
 msgstr ""
 
 #: templates/catalog/_item_results.html:38
 msgid "Supprimer les exemplaires sélectionnés"
-msgstr ""
-
-#: templates/catalog/_item_results.html:55
-#: templates/catalog/_item_results.html:124
-#: templates/catalog/item_bulk_assign_provenance.html:37
-#: templates/catalog/item_bulk_delete.html:59
-#: templates/catalog/record_detail.html:99
-#: templates/printing/_picker_base.html:61
-msgid "Code Ofelia"
 msgstr ""
 
 #: templates/catalog/_record_form.html:27
@@ -4945,11 +4963,6 @@ msgstr ""
 #: templates/catalog/category_list.html:37
 #: templates/catalog/location_list.html:36
 msgid "Parent"
-msgstr ""
-
-#: templates/catalog/category_list.html:38
-#: templates/catalog/language_list.html:36 templates/core/dashboard.html:189
-msgid "Notices"
 msgstr ""
 
 #: templates/catalog/category_list.html:69
@@ -5957,7 +5970,7 @@ msgstr ""
 msgid "Rechercher des exemplaires"
 msgstr ""
 
-#: templates/catalog/record_list.html:104
+#: templates/catalog/record_list.html:105
 #: templates/printing/_picker_base.html:44
 #, python-format
 msgid "%(counter)s exemplaire"
@@ -5965,46 +5978,48 @@ msgid_plural "%(counter)s exemplaires"
 msgstr[0] ""
 msgstr[1] ""
 
-#: templates/catalog/record_list.html:106
+#: templates/catalog/record_list.html:107
 #, python-format
 msgid "%(counter)s notice"
 msgid_plural "%(counter)s notices"
 msgstr[0] ""
 msgstr[1] ""
 
-#: templates/catalog/record_list.html:123
+#: templates/catalog/record_list.html:113
+msgid ""
+"Télécharge toutes les lignes de la recherche, pas seulement la page affichée."
+msgstr ""
+
+#: templates/catalog/record_list.html:115
+msgid "Export Excel"
+msgstr ""
+
+#: templates/catalog/record_list.html:133
 msgid "notice(s) sélectionnée(s)"
 msgstr ""
 
-#: templates/catalog/record_list.html:157
+#: templates/catalog/record_list.html:167
 msgid "Supprimer les notices sélectionnées"
 msgstr ""
 
-#: templates/catalog/record_list.html:174
-#: templates/catalog/record_list.html:243
-#: templates/catalog/scan_session.html:55
-#: templates/catalog/scan_session.html:190
-msgid "Ex."
-msgstr ""
-
-#: templates/catalog/record_list.html:216
-#: templates/catalog/record_list.html:275
+#: templates/catalog/record_list.html:226
+#: templates/catalog/record_list.html:285
 msgid "ex."
 msgstr ""
 
-#: templates/catalog/record_list.html:286
+#: templates/catalog/record_list.html:296
 #: templates/finance/invoice_list.html:86
 #: templates/members/member_list.html:122 templates/setup/step.html:31
 msgid "Précédent"
 msgstr ""
 
-#: templates/catalog/record_list.html:290
+#: templates/catalog/record_list.html:300
 #: templates/finance/invoice_list.html:90
 #: templates/members/member_list.html:126
 msgid "Suivant"
 msgstr ""
 
-#: templates/catalog/record_list.html:297
+#: templates/catalog/record_list.html:307
 msgid "Aucune notice ne correspond."
 msgstr ""
 

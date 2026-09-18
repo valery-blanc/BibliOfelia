@@ -6,6 +6,8 @@ app_name = "catalog"
 
 urlpatterns = [
     path("", views.record_list, name="record_list"),
+    # FEAT-096 : export Excel de la liste filtrée (avant <int:pk>/)
+    path("export.xlsx", views.catalog_list_export, name="catalog_list_export"),
     path("new/", views.record_create, name="record_create"),
     path("isbn-lookup/", views.isbn_lookup, name="isbn_lookup"),
     path("<int:pk>/", views.record_detail, name="record_detail"),
