@@ -65,7 +65,7 @@ docs/bugs/      BUG-XXX-*.md
 
 ## Déploiement keebee (Ofelia Box)
 
-Voir Task #18 et `C:\WORK\keebee\CLAUDE.md`. Cohabitation avec Koha :
+Voir Task #18 et `C:\WORK\Ofeliabox\CLAUDE.md`. Cohabitation avec Koha :
 - Koha reste sur `/biblio/`
 - BibliOfelia s'installe sur `/bibliofelia/`
 

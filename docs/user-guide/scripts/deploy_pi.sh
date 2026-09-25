@@ -8,7 +8,7 @@
 #   - .venv-doc operationnel avec MkDocs et plugins (cf. requirements-doc.txt)
 #   - cle SSH ~/.ssh/id_ed25519_pi
 #   - location nginx /bibliofelia/docs/ deja declaree dans
-#     C:\WORK\keebee\nginx\conf.d\ofelia-locations.inc
+#     C:\WORK\Ofeliabox\nginx\conf.d\ofelia-locations.inc
 set -euo pipefail
 
 PI_USER="ofelia"

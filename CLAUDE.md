@@ -5,7 +5,7 @@ Dans ce fichier, « Claude » désigne l'agent de session, pas un produit.
 
 ## Projet
 
-**BibliOfelia** — Logiciel de gestion de bibliothèque hors-ligne pour le projet Ofelia. Tourne sur la **Ofelia Box** (Raspberry Pi 5) en cohabitation avec [EduBox/keebee](../keebee).
+**BibliOfelia** — Logiciel de gestion de bibliothèque hors-ligne pour le projet Ofelia. Tourne sur la **Ofelia Box** (Raspberry Pi 5) en cohabitation avec [EduBox/keebee](../Ofeliabox).
 
 - **Spec** : `docs/specs/SPEC_BIBLIOFELIA.md` (source de vérité)
 - **Avancement** : `docs/tasks/TASKS.md`
@@ -181,7 +181,7 @@ Outils :
 
 ## Connexion Pi
 
-Voir `C:\WORK\keebee\CLAUDE.md` — `ssh -i ~/.ssh/id_ed25519_pi ofelia@192.168.0.147`. Chemin d'install sur la Pi : `/opt/edubox/`.
+Voir `C:\WORK\Ofeliabox\CLAUDE.md` — `ssh -i ~/.ssh/id_ed25519_pi ofelia@192.168.0.147`. Chemin d'install sur la Pi : `/opt/edubox/`.
 
 ## Infrastructure — accès serveurs
 
