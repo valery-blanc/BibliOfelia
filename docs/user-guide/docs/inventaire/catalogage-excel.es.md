@@ -5,16 +5,16 @@ Muchas bibliotecas llegan al proyecto Ofelia con un fondo ya escrito en una
 veces un ISBN). La **catalogación Excel** ofrece cuatro herramientas para
 aprovechar ese archivo:
 
-1. **Verificar un archivo** — BibliOfelia anota su hoja de cálculo con lo
+1. **Verificar un archivo** — BiblOFELIA anota su hoja de cálculo con lo
    que las bases de datos en línea conocen de cada libro, sin modificar nada
    en el catálogo. Ideal **antes** de una migración, para medir la calidad
    del archivo y corregirlo a mano.
-2. **Importar en el catálogo** — BibliOfelia convierte una lista de ISBN en
+2. **Importar en el catálogo** — BiblOFELIA convierte una lista de ISBN en
    fichas y ejemplares, de una sola vez.
-3. **Exportar el catálogo** — BibliOfelia le devuelve todo su fondo en una
+3. **Exportar el catálogo** — BiblOFELIA le devuelve todo su fondo en una
    hoja de cálculo, una línea por ejemplar.
 4. **Actualizar ejemplares** — usted devuelve esa hoja corregida y
-   BibliOfelia aplica sus correcciones a los libros ya catalogados, sin
+   BiblOFELIA aplica sus correcciones a los libros ya catalogados, sin
    crear nunca ninguno nuevo.
 
 !!! info "Solo para bibliotecarios"
@@ -28,7 +28,7 @@ sección **Inventario**, haga clic en
 [**Catalogación Excel**](/bibliofelia/es/catalog/excel-catalog/){ target="_blank" }.
 
 La página muestra cuatro recuadros: **Verificar un archivo**, **Importar en
-BibliOfelia**, **Exportar el catálogo** y **Actualizar ejemplares**.
+BiblOFELIA**, **Exportar el catálogo** y **Actualizar ejemplares**.
 
 ## Verificar un archivo
 
@@ -55,7 +55,7 @@ En el recuadro
 [**Verificar un archivo**](/bibliofelia/es/catalog/excel-catalog/){ target="_blank" },
 elija su archivo y haga clic en **Iniciar la verificación**.
 
-BibliOfelia consulta **OpenLibrary, Google Books, la BNF y la BNE**, primero
+BiblOFELIA consulta **OpenLibrary, Google Books, la BNF y la BNE**, primero
 por ISBN y luego por título + autor. El procesamiento se realiza en segundo
 plano: cuente unos **10 minutos por cada 300 filas**.
 
@@ -105,11 +105,11 @@ orden.
 | `CONDITION` | el estado del ejemplar (Nuevo, Bueno, Desgastado, Dañado) |
 
 En el recuadro
-[**Importar en BibliOfelia**](/bibliofelia/es/catalog/excel-catalog/){ target="_blank" },
+[**Importar en BiblOFELIA**](/bibliofelia/es/catalog/excel-catalog/){ target="_blank" },
 elija su archivo y haga clic en **Importar en el catálogo**.
 
 Cada ISBN se convierte en una ficha y un ejemplar. Si un ISBN **ya existe**
-en el catálogo, BibliOfelia no recrea la ficha: simplemente añade un
+en el catálogo, BiblOFELIA no recrea la ficha: simplemente añade un
 ejemplar a la ficha existente.
 
 !!! info "Una columna rellenada reemplaza la información de la ficha"
@@ -159,7 +159,7 @@ ubicación, el estado, la procedencia y el código externo pertenecen al
 | `CONDITION`, `PROVENANCE`, `LOCATION` | los datos del ejemplar |
 
 !!! tip "Es el archivo de la actualización"
-    Las columnas de la exportación son **exactamente** las que BibliOfelia
+    Las columnas de la exportación son **exactamente** las que BiblOFELIA
     sabe releer. Corrija lo que quiera en Excel y devuelva el mismo archivo
     por **Actualizar ejemplares**: no hay nada más que preparar.
 
@@ -245,7 +245,7 @@ archivo anotado o consultar las advertencias fila por fila.
 
 ## Véase también
 
-- [Catalogar escaneando](catalogage-scan.md) — la misma importación, pero
-  con la cámara libro por libro
+- [Catalogar escaneando](catalogage-scan.md) — el mismo trabajo, libro por
+  libro, con la cámara o el lector USB
 - [Añadir un libro](../catalogue/ajouter-livre.md) — crear una sola ficha a
   mano

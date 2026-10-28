@@ -1,6 +1,6 @@
 # Print book labels
 
-Barcode labels are stuck on books to allow quick scanning. BibliOfelia
+Barcode labels are stuck on books to allow quick scanning. BiblOFELIA
 generates the PDF of labels to print on sticky sheets.
 
 ## Open the printing page
@@ -99,7 +99,7 @@ The text is centred and its size adjusts on its own: `PER` fills the label,
 !!! warning "The classification code has to be filled in first"
     The code is set on the **classification**, not on the book (see
     [Classifications](../catalogue/categories.md)). A copy whose classification
-    has no code is skipped when printing; if none has one, BibliOfelia
+    has no code is skipped when printing; if none has one, BiblOFELIA
     tells you instead of producing an empty PDF.
 
 ## See also

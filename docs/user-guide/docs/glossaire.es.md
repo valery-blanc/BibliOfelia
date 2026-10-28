@@ -1,10 +1,10 @@
 # Glosario
 
-Pequeño léxico de los términos usados en BibliOfelia.
+Pequeño léxico de los términos usados en BiblOFELIA.
 
 ## Los diferentes códigos: ¿para qué sirven?
 
-BibliOfelia usa varios tipos de códigos para identificar los libros
+BiblOFELIA usa varios tipos de códigos para identificar los libros
 y los miembros. Es importante distinguirlos bien porque no sirven
 para lo mismo.
 
@@ -19,7 +19,7 @@ Ejemplos:
 - `2900000000017` → etiqueta de un libro
 - `2910000000444` → tarjeta de un miembro
 
-Es el código que BibliOfelia genera automáticamente cuando crea un
+Es el código que BiblOFELIA genera automáticamente cuando crea un
 nuevo ejemplar o un nuevo miembro. Es el que se imprime en las
 etiquetas y en las tarjetas físicas. Es el que se escanea para los
 préstamos, las devoluciones, el inventario.
@@ -37,7 +37,7 @@ interno** más legible para el bibliotecario. Tiene la forma
 
 - `OFL-20260525-0014` → 14º libro registrado el 25 de mayo de 2026
 
-Este código aparece en BibliOfelia en la ficha del ejemplar.
+Este código aparece en BiblOFELIA en la ficha del ejemplar.
 Permite identificar rápidamente cuándo se registró un libro. No se
 imprime en la etiqueta, pero **se puede teclear** en la búsqueda, el
 préstamo o la devolución — con o sin guiones.
@@ -50,7 +50,7 @@ Identifica el título universalmente.
 
 Ejemplo: `9782070612758` → identifica *El Principito* en Gallimard.
 
-Cuando crea un nuevo registro, BibliOfelia consulta la base
+Cuando crea un nuevo registro, BiblOFELIA consulta la base
 OpenLibrary a partir del ISBN-13 para rellenar el título, el autor
 y el editor. El ISBN-13 sirve sobre todo para el **catálogo**, no
 para el préstamo diario.
@@ -62,7 +62,7 @@ ISBN, pero cada uno su código Ofelia).
 ### ISBN-10 (formato antiguo)
 
 Antes de 2007, los libros tenían un código de editor de 10 dígitos:
-es el ISBN-10. Puede encontrarlo en libros antiguos. BibliOfelia
+es el ISBN-10. Puede encontrarlo en libros antiguos. BiblOFELIA
 acepta los dos: si escribe un ISBN-10, se convierte automáticamente
 en ISBN-13.
 
@@ -73,7 +73,7 @@ En el código de barras del reverso de una revista, empieza por **977**.
 
 A diferencia del ISBN, el ISSN identifica **el título de la revista**, no un
 número concreto: todos los números de una misma revista comparten el mismo
-ISSN. Por lo tanto, BibliOfelia crea **una sola ficha** por revista, a la
+ISSN. Por lo tanto, BiblOFELIA crea **una sola ficha** por revista, a la
 que cada número añade un ejemplar. Una revista se cataloga como un libro,
 simplemente escaneando su código de barras 977.
 
@@ -85,7 +85,7 @@ mismo.
 
 ## Los otros términos
 
-### BibliOfelia
+### BiblOFELIA
 
 El software de gestión de biblioteca, instalado en la **Ofelia
 Box**. Se accede desde cualquier ordenador o tableta de la
@@ -132,20 +132,20 @@ libro](catalogue/ajouter-livre.md).
 ### Ofelia Box
 
 La pequeña caja (un mini-ordenador Raspberry Pi) que alberga
-BibliOfelia. Conectada a la red de la biblioteca, difunde la
+BiblOFELIA. Conectada a la red de la biblioteca, difunde la
 aplicación a todos los puestos conectados. No necesita Internet
 para funcionar.
 
 ### OfeliaScan
 
-La aplicación Android compañera de BibliOfelia. Permite escanear
+La aplicación Android compañera de BiblOFELIA. Permite escanear
 los códigos de barras con un teléfono. Vea [Activar
 OfeliaScan](ofeliascan/activer.md).
 
 ### Multa
 
 Importe facturado **a mano** desde la ficha de un usuario (motivo +
-importe). BibliOfelia no calcula sola ninguna multa de atraso. Véase
+importe). BiblOFELIA no calcula sola ninguna multa de atraso. Véase
 [Caja y facturas](caisse/caisse.md).
 
 ### Animación

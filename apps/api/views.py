@@ -98,7 +98,7 @@ class PairingInfoView(APIView):
         return Response(
             {
                 "box_name": Setting.get("box_name", "OfeliaBox"),
-                "library_name": Setting.get("library_name", "BibliOfelia"),
+                "library_name": Setting.get("library_name", "BiblOFELIA"),
                 "version": settings.BIBLIOFELIA_VERSION,
                 "base_url": self._base_url(request),
             }
@@ -108,7 +108,7 @@ class PairingInfoView(APIView):
     def _base_url(request) -> str:
         """URL absolue de la base de l'API, slash final inclus.
 
-        OfeliaScan l'utilise telle quelle (`BibliOfeliaApiFactory.forBaseUrl`).
+        OfeliaScan l'utilise telle quelle (`BiblOFELIAApiFactory.forBaseUrl`).
         Override explicite via le réglage API_BASE_URL ; sinon reconstruite
         depuis la requête — la box publie l'adresse réellement utilisée par le
         client, donc aucun chemin n'est codé en dur (SPEC-CORR-002).

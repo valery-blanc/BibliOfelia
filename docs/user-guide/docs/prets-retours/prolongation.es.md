@@ -17,7 +17,7 @@ contar desde hoy).
 ## ¿Cuántas veces se puede renovar?
 
 Por defecto, un préstamo puede renovarse una vez. Más allá,
-BibliOfelia bloquea la renovación: el miembro debe devolver el libro
+BiblOFELIA bloquea la renovación: el miembro debe devolver el libro
 (aunque sea para volverlo a prestar si nadie lo ha reservado).
 
 Este máximo es configurable por el administrador en los parámetros.

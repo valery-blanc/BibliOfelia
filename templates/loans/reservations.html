@@ -25,6 +25,20 @@
     </div>
 </header>
 
+<div class="reserve-start">
+    <a href="{% url 'loans:reservation_pick' %}" class="btn btn--primary btn--lg">
+        {% icon "bookmark-check" size="16px" %} {% trans "Réserver un livre" %}
+    </a>
+    <button type="button"
+            class="btn btn--primary scan-inline-btn js-scan-handoff"
+            data-scan-kind="auto"
+            data-scan-dispatch-url="{% url 'loans:reservation_pick' %}"
+            title="{% trans 'Scanner le code-barres' %}"
+            aria-label="{% trans 'Scanner le code-barres' %}">
+        {% icon "scan-barcode" size="16px" %}
+    </button>
+</div>
+
 {# ── Prêtes à retirer ── #}
 <h2 class="section-title">
     {% trans "Prêtes à retirer" %}

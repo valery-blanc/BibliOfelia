@@ -44,7 +44,7 @@ def render_avahi_service() -> str:
     valeurs interpolées sont échappées pour le XML.
     """
     box_name = Setting.get("box_name", "OfeliaBox")
-    library_name = Setting.get("library_name", "BibliOfelia")
+    library_name = Setting.get("library_name", "BiblOFELIA")
     return TEMPLATE.format(
         name=escape(str(box_name)),
         port=int(settings.MDNS_SERVICE_PORT),

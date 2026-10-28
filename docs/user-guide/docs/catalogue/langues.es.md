@@ -1,6 +1,6 @@
 # Idiomas
 
-BibliOfelia mantiene **una sola lista de idiomas**, que sirve para dos cosas:
+BiblOFELIA mantiene **una sola lista de idiomas**, que sirve para dos cosas:
 
 - el **idioma de un libro**, en la ficha del registro;
 - los **idiomas hablados** de un usuario, en su ficha.

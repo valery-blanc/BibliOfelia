@@ -1,6 +1,6 @@
 # Se connecter
 
-Pour utiliser BibliOfelia, ouvrez votre navigateur web et rendez-vous à
+Pour utiliser BiblOFELIA, ouvrez votre navigateur web et rendez-vous à
 l'adresse de la Ofelia Box (souvent `http://ofelia.local/bibliofelia/`
 ou l'adresse IP que l'administrateur vous a communiquée).
 
@@ -16,7 +16,7 @@ cliquez sur **Se connecter**.
     eux-mêmes. Demandez à l'administrateur de la Box de vous en créer un.
 
 !!! info "Mot de passe oublié ?"
-    BibliOfelia fonctionne hors ligne et n'envoie pas d'email :
+    BiblOFELIA fonctionne hors ligne et n'envoie pas d'email :
     l'administrateur doit réinitialiser votre mot de passe directement
     depuis la Box.
 

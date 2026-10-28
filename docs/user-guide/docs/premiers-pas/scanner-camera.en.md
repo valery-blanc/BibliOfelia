@@ -1,6 +1,6 @@
 # Scanning with the camera
 
-BibliOfelia can scan barcodes **directly with the camera** of your
+BiblOFELIA can scan barcodes **directly with the camera** of your
 device — phone, tablet, or laptop with a webcam. No app to install:
 everything happens in the browser.
 
@@ -59,7 +59,7 @@ A few things to check:
 
 !!! warning "Secure connection (HTTPS) required"
     For security reasons, browsers only allow the camera over a **secure
-    (https://)** connection. If you reach BibliOfelia through a local
+    (https://)** connection. If you reach BiblOFELIA through a local
     `http://` address (for example `http://ofelia.local`), the camera
     cannot open. In that case, use a **barcode scanner** or **keyboard
     entry**, or ask the Box administrator for the secure address.
@@ -69,7 +69,7 @@ A few things to check:
   the site settings (the padlock icon left of the address).
 - **No camera detected**: on a desktop without a webcam, the camera is not
   available — use a barcode scanner or the keyboard.
-- **Clear error message**: if something goes wrong, BibliOfelia shows the
+- **Clear error message**: if something goes wrong, BiblOFELIA shows the
   exact reason and invites you to **type the code by hand**. You are never
   stuck.
 

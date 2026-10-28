@@ -4,7 +4,7 @@
 
 ### Olvidé mi contraseña, ¿qué hago?
 
-BibliOfelia funciona sin conexión y no envía correos de
+BiblOFELIA funciona sin conexión y no envía correos de
 restablecimiento. Pida al administrador de la Box que restablezca su
 contraseña directamente desde la consola de administración.
 
@@ -36,7 +36,7 @@ préstamo.
 ### ¿Cómo añadir un libro rápidamente?
 
 Si el libro tiene un ISBN, escríbalo en el formulario de nuevo
-registro: BibliOfelia consulta OpenLibrary y rellena la ficha
+registro: BiblOFELIA consulta OpenLibrary y rellena la ficha
 automáticamente. Vea [Añadir un libro](catalogue/ajouter-livre.md).
 
 ### ¿Qué hacer si el ISBN no se encuentra?
@@ -72,14 +72,14 @@ teléfono Android personal.
 
 ### ¿Necesita OfeliaScan Internet?
 
-No. Se comunica con BibliOfelia vía el Wi-Fi local de la Ofelia
+No. Se comunica con BiblOFELIA vía el Wi-Fi local de la Ofelia
 Box. No se requiere conexión a Internet para el uso diario.
 
 ## Sobre los idiomas
 
 ### ¿Puedo escribir un título en malagache?
 
-Sí. BibliOfelia acepta todos los caracteres Unicode (acentos,
+Sí. BiblOFELIA acepta todos los caracteres Unicode (acentos,
 alfabetos no latinos). Escriba el título tal cual.
 
 ### ¿Puede el miembro francófono tener una tarjeta en francés aunque yo
@@ -125,7 +125,7 @@ aún circule nunca podrá designar otro libro por error.
 
 Abra la [ficha del miembro](usagers/fiche.md), haga clic en
 **Modificar**, luego **Reemplazar la tarjeta** (junto al n.º de
-tarjeta): BibliOfelia asigna un nuevo número, retira
+tarjeta): BiblOFELIA asigna un nuevo número, retira
 el antiguo definitivamente y conserva todo el historial. La tarjeta
 antigua ya no funciona (cualquier escaneo devuelve un error) —
 destrúyala si reaparece. Mientras espera la nueva tarjeta, el miembro
@@ -140,7 +140,7 @@ miembro (teléfono visible en su ficha); (2) para bloquear sus
 préstamos, **desactive** temporalmente al miembro desde su ficha y
 reactívelo cuando devuelva los libros; (3) para un atraso de varios
 meses, marque el préstamo como **Perdido**. También puede poner una
-**multa manual** desde la ficha. BibliOfelia solo envía un
+**multa manual** desde la ficha. BiblOFELIA solo envía un
 recordatorio por correo para una **factura** vencida (una sola vez);
 para un libro atrasado sin factura, el teléfono o el SMS siguen
 siendo lo más eficaz.

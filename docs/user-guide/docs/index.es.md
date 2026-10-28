@@ -1,10 +1,10 @@
-# Bienvenido a BibliOfelia
+# Bienvenido a BiblOFELIA
 
 Guía de usuario para bibliotecarios.
 
 ## A quién va dirigida esta guía
 
-Esta guía acompaña a los bibliotecarios que usan BibliOfelia a
+Esta guía acompaña a los bibliotecarios que usan BiblOFELIA a
 diario: registrar préstamos, inscribir miembros, gestionar el
 catálogo y la caja, imprimir tarjetas y etiquetas.
 

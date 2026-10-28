@@ -15,7 +15,7 @@ date by a standard duration (default 21 days starting today).
 
 ## How many times can you renew?
 
-By default, a loan can be renewed once. Beyond that, BibliOfelia
+By default, a loan can be renewed once. Beyond that, BiblOFELIA
 blocks renewal: the member must bring the book back (and re-borrow it
 if no one else reserved it).
 

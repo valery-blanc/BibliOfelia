@@ -136,7 +136,7 @@ def _logo() -> ImageReader | None:
 def _library_name() -> str:
     from apps.core.models import Setting
 
-    return Setting.get("library_name", "BibliOfelia")
+    return Setting.get("library_name", "BiblOFELIA")
 
 
 def _styles() -> dict:
@@ -238,7 +238,7 @@ def render_report_pdf(page, block=None) -> bytes:
         canvas.setFont(font["body"], 7.5)
         canvas.drawString(
             MARGIN, 10 * mm,
-            _("Édité par BibliOfelia le %(d)s.") % {"d": date.today().strftime("%d/%m/%Y")},
+            _("Édité par BiblOFELIA le %(d)s.") % {"d": date.today().strftime("%d/%m/%Y")},
         )
         canvas.drawRightString(A4[0] - MARGIN, 10 * mm, _("Page %(n)s") % {"n": doc.page})
         canvas.restoreState()

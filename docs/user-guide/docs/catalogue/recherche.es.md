@@ -1,6 +1,6 @@
 # Búsqueda
 
-BibliOfelia ofrece dos herramientas de búsqueda complementarias: la
+BiblOFELIA ofrece dos herramientas de búsqueda complementarias: la
 **búsqueda global** desde cualquier página, y el **filtro del
 catálogo** cuando ya está en la lista de libros.
 
@@ -13,19 +13,19 @@ En la parte superior de cada página, un campo de búsqueda acepta:
 - **Un ISBN-13** — 9782070612758 (código del editor, al dorso del
   libro)
 - **Un código Ofelia de ejemplar** — 2900000000017 (código de barras
-  de la etiqueta BibliOfelia)
+  de la etiqueta BiblOFELIA)
 - **Un código Ofelia externo** — BCF13298781X (código puesto por otra
   biblioteca o por un donante, si lo ha registrado en el ejemplar)
 - **Un nombre de miembro** — "rakoto", "dubois"
 - **Un número de tarjeta** — 2910000000444 (código de barras de la
   tarjeta)
 
-BibliOfelia detecta automáticamente de qué se trata (libro, miembro,
+BiblOFELIA detecta automáticamente de qué se trata (libro, miembro,
 ejemplar) y le lleva directamente a la página correcta.
 
 !!! tip "Escriba y pulse Enter"
     No es necesario hacer clic en un botón: escriba y pulse Enter,
-    BibliOfelia se encarga del resto.
+    BiblOFELIA se encarga del resto.
 
 ## El filtro del catálogo
 
@@ -100,7 +100,7 @@ el catálogo con todas las columnas de importación, use
 La búsqueda no es exigente: escribir "petit prince" también
 encuentra "Le Petit Prince" y "petits princes". Puede escribir en
 mayúsculas o minúsculas, con o sin acentos, en cualquier orden.
-BibliOfelia hace el resto.
+BiblOFELIA hace el resto.
 
 ## Búsqueda por código de barras
 

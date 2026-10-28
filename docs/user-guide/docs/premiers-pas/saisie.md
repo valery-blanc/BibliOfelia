@@ -1,6 +1,6 @@
 # Modes de saisie : caméra, douchette ou clavier ?
 
-BibliOfelia est conçu pour fonctionner avec ou sans matériel spécifique.
+BiblOFELIA est conçu pour fonctionner avec ou sans matériel spécifique.
 Choisissez le mode qui correspond à votre équipement.
 
 ## La caméra du navigateur (sans matériel)
@@ -35,14 +35,14 @@ vous travaillez.
 
 ## OfeliaScan (application mobile, en complément)
 
-OfeliaScan est l'application Android compagnon de BibliOfelia. Elle reste
+OfeliaScan est l'application Android compagnon de BiblOFELIA. Elle reste
 utile comme complément mobile, notamment pour envoyer de gros lots de
 catalogage ou de récolement.
 
 **Avantages :**
 
 - Application dédiée, pour ceux qui la préfèrent à la caméra du navigateur
-- Envoi de lots entiers à BibliOfelia
+- Envoi de lots entiers à BiblOFELIA
 
 **Limites :**
 
@@ -72,4 +72,4 @@ manuellement et appuyer sur **Entrée** ou cliquer sur le bouton
 
 Si vous n'avez ni la carte du membre ni le livre sous la main, utilisez
 la **recherche globale** en haut de chaque page : tapez le nom du
-membre ou un mot du titre, et BibliOfelia trouve la fiche directement.
+membre ou un mot du titre, et BiblOFELIA trouve la fiche directement.

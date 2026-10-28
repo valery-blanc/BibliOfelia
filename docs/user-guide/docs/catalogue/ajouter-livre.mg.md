@@ -22,7 +22,7 @@ any ambony havanana.
 Raha manana ISBN (kaody 13 isa eo amin'ny lafiny ambadika) ilay
 boky, soraty eo amin'ny toerana **ISBN-13** dia tsindrio **Enter**.
 
-Ny BibliOfelia dia manontany ny base OpenLibrary ary mameno
+Ny BiblOFELIA dia manontany ny base OpenLibrary ary mameno
 automatika ny lohateny, ny mpanoratra, ny editora ary ny taona. Tsy
 ilainao afa-tsy mijery sy mameno.
 
@@ -53,12 +53,12 @@ tanana:
 
 ## Tehirizo
 
-Click amin'ny **Tehirizo**. Voaforona ny notice ary ny BibliOfelia
+Click amin'ny **Tehirizo**. Voaforona ny notice ary ny BiblOFELIA
 dia manolotra avy hatrany ny **hampiana kopia voalohany**: jereo
 [Fitantanana kopia](exemplaires.md).
 
 !!! warning "Doublons"
-    Raha mampiditra in-droa ny ISBN mitovy ianao, ny BibliOfelia dia
+    Raha mampiditra in-droa ny ISBN mitovy ianao, ny BiblOFELIA dia
     mampandre anao: aza mamorona notice vaovao, mampia kopia ho an'ny
     notice efa misy (boky iray, kopia roa).
 

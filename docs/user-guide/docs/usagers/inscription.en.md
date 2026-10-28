@@ -41,7 +41,7 @@ person speaks — there is no limit. Anything missing from the list goes into
 **Other languages**, separated by commas.
 
 Not to be confused with **Language** just above: that one says which
-language BibliOfelia should **write** to them in (reminders, letters).
+language BiblOFELIA should **write** to them in (reminders, letters).
 Spoken languages are there to welcome them and suggest the right books.
 
 ### The family
@@ -51,7 +51,7 @@ grandparents, children. For each one: **first name**, **sex**, **Adult or
 child**, and the **languages** they speak (the same box, folded under "Spoken
 languages").
 
-For a child, enter their **year of birth**: BibliOfelia works out the age and
+For a child, enter their **year of birth**: BiblOFELIA works out the age and
 keeps it up to date on its own. For an adult, there is nothing else to fill in.
 
 Click **Add a person** for one more line, **Remove** to take one away. A line
@@ -67,7 +67,7 @@ offered.
 
 ## Save
 
-Click **Save**. BibliOfelia automatically assigns:
+Click **Save**. BiblOFELIA automatically assigns:
 
 - A unique **card number** (starts with 291 — this is the card's
   barcode)

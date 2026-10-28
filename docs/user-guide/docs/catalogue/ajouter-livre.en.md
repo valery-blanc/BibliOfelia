@@ -21,7 +21,7 @@ top right.
 If the book has an ISBN (13-digit code on the back cover), type it in
 the **ISBN-13** field and press **Enter**.
 
-BibliOfelia queries the OpenLibrary database and pre-fills the title,
+BiblOFELIA queries the OpenLibrary database and pre-fills the title,
 authors, publisher and year. You just need to check and complete.
 
 !!! tip "No internet?"
@@ -50,11 +50,11 @@ If no ISBN or no network, fill in the fields by hand:
 
 ## Save
 
-Click **Save**. The record is created and BibliOfelia immediately
+Click **Save**. The record is created and BiblOFELIA immediately
 offers to **add a first copy**: see [Managing copies](exemplaires.md).
 
 !!! warning "Duplicates"
-    If you enter the same ISBN twice, BibliOfelia warns you: do not
+    If you enter the same ISBN twice, BiblOFELIA warns you: do not
     create a new record, instead add an additional copy to the
     existing record (one book, two copies).
 

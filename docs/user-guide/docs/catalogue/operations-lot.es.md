@@ -1,7 +1,7 @@
 # Operaciones en lote
 
 Para ganar tiempo cuando tiene varios registros que modificar de la
-misma manera, BibliOfelia ofrece **operaciones en lote** (o "acciones
+misma manera, BiblOFELIA ofrece **operaciones en lote** (o "acciones
 masivas") desde la lista del catálogo.
 
 ## Seleccionar varios registros

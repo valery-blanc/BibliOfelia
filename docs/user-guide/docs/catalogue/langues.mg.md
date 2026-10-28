@@ -1,6 +1,6 @@
 # Fiteny
 
-Mitazona **lisitry ny fiteny tokana** ny BibliOfelia, ary zavatra roa no
+Mitazona **lisitry ny fiteny tokana** ny BiblOFELIA, ary zavatra roa no
 anaovana azy :
 
 - ny **fitenin'ny boky**, eo amin'ny rakitra ;

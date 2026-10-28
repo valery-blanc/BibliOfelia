@@ -21,7 +21,7 @@ Desde [**Avanzado**](/bibliofelia/es/advanced/){ target="_blank" }, abra
 
 ## Las clasificaciones incluidas
 
-BibliOfelia llega con las **20 clasificaciones oficiales Ofelia**: cinco
+BiblOFELIA llega con las **20 clasificaciones oficiales Ofelia**: cinco
 franjas de edad cruzadas con cuatro tipos de documento.
 
 | | Ficción | Documental | Álbum | Cómic |
@@ -52,7 +52,7 @@ distintos.
 
 En la instalación, las clasificaciones incluidas reciben un código de
 partida (`JE DOC`, `AD FIC`…). Puede sustituirlos por los suyos:
-BibliOfelia nunca reescribirá un código que usted haya tecleado.
+BiblOFELIA nunca reescribirá un código que usted haya tecleado.
 
 Una vez los códigos en su sitio, imprima las
 [etiquetas de lomo](../impressions/etiquettes.md).

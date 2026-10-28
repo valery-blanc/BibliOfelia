@@ -1,7 +1,7 @@
 # Manonta etikety boky
 
 Ny etikety code-barre dia mipetaka amin'ny boky mba hahafahana
-mijery azy haingana. Ny BibliOfelia dia mamorona ny PDF an'ny
+mijery azy haingana. Ny BiblOFELIA dia mamorona ny PDF an'ny
 etikety hatontana amin'ny taratasy miankina.
 
 ## Sokafy ny pejy fanontana
@@ -112,7 +112,7 @@ Eo afovoany ny soratra ary mifanaraka ho azy ny habeny : mameno ny etikety ny
     Soratana eo amin'ny **fanasokajiana** ny kaody, fa tsy eo amin'ny boky
     (jereo ny [Fanasokajiana](../catalogue/categories.md)). Ny kopia izay tsy
     manana kaody ny fanasokajiany dia tsy tafiditra amin'ny fanontana ; raha tsy
-    misy manana mihitsy dia lazain'ny BibliOfelia aminao fa tsy manome PDF
+    misy manana mihitsy dia lazain'ny BiblOFELIA aminao fa tsy manome PDF
     foana.
 
 ## Jereo koa

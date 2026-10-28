@@ -299,7 +299,7 @@ class BibliographicRecord(models.Model):
 class Item(models.Model):
     internal_id = models.CharField(max_length=20, unique=True, blank=True)
     ean13 = models.CharField(max_length=13, unique=True, blank=True)
-    # FEAT-063 : code attribué hors BibliOfelia (autre bibliothèque, donateur,
+    # FEAT-063 : code attribué hors BiblOFELIA (autre bibliothèque, donateur,
     # catalogage antérieur). Stocké normalisé (majuscules, sans séparateurs) par
     # `apps.catalog.lookup.normalize_external_code` pour que la saisie et le
     # scan retombent toujours sur la même chaîne.
@@ -486,7 +486,7 @@ class ScanInputMode(models.TextChoices):
 
     `mobile`   — envoyé par OfeliaScan (API). `camera` — scan caméra navigateur
     (FEAT-046). `douchette` — lecteur code-barres USB (clavier HID) branché sur
-    le poste qui affiche BibliOfelia : le lot est piloté par le keyboard-wedge
+    le poste qui affiche BiblOFELIA : le lot est piloté par le keyboard-wedge
     (scan-wedge.js), sans caméra.
     """
 

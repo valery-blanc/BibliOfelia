@@ -4,7 +4,7 @@
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
     <meta name="theme-color" content="#6B2138">
-    <title>{% block title %}{{ library_name }}{% endblock %} — BibliOfelia</title>
+    <title>{% block title %}{{ library_name }}{% endblock %} — BiblOFELIA</title>
     <link rel="stylesheet" href="{% static 'css/ofelia.css' %}">
     <script defer src="{% static 'js/htmx.min.js' %}"></script>
     <script defer src="{% static 'js/alpine.min.js' %}"></script>
@@ -48,7 +48,7 @@
         <a href="{% url 'core:dashboard' %}" class="topbar-brand">
             <img class="topbar-logo" src="{% static 'img/ofelia-logo-small.png' %}" alt="OFELIA">
             <div class="topbar-titles">
-                <span class="topbar-lib">BibliOfelia · {{ library_name }}</span>
+                <span class="topbar-lib">BiblOFELIA · {{ library_name }}</span>
                 <span class="topbar-sub">{% trans "Bibliothèque communautaire" %}</span>
             </div>
         </a>
@@ -118,7 +118,7 @@
 
 <footer class="footer">
     <div class="footer-inner">
-        <span>BibliOfelia v{{ app_version }} — {% trans "Ofelia Box" %}</span>
+        <span>BiblOFELIA v{{ app_version }} — {% trans "Ofelia Box" %}</span>
     </div>
 </footer>
 </body>

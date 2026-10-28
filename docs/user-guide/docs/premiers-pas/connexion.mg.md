@@ -1,6 +1,6 @@
 # Fidirana
 
-Mba hampiasana ny BibliOfelia, sokafy ny navigateur web ary mandehana
+Mba hampiasana ny BiblOFELIA, sokafy ny navigateur web ary mandehana
 amin'ny adiresy an'ny Ofelia Box (matetika
 `http://ofelia.local/bibliofelia/` na ny adiresy IP nomen'ny
 mpitantana anao).
@@ -18,7 +18,7 @@ tsindrio **Hiditra**.
     anao.
 
 !!! info "Hadinonao ny tenimiafinao?"
-    Ny BibliOfelia dia miasa tsy misy internet ary tsy mandefa
+    Ny BiblOFELIA dia miasa tsy misy internet ary tsy mandefa
     mailaka: ny mpitantana ihany no afaka mamerina ny tenimiafinao
     amin'ny Box mivantana.
 

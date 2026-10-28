@@ -1,10 +1,10 @@
 # Voambolana
 
-Voambolana kely an'ireo teny ampiasaina ao amin'ny BibliOfelia.
+Voambolana kely an'ireo teny ampiasaina ao amin'ny BiblOFELIA.
 
 ## Ireo code samihafa: ho an'ny inona?
 
-Ny BibliOfelia dia mampiasa code karazany maro mba hahafantarana
+Ny BiblOFELIA dia mampiasa code karazany maro mba hahafantarana
 ny boky sy ny mpianatra. Tena ilaina ny mampifandanja azy ireo
 satria tsy mitovy ny tanjony.
 
@@ -19,7 +19,7 @@ Ohatra:
 - `2900000000017` → etikety boky
 - `2910000000444` → karatry ny mpianatra
 
-Io no code aforonin'ny BibliOfelia automatika rehefa mamorona kopia
+Io no code aforonin'ny BiblOFELIA automatika rehefa mamorona kopia
 vaovao na mpianatra vaovao ianao. Io no soratana amin'ny etikety
 sy ny karatra ara-batana. Io no jerena ho an'ny fampindramana,
 famerenana, récolement.
@@ -38,7 +38,7 @@ Manana endrika **OFL-AAAAMMDD-NNNN**:
 
 - `OFL-20260525-0014` → boky faha-14 nampidirina ny 25 may 2026
 
-Ity code ity dia miseho ao amin'ny BibliOfelia amin'ny takelakan'ny
+Ity code ity dia miseho ao amin'ny BiblOFELIA amin'ny takelakan'ny
 kopia. Ahafahana mahafantatra haingana hoe rahoviana no nampidirina
 ny boky. Tsy atontana amin'ny etikety, fa **azonao soratana** ao
 amin'ny fikarohana, fampindramana na famerenana — misy na tsy misy
@@ -53,7 +53,7 @@ lohateny manerantany.
 Ohatra: `9782070612758` → mahafantatra ny *Le Petit Prince* an'i
 Gallimard.
 
-Rehefa mamorona notice vaovao ianao, ny BibliOfelia dia manontany
+Rehefa mamorona notice vaovao ianao, ny BiblOFELIA dia manontany
 ny base OpenLibrary avy amin'ny ISBN-13 mba hameno ny lohateny, ny
 mpanoratra ary ny editora. Ny ISBN-13 dia ampiasaina indrindra ho
 an'ny **catalogage**, fa tsy ho an'ny fampindramana isan'andro.
@@ -65,7 +65,7 @@ fa tsirairay manana ny code Ofeliany).
 ### ISBN-10 (endrika taloha)
 
 Talohan'ny 2007, ny boky dia nanana code editora 10 isa: io ny
-ISBN-10. Mety hahita izany ianao amin'ny boky taloha. Ny BibliOfelia
+ISBN-10. Mety hahita izany ianao amin'ny boky taloha. Ny BiblOFELIA
 dia mandray ny roa: raha manoratra ISBN-10 ianao, dia voadika
 automatika ho ISBN-13.
 
@@ -76,7 +76,7 @@ amin'ny barcode ao ambadiky ny gazetiboky, dia manomboka amin'ny **977** izy.
 
 Tsy toy ny ISBN, ny ISSN dia mamantatra ny **lohatenin'ny gazetiboky**, fa
 tsy laharana manokana: ny laharana rehetra amin'ny gazetiboky iray dia
-mizara ISSN mitovy. Noho izany, ny BibliOfelia dia mamorona **notice
+mizara ISSN mitovy. Noho izany, ny BiblOFELIA dia mamorona **notice
 tokana** isaky ny gazetiboky, ka ny laharana tsirairay dia manampy
 exemplaire aminy. Manoratra gazetiboky toy ny boky ianao, amin'ny fandrafetana
 ny barcode 977-ny fotsiny.
@@ -88,7 +88,7 @@ hoe "laharan-karatra" na "laharana mpianatra" — mitovy ireo.
 
 ## Ireo teny hafa
 
-### BibliOfelia
+### BiblOFELIA
 
 Ny logiciel fitantanana tranomboky, voa-install amin'ny **Ofelia
 Box**. Azo idirana avy amin'ny ordinateur na tablette tsirairay
@@ -135,13 +135,13 @@ boky](catalogue/ajouter-livre.md).
 ### Ofelia Box
 
 Ny boîtier kely (mini-ordinateur Raspberry Pi) izay mitazona ny
-BibliOfelia. Tafiditra amin'ny réseau an'ny tranomboky, mizara ny
+BiblOFELIA. Tafiditra amin'ny réseau an'ny tranomboky, mizara ny
 aplikasiona amin'ny ordinateur rehetra tafiditra. Tsy mila internet
 mba hiasa.
 
 ### OfeliaScan
 
-Ny aplikasiona Android namana an'ny BibliOfelia. Manova ny finday
+Ny aplikasiona Android namana an'ny BiblOFELIA. Manova ny finday
 ho scanner ho an'ny code-barre. Jereo [Hampandeha
 OfeliaScan](ofeliascan/activer.md).
 

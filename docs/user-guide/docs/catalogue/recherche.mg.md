@@ -1,6 +1,6 @@
 # Fikarohana
 
-Ny BibliOfelia dia manolotra fitaovana fikarohana roa: ny
+Ny BiblOFELIA dia manolotra fitaovana fikarohana roa: ny
 **fikarohana ankapobeny** avy amin'ny pejy rehetra, sy ny
 **fanitana ny boky** rehefa efa ao amin'ny lisitry ny boky ianao.
 
@@ -14,19 +14,19 @@ Eo ambonin'ny pejy tsirairay, toerana fikarohana lehibe iray mandray:
 - **ISBN-13** — 9782070612758 (code an'ny editora, ao amin'ny
   ambadiky ny boky)
 - **Code Ofelia an'ny kopia** — 2900000000017 (code-barre an'ny
-  etikety BibliOfelia)
+  etikety BiblOFELIA)
 - **Kaody Ofelia ivelany** — BCF13298781X (kaody napetraky ny tranomboky
   hafa na ny mpanolotra, raha voasoratrao eo amin'ny kopia)
 - **Anaran'ny mpianatra** — "rakoto", "dubois"
 - **Laharan'ny karatra** — 2910000000444 (code-barre an'ny karatra)
 
-Ny BibliOfelia dia mahafantatra automatika izay zavatra (boky,
+Ny BiblOFELIA dia mahafantatra automatika izay zavatra (boky,
 mpianatra, kopia) ary mitondra anao avy hatrany amin'ny pejy
 marina.
 
 !!! tip "Soraty dia Enter"
     Tsy mila click amin'ny bokotra: soraty dia tsindrio Enter, ny
-    BibliOfelia no mikarakara ny ambiny.
+    BiblOFELIA no mikarakara ny ambiny.
 
 ## Ny fanitana ny boky
 
@@ -50,7 +50,7 @@ olon-dehibe ihany.
 Tsy be fadiranovana ny fikarohana: ny fanoratana "petit prince" dia
 mahita koa ny "Le Petit Prince" sy ny "petits princes". Azonao
 atao amin'ny lehibe na kely, misy na tsy misy accent, amin'ny
-filaharana inona na inona. Ny BibliOfelia no manao ny ambiny.
+filaharana inona na inona. Ny BiblOFELIA no manao ny ambiny.
 
 ## Karohy ny kopia fa tsy ny rakitra
 

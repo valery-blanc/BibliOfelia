@@ -25,7 +25,7 @@ def test_footer_follows_the_setting(settings, client):
     user = User.objects.create_user(username="lib", password="pw", role=Role.LIBRARIAN)
     client.force_login(user)
     body = client.get(reverse("core:dashboard")).content.decode()
-    assert "BibliOfelia v9.9-test" in body
+    assert "BiblOFELIA v9.9-test" in body
     assert "0.1.0-dev" not in body
 
 

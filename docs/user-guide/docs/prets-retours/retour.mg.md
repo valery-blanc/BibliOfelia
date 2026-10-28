@@ -32,7 +32,7 @@ segondra.
 
 ### Tsy nampindraina ny boky
 
-Raha mijery boky tsy nampindraina ianao, ny BibliOfelia dia
+Raha mijery boky tsy nampindraina ianao, ny BiblOFELIA dia
 mampitandrina anao amin'ny hafatra volom-boasary. Hamarino:
 
 - Tsy nampifangaroinao boky roa mitovy
@@ -49,7 +49,7 @@ tara mihalava](../faq.md#retard).
 
 ### Mamoaka famandrihana ny boky
 
-Raha nisy nanao famandrihana ity boky ity, ny BibliOfelia dia
+Raha nisy nanao famandrihana ity boky ity, ny BiblOFELIA dia
 mampiseho azy any ambonin'ny pejy miaraka amin'ny anaran'ny
 mpianatra sy ny soratra **Atao etsy ankilany**. Io no famantarana
 mba hametrahana ny boky ao amin'ny toerana fakana fa tsy averina

@@ -46,7 +46,7 @@ refused.
   [card renewal](../usagers/renouvellement.md). The amount comes from
   the [category](tarifs.md). A fee of 0 emits nothing.
 - **Fine** — **manual only**, from the profile (**Fine**). You pick
-  the reason and the amount. BibliOfelia never auto-calculates an
+  the reason and the amount. BiblOFELIA never auto-calculates an
   overdue fine.
 - **Event fee** — same path, **Event fee** button.
 

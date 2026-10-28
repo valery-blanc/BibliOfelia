@@ -1,6 +1,6 @@
 """Modèles propres à l'app `api`.
 
-FEAT-023 — `ScanHandoff` : protocole single-scan entre BibliOfelia web et
+FEAT-023 — `ScanHandoff` : protocole single-scan entre BiblOFELIA web et
 OfeliaScan. Le navigateur crée un handoff (token UUID + TTL 5 min) via session,
 ouvre un deep-link `ofeliascan://scan-one?token=...`, et poll le résultat ;
 OfeliaScan POST la valeur via JWT. Token bearer single-use.
@@ -32,7 +32,7 @@ class ScanHandoffTarget(models.TextChoices):
 
 
 class ScanHandoff(models.Model):
-    """Single-scan handoff entre BibliOfelia web et OfeliaScan (FEAT-023).
+    """Single-scan handoff entre BiblOFELIA web et OfeliaScan (FEAT-023).
 
     Créé par une page web (session-auth, librarian), consommé par OfeliaScan
     (JWT) qui POST la valeur scannée. Le navigateur récupère la valeur par

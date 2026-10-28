@@ -1,6 +1,6 @@
 # Recorrido del panel
 
-El panel es la página de inicio de BibliOfelia. Reúne todo lo que
+El panel es la página de inicio de BiblOFELIA. Reúne todo lo que
 necesita a diario.
 
 ![Vista general del panel](../assets/screenshots/es/premiers-pas/dashboard.png)

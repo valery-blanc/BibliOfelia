@@ -1,6 +1,6 @@
 # Sign in
 
-To use BibliOfelia, open your web browser and go to the Ofelia Box
+To use BiblOFELIA, open your web browser and go to the Ofelia Box
 address (usually `http://ofelia.local/bibliofelia/` or the IP address
 your administrator provided).
 
@@ -16,7 +16,7 @@ Type your username and password in the two fields, then click
     administrator to create one for you.
 
 !!! info "Forgot your password?"
-    BibliOfelia works offline and does not send emails: the
+    BiblOFELIA works offline and does not send emails: the
     administrator must reset your password directly from the Box.
 
 ## Security: limited attempts

@@ -1,9 +1,9 @@
 # Activer OfeliaScan
 
-**OfeliaScan** est l'application Android compagnon de BibliOfelia. Une
+**OfeliaScan** est l'application Android compagnon de BiblOFELIA. Une
 fois installée et appairée à votre Ofelia Box, elle vous permet de
 scanner les codes-barres depuis le téléphone et d'envoyer le résultat
-directement à BibliOfelia sur l'ordinateur.
+directement à BiblOFELIA sur l'ordinateur.
 
 !!! info "La caméra est désormais intégrée au site"
     Vous n'avez plus besoin d'OfeliaScan pour les scans courants : les
@@ -38,7 +38,7 @@ d'installation.
 Une fois OfeliaScan installé, il faut le connecter à votre Box (à
 faire **une seule fois**).
 
-1. Sur l'ordinateur, ouvrez BibliOfelia et allez dans **Avancé → Accès
+1. Sur l'ordinateur, ouvrez BiblOFELIA et allez dans **Avancé → Accès
    OfeliaScan**
 2. Un QR code s'affiche à l'écran
 3. Sur le téléphone, ouvrez OfeliaScan et appuyez sur **Appairer**
@@ -50,7 +50,7 @@ chaque utilisation.
 
 !!! info "Plusieurs téléphones, une Box"
     Plusieurs bibliothécaires peuvent appairer leur téléphone à la
-    même Box. Chacun voit ses propres scans dans BibliOfelia.
+    même Box. Chacun voit ses propres scans dans BiblOFELIA.
 
 ## Voir aussi
 

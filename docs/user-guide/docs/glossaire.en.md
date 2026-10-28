@@ -1,10 +1,10 @@
 # Glossary
 
-Small lexicon of terms used in BibliOfelia.
+Small lexicon of terms used in BiblOFELIA.
 
 ## The different codes: what are they for?
 
-BibliOfelia uses several kinds of codes to identify books and
+BiblOFELIA uses several kinds of codes to identify books and
 members. It is important to distinguish them as they don't serve the
 same purpose.
 
@@ -19,7 +19,7 @@ Examples:
 - `2900000000017` → label on a book
 - `2910000000444` → card of a member
 
-It is the code BibliOfelia automatically generates when you create a
+It is the code BiblOFELIA automatically generates when you create a
 new copy or a new member. It is what is printed on physical labels
 and cards. It is what is scanned for loans, returns, inventory.
 
@@ -36,7 +36,7 @@ Alongside the Ofelia code, each book also has a more readable
 
 - `OFL-20260525-0014` → 14th book entered on 25 May 2026
 
-This code appears in BibliOfelia on the copy's record. It quickly
+This code appears in BiblOFELIA on the copy's record. It quickly
 tells when a book was registered. It is not printed on the label, but
 you **can type it** in search, lending or return — with or without
 the hyphens.
@@ -50,7 +50,7 @@ title universally.
 Example: `9782070612758` → identifies *The Little Prince* by
 Gallimard.
 
-When you create a new record, BibliOfelia queries the OpenLibrary
+When you create a new record, BiblOFELIA queries the OpenLibrary
 database from the ISBN-13 to pre-fill the title, author and
 publisher. ISBN-13 is therefore mainly used for **cataloging**, not
 for daily lending.
@@ -62,7 +62,7 @@ each has its own Ofelia code).
 ### ISBN-10 (old format)
 
 Before 2007, books had a 10-digit publisher code: this is the
-ISBN-10. You can find it on old books. BibliOfelia accepts both: if
+ISBN-10. You can find it on old books. BiblOFELIA accepts both: if
 you type an ISBN-10, it is automatically converted to ISBN-13.
 
 ### ISSN (magazines and journals)
@@ -72,7 +72,7 @@ On the barcode on the back of a magazine, it starts with **977**.
 
 Unlike the ISBN, the ISSN identifies **the magazine's title**, not a
 specific issue: every issue of the same magazine shares the same ISSN.
-BibliOfelia therefore creates **a single record** per magazine, to which
+BiblOFELIA therefore creates **a single record** per magazine, to which
 each issue adds a copy. You catalog a magazine like a book, simply by
 scanning its 977 barcode.
 
@@ -83,7 +83,7 @@ This is the Ofelia code of a member card (prefix 291). Also called
 
 ## Other terms
 
-### BibliOfelia
+### BiblOFELIA
 
 The library management software, installed on the **Ofelia Box**.
 Accessed from any computer or tablet in the library via a web
@@ -128,20 +128,20 @@ book). See [Adding a book](catalogue/ajouter-livre.md).
 
 ### Ofelia Box
 
-The small box (a Raspberry Pi mini-computer) that hosts BibliOfelia.
+The small box (a Raspberry Pi mini-computer) that hosts BiblOFELIA.
 Plugged into the library network, it serves the app to all connected
 workstations. No internet needed for it to work.
 
 ### OfeliaScan
 
-The Android companion app for BibliOfelia. Turns a phone into a
+The Android companion app for BiblOFELIA. Turns a phone into a
 scanner for barcodes. See [Activate
 OfeliaScan](ofeliascan/activer.md).
 
 ### Fine
 
 Amount billed **by hand** from a member profile (reason + amount).
-BibliOfelia never auto-calculates an overdue fine. See
+BiblOFELIA never auto-calculates an overdue fine. See
 [Cash desk and invoices](caisse/caisse.md).
 
 ### Event

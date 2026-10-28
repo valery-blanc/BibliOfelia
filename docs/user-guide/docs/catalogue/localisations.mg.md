@@ -42,7 +42,7 @@ takelakan'ny kopia.
 ## Récolement sy fifindra automatika
 
 Mandritra ny récolement amin'ny OfeliaScan, raha mahita boky amin'ny
-toerana hafa noho ny voasoratra ianao, ny BibliOfelia dia manavao
+toerana hafa noho ny voasoratra ianao, ny BiblOFELIA dia manavao
 automatika ny toeran'ny kopia. Io no fomba haingana indrindra
 hanavaozana ny boky aorian'ny fandaminana lehibe.
 

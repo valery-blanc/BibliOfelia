@@ -222,7 +222,7 @@ def ofeliascan_access(request):
     return render(request, "core/admin/ofeliascan.html", {
         "credentials": creds,
         "box": _box_addresses(request),
-        "box_name": Setting.get("box_name", "BibliOfelia"),
+        "box_name": Setting.get("box_name", "BiblOFELIA"),
         "api_path": settings.API_BASE_PATH,
         "suggested_password": _generate_password(),
     })

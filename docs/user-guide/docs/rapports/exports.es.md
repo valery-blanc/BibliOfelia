@@ -44,7 +44,7 @@ las columnas de la base — mucho más de lo que muestra la tabla.
 | Los préstamos del período | Todos los préstamos del período mostrado arriba |
 
 Útil para: un **inventario anual**, compartir su fondo con otra biblioteca,
-o un cálculo que BibliOfelia no hace.
+o un cálculo que BiblOFELIA no hace.
 
 ## Cómo abrir un CSV
 

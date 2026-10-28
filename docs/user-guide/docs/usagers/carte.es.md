@@ -30,7 +30,7 @@ guardarlo para más tarde.
 
 ## Formato de la tarjeta
 
-Las tarjetas BibliOfelia tienen el formato estándar de tarjeta de
+Las tarjetas BiblOFELIA tienen el formato estándar de tarjeta de
 visita (85 × 54 mm) con:
 
 - Logo **OFELIA** en filigrana

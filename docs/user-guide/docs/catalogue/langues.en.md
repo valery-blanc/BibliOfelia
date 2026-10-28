@@ -1,6 +1,6 @@
 # Languages
 
-BibliOfelia keeps **a single list of languages**, used for two things:
+BiblOFELIA keeps **a single list of languages**, used for two things:
 
 - the **language of a book**, on the record;
 - the **spoken languages** of a member, on their profile.
@@ -16,7 +16,7 @@ Click **New language**, then fill in:
 - **Name** — the name of the language
 
 Add one as soon as a book or a reader needs it: the list shipped with
-BibliOfelia covers 22 languages, but a collection can hold any of them.
+BiblOFELIA covers 22 languages, but a collection can hold any of them.
 
 !!! tip "No regional variants"
     Use the main code, without splitting by country: **`fr`** covers French from

@@ -9,11 +9,21 @@ il sera mis de côté pour le membre suivant.
 1. Ouvrez la [fiche de la notice](../catalogue/recherche.md) du livre
    demandé
 2. Cliquez sur **Réserver**
-3. Identifiez le membre (scannez sa carte ou tapez son nom)
+3. Tapez le nom du membre : la liste se réduit. Choisissez la personne.
 4. Validez
 
 La réservation apparaît dans la liste **Réservations en attente** sur
 la fiche du livre.
+
+## Depuis la page Réservations
+
+1. Ouvrez [**Réservations**](/bibliofelia/fr/loans/reservations/){ target="_blank" }
+2. Cliquez sur **Réserver un livre**. Il est juste au-dessus de
+   **Prêtes à retirer**. Le bouton rond à côté ouvre la caméra :
+   un ISBN ou un code Ofelia lance la recherche.
+3. Cherchez le livre par son titre, son auteur, son ISBN ou son code.
+   Le même scan est à côté du champ.
+4. Cliquez sur **Réserver**, puis tapez le nom pour choisir la personne
 
 ## Voir toutes les réservations
 
@@ -31,7 +41,7 @@ La page liste toutes les réservations en cours avec :
 
 ## File d'attente : plusieurs réservations sur un même livre
 
-Si plusieurs membres réservent le même livre, BibliOfelia gère
+Si plusieurs membres réservent le même livre, BiblOFELIA gère
 automatiquement la file d'attente : le premier à avoir réservé est
 servi en premier quand le livre revient.
 
@@ -40,7 +50,7 @@ La fiche du livre montre la position du membre dans la file
 
 ## Une fois le livre revenu
 
-Quand le livre est retourné, BibliOfelia met automatiquement à jour la
+Quand le livre est retourné, BiblOFELIA met automatiquement à jour la
 première réservation en **Prête à retirer**. Vous voyez alors :
 
 - Une alerte sur la page **Retour** au moment du scan

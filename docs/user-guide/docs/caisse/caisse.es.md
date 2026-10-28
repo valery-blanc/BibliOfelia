@@ -46,7 +46,7 @@ Se aceptan pagos parciales. Un importe superior al saldo se rechaza.
   [renovación de tarjeta](../usagers/renouvellement.md). El importe
   depende de la [categoría](tarifs.md). Un 0 no emite nada.
 - **Multa** — **solo a mano**, desde la ficha (**Multa**). Usted
-  elige el motivo y el importe. BibliOfelia nunca calcula sola una
+  elige el motivo y el importe. BiblOFELIA nunca calcula sola una
   multa por atraso.
 - **Gastos de animación** — el mismo camino, botón **Gastos de
   animación**.

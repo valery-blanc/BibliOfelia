@@ -1,7 +1,7 @@
 # Asa marobe
 
 Mba hahatsapana fotoana rehefa misy notice maro ovaina amin'ny
-fomba mitovy, ny BibliOfelia dia manolotra **asa marobe** avy amin'ny
+fomba mitovy, ny BiblOFELIA dia manolotra **asa marobe** avy amin'ny
 lisitry ny boky.
 
 ## Misafidy notice maro

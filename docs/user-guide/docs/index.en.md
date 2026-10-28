@@ -1,10 +1,10 @@
-# Welcome to BibliOfelia
+# Welcome to BiblOFELIA
 
 User guide for librarians.
 
 ## Who this guide is for
 
-This guide accompanies librarians using BibliOfelia day to day:
+This guide accompanies librarians using BiblOFELIA day to day:
 registering loans, enrolling members, managing the catalog and the
 cash desk, printing cards and labels.
 

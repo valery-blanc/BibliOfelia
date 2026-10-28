@@ -204,7 +204,7 @@ def _rsync_media(src: Path, dest: Path) -> None:
 def _push_cloud(dest: Path, remote: str) -> None:
     """rclone sync local → remote. Requiert `rclone` configuré dans
     l'environnement (passphrase de chiffrement gérée par rclone crypt côté
-    config — pas dans BibliOfelia)."""
+    config — pas dans BiblOFELIA)."""
     rclone = shutil.which("rclone")
     if not rclone:
         raise RuntimeError("rclone non installé")

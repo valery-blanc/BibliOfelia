@@ -1,7 +1,7 @@
 # Imprimer les étiquettes de livres
 
 Les étiquettes-codes-barres se collent sur les livres pour permettre
-leur scan rapide. BibliOfelia génère le PDF des étiquettes à imprimer
+leur scan rapide. BiblOFELIA génère le PDF des étiquettes à imprimer
 sur planches autocollantes.
 
 ## Ouvrir la page d'impression
@@ -110,7 +110,7 @@ l'étiquette, `RO FI ADO` se répartit sur deux lignes.
     Le code se saisit sur la **classification**, pas sur le livre (voir
     [Classifications](../catalogue/categories.md)). Un exemplaire dont la
     classification n'a pas de code est ignoré à l'impression ; si aucun
-    n'en a, BibliOfelia vous le dit au lieu de sortir un PDF vide.
+    n'en a, BiblOFELIA vous le dit au lieu de sortir un PDF vide.
 
 ## Voir aussi
 

@@ -1,6 +1,6 @@
 # Mi-scan amin'ny fakantsary (caméra)
 
-Ny BibliOfelia dia afaka mi-scan ny code-barres **mivantana amin'ny
+Ny BiblOFELIA dia afaka mi-scan ny code-barres **mivantana amin'ny
 fakantsary (caméra)** an'ny fitaovanao — finday, tablette, na
 ordinateur portable misy webcam. Tsy misy application apetraka:
 ao anatin'ny navigateur no atao ny zava-drehetra.
@@ -65,7 +65,7 @@ Zavatra vitsivitsy hojerena:
 !!! warning "Mila fifandraisana voaaro (HTTPS)"
     Noho ny antony fiarovana, dia tsy mamela ny fakantsary ny navigateur raha
     tsy amin'ny fifandraisana **voaaro (https://)**. Raha midira amin'ny
-    BibliOfelia amin'ny adiresy an-toerana `http://` ianao (ohatra
+    BiblOFELIA amin'ny adiresy an-toerana `http://` ianao (ohatra
     `http://ofelia.local`), dia tsy afaka misokatra ny fakantsary. Amin'izay
     dia ampiasao ny **douchette** na ny **fanoratana amin'ny clavier**, na
     angataho amin'ny mpitantana ny Box ny adiresy voaaro.
@@ -76,7 +76,7 @@ Zavatra vitsivitsy hojerena:
   eo ankavian'ny adiresy).
 - **Tsy hita fakantsary**: amin'ny ordinateur tsy misy webcam, dia tsy misy
   fakantsary — ampiasao ny douchette na ny clavier.
-- **Hafatra fahadisoana mazava**: raha misy olana, dia asehon'ny BibliOfelia
+- **Hafatra fahadisoana mazava**: raha misy olana, dia asehon'ny BiblOFELIA
   ny antony marina ary manasa anao hi-**soratra ny code amin'ny tanana**. Tsy
   voasakana mihitsy ianao.
 

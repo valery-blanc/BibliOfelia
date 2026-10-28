@@ -1,6 +1,6 @@
 # Dashboard tour
 
-The dashboard is the home page of BibliOfelia. It brings together
+The dashboard is the home page of BiblOFELIA. It brings together
 everything you need day to day.
 
 ![Dashboard overview](../assets/screenshots/en/premiers-pas/dashboard.png)

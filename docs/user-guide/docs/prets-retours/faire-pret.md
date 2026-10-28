@@ -34,7 +34,7 @@ caméra](../premiers-pas/scanner-camera.md)).
     (tapez le nom du membre) pour ouvrir sa fiche, puis cliquez sur
     **Nouveau prêt** depuis sa fiche.
 
-Une fois le membre identifié, BibliOfelia affiche son nom et sa catégorie.
+Une fois le membre identifié, BiblOFELIA affiche son nom et sa catégorie.
 Si des alertes existent (carte expirée, trop de prêts en cours), elles
 apparaissent en jaune juste sous le nom — lisez-les avant de poursuivre.
 
@@ -76,7 +76,7 @@ Quand tous les livres sont dans le panier, la section **3 · Confirmer**
 apparaît en bas. Vous pouvez ajouter une note libre (facultatif), puis
 cliquez sur le grand bouton orange **Prêter N livres**.
 
-BibliOfelia enregistre les prêts, calcule automatiquement la date de
+BiblOFELIA enregistre les prêts, calcule automatiquement la date de
 retour (par défaut, 21 jours plus tard) et revient à un formulaire vide
 prêt pour le membre suivant.
 

@@ -46,7 +46,7 @@ affiché. Si ça échoue, prévenez l'administrateur.
 Cette étape **n'apparaît que sur la Ofelia Box**, et seulement pour
 un administrateur. Sur une instance hébergée, elle n'a aucun sens.
 
-BibliOfelia ne peut pas éteindre la Box elle-même (elle tourne dans
+BiblOFELIA ne peut pas éteindre la Box elle-même (elle tourne dans
 un conteneur) : elle dépose une demande que le système de la Box
 doit surveiller. Si ce service n'est pas encore installé, la demande
 est enregistrée **mais la Box ne s'éteint pas** — l'écran le dit.

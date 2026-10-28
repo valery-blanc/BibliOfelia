@@ -36,7 +36,7 @@ cámara](../premiers-pas/scanner-camera.md)).
     el nombre del miembro) para abrir su ficha, luego haga clic en
     **Nuevo préstamo** desde su ficha.
 
-Una vez identificado el miembro, BibliOfelia muestra su nombre y
+Una vez identificado el miembro, BiblOFELIA muestra su nombre y
 categoría. Si hay alertas (tarjeta expirada, demasiados préstamos
 activos), aparecen en amarillo justo bajo el nombre — léalas antes
 de continuar.
@@ -82,7 +82,7 @@ Cuando todos los libros están en el carrito, la sección
 (opcional), luego haga clic en el gran botón naranja **Prestar N
 libros**.
 
-BibliOfelia registra los préstamos, calcula automáticamente la fecha
+BiblOFELIA registra los préstamos, calcula automáticamente la fecha
 de devolución (por defecto 21 días después) y vuelve a un formulario
 vacío listo para el siguiente miembro.
 

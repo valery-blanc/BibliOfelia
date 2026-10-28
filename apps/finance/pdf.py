@@ -47,7 +47,7 @@ def _library() -> dict:
 
     identity = Setting.get("library_identity", {}) or {}
     return {
-        "name": Setting.get("library_name", identity.get("name", "BibliOfelia")),
+        "name": Setting.get("library_name", identity.get("name", "BiblOFELIA")),
         "address": identity.get("address", ""),
         "country": identity.get("country", ""),
         "email": identity.get("email", ""),
@@ -186,7 +186,7 @@ def render_invoice_pdf(invoice) -> bytes:
     pdf.setFillColor(INK_SOFT)
     pdf.drawCentredString(
         width / 2, 14 * mm,
-        _("%(lib)s — document généré par BibliOfelia") % {"lib": library["name"]},
+        _("%(lib)s — document généré par BiblOFELIA") % {"lib": library["name"]},
     )
     pdf.showPage()
     pdf.save()

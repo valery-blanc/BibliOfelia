@@ -1,6 +1,6 @@
 # Imprimir las tarjetas de miembros
 
-Las tarjetas de miembros se generan en PDF desde BibliOfelia. Puede
+Las tarjetas de miembros se generan en PDF desde BiblOFELIA. Puede
 imprimir una sola o varias a la vez.
 
 ## Abrir la página de impresión

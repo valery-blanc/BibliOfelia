@@ -1,6 +1,6 @@
 # Scanner avec la caméra
 
-BibliOfelia sait scanner les codes-barres **directement avec la caméra**
+BiblOFELIA sait scanner les codes-barres **directement avec la caméra**
 de votre appareil — téléphone, tablette ou ordinateur portable équipé
 d'une webcam. Aucune application à installer : tout se passe dans le
 navigateur.
@@ -64,7 +64,7 @@ Quelques points à vérifier :
 !!! warning "Connexion sécurisée (HTTPS) requise"
     Pour des raisons de sécurité, les navigateurs n'autorisent la caméra
     que sur une connexion **sécurisée (https://)**. Si vous accédez à
-    BibliOfelia par une adresse locale en `http://` (par exemple
+    BiblOFELIA par une adresse locale en `http://` (par exemple
     `http://ofelia.local`), la caméra ne pourra pas s'ouvrir. Dans ce cas,
     utilisez une **douchette** ou la **saisie au clavier**, ou demandez à
     l'administrateur de la Box l'adresse sécurisée.
@@ -75,7 +75,7 @@ Quelques points à vérifier :
   à gauche de l'adresse).
 - **Aucune caméra détectée** : sur un poste fixe sans webcam, la caméra
   n'est pas disponible — utilisez la douchette ou le clavier.
-- **Message d'erreur explicite** : en cas de problème, BibliOfelia affiche
+- **Message d'erreur explicite** : en cas de problème, BiblOFELIA affiche
   la raison exacte et vous invite à **saisir le code à la main**. Vous
   n'êtes jamais bloqué.
 

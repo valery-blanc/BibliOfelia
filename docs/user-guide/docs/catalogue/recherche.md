@@ -1,6 +1,6 @@
 # Recherche
 
-BibliOfelia offre deux outils de recherche complémentaires : la
+BiblOFELIA offre deux outils de recherche complémentaires : la
 **recherche globale** depuis n'importe quelle page, et le **filtre du
 catalogue** quand vous êtes déjà dans la liste des livres.
 
@@ -12,19 +12,19 @@ En haut de chaque page, un grand champ de recherche accepte :
 - **Un nom d'auteur** — "hugo", "saint-exupéry"
 - **Un ISBN-13** — 9782070612758 (code de l'éditeur, au dos du livre)
 - **Un code Ofelia d'exemplaire** — 2900000000017 (code-barres de
-  l'étiquette BibliOfelia)
+  l'étiquette BiblOFELIA)
 - **Un code Ofelia externe** — BCF13298781X (code posé par une autre
   bibliothèque ou par un donateur, si vous l'avez enregistré sur
   l'exemplaire)
 - **Un nom de membre** — "rakoto", "dubois"
 - **Un numéro de carte** — 2910000000444 (code-barres de la carte)
 
-BibliOfelia détecte automatiquement de quoi il s'agit (livre, membre,
+BiblOFELIA détecte automatiquement de quoi il s'agit (livre, membre,
 exemplaire) et vous emmène directement sur la bonne page.
 
 !!! tip "Tapez puis Entrée"
     Pas besoin de cliquer sur un bouton : tapez et appuyez sur Entrée,
-    BibliOfelia s'occupe du reste.
+    BiblOFELIA s'occupe du reste.
 
 ## Le filtre du catalogue
 
@@ -100,7 +100,7 @@ catalogue avec toutes les colonnes d'import, utilisez
 La recherche n'est pas pointilleuse : taper "petit prince" trouve aussi
 "Le Petit Prince" et "petits princes". Vous pouvez écrire en
 majuscules ou en minuscules, avec ou sans accents, dans n'importe
-quel ordre. BibliOfelia fait le reste.
+quel ordre. BiblOFELIA fait le reste.
 
 ## Recherche par code-barres
 

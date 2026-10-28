@@ -1,6 +1,6 @@
 # Fanovana fiteny
 
-Misy amin'ny fiteny efatra ny BibliOfelia: **Français**, **English**,
+Misy amin'ny fiteny efatra ny BiblOFELIA: **Français**, **English**,
 **Español** ary **Malagasy**. Ny mpitantana tsirairay dia afaka
 misafidy ny fiteniny manokana.
 
@@ -22,7 +22,7 @@ pejy dia averina amin'ny fiteny vaovao.
 
 !!! info "Voatahiry ny safidy"
     Ny safidy fiteninao dia voatahiry amin'ny ordinateur: ny
-    fotoana manaraka rehefa manokatra BibliOfelia ianao dia hiseho
+    fotoana manaraka rehefa manokatra BiblOFELIA ianao dia hiseho
     amin'ny fiteny mitovy.
 
 ## Tranomboky maro fiteny

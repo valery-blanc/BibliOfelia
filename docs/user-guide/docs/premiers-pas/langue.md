@@ -1,6 +1,6 @@
 # Changer de langue
 
-BibliOfelia est disponible en quatre langues : **Français**, **English**,
+BiblOFELIA est disponible en quatre langues : **Français**, **English**,
 **Español** et **Malagasy**. Chaque bibliothécaire peut choisir sa langue
 indépendamment des autres.
 
@@ -22,7 +22,7 @@ langue souhaitée. La page recharge immédiatement dans la nouvelle langue.
 
 !!! info "Préférence enregistrée"
     Votre choix de langue est mémorisé sur votre poste : la prochaine
-    fois que vous ouvrez BibliOfelia, l'interface se présente dans la
+    fois que vous ouvrez BiblOFELIA, l'interface se présente dans la
     même langue.
 
 ## Bibliothèque multilingue

@@ -21,7 +21,7 @@ en haut à droite.
 Si le livre a un ISBN (code à 13 chiffres au dos), tapez-le dans le
 champ **ISBN-13** et appuyez sur **Entrée**.
 
-BibliOfelia interroge la base de données OpenLibrary et pré-remplit
+BiblOFELIA interroge la base de données OpenLibrary et pré-remplit
 automatiquement le titre, les auteurs, l'éditeur et l'année. Vous
 n'avez plus qu'à vérifier et compléter.
 
@@ -51,12 +51,12 @@ Si pas d'ISBN ou pas de réseau, remplissez les champs à la main :
 
 ## Enregistrer
 
-Cliquez sur **Enregistrer**. La notice est créée et BibliOfelia vous
+Cliquez sur **Enregistrer**. La notice est créée et BiblOFELIA vous
 propose immédiatement d'**ajouter un premier exemplaire** : voir
 [Gérer les exemplaires](exemplaires.md).
 
 !!! warning "Doublons"
-    Si vous saisissez deux fois le même ISBN, BibliOfelia vous prévient
+    Si vous saisissez deux fois le même ISBN, BiblOFELIA vous prévient
     : ne créez pas une nouvelle notice, ajoutez plutôt un exemplaire
     supplémentaire à la notice existante (un même livre, deux copies).
 

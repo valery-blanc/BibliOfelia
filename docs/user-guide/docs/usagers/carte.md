@@ -28,7 +28,7 @@ directement ou le sauvegarder pour plus tard.
 
 ## Format de la carte
 
-Les cartes BibliOfelia sont au format standard de carte de visite
+Les cartes BiblOFELIA sont au format standard de carte de visite
 (85 × 54 mm) avec :
 
 - Le **logo OFELIA** en filigrane

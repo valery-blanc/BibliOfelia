@@ -1,6 +1,6 @@
 """Activités, animations et bouclement. FEAT-085 / FEAT-086, SPEC §6.14–§6.15.
 
-Ce que BibliOfelia ignorait jusqu'ici : le travail des employés. Sans ces
+Ce que BiblOFELIA ignorait jusqu'ici : le travail des employés. Sans ces
 tables, impossible de répondre en fin d'année à « combien d'animations, et qui
 est venu ? » — la question que pose tout bailleur.
 """

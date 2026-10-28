@@ -2,7 +2,7 @@
 
 El **inventario** consiste en recorrer las estanterías y comprobar que cada
 libro está en su sitio. Es la operación más potente del sistema: recorre las
-estanterías escaneando con la **cámara**, y BibliOfelia se actualiza
+estanterías escaneando con la **cámara**, y BiblOFELIA se actualiza
 automáticamente.
 
 El inventario se hace ahora **directamente desde el sitio**, con la cámara de
@@ -30,7 +30,7 @@ Antes de empezar:
 2. Elija el **alcance**: una **ubicación** concreta (p. ej. «Estantería A1»)
    o **todo el fondo**. Si elige una ubicación, seleccionarla pasa a ser
    obligatorio.
-3. Confirme: BibliOfelia abre directamente la página de **informe**, que
+3. Confirme: BiblOFELIA abre directamente la página de **informe**, que
    sirve también como pantalla de registro.
 
 ## Escanear los libros en continuo
@@ -41,7 +41,7 @@ Antes de empezar:
    vibración) confirma cada libro nuevo, y un **contador** sube en pantalla.
 3. Para cada escaneo:
    - libro **en la estantería correcta**: se marca como «visto»;
-   - libro **colocado en otro sitio** (alcance = una ubicación): BibliOfelia
+   - libro **colocado en otro sitio** (alcance = una ubicación): BiblOFELIA
      actualiza automáticamente su estantería a la que está inventariando;
    - **código desconocido**: se señala, a investigar.
 
@@ -50,7 +50,7 @@ varios ejemplares, la pantalla indica «ejemplar 2», «ejemplar 3»… para
 ayudarle a encontrarlos todos.
 
 !!! tip "Vaya rápido, no piense"
-    No hace falta comprobar cada escaneo: BibliOfelia lo ordena todo al final.
+    No hace falta comprobar cada escaneo: BiblOFELIA lo ordena todo al final.
     Concéntrese en la velocidad y la cobertura completa de la estantería. La
     lista y los contadores se actualizan en directo.
 
@@ -58,7 +58,7 @@ Cuando haya recorrido la estantería, pulse **Terminar**.
 
 ## Con un lector de código de barras USB
 
-Si el puesto que muestra BibliOfelia tiene un **lector de código de barras USB**
+Si el puesto que muestra BiblOFELIA tiene un **lector de código de barras USB**
 (lector con cable), puede hacer el inventario **sin cámara** — es incluso la única
 opción si la pantalla está en una red local sin `https://`.
 
@@ -109,6 +109,6 @@ cierre).
 ## ¿Y OfeliaScan?
 
 Para los **inventarios grandes**, la aplicación móvil [OfeliaScan](../ofeliascan/activer.md)
-también puede enviar una sesión entera de escaneos a BibliOfelia. La lógica es
+también puede enviar una sesión entera de escaneos a BiblOFELIA. La lógica es
 la misma (libros vistos, desplazados, ausentes). Para el inventario corriente
 de una sola estantería, la cámara del sitio descrita arriba es lo más sencillo.

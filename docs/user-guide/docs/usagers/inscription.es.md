@@ -41,7 +41,7 @@ que hable la persona: no hay límite. Lo que falte en la lista se escribe en
 **Otros idiomas**, separado por comas.
 
 No hay que confundirlo con **Idioma**, justo encima: ese dice en qué idioma
-debe BibliOfelia **escribirle** (avisos, cartas). Los idiomas hablados
+debe BiblOFELIA **escribirle** (avisos, cartas). Los idiomas hablados
 sirven para acogerle y proponerle los libros adecuados.
 
 ### La familia
@@ -50,7 +50,7 @@ La sección **Familia** enumera las personas que comparten este carné: pareja,
 abuelos, hijos. Para cada una: **nombre**, **sexo**, **Adulto o niño**, y los
 **idiomas** que habla (el mismo recuadro, plegado bajo "Idiomas hablados").
 
-Para un niño, indique su **año de nacimiento**: BibliOfelia deduce la edad y la
+Para un niño, indique su **año de nacimiento**: BiblOFELIA deduce la edad y la
 mantiene al día por sí solo. Para un adulto no hay nada más que rellenar.
 
 Haga clic en **Añadir una persona** para una línea más, y en **Quitar** para
@@ -66,7 +66,7 @@ línea que se le ofrece.
 
 ## Guardar
 
-Haga clic en **Guardar**. BibliOfelia asigna automáticamente:
+Haga clic en **Guardar**. BiblOFELIA asigna automáticamente:
 
 - Un **número de tarjeta** único (empieza por 291 — es el código de
   barras de la tarjeta)

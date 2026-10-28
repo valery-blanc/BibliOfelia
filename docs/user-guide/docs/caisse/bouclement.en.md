@@ -45,7 +45,7 @@ fails, tell the administrator.
 This step **appears only on the Ofelia Box**, and only for an
 administrator. On a hosted instance it would make no sense.
 
-BibliOfelia cannot shut the Box down itself (it runs in a container):
+BiblOFELIA cannot shut the Box down itself (it runs in a container):
 it drops a request that the Box's system service must watch. If that
 service is not installed yet, the request is recorded **but the Box
 does not shut down** — the screen says so.

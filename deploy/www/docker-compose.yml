@@ -1,0 +1,24 @@
+# Page www.bibliofelia.org / bibliofelia.org.
+# Sur Fez et Avignon : copier ce fichier dans ~/docker/bibliofelia-www/
+# et lancer `docker compose up -d --build` depuis ce dossier.
+# Le contexte ../../BibliOfelia est le dépôt copié dans ~/BibliOfelia.
+services:
+  www:
+    build:
+      context: ../../BibliOfelia
+      dockerfile: www/Dockerfile
+    image: bibliofelia-www:latest
+    container_name: bibliofelia-www
+    restart: unless-stopped
+    networks: [web]
+    labels:
+      - traefik.enable=true
+      - traefik.docker.network=web
+      - traefik.http.routers.bibliofelia-www.rule=Host(`bibliofelia.org`) || Host(`www.bibliofelia.org`)
+      - traefik.http.routers.bibliofelia-www.entrypoints=websecure
+      - traefik.http.routers.bibliofelia-www.tls.certresolver=letsencrypt
+      - traefik.http.services.bibliofelia-www.loadbalancer.server.port=80
+
+networks:
+  web:
+    external: true

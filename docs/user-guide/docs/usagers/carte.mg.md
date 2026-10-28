@@ -30,7 +30,7 @@ na tahirizina ho an'ny aoriana.
 
 ## Endrika karatra
 
-Ny karatra BibliOfelia dia amin'ny endrika standard an'ny karatra
+Ny karatra BiblOFELIA dia amin'ny endrika standard an'ny karatra
 fitsidihana (85 × 54 mm) miaraka amin'ny:
 
 - Logo **OFELIA** filigrane

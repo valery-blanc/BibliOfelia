@@ -1,6 +1,6 @@
 # Modos de entrada: cámara, escáner o teclado
 
-BibliOfelia está diseñado para funcionar con o sin equipo específico.
+BiblOFELIA está diseñado para funcionar con o sin equipo específico.
 Elija el modo que corresponda a su equipo.
 
 ## La cámara del navegador (sin equipo)
@@ -35,7 +35,7 @@ trabaja.
 
 ## OfeliaScan (aplicación móvil, como complemento)
 
-OfeliaScan es la aplicación Android compañera de BibliOfelia. Sigue siendo
+OfeliaScan es la aplicación Android compañera de BiblOFELIA. Sigue siendo
 útil como complemento móvil, en particular para enviar lotes grandes de
 catalogación o de inventario.
 
@@ -43,7 +43,7 @@ catalogación o de inventario.
 
 - Una aplicación dedicada, para quienes la prefieren a la cámara del
   navegador
-- Envío de lotes enteros a BibliOfelia
+- Envío de lotes enteros a BiblOFELIA
 
 **Limitaciones:**
 
@@ -72,5 +72,5 @@ manualmente y pulsar **Enter** o hacer clic en **Validar** al lado.
 
 Si no tiene la tarjeta del miembro ni el libro a la mano, use la
 **búsqueda global** en la parte superior de cada página: escriba el
-nombre del miembro o una palabra del título, y BibliOfelia encuentra
+nombre del miembro o una palabra del título, y BiblOFELIA encuentra
 la ficha directamente.

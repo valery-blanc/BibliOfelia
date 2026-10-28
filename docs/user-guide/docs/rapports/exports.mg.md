@@ -46,7 +46,7 @@ asehon'ny tabilao.
 | Ny fampindramana amin'ny vanim-potoana | Ny fampindramana rehetra amin'ny vanim-potoana aseho eo ambony |
 
 Ilaina ho an'ny : **fanisana isan-taona**, fizarana ny tahirinao amin'ny
-tranomboky hafa, na kajy tsy ataon'ny BibliOfelia.
+tranomboky hafa, na kajy tsy ataon'ny BiblOFELIA.
 
 ## Ahoana no hanokafana rakitra CSV
 

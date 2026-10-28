@@ -33,7 +33,7 @@ _LANG_NAME_PREFIXES = (
     "Portugais", "Allemand", "Italien", "Arabe",
 )
 
-# Anciennes catégories du seed BibliOfelia → catégorie officielle.
+# Anciennes catégories du seed BiblOFELIA → catégorie officielle.
 _LEGACY_MAP = {
     "ADU-ROM": "AD FIC",
     "ADU-NOU": "AD FIC",

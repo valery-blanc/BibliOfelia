@@ -19,7 +19,7 @@ From [**Advanced**](/bibliofelia/en/advanced/){ target="_blank" }, open
 
 ## The classifications provided
 
-BibliOfelia ships with the **20 official Ofelia classifications**: five age
+BiblOFELIA ships with the **20 official Ofelia classifications**: five age
 groups crossed with four document types.
 
 | | Fiction | Non-fiction | Picture books | Comics |
@@ -48,7 +48,7 @@ It applies to **every** record in the classification: one entry only, and two
 books of the same classification can never show two different codes.
 
 On installation, the classifications provided get a starting code (`JE DOC`,
-`AD FIC`…). You can replace them with your own: BibliOfelia will never
+`AD FIC`…). You can replace them with your own: BiblOFELIA will never
 overwrite a code you typed in.
 
 Once the codes are in place, print the

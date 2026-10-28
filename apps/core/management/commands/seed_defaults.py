@@ -113,7 +113,7 @@ class Command(BaseCommand):
     help = "Crée Settings, Catégories et MemberCategories par défaut si absents (idempotent)."
 
     DEFAULTS = {
-        "library_name": ("BibliOfelia", "Nom de la bibliothèque"),
+        "library_name": ("BiblOFELIA", "Nom de la bibliothèque"),
         "library_address": ("", "Adresse de la bibliothèque"),
         "default_language": ("fr", "Langue par défaut"),
         "enabled_languages": (["fr", "en", "es", "mg"], "Langues activées"),

@@ -441,7 +441,7 @@ def queue_invoice_email(invoice: Invoice, *, kind=EmailKind.INVOICE) -> Outbound
 def _library_name() -> str:
     from apps.core.models import Setting
 
-    return Setting.get("library_name", "BibliOfelia") or "BibliOfelia"
+    return Setting.get("library_name", "BiblOFELIA") or "BiblOFELIA"
 
 
 def invoices_to_send():

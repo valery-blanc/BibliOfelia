@@ -1,0 +1,71 @@
+{% extends "base.html" %}
+{% load i18n biblio_icons %}
+
+{% block title %}{% trans "Réserver un livre" %}{% endblock %}
+
+{% block tile_strip %}{% include "partials/_tile_strip.html" with active="reservations" %}{% endblock %}
+
+{% block content %}
+<header class="pagehead">
+    <div class="pagehead-icon" style="--ph-bg:var(--blush);--ph-fg:var(--burgundy)">
+        {% icon "bookmark-check" size="28px" %}
+    </div>
+    <div class="pagehead-text">
+        <h1 class="pagehead-title">{% trans "Réserver un livre" %}</h1>
+        <div class="pagehead-sub">{% trans "Choisissez le livre à réserver." %}</div>
+    </div>
+</header>
+
+<form method="get" class="card" style="margin-bottom:18px">
+    <div class="field">
+        <label for="q">{% trans "Titre, auteur, ISBN ou code" %}</label>
+        <div class="scan-field">
+            <input id="q" class="form-control" type="search" name="q" value="{{ q }}"
+                   autofocus autocomplete="off">
+            <button type="button"
+                    class="btn btn--primary scan-inline-btn js-scan-handoff"
+                    data-scan-target="input[name=q]"
+                    data-scan-kind="auto"
+                    data-scan-autosubmit="true"
+                    title="{% trans 'Scanner le code-barres' %}"
+                    aria-label="{% trans 'Scanner le code-barres' %}">
+                {% icon "scan-barcode" size="16px" %}
+            </button>
+        </div>
+    </div>
+    <div class="form-actions">
+        <button type="submit" class="btn btn--primary">
+            {% icon "search" size="16px" %} {% trans "Rechercher" %}
+        </button>
+        <a href="{% url 'loans:reservations' %}" class="btn btn--ghost">{% trans "Annuler" %}</a>
+    </div>
+</form>
+
+{% if searched %}
+    {% if records %}
+    <div class="list">
+        {% for record in records %}
+        <a class="list-row" href="{% url 'loans:reservation_create' record.pk %}">
+            <div class="lrow-icon" style="--lr-bg:var(--blush-light);--lr-fg:#B83232">
+                {% icon "book-open" size="18px" %}
+            </div>
+            <div class="lrow-body">
+                <div class="lrow-title">{{ record.title }}</div>
+                <div class="lrow-sub">
+                    {% for author in record.authors.all %}{{ author.full_name }}{% if not forloop.last %}, {% endif %}{% empty %}—{% endfor %}
+                    {% if record.isbn_13 %} · {{ record.isbn_13 }}{% endif %}
+                </div>
+            </div>
+            <div class="lrow-end">
+                <span class="btn btn--primary btn--sm">{% trans "Réserver" %}</span>
+            </div>
+        </a>
+        {% endfor %}
+    </div>
+    {% else %}
+    <div class="card" style="text-align:center;padding:24px">
+        <p class="muted">{% trans "Aucun livre ne correspond." %}</p>
+    </div>
+    {% endif %}
+{% endif %}
+{% endblock %}

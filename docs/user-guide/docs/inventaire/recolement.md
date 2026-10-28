@@ -3,7 +3,7 @@
 Le **récolement** consiste à passer dans les rayons et vérifier que
 chaque livre est à sa place. C'est l'opération la plus puissante du
 système : vous parcourez les étagères en scannant avec la **caméra**, et
-BibliOfelia se met à jour automatiquement.
+BiblOFELIA se met à jour automatiquement.
 
 Le récolement se fait désormais **directement depuis le site**, avec la
 caméra de votre téléphone ou de votre tablette — aucune application à
@@ -32,7 +32,7 @@ Avant de commencer :
 2. Choisissez la **portée** : un **emplacement** précis (ex. « Rayon A1 »)
    ou **tout le fonds**. Si vous choisissez un emplacement, il devient
    obligatoire de le sélectionner.
-3. Validez : BibliOfelia ouvre directement la page de **rapport**, qui
+3. Validez : BiblOFELIA ouvre directement la page de **rapport**, qui
    sert aussi d'écran de pointage.
 
 ## Scanner les livres en continu
@@ -44,7 +44,7 @@ Avant de commencer :
    l'écran.
 3. Pour chaque scan :
    - livre **dans le bon rayon** : il est marqué « vu » ;
-   - livre **rangé ailleurs** (portée = un emplacement) : BibliOfelia met
+   - livre **rangé ailleurs** (portée = un emplacement) : BiblOFELIA met
      automatiquement à jour son rayon vers celui que vous récolez ;
    - **code inconnu** : signalé, à investiguer.
 
@@ -53,7 +53,7 @@ plusieurs exemplaires, l'écran indique « exemplaire 2 », « exemplaire 3 »�
 pour vous aider à tous les retrouver.
 
 !!! tip "Allez vite, ne réfléchissez pas"
-    Inutile de vérifier chaque scan : BibliOfelia trie tout à la fin.
+    Inutile de vérifier chaque scan : BiblOFELIA trie tout à la fin.
     Concentrez-vous sur la vitesse et la couverture complète du rayon. La
     liste et les compteurs se mettent à jour en direct.
 
@@ -61,7 +61,7 @@ Quand le rayon est parcouru, appuyez sur **Terminer**.
 
 ## Avec une douchette USB
 
-Si le poste qui affiche BibliOfelia est équipé d'une **douchette USB** (lecteur
+Si le poste qui affiche BiblOFELIA est équipé d'une **douchette USB** (lecteur
 de code-barres filaire), vous pouvez récoler **sans caméra** : c'est même le seul
 moyen si l'écran est branché en réseau local sans `https://`.
 
@@ -114,6 +114,6 @@ fermeture).
 ## Et OfeliaScan ?
 
 Pour de **gros récolements**, l'application mobile [OfeliaScan](../ofeliascan/activer.md)
-peut aussi envoyer une session entière de scans à BibliOfelia. La logique
+peut aussi envoyer une session entière de scans à BiblOFELIA. La logique
 est la même (livres vus, déplacés, manquants). Pour le récolement courant
 d'un rayon, la caméra du site décrite ci-dessus est le moyen le plus simple.

@@ -22,7 +22,7 @@ Haga clic en **Crear**. Cada ejemplar recibe automáticamente:
 - Un **código Ofelia** único (empieza por 290 — es el código de
   barras que se imprime en la etiqueta del libro)
 - Un **código interno** con la forma `OFL-AAAAMMDD-NNNN` (visible
-  en la ficha en BibliOfelia, práctico para identificar rápidamente
+  en la ficha en BiblOFELIA, práctico para identificar rápidamente
   la fecha de creación)
 
 Vea el [glosario](../glossaire.md) para entender los distintos
@@ -56,7 +56,7 @@ poder prestarse. Use el botón **Descartar** desde su ficha.
 
 Algunos libros llegan con una etiqueta que no es la suya: un fondo prestado
 por otra biblioteca, una donación ya catalogada, un inventario anterior a
-BibliOfelia. En vez de pegar su etiqueta encima, escriba ese código en el
+BiblOFELIA. En vez de pegar su etiqueta encima, escriba ese código en el
 campo **Código Ofelia externo** del ejemplar (hasta 20 letras o cifras, por
 ejemplo `BCF13298781X`).
 
@@ -65,7 +65,7 @@ al prestar, al devolver, en el recuento, en la búsqueda. Puede escribirlo o
 escanearlo, con o sin guiones, en mayúsculas o en minúsculas.
 
 !!! warning "Un código, un ejemplar"
-    Dos ejemplares no pueden llevar el mismo código externo: BibliOfelia no
+    Dos ejemplares no pueden llevar el mismo código externo: BiblOFELIA no
     sabría cuál está escaneando. Si el código ya está ocupado, el
     formulario le indica en qué ejemplar se encuentra.
 

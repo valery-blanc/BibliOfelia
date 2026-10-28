@@ -4,16 +4,16 @@ Many libraries join the Ofelia project with a collection already typed into
 an **Excel spreadsheet** (an in-house id, a title, an author, sometimes an
 ISBN). **Excel cataloging** offers four tools to make use of that file:
 
-1. **Check a file** — BibliOfelia annotates your spreadsheet with what the
+1. **Check a file** — BiblOFELIA annotates your spreadsheet with what the
    online databases know about each book, without changing anything in the
    catalog. Ideal **before** a migration, to measure the quality of the
    file and fix it by hand.
-2. **Import into the catalog** — BibliOfelia turns a list of ISBNs into
+2. **Import into the catalog** — BiblOFELIA turns a list of ISBNs into
    records and copies, all at once.
-3. **Export the catalog** — BibliOfelia hands your whole collection back as
+3. **Export the catalog** — BiblOFELIA hands your whole collection back as
    a spreadsheet, one row per copy.
 4. **Update copies** — you send that corrected spreadsheet back, and
-   BibliOfelia applies your fixes to books already catalogued, without ever
+   BiblOFELIA applies your fixes to books already catalogued, without ever
    creating new ones.
 
 !!! info "Librarians only"
@@ -26,7 +26,7 @@ From the [**Advanced**](/bibliofelia/en/advanced/){ target="_blank" } menu,
 **Inventory** section, click
 [**Excel cataloging**](/bibliofelia/en/catalog/excel-catalog/){ target="_blank" }.
 
-The page shows four boxes: **Check a file**, **Import into BibliOfelia**,
+The page shows four boxes: **Check a file**, **Import into BiblOFELIA**,
 **Export the catalog** and **Update copies**.
 
 ## Check a file
@@ -54,7 +54,7 @@ In the
 [**Check a file**](/bibliofelia/en/catalog/excel-catalog/){ target="_blank" }
 box, choose your file then click **Start verification**.
 
-BibliOfelia queries **OpenLibrary, Google Books, the BNF and the BNE**,
+BiblOFELIA queries **OpenLibrary, Google Books, the BNF and the BNE**,
 first by ISBN, then by title + author. Processing runs in the background:
 expect about **10 minutes per 300 rows**.
 
@@ -101,11 +101,11 @@ column is **optional**: add only the ones you have, in any order.
 | `CONDITION` | the copy condition (New, Good, Worn, Damaged) |
 
 In the
-[**Import into BibliOfelia**](/bibliofelia/en/catalog/excel-catalog/){ target="_blank" }
+[**Import into BiblOFELIA**](/bibliofelia/en/catalog/excel-catalog/){ target="_blank" }
 box, choose your file then click **Import into the catalog**.
 
 Each ISBN becomes a record and a copy. If an ISBN is **already present** in
-the catalog, BibliOfelia does not recreate the record: it simply adds a
+the catalog, BiblOFELIA does not recreate the record: it simply adds a
 copy to the existing one.
 
 !!! info "A filled-in column replaces the record's information"
@@ -153,7 +153,7 @@ record.
 | `CONDITION`, `PROVENANCE`, `LOCATION` | the copy's details |
 
 !!! tip "This is the update file"
-    The export columns are **exactly** the ones BibliOfelia can read back.
+    The export columns are **exactly** the ones BiblOFELIA can read back.
     Fix whatever you like in Excel, then send the same file through **Update
     copies**: nothing else to prepare.
 
@@ -236,7 +236,7 @@ the warnings row by row.
 
 ## See also
 
-- [Catalogue by scanning](catalogage-scan.md) — the same import, but with
-  the camera book by book
+- [Catalogue by scanning](catalogage-scan.md) — the same job, book by book,
+  with the camera or the USB scanner
 - [Add a book](../catalogue/ajouter-livre.md) — create a single record by
   hand

@@ -1,7 +1,7 @@
 """FEAT-063 : résolution d'un code d'exemplaire saisi ou scanné.
 
 Un exemplaire peut être désigné par trois codes : le **code Ofelia** que
-BibliOfelia lui a attribué (EAN13 préfixe 290, imprimé sur l'étiquette), un
+BiblOFELIA lui a attribué (EAN13 préfixe 290, imprimé sur l'étiquette), un
 **code Ofelia externe** posé hors du système — étiquette d'une autre
 bibliothèque, d'un donateur, d'un catalogage antérieur au projet — et le
 **code interne** ``OFL-YYYYMMDD-NNNN`` affiché à l'écran.

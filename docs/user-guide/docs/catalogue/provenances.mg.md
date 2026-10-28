@@ -21,9 +21,11 @@ sokafy ny **Fiaviana**, avy eo tsindrio **Fiaviana vaovao**.
 
 Fomba telo, manomboka amin'ny haingana indrindra :
 
-1. **Rehefa manasokajy** — rehefa manomboka andiany fanaovana scan ianao dia
-   fidio ny **Fiaviana mahazatra** : hahazo azy ny kopia rehetra ao anatiny.
-   Io no fomba mety amin'ny boaty boky nindramina.
+1. **Rehefa manasokajy** — rehefa manomboka andiany fanaovana scan ianao,
+   amin'ny fakantsary na amin'ny douchette, dia fidio ny **Fiaviana
+   mahazatra** : hahazo azy ny kopia rehetra ao anatiny. Io no fomba mety
+   amin'ny boaty boky nindramina. Jereo ny
+   [Catalogage amin'ny scan](../inventaire/catalogage-scan.md#defauts).
 2. **Avy amin'ny katalaogy** — mariho **Karohy ny kopia**, fidio ny andalana,
    avy eo **Hanome fiaviana**.
 3. **Kopia tsirairay** — ny saha **Fiaviana** ao amin'ny formulaire.
@@ -50,7 +52,7 @@ mijanona ao amin'ny katalaogy ny rakitra.
 
 ## Famafana fiaviana
 
-Raha mbola misy kopia mitondra azy dia **mandà** ny hamafa azy ny BibliOfelia :
+Raha mbola misy kopia mitondra azy dia **mandà** ny hamafa azy ny BiblOFELIA :
 ho very ny hany porofon'ny niavian'ireo boky ireo. Manolotra anao ny hijery ny
 kopia voakasika àry ny efijery, mba hokarakaraina aloha.
 

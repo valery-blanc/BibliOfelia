@@ -4,7 +4,7 @@
 
 ### J'ai oublié mon mot de passe, que faire ?
 
-BibliOfelia fonctionne hors ligne et n'envoie pas de courriel de
+BiblOFELIA fonctionne hors ligne et n'envoie pas de courriel de
 réinitialisation. Demandez à l'administrateur de la Box de
 réinitialiser votre mot de passe directement depuis la console
 d'administration.
@@ -39,7 +39,7 @@ prêt.
 ### Comment ajouter un livre rapidement ?
 
 Si le livre a un ISBN, tapez-le dans le formulaire de nouvelle
-notice : BibliOfelia interroge OpenLibrary et pré-remplit la fiche
+notice : BiblOFELIA interroge OpenLibrary et pré-remplit la fiche
 automatiquement. Voir [Ajouter un livre](catalogue/ajouter-livre.md).
 
 ### Que faire si l'ISBN n'est pas trouvé ?
@@ -75,14 +75,14 @@ votre propre téléphone Android personnel.
 
 ### OfeliaScan a-t-il besoin d'internet ?
 
-Non. Il communique avec BibliOfelia via le Wi-Fi local de la Ofelia
+Non. Il communique avec BiblOFELIA via le Wi-Fi local de la Ofelia
 Box. Aucune connexion internet n'est requise pour l'usage quotidien.
 
 ## Sur les langues
 
 ### Puis-je écrire un titre en malagasy ?
 
-Oui. BibliOfelia accepte tous les caractères Unicode (accents,
+Oui. BiblOFELIA accepte tous les caractères Unicode (accents,
 alphabets non-latins). Saisissez le titre tel quel.
 
 ### Le membre francophone peut-il avoir une carte en français même si je
@@ -128,7 +128,7 @@ encore ne pourra jamais désigner un autre livre par erreur.
 
 Ouvrez la [fiche du membre](usagers/fiche.md), cliquez sur
 **Modifier**, puis **Remplacer la carte** (à côté du n° de carte) :
-BibliOfelia attribue un nouveau numéro, met
+BiblOFELIA attribue un nouveau numéro, met
 l'ancien de côté pour de bon et conserve tout l'historique. L'ancienne
 carte ne fonctionne plus (tout scan renvoie une erreur), détruisez-la
 si elle réapparaît. En attendant la nouvelle carte, le membre peut
@@ -143,7 +143,7 @@ le membre (téléphone visible sur sa fiche) ; (2) pour bloquer ses
 emprunts, **désactivez** temporairement le membre depuis sa fiche et
 réactivez-le au retour des livres ; (3) pour un retard de plusieurs
 mois, marquez le prêt **Perdu**. Vous pouvez aussi poser une **amende
-manuelle** depuis la fiche. BibliOfelia n'envoie une relance email que
+manuelle** depuis la fiche. BiblOFELIA n'envoie une relance email que
 pour une **facture** échue (une seule fois) ; pour un livre en retard
 sans facture, téléphone ou SMS restent les plus efficaces.
 

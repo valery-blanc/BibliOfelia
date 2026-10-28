@@ -1,6 +1,6 @@
 # Escanear con la cámara
 
-BibliOfelia puede escanear códigos de barras **directamente con la
+BiblOFELIA puede escanear códigos de barras **directamente con la
 cámara** de su dispositivo: teléfono, tableta o portátil con webcam.
 Sin aplicación que instalar: todo ocurre en el navegador.
 
@@ -62,7 +62,7 @@ Algunos puntos que comprobar:
 
 !!! warning "Se requiere conexión segura (HTTPS)"
     Por seguridad, los navegadores solo permiten la cámara con una conexión
-    **segura (https://)**. Si accede a BibliOfelia por una dirección local
+    **segura (https://)**. Si accede a BiblOFELIA por una dirección local
     en `http://` (por ejemplo `http://ofelia.local`), la cámara no podrá
     abrirse. En ese caso, use un **lector de códigos** o la **entrada por
     teclado**, o pida al administrador de la Box la dirección segura.
@@ -73,7 +73,7 @@ Algunos puntos que comprobar:
   dirección).
 - **Ninguna cámara detectada**: en un puesto fijo sin webcam, la cámara no
   está disponible — use un lector de códigos o el teclado.
-- **Mensaje de error claro**: si algo falla, BibliOfelia muestra el motivo
+- **Mensaje de error claro**: si algo falla, BiblOFELIA muestra el motivo
   exacto y le invita a **escribir el código a mano**. Nunca se queda
   bloqueado.
 

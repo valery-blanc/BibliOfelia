@@ -128,6 +128,25 @@ def test_consultation_view(client, librarian):
     assert InHouseConsultation.objects.filter(count=3).exists()
 
 
+def test_reservation_form_filters_members_by_name(
+    client, librarian, member, other_member, record
+):
+    client.force_login(librarian)
+    resp = client.get(f"/fr/loans/reservations/new/{record.pk}/")
+    assert resp.status_code == 200
+    body = resp.content.decode()
+    assert "data-member-picker" in body
+    assert "Tapez un nom pour filtrer" in body
+    assert "Lovelace" in body
+    assert "Hopper" in body
+    assert "member-picker-list" in body
+    assert 'size="8"' in body
+    assert "member-picker.js" in body
+    en = client.get(f"/en/loans/reservations/new/{record.pk}/")
+    assert en.status_code == 200
+    assert "Type a name to filter" in en.content.decode()
+
+
 def test_reservation_create_view(client, librarian, member, record):
     client.force_login(librarian)
     resp = client.post(
@@ -139,7 +158,39 @@ def test_reservation_create_view(client, librarian, member, record):
 
 def test_reservation_list_view(client, librarian):
     client.force_login(librarian)
-    assert client.get("/fr/loans/reservations/").status_code == 200
+    resp = client.get("/fr/loans/reservations/")
+    assert resp.status_code == 200
+    body = resp.content.decode()
+    assert "/loans/reservations/new/" in body
+    assert body.index("Réserver un livre") < body.index("Prêtes à retirer")
+    assert 'data-scan-kind="auto"' in body
+    assert 'data-scan-dispatch-url="' in body
+    assert "/loans/reservations/new/" in body.split('data-scan-dispatch-url="', 1)[1]
+
+
+def test_reservation_pick_scan_sits_beside_the_search_field(client, librarian):
+    client.force_login(librarian)
+    resp = client.get("/fr/loans/reservations/new/")
+    assert resp.status_code == 200
+    body = resp.content.decode()
+    assert 'data-scan-target="input[name=q]"' in body
+    assert 'data-scan-kind="auto"' in body
+    assert 'data-scan-autosubmit="true"' in body
+
+
+def test_reservation_pick_lists_a_title(client, librarian, record):
+    client.force_login(librarian)
+    resp = client.get("/fr/loans/reservations/new/", {"q": "Fondation"})
+    assert resp.status_code == 200
+    assert b"Fondation" in resp.content
+    assert f"/loans/reservations/new/{record.pk}/".encode() in resp.content
+
+
+def test_reservation_pick_code_opens_the_member_form(client, librarian, item):
+    client.force_login(librarian)
+    resp = client.get("/fr/loans/reservations/new/", {"q": item.ean13})
+    assert resp.status_code == 302
+    assert resp.url.endswith(f"/loans/reservations/new/{item.record_id}/")
 
 
 def test_reservation_cancel_view(client, librarian, member, record):

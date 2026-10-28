@@ -1,8 +1,8 @@
 # Activate OfeliaScan
 
-**OfeliaScan** is the Android companion app for BibliOfelia. Once
+**OfeliaScan** is the Android companion app for BiblOFELIA. Once
 installed and paired with your Ofelia Box, it lets you scan barcodes
-from a phone and send the result directly to BibliOfelia on the
+from a phone and send the result directly to BiblOFELIA on the
 computer.
 
 !!! info "The camera is now built into the site"
@@ -35,7 +35,7 @@ Ask the Box administrator for the exact installation procedure.
 Once OfeliaScan is installed, you need to connect it to your Box
 (to do **once only**).
 
-1. On the computer, open BibliOfelia and go to **Advanced → OfeliaScan
+1. On the computer, open BiblOFELIA and go to **Advanced → OfeliaScan
    access**
 2. A QR code is displayed on screen
 3. On the phone, open OfeliaScan and tap **Pair**
@@ -46,7 +46,7 @@ The phone is now linked to your Box. It will remember on each use.
 
 !!! info "Several phones, one Box"
     Several librarians can pair their phone to the same Box. Each
-    sees their own scans in BibliOfelia.
+    sees their own scans in BiblOFELIA.
 
 ## See also
 

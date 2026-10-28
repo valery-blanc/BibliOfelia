@@ -31,7 +31,7 @@ Vous pouvez enchaîner toute une pile de retours en quelques secondes.
 
 ### Le livre n'est pas en prêt
 
-Si vous scannez un livre qui n'était pas emprunté, BibliOfelia vous
+Si vous scannez un livre qui n'était pas emprunté, BiblOFELIA vous
 prévient avec un message orange. Vérifiez :
 
 - Vous n'avez pas confondu deux livres similaires
@@ -48,7 +48,7 @@ Pour suivre les retards systématiquement, voir
 
 ### Le livre déclenche une réservation
 
-Si quelqu'un avait réservé ce livre, BibliOfelia l'affiche en haut de
+Si quelqu'un avait réservé ce livre, BiblOFELIA l'affiche en haut de
 la page avec le nom du membre et la mention **À mettre de côté**.
 C'est le signal pour ranger le livre dans la zone de retrait au lieu
 de le remettre en rayon.

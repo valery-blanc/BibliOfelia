@@ -45,7 +45,7 @@ Si falla, avise al administrador.
 Este paso **solo aparece en la Ofelia Box**, y solo para un
 administrador. En una instancia alojada no tiene sentido.
 
-BibliOfelia no puede apagar la Box ella misma (corre en un
+BiblOFELIA no puede apagar la Box ella misma (corre en un
 contenedor): deja una petición que el servicio del sistema de la Box
 debe vigilar. Si ese servicio aún no está instalado, la petición se
 registra **pero la Box no se apaga** — la pantalla lo dice.

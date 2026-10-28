@@ -45,7 +45,7 @@ nahomby, lazao ny mpitantana.
 Ity dingana ity **hita amin'ny Ofelia Box ihany**, ary ho an'ny
 mpitantana ihany. Amin'ny instance voarindra dia tsy misy dikany.
 
-Tsy afaka mamono ny Box ny BibliOfelia (ao anaty container izy):
+Tsy afaka mamono ny Box ny BiblOFELIA (ao anaty container izy):
 mametraka fangatahana izay tokony hojerena ny service système. Raha
 tsy mbola voapetraka io service io, voarakitra ny fangatahana **fa
 tsy vonoina ny Box** — ny pejy milaza izany.

@@ -195,7 +195,7 @@ def test_languages_are_reachable_from_advanced(client, librarian):
 
 
 def test_member_correspondence_language_stays_on_ui_languages(client, seeded):
-    """BibliOfelia ne sait écrire qu'en 4 langues : ce menu ne bouge pas."""
+    """BiblOFELIA ne sait écrire qu'en 4 langues : ce menu ne bouge pas."""
     from apps.members.forms import MemberForm
 
     codes = [code for code, _label in MemberForm().fields["preferred_language"].widget.choices]

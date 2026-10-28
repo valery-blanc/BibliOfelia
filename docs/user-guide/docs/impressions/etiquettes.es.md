@@ -1,7 +1,7 @@
 # Imprimir las etiquetas de libros
 
 Las etiquetas con códigos de barras se pegan en los libros para
-permitir su escaneo rápido. BibliOfelia genera el PDF de las
+permitir su escaneo rápido. BiblOFELIA genera el PDF de las
 etiquetas a imprimir en planchas autoadhesivas.
 
 ## Abrir la página de impresión
@@ -109,7 +109,7 @@ El texto va centrado y su tamaño se ajusta solo: `PER` llena la etiqueta,
     El código se escribe en la **clasificación**, no en el libro (véase
     [Clasificaciones](../catalogue/categories.md)). Un ejemplar cuya
     clasificación no tiene código se omite al imprimir; si ninguno lo tiene,
-    BibliOfelia se lo dice en vez de generar un PDF vacío.
+    BiblOFELIA se lo dice en vez de generar un PDF vacío.
 
 ## Ver también
 

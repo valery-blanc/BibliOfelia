@@ -1,6 +1,6 @@
 # Input methods: camera, scanner or keyboard?
 
-BibliOfelia is designed to work with or without specific hardware.
+BiblOFELIA is designed to work with or without specific hardware.
 Choose the mode that fits your equipment.
 
 ## The browser camera (no hardware)
@@ -35,14 +35,14 @@ you're using.
 
 ## OfeliaScan (mobile app, as a complement)
 
-OfeliaScan is the Android companion app for BibliOfelia. It remains useful
+OfeliaScan is the Android companion app for BiblOFELIA. It remains useful
 as a mobile complement, in particular for sending large batches of
 cataloguing or inventory.
 
 **Advantages:**
 
 - A dedicated app, for those who prefer it to the browser camera
-- Sending whole batches to BibliOfelia
+- Sending whole batches to BiblOFELIA
 
 **Limitations:**
 
@@ -70,5 +70,5 @@ press **Enter** or click the **Validate** button next to it.
 
 If you don't have the member's card or the book in hand, use the
 **global search** at the top of every page: type the member's name or
-a word from the title, and BibliOfelia takes you directly to the right
+a word from the title, and BiblOFELIA takes you directly to the right
 page.

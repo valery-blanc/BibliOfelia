@@ -1,4 +1,4 @@
-"""Vue `set_language` durcie pour BibliOfelia.
+"""Vue `set_language` durcie pour BiblOFELIA.
 
 BUG-013 (récurrent) : `django.views.i18n.set_language` redirige vers
 `/<lang>/path/` sans préfixe `FORCE_SCRIPT_NAME`. En production, l'app est

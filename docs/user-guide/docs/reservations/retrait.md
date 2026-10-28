@@ -6,7 +6,7 @@ réservation expire et le livre est libéré.
 
 ## Mettre le livre de côté
 
-Au moment du retour, si le livre déclenche une réservation, BibliOfelia
+Au moment du retour, si le livre déclenche une réservation, BiblOFELIA
 vous l'indique avec un message :
 
 > **À mettre de côté pour [Nom du membre]**

@@ -1,4 +1,4 @@
-"""Capture des screenshots de BibliOfelia via Playwright (Sprint 15 Task 3).
+"""Capture des screenshots de BiblOFELIA via Playwright (Sprint 15 Task 3).
 
 Couvre les ~22 pages du sommaire v2 du guide utilisateur.
 
@@ -131,7 +131,7 @@ def capture(page: Page, out_dir: Path, group: str, name: str, full_page: bool) -
 
 
 def main(argv: list[str] | None = None) -> int:
-    parser = argparse.ArgumentParser(description="Capture screenshots BibliOfelia")
+    parser = argparse.ArgumentParser(description="Capture screenshots BiblOFELIA")
     parser.add_argument("--base-url", default=BASE_URL)
     parser.add_argument("--username", default=USERNAME)
     parser.add_argument("--password", default=PASSWORD)

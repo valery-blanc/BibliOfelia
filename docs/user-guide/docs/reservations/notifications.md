@@ -1,6 +1,6 @@
 # Notifications et relances
 
-BibliOfelia fonctionne hors ligne et n'envoie pas d'emails ou SMS
+BiblOFELIA fonctionne hors ligne et n'envoie pas d'emails ou SMS
 automatiques. **C'est à vous d'appeler les membres** quand un livre
 réservé arrive. Cette page explique comment suivre les notifications à
 faire.

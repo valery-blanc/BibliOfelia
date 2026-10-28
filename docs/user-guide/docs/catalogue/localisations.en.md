@@ -38,7 +38,7 @@ dropdown. You can also change it later from the copy's page.
 ## Inventory with automatic relocation
 
 During an inventory with OfeliaScan, if you scan a book in a different
-location from the one recorded, BibliOfelia automatically updates the
+location from the one recorded, BiblOFELIA automatically updates the
 copy's location. This is the fastest way to refresh your catalog
 after a major rearrangement.
 

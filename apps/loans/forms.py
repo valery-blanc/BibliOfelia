@@ -29,4 +29,5 @@ class ReservationForm(forms.Form):
     member = forms.ModelChoiceField(
         queryset=Member.objects.order_by("last_name", "first_name"),
         label=_("Réserver pour"),
+        widget=forms.Select(attrs={"size": "8", "class": "member-picker-list"}),
     )

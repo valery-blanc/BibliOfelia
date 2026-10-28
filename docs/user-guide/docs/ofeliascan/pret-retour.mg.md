@@ -1,7 +1,7 @@
 # Fampindramana sy famerenana amin'ny OfeliaScan
 
 Ny OfeliaScan dia tsy manao fampindramana sy famerenana izy irery:
-manompo amin'ny **fijerena** code-barre ihany. Ny BibliOfelia amin'ny
+manompo amin'ny **fijerena** code-barre ihany. Ny BiblOFELIA amin'ny
 ordinateur no manoratra ny asa.
 
 Ny foto-kevitra: ny finday-nao dia "scanner tsy misy tariby".
@@ -19,7 +19,7 @@ Ny foto-kevitra: ny finday-nao dia "scanner tsy misy tariby".
 2. Click amin'ny **Hijery karatra** ao amin'ny fizarana Mpianatra
 3. OfeliaScan dia misokatra amin'ny finday (mihovotra na feo)
 4. Atoroy ny caméra mankany amin'ny karatry ny mpianatra
-5. Vao novakiana ny code, mihovotra ny finday — ny BibliOfelia dia
+5. Vao novakiana ny code, mihovotra ny finday — ny BiblOFELIA dia
    mahafantatra ny mpianatra automatika
 6. Click amin'ny **Hijery boky** ao amin'ny fizarana Boky
 7. Jereo boky tsirairay miandalana

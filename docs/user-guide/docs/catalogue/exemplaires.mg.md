@@ -23,7 +23,7 @@ Click amin'ny **Forono**. Kopia tsirairay dia mahazo automatika:
 - **Code Ofelia** miavaka (manomboka amin'ny 290 — io no code-barre
   printy amin'ny etikety boky)
 - **Code interne** amin'ny endrika `OFL-AAAAMMDD-NNNN` (hita amin'ny
-  takelaka ao amin'ny BibliOfelia, mahasoa mba hahafantarana
+  takelaka ao amin'ny BiblOFELIA, mahasoa mba hahafantarana
   haingana ny dat'an'ny fampidirana)
 
 Jereo ny [voambolana](../glossaire.md) mba hahafantarana tsara ireo
@@ -57,7 +57,7 @@ ampindramina. Ampiasao ny bokotra **Foanana** avy amin'ny takelakany.
 
 Misy boky tonga miaraka amin'ny etikety tsy anao : fanangonana nampindramin'ny
 tranomboky hafa, fanomezana efa voasokajy, na lisitra taloha talohan'ny
-BibliOfelia. Aleo tsy manindry etikety vaovao eo amboniny, fa soraty ao amin'ny
+BiblOFELIA. Aleo tsy manindry etikety vaovao eo amboniny, fa soraty ao amin'ny
 saha **Kaody Ofelia ivelany** an'ilay kopia io kaody io (20 litera na isa
 farafahabetsany, ohatra `BCF13298781X`).
 
@@ -67,7 +67,7 @@ skanana izy, na misy tsipika na tsia, na sora-baventy na sora-madinika.
 
 !!! warning "Kaody iray, kopia iray"
     Tsy afaka mizara kaody ivelany iray ny kopia roa : tsy ho fantatry ny
-    BibliOfelia hoe iza no skananao. Raha efa voatokana ilay kaody dia
+    BiblOFELIA hoe iza no skananao. Raha efa voatokana ilay kaody dia
     lazain'ny formulaire hoe amin'ny kopia inona izy.
 
 ## Ny fiaviana

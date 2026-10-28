@@ -4,7 +4,7 @@
 
 ### I forgot my password, what should I do?
 
-BibliOfelia works offline and does not send reset emails. Ask the
+BiblOFELIA works offline and does not send reset emails. Ask the
 Box administrator to reset your password directly from the admin
 console.
 
@@ -35,7 +35,7 @@ No. Renew the card first (see
 
 ### How to add a book quickly?
 
-If the book has an ISBN, type it in the new record form: BibliOfelia
+If the book has an ISBN, type it in the new record form: BiblOFELIA
 queries OpenLibrary and pre-fills the record automatically. See [Add
 a book](catalogue/ajouter-livre.md).
 
@@ -70,14 +70,14 @@ phone.
 
 ### Does OfeliaScan need internet?
 
-No. It communicates with BibliOfelia via the local Wi-Fi of the
+No. It communicates with BiblOFELIA via the local Wi-Fi of the
 Ofelia Box. No internet connection is required for daily use.
 
 ## About languages
 
 ### Can I write a title in Malagasy?
 
-Yes. BibliOfelia accepts all Unicode characters (accents, non-Latin
+Yes. BiblOFELIA accepts all Unicode characters (accents, non-Latin
 scripts). Type the title as is.
 
 ### Can the French-speaking member have a French card even though I work
@@ -120,7 +120,7 @@ designate another book by mistake.
 ### A member lost their card — what do I do? { #carte-perdue }
 
 Open the [member profile](usagers/fiche.md), click **Edit**, then
-**Replace card** (next to the card number): BibliOfelia assigns a new
+**Replace card** (next to the card number): BiblOFELIA assigns a new
 number, retires the old one for good
 and keeps the whole history. The old card no longer works (any scan
 returns an error) — destroy it if it reappears. While waiting for the
@@ -135,7 +135,7 @@ Track overdues with the **Overdue loans** counter on the dashboard and
 temporarily **deactivate** the member from their profile and reactivate
 when the books come back; (3) for an overdue of several months, mark
 the loan **Lost**. You can also add a **manual fine** from the
-profile. BibliOfelia only emails a reminder for an overdue
+profile. BiblOFELIA only emails a reminder for an overdue
 **invoice** (once); for a late book without an invoice, phone or SMS
 remain the most effective.
 

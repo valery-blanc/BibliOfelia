@@ -3,14 +3,14 @@
 <head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
-    <title>{% trans "Installation BibliOfelia" %} — {{ step_label }}</title>
+    <title>{% trans "Installation BiblOFELIA" %} — {{ step_label }}</title>
     <link rel="stylesheet" href="{% load static %}{% static 'css/pico.min.css' %}">
     <link rel="stylesheet" href="{% static 'css/bibliofelia.css' %}">
 </head>
 <body>
 <main class="container" style="max-width:640px;padding:2rem 1rem;">
 <header>
-    <h1>{% icon "book-open" %} BibliOfelia — {% trans "Installation" %}</h1>
+    <h1>{% icon "book-open" %} BiblOFELIA — {% trans "Installation" %}</h1>
     <p><small>{% trans "Étape" %} {{ step_index }} / {{ total_steps }} — <strong>{{ step_label }}</strong></small></p>
     <progress value="{{ step_index }}" max="{{ total_steps }}"></progress>
 </header>

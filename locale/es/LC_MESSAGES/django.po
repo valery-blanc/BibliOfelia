@@ -1,10 +1,10 @@
-# BibliOfelia — traducción al español.
+# BiblOFELIA — traducción al español.
 # Copyright (C) 2026 Proyecto Ofelia.
-# This file is distributed under the same license as the BibliOfelia package.
+# This file is distributed under the same license as the BiblOFELIA package.
 #
 msgid ""
 msgstr ""
-"Project-Id-Version: BibliOfelia 1.0\n"
+"Project-Id-Version: BiblOFELIA 1.0\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2026-09-18 05:39+0000\n"
 "PO-Revision-Date: 2026-05-22 00:00+0000\n"
@@ -2165,8 +2165,8 @@ msgstr "Saldo pendiente"
 
 #: apps/finance/pdf.py:189
 #, python-format
-msgid "%(lib)s — document généré par BibliOfelia"
-msgstr "%(lib)s — documento generado por BibliOfelia"
+msgid "%(lib)s — document généré par BiblOFELIA"
+msgstr "%(lib)s — documento generado por BiblOFELIA"
 
 #: apps/finance/services.py:157
 #, python-format
@@ -4472,8 +4472,8 @@ msgstr "edad desconocida"
 
 #: apps/reports/pdf.py:241
 #, python-format
-msgid "Édité par BibliOfelia le %(d)s."
-msgstr "Emitido por BibliOfelia el %(d)s."
+msgid "Édité par BiblOFELIA le %(d)s."
+msgstr "Emitido por BiblOFELIA el %(d)s."
 
 #: apps/reports/pdf.py:243
 #, python-format
@@ -5113,12 +5113,12 @@ msgstr[1] ""
 
 #: templates/catalog/excel_catalog/_export_form.html:8
 msgid ""
-"Le fichier porte exactement les colonnes que BibliOfelia sait relire, plus "
+"Le fichier porte exactement les colonnes que BiblOFELIA sait relire, plus "
 "les codes qui identifient l'exemplaire (OFELIA_CODE, INTERNAL_ID). C'est le "
 "point de départ d'une correction en masse : exportez, corrigez dans Excel, "
 "renvoyez le fichier par « Mettre à jour les exemplaires »."
 msgstr ""
-"El archivo lleva exactamente las columnas que BibliOfelia sabe releer, más "
+"El archivo lleva exactamente las columnas que BiblOFELIA sabe releer, más "
 "los códigos que identifican el ejemplar (OFELIA_CODE, INTERNAL_ID). Es el "
 "punto de partida de una corrección masiva: exporte, corrija en Excel y "
 "devuelva el archivo con «Actualizar los ejemplares»."
@@ -5300,11 +5300,11 @@ msgstr ""
 #: templates/catalog/excel_catalog/_verify_form.html:6
 msgid ""
 "Téléversez un fichier .xlsx avec les colonnes ID, TITLE, AUTHOR, ISBN. "
-"BibliOfelia interroge OpenLibrary, Google Books, la BNF et la BNE — d'abord "
+"BiblOFELIA interroge OpenLibrary, Google Books, la BNF et la BNE — d'abord "
 "par ISBN, puis par titre + auteur — et vous renvoie le même fichier annoté, "
 "avec un score de confiance pour les appariements incertains."
 msgstr ""
-"Suba un archivo .xlsx con las columnas ID, TITLE, AUTHOR, ISBN. BibliOfelia "
+"Suba un archivo .xlsx con las columnas ID, TITLE, AUTHOR, ISBN. BiblOFELIA "
 "consulta OpenLibrary, Google Books, la BNF y la BNE — primero por ISBN, "
 "luego por título + autor — y le devuelve el mismo archivo anotado, con una "
 "puntuación de confianza para las coincidencias inciertas."
@@ -5549,8 +5549,8 @@ msgid "Vérifier un fichier"
 msgstr "Verificar un archivo"
 
 #: templates/catalog/excel_catalog/index.html:36
-msgid "Importer dans BibliOfelia"
-msgstr "Importar en BibliOfelia"
+msgid "Importer dans BiblOFELIA"
+msgstr "Importar en BiblOFELIA"
 
 #: templates/catalog/excel_catalog/index.html:54
 msgid "Mettre à jour des exemplaires"
@@ -6732,12 +6732,12 @@ msgstr "Solicitud de apagado registrada."
 
 #: templates/closing/day_closing.html:198
 msgid ""
-"BibliOfelia tourne dans un conteneur et ne peut pas éteindre la Box elle-"
+"BiblOFELIA tourne dans un conteneur et ne peut pas éteindre la Box elle-"
 "même : elle dépose une demande que le service système de la Box surveille. "
 "Si ce service n'est pas installé, la demande est enregistrée mais la Box ne "
 "s'éteindra pas."
 msgstr ""
-"BibliOfelia funciona en un contenedor y no puede apagar la Box por sí misma: "
+"BiblOFELIA funciona en un contenedor y no puede apagar la Box por sí misma: "
 "deja una solicitud que el servicio de sistema de la Box vigila. Si ese "
 "servicio no está instalado, la solicitud queda registrada pero la Box no se "
 "apagará."
@@ -8935,10 +8935,10 @@ msgstr "Instalación ya realizada"
 
 #: templates/setup/already_done.html:11
 msgid ""
-"BibliOfelia est configurée. Pour réinitialiser, contactez le support central "
+"BiblOFELIA est configurée. Pour réinitialiser, contactez le support central "
 "(procédure §9.3)."
 msgstr ""
-"BibliOfelia está configurada. Para reiniciar, contacte soporte central "
+"BiblOFELIA está configurada. Para reiniciar, contacte soporte central "
 "(procedimiento §9.3)."
 
 #: templates/setup/completed.html:5 templates/setup/completed.html:11
@@ -8946,8 +8946,8 @@ msgid "Installation terminée"
 msgstr "Instalación completa"
 
 #: templates/setup/completed.html:14
-msgid "BibliOfelia est prête à l'usage."
-msgstr "BibliOfelia está lista para usar."
+msgid "BiblOFELIA est prête à l'usage."
+msgstr "BiblOFELIA está lista para usar."
 
 #: templates/setup/completed.html:15
 #, python-format
@@ -8977,8 +8977,8 @@ msgstr ""
 "§9.3."
 
 #: templates/setup/step.html:6
-msgid "Installation BibliOfelia"
-msgstr "Instalación BibliOfelia"
+msgid "Installation BiblOFELIA"
+msgstr "Instalación BiblOFELIA"
 
 #: templates/setup/step.html:13
 msgid "Installation"
@@ -8987,3 +8987,21 @@ msgstr "Instalación"
 #: templates/setup/step.html:14
 msgid "Étape"
 msgstr "Paso"
+
+msgid "Réserver un livre"
+msgstr "Reservar un libro"
+
+msgid "Titre, auteur, ISBN ou code"
+msgstr "Título, autor, ISBN o código"
+
+msgid "Rechercher"
+msgstr "Buscar"
+
+msgid "Aucun livre ne correspond."
+msgstr "Ningún libro coincide."
+
+msgid "Choisissez le livre à réserver."
+msgstr "Elija el libro que quiere reservar."
+
+msgid "Tapez un nom pour filtrer"
+msgstr "Escriba un nombre para filtrar"

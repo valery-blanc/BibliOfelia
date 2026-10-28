@@ -22,9 +22,11 @@ Desde [**Avanzado**](/bibliofelia/es/advanced/){ target="_blank" }, abra
 
 Tres formas, de la más rápida a la más puntual:
 
-1. **Al catalogar** — cuando inicia un lote de escaneo, elija una
-   **procedencia por defecto**: todos los ejemplares del lote la recibirán.
-   Es el método adecuado para una caja de libros prestados.
+1. **Al catalogar** — cuando inicia un lote de escaneo, con la cámara o con
+   el lector USB, elija una **procedencia por defecto**: todos los
+   ejemplares del lote la recibirán. Es el método adecuado para una caja de
+   libros prestados. Véase
+   [Catalogar escaneando](../inventaire/catalogage-scan.md#defauts).
 2. **Desde el catálogo** — marque **Buscar los ejemplares**, seleccione las
    líneas deseadas y luego **Asignar una procedencia**.
 3. **De uno en uno** — el campo **Procedencia** del formulario de ejemplar.
@@ -51,7 +53,7 @@ registros se quedan en el catálogo.
 
 ## Eliminar una procedencia
 
-Mientras un ejemplar la lleve, BibliOfelia **se niega** a eliminarla: sería
+Mientras un ejemplar la lleve, BiblOFELIA **se niega** a eliminarla: sería
 perder el único rastro del origen de esos libros. La pantalla le propone
 entonces ver los ejemplares afectados para tratarlos primero.
 

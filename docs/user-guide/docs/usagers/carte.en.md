@@ -28,7 +28,7 @@ later.
 
 ## Card format
 
-BibliOfelia cards are standard business card size (85 × 54 mm) with:
+BiblOFELIA cards are standard business card size (85 × 54 mm) with:
 
 - **OFELIA logo** as watermark
 - **Member photo** (top left, if provided)

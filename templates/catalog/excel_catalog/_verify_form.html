@@ -3,7 +3,7 @@
       enctype="multipart/form-data" class="excel-form">
     {% csrf_token %}
     <p class="muted text-sm" style="margin-bottom:14px">
-        {% trans "Téléversez un fichier .xlsx avec les colonnes ID, TITLE, AUTHOR, ISBN. BibliOfelia interroge OpenLibrary, Google Books, la BNF et la BNE — d'abord par ISBN, puis par titre + auteur — et vous renvoie le même fichier annoté, avec un score de confiance pour les appariements incertains." %}
+        {% trans "Téléversez un fichier .xlsx avec les colonnes ID, TITLE, AUTHOR, ISBN. BiblOFELIA interroge OpenLibrary, Google Books, la BNF et la BNE — d'abord par ISBN, puis par titre + auteur — et vous renvoie le même fichier annoté, avec un score de confiance pour les appariements incertains." %}
     </p>
     <input type="file" name="file" accept=".xlsx" required class="form-control" style="margin-bottom:14px">
     <div class="form-actions" style="border:0;padding:0">

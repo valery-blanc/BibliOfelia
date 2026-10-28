@@ -2,9 +2,60 @@
 
 Source de vérité de l'avancement v1. Une case `[x]` = livrable terminé et déployable. `[ ]` = à faire. `[!]` = bloqué (voir note).
 
-Mise à jour : 2026-09-18 (Sprint 37 **CLOS** — FEAT-096 export Excel
+Mise à jour : 2026-10-28 — Sprint 38 validé par Val. Vidéo et langues
+de l'accueil, filtre de personne sur la réservation.
+
+## Sprint 38 — guide, réservations, Caracas, marque, accueil (2026-10-26)
+
+- [x] BUG-049 — liens de langue du guide relatifs au préfixe `/docs/`
+- [x] BUG-050 — bouton **Réserver un livre** sur la page Réservations
+- [x] BUG-051 — San Juan et Canaima en `America/Caracas`
+- [x] FEAT-097 — libellés visibles **BiblOFELIA**
+- [x] FEAT-098 — `www.bibliofelia.org` liste les bibliothèques
+- [x] Guide (chapitre réservation, ×4) + SPEC + gate i18n
+- [x] Déploiement Fez (actif) + image sur Avignon (secours, conteneurs arrêtés) + Box + guide + page d'accueil. Horloges mesurées : San Juan et Canaima `−04`, Grand-Saconnex heure suisse. Pas de commit GQQFM : l'inventaire failover a la page `bibliofelia-www` sur les deux nœuds, le fichier du dépôt GQQFM n'est pas commité.
+- [x] FEAT-099 — icône OFELIA du guide → application ; texte « Guide BiblOFELIA » → accueil du guide
+- [x] FEAT-100 — bouton **Réserver un livre** au-dessus de **Prêtes à retirer**, scan ISBN / code Ofelia à côté du bouton et du champ de recherche
+- [x] Déploiement de FEAT-099 et FEAT-100. Fez actif (Grand-Saconnex, San Juan, guide, docs.bibliofelia.org). Avignon secours : code et images, aucun conteneur. Box : application et guide `/bibliofelia/docs/`.
+- [x] FEAT-101 — grande tuile OFELIA International, fond vidéo du garçon et de la mappemonde
+- [x] Déploiement de FEAT-101. Page en ligne sur Fez (`bibliofelia.org` et `www`). Image sur Avignon, conteneur arrêté.
+- [x] FEAT-102 — la vidéo d'accueil joue ; bandeaux et langues FR/EN/ES/MG comme l'application
+- [x] FEAT-103 — taper un nom réduit la liste des personnes sur une réservation
+- [x] Déploiement de FEAT-102 (page d'accueil, Fez + image Avignon, conteneur Avignon arrêté) et FEAT-103 (Grand-Saconnex, San Juan, image Avignon, Box, guide en ligne et pages du guide sur la Box)
+- [x] Test fonctionnel Val — OK 2026-10-28
+- [x] Commit (après confirmation Val)
+
+Mise à jour précédente : 2026-10-16 — base **Canaima** vidée pour la mise en production
+(données seulement, pas de commit). Notices, exemplaires, usagers, lots de
+catalogage, récolements, prêts et réservations de test supprimés.
+Classifications, emplacements, provenances, langues, catégories d'usager,
+réglages et comptes (`admin`, `Val`, `rocio`, `ofeliascan`) conservés.
+Sauvegarde : `bibliofelia-avant-nettoyage-20261016T092556Z.sqlite3` à côté
+de la base, sur la Box. Les listes `TEST` et emplacements `[DEMO]` sont
+laissées pour une retouche à la main.
+
+Mise à jour précédente : 2026-10-13 — guide : catalogage caméra et douchette
+unifiés dans `inventaire/catalogage-scan` (×4), provenance par défaut
+documentée. Page `catalogage-douchette` réduite à un renvoi, hors menu.
+Pas de commit tant que Val n'a pas relu le guide.
+
+Mise à jour précédente : 2026-09-18 (Sprint 37 **CLOS** — FEAT-096 export Excel
 de la liste catalogue, validé Val). Sprint 36 **CLOS** — FEAT-095 filtre
 multi-emplacements, validé Val. Sprint 35 **CLOS**. Sprint 12 **CLOS** — FEAT-038 (cartes membres : fond crème, logo OFELIA filigrane, photo HG, langue BG, bloc droite), FEAT-039 (étiquettes 70×42 mm, titre wrap 2 lignes, auteurs 2 lignes, logo Ofelia), split paramétrage `labels` → `printing_cards` + `printing_labels`. BUG-013 v2 (sélecteur de langue qui perdait `/bibliofelia/` à chaque déploiement : wrapper `apps/core/i18n_views.py:set_language` force `FORCE_SCRIPT_NAME` + échange code langue même sur URL non résolue). **Gate i18n pérenne** : `scripts/i18n_check.py` exit != 0 si chaîne manquante ; documenté dans CLAUDE.md comme obligatoire avant tout commit ; 207 entrées EN/ES/MG appliquées (Sprints 10-12 incl. FORMS labels enrobés `gettext_lazy`). 304 tests verts (287 → 304). Sprint 11 **CLOS** — — BUG-014 (saisie clavier sur `/loans/lend/` + `/loans/return/` : bouton scan repassé `type="button"` + bouton « Valider » visible séparé pour la saisie clavier), FEAT-034 (UI réservations : liste d'attente PENDING sur fiche notice, expiration affichée sur exemplaires mis de côté, section « Réservations à relancer » sur page Retour, paramètres `default_loan_days`/`reservation_expiry_days`/`pickup_hold_days` exposés dans `/settings/loans/`), FEAT-035 (Setting `default_loan_days` global défaut 21, section « Relances à faire » bas du dashboard avec 10 prêts en retard), FEAT-036 (`Reservation.notified_at` + endpoint `POST /loans/reservations/<pk>/notify/`, page Réservations enrichie code Ofelia / dates avec heure / date limite retrait / police 16-17 px + cadre « Notifications à faire » entre tuiles et bannière scan sur dashboard), BUG-015 (DateInput format ISO `%Y-%m-%d` sur `MemberForm`, sinon locale FR remplit pas l'input HTML5), FEAT-037 (photo membre dans pagehead fiche + miniature sur form, expiration_date = registration_date + 1 an auto JS au change + initial `today + 1 an` à la création). 287 tests verts (266 → 287, +21). Migration `loans/0002_reservation_notified_at`. 5 vagues de déploiement Pi. 2 nouvelles entrées MEMORY (DateInput ISO format, bouton scan type=button + Valider visible). — Sprint 10 **CLOS end-to-end** — FEAT-032 + FEAT-033 validés Val 2026-05-24 sur la Pi, **+ OfeliaScan mobile mis à jour le 2026-05-24** : test prod 18:26 → session récolement scope=A1 reçue d'OfeliaScan avec 16 scans, 16 exemplaires relocate de J1 → A1 automatiquement. Bout-en-bout fonctionnel : catalogage OfeliaScan envoie `location_code`, picker récolement OfeliaScan envoie `scope_type=location` + `scope_location_code`, BibliOfelia déplace les items au scan. FEAT-032 : UI librarian /catalog/locations/ + endpoint GET /api/v1/locations testés OK. FEAT-033 : relocate auto vérifiée via UI web ET via OfeliaScan mobile. Commit `9d4fe83` + push + déploiement Pi (rebuild Docker + migration `0003`). 266 tests verts. — Sprint 8 **CLOS** — FEAT-025 **validé Val 2026-05-23** : refonte design global, 23 templates métiers harmonisés sur le design system OFELIA. Lot A pilote validé en premier (record_detail, member_detail, reports/index, settings_index), puis Lots B+C+D livrés d'un bloc. Helpers CSS ajoutés (`.req`, `.help-hint`, `.field-error`, `.form-control`, `details.advanced-section`, `.isbn-row`, `.form-actions`), `_field.html` migré `.form-row` → `.field`. Découverte d'infra : templates **embarqués au build Docker**, pas bind-mountés → rebuild obligatoire pour tout changement de template (documenté dans FEAT-025). — Sprint 7 **CLOS** — FEAT-024 **validé Val 2026-05-23** : scanner caméra navigateur sur Android Firefox HTTPS OK, fallback OfeliaScan automatique en HTTP LAN, Chrome Android sans Play Store via `S.browser_fallback_url`, bouton Annuler pendant polling. Décision UX : caméra-d'abord automatique, pas de toggle utilisateur. Décision infra : pas de cert auto-signé. 3 commits Pi `d7c8e8f` → `9d2af81` → `e9993a5`. FEAT-023 **validé Val 2026-05-23** : banner dashboard → OfeliaScan ouvre → scan livre → retour BibliOfelia → fiche notice affichée, bout-en-bout fonctionnel. Modèle `ScanHandoff` + endpoints `/api/v1/scan-handoff[/{token}]` + JS `scan-handoff.js` + 4 boutons « Scanner » câblés. BUG-010 entrypoint Dockerfile + BUG-011 CSRF cookie HttpOnly + Chrome Android `intent://` URL résolus. Sprints 3/5/6 clos. Reste pour Sprint 7 : Android-side OfeliaScan déjà fonctionnelle côté Val (intent filter + activity scan-one + POST callback) — implémentation Android terminée hors repo. Prochain sprint : FEAT-024 scanner caméra navigateur (HTTPS).)
+
+## Guide — catalogage scan et douchette (2026-10-13)
+
+Un seul chapitre, parce que les deux outils font le même lot. La provenance
+par défaut manquait au chapitre scan.
+
+- [x] `inventaire/catalogage-scan` ×4 : caméra et douchette, provenance par défaut, libellés réels des boutons
+- [x] Liens directs vers Classifications, Emplacements, Provenances ; usage facultatif, listes à créer avant le lot
+- [x] `catalogage-douchette` ×4 : renvoi vers `#douchette`, retiré du menu (`not_in_nav`)
+- [x] Liens depuis Provenances et Cataloguer depuis Excel, ×4
+- [x] SPEC §6.1 (FEAT-046 / FEAT-054)
+- [x] Déployé : docs.bibliofelia.org (Fez), image de secours (Avignon), guide de la Box
+- [ ] Relecture Val sur le guide déployé
+- [ ] Commit (après confirmation Val)
 
 ## Sprint 37 — FEAT-096 export Excel liste catalogue (CLOS 2026-09-18)
 

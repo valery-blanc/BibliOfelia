@@ -9,11 +9,21 @@ lado para el siguiente miembro.
 1. Abra la [ficha del registro](../catalogue/recherche.md) del libro
    solicitado
 2. Haga clic en **Reservar**
-3. Identifique al miembro (escanee su tarjeta o escriba su nombre)
+3. Escriba el nombre del miembro: la lista se reduce. Elija a la persona.
 4. Valide
 
 La reserva aparece en la lista **Reservas activas** en la ficha del
 libro.
+
+## Desde la página Reservas
+
+1. Abra [**Reservas**](/bibliofelia/es/loans/reservations/){ target="_blank" }
+2. Haga clic en **Reservar un libro**. Está justo encima de
+   **Listas para retirar**. El botón redondo de al lado abre la cámara:
+   un ISBN o un código Ofelia inicia la búsqueda.
+3. Busque el libro por título, autor, ISBN o código. El mismo escaneo
+   está al lado del campo.
+4. Haga clic en **Reservar**, luego escriba el nombre para elegir a la persona
 
 ## Ver todas las reservas
 
@@ -31,7 +41,7 @@ La página lista todas las reservas activas con:
 
 ## Cola: varias reservas sobre un mismo libro
 
-Si varios miembros reservan el mismo libro, BibliOfelia gestiona
+Si varios miembros reservan el mismo libro, BiblOFELIA gestiona
 automáticamente la cola: el primero en haber reservado se atiende
 primero cuando el libro vuelve.
 
@@ -40,7 +50,7 @@ La ficha del libro muestra la posición del miembro en la cola
 
 ## Una vez vuelto el libro
 
-Cuando el libro se devuelve, BibliOfelia actualiza automáticamente
+Cuando el libro se devuelve, BiblOFELIA actualiza automáticamente
 la primera reserva a **Lista para recoger**. Entonces ve:
 
 - Una alerta en la página **Devolución** al momento del escaneo

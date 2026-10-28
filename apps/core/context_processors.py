@@ -1,15 +1,18 @@
 """Context processors disponibles dans tous les templates."""
 from __future__ import annotations
 
-from datetime import date
-
 from django.conf import settings
+from django.utils.translation import get_language
 
 
 def global_settings(request):
     script_name = settings.FORCE_SCRIPT_NAME or ""
+    # Le français est la langue par défaut du guide : il vit à `/docs/`,
+    # pas à `/docs/fr/`. Les autres langues sont des préfixes (`/docs/en/`).
+    lang = (get_language() or "fr").split("-")[0]
+    guide_lang = "" if lang in {"", "fr"} else f"{lang}/"
     return {
-        "library_name": _safe_setting("library_name", "BibliOfelia"),
+        "library_name": _safe_setting("library_name", "BiblOFELIA"),
         # Une seule source de vérité pour la version : le pied de page la codait
         # en dur, l'API et /pairing/info lisaient le réglage. Les deux pouvaient
         # donc annoncer des versions différentes du même logiciel.
@@ -17,7 +20,8 @@ def global_settings(request):
         "enabled_languages": settings.LANGUAGES,
         # Guide utilisateur statique (Sprint 15) servi par nginx à `<SCRIPT_NAME>/docs/`.
         # En dev (FORCE_SCRIPT_NAME=""), lancer `mkdocs serve` séparément.
-        "docs_url": script_name.rstrip("/") + "/docs/",
+        # La langue du guide suit celle de l'application.
+        "docs_url": script_name.rstrip("/") + "/docs/" + guide_lang,
     }
 
 

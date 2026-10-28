@@ -1,4 +1,4 @@
-"""Crée/met à jour les Group Django pour les rôles BibliOfelia (idempotent).
+"""Crée/met à jour les Group Django pour les rôles BiblOFELIA (idempotent).
 
 À appeler après `migrate` (cf. `scripts/dev-entrypoint.sh`).
 SPEC §9.2.

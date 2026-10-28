@@ -1,4 +1,4 @@
-# BibliOfelia
+# BiblOFELIA
 
 Logiciel de gestion de bibliothèque pour petites bibliothèques communautaires (≤ 3000 ouvrages), hors-ligne, déployé sur **Ofelia Box** (Raspberry Pi 5) du projet Ofelia.
 
@@ -67,7 +67,7 @@ docs/bugs/      BUG-XXX-*.md
 
 Voir Task #18 et `C:\WORK\Ofeliabox\CLAUDE.md`. Cohabitation avec Koha :
 - Koha reste sur `/biblio/`
-- BibliOfelia s'installe sur `/bibliofelia/`
+- BiblOFELIA s'installe sur `/bibliofelia/`
 
 Cf. variables `FORCE_SCRIPT_NAME`, `STATIC_URL`, `MEDIA_URL` dans `docker-compose.yml`.
 

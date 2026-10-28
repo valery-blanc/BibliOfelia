@@ -1,6 +1,6 @@
 # Imprimer les cartes de membres
 
-Les cartes de membres se génèrent en PDF depuis BibliOfelia. Vous
+Les cartes de membres se génèrent en PDF depuis BiblOFELIA. Vous
 pouvez en imprimer une seule ou plusieurs d'un coup.
 
 ## Ouvrir la page d'impression

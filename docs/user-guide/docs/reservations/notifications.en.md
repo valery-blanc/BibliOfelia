@@ -1,6 +1,6 @@
 # Notifications and follow-ups
 
-BibliOfelia works offline and does not send automatic emails or SMS.
+BiblOFELIA works offline and does not send automatic emails or SMS.
 **It is up to you to call members** when a reserved book arrives.
 This page explains how to track notifications to do.
 

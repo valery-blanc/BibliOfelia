@@ -1,7 +1,11 @@
 {% extends "base.html" %}
-{% load i18n biblio_icons %}
+{% load static i18n biblio_icons %}
 
 {% block title %}{% trans "Réserver" %}{% endblock %}
+
+{% block extra_head %}
+<script defer src="{% static 'js/member-picker.js' %}"></script>
+{% endblock %}
 
 {% block tile_strip %}{% include "partials/_tile_strip.html" with active="reservations" %}{% endblock %}
 
@@ -19,7 +23,18 @@
 <form method="post" class="card">
     {% csrf_token %}
     {% if form.non_field_errors %}<div class="msg msg-error">{{ form.non_field_errors }}</div>{% endif %}
-    {% include "partials/_field.html" with field=form.member %}
+    <div class="field member-picker" data-member-picker>
+        <label for="{{ form.member.id_for_label }}">
+            {{ form.member.label }}{% if form.member.field.required %} <span class="req" aria-hidden="true">*</span>{% endif %}
+        </label>
+        <input type="search" class="member-picker-q" data-member-filter
+               autocomplete="off" spellcheck="false"
+               placeholder="{% trans 'Tapez un nom pour filtrer' %}"
+               aria-label="{% trans 'Tapez un nom pour filtrer' %}"
+               aria-controls="{{ form.member.id_for_label }}">
+        {{ form.member }}
+        {% for error in form.member.errors %}<small class="field-error">{{ error }}</small>{% endfor %}
+    </div>
     <div class="form-actions">
         <button type="submit" class="btn btn--primary">
             {% icon "check" size="16px" %} {% trans "Enregistrer la réservation" %}

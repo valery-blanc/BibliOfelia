@@ -44,7 +44,7 @@ carry **every** column in the database — far more than the table shows.
 | The period's loans | Every loan of the period shown at the top of the screen |
 
 Useful for: an **annual inventory**, sharing your collection with another
-library, or a calculation BibliOfelia does not do.
+library, or a calculation BiblOFELIA does not do.
 
 ## How to open a CSV
 

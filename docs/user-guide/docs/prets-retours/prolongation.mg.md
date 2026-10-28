@@ -18,7 +18,7 @@ default 21 andro manomboka anio).
 ## Im-piry ny fanitarana azo atao?
 
 Araka ny default, fampindramana iray dia azo havaozina indray
-mandeha ihany. Aorian'izay, ny BibliOfelia dia misakana ny
+mandeha ihany. Aorian'izay, ny BiblOFELIA dia misakana ny
 fanavaozana: tsy maintsy mamerina ny boky ny mpianatra (na hamerina
 mampindrana raha tsy misy olona nanao famandrihana).
 

@@ -46,7 +46,7 @@ tableau affiche.
 | Les prêts de la période | Tous les prêts de la période affichée en haut de l'écran |
 
 Utile pour : un **inventaire annuel**, le partage de votre fonds avec une
-autre bibliothèque, ou un calcul que BibliOfelia ne fait pas.
+autre bibliothèque, ou un calcul que BiblOFELIA ne fait pas.
 
 ## Comment ouvrir un CSV
 

@@ -1,6 +1,6 @@
 # Fampandrenesana sy tara hatonina
 
-Ny BibliOfelia dia miasa tsy misy internet ary tsy mandefa mailaka
+Ny BiblOFELIA dia miasa tsy misy internet ary tsy mandefa mailaka
 na SMS automatika. **Anjaranao ny miantso ny mpianatra** rehefa
 tonga ny boky nofaranana. Ity pejy ity dia manazava ny fomba
 hanaraha-maso ny fampandrenesana hatao.

@@ -6,7 +6,7 @@ reservation expires and the book is released.
 
 ## Set the book aside
 
-When the book is returned, if it triggers a reservation, BibliOfelia
+When the book is returned, if it triggers a reservation, BiblOFELIA
 indicates this with a message:
 
 > **Set aside for [Member name]**

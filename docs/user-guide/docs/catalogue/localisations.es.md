@@ -42,7 +42,7 @@ ficha del ejemplar.
 ## Inventario y reubicación automática
 
 Durante un inventario con OfeliaScan, si escanea un libro en una
-ubicación diferente a la registrada, BibliOfelia actualiza
+ubicación diferente a la registrada, BiblOFELIA actualiza
 automáticamente la ubicación del ejemplar. Es la forma más rápida de
 actualizar su catálogo tras una gran reorganización.
 

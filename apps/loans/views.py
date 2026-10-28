@@ -357,6 +357,34 @@ def reservation_notify(request, pk):
 
 
 @require_role(*WRITE_ROLES)
+def reservation_pick(request):
+    """Choisir la notice à réserver, depuis la page Réservations.
+
+    Un code d'exemplaire (étiquette, code externe, OFL-…) ouvre directement
+    le formulaire du membre. Un texte (titre, auteur, ISBN) affiche la liste.
+    """
+    q = (request.GET.get("q") or "").strip()
+    records: list = []
+    if q:
+        item = find_item(q)
+        if item is not None:
+            return redirect("loans:reservation_create", record_pk=item.record_id)
+        from apps.catalog.views import filtered_records
+
+        found, relevance = filtered_records({"q": q})
+        records = list(found[:30])
+        if relevance is not None:
+            records.sort(key=lambda record: relevance.get(record.pk, 1 << 30))
+        else:
+            records.sort(key=lambda record: (record.title or "").lower())
+    return render(
+        request,
+        "loans/reservation_pick.html",
+        {"q": q, "records": records, "searched": bool(q)},
+    )
+
+
+@require_role(*WRITE_ROLES)
 def reservation_create(request, record_pk):
     record = get_object_or_404(BibliographicRecord, pk=record_pk)
     if request.method == "POST":

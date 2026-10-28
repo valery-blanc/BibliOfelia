@@ -1,6 +1,6 @@
 # Search
 
-BibliOfelia provides two complementary search tools: the **global
+BiblOFELIA provides two complementary search tools: the **global
 search** from any page, and the **catalog filter** when you are
 already in the book list.
 
@@ -12,18 +12,18 @@ At the top of every page, a large search field accepts:
 - **An author name** — "hugo", "saint-exupéry"
 - **An ISBN-13** — 9782070612758 (publisher's code, on the back of
   the book)
-- **A copy Ofelia code** — 2900000000017 (barcode on the BibliOfelia
+- **A copy Ofelia code** — 2900000000017 (barcode on the BiblOFELIA
   label)
 - **An external Ofelia code** — BCF13298781X (a code put on the book by
   another library or by a donor, if you recorded it on the copy)
 - **A member name** — "rakoto", "dubois"
 - **A card number** — 2910000000444 (barcode on the card)
 
-BibliOfelia automatically detects what it is (book, member, copy) and
+BiblOFELIA automatically detects what it is (book, member, copy) and
 takes you directly to the right page.
 
 !!! tip "Type then Enter"
-    No need to click a button: type and press Enter, BibliOfelia
+    No need to click a button: type and press Enter, BiblOFELIA
     handles the rest.
 
 ## Catalog filter
@@ -96,7 +96,7 @@ catalogue with every import column, use
 
 The search is not picky: typing "petit prince" also finds "Le Petit
 Prince" and "petits princes". You can write in uppercase or lowercase,
-with or without accents, in any order. BibliOfelia handles the rest.
+with or without accents, in any order. BiblOFELIA handles the rest.
 
 ## Search by barcode
 

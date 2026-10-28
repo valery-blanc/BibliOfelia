@@ -3,7 +3,7 @@
 Ny **récolement** no asa mandalo amin'ny rakitra ary manamarina hoe ao
 amin'ny toerany ny boky tsirairay. Io no asa mahery indrindra an'ny rafitra:
 mizotra amin'ny rakitra ianao mi-scan amin'ny **fakantsary**, ary ny
-BibliOfelia dia manavao ny tenany automatika.
+BiblOFELIA dia manavao ny tenany automatika.
 
 Ny récolement izao dia atao **mivantana avy amin'ny tranonkala**, amin'ny
 fakantsarin'ny findayinao na tablette — tsy misy application apetraka.
@@ -31,7 +31,7 @@ Alohan'ny hanombohana:
 2. Safidio ny **fetra**: **toerana** voafaritra (ohatra "Rakitra A1") na **ny
    boky rehetra**. Raha misafidy toerana ianao, dia tsy maintsy fenoina ny
    fisafidianana azy.
-3. Hamarino: sokafan'ny BibliOfelia mivantana ny pejy **tatitra**, izay
+3. Hamarino: sokafan'ny BiblOFELIA mivantana ny pejy **tatitra**, izay
    ampiasaina koa ho écran fandraketana.
 
 ## Mi-scan ny boky tsy tapaka
@@ -44,7 +44,7 @@ Alohan'ny hanombohana:
 3. Ho an'ny scan tsirairay:
    - boky **eo amin'ny rakitra mety**: voamarika "hita";
    - boky **napetraka hafa toerana** (fetra = toerana iray): avaozin'ny
-     BibliOfelia automatika ny rakiny ho amin'izay jerenao;
+     BiblOFELIA automatika ny rakiny ho amin'izay jerenao;
    - **code tsy fantatra**: marihina, hozahana.
 
 Ny boky iray scan-ina indroa dia isaina indray mandeha ihany. Raha manana
@@ -52,7 +52,7 @@ exemplaire maromaro ny notice iray, dia asehon'ny écran "exemplaire 2",
 "exemplaire 3"… mba hanampiana anao hahita azy rehetra.
 
 !!! tip "Mandehana haingana, aza misaintsaina"
-    Tsy ilaina ny manamarina ny scan tsirairay: ny BibliOfelia no mandamina ny
+    Tsy ilaina ny manamarina ny scan tsirairay: ny BiblOFELIA no mandamina ny
     zava-drehetra amin'ny farany. Mifantoha amin'ny hafainganana sy ny
     fandrakofana feno ny rakitra. Mivoatra mivantana ny lisitra sy ny kaontera.
 
@@ -61,7 +61,7 @@ Rehefa voarakitra ny rakitra, tsindrio **Vita**.
 ## Amin'ny douchette USB
 
 Raha misy **douchette USB** (mpamaky code-barres misy tariby) ny toerana
-mampiseho ny BibliOfelia, dia afaka manao récolement **tsy misy fakantsary**
+mampiseho ny BiblOFELIA, dia afaka manao récolement **tsy misy fakantsary**
 ianao — io mihitsy aza no hany fomba raha tafiditra amin'ny tambajotra an-toerana
 tsy misy `https://` ny écran.
 
@@ -115,7 +115,7 @@ fikatonana).
 ## Ary ny OfeliaScan?
 
 Ho an'ny **récolement lehibe**, dia afaka mandefa session scan iray manontolo
-amin'ny BibliOfelia koa ny application finday [OfeliaScan](../ofeliascan/activer.md). Mitovy
+amin'ny BiblOFELIA koa ny application finday [OfeliaScan](../ofeliascan/activer.md). Mitovy
 ny lojika (boky hita, nafindra, tsy ampy). Ho an'ny récolement mahazatra an'ny
 rakitra iray, ny fakantsarin'ny tranonkala voalaza etsy ambony no tsotra
 indrindra.

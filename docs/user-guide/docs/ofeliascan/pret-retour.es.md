@@ -1,7 +1,7 @@
 # Préstamo y devolución con OfeliaScan
 
 OfeliaScan no hace los préstamos y devoluciones por sí solo: sirve
-únicamente para **escanear** los códigos de barras. Es BibliOfelia en
+únicamente para **escanear** los códigos de barras. Es BiblOFELIA en
 el ordenador quien registra la operación.
 
 El principio: su teléfono es un "escáner inalámbrico".
@@ -19,7 +19,7 @@ El principio: su teléfono es un "escáner inalámbrico".
 2. Haga clic en **Escanear la tarjeta** en la sección Miembro
 3. OfeliaScan se abre en su teléfono (vibrador o sonido)
 4. Apunte la cámara hacia la tarjeta del miembro
-5. En cuanto se lee el código, el teléfono vibra — BibliOfelia
+5. En cuanto se lee el código, el teléfono vibra — BiblOFELIA
    identifica al miembro automáticamente
 6. Haga clic en **Escanear un libro** en la sección Libros
 7. Escanee cada libro uno tras otro

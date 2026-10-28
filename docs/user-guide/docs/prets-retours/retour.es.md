@@ -31,7 +31,7 @@ Puede encadenar toda una pila de devoluciones en segundos.
 
 ### El libro no está prestado
 
-Si escanea un libro que no estaba prestado, BibliOfelia le avisa con
+Si escanea un libro que no estaba prestado, BiblOFELIA le avisa con
 un mensaje naranja. Verifique:
 
 - No ha confundido dos libros similares
@@ -48,7 +48,7 @@ atraso prolongado](../faq.md#retard).
 
 ### El libro desencadena una reserva
 
-Si alguien había reservado este libro, BibliOfelia lo muestra arriba
+Si alguien había reservado este libro, BiblOFELIA lo muestra arriba
 de la página con el nombre del miembro y la mención **A poner de
 lado**. Es la señal para guardar el libro en la zona de recogida en
 lugar de devolverlo al estante.

@@ -22,9 +22,10 @@ From [**Advanced**](/bibliofelia/en/advanced/){ target="_blank" }, open
 
 Three ways, from the fastest to the most piecemeal:
 
-1. **While cataloguing** — when you start a scanning batch, pick a **default
-   source**: every copy in the batch will get it. That is the right method
-   for a box of borrowed books.
+1. **While cataloguing** — when you start a scanning batch, with the camera
+   or the USB scanner, pick a **default source**: every copy in the batch
+   will get it. That is the right method for a box of borrowed books. See
+   [Catalogue by scanning](../inventaire/catalogage-scan.md#defauts).
 2. **From the catalog** — tick **Search copies**, select the lines you want,
    then **Assign a source**.
 3. **One copy at a time** — the **Source** field on the copy form.
@@ -51,7 +52,7 @@ stay in the catalog.
 
 ## Deleting a source
 
-As long as one copy still uses it, BibliOfelia **refuses** to delete it:
+As long as one copy still uses it, BiblOFELIA **refuses** to delete it:
 that would lose the only trace of where those books came from. The screen
 then offers to show you the copies concerned so you can deal with them
 first.

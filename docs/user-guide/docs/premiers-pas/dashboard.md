@@ -1,6 +1,6 @@
 # Tour du dashboard
 
-Le tableau de bord est la page d'accueil de BibliOfelia. Il regroupe
+Le tableau de bord est la page d'accueil de BiblOFELIA. Il regroupe
 tout ce dont vous avez besoin au quotidien.
 
 ![Vue d'ensemble du dashboard](../assets/screenshots/fr/premiers-pas/dashboard.png)

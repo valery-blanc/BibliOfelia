@@ -1,0 +1,468 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>BiblOFELIA — Les bibliothèques du projet Ofelia</title>
+  <meta name="description" content="Les bibliothèques du projet Ofelia : Canaima, Grand-Saconnex et San Juan.">
+  <link rel="icon" href="img/ofelia-logo-small.png">
+  <link rel="alternate" hreflang="fr" href="https://bibliofelia.org/">
+  <link rel="alternate" hreflang="en" href="https://bibliofelia.org/?lang=en">
+  <link rel="alternate" hreflang="es" href="https://bibliofelia.org/?lang=es">
+  <link rel="alternate" hreflang="mg" href="https://bibliofelia.org/?lang=mg">
+  <style>
+    @font-face {
+      font-family: "Bricolage Grotesque";
+      font-style: normal;
+      font-weight: 400 800;
+      font-display: swap;
+      src: url("fonts/bricolage.woff2") format("woff2");
+    }
+    @font-face {
+      font-family: "DM Sans";
+      font-style: normal;
+      font-weight: 400 700;
+      font-display: swap;
+      src: url("fonts/dm-sans.woff2") format("woff2");
+    }
+    :root {
+      --burgundy: #6B2138;
+      --burgundy-dark: #4E1829;
+      --orange: #ED7538;
+      --amber: #F3B84C;
+      --forest: #3D8C5A;
+      --cream: #F7F5F0;
+      --paper: #FFFFFF;
+      --ink: #3D3530;
+      --ink-soft: #5C5550;
+      --grey: #9A9088;
+      --line: rgba(61, 53, 48, 0.10);
+      --shadow: 0 10px 30px rgba(78, 24, 41, 0.08);
+    }
+    * { box-sizing: border-box; }
+    html, body { margin: 0; padding: 0; }
+    body {
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+      background: #1c1612;
+      color: var(--ink);
+      font-family: "DM Sans", system-ui, sans-serif;
+      font-size: 17px;
+      line-height: 1.5;
+    }
+    .stage {
+      position: fixed;
+      inset: 0;
+      z-index: 0;
+      overflow: hidden;
+      background: #1c1612 url("media/ofelia-home-poster.jpg") center / cover no-repeat;
+    }
+    .stage video {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+    }
+    .stage::after {
+      content: "";
+      position: absolute;
+      inset: 0;
+      background: linear-gradient(
+        180deg,
+        rgba(28, 22, 18, 0.25) 0%,
+        rgba(28, 22, 18, 0.08) 38%,
+        rgba(28, 22, 18, 0.38) 100%
+      );
+    }
+    header, main, footer { position: relative; z-index: 1; }
+    a { color: var(--burgundy); }
+    .wrap { width: min(1080px, calc(100% - 40px)); margin: 0 auto; }
+
+    .topbar {
+      background: var(--paper);
+      border-bottom: 1px solid var(--line);
+      box-shadow: 0 1px 0 rgba(61, 53, 48, 0.04);
+    }
+    .topbar-inner {
+      width: min(1080px, calc(100% - 40px));
+      margin: 0 auto;
+      min-height: 64px;
+      display: flex;
+      align-items: center;
+      gap: 12px;
+    }
+    .topbar-brand {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      min-width: 0;
+      text-decoration: none;
+      color: inherit;
+    }
+    .topbar-logo { height: 36px; width: auto; flex-shrink: 0; }
+    .topbar-titles {
+      display: flex;
+      flex-direction: column;
+      line-height: 1.15;
+      min-width: 0;
+    }
+    .topbar-lib {
+      font-family: "Bricolage Grotesque", system-ui, sans-serif;
+      font-weight: 700;
+      font-size: 16px;
+      letter-spacing: -0.01em;
+      color: var(--burgundy);
+    }
+    .topbar-sub {
+      font-size: 12px;
+      font-weight: 500;
+      color: var(--grey);
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
+    }
+    .topbar-spacer { flex: 1; }
+    .lang-pill {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      padding: 7px 12px;
+      border-radius: 999px;
+      background: var(--cream);
+      border: 1px solid var(--line);
+      color: var(--ink-soft);
+      cursor: pointer;
+      flex-shrink: 0;
+    }
+    .lang-pill svg { width: 14px; height: 14px; }
+    .lang-pill select {
+      background: transparent;
+      border: 0;
+      font: inherit;
+      font-weight: 700;
+      font-size: 12px;
+      letter-spacing: 0.04em;
+      color: var(--ink);
+      cursor: pointer;
+      padding-right: 2px;
+    }
+
+    main { flex: 1; padding: 28px 0 64px; }
+    .hero {
+      max-width: 720px;
+      margin: 18px 0 28px;
+      background: rgba(247, 245, 240, 0.92);
+      border-radius: 24px;
+      padding: 22px 26px 20px;
+    }
+    h1 {
+      margin: 0 0 12px;
+      font-family: "Bricolage Grotesque", system-ui, sans-serif;
+      font-weight: 720;
+      font-size: clamp(2.4rem, 5vw, 3.6rem);
+      letter-spacing: -0.03em;
+      line-height: 1.05;
+      color: var(--burgundy-dark);
+    }
+    .lead { margin: 0; color: var(--ink-soft); font-size: 1.15rem; }
+    .grid {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 18px;
+    }
+    .card {
+      background: var(--paper);
+      border: 1px solid var(--line);
+      border-radius: 22px;
+      box-shadow: var(--shadow);
+      padding: 22px 22px 20px;
+      display: flex;
+      flex-direction: column;
+      min-height: 240px;
+      text-decoration: none;
+      color: inherit;
+      transition: transform 0.15s ease, box-shadow 0.15s ease;
+    }
+    .card:hover { transform: translateY(-3px); box-shadow: 0 16px 36px rgba(78, 24, 41, 0.12); }
+    .card:focus-visible { outline: 3px solid var(--orange); outline-offset: 3px; }
+    .swatch {
+      width: 46px;
+      height: 46px;
+      border-radius: 14px;
+      display: grid;
+      place-items: center;
+      font-family: "Bricolage Grotesque", system-ui, sans-serif;
+      font-weight: 700;
+      color: white;
+      margin-bottom: 18px;
+    }
+    .card h2 {
+      margin: 0;
+      font-family: "Bricolage Grotesque", system-ui, sans-serif;
+      font-size: 1.55rem;
+      letter-spacing: -0.02em;
+      color: var(--ink);
+    }
+    .where { margin: 6px 0 0; color: var(--grey); font-size: 0.95rem; }
+    .open {
+      margin-top: auto;
+      padding-top: 22px;
+      font-weight: 700;
+      color: var(--burgundy);
+    }
+    .card--project {
+      grid-column: 1 / -1;
+      min-height: 220px;
+      margin-top: 6px;
+      padding: 32px 34px;
+      background: var(--burgundy);
+      color: white;
+      border: none;
+      flex-direction: row;
+      align-items: flex-end;
+      justify-content: space-between;
+      gap: 28px;
+    }
+    .card--project h2 {
+      color: white;
+      font-size: clamp(2rem, 4vw, 2.8rem);
+    }
+    .kicker {
+      margin: 0 0 8px;
+      font-size: 0.82rem;
+      font-weight: 700;
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+      color: var(--amber);
+    }
+    .card--project .where { color: rgba(255, 255, 255, 0.86); font-size: 1.05rem; }
+    .card--project .open {
+      margin-top: 0;
+      padding-top: 0;
+      color: var(--amber);
+      font-size: 1.05rem;
+      white-space: nowrap;
+    }
+    .card--project:hover { box-shadow: 0 18px 40px rgba(28, 22, 18, 0.28); }
+    footer {
+      background: var(--burgundy);
+      color: rgba(255, 255, 255, 0.78);
+      font-size: 13px;
+    }
+    footer .wrap {
+      display: flex;
+      justify-content: space-between;
+      gap: 12px;
+      align-items: center;
+      flex-wrap: wrap;
+      padding: 18px 0;
+    }
+    footer a { color: white; font-weight: 700; text-decoration: none; }
+    footer a:hover { text-decoration: underline; }
+    @media (max-width: 800px) {
+      .grid { grid-template-columns: 1fr; }
+      .card { min-height: 0; }
+      .card--project { flex-direction: column; align-items: flex-start; min-height: 0; }
+      .topbar-sub { display: none; }
+    }
+  </style>
+</head>
+<body>
+  <div class="stage" aria-hidden="true">
+    <video autoplay muted loop playsinline preload="auto" poster="media/ofelia-home-poster.jpg">
+      <source src="media/ofelia-home.mp4" type="video/mp4">
+    </video>
+  </div>
+  <header class="topbar">
+    <div class="topbar-inner">
+      <a class="topbar-brand" href="/">
+        <img class="topbar-logo" src="img/ofelia-logo.png" alt="OFELIA">
+        <span class="topbar-titles">
+          <span class="topbar-lib">BiblOFELIA</span>
+          <span class="topbar-sub" data-i18n="sub">Les bibliothèques du projet Ofelia</span>
+        </span>
+      </a>
+      <div class="topbar-spacer"></div>
+      <label class="lang-pill">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="9"/><path d="M3 12h18"/><path d="M12 3a14 14 0 0 1 0 18"/><path d="M12 3a14 14 0 0 0 0 18"/></svg>
+        <select id="lang" aria-label="Langue">
+          <option value="fr" selected>FR</option>
+          <option value="en">EN</option>
+          <option value="es">ES</option>
+          <option value="mg">MG</option>
+        </select>
+      </label>
+    </div>
+  </header>
+  <main>
+    <div class="wrap">
+      <div class="hero">
+        <h1 data-i18n="h1">Les bibliothèques Ofelia</h1>
+        <p class="lead" data-i18n="lead">Chaque bibliothèque a son propre catalogue, ses usagers et ses prêts. Choisissez la vôtre.</p>
+      </div>
+      <div class="grid">
+        <a class="card" href="https://canaima.bibliofelia.org">
+          <div class="swatch" style="background:#3D8C5A">C</div>
+          <h2>Canaima</h2>
+          <p class="where" data-i18n="whereCanaima">Venezuela · Ofelia Box</p>
+          <div class="open" data-i18n="open">Ouvrir</div>
+        </a>
+        <a class="card" href="https://grand-saconnex.bibliofelia.org">
+          <div class="swatch" style="background:#ED7538">G</div>
+          <h2>Grand-Saconnex</h2>
+          <p class="where" data-i18n="whereGs">Suisse</p>
+          <div class="open" data-i18n="open">Ouvrir</div>
+        </a>
+        <a class="card" href="https://sanjuan.bibliofelia.org">
+          <div class="swatch" style="background:#6B2138">S</div>
+          <h2>San Juan</h2>
+          <p class="where" data-i18n="whereSj">Venezuela</p>
+          <div class="open" data-i18n="open">Ouvrir</div>
+        </a>
+        <a class="card card--project" href="https://ofeliainternational.org">
+          <div>
+            <p class="kicker" data-i18n="kicker">Le projet Ofelia</p>
+            <h2>OFELIA International</h2>
+            <p class="where" data-i18n="project">Éducation, bibliothèques et communautés.</p>
+          </div>
+          <div class="open" data-i18n="visit">Visiter le site</div>
+        </a>
+      </div>
+    </div>
+  </main>
+  <footer>
+    <div class="wrap">
+      <div>BiblOFELIA — <span data-i18n="footer">Projet Ofelia</span></div>
+      <a href="https://ofeliainternational.org">ofeliainternational.org</a>
+    </div>
+  </footer>
+  <script>
+    (function () {
+      var LANGS = ["fr", "en", "es", "mg"];
+      var TEXT = {
+        fr: {
+          title: "BiblOFELIA — Les bibliothèques du projet Ofelia",
+          description: "Les bibliothèques du projet Ofelia : Canaima, Grand-Saconnex et San Juan.",
+          lang: "Langue",
+          sub: "Les bibliothèques du projet Ofelia",
+          h1: "Les bibliothèques Ofelia",
+          lead: "Chaque bibliothèque a son propre catalogue, ses usagers et ses prêts. Choisissez la vôtre.",
+          open: "Ouvrir",
+          whereCanaima: "Venezuela · Ofelia Box",
+          whereGs: "Suisse",
+          whereSj: "Venezuela",
+          kicker: "Le projet Ofelia",
+          project: "Éducation, bibliothèques et communautés.",
+          visit: "Visiter le site",
+          footer: "Projet Ofelia"
+        },
+        en: {
+          title: "BiblOFELIA — The libraries of the Ofelia project",
+          description: "The libraries of the Ofelia project: Canaima, Grand-Saconnex and San Juan.",
+          lang: "Language",
+          sub: "The libraries of the Ofelia project",
+          h1: "The Ofelia libraries",
+          lead: "Each library has its own catalog, its members and its loans. Choose yours.",
+          open: "Open",
+          whereCanaima: "Venezuela · Ofelia Box",
+          whereGs: "Switzerland",
+          whereSj: "Venezuela",
+          kicker: "The Ofelia project",
+          project: "Education, libraries and communities.",
+          visit: "Visit the site",
+          footer: "Ofelia project"
+        },
+        es: {
+          title: "BiblOFELIA — Las bibliotecas del proyecto Ofelia",
+          description: "Las bibliotecas del proyecto Ofelia: Canaima, Grand-Saconnex y San Juan.",
+          lang: "Idioma",
+          sub: "Las bibliotecas del proyecto Ofelia",
+          h1: "Las bibliotecas Ofelia",
+          lead: "Cada biblioteca tiene su propio catálogo, sus usuarios y sus préstamos. Elija la suya.",
+          open: "Abrir",
+          whereCanaima: "Venezuela · Ofelia Box",
+          whereGs: "Suiza",
+          whereSj: "Venezuela",
+          kicker: "El proyecto Ofelia",
+          project: "Educación, bibliotecas y comunidades.",
+          visit: "Visitar el sitio",
+          footer: "Proyecto Ofelia"
+        },
+        mg: {
+          title: "BiblOFELIA — Ny tranomboky ao amin'ny tetikasa Ofelia",
+          description: "Ny tranomboky ao amin'ny tetikasa Ofelia : Canaima, Grand-Saconnex ary San Juan.",
+          lang: "Fiteny",
+          sub: "Ny tranomboky ao amin'ny tetikasa Ofelia",
+          h1: "Ny tranomboky Ofelia",
+          lead: "Manana ny katalaoginy, ny mpampiasa ary ny fampindramana ny tranomboky tsirairay. Fidio ny anao.",
+          open: "Sokafy",
+          whereCanaima: "Venezuela · Ofelia Box",
+          whereGs: "Soisa",
+          whereSj: "Venezuela",
+          kicker: "Ny tetikasa Ofelia",
+          project: "Fanabeazana, tranomboky ary vondrom-piarahamonina.",
+          visit: "Tsidiho ny tranonkala",
+          footer: "Tetikasa Ofelia"
+        }
+      };
+
+      function wanted() {
+        var query = new URLSearchParams(location.search).get("lang");
+        if (LANGS.indexOf(query) !== -1) return query;
+        try {
+          var stored = localStorage.getItem("bibliofelia-home-lang");
+          if (LANGS.indexOf(stored) !== -1) return stored;
+        } catch (error) {}
+        return "fr";
+      }
+
+      function apply(lang) {
+        var pack = TEXT[lang] || TEXT.fr;
+        document.documentElement.lang = lang;
+        document.title = pack.title;
+        var meta = document.querySelector('meta[name="description"]');
+        if (meta) meta.setAttribute("content", pack.description);
+        var nodes = document.querySelectorAll("[data-i18n]");
+        for (var i = 0; i < nodes.length; i++) {
+          var key = nodes[i].getAttribute("data-i18n");
+          if (pack[key] != null) nodes[i].textContent = pack[key];
+        }
+        var select = document.getElementById("lang");
+        if (select) {
+          select.value = lang;
+          select.setAttribute("aria-label", pack.lang);
+        }
+        try { localStorage.setItem("bibliofelia-home-lang", lang); } catch (error) {}
+        var url = new URL(location.href);
+        if (lang === "fr") url.searchParams.delete("lang");
+        else url.searchParams.set("lang", lang);
+        history.replaceState(null, "", url.pathname + url.search + url.hash);
+      }
+
+      var select = document.getElementById("lang");
+      if (select) {
+        select.addEventListener("change", function () { apply(select.value); });
+        apply(wanted());
+      }
+
+      var video = document.querySelector(".stage video");
+      if (!video) return;
+      video.muted = true;
+      video.loop = true;
+      function start() {
+        var pending = video.play();
+        if (pending && pending.catch) {
+          pending.catch(function () {
+            document.addEventListener("pointerdown", function () { video.play(); }, { once: true });
+          });
+        }
+      }
+      if (video.readyState >= 2) start();
+      else video.addEventListener("canplay", start);
+      document.addEventListener("visibilitychange", function () {
+        if (!document.hidden && video.paused) start();
+      });
+    })();
+  </script>
+</body>
+</html>

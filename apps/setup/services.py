@@ -44,8 +44,8 @@ def apply_wizard(session_data: dict) -> WizardCompletion:
     s7 = session_data.get("step7", {})  # demo
 
     # 1. Identité
-    Setting.set("library_name", s2.get("name", "BibliOfelia"))
-    Setting.set("box_name", s2.get("box_name", "BibliOfelia"))
+    Setting.set("library_name", s2.get("name", "BiblOFELIA"))
+    Setting.set("box_name", s2.get("box_name", "BiblOFELIA"))
     Setting.set("library_identity", {
         "name": s2.get("name", ""),
         "box_name": s2.get("box_name", ""),

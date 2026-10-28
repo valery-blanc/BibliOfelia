@@ -7,7 +7,7 @@ tsy misy tonga, tapitra ny famandrihana ary afaka ny boky.
 ## Apetraho etsy ankilany ny boky
 
 Amin'ny fotoana famerenana, raha mamoaka famandrihana ny boky, ny
-BibliOfelia dia milaza anao amin'ny hafatra:
+BiblOFELIA dia milaza anao amin'ny hafatra:
 
 > **Atao etsy ankilany ho an'i [Anaran'ny mpianatra]**
 

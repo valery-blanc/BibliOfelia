@@ -47,7 +47,7 @@ est refusé.
   [renouvellement de carte](../usagers/renouvellement.md). Le montant
   dépend de la [catégorie](tarifs.md). Un montant à 0 n'émet rien.
 - **Amende** — uniquement **à la main**, depuis la fiche
-  (**Amende**). Vous choisissez le motif et le montant. BibliOfelia
+  (**Amende**). Vous choisissez le motif et le montant. BiblOFELIA
   ne calcule jamais une amende de retard tout seul.
 - **Frais d'animation** — même chemin, bouton **Frais d'animation**.
 

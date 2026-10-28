@@ -1,7 +1,7 @@
 # Prêt et retour avec OfeliaScan
 
 OfeliaScan ne fait pas les prêts et retours tout seul : il sert
-uniquement à **scanner** les codes-barres. C'est BibliOfelia sur
+uniquement à **scanner** les codes-barres. C'est BiblOFELIA sur
 l'ordinateur qui enregistre l'opération.
 
 Le principe : votre téléphone est une "douchette sans fil".
@@ -18,7 +18,7 @@ Le principe : votre téléphone est une "douchette sans fil".
 2. Cliquez sur **Scanner la carte** dans la section Membre
 3. OfeliaScan s'ouvre sur votre téléphone (vibreur ou son)
 4. Pointez la caméra sur la carte du membre
-5. Dès que le code est lu, le téléphone vibre — BibliOfelia identifie
+5. Dès que le code est lu, le téléphone vibre — BiblOFELIA identifie
    le membre automatiquement
 6. Cliquez sur **Scanner un livre** dans la section Livres
 7. Scannez chaque livre l'un après l'autre

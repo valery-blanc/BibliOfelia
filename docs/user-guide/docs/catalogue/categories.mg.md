@@ -22,7 +22,7 @@ sokafy ny **Fanasokajiana** raha te hamorona, hanova na hamafa azy ireo.
 
 ## Ireo fanasokajiana omena
 
-Tonga miaraka amin'ny **fanasokajiana ofisialy Ofelia 20** i BibliOfelia :
+Tonga miaraka amin'ny **fanasokajiana ofisialy Ofelia 20** i BiblOFELIA :
 sokajin-taona dimy atambatra amin'ny karazana boky efatra.
 
 | | Angano | Dokumentera | Album | Sary mihetsika |
@@ -54,7 +54,7 @@ mihitsy.
 
 Amin'ny fametrahana, ny fanasokajiana omena dia mahazo kaody voalohany
 (`JE DOC`, `AD FIC`…). Afaka soloinao ny anao : tsy hanoratra indray i
-BibliOfelia ny kaody nosoratanao.
+BiblOFELIA ny kaody nosoratanao.
 
 Raha efa eo ny kaody, atontao ny
 [etikety sisiny](../impressions/etiquettes.md).

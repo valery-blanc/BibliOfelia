@@ -7,7 +7,7 @@ viene, la reserva expira y el libro se libera.
 ## Poner el libro de lado
 
 Al momento de la devolución, si el libro desencadena una reserva,
-BibliOfelia le indica con un mensaje:
+BiblOFELIA le indica con un mensaje:
 
 > **A poner de lado para [Nombre del miembro]**
 

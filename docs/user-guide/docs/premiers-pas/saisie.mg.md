@@ -1,7 +1,7 @@
 # Fomba fampidirana: fakantsary, scanner na clavier?
 
 Natao mba hiasa miaraka na tsy misy fitaovana manokana ny
-BibliOfelia. Safidio ny fomba mifanaraka amin'ny fitaovanao.
+BiblOFELIA. Safidio ny fomba mifanaraka amin'ny fitaovanao.
 
 ## Ny fakantsarin'ny navigateur (tsy misy fitaovana)
 
@@ -35,14 +35,14 @@ iasanao.
 
 ## OfeliaScan (application finday, ho fanampiny)
 
-OfeliaScan no aplikasiona Android namana an'ny BibliOfelia. Mbola ilaina ho
+OfeliaScan no aplikasiona Android namana an'ny BiblOFELIA. Mbola ilaina ho
 fanampin'ny finday izy, indrindra ho an'ny fandefasana lot lehibe catalogage
 na récolement.
 
 **Tombony:**
 
 - Application manokana, ho an'izay tia azy noho ny fakantsarin'ny navigateur
-- Fandefasana lot iray manontolo amin'ny BibliOfelia
+- Fandefasana lot iray manontolo amin'ny BiblOFELIA
 
 **Fetra:**
 
@@ -74,4 +74,4 @@ manokana ny kaody dia tsindrio **Enter** na click amin'ny bokotra
 Raha tsy manana ny karatry ny mpianatra na ny boky eo am-pelatananao
 ianao, ampiasao ny **fikarohana ankapobeny** ambonin'ny pejy
 tsirairay: soraty ny anaran'ny mpianatra na teny iray amin'ny
-lohateny, ary ny BibliOfelia dia mahita ny takelaka mivantana.
+lohateny, ary ny BiblOFELIA dia mahita ny takelaka mivantana.

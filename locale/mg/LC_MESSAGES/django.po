@@ -1,11 +1,11 @@
-# BibliOfelia — dikateny malagasy.
+# BiblOFELIA — dikateny malagasy.
 # Copyright (C) 2026 Tetikasa Ofelia.
-# This file is distributed under the same license as the BibliOfelia package.
+# This file is distributed under the same license as the BiblOFELIA package.
 # NB : dikateny voalohany, mila hamarinin'ny mpiteny teratany.
 #
 msgid ""
 msgstr ""
-"Project-Id-Version: BibliOfelia 1.0\n"
+"Project-Id-Version: BiblOFELIA 1.0\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2026-09-18 05:39+0000\n"
 "PO-Revision-Date: 2026-05-22 00:00+0000\n"
@@ -2175,8 +2175,8 @@ msgstr "Sisa haloa"
 
 #: apps/finance/pdf.py:189
 #, python-format
-msgid "%(lib)s — document généré par BibliOfelia"
-msgstr "%(lib)s — antontan-taratasy noforonin'ny BibliOfelia"
+msgid "%(lib)s — document généré par BiblOFELIA"
+msgstr "%(lib)s — antontan-taratasy noforonin'ny BiblOFELIA"
 
 #: apps/finance/services.py:157
 #, python-format
@@ -4495,8 +4495,8 @@ msgstr "tsy fantatra taona"
 
 #: apps/reports/pdf.py:241
 #, python-format
-msgid "Édité par BibliOfelia le %(d)s."
-msgstr "Navoakan'i BibliOfelia tamin'ny %(d)s."
+msgid "Édité par BiblOFELIA le %(d)s."
+msgstr "Navoakan'i BiblOFELIA tamin'ny %(d)s."
 
 #: apps/reports/pdf.py:243
 #, python-format
@@ -5137,12 +5137,12 @@ msgstr[1] ""
 
 #: templates/catalog/excel_catalog/_export_form.html:8
 msgid ""
-"Le fichier porte exactement les colonnes que BibliOfelia sait relire, plus "
+"Le fichier porte exactement les colonnes que BiblOFELIA sait relire, plus "
 "les codes qui identifient l'exemplaire (OFELIA_CODE, INTERNAL_ID). C'est le "
 "point de départ d'une correction en masse : exportez, corrigez dans Excel, "
 "renvoyez le fichier par « Mettre à jour les exemplaires »."
 msgstr ""
-"Mitondra tsy misy ombiombiny ireo fariana hain'ny BibliOfelia vakina indray "
+"Mitondra tsy misy ombiombiny ireo fariana hain'ny BiblOFELIA vakina indray "
 "ilay rakitra, miampy ny kaody manondro ny kopia (OFELIA_CODE, INTERNAL_ID). "
 "Izy no fiaingana amin'ny fanitsiana be dia be : avoahy, ahitsio ao amin'ny "
 "Excel, dia averino amin'ny « Hanavao ireo kopia »."
@@ -5324,12 +5324,12 @@ msgstr ""
 #: templates/catalog/excel_catalog/_verify_form.html:6
 msgid ""
 "Téléversez un fichier .xlsx avec les colonnes ID, TITLE, AUTHOR, ISBN. "
-"BibliOfelia interroge OpenLibrary, Google Books, la BNF et la BNE — d'abord "
+"BiblOFELIA interroge OpenLibrary, Google Books, la BNF et la BNE — d'abord "
 "par ISBN, puis par titre + auteur — et vous renvoie le même fichier annoté, "
 "avec un score de confiance pour les appariements incertains."
 msgstr ""
 "Alefaso rakitra .xlsx misy ny tsanganana ID, TITLE, AUTHOR, ISBN. Manontany "
-"ny OpenLibrary, Google Books, BNF ary BNE ny BibliOfelia — amin'ny ISBN "
+"ny OpenLibrary, Google Books, BNF ary BNE ny BiblOFELIA — amin'ny ISBN "
 "aloha, dia amin'ny lohateny + mpanoratra — ka mamerina ilay rakitra misy "
 "fanamarihana, miaraka amin'ny isa fahatokisana ho an'ny fifanarahana tsy azo "
 "antoka."
@@ -5575,8 +5575,8 @@ msgid "Vérifier un fichier"
 msgstr "Hamarina rakitra"
 
 #: templates/catalog/excel_catalog/index.html:36
-msgid "Importer dans BibliOfelia"
-msgstr "Afaro ao amin'ny BibliOfelia"
+msgid "Importer dans BiblOFELIA"
+msgstr "Afaro ao amin'ny BiblOFELIA"
 
 #: templates/catalog/excel_catalog/index.html:54
 msgid "Mettre à jour des exemplaires"
@@ -6762,12 +6762,12 @@ msgstr "Voarakitra ny fangatahana famonoana."
 
 #: templates/closing/day_closing.html:198
 msgid ""
-"BibliOfelia tourne dans un conteneur et ne peut pas éteindre la Box elle-"
+"BiblOFELIA tourne dans un conteneur et ne peut pas éteindre la Box elle-"
 "même : elle dépose une demande que le service système de la Box surveille. "
 "Si ce service n'est pas installé, la demande est enregistrée mais la Box ne "
 "s'éteindra pas."
 msgstr ""
-"Miasa anaty conteneur ny BibliOfelia ka tsy afaka mamono ny Box mivantana : "
+"Miasa anaty conteneur ny BiblOFELIA ka tsy afaka mamono ny Box mivantana : "
 "mametraka fangatahana arahin'ny serivisy rafitry ny Box izy. Raha tsy misy "
 "io serivisy io, voarakitra ny fangatahana saingy tsy hivonona ny Box."
 
@@ -8981,10 +8981,10 @@ msgstr "Efa vita ny fametrahana"
 
 #: templates/setup/already_done.html:11
 msgid ""
-"BibliOfelia est configurée. Pour réinitialiser, contactez le support central "
+"BiblOFELIA est configurée. Pour réinitialiser, contactez le support central "
 "(procédure §9.3)."
 msgstr ""
-"Voakirakira ny BibliOfelia. Mba hamerina, antsoy ny tobim-panampiana (fomba "
+"Voakirakira ny BiblOFELIA. Mba hamerina, antsoy ny tobim-panampiana (fomba "
 "§9.3)."
 
 #: templates/setup/completed.html:5 templates/setup/completed.html:11
@@ -8992,8 +8992,8 @@ msgid "Installation terminée"
 msgstr "Vita ny fametrahana"
 
 #: templates/setup/completed.html:14
-msgid "BibliOfelia est prête à l'usage."
-msgstr "Vonona ny ampiasaina ny BibliOfelia."
+msgid "BiblOFELIA est prête à l'usage."
+msgstr "Vonona ny ampiasaina ny BiblOFELIA."
 
 #: templates/setup/completed.html:15
 #, python-format
@@ -9021,8 +9021,8 @@ msgid "Elle permet de réinitialiser un superadmin perdu via la procédure §9.3
 msgstr "Ahafahana mamerina superadmin very amin'ny fomba §9.3."
 
 #: templates/setup/step.html:6
-msgid "Installation BibliOfelia"
-msgstr "Fametrahana BibliOfelia"
+msgid "Installation BiblOFELIA"
+msgstr "Fametrahana BiblOFELIA"
 
 #: templates/setup/step.html:13
 msgid "Installation"
@@ -9031,3 +9031,21 @@ msgstr "Fametrahana"
 #: templates/setup/step.html:14
 msgid "Étape"
 msgstr "Dingana"
+
+msgid "Réserver un livre"
+msgstr "Mamandrika boky"
+
+msgid "Titre, auteur, ISBN ou code"
+msgstr "Lohateny, mpanoratra, ISBN na kaody"
+
+msgid "Rechercher"
+msgstr "Hikaroka"
+
+msgid "Aucun livre ne correspond."
+msgstr "Tsy misy boky mifanaraka."
+
+msgid "Choisissez le livre à réserver."
+msgstr "Fidio ny boky hofandrihana."
+
+msgid "Tapez un nom pour filtrer"
+msgstr "Soraty ny anarana iray hanivana"

@@ -41,7 +41,7 @@ la personne parle — il n'y a pas de limite. Ce qui manque à la liste se
 saisit dans **Autres langues**, séparé par des virgules.
 
 À ne pas confondre avec **Langue** juste au-dessus : celle-ci dit dans
-quelle langue BibliOfelia doit lui **écrire** (relances, courriers). Les
+quelle langue BiblOFELIA doit lui **écrire** (relances, courriers). Les
 langues parlées, elles, servent à l'accueillir et à lui proposer les bons
 livres.
 
@@ -52,7 +52,7 @@ conjoint, grands-parents, enfants. Pour chacune : **prénom**, **sexe**,
 **Adulte ou enfant**, et les **langues** parlées (le même encadré, replié sous
 « Langues parlées »).
 
-Pour un enfant, indiquez son **année de naissance** : BibliOfelia en déduit
+Pour un enfant, indiquez son **année de naissance** : BiblOFELIA en déduit
 l'âge et le tient à jour tout seul. Pour un adulte, il n'y a rien d'autre à
 saisir.
 
@@ -69,7 +69,7 @@ pouvez laisser la ligne vide qui vous est proposée.
 
 ## Enregistrer
 
-Cliquez sur **Enregistrer**. BibliOfelia attribue automatiquement :
+Cliquez sur **Enregistrer**. BiblOFELIA attribue automatiquement :
 
 - Un **numéro de carte** unique (commence par 291 — c'est le code-barres
   de la carte)

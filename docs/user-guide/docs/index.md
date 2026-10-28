@@ -1,10 +1,10 @@
-# Bienvenue dans BibliOfelia
+# Bienvenue dans BiblOFELIA
 
 Guide utilisateur pour les bibliothecaires.
 
 ## A qui s'adresse ce guide
 
-Ce guide accompagne les bibliothecaires qui utilisent BibliOfelia
+Ce guide accompagne les bibliothecaires qui utilisent BiblOFELIA
 au quotidien : enregistrer des prets, inscrire des membres, gerer
 le catalogue, la caisse, imprimer des cartes et des etiquettes.
 

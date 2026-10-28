@@ -22,7 +22,7 @@ Cliquez sur **Créer**. Chaque exemplaire reçoit automatiquement :
 - Un **code Ofelia** unique (commence par 290 — c'est le code-barres
   qu'on imprime sur l'étiquette du livre)
 - Un **code interne** sous la forme `OFL-AAAAMMJJ-NNNN` (visible sur
-  la fiche dans BibliOfelia, pratique pour repérer rapidement la date
+  la fiche dans BiblOFELIA, pratique pour repérer rapidement la date
   de saisie)
 
 Voir le [glossaire](../glossaire.md) pour comprendre les différents
@@ -57,7 +57,7 @@ non-prêtable. Utilisez le bouton **Mettre au rebut** depuis sa fiche.
 
 Certains livres arrivent avec une étiquette qui n'est pas la vôtre : un
 fonds prêté par une autre bibliothèque, un don déjà catalogué, un
-inventaire d'avant BibliOfelia. Plutôt que de recoller une étiquette
+inventaire d'avant BiblOFELIA. Plutôt que de recoller une étiquette
 par-dessus, saisissez ce code dans le champ **Code Ofelia externe** de
 l'exemplaire (jusqu'à 20 lettres ou chiffres, par exemple `BCF13298781X`).
 
@@ -67,7 +67,7 @@ scanner, avec ou sans tirets, en majuscules ou en minuscules.
 
 !!! warning "Un code, un exemplaire"
     Deux exemplaires ne peuvent pas porter le même code externe : sinon,
-    BibliOfelia ne saurait pas lequel vous scannez. Si le code est déjà
+    BiblOFELIA ne saurait pas lequel vous scannez. Si le code est déjà
     pris, le formulaire vous dit sur quel exemplaire il se trouve.
 
 ## La provenance

@@ -2,7 +2,7 @@
 
 The **inventory** consists of walking through the stacks and checking that
 each book is in its place. It is the most powerful operation of the system:
-you walk the shelves while scanning with the **camera**, and BibliOfelia
+you walk the shelves while scanning with the **camera**, and BiblOFELIA
 updates itself automatically.
 
 The inventory is now done **directly from the site**, with the camera of
@@ -30,7 +30,7 @@ Before starting:
 2. Choose the **scope**: a specific **location** (e.g. "Shelf A1") or **the
    whole collection**. If you choose a location, selecting it becomes
    mandatory.
-3. Confirm: BibliOfelia opens the **report** page directly, which also
+3. Confirm: BiblOFELIA opens the **report** page directly, which also
    serves as the scanning screen.
 
 ## Scan the books continuously
@@ -41,7 +41,7 @@ Before starting:
    vibration) confirms each new book, and a **counter** climbs on screen.
 3. For each scan:
    - book **on the right shelf**: it is marked "seen";
-   - book **shelved elsewhere** (scope = a location): BibliOfelia
+   - book **shelved elsewhere** (scope = a location): BiblOFELIA
      automatically updates its shelf to the one you are inventorying;
    - **unknown code**: flagged, to investigate.
 
@@ -49,7 +49,7 @@ The same book scanned twice is counted only once. If a record has several
 copies, the screen shows "copy 2", "copy 3"… to help you find them all.
 
 !!! tip "Go fast, don't think"
-    No need to check each scan: BibliOfelia sorts everything out at the end.
+    No need to check each scan: BiblOFELIA sorts everything out at the end.
     Focus on speed and full coverage of the shelf. The list and counters
     update live.
 
@@ -57,7 +57,7 @@ When the shelf is covered, press **Finish**.
 
 ## With a USB barcode scanner
 
-If the workstation showing BibliOfelia has a **USB barcode scanner** (wired
+If the workstation showing BiblOFELIA has a **USB barcode scanner** (wired
 scanner), you can run the inventory **without a camera** — this is even the only
 option if the screen is on a local network without `https://`.
 
@@ -106,6 +106,6 @@ Ideally do it when the library is quiet (morning, closing day).
 ## What about OfeliaScan?
 
 For **large inventories**, the [OfeliaScan](../ofeliascan/activer.md) mobile app can also
-send a whole session of scans to BibliOfelia. The logic is the same (books
+send a whole session of scans to BiblOFELIA. The logic is the same (books
 seen, moved, missing). For the routine inventory of a single shelf, the
 site's camera described above is the simplest way.

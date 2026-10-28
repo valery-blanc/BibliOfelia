@@ -190,6 +190,19 @@ body, .md-typeset {
   font-size: 1rem;
 }
 
+/* Le texte du bandeau ouvre le guide. L'icône, elle, quitte vers l'application. */
+.md-header__topic .bo-guide-home,
+.md-nav__title .bo-guide-home {
+  color: inherit;
+  font: inherit;
+  text-decoration: none;
+}
+
+.md-header__topic .bo-guide-home:hover,
+.md-nav__title .bo-guide-home:hover {
+  text-decoration: underline;
+}
+
 .md-header[data-md-state="shadow"] {
   box-shadow: 0 2px 8px rgba(61,53,48,0.07);
 }

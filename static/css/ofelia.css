@@ -654,6 +654,22 @@ ul { list-style: none; padding: 0; }
   border-radius: 50%;
 }
 .scan-inline-btn svg { width: 20px; height: 20px; }
+.reserve-start {
+  display: flex;
+  align-items: stretch;
+  gap: 10px;
+  margin: 0 0 18px;
+}
+.scan-field {
+  display: flex;
+  align-items: stretch;
+  gap: 8px;
+}
+.field .scan-field input { flex: 1; min-width: 0; width: auto; }
+.member-picker-list {
+  height: 16rem;
+  padding: 6px;
+}
 
 /* ────────── KPI ────────── */
 .kpis {

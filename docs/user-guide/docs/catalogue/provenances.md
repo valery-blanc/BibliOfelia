@@ -22,9 +22,10 @@ Depuis [**Avancé**](/bibliofelia/fr/advanced/){ target="_blank" }, ouvrez
 
 Trois façons, de la plus rapide à la plus ponctuelle :
 
-1. **Au catalogage** — quand vous démarrez un lot de scan, choisissez une
-   **Provenance par défaut** : tous les exemplaires du lot la recevront.
-   C'est la bonne méthode pour un carton de livres prêtés.
+1. **Au catalogage** — quand vous démarrez un lot de scan, à la caméra ou
+   à la douchette, choisissez une **Provenance par défaut** : tous les
+   exemplaires du lot la recevront. C'est la bonne méthode pour un carton
+   de livres prêtés. Voir [Cataloguer en scannant](../inventaire/catalogage-scan.md#defauts).
 2. **Depuis le catalogue** — cochez **Chercher les exemplaires**,
    sélectionnez les lignes voulues, puis **Affecter une provenance**.
 3. **Un exemplaire à la fois** — le champ **Provenance** du formulaire
@@ -52,7 +53,7 @@ les notices restent au catalogue.
 
 ## Supprimer une provenance
 
-Tant qu'un exemplaire la porte, BibliOfelia **refuse** de la supprimer : ce
+Tant qu'un exemplaire la porte, BiblOFELIA **refuse** de la supprimer : ce
 serait perdre la seule trace de l'origine de ces livres. L'écran vous
 propose alors de voir les exemplaires concernés pour les traiter d'abord.
 

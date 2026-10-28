@@ -4,7 +4,7 @@
 
 ### Hadinoko ny tenimiafiko, inona no atao?
 
-Ny BibliOfelia dia miasa tsy misy internet ary tsy mandefa mailaka
+Ny BiblOFELIA dia miasa tsy misy internet ary tsy mandefa mailaka
 famerenana. Angataho amin'ny mpitantana ny Box mba hamerina ny
 tenimiafinao mivantana avy amin'ny console fitantanana.
 
@@ -37,7 +37,7 @@ fampindramana.
 ### Ahoana no manampy boky haingana?
 
 Raha manana ISBN ilay boky, soraty ao amin'ny formulaire notice
-vaovao: ny BibliOfelia dia manontany OpenLibrary ary mameno
+vaovao: ny BiblOFELIA dia manontany OpenLibrary ary mameno
 automatika ny takelaka. Jereo [Manampy boky](catalogue/ajouter-livre.md).
 
 ### Inona no atao raha tsy hita ny ISBN?
@@ -73,7 +73,7 @@ Android manokana azy.
 
 ### Mila internet ny OfeliaScan?
 
-Tsia. Mifandray amin'ny BibliOfelia amin'ny alalan'ny Wi-Fi an'ny
+Tsia. Mifandray amin'ny BiblOFELIA amin'ny alalan'ny Wi-Fi an'ny
 Ofelia Box. Tsy mila fifandraisana internet ho an'ny fampiasana
 isan'andro.
 
@@ -81,7 +81,7 @@ isan'andro.
 
 ### Afaka manoratra lohateny amin'ny malagasy aho?
 
-Eny. Ny BibliOfelia dia mandray ireo litera Unicode rehetra
+Eny. Ny BiblOFELIA dia mandray ireo litera Unicode rehetra
 (accent, alphabet tsy latin). Soraty ny lohateny araka ny izy.
 
 ### Afaka ny mpianatra miteny frantsay mahazo karatra frantsay na dia miasa amin'ny anglisy aho?
@@ -127,7 +127,7 @@ mihodinkodina dia tsy hahafantatra boky hafa tsy nahy mihitsy.
 
 Sokafy ny [takelakan'ny mpianatra](usagers/fiche.md), tsindrio
 **Hanova**, dia **Hanolo ny karatra** (eo akaikin'ny laharana):
-ny BibliOfelia dia manome laharana vaovao,
+ny BiblOFELIA dia manome laharana vaovao,
 mametraka ny taloha ankilany mandrakizay ary mitazona ny tantara
 manontolo. Ny karatra taloha dia tsy miasa intsony (ny scan rehetra
 dia mamerina hadisoana) — simbao izy raha miseho indray. Mandritra ny
@@ -144,7 +144,7 @@ raha hisakana ny fampindramana, **hampijanona** vonjimaika ny
 mpianatra avy amin'ny takelany dia hampandeha indray rehefa miverina
 ny boky; (3) ho an'ny tara volana maro, marika ny fampindramana ho
 **Very**. Azonao atao koa ny mametraka **sazy tanana** avy amin'ny
-takelaka. Ny BibliOfelia dia mandefa fampahatsiahivana mailaka ho
+takelaka. Ny BiblOFELIA dia mandefa fampahatsiahivana mailaka ho
 an'ny **faktiora** tara ihany (indray mandeha); ho an'ny boky tara
 tsy misy faktiora, ny telefaonina na SMS no mahomby indrindra.
 

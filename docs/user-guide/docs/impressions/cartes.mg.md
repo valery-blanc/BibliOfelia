@@ -1,7 +1,7 @@
 # Manonta karatra mpianatra
 
 Ny karatra mpianatra dia foronina amin'ny PDF avy amin'ny
-BibliOfelia. Azonao atontana iray na maro miaraka.
+BiblOFELIA. Azonao atontana iray na maro miaraka.
 
 ## Sokafy ny pejy fanontana
 

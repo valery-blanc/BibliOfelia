@@ -21,7 +21,7 @@ Click **Create**. Each copy automatically receives:
 - A unique **Ofelia code** (starts with 290 — this is the barcode
   printed on the book's label)
 - An **internal code** in the form `OFL-YYYYMMDD-NNNN` (visible on the
-  record in BibliOfelia, useful to quickly identify the entry date)
+  record in BiblOFELIA, useful to quickly identify the entry date)
 
 See the [glossary](../glossaire.md) for a detailed explanation of the
 different codes.
@@ -53,7 +53,7 @@ it: it stays in the database but becomes non-lendable. Use the
 
 Some books arrive with a label that is not yours: a collection lent by
 another library, a donation that was already catalogued, an inventory from
-before BibliOfelia. Instead of sticking your own label on top, enter that
+before BiblOFELIA. Instead of sticking your own label on top, enter that
 code in the copy's **External Ofelia code** field (up to 20 letters or
 digits, for example `BCF13298781X`).
 
@@ -62,7 +62,7 @@ lending, returning, doing an inventory check, or searching. You can type it
 or scan it, with or without dashes, in upper or lower case.
 
 !!! warning "One code, one copy"
-    Two copies cannot share the same external code: BibliOfelia would not
+    Two copies cannot share the same external code: BiblOFELIA would not
     know which one you are scanning. If the code is already taken, the form
     tells you which copy has it.
 

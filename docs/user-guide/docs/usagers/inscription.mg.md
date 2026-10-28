@@ -42,7 +42,7 @@ tenenin'ilay olona — tsy misy fetra. Izay tsy ao anaty lisitra dia soratana ao
 amin'ny **Fiteny hafa**, sarahina amin'ny faingo.
 
 Aza afangaro amin'ny **Fiteny** eo ambony : io dia milaza ny fiteny tokony
-**hanoratan'ny** BibliOfelia aminy (fampahatsiahivana, taratasy). Ny fiteny
+**hanoratan'ny** BiblOFELIA aminy (fampahatsiahivana, taratasy). Ny fiteny
 tenenina kosa dia entina handraisana azy sy hanolorana boky mifanaraka aminy.
 
 ### Ny fianakaviana
@@ -52,7 +52,7 @@ vady, raibe sy renibe, zanaka. Ho an'ny tsirairay : **anarana**, **lahy na
 vavy**, **Olon-dehibe na ankizy**, ary ny **fiteny** teneniny (ilay boaty
 ihany, miafina ao ambanin'ny « Fiteny tenenina »).
 
-Ho an'ny ankizy, soraty ny **taona nahaterahany** : ny BibliOfelia no manisa ny
+Ho an'ny ankizy, soraty ny **taona nahaterahany** : ny BiblOFELIA no manisa ny
 taonany ary manavao azy ho azy. Ho an'ny olon-dehibe dia tsy misy zavatra hafa
 fenoina.
 
@@ -69,7 +69,7 @@ foana ilay andalana atolotra anao.
 
 ## Tehirizo
 
-Click amin'ny **Tehirizo**. Ny BibliOfelia dia manome automatika:
+Click amin'ny **Tehirizo**. Ny BiblOFELIA dia manome automatika:
 
 - **Laharan'ny karatra** miavaka (manomboka amin'ny 291 — io no
   code-barre an'ny karatra)

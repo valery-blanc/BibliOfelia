@@ -1,9 +1,9 @@
 # Hampandeha OfeliaScan
 
-**OfeliaScan** no aplikasiona Android namana an'ny BibliOfelia.
+**OfeliaScan** no aplikasiona Android namana an'ny BiblOFELIA.
 Rehefa voa-install sy voapifandray amin'ny Ofelia Box-nao izy, dia
 ahafahanao mijery code-barre avy amin'ny finday ary mandefa ny
-vokany mivantana ho an'ny BibliOfelia amin'ny ordinateur.
+vokany mivantana ho an'ny BiblOFELIA amin'ny ordinateur.
 
 !!! info "Tafiditra ao amin'ny tranonkala izao ny fakantsary"
     Tsy mila OfeliaScan intsony ianao ho an'ny scan andavanandro: ny bokotra
@@ -37,7 +37,7 @@ fametahana.
 Rehefa voa-install OfeliaScan, mila ampifandraisina amin'ny Box-nao
 (atao **indray mandeha ihany**).
 
-1. Amin'ny ordinateur, sokafy BibliOfelia dia mandehana amin'ny
+1. Amin'ny ordinateur, sokafy BiblOFELIA dia mandehana amin'ny
    **Mandroso → Acces OfeliaScan**
 2. Code QR no miseho amin'ny écran
 3. Amin'ny finday, sokafy OfeliaScan dia tsindrio **Hampifandray**
@@ -50,7 +50,7 @@ ampiasaina.
 !!! info "Finday maro, Box iray"
     Mpitantana maro no afaka hampifandray ny findayny amin'ny Box
     iray. Tsirairay no mahita ny scans-ny manokana ao amin'ny
-    BibliOfelia.
+    BiblOFELIA.
 
 ## Jereo koa
 

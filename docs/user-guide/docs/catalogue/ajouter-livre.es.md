@@ -22,7 +22,7 @@ arriba a la derecha.
 Si el libro tiene un ISBN (código de 13 dígitos en la contraportada),
 escríbalo en el campo **ISBN-13** y pulse **Enter**.
 
-BibliOfelia consulta la base de datos OpenLibrary y rellena
+BiblOFELIA consulta la base de datos OpenLibrary y rellena
 automáticamente el título, los autores, el editor y el año. Solo
 tiene que verificar y completar.
 
@@ -53,12 +53,12 @@ Si no hay ISBN o no hay red, complete los campos a mano:
 
 ## Guardar
 
-Haga clic en **Guardar**. El registro se crea y BibliOfelia
+Haga clic en **Guardar**. El registro se crea y BiblOFELIA
 inmediatamente le propone **añadir un primer ejemplar**: vea
 [Gestionar los ejemplares](exemplaires.md).
 
 !!! warning "Duplicados"
-    Si introduce dos veces el mismo ISBN, BibliOfelia le avisa: no
+    Si introduce dos veces el mismo ISBN, BiblOFELIA le avisa: no
     cree un nuevo registro, mejor añada un ejemplar adicional al
     registro existente (un libro, dos copias).
 

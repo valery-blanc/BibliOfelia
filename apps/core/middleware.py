@@ -1,4 +1,4 @@
-"""Middlewares applicatifs BibliOfelia.
+"""Middlewares applicatifs BiblOFELIA.
 
 `MethodNotAllowedPrettyMiddleware` (FEAT-043) : Django ne fournit pas de
 `handler405` configurable — la réponse `HttpResponseNotAllowed` générée par

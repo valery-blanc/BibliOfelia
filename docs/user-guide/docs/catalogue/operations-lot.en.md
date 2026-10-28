@@ -1,7 +1,7 @@
 # Bulk operations
 
 To save time when you have several records to modify the same way,
-BibliOfelia offers **bulk operations** (or "mass actions") from the
+BiblOFELIA offers **bulk operations** (or "mass actions") from the
 catalog list.
 
 ## Selecting several records

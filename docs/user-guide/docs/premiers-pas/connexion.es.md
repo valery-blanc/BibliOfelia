@@ -1,6 +1,6 @@
 # Iniciar sesión
 
-Para usar BibliOfelia, abra su navegador web y vaya a la dirección de
+Para usar BiblOFELIA, abra su navegador web y vaya a la dirección de
 la Ofelia Box (generalmente `http://ofelia.local/bibliofelia/` o la
 dirección IP que el administrador le indicó).
 
@@ -16,7 +16,7 @@ haga clic en **Iniciar sesión**.
     Pida al administrador de la Box que cree una para usted.
 
 !!! info "¿Olvidó su contraseña?"
-    BibliOfelia funciona sin conexión y no envía correos: el
+    BiblOFELIA funciona sin conexión y no envía correos: el
     administrador debe restablecer su contraseña directamente desde
     la Box.
 

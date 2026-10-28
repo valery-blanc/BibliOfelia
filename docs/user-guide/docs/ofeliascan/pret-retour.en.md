@@ -1,7 +1,7 @@
 # Loan and return with OfeliaScan
 
 OfeliaScan does not lend and return on its own: it only **scans**
-barcodes. BibliOfelia on the computer is what records the operation.
+barcodes. BiblOFELIA on the computer is what records the operation.
 
 The principle: your phone is a "wireless scanner".
 
@@ -17,7 +17,7 @@ The principle: your phone is a "wireless scanner".
 2. Click **Scan the card** in the Member section
 3. OfeliaScan opens on your phone (vibration or sound)
 4. Point the camera at the member's card
-5. As soon as the code is read, the phone vibrates — BibliOfelia
+5. As soon as the code is read, the phone vibrates — BiblOFELIA
    identifies the member automatically
 6. Click **Scan a book** in the Books section
 7. Scan each book one after the other

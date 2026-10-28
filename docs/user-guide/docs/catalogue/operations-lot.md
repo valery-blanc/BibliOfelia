@@ -1,7 +1,7 @@
 # Opérations en lot
 
 Pour gagner du temps quand vous avez plusieurs notices à modifier de la
-même façon, BibliOfelia propose des **opérations en lot** (ou "actions
+même façon, BiblOFELIA propose des **opérations en lot** (ou "actions
 de masse") depuis la liste du catalogue.
 
 ## Sélectionner plusieurs notices

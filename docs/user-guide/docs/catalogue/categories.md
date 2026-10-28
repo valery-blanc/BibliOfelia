@@ -21,7 +21,7 @@ Depuis [**Avancé**](/bibliofelia/fr/advanced/){ target="_blank" }, ouvrez
 
 ## Les classifications fournies
 
-BibliOfelia arrive avec les **20 classifications officielles Ofelia** : cinq
+BiblOFELIA arrive avec les **20 classifications officielles Ofelia** : cinq
 tranches d'âge croisées avec quatre types de document.
 
 | | Fiction | Documentaire | Album | Bande dessinée |
@@ -52,7 +52,7 @@ codes différents.
 
 À l'installation, les classifications fournies reçoivent un code de
 départ (`JE DOC`, `AD FIC`…). Vous pouvez les remplacer par les vôtres :
-BibliOfelia ne réécrira jamais un code que vous avez saisi.
+BiblOFELIA ne réécrira jamais un code que vous avez saisi.
 
 Une fois les codes en place, imprimez les
 [étiquettes de tranche](../impressions/etiquettes.md).

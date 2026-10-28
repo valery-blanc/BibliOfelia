@@ -31,7 +31,7 @@ You can chain a whole pile of returns in seconds.
 
 ### The book is not on loan
 
-If you scan a book that was not on loan, BibliOfelia warns you with
+If you scan a book that was not on loan, BiblOFELIA warns you with
 an orange message. Check:
 
 - You haven't confused two similar books
@@ -48,7 +48,7 @@ overdue](../faq.md#retard).
 
 ### The book triggers a reservation
 
-If someone reserved this book, BibliOfelia displays it at the top of
+If someone reserved this book, BiblOFELIA displays it at the top of
 the page with the member's name and **Set aside**. This signals you
 to store the book in the pickup area instead of putting it back on
 the shelf.

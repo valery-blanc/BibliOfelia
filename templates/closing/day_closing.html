@@ -195,7 +195,7 @@ finit à midi boucle, un autre reboucle le soir.
     <p><b>{% trans "Demande d'extinction enregistrée." %}</b></p>
     {% endif %}
     <p class="muted text-sm">
-        {% trans "BibliOfelia tourne dans un conteneur et ne peut pas éteindre la Box elle-même : elle dépose une demande que le service système de la Box surveille. Si ce service n'est pas installé, la demande est enregistrée mais la Box ne s'éteindra pas." %}
+        {% trans "BiblOFELIA tourne dans un conteneur et ne peut pas éteindre la Box elle-même : elle dépose une demande que le service système de la Box surveille. Si ce service n'est pas installé, la demande est enregistrée mais la Box ne s'éteindra pas." %}
         {% if shutdown_flag %}<br><code>{{ shutdown_flag }}</code>{% endif %}
     </p>
     {% if user.is_superadmin %}

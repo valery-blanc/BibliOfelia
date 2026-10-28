@@ -1,6 +1,6 @@
 # Fitsidihana ny tabilao
 
-Ny tabilao no pejy fandraisana an'ny BibliOfelia. Mametaka eo ny zavatra
+Ny tabilao no pejy fandraisana an'ny BiblOFELIA. Mametaka eo ny zavatra
 rehetra ilainao isan'andro.
 
 ![Hevitra ankapobeny an'ny tabilao](../assets/screenshots/mg/premiers-pas/dashboard.png)

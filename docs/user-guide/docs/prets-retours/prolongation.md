@@ -17,7 +17,7 @@ d'aujourd'hui).
 ## Combien de fois peut-on prolonger ?
 
 Par défaut, un prêt peut être renouvelé une fois. Au-delà,
-BibliOfelia bloque le renouvellement : le membre doit ramener le livre
+BiblOFELIA bloque le renouvellement : le membre doit ramener le livre
 (quitte à le réemprunter ensuite si personne ne l'a réservé).
 
 Ce maximum est configurable par l'administrateur dans les paramètres.

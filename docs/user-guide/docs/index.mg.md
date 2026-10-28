@@ -1,4 +1,4 @@
-# Tongasoa amin'ny BibliOfelia
+# Tongasoa amin'ny BiblOFELIA
 
 Torolàlana ho an'ny mpitantana tranomboky.
 
@@ -11,7 +11,7 @@ Torolàlana ho an'ny mpitantana tranomboky.
 ## Ho an'iza ity torolàlana ity
 
 Ity torolàlana ity dia natao ho an'ireo mpitantana tranomboky izay
-mampiasa ny BibliOfelia isan'andro: fandraketana fampindramana,
+mampiasa ny BiblOFELIA isan'andro: fandraketana fampindramana,
 fisoratana anaran'ny mpianatra, fitantanana ny boky sy ny caisse,
 fanontana karatra sy etikety.
 

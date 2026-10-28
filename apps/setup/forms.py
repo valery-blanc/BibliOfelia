@@ -26,7 +26,7 @@ class Step2LibraryForm(forms.Form):
         label=_("Nom de la box (mDNS)"),
         max_length=80,
         help_text=_("Visible par OfeliaScan."),
-        initial="BibliOfelia",
+        initial="BiblOFELIA",
     )
     address = forms.CharField(label=_("Adresse"), required=False,
                               widget=forms.Textarea(attrs={"rows": 3}))

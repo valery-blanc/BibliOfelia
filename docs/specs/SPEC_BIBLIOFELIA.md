@@ -4,7 +4,37 @@ Spécification détaillée du logiciel de gestion de bibliothèque BibliOfelia, 
 
 Version : 1.0 (cible v1) — **`BIBLIOFELIA_VERSION = "1.0"`** depuis le 2026-08-23 (FEAT-082, était `0.1.0-dev`)
 Statut : draft pour Spec-Driven Development
-Dernière modif spec : 2026-09-18 — **FEAT-096** : bouton **Export Excel**
+Dernière modif spec : 2026-10-28 — **FEAT-102** la page bibliofelia.org
+joue la vidéo du garçon et de la mappemonde (elle ne reste plus une image
+fixe), et reprend les bandeaux de l'application : barre blanche avec le
+sélecteur FR/EN/ES/MG, pied bordeaux. **FEAT-103** sur le formulaire de
+réservation, on tape un nom pour réduire la liste des personnes.
+**FEAT-101** la page bibliofelia.org
+a une grande tuile OFELIA International et le fond vidéo du garçon avec
+la mappemonde. **FEAT-099** dans le guide, l'icône
+OFELIA ouvre BiblOFELIA (même langue, même préfixe) et le texte
+« Guide BiblOFELIA » ouvre l'accueil du guide. **FEAT-100** le bouton
+**Réserver un livre** est au-dessus de **Prêtes à retirer**, avec un scan
+ISBN ou code Ofelia à côté ; le même scan est à côté du champ de recherche.
+**BUG-049** le sélecteur de langue du guide reste dans le guide (liens
+relatifs, y compris sous `/docs/`). **BUG-050** la page Réservations a un
+bouton **Réserver un livre**. **BUG-051** San Juan et Canaima affichent
+`America/Caracas` (un seul fuseau au Venezuela) ; Grand-Saconnex reste
+`Europe/Zurich`. **FEAT-097** le nom visible est **BiblOFELIA**. **FEAT-098**
+`bibliofelia.org` et `www` listent les bibliothèques au lieu de rediriger
+vers ofeliainternational.org. Cf. §1, §2.2, §6.4, §6.6, §6.9.
+
+Modif précédente : 2026-10-13 — guide utilisateur : le catalogage
+caméra et le catalogage douchette sont **un seul chapitre**
+(`inventaire/catalogage-scan`, ×4 langues). Le formulaire de départ
+comprend une **provenance par défaut** (`ScanSession.default_provenance`),
+appliquée à tous les exemplaires du lot ; classification et emplacement
+restent surchargeables sur le hub. Les trois défauts sont facultatifs et
+ne proposent que des listes déjà créées (liens du guide vers
+`/catalog/categories/`, `/catalog/locations/`, `/catalog/provenances/`).
+L'ancienne page `catalogage-douchette` reste accessible par URL, hors menu.
+
+Modif précédente : 2026-09-18 — **FEAT-096** : bouton **Export Excel**
 sur la page Catalogue. Le fichier reprend la recherche courante (notices
 ou exemplaires, tous les filtres, toutes les pages) avec les colonnes
 affichées plus **Emplacement**. Ce n'est pas l'export d'inventaire
@@ -100,7 +130,7 @@ Modif précédente : 2026-08-20 — **Sprint 28, 2e vague** : **BUG-027** — pr
 
 ## 1. Vue d'ensemble
 
-BibliOfelia est un logiciel de gestion de bibliothèque destiné à équiper de petites bibliothèques communautaires (jusqu'à 3000 ouvrages) dans des zones rurales d'Afrique, de Madagascar et d'Amérique du Sud, dans le cadre du projet Ofelia.
+BibliOfelia est un logiciel de gestion de bibliothèque destiné à équiper de petites bibliothèques communautaires (jusqu'à 3000 ouvrages) dans des zones rurales d'Afrique, de Madagascar et d'Amérique du Sud, dans le cadre du projet Ofelia. Le nom affiché aux bibliothécaires est **BiblOFELIA** (FEAT-097).
 
 L'application tourne sur la même Ofelia Box que les autres services du projet (anciennement Edubox), un Raspberry Pi 5 (4 Go de RAM) qui fait office de serveur local. Elle est utilisée par des bibliothécaires bénévoles avec peu de formation informatique, doit fonctionner intégralement hors-ligne, et synchronise certaines tâches (récupération de métadonnées, sauvegardes cloud, mises à jour) quand une connexion internet ponctuelle est disponible via ZeroTier.
 
@@ -142,6 +172,17 @@ Une application Android compagnon, OfeliaScan, permet de scanner les codes-barre
 - Pas de connexion internet permanente
 - Connexion internet ponctuelle via partage mobile ou liaison satellite
 - Accès distant pour administration via ZeroTier quand internet disponible
+
+`https://bibliofelia.org` et `https://www.bibliofelia.org` servent une page
+d'accueil (FEAT-098, FEAT-101, FEAT-102) : Canaima, Grand-Saconnex, San Juan, puis une
+grande tuile vers `https://ofeliainternational.org`. Le fond est la vidéo
+du garçon et de la mappemonde, reprise du site OFELIA International et
+servie par la page (`www/media/ofelia-home.mp4`). Elle démarre toute seule
+et tourne en boucle ; l'image fixe ne sert qu'avant la première image.
+Le bandeau du haut est celui de l'application (fond blanc, logo, titre,
+sélecteur FR / EN / ES / MG). Le pied est le bandeau bordeaux. La langue
+choisie est retenue sur cet appareil. Les instances restent
+sur leurs sous-domaines.
 
 ### 2.3 Volumétrie cible
 
@@ -727,8 +768,14 @@ Travail de catalogage à partir d'un fichier Excel (migration `catalog/0009_exce
 
 #### Catalogage en scan caméra continu (FEAT-046)
 
-Depuis `/catalog/scan/`, un bibliothécaire démarre un **lot** (catégorie +
-emplacement par défaut, surchargeables ligne par ligne), puis scanne en rafale
+Depuis `/catalog/scan/`, un bibliothécaire démarre un **lot** (classification,
+emplacement et **provenance** par défaut). Classification et emplacement sont
+surchargeables sur le hub ; la provenance (`ScanSession.default_provenance`,
+FEAT-064) s'applique à **tous** les exemplaires du lot et ne se réédite pas
+ligne par ligne. Les trois défauts sont **facultatifs** : le formulaire ne
+liste que les valeurs déjà créées
+(`/catalog/categories/`, `/catalog/locations/`, `/catalog/provenances/`,
+Avancé → Méta-données) et n'en crée pas. Puis il scanne en rafale
 les codes-barres ISBN (EAN-13 `978…`/`979…`) avec la **caméra du navigateur**
 (même moteur continu que le récolement FEAT-045 : double moteur
 html5-qrcode/Quagga, EAN-13 + clé de contrôle + préfixe + consensus, bande de
@@ -788,7 +835,12 @@ Variante du catalogage caméra pour les postes équipés d'une **douchette USB**
 (lecteur de code-barres en mode clavier HID). Entrée **Avancé → Inventaire →
 « Catalogage par douchette »** (`catalog:scan_douchette_create`). Réutilise
 intégralement `ScanSession`/`ScanItem`/`scan_add`/`finalize_scan_session` — seule
-la **méthode de saisie** change (pas de caméra). Le champ `ScanSession.input_mode`
+la **méthode de saisie** change (pas de caméra). Le formulaire de départ est le
+même (classification, emplacement, provenance par défaut, nom du lot). ISSN,
+notice déjà au catalogue, édition du lot et impression des étiquettes sont
+identiques. Le guide utilisateur ne garde qu'un chapitre,
+`inventaire/catalogage-scan` ; la page `catalogage-douchette` n'est plus au
+menu et renvoie vers ce chapitre. Le champ `ScanSession.input_mode`
 (`mobile`/`camera`/`douchette`, migration `catalog/0012`) mémorise le mode : le
 hub `/catalog/scan/<pk>/` masque alors le bouton caméra et rend le champ ISBN
 `data-wedge-primary autofocus`. Le **keyboard-wedge global** (`scan-wedge.js`,
@@ -1253,8 +1305,19 @@ pas.
 ### 6.4 Réservations
 
 #### Création
-- Depuis la fiche notice : bouton "Réserver pour..."
-- Choix du membre
+- Depuis la page **Réservations** : bouton **Réserver un livre**
+  (`loans:reservation_pick`, `/loans/reservations/new/`), placé juste
+  au-dessus de **Prêtes à retirer** (FEAT-100). À côté, le scan caméra
+  (ISBN ou code Ofelia, `data-scan-kind="auto"`) ouvre cette recherche
+  avec `?q=`. Le même scan est à côté du champ : il remplit le champ et
+  lance la recherche. Recherche par titre, auteur, ISBN ou code. Un code
+  d'exemplaire ouvre directement le choix du membre ; sinon la liste des
+  notices, chacune avec **Réserver** (BUG-050).
+- Depuis la fiche notice : bouton **Réserver**
+- Choix du membre (FEAT-103) : la liste des personnes est visible, et un
+  champ au-dessus permet de taper un nom (ou plusieurs mots, sans tenir
+  compte des accents). Seuls les noms qui correspondent restent. Le
+  formulaire envoie toujours l'identifiant de la personne choisie.
 - Création de Reservation `pending` avec `expires_at` = aujourd'hui + `reservation_expiry_days`
 
 #### Satisfaction d'une réservation
@@ -1668,9 +1731,14 @@ qui ne veut rien dire localement.
 - Format d'étiquette et de carte
 - **Fuseau horaire (FEAT-077)** — liste des fuseaux IANA, première entrée
   « Fuseau du système » qui laisse la main à la machine. Deux niveaux : la
-  variable d'environnement **`TZ`** de l'instance donne le défaut (défaut `UTC` ;
-  c'est ainsi que la Box prend le fuseau du Raspberry Pi), le réglage des
-  Paramètres le surcharge sans redéploiement. `Setting.timezone` +
+  variable d'environnement **`TZ`** de l'instance donne le défaut (défaut `UTC`),
+  le réglage des Paramètres le surcharge sans redéploiement. San Juan et
+  Canaima sont en **`America/Caracas`** : le Venezuela n'a qu'un fuseau
+  (BUG-051). `America/Argentina/San_Juan` est un fuseau argentin, il ne
+  désigne pas la bibliothèque de San Juan. Grand-Saconnex reste
+  `Europe/Zurich`. Le fuseau du système du Raspberry Pi peut différer quand
+  la Box n'est pas sur place : l'horloge de la bibliothèque suit `TZ`, pas
+  l'horloge de l'hôte. `Setting.timezone` +
   `apps.core.middleware.TimezoneMiddleware`, qui active le fuseau à chaque
   requête. Un fuseau invalide est ignoré avec un log — jamais fatal. Le réglage
   vaut pour **toutes** les dates de l'application, pas seulement l'heure de
@@ -1937,6 +2005,16 @@ Implémentation :
 - Fallback configuré : `MODELTRANSLATION_FALLBACK_LANGUAGES = ('fr',)` → si un champ traduit est vide pour la langue active, la valeur française est utilisée.
 - Code de langue `mg` (Malagasy) absent de `django.conf.locale.LANG_INFO` ; enregistré explicitement dans `config/settings/base.py` (sinon `KeyError` dans `modeltranslation.admin.TranslationAdmin`).
 - **Routage** : `i18n_patterns(prefix_default_language=True)` dans `config/urls.py` — toutes les URLs de l'interface portent un préfixe de langue (`/fr/…`, `/en/…`, `/es/…`, `/mg/…`), **y compris `accounts/`** (login/logout + gestion comptes, depuis BUG-006). Indispensable pour que le sélecteur de langue et le cookie de préférence soient respectés sur toutes les pages (cf. BUG-005). La racine `/` redirige vers `/<langue>/`. Seuls `setup/`, `admin/`, `api/v1/`, `i18n/` restent hors `i18n_patterns` (paths techniques sans i18n).
+- Le bouton « ? » ouvre le guide dans la langue de l'interface (`/docs/` en
+  français, `/docs/en/`, `/docs/es/`, `/docs/mg/` sinon). Le sélecteur du guide
+  lui-même utilise des liens **relatifs** : le site est à la fois à la racine
+  de `docs.bibliofelia.org` et sous `/docs/` (BUG-049). Un lien `/en/` sortait
+  du guide.
+- Dans le bandeau, l'icône OFELIA ouvre l'application dans la même langue
+  (`/fr/`, `/en/`, `/es/`, `/mg/`, avec le préfixe `/bibliofelia` sur la Box).
+  Le texte « Guide BiblOFELIA » ouvre l'accueil du guide. Sur
+  `docs.bibliofelia.org`, l'icône ouvre `https://bibliofelia.org/` (FEAT-099).
+  Le script est `docs/user-guide/docs/javascripts/header-links.js`.
 - Sélecteur de langue dans l'en-tête : `set_language` natif de Django, persistance par cookie `django_language`. Le champ caché `next` du formulaire utilise `{{ request.path_info }}` (chemin **sans** le préfixe `FORCE_SCRIPT_NAME=/bibliofelia` ajouté par nginx en prod) — sinon `translate_url` ne sait pas resolve le chemin et le préfixe de langue reste inchangé.
 - Traductions maintenues via `scripts/apply_translations.py` (dict Python → batch d'application aux 4 `.po`, suppression des `#, fuzzy`). Approche utile pour les vagues de chaînes nouvelles : on évite l'édition manuelle des `.po` et le mauvais recyclage par `msgmerge` (fuzzy avec traductions d'autres msgid).
 - Membre peut avoir une `preferred_language` distincte, utilisée pour reçus et cartes (Sprint 3).
@@ -3266,7 +3344,7 @@ Topologie des adresses :
 | `sanjuan.bibliofelia.org` | Instance BibliOfelia sur Avignon | Bibliothèque San Juan (BD/volumes isolés) |
 | `grand-saconnex.bibliofelia.org` | Instance BibliOfelia sur Avignon | Bibliothèque Grand-Saconnex (BD/volumes isolés) |
 | `docs.bibliofelia.org` | Guide MkDocs statique (Avignon) | Miroir **en ligne** du guide ; la doc **locale embarquée sur la Box** reste servie hors-ligne sous `/bibliofelia/docs/` (inchangée) |
-| `bibliofelia.org` + `www` | 301 permanent → `ofeliainternational.org/what-we-do/` | Redirection (SEO-safe) |
+| `bibliofelia.org` + `www` | Page d'accueil sur le nœud actif | Canaima, Grand-Saconnex, San Juan, tuile OFELIA International, vidéo et langues FR/EN/ES/MG (FEAT-098, FEAT-102) |
 | `mail.bibliofelia.org` | docker-mailserver (Avignon) | 3 boîtes `no-reply@`/`info@`/`admin@` ; SPF/DKIM/DMARC validés, envoi+réception |
 
 Différences d'une instance Avignon vs la Box :

@@ -32,7 +32,7 @@ and read the card barcode — handy if the scanner is not plugged in (see
     the member's name) to open their profile, then click **New loan**
     from their profile.
 
-Once the member is identified, BibliOfelia displays their name and
+Once the member is identified, BiblOFELIA displays their name and
 category. If alerts exist (expired card, too many active loans), they
 appear in yellow just below the name — read them before proceeding.
 
@@ -74,7 +74,7 @@ When all books are in the basket, the section **3 · Confirm** appears
 at the bottom. You can add a free-form note (optional), then click the
 big orange **Lend N books** button.
 
-BibliOfelia records the loans, automatically calculates the return
+BiblOFELIA records the loans, automatically calculates the return
 date (21 days later by default) and returns to an empty form ready
 for the next member.
 

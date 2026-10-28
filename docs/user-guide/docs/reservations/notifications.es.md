@@ -1,6 +1,6 @@
 # Notificaciones y seguimientos
 
-BibliOfelia funciona sin conexión y no envía correos electrónicos ni
+BiblOFELIA funciona sin conexión y no envía correos electrónicos ni
 SMS automáticos. **Le corresponde a usted llamar a los miembros**
 cuando un libro reservado llega. Esta página explica cómo seguir las
 notificaciones pendientes.

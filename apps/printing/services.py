@@ -435,7 +435,7 @@ def _draw_member_card(pdf, x, y, w, h, member, library_name: str,
 def _library_name() -> str:
     from apps.core.models import Setting
 
-    return Setting.get("library_name", "BibliOfelia") or "BibliOfelia"
+    return Setting.get("library_name", "BiblOFELIA") or "BiblOFELIA"
 
 
 # ----------------------------------------------------------------------

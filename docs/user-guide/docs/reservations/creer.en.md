@@ -9,11 +9,20 @@ back, it will be set aside for the next member.
 1. Open the [record page](../catalogue/recherche.md) of the requested
    book
 2. Click **Reserve**
-3. Identify the member (scan their card or type their name)
+3. Type the member's name: the list gets shorter. Choose the person.
 4. Validate
 
 The reservation appears in the **Active reservations** list on the
 book's page.
+
+## From the Reservations page
+
+1. Open [**Reservations**](/bibliofelia/en/loans/reservations/){ target="_blank" }
+2. Click **Reserve a book**. It sits just above **Ready for pickup**.
+   The round button beside it opens the camera: an ISBN or an Ofelia
+   code starts the search.
+3. Search by title, author, ISBN or code. The same scan is beside the field.
+4. Click **Reserve**, then type the name to choose the person
 
 ## See all reservations
 
@@ -31,7 +40,7 @@ The page lists all current reservations with:
 
 ## Queue: several reservations on the same book
 
-If several members reserve the same book, BibliOfelia automatically
+If several members reserve the same book, BiblOFELIA automatically
 manages the queue: the first to have reserved is served first when
 the book returns.
 
@@ -40,7 +49,7 @@ The book's page shows the member's position in the queue
 
 ## Once the book is back
 
-When the book is returned, BibliOfelia automatically updates the
+When the book is returned, BiblOFELIA automatically updates the
 first reservation to **Ready for pickup**. You then see:
 
 - An alert on the **Return** page at scan time

@@ -5,16 +5,16 @@ déjà saisi dans un **tableur Excel** (un identifiant maison, un titre, un
 auteur, parfois un ISBN). Le **catalogage Excel** offre quatre outils pour
 exploiter ce fichier :
 
-1. **Vérifier un fichier** — BibliOfelia annote votre tableur avec ce que
+1. **Vérifier un fichier** — BiblOFELIA annote votre tableur avec ce que
    les bases en ligne connaissent de chaque livre, sans rien modifier dans
    le catalogue. Idéal **avant** une migration, pour mesurer la qualité du
    fichier et le corriger à la main.
-2. **Importer dans le catalogue** — BibliOfelia transforme une liste
+2. **Importer dans le catalogue** — BiblOFELIA transforme une liste
    d'ISBN en notices et exemplaires, d'un seul coup.
-3. **Exporter le catalogue** — BibliOfelia vous rend tout votre fonds dans
+3. **Exporter le catalogue** — BiblOFELIA vous rend tout votre fonds dans
    un tableur, une ligne par exemplaire.
 4. **Mettre à jour des exemplaires** — vous renvoyez ce tableur corrigé, et
-   BibliOfelia applique vos corrections aux livres déjà catalogués, sans
+   BiblOFELIA applique vos corrections aux livres déjà catalogués, sans
    jamais en créer de nouveaux.
 
 !!! info "Réservé aux bibliothécaires"
@@ -28,7 +28,7 @@ section **Inventaire**, cliquez sur
 [**Catalogage Excel**](/bibliofelia/fr/catalog/excel-catalog/){ target="_blank" }.
 
 La page propose quatre encadrés : **Vérifier un fichier**, **Importer dans
-BibliOfelia**, **Exporter le catalogue** et **Mettre à jour des
+BiblOFELIA**, **Exporter le catalogue** et **Mettre à jour des
 exemplaires**.
 
 ## Vérifier un fichier
@@ -56,7 +56,7 @@ Dans l'encadré
 [**Vérifier un fichier**](/bibliofelia/fr/catalog/excel-catalog/){ target="_blank" },
 choisissez votre fichier puis cliquez sur **Lancer la vérification**.
 
-BibliOfelia interroge **OpenLibrary, Google Books, la BNF et la BNE**,
+BiblOFELIA interroge **OpenLibrary, Google Books, la BNF et la BNE**,
 d'abord par ISBN, puis par titre + auteur. Le traitement se fait en tâche
 de fond : comptez environ **10 minutes pour 300 lignes**.
 
@@ -106,11 +106,11 @@ celles dont vous disposez, dans n'importe quel ordre.
 | `CLASSIFICATION_CODE` | le code de classification (l'ancien nom `CATEGORY_ABBR` est encore lu) |
 
 Dans l'encadré
-[**Importer dans BibliOfelia**](/bibliofelia/fr/catalog/excel-catalog/){ target="_blank" },
+[**Importer dans BiblOFELIA**](/bibliofelia/fr/catalog/excel-catalog/){ target="_blank" },
 choisissez votre fichier puis cliquez sur **Importer dans le catalogue**.
 
 Chaque ISBN devient une notice et un exemplaire. Si un ISBN est **déjà
-présent** dans le catalogue, BibliOfelia ne recrée pas la notice : il
+présent** dans le catalogue, BiblOFELIA ne recrée pas la notice : il
 ajoute simplement un exemplaire à la notice existante.
 
 !!! info "Une colonne remplie remplace l'information de la fiche"
@@ -159,7 +159,7 @@ appartiennent à l'**exemplaire** et non à la fiche.
 | `CONDITION`, `PROVENANCE`, `LOCATION` | les informations de l'exemplaire |
 
 !!! tip "C'est le fichier de la mise à jour"
-    Les colonnes de l'export sont **exactement** celles que BibliOfelia sait
+    Les colonnes de l'export sont **exactement** celles que BiblOFELIA sait
     relire. Corrigez ce que vous voulez dans Excel, puis renvoyez le même
     fichier par **Mettre à jour des exemplaires** : rien d'autre à préparer.
 
@@ -248,7 +248,7 @@ fichier annoté ou consulter les avertissements ligne par ligne.
 
 ## Voir aussi
 
-- [Cataloguer en scannant](catalogage-scan.md) — le même import, mais à la
-  caméra livre par livre
+- [Cataloguer en scannant](catalogage-scan.md) — le même travail, livre par
+  livre, à la caméra ou à la douchette
 - [Ajouter un livre](../catalogue/ajouter-livre.md) — créer une seule
   notice à la main

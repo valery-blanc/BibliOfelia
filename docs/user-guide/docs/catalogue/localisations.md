@@ -42,7 +42,7 @@ plus tard depuis la fiche de l'exemplaire.
 
 Lors d'un récolement avec OfeliaScan (inventaire), si vous scannez un
 livre dans une localisation différente de celle enregistrée,
-BibliOfelia met à jour automatiquement la localisation de
+BiblOFELIA met à jour automatiquement la localisation de
 l'exemplaire. C'est la façon la plus rapide de remettre votre catalogue
 à jour après un grand rangement.
 

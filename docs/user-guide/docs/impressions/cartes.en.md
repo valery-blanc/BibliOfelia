@@ -1,6 +1,6 @@
 # Print member cards
 
-Member cards are generated as PDFs from BibliOfelia. You can print
+Member cards are generated as PDFs from BiblOFELIA. You can print
 one or several at a time.
 
 ## Open the printing page

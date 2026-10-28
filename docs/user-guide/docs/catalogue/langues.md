@@ -1,6 +1,6 @@
 # Langues
 
-BibliOfelia tient **une seule liste de langues**, qui sert à deux choses :
+BiblOFELIA tient **une seule liste de langues**, qui sert à deux choses :
 
 - la **langue d'un livre**, sur la fiche de la notice ;
 - les **langues parlées** d'un usager, sur sa fiche.

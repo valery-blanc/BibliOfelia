@@ -39,7 +39,7 @@ fakantsary](../premiers-pas/scanner-camera.md)).
     takelakany, dia click amin'ny **Fampindramana vaovao** avy amin'ny
     takelakany.
 
-Rehefa voafantatra ny mpianatra, ny BibliOfelia dia mampiseho ny
+Rehefa voafantatra ny mpianatra, ny BiblOFELIA dia mampiseho ny
 anarany sy ny sokajiny. Raha misy fampitandremana (karatra tapitra,
 fampindramana be loatra), miseho amin'ny vola eo ambanin'ny anarana
 izany — vakio alohan'ny manohy.
@@ -86,7 +86,7 @@ Hanamarina** dia miseho ambany. Azonao ampiana note malalaka (tsy
 voatery), dia click amin'ny bokotra volom-boasary lehibe **Hampindrana
 N boky**.
 
-Ny BibliOfelia dia manoratra ny fampindramana, mikajy automatika ny
+Ny BiblOFELIA dia manoratra ny fampindramana, mikajy automatika ny
 daty famerenana (araka ny default 21 andro aoriana) ary miverina
 amin'ny formulaire foana vonona ho an'ny mpianatra manaraka.
 

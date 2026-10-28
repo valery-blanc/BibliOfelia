@@ -6,16 +6,16 @@ mpanoratra, indraindray ISBN). Manolotra fitaovana efatra hampiasana io rakitra
 io ny **katalaogy Excel** :
 
 1. **Hamarina rakitra** — manisy fanamarihana ny rakitra Excel-nao ny
-   BibliOfelia amin'izay fantatry ny banky angona an-tserasera momba ny boky
+   BiblOFELIA amin'izay fantatry ny banky angona an-tserasera momba ny boky
    tsirairay, nefa tsy manova na inona na inona ao amin'ny katalaogy. Tena
    mety **alohan'ny** fifindrana, mba handrefesana ny kalitaon'ny rakitra sy
    hanitsiana azy an-tanana.
-2. **Afaro ao amin'ny katalaogy** — ovain'ny BibliOfelia ho notice sy kopia
+2. **Afaro ao amin'ny katalaogy** — ovain'ny BiblOFELIA ho notice sy kopia
    ilay lisitra ISBN, indray mandeha.
-3. **Havoaka ny katalaogy** — averin'ny BibliOfelia aminao amin'ny rakitra
+3. **Havoaka ny katalaogy** — averin'ny BiblOFELIA aminao amin'ny rakitra
    Excel ny fonosam-bokinao manontolo, andalana iray isaky ny kopia.
 4. **Hanavao kopia** — averinao ilay rakitra voahitsy, dia ampiharin'ny
-   BibliOfelia amin'ny boky efa voasoratra ao amin'ny katalaogy ny
+   BiblOFELIA amin'ny boky efa voasoratra ao amin'ny katalaogy ny
    fanitsianao, nefa tsy mamorona boky vaovao mihitsy.
 
 !!! info "Ho an'ny mpitantana tranomboky ihany"
@@ -29,7 +29,7 @@ fizarana **Fanisana**, tsindrio
 [**Katalaogy Excel**](/bibliofelia/mg/catalog/excel-catalog/){ target="_blank" }.
 
 Mampiseho boaty efatra ny pejy : **Hamarina rakitra**, **Afaro ao amin'ny
-BibliOfelia**, **Havoaka ny katalaogy** ary **Hanavao kopia**.
+BiblOFELIA**, **Havoaka ny katalaogy** ary **Hanavao kopia**.
 
 ## Hamarina rakitra
 
@@ -58,7 +58,7 @@ Ao amin'ny boaty
 [**Hamarina rakitra**](/bibliofelia/mg/catalog/excel-catalog/){ target="_blank" },
 fidio ny rakitrao dia tsindrio **Atombohy ny fanamarinana**.
 
-Manontany ny **OpenLibrary, Google Books, BNF ary BNE** ny BibliOfelia,
+Manontany ny **OpenLibrary, Google Books, BNF ary BNE** ny BiblOFELIA,
 amin'ny ISBN aloha, dia amin'ny lohateny + mpanoratra. Atao ao ambadika ny
 fanodinana : manodidina ny **10 minitra isaky ny andalana 300**.
 
@@ -109,11 +109,11 @@ izay anananao, na inona na inona filaharana.
 | `CONDITION` | toetran'ny kopia (Vaovao, Tsara, Simba kely, Simba) |
 
 Ao amin'ny boaty
-[**Afaro ao amin'ny BibliOfelia**](/bibliofelia/mg/catalog/excel-catalog/){ target="_blank" },
+[**Afaro ao amin'ny BiblOFELIA**](/bibliofelia/mg/catalog/excel-catalog/){ target="_blank" },
 fidio ny rakitrao dia tsindrio **Afaro ao amin'ny katalaogy**.
 
 Lasa notice sy kopia ny ISBN tsirairay. Raha **efa misy** ao amin'ny
-katalaogy ny ISBN iray, dia tsy averin'ny BibliOfelia foronina ny notice :
+katalaogy ny ISBN iray, dia tsy averin'ny BiblOFELIA foronina ny notice :
 manampy kopia fotsiny amin'ny notice efa misy izy.
 
 !!! info "Ny tsanganana feno dia manolo ny mombamomba ao amin'ny rakitra"
@@ -163,7 +163,7 @@ ivelany dia an'ny **kopia**, fa tsy an'ny raki-tsoratra.
 | `CONDITION`, `PROVENANCE`, `LOCATION` | ny mombamomba ny kopia |
 
 !!! tip "Izy no rakitra ampiasaina amin'ny fanavaozana"
-    Ireo fariana avoaka dia **mitovy tanteraka** amin'izay hain'ny BibliOfelia
+    Ireo fariana avoaka dia **mitovy tanteraka** amin'izay hain'ny BiblOFELIA
     vakina indray. Ahitsio ao amin'ny Excel izay tianao, dia averino amin'ny
     **Hanavao kopia** ilay rakitra : tsy misy hafa homanina.
 
@@ -252,7 +252,7 @@ andalana.
 
 ## Jereo koa
 
-- [Catalogue amin'ny scan](catalogage-scan.md) — ny fanafarana mitovy, fa
-  amin'ny caméra isaky ny boky
+- [Catalogue amin'ny scan](catalogage-scan.md) — asa mitovy, isaky ny boky,
+  amin'ny fakantsary na amin'ny douchette
 - [Manampy boky](../catalogue/ajouter-livre.md) — mamorona notice tokana
   an-tanana
