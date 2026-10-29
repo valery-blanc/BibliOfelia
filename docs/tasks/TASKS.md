@@ -37,7 +37,7 @@ laissées pour une retouche à la main.
 Mise à jour précédente : 2026-10-13 — guide : catalogage caméra et douchette
 unifiés dans `inventaire/catalogage-scan` (×4), provenance par défaut
 documentée. Page `catalogage-douchette` réduite à un renvoi, hors menu.
-Pas de commit tant que Val n'a pas relu le guide.
+Relu par Val le 2026-10-29.
 
 Mise à jour précédente : 2026-09-18 (Sprint 37 **CLOS** — FEAT-096 export Excel
 de la liste catalogue, validé Val). Sprint 36 **CLOS** — FEAT-095 filtre
@@ -54,8 +54,8 @@ par défaut manquait au chapitre scan.
 - [x] Liens depuis Provenances et Cataloguer depuis Excel, ×4
 - [x] SPEC §6.1 (FEAT-046 / FEAT-054)
 - [x] Déployé : docs.bibliofelia.org (Fez), image de secours (Avignon), guide de la Box
-- [ ] Relecture Val sur le guide déployé
-- [ ] Commit (après confirmation Val)
+- [x] Relecture Val sur le guide déployé — OK 2026-10-29
+- [x] Commit (après confirmation Val)
 
 ## Sprint 37 — FEAT-096 export Excel liste catalogue (CLOS 2026-09-18)
 
